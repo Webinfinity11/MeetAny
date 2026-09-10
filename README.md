@@ -25,3 +25,7 @@ Validation: all eight logo images loaded in-browser; desktop and 320px profile l
 ## Presentation readiness
 
 Main journey copy now describes discovery, offers and draft preparation precisely. Profile facts, offers, terms and request requirements have consistent quiet information surfaces; forms group need/company information separately from contact/service details. Draft confirmation shows the complete contact and request summary. Whitespace-only required fields are rejected and valid values are trimmed. A skip link and current navigation semantics support keyboard navigation. `PRESENTATION-GE.md` provides a five-minute Georgian walkthrough and distinguishes existing demo behavior from production work. This pass validated JavaScript, all ten static pages' local references/anchors, and draft whitespace correction; prior browser checks remain documented above.
+
+## FiraGO and visual refinement
+
+`dist/refinement.css` provides the shared responsive visual pass: consistent heading hierarchy, spacing, photo proportions, navigation emphasis, card metadata and navy footer. Four original FiraGO 1.001 WOFF2 weights (400/500/600/700) are hosted locally; the previous Google Fonts import is removed. Headings, buttons, inputs and body use FiraGO; the MeetAny wordmark retains its existing treatment. Font provenance and OFL license are in `dist/assets/fonts/`. Validated all ten pages' style/asset links, WOFF2 signatures and Georgian glyph coverage for every weight, plus JavaScript syntax and whitespace checks.

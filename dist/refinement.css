@@ -1,0 +1,193 @@
+@font-face { font-family: FiraGO; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/FiraGO-Regular.woff2") format("woff2"); }
+@font-face { font-family: FiraGO; font-style: normal; font-weight: 500; font-display: swap; src: url("/assets/fonts/FiraGO-Medium.woff2") format("woff2"); }
+@font-face { font-family: FiraGO; font-style: normal; font-weight: 600; font-display: swap; src: url("/assets/fonts/FiraGO-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: FiraGO; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/FiraGO-Bold.woff2") format("woff2"); }
+/* Shared visual refinement for home, catalog and company profiles. */
+:root {
+  --blue: #245ddd;
+  --ink: #15273d;
+  --muted: #586d84;
+  --line: #e4eaf1;
+  --wash: #f4f7fa;
+}
+h1, h2, h3 { letter-spacing: -.025em; }
+.header-inner { min-height: 88px; padding-block: 16px; }
+.header nav a { position: relative; color: #51657c; }
+.header nav a.active { color: var(--ink); }
+.header nav a.active::after {
+  content: ''; position: absolute; bottom: 4px; left: 0; right: 0;
+  height: 2px; border-radius: 2px; background: var(--blue);
+}
+.button { border-radius: 7px; font-weight: 600; box-shadow: none; }
+.button:hover { background: #194bc0; box-shadow: none; }
+.button-outline:hover { background: #eef3fa; }
+.hero { gap: 56px; min-height: 560px; padding-block: 56px 64px; }
+.hero h1 { font-size: clamp(32px, 3.15vw, 44px); line-height: 1.5; font-weight: 750; }
+.hero p { max-width: 530px; margin-block: 22px 28px; line-height: 1.95; }
+.hero-visual { height: 444px; }
+.hero-photo, .hero-visual::after { border-radius: 12px; }
+.photo-caption { bottom: 26px; left: 26px; right: 26px; }
+.photo-caption strong { font-size: 16px; line-height: 1.6; }
+.photo-caption div > span { font-size: 13px; }
+.caption-icon { border: 0; border-radius: 50%; background: #ffffff1f; }
+.eyebrow { font-size: 13px; letter-spacing: 0; color: #566d87; }
+.search-form { border-radius: 9px; border-color: #ccd7e4; box-shadow: 0 5px 18px #18385d06; }
+.search-form input { font-size: 16px; }
+.search-form input::placeholder { color: #718299; }
+.search-examples { gap: 8px 12px; font-size: 13px; margin-top: 17px; }
+.search-examples a { border: 0; padding: 3px 0; color: #516b8a; }
+.search-examples a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 4px; }
+.section-kicker { font-size: 13px; color: #6b7d92; margin-bottom: 9px; }
+.section-heading { gap: 28px; margin-bottom: 32px; }
+.section-heading h2, .featured-section h2 { font-size: 28px; line-height: 1.55; }
+.category-section { padding-block: 40px 44px; }
+.category-grid { gap: 24px; }
+.category-card { padding: 18px 0; align-items: flex-start; gap: 14px; }
+.category-card h3 { font-size: 16px; line-height: 1.55; }
+.category-card p { font-size: 13px; color: #61768f; line-height: 1.75; }
+.category-icon { width: 42px; height: 42px; border-radius: 9px; margin-top: 2px; }
+.category-card .category-arrow { display: none; }
+.featured-section { padding-block: 32px 64px; }
+.company-grid { gap: 30px; }
+.company-photo-wrap { aspect-ratio: 1.7; border-radius: 10px; }
+.company-body, .results-grid .company-body { padding: 22px 0 0; }
+.company-top { align-items: center; gap: 13px; }
+.company-top > div { min-width: 0; }
+.company-card h3, .results-grid h3 { font-size: 22px; line-height: 1.3; overflow-wrap: anywhere; }
+.company-description, .results-grid .company-description { font-size: 16px; line-height: 1.85; margin-block: 18px 16px; }
+.company-location { color: #6b7f96; font-size: 12px; }
+.card-service-area { font-size: 13px; padding: 10px 12px; background: #f3f6f9; border-radius: 6px; }
+.tag { font-size: 12px; padding: 3px 0; background: none; color: #61748c; border-radius: 0; }
+.tag + .tag::before { content: '·'; margin-right: 9px; color: #91a0b2; }
+.tags { gap: 9px; }
+.photo-category { font-size: 12px; padding: 5px 10px; background: #fffffff2; color: #334c68; }
+.company-bottom { padding-top: 14px; margin-top: 18px; }
+.company-bottom .details-button { font-size: 14px; }
+.company-bottom .availability { font-size: 12px; color: #6e8095; }
+.section-disclaimer, .result-disclaimer { font-size: 13px; color: #708197; }
+.how-section { padding-top: 48px; margin-bottom: 64px; }
+.how-intro h2 { font-size: 30px; line-height: 1.65; }
+.steps li { padding: 23px; border-radius: 9px; }
+.steps h3 { font-size: 17px; }
+.catalog-head { padding-block: 28px 32px; background: #f5f7fb; }
+.catalog-title-row h1 { font-size: 34px; line-height: 1.5; }
+.catalog-title-row p { font-size: 16px; }
+.catalog-search { max-width: 840px; margin-top: 24px; }
+.catalog-layout { gap: 40px; padding-block: 36px 64px; }
+.filter-group { padding-bottom: 22px; margin-bottom: 22px; }
+.filter-group select, .results-toolbar select { border-color: #d9e1eb; border-radius: 6px; }
+.radio-option:has(input:checked) { color: var(--blue); font-weight: 600; }
+.radio-option:has(input:checked) small { color: var(--blue); background: #eaf0fc; }
+.results-grid { gap: 36px 26px; }
+.results-grid .company-photo-wrap { aspect-ratio: 1.85; }
+.results-toolbar { padding-bottom: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
+.filter-chip { border-radius: 6px; }
+.profile-container { padding-top: 28px; }
+.profile-cover { height: 280px; border-radius: 12px; }
+.profile-heading { margin-block: 28px 18px; }
+.profile-heading h1 { font-size: 40px; letter-spacing: -.035em; }
+.profile-lead { color: #526980; line-height: 1.9; }
+.profile-sections-nav { gap: 30px; padding-block: 14px; }
+.profile-layout { gap: 56px; }
+.profile-facts { background: #eff4fa; border-radius: 10px; }
+.profile-facts h2 { font-size: 18px; }
+.profile-section { padding-block: 36px; }
+.profile-section h2 { font-size: 25px; line-height: 1.55; }
+.offer-row, .offer-row:first-child, .offer-row:last-child { background: #f5f7fa; border-radius: 9px; padding: 24px; }
+.offer-row h3 { font-size: 18px; line-height: 1.7; margin-top: 5px; }
+.offer-number { letter-spacing: 0; }
+.offer-request { padding-top: 13px; }
+.profile-faq summary { padding-block: 3px; line-height: 1.8; }
+.form-section { background: #f4f7fa; }
+.form-section .field label { margin-bottom: 9px; }
+.field input, .field textarea { border-color: #d4dee9; border-radius: 6px; padding: 12px 13px; }
+.form-note.form-status { border-left: 0; background: none; padding: 17px 0 0; }
+footer { background: #14263d; color: #fff; border: 0; }
+.footer-main { padding-block: 44px; }
+.footer-brand { color: #fff; }
+.footer-main p, .footer-nav, .footer-language { color: #b8c6d7; font-size: 14px; }
+.footer-nav > span { color: #f6f9fd; font-size: 14px; }
+.footer-nav button { font-size: 14px; }
+.footer-nav a:hover, .footer-nav button:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+.footer-bottom { color: #a6b8cd; border-color: #ffffff20; font-size: 12px; padding-block: 22px; }
+@media (max-width: 1150px) {
+  .hero { gap: 32px; min-height: 0; padding-block: 44px; }
+  .hero h1 { font-size: 34px; }
+  .hero-visual { height: 420px; }
+  .category-grid { gap: 18px; }
+  .category-card { flex-direction: column; gap: 13px; }
+  .company-grid { gap: 22px; }
+  .profile-layout { gap: 32px; }
+  .profile-heading h1 { font-size: 36px; }
+}
+@media (max-width: 900px) {
+  .hero h1 { font-size: 28px; }
+  .hero-visual { height: 400px; }
+  .category-card { flex-direction: row; }
+  .company-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .company-grid .company-card:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px; }
+  .company-grid .company-card:last-child .company-body { padding-top: 0; }
+  .company-grid .company-card:last-child .company-photo-wrap { height: 100%; aspect-ratio: auto; min-height: 230px; }
+  .catalog-layout { gap: 24px; }
+}
+@media (max-width: 720px) {
+  .header-inner { min-height: 78px; padding-block: 15px; }
+  .header nav a.active::after { display: none; }
+  .header nav a.active { color: var(--blue); }
+  .hero { padding-block: 34px 40px; gap: 30px; }
+  .hero h1 { font-size: clamp(26px,5.8vw,38px); }
+  .hero p { font-size: 16px; margin-block: 20px 24px; }
+  .hero-visual { height: 320px; }
+  .photo-caption { left: 22px; right: 22px; bottom: 23px; }
+  .photo-caption strong { font-size: 14px; }
+  .category-section, .featured-section { padding-block: 32px 40px; }
+  .section-heading { margin-bottom: 24px; gap: 18px; }
+  .section-heading h2, .featured-section h2 { font-size: 23px; }
+  .section-kicker { font-size: 12px; }
+  .category-grid { gap: 12px 22px; }
+  .category-card { flex-direction: column; gap: 12px; }
+  .category-card h3 { font-size: 15px; }
+  .company-grid { grid-template-columns: minmax(0,1fr); gap: 32px; }
+  .company-grid .company-card:last-child { display: flex; grid-column: auto; gap: 0; }
+  .company-grid .company-card:last-child .company-photo-wrap { height: auto; min-height: 0; aspect-ratio: 1.7; }
+  .company-grid .company-card:last-child .company-body { padding-top: 22px; }
+  .company-bottom { align-items: center; }
+  .results-grid { gap: 32px 20px; }
+  .results-grid h3 { font-size: 20px; }
+  .catalog-head { padding-block: 24px; }
+  .catalog-title-row h1 { font-size: 28px; }
+  .catalog-title-row p { font-size: 16px; }
+  .catalog-layout { padding-block: 26px 44px; gap: 0; }
+  .how-section { padding-top: 34px; margin-bottom: 44px; }
+  .how-intro h2 { font-size: 27px; }
+  .steps li { padding: 20px; }
+  .profile-cover { height: 220px; }
+  .profile-heading h1 { font-size: 34px; }
+  .profile-layout { gap: 0; }
+  .profile-sections-nav { gap: 12px 20px; font-size: 14px; }
+  .profile-section h2 { font-size: 23px; }
+  .profile-section { padding-block: 30px; }
+  .offer-row, .offer-row:first-child, .offer-row:last-child { padding: 20px; }
+  .offer-row h3 { font-size: 17px; }
+  .footer-main { padding-block: 34px; gap: 28px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 26px; letter-spacing: -.035em; }
+  .hero-visual { height: 280px; }
+  .photo-caption { left: 18px; right: 18px; }
+  .category-card h3 { font-size: 14px; overflow-wrap: anywhere; }
+  .category-icon { margin-bottom: 0; }
+  .section-heading h2, .featured-section h2 { font-size: 21px; }
+  .section-heading > .text-link { max-width: 90px; }
+  .profile-cover { height: 180px; }
+  .profile-heading h1 { font-size: 29px; }
+  .profile-section h2 { font-size: 21px; }
+  .profile-meta { font-size: 12px; }
+  .company-bottom .details-button { font-size: 14px; }
+  .company-bottom .availability { font-size: 12px; }
+}
+
+:root { font-family: FiraGO, sans-serif; }
+h1, h2, h3, button, input, select, textarea, .profile-heading h1, .company-card h3 { font-family: FiraGO, sans-serif; }
+.hero h1 { font-weight: 700; }
+.button, .details-button, .offer-request { font-weight: 600; }
