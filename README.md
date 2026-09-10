@@ -21,3 +21,7 @@ Company data uses stable IDs and slugs. Each company owns multiple offers (8 com
 Industry, collaboration and service format filters supplement role, service territory and language, with contextual counts and URL state. The eight fictional company logomarks are original imagegen assets served locally in a shared sprite. Loading failures show a neutral Lucide building icon without retry loops. Real company identities including Credo Bank are not in the demo dataset.
 
 Validation: all eight logo images loaded in-browser; desktop and 320px profile layouts, filtered catalog to profile return URL, and offer-specific request prefill checked. Focused checks passed for combined/invalid filters, unsafe return URLs, unique profiles, 24 offers and logo error fallback.
+
+## Presentation readiness
+
+Main journey copy now describes discovery, offers and draft preparation precisely. Profile facts, offers, terms and request requirements have consistent quiet information surfaces; forms group need/company information separately from contact/service details. Draft confirmation shows the complete contact and request summary. Whitespace-only required fields are rejected and valid values are trimmed. A skip link and current navigation semantics support keyboard navigation. `PRESENTATION-GE.md` provides a five-minute Georgian walkthrough and distinguishes existing demo behavior from production work. This pass validated JavaScript, all ten static pages' local references/anchors, and draft whitespace correction; prior browser checks remain documented above.
