@@ -604,3 +604,31 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
  .company-listing .listing-action, .listing-offers { min-height: 44px; }
 }
 @media(prefers-reduced-motion:reduce) { .listing-media img { transition: none; } }
+
+/* Final home-page polish around the approved directory design. */
+.home-page .hero { padding-block: 40px 48px; min-height: 0; align-items: center; gap: 44px; }
+.home-page .hero-visual { height: 390px; }
+.home-page .hero h1 { line-height: 1.4; }
+.home-page .hero p { font-size: 16px; line-height: 1.85; margin-block: 18px 22px; max-width: 510px; }
+.home-page .search-examples { gap: 8px; align-items: center; flex-wrap: wrap; }
+.home-page .search-examples > span { font-size: 12px; color: #7b8ba0; margin-right: 3px; }
+.home-page .search-examples a { padding: 5px 10px; background: #f1f5fa; border-radius: 5px; font-size: 12px; text-decoration: none; }
+.home-page .search-examples a:hover { background: #e7effb; color: #245ddd; }
+.home-page .category-section { padding-block: 28px 30px; }
+.home-page .section-heading { margin-bottom: 24px; }
+.home-page .section-heading h2 { font-size: 26px; }
+.home-page .section-description { font-size: 14px; line-height: 1.8; color: #718398; max-width: 620px; margin-top: 8px; }
+.home-page .featured-section { padding-block: 26px 48px; }
+.home-page .how-section { padding-top: 32px; margin-bottom: 44px; }
+.home-page .how-intro h2 { font-size: 28px; line-height: 1.55; }
+.home-page .steps li { background: transparent; border-radius: 0; border-bottom: 1px solid #e5ebf2; padding: 19px 0; }
+.home-page .steps li:last-child { border-bottom: 0; }
+.home-page .steps h3 { font-size: 16px; }
+.home-next-step { max-width: 1256px; margin: 0 auto 48px; padding: 28px 0; display: flex; align-items: center; justify-content: space-between; gap: 28px; border-top: 1px solid #e4eaf1; }
+.home-next-step h2 { font-size: 24px; line-height: 1.5; }
+.home-next-step p { margin-top: 8px; font-size: 14px; line-height: 1.8; color: #718398; }
+.home-next-step > .button { white-space: nowrap; font-size: 13px; min-height: 44px; }
+@media(max-width:1328px) { .home-next-step { margin-inline: 36px; } }
+@media(max-width:900px) { .home-page .hero { gap: 26px; } .home-page .hero-visual { height: 330px; } .home-next-step { margin-inline: 30px; } }
+@media(max-width:720px) { .home-page .hero { padding-block: 28px 32px; } .home-page .hero-visual { height: 260px; } .home-page .section-heading h2 { font-size: 23px; } .home-next-step { margin: 0 24px 32px; flex-direction: column; align-items: flex-start; gap: 18px; } .home-next-step h2 { font-size: 22px; } }
+@media(max-width:420px) { .home-next-step { margin-inline: 20px; } }
