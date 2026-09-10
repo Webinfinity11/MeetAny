@@ -489,3 +489,13 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .visible-options .filter-option-icon { width: 18px; height: 18px; flex: 0 0 18px; color: #6a8199; }
 .visible-options .is-selected .filter-option-icon { color: #2354c9; }
 .visible-options .radio-option.is-selected small { color: #2354c9; font-weight: 600; }
+
+.filter-group-hint { font-size: 11px; line-height: 1.6; color: #78899d; margin: -4px 0 10px; }
+.filter-disclosure summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; list-style: none; cursor: pointer; font-size: 14px; font-weight: 600; color: #344c67; font-feature-settings: "case" 1; }
+.filter-disclosure summary::-webkit-details-marker { display: none; }
+.filter-disclosure summary .icon { width: 16px; height: 16px; flex: none; }
+.filter-disclosure[open] summary { margin-bottom: 14px; }
+.filter-disclosure[open] summary .icon { transform: rotate(45deg); }
+.filter-disclosure summary small { color: #285ce8; font-size: 12px; }
+.filter-disclosure .filter-group-hint { margin-top: 0; }
+.active-filters { align-items: center; }
