@@ -28,7 +28,7 @@ function card(c){
   </div>
  </article>`;
 }
-const grid=document.querySelector('#category-grid');if(grid)grid.innerHTML=categories.map((c,index)=>`<a class="category-card" href="/categories/?type=${c.id}"><span class="category-icon" aria-hidden="true"><img class="category-3d-sheet" src="/assets/category-business-3d.png" alt="" style="--category-x:${-100*(index%2)}%;--category-y:${-100*Math.floor(index/2)}%" decoding="async">${icon(categoryIcons[c.id])}</span><div><h3>${c.title}</h3><p>${c.sub}</p></div>${icon('arrow-up-right','category-arrow')}</a>`).join('');
+const grid=document.querySelector('#category-grid');if(grid&&!grid.hasAttribute('data-static'))grid.innerHTML=categories.map((c,index)=>`<a class="category-card" href="/categories/?type=${c.id}"><span class="category-icon" aria-hidden="true"><img class="category-3d-sheet" src="/assets/category-business-3d.png" alt="" style="--category-x:${-100*(index%2)}%;--category-y:${-100*Math.floor(index/2)}%" decoding="async">${icon(categoryIcons[c.id])}</span><div><h3>${c.title}</h3><p>${c.sub}</p></div>${icon('arrow-up-right','category-arrow')}</a>`).join('');
 const featured=document.querySelector('#featured-companies');if(featured)featured.innerHTML=companies.slice(0,3).map(card).join('');
 document.querySelector('.nav-home')?.classList.add('active');
 document.addEventListener('click',e=>{const close=e.target.closest('[data-close]');if(close)close.closest('dialog').close();});
