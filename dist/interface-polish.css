@@ -62,3 +62,9 @@
  .company-listing .listing-action { font-size:13px; gap:6px; padding-inline:10px; }
 }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+/* Transparent wordmark replaces the old emblem and repeated text. */
+.brand { display:inline-flex; align-items:center; flex-shrink:0; }
+.brand img.brand-wordmark,.design-two .brand img.brand-wordmark { display:block; width:160px; height:auto; margin:0; border:0; border-radius:0; object-fit:contain; box-shadow:none; }
+.footer-brand img.brand-wordmark { width:150px; }
+@media(max-width:720px) { .header .brand img.brand-wordmark,.design-two .header .brand img.brand-wordmark { width:138px; height:auto; margin:0; } }
