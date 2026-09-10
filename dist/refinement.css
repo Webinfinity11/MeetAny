@@ -865,3 +865,26 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .design-switch:hover { background:#edf3ff; }
 @media(max-width:900px) { .header-actions { gap:10px; } .header-actions .language { display:none; } }
 @media(max-width:600px) { .header-inner { flex-wrap:wrap; } .header-actions { flex-wrap:wrap; } .design-switch { padding:6px 8px; font-size:11px; } }
+
+/* Compact, consistent company and request forms in both designs. */
+#form-dialog, #form-dialog:has(#intro-form) { width:min(580px,calc(100% - 32px)); max-height:90dvh; padding:28px; border-radius:14px; }
+#form-dialog #form-title { font-size:24px; line-height:1.45; padding-right:30px; margin:4px 0 8px; }
+#form-dialog #form-content > .section-kicker { font-size:11px; margin-bottom:4px; }
+#form-dialog .request-intro { font-size:13px; line-height:1.7; margin:0 0 22px; }
+#form-dialog .company-essential, #form-dialog .request-essential { margin-top:0; }
+#form-dialog .field, #intro-form .request-essential .field { margin:0 0 16px; }
+#form-dialog .field label { display:block; font-size:13px; font-weight:500; line-height:1.6; margin-bottom:6px; }
+#form-dialog .field input, #form-dialog .field select { height:44px; min-height:44px; padding:10px 12px; font-size:14px; border:1px solid #d5deea; border-radius:7px; background:#fff; }
+#form-dialog .field textarea { min-height:96px; padding:11px 12px; font-size:14px; line-height:1.7; border:1px solid #d5deea; border-radius:7px; background:#fff; }
+#form-dialog .field input:focus, #form-dialog .field textarea:focus, #form-dialog .field select:focus { border-color:#245ddd; outline:2px solid #cddcff; outline-offset:1px; }
+#form-dialog .request-field-grid { gap:14px; }
+#form-dialog .request-extras { margin:18px 0; }
+#form-dialog .request-extras summary { padding:12px 0; font-size:13px; }
+#form-dialog .form-action-bar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding-top:18px; margin-top:20px; border-top:1px solid #e3e9f1; }
+#form-dialog .form-action-bar .form-submit { width:auto; margin:0; min-height:44px; padding:10px 24px; font-size:13px; }
+#form-dialog .form-cancel { border:0; background:transparent; color:#687b92; padding:10px 0; font-size:13px; }
+#form-dialog .form-cancel:hover { color:#18334d; }
+#form-dialog .request-demo-note { font-size:11px!important; margin:12px 0 0!important; color:#738398!important; }
+#form-dialog .selected-offer { font-size:12px; padding:10px 12px; margin:12px 0 18px; }
+#form-dialog .form-actions .button { font-size:13px; min-height:44px; }
+@media(max-width:520px) { #form-dialog, #form-dialog:has(#intro-form) { width:calc(100% - 24px); padding:24px 20px; } #form-dialog #form-title { font-size:21px; } #form-dialog .field input, #form-dialog .field textarea, #form-dialog .field select { font-size:16px; } }
