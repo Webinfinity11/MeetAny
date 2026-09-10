@@ -269,3 +269,29 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
 .field-hint { display: block; color: #697e94; font-size: 12px; line-height: 1.7; margin-top: 7px; }
 #intro-form .request-field-grid .field { margin-bottom: 20px; }
 @media(max-width:520px) { .request-field-grid { grid-template-columns: minmax(0,1fr); gap: 0; } }
+
+/* Quick request: four essential fields, optional conditions on demand. */
+#form-dialog:has(#intro-form) { width: min(620px,calc(100% - 32px)); padding: 30px; }
+#form-dialog:has(#intro-form) #form-title { padding-right: 30px; font-size: 25px; line-height: 1.45; }
+#form-dialog .request-intro { font-size: 14px; line-height: 1.7; margin-top: 10px; color: #6c7f95; }
+.request-essential { margin-top: 24px; }
+#intro-form .request-essential .field { margin: 0 0 17px; }
+#intro-form .field label { font-size: 14px; margin-bottom: 7px; }
+#intro-form #request-text { min-height: 96px; }
+#intro-form .request-essential .request-field-grid .field { margin-bottom: 0; }
+.request-extras { margin: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.request-extras summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 0; font-size: 14px; font-weight: 500; color: #3c5c80; }
+.request-extras summary::-webkit-details-marker { display: none; }
+.request-extras summary small { font-size: 12px; font-weight: 400; color: #7b8da1; margin-left: 8px; }
+.request-extras summary .icon { width: 17px; height: 17px; }
+.request-extras[open] summary .icon { transform: rotate(45deg); }
+.request-extras-content { padding: 4px 0 2px; }
+#intro-form .request-extras .field { margin-top: 0; margin-bottom: 17px; }
+#intro-form .form-submit { margin-top: 0; }
+.request-demo-note { font-size: 12px!important; color: #788a9e!important; line-height: 1.7!important; margin-top: 12px!important; }
+@media(max-width:520px) {
+ #form-dialog:has(#intro-form) { padding: 26px 20px; width: calc(100% - 24px); }
+ #intro-form .request-essential .request-field-grid .field { margin-bottom: 17px; }
+ #intro-form .request-essential .request-field-grid .field:last-child { margin-bottom: 0; }
+ .request-extras summary small { display: block; margin: 2px 0 0; }
+}

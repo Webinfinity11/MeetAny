@@ -88,32 +88,37 @@ function openRequest(companyId,offerIndex){
  document.querySelector('#form-content').innerHTML=`
  <span class="section-kicker">თანამშრომლობის მოთხოვნა</span>
  <h2 id="form-title">${company?esc(company.name):'რას ეძებს შენი ბიზნესი?'}</h2>
- <p>მიუთითე საჭიროება და პირობები, რომ პარტნიორმა ზუსტი შეთავაზება მოამზადოს.</p>
+ <p class="request-intro">მოკლედ აღწერე საჭიროება და დატოვე საკონტაქტო ინფორმაცია.</p>
  ${offer?`<p class="selected-offer">შეთავაზება: ${esc(offer)}</p>`:''}
- <form id="intro-form">
-  <fieldset class="form-section"><legend><span>01</span> საჭიროება და მოცულობა</legend>
-   <div class="field"><label for="request-text">რა გჭირდება? *</label><textarea id="request-text" name="need" required minlength="10" maxlength="2000" placeholder="აღწერე პროდუქტი ან მომსახურება და მნიშვნელოვანი მოთხოვნები.">${esc(d.need??(offer?'დაინტერესებული ვარ: '+offer+'\n\n':filters.q||''))}</textarea></div>
+ <form id="intro-form" novalidate>
+  <div class="request-essential">
+   <div class="field"><label for="request-text">რა გჭირდება? *</label><textarea id="request-text" name="need" required minlength="10" maxlength="2000" rows="3" placeholder="მაგ.: სასტუმროსთვის 100 კომპლექტი თეთრეული">${esc(d.need??(offer?'დაინტერესებული ვარ: '+offer+'\n\n':filters.q||''))}</textarea></div>
+   <div class="field"><label for="request-city">სად გჭირდება? *</label><input id="request-city" name="city" required maxlength="100" value="${esc(d.city??cityNames[filters.city]??'')}" placeholder="ქალაქი ან დისტანციურად" autocomplete="address-level2"></div>
    <div class="request-field-grid">
-    <div class="field"><label for="request-city">მომსახურების ადგილი *</label><input id="request-city" name="city" required maxlength="100" value="${esc(d.city??cityNames[filters.city]??'')}" placeholder="მაგ.: თბილისი"></div>
-    <div class="field"><label for="request-quantity">მოცულობა <span class="optional-label">არასავალდებულო</span></label><input id="request-quantity" name="quantity" maxlength="120" value="${esc(d.quantity||'')}" aria-describedby="quantity-hint" placeholder="მაგ.: 100 კომპლექტი"><small id="quantity-hint" class="field-hint">რაოდენობა და ერთეული, ან სამუშაოს მასშტაბი.</small></div>
+    <div class="field"><label for="request-name">სახელი / კომპანია *</label><input id="request-name" name="name" required maxlength="120" value="${esc(d.name||'')}" autocomplete="organization" placeholder="შენი სახელი ან კომპანია"></div>
+    <div class="field"><label for="request-email">ელფოსტა *</label><input id="request-email" type="email" name="email" required maxlength="200" value="${esc(d.email||'')}" autocomplete="email" placeholder="name@company.ge"></div>
    </div>
-   <div class="field"><label for="request-collaboration">თანამშრომლობის ტიპი</label><select id="request-collaboration" name="collaboration">${requestOptions(requestChoices.collaboration,d.collaboration)}</select></div>
-  </fieldset>
-  <fieldset class="form-section"><legend><span>02</span> ბიუჯეტი და ვადა</legend>
-   <div class="field"><label for="request-budget-mode">სავარაუდო ბიუჯეტი</label><select id="request-budget-mode" name="budgetMode">${requestOptions(requestChoices.budgetMode,d.budgetMode)}</select></div>
-   <div class="request-field-grid" id="budget-fields" hidden>
-    <div class="field"><label for="request-budget">ბიუჯეტის ზედა ზღვარი *</label><input id="request-budget" name="budget" type="number" min="0.01" max="1000000000" step="0.01" inputmode="decimal" value="${esc(d.budget||'')}" disabled placeholder="მაგ.: 5000"></div>
-    <div class="field"><label for="request-currency">ვალუტა</label><select id="request-currency" name="currency" disabled>${requestOptions(requestChoices.currency,d.currency)}</select></div>
+  </div>
+  <details class="request-extras" id="request-extras" ${d.quantity||d.budgetMode==='limit'||d.timing!=='flexible'||d.collaboration!=='discuss'?'open':''}>
+   <summary><span>დაამატე პირობები <small>არასავალდებულო</small></span>${icon('plus')}</summary>
+   <div class="request-extras-content">
+    <div class="request-field-grid">
+     <div class="field"><label for="request-quantity">მოცულობა</label><input id="request-quantity" name="quantity" maxlength="120" value="${esc(d.quantity||'')}" placeholder="მაგ.: 100 კომპლექტი"></div>
+     <div class="field"><label for="request-collaboration">თანამშრომლობა</label><select id="request-collaboration" name="collaboration">${requestOptions(requestChoices.collaboration,d.collaboration)}</select></div>
+    </div>
+    <div class="request-field-grid">
+     <div class="field"><label for="request-budget-mode">ბიუჯეტი</label><select id="request-budget-mode" name="budgetMode">${requestOptions(requestChoices.budgetMode,d.budgetMode)}</select></div>
+     <div class="field"><label for="request-timing">სასურველი ვადა</label><select id="request-timing" name="timing">${requestOptions(requestChoices.timing,d.timing)}</select></div>
+    </div>
+    <div class="request-field-grid" id="budget-fields" hidden>
+     <div class="field"><label for="request-budget">ბიუჯეტის ზედა ზღვარი *</label><input id="request-budget" name="budget" type="number" min="0.01" max="1000000000" step="0.01" inputmode="decimal" value="${esc(d.budget||'')}" disabled placeholder="მაგ.: 5000"></div>
+     <div class="field"><label for="request-currency">ვალუტა</label><select id="request-currency" name="currency" disabled>${requestOptions(requestChoices.currency,d.currency)}</select></div>
+    </div>
+    <div class="field" id="deadline-field" hidden><label for="request-deadline">სასურველი თარიღი *</label><input id="request-deadline" name="deadline" type="date" min="${localRequestDate()}" value="${esc(d.deadline||'')}" disabled></div>
    </div>
-   <div class="field"><label for="request-timing">როდის გჭირდება?</label><select id="request-timing" name="timing">${requestOptions(requestChoices.timing,d.timing)}</select></div>
-   <div class="field" id="deadline-field" hidden><label for="request-deadline">სასურველი თარიღი *</label><input id="request-deadline" name="deadline" type="date" min="${localRequestDate()}" value="${esc(d.deadline||'')}" disabled></div>
-  </fieldset>
-  <fieldset class="form-section"><legend><span>03</span> საკონტაქტო ინფორმაცია</legend>
-   <div class="field"><label for="request-name">შენი სახელი / კომპანია *</label><input id="request-name" name="name" required maxlength="120" value="${esc(d.name||'')}" autocomplete="organization" placeholder="სახელი ან კომპანიის დასახელება"></div>
-   <div class="field"><label for="request-email">ელფოსტა *</label><input id="request-email" type="email" name="email" required maxlength="200" value="${esc(d.email||'')}" autocomplete="email" placeholder="name@company.ge"></div>
-  </fieldset>
-  <p class="form-note form-status">საცდელი რეჟიმი: მოთხოვნა არ იგზავნება და სერვერზე არ ინახება. მონახაზი შეგიძლია გადაამოწმო და ჩამოტვირთო. გვერდის დატოვებისას ჩამოუტვირთავი მონაცემები დაიკარგება.</p>
-  <button class="button form-submit" type="submit">მონახაზის გადამოწმება ${icon('arrow-right')}</button>
+  </details>
+  <button class="button form-submit" type="submit">მოამზადე მონახაზი ${icon('arrow-right')}</button>
+  <p class="request-demo-note">დემო რეჟიმი · კომპანიას არ ეგზავნება. გვერდის დატოვებისას ჩამოუტვირთავი მონახაზი იკარგება.</p>
  </form>`;
  const form=document.querySelector('#intro-form');
  const sync=()=>{
@@ -126,8 +131,8 @@ function openRequest(companyId,offerIndex){
  const remember=()=>{requestDraft[key]=Object.fromEntries([...form.querySelectorAll('[name]')].map(el=>[el.name,el.value]));};
  form.addEventListener('input',remember);form.addEventListener('change',()=>{sync();remember();});sync();
  form.addEventListener('submit',e=>{
-  e.preventDefault();sync();const data=readValidDraft(form);if(!data)return;
-  const error=requestDetailsError(data);if(error){form.elements[error[0]].setCustomValidity(error[1]);form.reportValidity();return;}
+  e.preventDefault();sync();const extras=document.querySelector('#request-extras');if([...extras.querySelectorAll('[name]')].some(field=>!field.disabled&&!field.checkValidity()))extras.open=true;const data=readValidDraft(form);if(!data)return;
+  const error=requestDetailsError(data);if(error){extras.open=true;form.elements[error[0]].setCustomValidity(error[1]);form.reportValidity();return;}
   remember();lastDraft={...data,company:company?.name||'პარტნიორი შესარჩევია',offer};
   document.querySelector('#form-content').innerHTML=`<span class="section-kicker">მოთხოვნის მონახაზი</span><h2 id="form-title" tabindex="-1">გადაამოწმე დეტალები</h2>
    <div class="draft-summary"><span class="section-kicker">მიმღები</span><h3>${esc(lastDraft.company)}</h3>${offer?`<p class="selected-offer">${esc(offer)}</p>`:''}<p style="white-space:pre-wrap">${esc(data.need)}</p><dl>${requestFacts(lastDraft).map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl></div>
@@ -148,7 +153,14 @@ const menuButton=document.querySelector('.mobile-menu');if(menuButton){menuButto
 // A failed logo stays a readable company identity, never a broken image.
 document.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement&&e.target.classList.contains('logo-sheet'))e.target.closest('.company-logo').classList.add('logo-unavailable');},true);
 document.querySelectorAll('.logo-sheet').forEach(img=>{if(img.complete&&!img.naturalWidth)img.closest('.company-logo').classList.add('logo-unavailable');});
-const profile=document.querySelector('[data-profile-id]');if(profile){document.querySelector('.nav-home')?.classList.remove('active');document.querySelector('.nav-categories')?.classList.add('active');const back=safeCatalogFrom(new URLSearchParams(location.search).get('from'));document.querySelector('[data-back-to-results]').href=back;filters=readFilters(new URL(back,location.origin).search);document.querySelector('[data-copy-profile]')?.addEventListener('click',async()=>{const url=location.origin+location.pathname;try{await navigator.clipboard.writeText(url);const toast=document.querySelector('#toast');toast.textContent='კომპანიის ბმული დაკოპირებულია';toast.style.display='block';setTimeout(()=>toast.style.display='none',2500);}catch{document.querySelector('#form-content').innerHTML='<h2 id="form-title">კომპანიის ბმული</h2><p>მონიშნე და დააკოპირე ბმული.</p><div class="field"><label for="profile-link">ბმული</label><input id="profile-link" readonly value="'+esc(url)+'"></div>';document.querySelector('#form-dialog').showModal();document.querySelector('#profile-link').select();}});}
+const profile=document.querySelector('[data-profile-id]');
+if(profile){
+ document.querySelector('.nav-home')?.classList.remove('active');
+ document.querySelector('.nav-categories')?.classList.add('active');
+ const back=safeCatalogFrom(new URLSearchParams(location.search).get('from'));
+ document.querySelector('[data-back-to-results]').href=back;
+ filters=readFilters(new URL(back,location.origin).search);
+}
 
 document.querySelector('#main-nav a.active')?.setAttribute('aria-current','page');
 
