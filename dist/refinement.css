@@ -712,3 +712,36 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 /* Use existing workplace photography instead of invented company marks. */
 .company-photo-avatar { overflow: hidden; border: 0; background: #edf2f7; }
 .company-photo-avatar > img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+
+/* Profile albums and keyboard-accessible photo viewer. */
+.gallery-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 18px; }
+.gallery-heading h2 { margin: 0; }
+.gallery-heading > span { color: #778a9f; font-size: 12px; white-space: nowrap; }
+.profile-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+.profile-gallery figure { margin: 0; min-width: 0; }
+.gallery-thumbnail { display: block; width: 100%; padding: 0; border: 0; border-radius: 8px; overflow: hidden; background: #f1f4f8; position: relative; aspect-ratio: 1.8; cursor: zoom-in; }
+.gallery-thumbnail > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gallery-expand { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 28px; height: 28px; background: #fff; color: #245ddd; border-radius: 50%; }
+.gallery-expand .icon { width: 16px; height: 16px; }
+.profile-gallery figcaption { margin-top: 8px; font-size: 12px; line-height: 1.6; color: #6d8198; }
+.gallery-dialog { width: min(1000px,calc(100vw - 32px)); max-width: none; max-height: 94dvh; padding: 16px; border: 0; border-radius: 12px; background: #102033; color: #fff; }
+.gallery-dialog::backdrop { background: #08121dd9; }
+.gallery-dialog-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 10px; }
+#gallery-counter { color: #d5e0ed; font-size: 13px; }
+.gallery-close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 6px; background: #ffffff15; color: #fff; }
+.gallery-large { margin: 0; }
+#gallery-full-image { display: block; width: 100%; max-height: 68dvh; object-fit: contain; }
+#gallery-full-image[hidden] { display: none; }
+#gallery-full-caption { margin-top: 12px; text-align: center; font-size: 14px; line-height: 1.7; color: #e2e9f2; }
+.gallery-dialog-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 10px; }
+.gallery-dialog-nav button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 0; border-radius: 6px; padding: 8px 12px; color: #fff; background: #ffffff15; font-size: 13px; }
+.gallery-dialog-nav button:disabled { opacity: .3; cursor: default; }
+#gallery-prev .icon { transform: rotate(180deg); }
+.gallery-dialog button:focus-visible { outline: 2px solid #aecaff; outline-offset: 2px; }
+@media(max-width:520px) { .profile-gallery { gap: 14px 10px; } .gallery-thumbnail { aspect-ratio: 1.25; } .gallery-dialog { padding: 12px; } }
+
+/* Eight featured industries on home; all eleven remain in the catalog. */
+.industry-list { grid-template-columns: repeat(8,minmax(0,1fr)); }
+.industry-list .industry-title { font-size: 12px; }
+@media(max-width:1000px) { .industry-list { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+@media(max-width:420px) { .industry-list { grid-template-columns: repeat(2,minmax(0,1fr)); } }

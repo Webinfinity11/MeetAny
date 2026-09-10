@@ -231,3 +231,26 @@ function categoryImageFallback(img){if(img instanceof HTMLImageElement&&img.clas
 document.addEventListener('error',e=>categoryImageFallback(e.target),true);
 document.querySelectorAll('.category-3d-sheet').forEach(img=>{if(img.complete&&!img.naturalWidth)categoryImageFallback(img);});
 
+
+const galleryDialog=document.querySelector('#gallery-dialog');
+if(galleryDialog){
+ const thumbnails=[...document.querySelectorAll('[data-gallery-index]')];
+ const fullImage=document.querySelector('#gallery-full-image'),caption=document.querySelector('#gallery-full-caption');
+ const previous=document.querySelector('#gallery-prev'),next=document.querySelector('#gallery-next');
+ let current=0,opener=null;
+ function showGalleryPhoto(index){
+  current=Math.max(0,Math.min(thumbnails.length-1,index));
+  const selected=thumbnails[current];
+  fullImage.hidden=false;fullImage.alt=selected.dataset.galleryCaption;fullImage.src=selected.dataset.gallerySrc;
+  caption.textContent=selected.dataset.galleryCaption;
+  document.querySelector('#gallery-counter').textContent=(current+1)+' / '+thumbnails.length;
+  previous.disabled=current===0;next.disabled=current===thumbnails.length-1;
+ }
+ thumbnails.forEach((button,index)=>button.addEventListener('click',()=>{opener=button;showGalleryPhoto(index);galleryDialog.showModal();galleryDialog.querySelector('.gallery-close').focus();}));
+ previous.addEventListener('click',()=>showGalleryPhoto(current-1));
+ next.addEventListener('click',()=>showGalleryPhoto(current+1));
+ galleryDialog.querySelector('.gallery-close').addEventListener('click',()=>galleryDialog.close());
+ galleryDialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();showGalleryPhoto(current+(event.key==='ArrowRight'?1:-1));}});
+ galleryDialog.addEventListener('close',()=>opener?.focus({preventScroll:true}));
+ fullImage.addEventListener('error',()=>{fullImage.hidden=true;caption.textContent='ფოტო ვერ ჩაიტვირთა. სცადე სხვა ფოტო.';});
+}

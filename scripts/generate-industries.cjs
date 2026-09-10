@@ -24,7 +24,7 @@ const markup = `<!-- industry-directory:start -->
 <section class="industry-section" id="industries" aria-labelledby="industry-heading">
  <div class="industry-heading-row"><h2 id="industry-heading">საქმიანობის მიხედვით</h2><a class="textlink" href="/categories/">ყველა მიმართულება (${entries.length}) ${icon('arrow-right')}</a></div>
  
- <ul class="industry-list" id="industry-list" aria-label="საქმიანობის მიმართულებები">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}</ul>
+ <ul class="industry-list" id="industry-list" aria-label="საქმიანობის მიმართულებები">${entries.filter(e=>['textiles','marketing','logistics','food','packaging','tourism','finance','technology'].includes(e.id)).map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}</ul>
 </section>
 <!-- industry-directory:end -->`;
 const file = 'dist/index.html';
@@ -32,4 +32,4 @@ let html = fs.readFileSync(file, 'utf8');
 if (html.includes('<!-- industry-directory:start -->')) html = html.replace(/<!-- industry-directory:start -->[\s\S]*?<!-- industry-directory:end -->/, markup);
 else html = html.replace('<section class="featured-section"', markup+'<section class="featured-section"');
 fs.writeFileSync(file, html);
-console.log('Generated '+entries.length+' industry links with company counts.');
+console.log('Generated eight featured industry links; full catalog has '+entries.length+' industries.');
