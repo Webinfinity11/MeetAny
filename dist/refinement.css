@@ -392,3 +392,63 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
 .company-card .company-description { margin-bottom: 16px; }
 .company-card .company-photo-wrap { isolation: isolate; }
 @media(max-width:420px) { .company-card .card-profile-button { min-height: 48px; } }
+
+/* A compact profile introduction with aligned content below it. */
+.profile-container { padding-top: 20px; }
+.profile-breadcrumb { margin-bottom: 18px; }
+.profile-cover { height: 220px; border-radius: 10px; }
+.profile-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; margin: 24px 0; }
+.profile-identity { align-items: flex-start; gap: 18px; flex: 1; }
+.company-logo.profile-logo { width: 78px; height: 78px; margin-top: 3px; border-radius: 10px; }
+.profile-heading .section-kicker { font-size: 12px; margin-bottom: 5px; }
+.profile-heading h1 { font-size: 34px; line-height: 1.25; letter-spacing: -.03em; }
+.profile-heading .profile-meta { margin-top: 9px; font-size: 13px; gap: 7px; }
+.profile-heading .profile-lead { margin-top: 12px; max-width: 700px; font-size: 16px; line-height: 1.8; color: #5d738b; }
+.profile-actions { min-width: 210px; margin-top: 22px; gap: 8px; }
+.profile-actions .button { min-height: 46px; }
+.profile-actions .profile-demo { padding: 0; margin: 0; border: 0; border-radius: 0; background: none; font-size: 12px; line-height: 1.7; color: #73869c; text-align: center; }
+.profile-sections-nav { padding: 10px 0; gap: 28px; }
+.profile-sections-nav a { min-height: 34px; }
+.profile-layout { column-gap: 40px; padding-top: 26px; align-items: start; }
+.profile-section#offers { padding-top: 0; }
+.profile-section#offers > h2 { margin-bottom: 18px; }
+.profile-facts { margin-top: 0; padding: 23px; }
+.profile-facts h2 { margin-bottom: 12px; }
+.profile-facts dl > div { padding: 12px 0; }
+.profile-facts-note { margin-top: 12px; padding-top: 18px; }
+@media(max-width:1050px) {
+ .profile-heading { gap: 24px; }
+ .profile-heading h1 { font-size: 31px; }
+ .profile-actions { min-width: 185px; }
+ .profile-layout { column-gap: 28px; }
+}
+@media(max-width:720px) {
+ .profile-container { padding-top: 18px; }
+ .profile-cover { height: 180px; }
+ .profile-heading { flex-direction: column; gap: 18px; margin: 20px 0; }
+ .profile-identity { width: 100%; gap: 15px; }
+ .company-logo.profile-logo { width: 65px; height: 65px; }
+ .profile-heading h1 { font-size: 30px; }
+ .profile-heading .profile-lead { font-size: 16px; margin-top: 10px; }
+ .profile-actions { margin-top: 0; min-width: 0; width: 100%; display: flex; flex-direction: row; align-items: center; gap: 14px; }
+ .profile-actions .button { flex: 0 1 auto; min-width: 210px; }
+ .profile-actions .profile-demo { text-align: left; flex: 1; }
+ .profile-sections-nav { gap: 8px 20px; padding-block: 9px; }
+ .profile-layout { padding-top: 22px; gap: 22px; }
+ .profile-facts { margin-top: 0; padding: 20px; }
+ .profile-facts dl { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 18px; }
+ .profile-section#offers { padding-top: 0; }
+}
+@media(max-width:420px) {
+ .profile-cover { height: 150px; }
+ .profile-breadcrumb { margin-bottom: 14px; }
+ .profile-identity { gap: 12px; }
+ .company-logo.profile-logo { width: 52px; height: 52px; }
+ .profile-heading h1 { font-size: 26px; }
+ .profile-heading .profile-meta { font-size: 12px; }
+ .profile-actions { flex-direction: column; align-items: stretch; gap: 6px; }
+ .profile-actions .button { min-width: 0; }
+ .profile-actions .profile-demo { text-align: center; }
+ .profile-facts dl { grid-template-columns: minmax(0,1fr); }
+ .profile-section#offers > h2 { margin-bottom: 15px; }
+}
