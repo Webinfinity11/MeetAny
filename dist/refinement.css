@@ -851,3 +851,12 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
  .home-discovery .discovery-steps li { display: block; border: 0; padding: 0; }
  .home-discovery .discovery-step-heading { margin-bottom: 5px; }
 }
+
+/* Cohesive dimensional illustrations keep the need field dominant. */
+.need-process-art { position: relative; width: 144px; height: 144px; overflow: hidden; margin: 0 0 12px; }
+.need-process-art img { position: absolute; left: var(--process-offset); top: 0; display: block; width: 300%; height: 100%; max-width: none; }
+@media(max-width:720px) {
+ .home-discovery .discovery-steps li { display: grid; grid-template-columns: minmax(0,1fr) 90px; column-gap: 14px; align-items: start; }
+ .home-discovery .discovery-step-heading, .home-discovery .discovery-steps h2, .home-discovery .discovery-steps p { grid-column: 1; }
+ .need-process-art { grid-column: 2; grid-row: 1 / 4; width: 90px; height: 90px; align-self: center; margin: 0; }
+}
