@@ -654,3 +654,5 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .partnership-banner-content { max-width: 660px; padding-block: 40px; }
 @media(max-width:900px) and (min-width:721px) { .partnership-banner h2 { font-size: 25px; } .partnership-banner-content { max-width: 58%; } .partnership-banner h2 br { display: none; } }
 @media(max-width:720px) { .partnership-banner { min-height: 0; display: flex; flex-direction: column; } .partnership-banner > img { position: relative; inset: auto; width: 100%; height: 220px; z-index: auto; object-position: center 35%; } .partnership-banner::before { display: none; } .partnership-banner-content { max-width: none; padding-block: 24px; } }
+
+.partnership-banner > img { object-position: 50% 65%; }
