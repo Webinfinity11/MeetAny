@@ -888,3 +888,9 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 #form-dialog .selected-offer { font-size:12px; padding:10px 12px; margin:12px 0 18px; }
 #form-dialog .form-actions .button { font-size:13px; min-height:44px; }
 @media(max-width:520px) { #form-dialog, #form-dialog:has(#intro-form) { width:calc(100% - 24px); padding:24px 20px; } #form-dialog #form-title { font-size:21px; } #form-dialog .field input, #form-dialog .field textarea, #form-dialog .field select { font-size:16px; } }
+
+/* V1: a new flat Phosphor regular set, no raised tiles or duotone fill. */
+.design-one .icon { fill:currentColor; stroke:none; stroke-width:0; }
+.design-one .industry-icon .icon { width:26px; height:26px; color:#476684; }
+.design-one .industry-list a:hover .icon { color:#245ddd; }
+.design-one .category-icon > .icon { color:#476684; }
