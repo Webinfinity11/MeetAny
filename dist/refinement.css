@@ -482,3 +482,10 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .visible-options .radio-option:focus-within { outline: 2px solid #285ce8; outline-offset: 1px; }
 @media(max-width:1000px) and (min-width:721px) { .catalog-layout { grid-template-columns: 240px minmax(0,1fr); gap: 24px; } }
 @media(max-width:720px) { .catalog-layout { grid-template-columns: 1fr; } .filters.is-open { margin-bottom: 24px; } .filter-results-button { position: sticky; bottom: 12px; z-index: 2; box-shadow: 0 3px 16px #17345126; } }
+
+/* Consistent category symbols help scan the sidebar. */
+.visible-options .radio-option { min-height: 44px; }
+.visible-options .filter-option-label { display: flex; align-items: center; gap: 9px; }
+.visible-options .filter-option-icon { width: 18px; height: 18px; flex: 0 0 18px; color: #6a8199; }
+.visible-options .is-selected .filter-option-icon { color: #2354c9; }
+.visible-options .radio-option.is-selected small { color: #2354c9; font-weight: 600; }

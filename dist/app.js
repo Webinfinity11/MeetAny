@@ -1,4 +1,4 @@
-const icon=(name,extra='')=>'<svg class="icon '+extra+'" aria-hidden="true"><use href="/assets/icons.svg#'+name+'"></use></svg>';
+const icon=(name,extra='')=>'<svg class="icon '+extra+'" aria-hidden="true"><use href="/assets/icons.svg?v=all-industries#'+name+'"></use></svg>';
 const categoryIcons={suppliers:'package',services:'briefcase-business',distributors:'truck',partners:'handshake'};
 const categories=[{id:'suppliers',title:'მომწოდებელი',sub:'პროდუქტი და წარმოება'},{id:'services',title:'მომსახურება',sub:'ექსპერტიზა შენი ბიზნესისთვის'},{id:'distributors',title:'დისტრიბუტორი',sub:'ახალი ბაზარი და გაყიდვები'},{id:'partners',title:'ბიზნესპარტნიორი',sub:'ერთობლივი შესაძლებლობები'}];
 const companies=[{id:'linen',name:'Linen House',initials:'lh.',type:'suppliers',city:'tbilisi',cityLabel:'თბილისი',description:'სასტუმროს თეთრეული და ტექსტილი — შენი სტუმრების კომფორტისთვის.',tags:['სასტუმროები','ტექსტილი'],color:'#357da4',bg:'#e9f3f9',offer:['თეთრეულის და პირსახოცების მიწოდება','სასტუმროებისა და რესტორნების ტექსტილი','შეკვეთის პირობების ინდივიდუალური შეთანხმება'],area:'თბილისი, ბათუმი',words:'თეთრეული მომწოდებელი ტექსტილი სასტუმრო თბილისი ბათუმი',languages:'ქართული, ინგლისური'},
@@ -48,12 +48,14 @@ function searchTerms(q){return q.toLocaleLowerCase().split(/[\s,.;!?]+/).filter(
 function getResults(f){const terms=searchTerms(f.q);const matches=companies.filter(c=>{if(f.type&&c.type!==f.type)return false;if(f.city&&!c.area.includes(cityNames[f.city])&&!c.area.includes('მთელი საქართველო'))return false;if(f.language==='en'&&!c.languages.includes('ინგლისური'))return false;if(f.industry&&c.industry!==f.industry)return false;if(f.collaboration&&!c.collaboration.includes(f.collaboration))return false;if(f.format&&!c.format.includes(f.format))return false;const words=(c.name+' '+c.description+' '+c.words+' '+c.offer.join(' ')+' '+filterOptions.industry[c.industry]).toLocaleLowerCase().split(/\s+/);return !terms.length||terms.every(t=>words.some(w=>w.includes(t)));});if(f.sort==='name')matches.sort((a,b)=>a.name.localeCompare(b.name));else if(terms.length){const score=c=>terms.reduce((sum,t)=>sum+(c.name.toLowerCase().includes(t)?3:0)+(c.tags.some(tag=>tag.includes(t))?2:0),0);matches.sort((a,b)=>score(b)-score(a));}return matches;}
 function setFilters(next,{push=true}={}){filters=validateFilters({...filters,...next});const url=new URL(location.href);url.search=filterQuery(filters);if(push)history.pushState({},'',url);else history.replaceState({},'',url);renderResults();return getResults(filters);}
 function facetCount(key,value){return getResults({...filters,[key]:value}).length;}
+const filterIndustryIcons={textiles:'shirt',marketing:'megaphone',logistics:'truck',food:'utensils',packaging:'package',tourism:'map-pin',finance:'calculator',technology:'monitor',construction:'hard-hat',legal:'scale',cleaning:'sparkles'};
 function renderResults(){const grid=document.querySelector('#results-grid');if(!grid)return;
  for(const key of ['industry','type','city','collaboration','format','language']){
   const any={industry:'ყველა მიმართულება',type:'ყველა ტიპი',city:'ყველა ქალაქი',collaboration:'ნებისმიერი',format:'ნებისმიერი',language:'ყველა ენა'}[key];
   document.querySelector('#'+key+'-options').innerHTML=[['',any],...Object.entries(filterValues[key])].map(([value,label])=>{
    const count=facetCount(key,value);
-   return `<label class="radio-option ${filters[key]===value?'is-selected':''}"><input type="radio" name="${key}" value="${value}" ${filters[key]===value?'checked':''}><span>${esc(label)}</span><small aria-label="${count} კომპანია">${count}</small></label>`;
+   const symbol=key==='industry'?(filterIndustryIcons[value]||'building-2'):key==='type'?(categoryIcons[value]||'users'):null;
+   return `<label class="radio-option ${filters[key]===value?'is-selected':''}"><input type="radio" name="${key}" value="${value}" ${filters[key]===value?'checked':''}><span class="filter-option-label">${symbol?icon(symbol,'filter-option-icon'):''}<span>${esc(label)}</span></span><small aria-label="${count} კომპანია">${count}</small></label>`;
   }).join('');
  }
  document.querySelector('#sort-filter').value=filters.sort;document.querySelector('#catalog-query').value=filters.q;
