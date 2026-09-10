@@ -191,3 +191,8 @@ footer { background: #14263d; color: #fff; border: 0; }
 h1, h2, h3, button, input, select, textarea, .profile-heading h1, .company-card h3 { font-family: FiraGO, sans-serif; }
 .hero h1 { font-weight: 700; }
 .button, .details-button, .offer-request { font-weight: 600; }
+
+/* FiraGO's Georgian title forms use OpenType case glyphs. */
+h1, h2, h3, button, .button, .details-button, .offer-request {
+  font-feature-settings: "case" 1;
+}
