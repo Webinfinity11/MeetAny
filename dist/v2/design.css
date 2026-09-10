@@ -119,3 +119,7 @@ body.design-two { background:#fff; color:var(--ink); }
 .design-two .company-listing:hover { border-color:#c2d2e9; }
 @media(min-width:721px) and (max-width:900px) { .design-two .company-grid .company-listing:last-child { grid-column:auto; } }
 @media(max-width:380px) { .market-search-types { gap:11px; } .market-search-types label { font-size:10px; } .design-two .listing-footer { flex-wrap:wrap; } .design-two .listing-description { min-height:0; } }
+
+/* Keep the complete search menu above subsequent marketplace sections. */
+.design-two .home-discovery { z-index: 2; overflow: visible; }
+.design-two .discovery-suggestions { z-index: 4; max-height: min(380px, 60dvh); overflow-y: auto; overscroll-behavior: contain; }
