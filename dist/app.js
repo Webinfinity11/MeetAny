@@ -14,7 +14,7 @@ companies.forEach(c=>Object.assign(c,companyDetails[c.id]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const photos={linen:['hotel-linen.jpg','სასტუმროს ოთახი და თეთრეული'],studio:['creative-team.jpg','გუნდი შემოქმედებით სამუშაო სივრცეში'],route:['logistics-warehouse.jpg','ლოგისტიკური საწყობის თაროები'],fresh:['fresh-produce.jpg','ახალი ხილი და ბოსტნეული'],pack:['cardboard-packaging.jpg','მუყაოს შეფუთვის ყუთები'],bridge:['logistics-warehouse.jpg','სადისტრიბუციო საწყობი'],stay:['hotel-linen.jpg','სასტუმროს ნომერი'],account:['creative-team.jpg','სამუშაო სივრცე']};
 Object.assign(photos,{"pixel": ["technology-office.jpg", "ტექნოლოგიური გუნდის სამუშაო სივრცე"], "build": ["construction-interior.jpg", "შენობის ინტერიერის მოწყობის სამუშაოები"], "legal": ["legal-office.jpg", "საქმიანი შეხვედრის სივრცე"], "clean": ["commercial-cleaning.jpg", "კომერციული სივრცის დასუფთავება"]});
-function companyLogo(c,extra=''){return '<span class="company-logo '+extra+'" role="img" aria-label="'+esc(c.name)+'"><img class="company-vector-logo" src="/assets/logos/'+c.id+'.svg?v=blue2" alt=""></span>';}
+function companyLogo(c,extra=''){const photo=photos[c.id];return '<span class="company-logo company-photo-avatar '+extra+'"><img src="/assets/photos/'+photo[0]+'" alt="'+esc(c.name)+' — სამუშაო გარემოს ფოტო" loading="lazy" decoding="async"></span>';}
 function profileHref(c){const base="/companies/"+c.slug+"/";return location.pathname==="/categories/"?base+"?from="+encodeURIComponent("/categories/"+location.search):base;}
 function card(c){
  const photo=photos[c.id],href=esc(profileHref(c));

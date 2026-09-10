@@ -708,3 +708,7 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .company-logo .company-vector-logo { width: 76%; height: 76%; object-fit: contain; }
 @media(max-width:900px) { .partnership-banner-content { max-width: none; padding: 28px; } .partnership-banner h2 { font-size: 23px; } }
 @media(max-width:720px) { .partnership-banner { display: flex; } .partnership-banner > img { width: 100%; } }
+
+/* Use existing workplace photography instead of invented company marks. */
+.company-photo-avatar { overflow: hidden; border: 0; background: #edf2f7; }
+.company-photo-avatar > img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; }
