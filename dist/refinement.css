@@ -656,3 +656,25 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 @media(max-width:720px) { .partnership-banner { min-height: 0; display: flex; flex-direction: column; } .partnership-banner > img { position: relative; inset: auto; width: 100%; height: 220px; z-index: auto; object-position: center 35%; } .partnership-banner::before { display: none; } .partnership-banner-content { max-width: none; padding-block: 24px; } }
 
 .partnership-banner > img { object-position: 50% 65%; }
+
+/* MeetAny signature: two connected forms and restrained logo-color accents. */
+.home-page .hero { position: relative; }
+.home-page .hero .eyebrow { display: flex; align-items: center; gap: 9px; color: #66778a; font-size: 12px; }
+.connection-mark { width: 32px; height: 20px; flex: none; }
+.home-page .hero h1 { font-size: clamp(30px,3.05vw,43px); line-height: 1.45; letter-spacing: -.035em; }
+.home-page .hero h1 span { color: #be397e; background: linear-gradient(100deg,#c62b94 5%,#d65150 65%,#d86212 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.home-page .hero p { margin-top: 16px; }
+.hero-connection-mark { position: absolute; width: 124px; height: 78px; top: 20px; right: 20px; z-index: 2; filter: drop-shadow(0 2px 8px #142b3a20); pointer-events: none; }
+.home-page .hero .search-form .button { background: linear-gradient(110deg,#982b78,#b63d29); }
+.home-page .hero .search-form .button:hover { background: linear-gradient(110deg,#7f2264,#983222); }
+.home-page .search-examples a:hover { background: #fff0f6; color: #9c2f75; }
+.home-page .photo-caption { border-left: 3px solid #ef6386; }
+.home-page .category-card:hover { background: #fff5f4; }
+.home-page .section-kicker::before { content: ""; display: inline-block; width: 18px; height: 3px; margin-right: 8px; vertical-align: middle; border-radius: 3px; background: linear-gradient(90deg,#e52bae,#ff850c); }
+.home-page .banner-eyebrow { display: flex; align-items: center; gap: 8px; }
+.home-page .banner-eyebrow img { width: 32px; height: 20px; flex: none; }
+.home-page .steps .step-number { color: #a44976; }
+@media(max-width:900px) { .home-page .hero h1 { font-size: 31px; } .hero-connection-mark { width: 96px; height: 60px; top: 16px; right: 16px; } }
+@media(max-width:720px) { .home-page .hero h1 { font-size: clamp(29px,6.7vw,39px); } }
+@media(max-width:360px) { .home-page .hero h1 { font-size: 27px; } }
+@media(forced-colors:active) { .home-page .hero h1 span { background: none; -webkit-text-fill-color: currentColor; } }
