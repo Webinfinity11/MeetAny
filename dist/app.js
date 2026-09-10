@@ -231,12 +231,3 @@ function categoryImageFallback(img){if(img instanceof HTMLImageElement&&img.clas
 document.addEventListener('error',e=>categoryImageFallback(e.target),true);
 document.querySelectorAll('.category-3d-sheet').forEach(img=>{if(img.complete&&!img.naturalWidth)categoryImageFallback(img);});
 
-const industryRail=document.querySelector('#industry-list');
-if(industryRail){
- const controls=[...document.querySelectorAll('[data-industry-scroll]')];
- const syncRail=()=>{const max=industryRail.scrollWidth-industryRail.clientWidth;controls.forEach(button=>{button.disabled=Number(button.dataset.industryScroll)<0?industryRail.scrollLeft<=1:industryRail.scrollLeft>=max-1;});};
- controls.forEach(button=>button.addEventListener('click',()=>industryRail.scrollBy({left:Number(button.dataset.industryScroll)*industryRail.clientWidth*.75,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})));
- industryRail.addEventListener('scroll',syncRail,{passive:true});
- if(typeof ResizeObserver!=='undefined')new ResizeObserver(syncRail).observe(industryRail);
- syncRail();document.fonts?.ready.then(syncRail);
-}

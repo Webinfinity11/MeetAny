@@ -19,12 +19,12 @@ const details = {
  cleaning: ['sparkles','დასუფთავება და მოვლა']
 };
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="/assets/icons.svg?v=all-industries#${name}"></use></svg>`;
-const shortTitles = {textiles:'ტექსტილი',marketing:'მარკეტინგი',logistics:'ლოგისტიკა',food:'საკვები',packaging:'შეფუთვა',tourism:'ტურიზმი',finance:'ფინანსები',technology:'IT და ტექნოლოგიები',construction:'მშენებლობა',legal:'იურიდიული',cleaning:'დასუფთავება'};
+const shortTitles = {textiles:'ტექსტილი',marketing:'მარკეტინგი',logistics:'ლოგისტიკა',food:'საკვები',packaging:'შეფუთვა',tourism:'ტურიზმი',finance:'ფინანსები',technology:'ტექნოლოგიები',construction:'მშენებლობა',legal:'იურიდიული',cleaning:'დასუფთავება'};
 const markup = `<!-- industry-directory:start -->
 <section class="industry-section" id="industries" aria-labelledby="industry-heading">
  <div class="industry-heading-row"><h2 id="industry-heading">საქმიანობის მიხედვით</h2><a class="textlink" href="/categories/">ყველა მიმართულება (${entries.length}) ${icon('arrow-right')}</a></div>
- <div class="industry-scroll-controls"><button type="button" class="industry-scroll-button" data-industry-scroll="-1" aria-label="წინა კატეგორიები" aria-controls="industry-list">${icon('arrow-right')}</button><button type="button" class="industry-scroll-button" data-industry-scroll="1" aria-label="შემდეგი კატეგორიები" aria-controls="industry-list">${icon('arrow-right')}</button></div>
- <ul class="industry-list" id="industry-list" tabindex="0" aria-label="საქმიანობის მიმართულებები">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}<li><a href="/categories/"><span class="industry-icon">${icon('arrow-right')}</span><span class="industry-title tt">ყველა კომპანია</span><span class="industry-count">${entries.reduce((n,e)=>n+e.count,0)} კომპანია</span></a></li></ul>
+ 
+ <ul class="industry-list" id="industry-list" aria-label="საქმიანობის მიმართულებები">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}</ul>
 </section>
 <!-- industry-directory:end -->`;
 const file = 'dist/index.html';
