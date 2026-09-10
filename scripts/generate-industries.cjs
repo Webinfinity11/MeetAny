@@ -18,7 +18,7 @@ const icon = name => `<svg class="icon" aria-hidden="true"><use href="/assets/ic
 const shortTitles = {textiles:'ტექსტილი',marketing:'მარკეტინგი',logistics:'ლოგისტიკა',food:'საკვები',packaging:'შეფუთვა',tourism:'ტურიზმი',finance:'ფინანსები'};
 const markup = `<!-- industry-directory:start -->
 <section class="industry-section" id="industries" aria-labelledby="industry-heading">
- <div class="industry-heading-row"><h2 id="industry-heading">საქმიანობის მიხედვით</h2><span>სადემონსტრაციო კატალოგი</span></div>
+ <div class="industry-heading-row"><h2 id="industry-heading">საქმიანობის მიხედვით</h2></div>
  <ul class="industry-list">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}</ul>
 </section>
 <!-- industry-directory:end -->`;
