@@ -632,3 +632,25 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 @media(max-width:900px) { .home-page .hero { gap: 26px; } .home-page .hero-visual { height: 330px; } .home-next-step { margin-inline: 30px; } }
 @media(max-width:720px) { .home-page .hero { padding-block: 28px 32px; } .home-page .hero-visual { height: 260px; } .home-page .section-heading h2 { font-size: 23px; } .home-next-step { margin: 0 24px 32px; flex-direction: column; align-items: flex-start; gap: 18px; } .home-next-step h2 { font-size: 22px; } }
 @media(max-width:420px) { .home-next-step { margin-inline: 20px; } }
+
+/* A candid workplace moment between discovery and the next steps. */
+.partnership-banner { position: relative; isolation: isolate; max-width: 1256px; min-height: 290px; margin: 0 auto 48px; overflow: hidden; border-radius: 10px; background: #23362f; }
+.partnership-banner > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
+.partnership-banner::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg,rgba(12,27,35,.87) 0%,rgba(12,27,35,.72) 39%,rgba(12,27,35,.25) 70%,rgba(12,27,35,.1) 100%); }
+.partnership-banner-content { padding: 38px 42px; max-width: 700px; }
+.banner-eyebrow { color: #dce7e8; font-size: 12px; line-height: 1.7; }
+.partnership-banner h2 { font-size: 30px; line-height: 1.55; color: #fff; margin: 12px 0 22px; }
+.partnership-banner .banner-action { display: inline-flex; width: auto; min-height: 44px; padding: 11px 16px; font-size: 13px; color: #203c53; background: #fff; gap: 14px; }
+.partnership-banner .banner-action:hover { background: #e8f0f8; }
+.banner-action .icon { width: 17px; height: 17px; }
+@media(max-width:1328px) { .partnership-banner { margin-inline: 36px; } }
+@media(max-width:900px) { .partnership-banner { margin-inline: 30px; } .partnership-banner-content { padding: 32px; } .partnership-banner h2 { font-size: 27px; } }
+@media(max-width:720px) { .partnership-banner { margin: 0 24px 32px; min-height: 270px; } .partnership-banner-content { padding: 28px 24px; } .partnership-banner h2 { font-size: 24px; } .partnership-banner h2 br { display: none; } .partnership-banner::before { background: linear-gradient(90deg,#0c1b23de,#0c1b2380); } }
+@media(max-width:420px) { .partnership-banner { margin-inline: 20px; } .partnership-banner-content { padding-inline: 20px; } .partnership-banner h2 { font-size: 22px; } }
+
+.partnership-banner { min-height: 320px; background: #142b3a; }
+.partnership-banner > img { left: auto; right: 0; width: 55%; object-position: center 35%; }
+.partnership-banner::before { background: linear-gradient(90deg,#142b3a 0%,#142b3a 43%,#142b3a99 52%,transparent 65%); }
+.partnership-banner-content { max-width: 660px; padding-block: 40px; }
+@media(max-width:900px) and (min-width:721px) { .partnership-banner h2 { font-size: 25px; } .partnership-banner-content { max-width: 58%; } .partnership-banner h2 br { display: none; } }
+@media(max-width:720px) { .partnership-banner { min-height: 0; display: flex; flex-direction: column; } .partnership-banner > img { position: relative; inset: auto; width: 100%; height: 220px; z-index: auto; object-position: center 35%; } .partnership-banner::before { display: none; } .partnership-banner-content { max-width: none; padding-block: 24px; } }
