@@ -517,3 +517,26 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .search-clear .icon { width: 16px; height: 16px; }
 @media(max-width:900px) { .catalog-heading-search { grid-template-columns: 1fr; gap: 18px; } }
 @media(max-width:420px) { .catalog-search { gap: 5px; } .catalog-search > .button { padding-inline: 12px; } .catalog-search > .button .icon { display: none; } .catalog-title-row h1 { font-size: 25px; } }
+
+/* Compact company cards, retaining readable details and a clear action. */
+.company-card { container-type: inline-size; }
+.company-card .company-photo-wrap, .results-grid .company-photo-wrap,
+.company-grid .company-card:last-child .company-photo-wrap { aspect-ratio: 2.7; max-height: 160px; border-radius: 9px; }
+.company-card .company-body, .results-grid .company-body,
+.company-grid .company-card:last-child .company-body { padding-top: 12px; }
+.company-card .company-top { gap: 10px; }
+.company-card .company-logo { width: 40px; height: 40px; border-radius: 7px; }
+.company-card h3, .results-grid h3 { font-size: 20px; line-height: 1.35; }
+.company-card .company-location { font-size: 12px; margin-top: 3px; }
+.company-card .company-description, .results-grid .company-description { font-size: 14px; line-height: 1.65; margin: 10px 0 12px; }
+.company-card .card-facts { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; padding: 10px 12px; border-radius: 7px; }
+.company-card .card-facts dt { font-size: 11px; gap: 5px; margin-bottom: 3px; line-height: 1.5; }
+.company-card .card-facts dt .icon { width: 13px; height: 13px; flex: none; }
+.company-card .card-facts dd { font-size: 12px; line-height: 1.6; }
+.company-card .company-bottom { margin-top: 10px; }
+.company-card .card-profile-button { min-height: 40px; padding: 8px 12px; font-size: 13px; border-radius: 6px; }
+.company-card .card-profile-button .icon { width: 16px; height: 16px; }
+.company-card .photo-category { top: 10px; left: 10px; font-size: 11px; padding: 4px 8px; border-radius: 5px; }
+.company-card .photo-offer-count { right: 10px; bottom: 10px; font-size: 11px; padding: 3px 8px; }
+@container(max-width:320px) { .company-card .card-facts { grid-template-columns: 1fr; gap: 8px; } }
+@media(max-width:720px) { .company-grid, .results-grid { row-gap: 26px; } .company-card .card-profile-button { min-height: 44px; } }
