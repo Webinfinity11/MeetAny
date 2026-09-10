@@ -258,3 +258,14 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
  .industry-list { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
  .industry-list li:last-child { grid-column: 1/-1; }
 }
+
+/* Structured request details stay readable on narrow screens. */
+.request-field-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+.request-field-grid[hidden], #deadline-field[hidden] { display: none; }
+#intro-form .field { min-width: 0; }
+#intro-form .field select { width: 100%; min-height: 46px; padding: 12px; border: 1px solid #d4dee9; border-radius: 6px; background: #fff; color: var(--ink); font-size: 16px; }
+#intro-form input[type="date"] { min-width: 0; max-width: 100%; }
+.optional-label { display: block; color: #73849a; font-size: 12px; font-weight: 400; }
+.field-hint { display: block; color: #697e94; font-size: 12px; line-height: 1.7; margin-top: 7px; }
+#intro-form .request-field-grid .field { margin-bottom: 20px; }
+@media(max-width:520px) { .request-field-grid { grid-template-columns: minmax(0,1fr); gap: 0; } }

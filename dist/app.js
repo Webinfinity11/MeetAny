@@ -46,6 +46,7 @@ let requestDraft={};let lastDraft=null;
 function readValidDraft(form){
  const data={};
  for(const field of form.querySelectorAll('[name]')){
+  if(field.disabled)continue;
   const value=field.value.trim();
   field.setCustomValidity(field.required&&value.length<Math.max(1,field.minLength||0)?'შეავსე ველი სრულად; მხოლოდ გამოტოვებები საკმარისი არ არის.':'');
   data[field.name]=value;
@@ -53,9 +54,92 @@ function readValidDraft(form){
  return form.reportValidity()?data:null;
 }
 document.addEventListener('input',e=>{if(e.target.matches('#intro-form [name],#company-form [name]'))e.target.setCustomValidity('');});
-function openRequest(companyId,offerIndex){const company=companies.find(c=>c.id===companyId);const selectedOffer=Number.isInteger(offerIndex)&&company?.offer[offerIndex]?company.offer[offerIndex]:'';const draftKey=(companyId||'general')+':'+(selectedOffer?offerIndex:'general');const draft=requestDraft[draftKey]||{};document.querySelector('#form-content').innerHTML=`<span class="section-kicker">${company?'საქმიანი გაცნობა':'ბიზნესმოთხოვნა'}</span><h2 id="form-title">${company?company.name+' — გაცნობა':'რას ეძებს შენი ბიზნესი?'}</h2><p>მოკლედ აღწერე შენი მიზანი და თანამშრომლობის პირობები.</p>${selectedOffer?`<p class="selected-offer">შეთავაზება: ${esc(selectedOffer)}</p>`:''}<form id="intro-form"><fieldset class="form-section"><legend><span>01</span> შენი საჭიროება</legend><div class="field"><label for="request-text">რა გჭირდება? *</label><textarea id="request-text" name="need" required minlength="10" maxlength="2000" placeholder="მაგალითად: ვეძებ სასტუმროსთვის თეთრეულის მომწოდებელს თბილისში.">${esc(draft.need||(selectedOffer?'დაინტერესებული ვარ: '+selectedOffer+'\n\n':'')||filters.q||'')}</textarea></div><div class="field"><label for="request-city">მომსახურების ადგილი *</label><input id="request-city" name="city" required maxlength="100" value="${esc(draft.city||cityNames[filters.city]||'')}" placeholder="მაგალითად: თბილისი"></div></fieldset><fieldset class="form-section"><legend><span>02</span> საკონტაქტო ინფორმაცია</legend><div class="field"><label for="request-name">შენი სახელი / კომპანია *</label><input id="request-name" name="name" required maxlength="120" value="${esc(draft.name||'')}" autocomplete="organization" placeholder="სახელი ან კომპანიის დასახელება"></div><div class="field"><label for="request-email">ელფოსტა *</label><input id="request-email" type="email" name="email" required maxlength="200" value="${esc(draft.email||'')}" autocomplete="email" placeholder="name@company.ge"></div></fieldset><p class="form-note form-status">საცდელი რეჟიმი: მოთხოვნა არ იგზავნება და სერვერზე არ ინახება. შეგიძლია მოამზადო და ჩამოტვირთო მისი ტექსტი.</p><button class="button form-submit" type="submit">მოთხოვნის მომზადება ${icon('arrow-right')}</button></form>`;const form=document.querySelector('#intro-form');form.addEventListener('input',()=>{requestDraft[draftKey]=Object.fromEntries(new FormData(form));});form.addEventListener('submit',e=>{e.preventDefault();const data=readValidDraft(form);if(!data)return;lastDraft={...data,company:company?.name||'პარტნიორი შესარჩევია'};document.querySelector('#form-content').innerHTML=`<div class="success-icon">${icon('check')}</div><h2 id="form-title">მოთხოვნა მომზადებულია</h2><div class="draft-summary"><span class="section-kicker">მოთხოვნის მიმღები</span><h3>${esc(lastDraft.company)}</h3><p style="white-space:pre-wrap">${esc(data.need)}</p><dl><div><dt>ადგილი</dt><dd>${esc(data.city)}</dd></div><div><dt>გამომგზავნი</dt><dd>${esc(data.name)}</dd></div><div><dt>ელფოსტა</dt><dd>${esc(data.email)}</dd></div></dl></div><p class="form-note">ეს მოთხოვნის მონახაზია — კომპანიასთან არ გაგზავნილა. ჩამოტვირთე ტექსტი შენს მოწყობილობაზე.</p><div class="form-actions"><button class="button" data-action="download">ტექსტის ჩამოტვირთვა ${icon('download')}</button><button class="button button-outline" data-close>დასრულება</button></div>`;});form.querySelector('textarea').addEventListener('input',e=>e.target.setCustomValidity(''));document.querySelector('#form-dialog').showModal();}
+const requestChoices={
+ budgetMode:{discuss:'ჯერ დასაზუსტებელია',limit:'ბიუჯეტის მითითება'},
+ currency:{GEL:'₾ — ლარი',USD:'$ — დოლარი',EUR:'€ — ევრო'},
+ timing:{flexible:'ვადა მოქნილია',soon:'რაც შეიძლება მალე',month:'ერთი თვის განმავლობაში',date:'კონკრეტულ თარიღამდე'},
+ collaboration:{discuss:'ჯერ დასაზუსტებელია',once:'ერთჯერადი შეკვეთა',project:'პროექტული თანამშრომლობა',ongoing:'რეგულარული თანამშრომლობა'}
+};
+function requestOptions(options,value){return Object.entries(options).map(([key,label])=>`<option value="${key}" ${key===value?'selected':''}>${esc(label)}</option>`).join('');}
+function localRequestDate(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function requestFacts(d){return [
+ ['ადგილი',d.city],['მოცულობა',d.quantity||'დასაზუსტებელია'],
+ ['თანამშრომლობა',requestChoices.collaboration[d.collaboration]||requestChoices.collaboration.discuss],
+ ['ბიუჯეტი',d.budgetMode==='limit'?Number(d.budget).toLocaleString('ka-GE')+' '+d.currency:'დასაზუსტებელია'],
+ ['სასურველი ვადა',d.timing==='date'?d.deadline.split('-').reverse().join('.'):requestChoices.timing[d.timing]||requestChoices.timing.flexible],
+ ['გამომგზავნი',d.name],['ელფოსტა',d.email]
+];}
+function requestDownloadText(d){return 'MeetAny — გაცნობის მოთხოვნის მონახაზი\n\nმიმღები: '+d.company+(d.offer?'\nშეთავაზება: '+d.offer:'')+'\n\n'+d.need+'\n\n'+requestFacts(d).map(([label,value])=>label+': '+value).join('\n')+'\n\nსაცდელი ვერსია. მოთხოვნა არ გაგზავნილა.';}
+function requestDetailsError(d,today=localRequestDate()){
+ if(!Object.hasOwn(requestChoices.budgetMode,d.budgetMode))return ['budgetMode','აირჩიე ბიუჯეტის ვარიანტი.'];
+ if(d.budgetMode==='limit'&&(!Number.isFinite(Number(d.budget))||Number(d.budget)<=0||Number(d.budget)>1000000000))return ['budget','მიუთითე დადებითი თანხა, მაქსიმუმ 1 000 000 000.'];
+ if(d.budgetMode==='limit'&&!Object.hasOwn(requestChoices.currency,d.currency))return ['currency','აირჩიე ვალუტა.'];
+ if(!Object.hasOwn(requestChoices.timing,d.timing))return ['timing','აირჩიე სასურველი ვადა.'];
+ if(d.timing==='date'&&(!/^\d{4}-\d{2}-\d{2}$/.test(d.deadline||'')||!Number.isFinite(Date.parse(d.deadline))||new Date(d.deadline+'T12:00:00Z').toISOString().slice(0,10)!==d.deadline||d.deadline<today))return ['deadline','აირჩიე დღევანდელი ან მომავალი თარიღი.'];
+ if(!Object.hasOwn(requestChoices.collaboration,d.collaboration))return ['collaboration','აირჩიე თანამშრომლობის ტიპი.'];
+ return null;
+}
+function openRequest(companyId,offerIndex){
+ const company=companies.find(c=>c.id===companyId);
+ const offer=Number.isInteger(offerIndex)&&company?.offer[offerIndex]?company.offer[offerIndex]:'';
+ const key=(companyId||'general')+':'+(offer?offerIndex:'general');
+ const d={budgetMode:'discuss',currency:'GEL',timing:'flexible',collaboration:'discuss',...requestDraft[key]};
+ const dialog=document.querySelector('#form-dialog');
+ document.querySelector('#form-content').innerHTML=`
+ <span class="section-kicker">თანამშრომლობის მოთხოვნა</span>
+ <h2 id="form-title">${company?esc(company.name):'რას ეძებს შენი ბიზნესი?'}</h2>
+ <p>მიუთითე საჭიროება და პირობები, რომ პარტნიორმა ზუსტი შეთავაზება მოამზადოს.</p>
+ ${offer?`<p class="selected-offer">შეთავაზება: ${esc(offer)}</p>`:''}
+ <form id="intro-form">
+  <fieldset class="form-section"><legend><span>01</span> საჭიროება და მოცულობა</legend>
+   <div class="field"><label for="request-text">რა გჭირდება? *</label><textarea id="request-text" name="need" required minlength="10" maxlength="2000" placeholder="აღწერე პროდუქტი ან მომსახურება და მნიშვნელოვანი მოთხოვნები.">${esc(d.need??(offer?'დაინტერესებული ვარ: '+offer+'\n\n':filters.q||''))}</textarea></div>
+   <div class="request-field-grid">
+    <div class="field"><label for="request-city">მომსახურების ადგილი *</label><input id="request-city" name="city" required maxlength="100" value="${esc(d.city??cityNames[filters.city]??'')}" placeholder="მაგ.: თბილისი"></div>
+    <div class="field"><label for="request-quantity">მოცულობა <span class="optional-label">არასავალდებულო</span></label><input id="request-quantity" name="quantity" maxlength="120" value="${esc(d.quantity||'')}" aria-describedby="quantity-hint" placeholder="მაგ.: 100 კომპლექტი"><small id="quantity-hint" class="field-hint">რაოდენობა და ერთეული, ან სამუშაოს მასშტაბი.</small></div>
+   </div>
+   <div class="field"><label for="request-collaboration">თანამშრომლობის ტიპი</label><select id="request-collaboration" name="collaboration">${requestOptions(requestChoices.collaboration,d.collaboration)}</select></div>
+  </fieldset>
+  <fieldset class="form-section"><legend><span>02</span> ბიუჯეტი და ვადა</legend>
+   <div class="field"><label for="request-budget-mode">სავარაუდო ბიუჯეტი</label><select id="request-budget-mode" name="budgetMode">${requestOptions(requestChoices.budgetMode,d.budgetMode)}</select></div>
+   <div class="request-field-grid" id="budget-fields" hidden>
+    <div class="field"><label for="request-budget">ბიუჯეტის ზედა ზღვარი *</label><input id="request-budget" name="budget" type="number" min="0.01" max="1000000000" step="0.01" inputmode="decimal" value="${esc(d.budget||'')}" disabled placeholder="მაგ.: 5000"></div>
+    <div class="field"><label for="request-currency">ვალუტა</label><select id="request-currency" name="currency" disabled>${requestOptions(requestChoices.currency,d.currency)}</select></div>
+   </div>
+   <div class="field"><label for="request-timing">როდის გჭირდება?</label><select id="request-timing" name="timing">${requestOptions(requestChoices.timing,d.timing)}</select></div>
+   <div class="field" id="deadline-field" hidden><label for="request-deadline">სასურველი თარიღი *</label><input id="request-deadline" name="deadline" type="date" min="${localRequestDate()}" value="${esc(d.deadline||'')}" disabled></div>
+  </fieldset>
+  <fieldset class="form-section"><legend><span>03</span> საკონტაქტო ინფორმაცია</legend>
+   <div class="field"><label for="request-name">შენი სახელი / კომპანია *</label><input id="request-name" name="name" required maxlength="120" value="${esc(d.name||'')}" autocomplete="organization" placeholder="სახელი ან კომპანიის დასახელება"></div>
+   <div class="field"><label for="request-email">ელფოსტა *</label><input id="request-email" type="email" name="email" required maxlength="200" value="${esc(d.email||'')}" autocomplete="email" placeholder="name@company.ge"></div>
+  </fieldset>
+  <p class="form-note form-status">საცდელი რეჟიმი: მოთხოვნა არ იგზავნება და სერვერზე არ ინახება. მონახაზი შეგიძლია გადაამოწმო და ჩამოტვირთო. გვერდის დატოვებისას ჩამოუტვირთავი მონაცემები დაიკარგება.</p>
+  <button class="button form-submit" type="submit">მონახაზის გადამოწმება ${icon('arrow-right')}</button>
+ </form>`;
+ const form=document.querySelector('#intro-form');
+ const sync=()=>{
+  const budget=form.elements.budgetMode.value==='limit',date=form.elements.timing.value==='date';
+  document.querySelector('#budget-fields').hidden=!budget;
+  form.elements.budget.disabled=!budget;form.elements.budget.required=budget;form.elements.currency.disabled=!budget;
+  document.querySelector('#deadline-field').hidden=!date;
+  form.elements.deadline.disabled=!date;form.elements.deadline.required=date;form.elements.deadline.min=localRequestDate();
+ };
+ const remember=()=>{requestDraft[key]=Object.fromEntries([...form.querySelectorAll('[name]')].map(el=>[el.name,el.value]));};
+ form.addEventListener('input',remember);form.addEventListener('change',()=>{sync();remember();});sync();
+ form.addEventListener('submit',e=>{
+  e.preventDefault();sync();const data=readValidDraft(form);if(!data)return;
+  const error=requestDetailsError(data);if(error){form.elements[error[0]].setCustomValidity(error[1]);form.reportValidity();return;}
+  remember();lastDraft={...data,company:company?.name||'პარტნიორი შესარჩევია',offer};
+  document.querySelector('#form-content').innerHTML=`<span class="section-kicker">მოთხოვნის მონახაზი</span><h2 id="form-title" tabindex="-1">გადაამოწმე დეტალები</h2>
+   <div class="draft-summary"><span class="section-kicker">მიმღები</span><h3>${esc(lastDraft.company)}</h3>${offer?`<p class="selected-offer">${esc(offer)}</p>`:''}<p style="white-space:pre-wrap">${esc(data.need)}</p><dl>${requestFacts(lastDraft).map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl></div>
+   <p class="form-note">მოთხოვნა კომპანიას არ გაგზავნია. ჩამოტვირთე მონახაზი ან დაბრუნდი დეტალების შესასწორებლად.</p>
+   <div class="form-actions"><button class="button" data-action="download">ჩამოტვირთე მონახაზი ${icon('download')}</button><button class="button button-outline" id="edit-request">რედაქტირება</button></div>`;
+  document.querySelector('#edit-request').addEventListener('click',()=>openRequest(companyId,offerIndex));
+  dialog.scrollTop=0;document.querySelector('#form-title').focus({preventScroll:true});
+ });
+ if(!dialog.open)dialog.showModal();else form.elements.need.focus({preventScroll:true});dialog.scrollTop=0;
+}
 function openCompanyForm(){document.querySelector('#form-content').innerHTML=`<span class="section-kicker">შენი კომპანია MeetAny-ზე</span><h2 id="form-title">კომპანიის დამატება</h2><p>მოამზადე შენი კომპანიის პროფილის მოკლე ვერსია.</p><form id="company-form"><fieldset class="form-section"><legend><span>01</span> კომპანიის შესახებ</legend><div class="field"><label for="company-name">კომპანიის დასახელება *</label><input id="company-name" name="name" required maxlength="80"></div><div class="field"><label for="company-offer">რას სთავაზობ ბიზნესებს? *</label><textarea id="company-offer" name="offer" required minlength="10" maxlength="1500"></textarea></div></fieldset><fieldset class="form-section"><legend><span>02</span> მომსახურების არეალი</legend><div class="field"><label for="company-area">მომსახურების ტერიტორია *</label><input id="company-area" name="area" required maxlength="100" placeholder="მაგალითად: მთელი საქართველო"></div></fieldset><p class="form-note form-status">საცდელი რეჟიმი: პროფილი საჯაროდ არ გამოქვეყნდება. შეგიძლია ნახო და ჩამოტვირთო მისი ტექსტი.</p><button class="button form-submit" type="submit">პროფილის წინასწარი ნახვა ${icon('arrow-right')}</button></form>`;document.querySelector('#company-form').addEventListener('submit',e=>{e.preventDefault();const data=readValidDraft(e.target);if(!data)return;lastDraft={profile:true,...data};document.querySelector('#form-content').innerHTML=`<span class="section-kicker">პროფილის მონახაზი</span><h2 id="form-title">${esc(data.name)}</h2><p style="white-space:pre-wrap">${esc(data.offer)}</p><div class="detail-meta"><div><small>მომსახურების ტერიტორია</small>${esc(data.area)}</div></div><p class="form-note">პროფილი არ გამოქვეყნებულა. ეს ტექსტის წინასწარი ვერსიაა.</p><button class="button form-submit" data-action="download">პროფილის ტექსტის ჩამოტვირთვა ${icon('download')}</button>`;});document.querySelector('#form-dialog').showModal();}
-document.addEventListener('click',e=>{if(e.target.closest('[data-reset]'))setFilters({...defaultFilters});const remove=e.target.closest('[data-remove-filter]');if(remove)setFilters({[remove.dataset.removeFilter]:''});const intro=e.target.closest('[data-intro]');if(intro)openRequest(intro.dataset.intro,intro.dataset.offerIndex===undefined?undefined:Number(intro.dataset.offerIndex));const action=e.target.closest('[data-action]')?.dataset.action;if(action==='request')openRequest();if(action==='add-company')openCompanyForm();if(action==='download'&&lastDraft){const d=lastDraft;const text=d.profile?`MeetAny — კომპანიის მონახაზი\n\n${d.name}\n${d.offer}\n\nტერიტორია: ${d.area}\n\nსაცდელი ვერსია. პროფილი არ გამოქვეყნებულა.`:`MeetAny — გაცნობის მოთხოვნის მონახაზი\n\nმიმღები: ${d.company}\nგამომგზავნი: ${d.name}\nელფოსტა: ${d.email}\nადგილი: ${d.city}\n\n${d.need}\n\nსაცდელი ვერსია. მოთხოვნა არ გაგზავნილა.`;const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=d.profile?'MeetAny-profile.txt':'MeetAny-request.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}});
+document.addEventListener('click',e=>{if(e.target.closest('[data-reset]'))setFilters({...defaultFilters});const remove=e.target.closest('[data-remove-filter]');if(remove)setFilters({[remove.dataset.removeFilter]:''});const intro=e.target.closest('[data-intro]');if(intro)openRequest(intro.dataset.intro,intro.dataset.offerIndex===undefined?undefined:Number(intro.dataset.offerIndex));const action=e.target.closest('[data-action]')?.dataset.action;if(action==='request')openRequest();if(action==='add-company')openCompanyForm();if(action==='download'&&lastDraft){const d=lastDraft;const text=d.profile?`MeetAny — კომპანიის მონახაზი\n\n${d.name}\n${d.offer}\n\nტერიტორია: ${d.area}\n\nსაცდელი ვერსია. პროფილი არ გამოქვეყნებულა.`:requestDownloadText(d);const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=d.profile?'MeetAny-profile.txt':'MeetAny-request.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}});
 for(const dialog of document.querySelectorAll('dialog'))dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
 if(document.modelContext?.registerTool&&document.querySelector('#results-grid')){const lifecycle=new AbortController();try{Promise.resolve(document.modelContext.registerTool({name:'set_catalog_filters',title:'კომპანიების ძიება',description:'Set visible MeetAny demo catalog filters and return matching fictional companies. Does not contact companies.',inputSchema:{type:'object',properties:{q:{type:'string',maxLength:200},type:{type:'string',enum:['','suppliers','services','distributors','partners']},city:{type:'string',enum:['','tbilisi','batumi','kutaisi']},language:{type:'string',enum:['','ka','en']},industry:{type:'string',enum:['',...Object.keys(filterOptions.industry)]},collaboration:{type:'string',enum:['',...Object.keys(filterOptions.collaboration)]},format:{type:'string',enum:['',...Object.keys(filterOptions.format)]},sort:{type:'string',enum:['relevance','name']}},additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){const f=validateFilters(input);const results=setFilters(f);return{count:results.length,companies:results.map(c=>({id:c.id,name:c.name,description:c.description})),demo:true}}},{signal:lifecycle.signal})).catch(()=>{});}catch{}window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});}
 

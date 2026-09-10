@@ -39,3 +39,7 @@ The industry accent now uses `connection-transparent.png`, a newly generated squ
 ## Reference-aligned category navigation
 
 Replaced the large decorative industry composition with compact stacked navigation. Four partner roles use newly generated transparent semantic 3D symbols (parcel, briefcase, cargo truck, handshake). Seven industries appear in a compact lower rail with purpose-specific Lucide symbols and company counts. The standalone ring artwork is no longer rendered. The category sprite has an error fallback to the corresponding line icon. Styles and scripts are versioned to refresh stale browser caches. Checked rendered category links/sprite positions, industry links, local assets, and SVG symbols.
+
+## Structured request form
+
+Request drafts now include scope/quantity, collaboration type, an optional budget limit with GEL/USD/EUR currency, and flexible/soon/month/specific-date timing. Conditional budget and date inputs are enabled and required only when selected. Draft review and downloaded text share the same field formatting; edit returns to the same company/offer and preserves inputs in page memory. Past/impossible dates and invalid amounts are rejected. Focused checks covered export completeness, invalid dates/amounts, and omission of inactive conditional values. Still no transmission or server storage.
