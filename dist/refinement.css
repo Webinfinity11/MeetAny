@@ -907,3 +907,17 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
  #intro-form .request-extras { margin-bottom:0; }
  #intro-form .form-action-bar { border-top:0; margin-top:0; }
 }
+
+/* Accessible native dialog drawer, shared by both mobile designs. */
+html.drawer-open { overflow:hidden; }
+dialog.mobile-drawer, .design-two dialog.mobile-drawer { position:fixed; inset:0 0 0 auto; margin:0; width:min(330px,86vw); max-width:86vw; height:100dvh; max-height:100dvh; padding:24px; border:0; border-radius:18px 0 0 18px; background:#fff; color:#18334d; box-shadow:-16px 0 48px #13294324; }
+.mobile-drawer[open] { animation:drawer-enter .22s ease-out; }
+.mobile-drawer::backdrop { background:#122b4c70; backdrop-filter:blur(3px); }
+.drawer-heading { display:flex; justify-content:space-between; align-items:center; padding-bottom:24px; border-bottom:1px solid #e5ebf3; font-size:20px; font-weight:700; font-feature-settings:"case" 1; }
+.drawer-close { display:grid; place-items:center; width:44px; height:44px; border:1px solid #e2e9f2; border-radius:10px; background:white; color:#5d7490; }
+.drawer-links { display:flex; flex-direction:column; gap:8px; margin-top:22px; }
+.drawer-links a { display:flex; align-items:center; min-height:52px; padding:12px 14px; border-radius:9px; font-size:15px; font-weight:500; font-feature-settings:"case" 1; }
+.drawer-links a.active { background:#edf3fe; color:#245ddd; }
+.drawer-links a:hover { background:#f3f6fb; }
+@keyframes drawer-enter { from { transform:translateX(100%); } to { transform:translateX(0); } }
+@media(prefers-reduced-motion:reduce) { .mobile-drawer[open] { animation:none; } }
