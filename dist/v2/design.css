@@ -135,3 +135,10 @@ body.design-two { background:#fff; color:var(--ink); }
 .design-two .process-symbol .icon { width:34px; height:34px; }
 @media(min-width:721px) and (max-width:900px) { .design-two .process-symbol { margin:10px 0; } }
 @media(max-width:420px) { .design-two .category-icon { flex-basis:36px; width:36px; height:36px; border-radius:10px; } .design-two .category-icon > .icon { width:24px; height:24px; } }
+
+/* Dimensional role icons, matching the 3D industry collection. */
+.design-two .category-card .category-icon { display:block; position:relative; width:66px; height:66px; flex:0 0 66px; overflow:hidden; background:transparent; border-radius:0; }
+.design-two .category-card .category-icon .category-3d-sheet { display:block; position:absolute; left:var(--category-x); top:var(--category-y); width:200%; height:200%; max-width:none; }
+.design-two .category-card .category-icon > .icon { display:none; }
+.design-two .category-card:hover .category-icon { background:transparent; }
+@media(max-width:520px) { .design-two .category-card .category-icon { width:52px; height:52px; flex-basis:52px; } }
