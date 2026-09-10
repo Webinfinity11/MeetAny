@@ -63,8 +63,12 @@
 }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 
-/* Transparent wordmark replaces the old emblem and repeated text. */
-.brand { display:inline-flex; align-items:center; flex-shrink:0; }
-.brand img.brand-wordmark,.design-two .brand img.brand-wordmark { display:block; width:190px; height:auto; margin:0; border:0; border-radius:0; object-fit:contain; box-shadow:none; }
-.footer-brand img.brand-wordmark { width:180px; }
-@media(max-width:720px) { .header .brand img.brand-wordmark,.design-two .header .brand img.brand-wordmark { width:172px; height:auto; margin:0; } }
+/* Original supplied emblem paired with the clean wordmark. */
+.brand { display:inline-flex; align-items:center; gap:10px; flex-shrink:0; }
+.brand img.brand-wordmark,.design-two .brand img.brand-wordmark { display:block; width:145px; height:auto; margin:0; border:0; border-radius:0; object-fit:contain; box-shadow:none; }
+.brand img.brand-symbol,.design-two .brand img.brand-symbol { display:block; width:54px; height:38px; margin:0; border:0; border-radius:5px; object-fit:contain; box-shadow:none; }
+@media(max-width:720px) {
+ .header .brand { gap:8px; }
+ .header .brand img.brand-wordmark,.design-two .header .brand img.brand-wordmark { width:126px; height:auto; margin:0; }
+ .header .brand img.brand-symbol,.design-two .header .brand img.brand-symbol { width:46px; height:auto; margin:0; }
+}
