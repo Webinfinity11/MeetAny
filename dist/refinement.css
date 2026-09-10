@@ -193,6 +193,11 @@ h1, h2, h3, button, input, select, textarea, .profile-heading h1, .company-card 
 .button, .details-button, .offer-request { font-weight: 600; }
 
 /* FiraGO's Georgian title forms use OpenType case glyphs. */
-h1, h2, h3, button, .button, .details-button, .offer-request {
+h1, h2, h3, .tt,
+button, input[type="button"], input[type="submit"], input[type="reset"],
+.button, .details-button, .offer-request, .text-link,
+#main-nav a, .profile-sections-nav a, .footer-nav a, .search-examples a {
+  font-family: FiraGO, sans-serif;
+  -webkit-font-feature-settings: "case" 1;
   font-feature-settings: "case" 1;
 }
