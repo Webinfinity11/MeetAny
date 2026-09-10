@@ -12,14 +12,18 @@ const details = {
  food: ['utensils', 'პროდუქტი კაფეებისა და რესტორნებისთვის'],
  packaging: ['package', 'ყუთები და ბრენდირებული შეფუთვა'],
  tourism: ['map-pin', 'სასტუმროები და ერთობლივი პაკეტები'],
- finance: ['calculator', 'აღრიცხვა და ანგარიშგება']
+ finance: ['calculator', 'აღრიცხვა და ანგარიშგება'],
+ technology: ['monitor','ვებსაიტები და პროგრამული მომსახურება'],
+ construction: ['hard-hat','მშენებლობა და რემონტი'],
+ legal: ['scale','იურიდიული მომსახურება'],
+ cleaning: ['sparkles','დასუფთავება და მოვლა']
 };
-const icon = name => `<svg class="icon" aria-hidden="true"><use href="/assets/icons.svg?v=category-symbols#${name}"></use></svg>`;
-const shortTitles = {textiles:'ტექსტილი',marketing:'მარკეტინგი',logistics:'ლოგისტიკა',food:'საკვები',packaging:'შეფუთვა',tourism:'ტურიზმი',finance:'ფინანსები'};
+const icon = name => `<svg class="icon" aria-hidden="true"><use href="/assets/icons.svg?v=all-industries#${name}"></use></svg>`;
+const shortTitles = {textiles:'ტექსტილი',marketing:'მარკეტინგი',logistics:'ლოგისტიკა',food:'საკვები',packaging:'შეფუთვა',tourism:'ტურიზმი',finance:'ფინანსები',technology:'IT და ტექნოლოგიები',construction:'მშენებლობა',legal:'იურიდიული',cleaning:'დასუფთავება'};
 const markup = `<!-- industry-directory:start -->
 <section class="industry-section" id="industries" aria-labelledby="industry-heading">
  <div class="industry-heading-row"><h2 id="industry-heading">საქმიანობის მიხედვით</h2><a class="textlink" href="/categories/">ყველა მიმართულება (${entries.length}) ${icon('arrow-right')}</a></div>
- <ul class="industry-list">${entries.filter(e=>details[e.id]).map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}</ul>
+ <ul class="industry-list">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}<li><a href="/categories/"><span class="industry-icon">${icon('arrow-right')}</span><span class="industry-title tt">ყველა კომპანია</span><span class="industry-count">${entries.reduce((n,e)=>n+e.count,0)} კომპანია</span></a></li></ul>
 </section>
 <!-- industry-directory:end -->`;
 const file = 'dist/index.html';

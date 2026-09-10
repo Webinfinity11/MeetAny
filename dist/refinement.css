@@ -457,3 +457,11 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
 .industry-heading-row .textlink { font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
 
 img[src$="technology-office.jpg"] { object-position: center 65%; }
+
+/* Complete industry directory: all eleven categories remain visible. */
+.industry-list { grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; padding: 12px; }
+.industry-list li + li { border-left: 0; }
+.industry-list a { min-height: 112px; padding: 12px 8px; }
+@media(max-width:1000px) { .industry-list { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+@media(max-width:600px) { .industry-list { grid-template-columns: repeat(3,minmax(0,1fr)); } .industry-heading-row { align-items: flex-start; flex-wrap: wrap; gap: 8px; } }
+@media(max-width:420px) { .industry-list { grid-template-columns: repeat(2,minmax(0,1fr)); } .industry-list li:last-child { grid-column: auto; } }
