@@ -7,3 +7,9 @@ Run with a static HTTP server pointing to `dist`. No build or package installati
 The local reference was `ec62b8c77f017d9e28a6123ab0164157.jpg`. Logo supplied by the project owner. Decorative connection sculpture generated with imagegen. Typography uses Google Fonts Noto Sans Georgian with a system sans-serif fallback.
 
 Validation: JavaScript syntax, local asset and route references, and focused filtering/invalid-input checks. Browser visual/interaction testing was not requested. Optional WebMCP tool `set_catalog_filters` registers only if the page-scoped API is present; no supported WebMCP execution context was available for contract verification. Backend submission, real accounts and IP-based multilingual redirects are outside this Georgian design prototype.
+
+## Photography redesign
+
+The updated design uses an open full-page composition: no outer mockup frame or enclosing company/category card borders. It includes six real Pexels photographs, subject-specific Lucide icons, and a mobile navigation menu. Source and credit records are in `dist/assets/photos/sources.json`; the Lucide license is in `dist/assets/icons/LICENSE`. Generic stock photos do not depict or endorse the fictional demo companies.
+
+Visual validation during the redesign covered desktop and 390px mobile layouts, plus 320px overflow checks on both routes. A legacy unbounded search SVG was replaced with the shared icon component; long Georgian headings and grid children were adjusted. Both pages measured scrollWidth equal to viewport width at 320px. Category filtering and the profile-to-request dialog flow were checked in the browser. The original optional WebMCP contract validation gap remains unchanged.

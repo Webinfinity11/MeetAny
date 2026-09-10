@@ -1,0 +1,49 @@
+{
+  "license": "Pexels License",
+  "license_url": "https://www.pexels.com/license/",
+  "license_note": "Free use on websites; attribution optional. Do not imply endorsement by depicted people or brands. Images are illustrative stock photography, not verified Georgian businesses.",
+  "assets": [
+    {
+      "file": "hero-meeting.jpg",
+      "credit": "Diva Plavalaguna",
+      "source": "https://www.pexels.com/photo/people-having-a-meeting-at-the-office-6146812/",
+      "download": "https://images.pexels.com/photos/6146812/pexels-photo-6146812.jpeg?cs=srgb&fm=jpg&w=1200&q=85",
+      "bytes": 132624
+    },
+    {
+      "file": "hotel-linen.jpg",
+      "credit": "Dang Hong",
+      "source": "https://www.pexels.com/photo/bed-in-hotel-room-17495859/",
+      "download": "https://images.pexels.com/photos/17495859/pexels-photo-17495859.jpeg?cs=srgb&fm=jpg&w=800&q=85",
+      "bytes": 58003
+    },
+    {
+      "file": "creative-team.jpg",
+      "credit": "cottonbro studio",
+      "source": "https://www.pexels.com/photo/coworker-at-a-creative-office-6805154/",
+      "download": "https://images.pexels.com/photos/6805154/pexels-photo-6805154.jpeg?cs=srgb&fm=jpg&w=800&q=85",
+      "bytes": 58819
+    },
+    {
+      "file": "logistics-warehouse.jpg",
+      "credit": "Tiger Lily",
+      "source": "https://www.pexels.com/photo/shelves-on-a-warehouse-4483608/",
+      "download": "https://images.pexels.com/photos/4483608/pexels-photo-4483608.jpeg?cs=srgb&fm=jpg&w=800&q=85",
+      "bytes": 216120
+    },
+    {
+      "file": "fresh-produce.jpg",
+      "credit": "Yusuf Çelik",
+      "source": "https://www.pexels.com/photo/fresh-fruits-and-vegetables-on-market-12974981/",
+      "download": "https://images.pexels.com/photos/12974981/pexels-photo-12974981.jpeg?cs=srgb&fm=jpg&w=800&q=85",
+      "bytes": 256287
+    },
+    {
+      "file": "cardboard-packaging.jpg",
+      "credit": "Ron Lach",
+      "source": "https://www.pexels.com/photo/person-holding-brown-cardboard-box-9603490/",
+      "download": "https://images.pexels.com/photos/9603490/pexels-photo-9603490.jpeg?cs=srgb&fm=jpg&w=800&q=85",
+      "bytes": 32589
+    }
+  ]
+}
