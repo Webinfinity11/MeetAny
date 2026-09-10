@@ -123,3 +123,15 @@ body.design-two { background:#fff; color:var(--ink); }
 /* Keep the complete search menu above subsequent marketplace sections. */
 .design-two .home-discovery { z-index: 2; overflow: visible; }
 .design-two .discovery-suggestions { z-index: 4; max-height: min(380px, 60dvh); overflow-y: auto; overscroll-behavior: contain; }
+/* Phosphor: soft duotone pictograms and precise navigation glyphs. */
+.design-two .icon { fill:currentColor; stroke:none; stroke-width:0; }
+.design-two .category-icon { display:grid; place-items:center; flex:0 0 48px; width:48px; height:48px; border-radius:12px; background:#e7eefb; overflow:visible; }
+.design-two .category-icon > .icon { width:28px; height:28px; color:#345d9c; }
+.design-two .industry-icon { display:grid; place-items:center; width:40px; height:40px; margin:0 auto 8px; color:#527197; }
+.design-two .industry-icon .icon { width:27px; height:27px; }
+.design-two .category-card:hover .category-icon { background:#dce7fb; }
+.design-two .offer-icon { color:#345d9c; }
+.design-two .process-symbol { grid-column:2; grid-row:1/4; display:grid; place-items:center; width:64px; height:64px; align-self:center; justify-self:center; border-radius:16px; color:#345d9c; background:#e4ecfa; }
+.design-two .process-symbol .icon { width:34px; height:34px; }
+@media(min-width:721px) and (max-width:900px) { .design-two .process-symbol { margin:10px 0; } }
+@media(max-width:420px) { .design-two .category-icon { flex-basis:36px; width:36px; height:36px; border-radius:10px; } .design-two .category-icon > .icon { width:24px; height:24px; } }
