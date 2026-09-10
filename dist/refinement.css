@@ -201,3 +201,71 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
   -webkit-font-feature-settings: "case" 1;
   font-feature-settings: "case" 1;
 }
+
+/* Industry directory with a single existing 3D brand accent. */
+.industry-section { max-width: 1328px; margin: 0 auto; padding: 22px 36px 52px; }
+.industry-layout { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.8fr); gap: 48px; border-top: 1px solid var(--line); padding-top: 40px; }
+.industry-intro { min-width: 0; }
+.industry-intro h2 { font-size: 28px; line-height: 1.65; }
+.industry-intro > p { color: var(--muted); font-size: 16px; line-height: 1.9; margin-top: 16px; max-width: 330px; }
+.industry-sculpture { display: block; width: 100%; max-width: 370px; height: auto; margin-top: 25px; border-radius: 10px; }
+.industry-directory { min-width: 0; }
+.industry-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.industry-list li { min-width: 0; }
+.industry-list li:last-child { grid-column: 1 / -1; }
+.industry-list a { min-height: 152px; height: 100%; display: flex; align-items: flex-start; gap: 13px; padding: 22px 18px; background: #f4f7fa; border-radius: 9px; transition: background .18s ease; }
+.industry-list a:hover, .industry-list a:focus-visible { background: #eaf1fb; }
+.industry-icon { flex: none; display: grid; place-items: center; width: 32px; height: 32px; color: #45617d; margin-top: 1px; }
+.industry-icon .icon { width: 23px; height: 23px; }
+.industry-copy { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+.industry-title { font-size: 16px; line-height: 1.6; font-weight: 600; color: #253e5b; }
+.industry-description { font-size: 14px; line-height: 1.75; color: #64798f; margin-top: 6px; }
+.industry-count { font-size: 12px; line-height: 1.7; color: #607997; margin-top: 13px; }
+.industry-list a > .icon { width: 17px; height: 17px; margin-left: auto; margin-top: 5px; color: #7a91ac; }
+.industry-list li:last-child a { min-height: 0; }
+.industry-demo { margin-top: 16px; font-size: 13px; color: #708197; }
+@media (max-width: 1150px) {
+ .industry-section { padding-inline: 30px; }
+ .industry-layout { gap: 30px; grid-template-columns: minmax(0,.8fr) minmax(0,1.8fr); }
+ .industry-list a { padding: 20px 15px; gap: 10px; }
+ .industry-intro h2 { font-size: 25px; }
+ .industry-title { font-size: 15px; }
+ .industry-list a > .icon { display: none; }
+}
+@media (max-width: 900px) {
+ .industry-layout { grid-template-columns: minmax(0,1fr); gap: 26px; }
+ .industry-intro { display: grid; grid-template-columns: minmax(0,1fr) 230px; column-gap: 28px; align-items: start; }
+ .industry-intro .section-kicker, .industry-intro h2, .industry-intro > p { grid-column: 1; }
+ .industry-intro h2 br { display: none; }
+ .industry-sculpture { grid-column: 2; grid-row: 1 / 4; width: 230px; margin-top: 0; align-self: center; }
+ .industry-title { font-size: 16px; }
+ .industry-list a > .icon { display: block; }
+}
+@media (max-width: 720px) {
+ .industry-section { padding: 8px 24px 36px; }
+ .industry-layout { padding-top: 30px; }
+ .industry-intro { grid-template-columns: minmax(0,1fr) 180px; gap: 0 20px; }
+ .industry-intro h2 { font-size: 23px; }
+ .industry-sculpture { width: 180px; }
+ .industry-list a { min-height: 148px; padding: 20px 16px; }
+ .industry-icon { display: none; }
+}
+@media (max-width: 520px) {
+ .industry-intro { display: block; }
+ .industry-intro h2 { max-width: 320px; }
+ .industry-intro > p { max-width: none; }
+ .industry-sculpture { width: 250px; max-width: 100%; margin: 20px auto 0; }
+ .industry-list { grid-template-columns: minmax(0,1fr); gap: 10px; }
+ .industry-list a { min-height: 0; padding: 19px 16px; }
+ .industry-list li:last-child { grid-column: auto; }
+ .industry-icon { display: grid; }
+ .industry-title { font-size: 16px; }
+ .industry-count { margin-top: 9px; }
+}
+@media (max-width: 420px) {
+ .industry-section { padding-inline: 20px; }
+ .industry-intro h2 { font-size: 21px; }
+ .industry-list a { gap: 10px; }
+ .industry-title, .industry-description { overflow-wrap: anywhere; }
+ .industry-list a > .icon { display: none; }
+}

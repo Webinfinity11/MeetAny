@@ -1,3 +1,4 @@
+require('./generate-industries.cjs');
 const fs = require('fs');
 const vm = require('vm');
 const context = {location: {pathname:'/', search:''}};

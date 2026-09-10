@@ -29,3 +29,7 @@ Main journey copy now describes discovery, offers and draft preparation precisel
 ## FiraGO and visual refinement
 
 `dist/refinement.css` provides the shared responsive visual pass: consistent heading hierarchy, spacing, photo proportions, navigation emphasis, card metadata and navy footer. Four original FiraGO 1.001 WOFF2 weights (400/500/600/700) are hosted locally; the previous Google Fonts import is removed. Headings, buttons, inputs and body use FiraGO; the MeetAny wordmark retains its existing treatment. Font provenance and OFL license are in `dist/assets/fonts/`. Validated all ten pages' style/asset links, WOFF2 signatures and Georgian glyph coverage for every weight, plus JavaScript syntax and whitespace checks.
+
+## Industry directory and 3D accent
+
+The home page now distinguishes partner role from seven industry links. Each industry lists its description and company count, linking to the existing catalog industry filter. The local connection-sculpture image is reused as the single 3D accent, preserving the real business photography elsewhere. `generate-profiles.cjs` runs `generate-industries.cjs` first so directory counts follow the canonical data. Validation confirmed seven populated filter destinations, correct logistics count, and valid local assets/routes.
