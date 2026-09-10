@@ -452,3 +452,8 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
  .profile-facts dl { grid-template-columns: minmax(0,1fr); }
  .profile-section#offers > h2 { margin-bottom: 15px; }
 }
+
+.company-vector-logo { width: 70%; height: 70%; object-fit: contain; }
+.industry-heading-row .textlink { font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+
+img[src$="technology-office.jpg"] { object-position: center 65%; }

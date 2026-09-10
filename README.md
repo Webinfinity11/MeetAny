@@ -53,3 +53,5 @@ Company cards use shorter photos and labeled service-area/collaboration facts, w
 Company cards now end in a full-width “View profile” action with a restrained blue surface and clear hover/focus treatment. Offer counts move to the photo, avoiding a split footer. Facts and footer spacing are unified. Verified all eight card actions/counts and preservation of filtered return links.
 
 Profile spacing now groups the short description with the identity and places the compact demo label alongside the request action. Reduced cover/header spacing, removed the redundant offer-section kicker and aligned the facts panel with the offers section. Mobile layouts retain natural text wrapping with a full-width request action at narrow widths. Verified all eight generated summaries and retained offer actions.
+
+Expanded catalog: 11 industries, 12 fictional company profiles and 36 offers. Added IT, construction, legal services and commercial cleaning; four local vector logomarks and licensed Pexels photographs with provenance in assets/photos/new-categories-sources.json. Home keeps seven short industry links and a full-catalog link.
