@@ -750,3 +750,43 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .process-illustration > img { display: block; width: 100%; height: auto; }
 .process-illustration figcaption { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin-top: -8px; color: #526f93; font-size: 12px; text-align: center; font-feature-settings: "case" 1; }
 @media(max-width:420px) { .process-illustration figcaption { font-size: 11px; gap: 8px; } }
+
+/* Reference-inspired visual concept: one need field and three illustrated steps. */
+.home-discovery { max-width: 1256px; margin: 28px auto 40px; padding: 38px 42px 32px; border-radius: 18px; background: #194da6; color: #fff; }
+.discovery-kicker { color: #d0dff6; font-size: 12px; line-height: 1.7; }
+.home-discovery h1 { color: #fff; font-size: clamp(28px,3vw,42px); line-height: 1.4; margin: 12px 0 26px; max-width: 1000px; }
+.discovery-search { display: flex; align-items: center; gap: 8px; position: relative; z-index: 3; background: white; border-radius: 10px; padding: 7px; }
+.discovery-query { display: flex; align-items: center; flex: 1; min-width: 0; gap: 12px; }
+.discovery-query > .icon { width: 21px; height: 21px; flex: none; margin-left: 14px; color: #6d829b; }
+.discovery-query input { border: 0; outline: 0; background: transparent; color: #243950; font-size: 16px; min-width: 0; width: 100%; padding: 12px 0; }
+.discovery-query input::placeholder { color: #7b8a9d; }
+.discovery-search:focus-within { outline: 3px solid #a7c6ff; outline-offset: 2px; }
+.discovery-search > .button { background: #142c4c; border-radius: 7px; min-height: 46px; padding: 12px 22px; font-size: 14px; }
+.discovery-search > .button:hover { background: #213e66; }
+.discovery-suggestions { display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; padding: 16px; border-radius: 10px; background: #fff; color: #1b304a; box-shadow: 0 12px 30px #10284926; }
+.discovery-query:focus-within .discovery-suggestions { display: block; }
+.discovery-query.suggestions-dismissed .discovery-suggestions { display: none; }
+.discovery-suggestions > p { font-size: 12px; color: #76879a; margin: 0 10px 8px; }
+.discovery-suggestions a { display: flex; align-items: center; gap: 12px; padding: 11px 10px; border-radius: 6px; font-size: 14px; }
+.discovery-suggestions a:hover, .discovery-suggestions a:focus-visible { background: #edf3ff; }
+.discovery-suggestions a .icon { width: 19px; height: 19px; color: #537db5; }
+.discovery-suggestions a .icon:last-child { margin-left: auto; }
+.discovery-steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 34px; scroll-margin-top: 24px; }
+.discovery-steps li { min-width: 0; }
+.discovery-step-heading { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+.discovery-step-number { color: #a7c6f8; font-size: 24px; line-height: 1.2; font-weight: 600; }
+.discovery-step-line { flex: 1; height: 1px; border-top: 1px dashed #719ad8; }
+.discovery-steps li:last-child .discovery-step-line { visibility: hidden; }
+.discovery-steps h2 { font-size: 17px; line-height: 1.6; color: #fff; }
+.discovery-art { position: relative; width: 190px; max-width: 100%; height: 165px; overflow: hidden; margin: 8px 0; }
+.discovery-art img { position: absolute; top: 0; left: var(--process-x); width: 300%; height: 100%; max-width: none; object-fit: fill; }
+.discovery-steps p { color: #dbe7f8; font-size: 13px; line-height: 1.8; max-width: 330px; }
+@media(max-width:1328px) { .home-discovery { margin-inline: 36px; } }
+@media(max-width:900px) { .home-discovery { margin-inline: 30px; padding: 30px; } .discovery-steps { gap: 22px; } .discovery-steps h2 { font-size: 15px; } .discovery-art { width: 160px; height: 145px; } }
+@media(max-width:720px) { .home-discovery { margin: 20px 24px 28px; padding: 26px 22px; border-radius: 12px; } .home-discovery h1 { font-size: 28px; } .discovery-steps { grid-template-columns: 1fr; gap: 22px; } .discovery-steps li { display: grid; grid-template-columns: minmax(0,1fr) 120px; column-gap: 12px; padding-top: 16px; border-top: 1px solid #ffffff25; } .discovery-step-heading, .discovery-steps h2, .discovery-steps p { grid-column: 1; } .discovery-art { grid-column: 2; grid-row: 1/4; width: 120px; height: 125px; align-self: center; margin: 0; } .discovery-step-line { display: none; } .discovery-step-number { font-size: 19px; } .discovery-search > .button { font-size: 12px; padding-inline: 12px; } .discovery-search > .button .icon { display: none; } .discovery-query > .icon { margin-left: 5px; width: 17px; height: 17px; } .discovery-query { gap: 7px; } }
+@media(max-width:420px) { .home-discovery { margin-inline: 20px; padding: 22px 16px; } .home-discovery h1 { font-size: 25px; } .discovery-steps li { grid-template-columns: minmax(0,1fr) 95px; } .discovery-art { width: 95px; height: 105px; } }
+
+.discovery-art { width: 180px; height: 180px; }
+@media(max-width:900px) { .discovery-art { width: 150px; height: 150px; } }
+@media(max-width:720px) { .discovery-art { width: 120px; height: 120px; } }
+@media(max-width:420px) { .discovery-art { width: 95px; height: 95px; } }

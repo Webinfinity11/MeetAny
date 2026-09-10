@@ -254,3 +254,6 @@ if(galleryDialog){
  galleryDialog.addEventListener('close',()=>opener?.focus({preventScroll:true}));
  fullImage.addEventListener('error',()=>{fullImage.hidden=true;caption.textContent='ფოტო ვერ ჩაიტვირთა. სცადე სხვა ფოტო.';});
 }
+
+const discoveryQuery=document.querySelector('.discovery-query');
+if(discoveryQuery){const input=discoveryQuery.querySelector('input');input.addEventListener('focus',()=>discoveryQuery.classList.remove('suggestions-dismissed'));input.addEventListener('input',()=>discoveryQuery.classList.remove('suggestions-dismissed'));discoveryQuery.addEventListener('keydown',event=>{if(event.key==='Escape'){discoveryQuery.classList.add('suggestions-dismissed');input.focus();discoveryQuery.classList.add('suggestions-dismissed');}});}
