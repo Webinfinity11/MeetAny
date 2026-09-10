@@ -1,0 +1,15 @@
+{
+  "source": "https://github.com/phosphor-icons/core",
+  "license": "MIT; icons-flat-LICENSE.txt",
+  "style": "fill",
+  "mapping": {
+    "shirt": "coat-hanger",
+    "megaphone": "palette",
+    "truck": "warehouse",
+    "utensils": "bowl-food",
+    "package": "gift",
+    "map-pin": "suitcase-rolling",
+    "calculator": "chart-pie-slice",
+    "monitor": "cpu"
+  }
+}
