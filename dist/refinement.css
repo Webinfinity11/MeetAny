@@ -894,3 +894,16 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .design-one .industry-icon .icon { width:26px; height:26px; color:#476684; }
 .design-one .industry-list a:hover .icon { color:#245ddd; }
 .design-one .category-icon > .icon { color:#476684; }
+/* Mobile QA: readable inputs, touch targets, and reachable form actions. */
+@media(max-width:720px) {
+ .home-discovery .discovery-query input, .design-two .home-discovery .discovery-query input, .catalog-search input { font-size:16px; }
+ .header .mobile-menu { min-width:44px; min-height:44px; }
+ .header .design-switch, .header .button-small { min-height:44px; }
+ .header nav a { min-height:44px; display:flex; align-items:center; }
+ .profile-sections-nav a { min-height:44px; display:inline-flex; align-items:center; }
+ .profile-faq summary { min-height:44px; display:flex; align-items:center; }
+ #form-dialog .form-action-bar { position:sticky; bottom:0; z-index:2; background:#fff; padding-bottom:8px; }
+ #form-dialog .form-cancel { min-height:44px; }
+ #intro-form .request-extras { margin-bottom:0; }
+ #intro-form .form-action-bar { border-top:0; margin-top:0; }
+}

@@ -142,3 +142,13 @@ body.design-two { background:#fff; color:var(--ink); }
 .design-two .category-card .category-icon > .icon { display:none; }
 .design-two .category-card:hover .category-icon { background:transparent; }
 @media(max-width:520px) { .design-two .category-card .category-icon { width:52px; height:52px; flex-basis:52px; } }
+/* QA correction: light footer requires dark text and touch-sized controls. */
+.design-two footer, .design-two footer .brand { color:#18334d; }
+.design-two footer p, .design-two .footer-nav a, .design-two .footer-nav button, .design-two .footer-language, .design-two .footer-bottom { color:#526b86; }
+.design-two .footer-nav > span { color:#18334d; }
+@media(max-width:720px) {
+ .design-two .home-discovery .discovery-query input, .design-two .catalog-search input { font-size:16px; }
+ .design-two .header .button-small, .design-two .header .design-switch { min-height:44px; }
+ .design-two .listing-action { min-height:44px; }
+}
+.design-two footer .brand-any { background:#245ddd; background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
