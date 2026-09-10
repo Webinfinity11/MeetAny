@@ -33,3 +33,5 @@ Main journey copy now describes discovery, offers and draft preparation precisel
 ## Industry directory and 3D accent
 
 The home page now distinguishes partner role from seven industry links. Each industry lists its description and company count, linking to the existing catalog industry filter. The local connection-sculpture image is reused as the single 3D accent, preserving the real business photography elsewhere. `generate-profiles.cjs` runs `generate-industries.cjs` first so directory counts follow the canonical data. Validation confirmed seven populated filter destinations, correct logistics count, and valid local assets/routes.
+
+The industry accent now uses `connection-transparent.png`, a newly generated square 3D render with genuine RGBA transparency, replacing the opaque-background image. All corners are fully transparent; the image is displayed without a background or border radius. Generation prompt and provenance are in `connection-transparent.source.json`.

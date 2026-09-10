@@ -202,13 +202,13 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
   font-feature-settings: "case" 1;
 }
 
-/* Industry directory with a single existing 3D brand accent. */
+/* Industry directory with a freestanding transparent 3D brand accent. */
 .industry-section { max-width: 1328px; margin: 0 auto; padding: 22px 36px 52px; }
 .industry-layout { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.8fr); gap: 48px; border-top: 1px solid var(--line); padding-top: 40px; }
 .industry-intro { min-width: 0; }
 .industry-intro h2 { font-size: 28px; line-height: 1.65; }
 .industry-intro > p { color: var(--muted); font-size: 16px; line-height: 1.9; margin-top: 16px; max-width: 330px; }
-.industry-sculpture { display: block; width: 100%; max-width: 370px; height: auto; margin-top: 25px; border-radius: 10px; }
+.industry-sculpture { display: block; width: 100%; max-width: 400px; height: auto; margin-top: 18px; border-radius: 0; background: transparent; object-fit: contain; }
 .industry-directory { min-width: 0; }
 .industry-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
 .industry-list li { min-width: 0; }

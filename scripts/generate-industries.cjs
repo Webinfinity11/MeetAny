@@ -22,7 +22,7 @@ const markup = `<!-- industry-directory:start -->
    <span class="section-kicker">საქმიანობის მიმართულებები</span>
    <h2 id="industry-heading">იპოვე კომპანია<br>შენი სფეროდან</h2>
    <p>აირჩიე მიმართულება და გაეცანი შესაბამის შეთავაზებებს.</p>
-   <img class="industry-sculpture" src="/assets/connection-sculpture.png" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+   <img class="industry-sculpture" src="/assets/connection-transparent.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
   </div>
   <div class="industry-directory">
    <ul class="industry-list">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-copy"><span class="industry-title tt">${title}</span><span class="industry-description">${details[id][1]}</span><span class="industry-count">${count} კომპანია</span></span>${icon('arrow-up-right')}</a></li>`).join('')}</ul>
