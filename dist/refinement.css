@@ -860,3 +860,8 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
  .home-discovery .discovery-step-heading, .home-discovery .discovery-steps h2, .home-discovery .discovery-steps p { grid-column: 1; }
  .need-process-art { grid-column: 2; grid-row: 1 / 4; width: 90px; height: 90px; align-self: center; margin: 0; }
 }
+
+.design-switch { display:inline-flex; align-items:center; gap:9px; padding:8px 12px; border:1px solid #c9d6e8; border-radius:6px; font-size:12px; color:#245ddd; white-space:nowrap; font-feature-settings:"case" 1; }
+.design-switch:hover { background:#edf3ff; }
+@media(max-width:900px) { .header-actions { gap:10px; } .header-actions .language { display:none; } }
+@media(max-width:600px) { .header-inner { flex-wrap:wrap; } .header-actions { flex-wrap:wrap; } .design-switch { padding:6px 8px; font-size:11px; } }
