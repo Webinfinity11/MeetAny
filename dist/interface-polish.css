@@ -65,6 +65,6 @@
 
 /* Transparent wordmark replaces the old emblem and repeated text. */
 .brand { display:inline-flex; align-items:center; flex-shrink:0; }
-.brand img.brand-wordmark,.design-two .brand img.brand-wordmark { display:block; width:160px; height:auto; margin:0; border:0; border-radius:0; object-fit:contain; box-shadow:none; }
-.footer-brand img.brand-wordmark { width:150px; }
-@media(max-width:720px) { .header .brand img.brand-wordmark,.design-two .header .brand img.brand-wordmark { width:138px; height:auto; margin:0; } }
+.brand img.brand-wordmark,.design-two .brand img.brand-wordmark { display:block; width:190px; height:auto; margin:0; border:0; border-radius:0; object-fit:contain; box-shadow:none; }
+.footer-brand img.brand-wordmark { width:180px; }
+@media(max-width:720px) { .header .brand img.brand-wordmark,.design-two .header .brand img.brand-wordmark { width:172px; height:auto; margin:0; } }
