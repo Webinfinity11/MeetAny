@@ -17,17 +17,14 @@ Object.assign(photos,{"pixel": ["technology-office.jpg", "ტექნოლო�
 function companyLogo(c,extra=''){if(['pixel','build','legal','clean'].includes(c.id))return '<span class="company-logo '+extra+'" role="img" aria-label="'+esc(c.name)+'"><img class="company-vector-logo" src="/assets/logos/'+c.id+'.svg" alt=""></span>';const index=companies.findIndex(x=>x.id===c.id);return '<span class="company-logo '+extra+'" role="img" aria-label="'+esc(c.name)+' — დემო ლოგო"><img src="/assets/company-logomarks.png" class="logo-sheet" style="--logo-x:'+(-100*(index%4))+'%;--logo-y:'+(-100*Math.floor(index/4))+'%" alt=""><span class="logo-fallback" aria-hidden="true">'+icon('building-2')+'</span></span>';}
 function profileHref(c){const base="/companies/"+c.slug+"/";return location.pathname==="/categories/"?base+"?from="+encodeURIComponent("/categories/"+location.search):base;}
 function card(c){
- const photo=photos[c.id],category=categories.find(x=>x.id===c.type),href=esc(profileHref(c));
- return `<article class="company-card">
-  <a class="company-photo-wrap" href="${href}" aria-label="${esc(c.name)} — კომპანიის ნახვა">
-   <img class="company-photo" src="/assets/photos/${photo[0]}" alt="${photo[1]} — საილუსტრაციო ფოტო" width="800" height="533" loading="lazy" decoding="async">
-   <span class="photo-category">${category.title}</span><span class="photo-offer-count">${c.offer.length} შეთავაზება</span>
-  </a>
-  <div class="company-body">
-   <div class="company-top">${companyLogo(c)}<div><h3><a href="${href}">${esc(c.name)}</a></h3><p class="company-location" aria-label="კომპანიის მდებარეობა: ${c.cityLabel}">${icon('map-pin')} ${c.cityLabel}</p></div></div>
-   <p class="company-description">${c.description}</p>
-   <dl class="card-facts"><div><dt>${icon('globe')} მომსახურების არეალი</dt><dd>${c.area}</dd></div><div><dt>${icon('handshake')} თანამშრომლობა</dt><dd>${c.collaboration.map(x=>filterOptions.collaboration[x]).join(' · ')}</dd></div></dl>
-   <div class="company-bottom"><a class="button card-profile-button" href="${href}" aria-label="${esc(c.name)} — პროფილის ნახვა"><span>პროფილის ნახვა</span>${icon('arrow-right')}</a></div>
+ const photo=photos[c.id],href=esc(profileHref(c));
+ return `<article class="company-listing">
+  <a class="listing-media" href="${href}" aria-label="${esc(c.name)} — კომპანიის პროფილი"><img src="/assets/photos/${photo[0]}" alt="${esc(photo[1])}" width="800" height="533" loading="lazy" decoding="async"></a>
+  <div class="listing-content">
+   <div class="listing-heading">${companyLogo(c)}<div><p class="listing-industry">${esc(filterOptions.industry[c.industry])}</p><h3><a href="${href}">${esc(c.name)}</a></h3></div><span class="listing-city">${icon('map-pin')}${esc(c.cityLabel)}</span></div>
+   <p class="listing-description">${esc(c.description)}</p>
+   <dl class="listing-facts"><div><dt>${icon('globe')}<span class="sr-only">მომსახურების არეალი</span></dt><dd>${esc(c.area)}</dd></div><div><dt>${icon('handshake')}<span class="sr-only">თანამშრომლობა</span></dt><dd>${c.collaboration.map(x=>filterOptions.collaboration[x]).join(' · ')}</dd></div></dl>
+   <div class="listing-footer"><a class="listing-offers" href="${href}#offers">${c.offer.length} შეთავაზება ${icon('chevron-right')}</a><a class="button listing-action" href="${href}" aria-label="${esc(c.name)} — გაცნობა">გაიცანი კომპანია ${icon('arrow-up-right')}</a></div>
   </div>
  </article>`;
 }
