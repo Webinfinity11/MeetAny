@@ -81,8 +81,8 @@ function renderResults(){const grid=document.querySelector('#results-grid');if(!
    return `<label class="radio-option ${selected?'is-selected':''}"><input type="${multiFilterKeys.includes(key)?'checkbox':'radio'}" name="${key}" value="${value}" ${selected?'checked':''}><span class="filter-option-label">${symbol?icon(symbol,'filter-option-icon'):''}<span>${esc(label)}</span></span><small aria-label="${count} კომპანია">${count}</small></label>`;
   }).join('');
  }
- document.querySelector('#sort-filter').value=filters.sort;document.querySelector('#catalog-query').value=filters.q;
- const industry=filterOptions.industry[filters.industry];document.querySelector('#catalog-title').textContent=industry||'იპოვე შენი პარტნიორი';document.title=(industry||'კატეგორიები და კომპანიები')+' — MeetAny';const results=getResults(filters);document.querySelector('#result-count').innerHTML=`<strong>${results.length} კომპანია</strong> <span>· ${results.reduce((sum,c)=>sum+c.offer.length,0)} შეთავაზება</span>`;
+ document.querySelector('#sort-filter').value=filters.sort;document.querySelector('#catalog-query').value=filters.q;document.querySelector('#clear-catalog-query').hidden=!filters.q;
+ const industry=filterOptions.industry[filters.industry];document.querySelector('#catalog-title').textContent=industry||'კომპანიები';document.title=(industry||'კატეგორიები და კომპანიები')+' — MeetAny';const results=getResults(filters);document.querySelector('#result-count').innerHTML=`<strong>${results.length} კომპანია</strong> <span>· ${results.reduce((sum,c)=>sum+c.offer.length,0)} შეთავაზება</span>`;
  document.querySelector('#filter-results-button').textContent='შედეგების ნახვა ('+results.length+')';
  const chips=Object.entries(filters).filter(([k,v])=>v&&k!=='sort').flatMap(([k,v])=>(multiFilterKeys.includes(k)?selectedValues(v):[v]).map(value=>[k,value,k==='q'?value:filterValues[k][value]]));
  document.querySelector('#active-filters').innerHTML=chips.map(([key,value,label])=>`<button class="filter-chip" data-remove-filter="${key}" data-filter-value="${esc(value)}" aria-label="ფილტრის წაშლა: ${esc(label)}">${esc(label)} ${icon('x')}</button>`).join('')+(chips.length?'<button class="reset-button" data-reset>ყველას გასუფთავება</button>':'');
@@ -98,6 +98,10 @@ if(document.querySelector('#results-grid')){
  panel.addEventListener('change',e=>{const key=e.target.name,value=e.target.value;if(Object.hasOwn(defaultFilters,key)){setFilters({[key]:nextFilterSelection(key,value,e.target.checked)});const options=document.querySelectorAll('#'+key+'-options input');[...options].find(input=>input.value===value)?.focus({preventScroll:true});}});
  document.querySelector('#filter-results-button').addEventListener('click',()=>{setFilterPanel(false);toggle.focus({preventScroll:true});document.querySelector('.results-toolbar').scrollIntoView({block:'start'});});
  document.querySelector('#sort-filter').addEventListener('change',e=>setFilters({sort:e.target.value}));
+ const queryInput=document.querySelector('#catalog-query'),clearQuery=document.querySelector('#clear-catalog-query');
+ queryInput.addEventListener('input',()=>{clearQuery.hidden=!queryInput.value;});
+ queryInput.addEventListener('search',()=>{if(!queryInput.value)setFilters({q:''});});
+ clearQuery.addEventListener('click',()=>{setFilters({q:''});queryInput.focus();});
  document.querySelector('#catalog-search').addEventListener('submit',e=>{e.preventDefault();setFilters({q:document.querySelector('#catalog-query').value.trim()});});
  toggle.addEventListener('click',()=>{const open=!panel.classList.contains('is-open');setFilterPanel(open);if(open)panel.scrollIntoView({block:'start',behavior:'smooth'});});
  panel.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('is-open')){setFilterPanel(false);toggle.focus();}});

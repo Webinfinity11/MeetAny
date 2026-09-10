@@ -499,3 +499,21 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .filter-disclosure summary small { color: #285ce8; font-size: 12px; }
 .filter-disclosure .filter-group-hint { margin-top: 0; }
 .active-filters { align-items: center; }
+
+/* Compact catalog heading keeps search close to the results. */
+.catalog-head { padding-block: 20px 24px; }
+.catalog-head .breadcrumb { margin-bottom: 14px; }
+.catalog-heading-search { display: grid; grid-template-columns: minmax(260px,.8fr) minmax(0,1.2fr); align-items: center; gap: 32px; }
+.catalog-title-row h1 { font-size: 28px; line-height: 1.4; }
+.catalog-title-row p { font-size: 14px; margin-top: 6px; }
+.catalog-search { width: 100%; max-width: none; margin: 0; padding: 5px; gap: 8px; flex-wrap: nowrap; box-shadow: none; }
+.catalog-search input { font-size: 16px; padding-block: 10px; }
+.catalog-search input::-webkit-search-cancel-button { display: none; }
+.catalog-search:focus-within { outline: none; border-color: #4776df; box-shadow: 0 0 0 3px #285ce812; }
+.catalog-search > .button { width: auto; min-height: 44px; padding: 10px 16px; font-size: 13px; }
+.search-clear { flex: none; display: grid; place-items: center; width: 32px; height: 36px; border: 0; border-radius: 5px; background: transparent; color: #6a7f96; }
+.search-clear:hover { background: #eef3f9; }
+.search-clear[hidden] { display: none; }
+.search-clear .icon { width: 16px; height: 16px; }
+@media(max-width:900px) { .catalog-heading-search { grid-template-columns: 1fr; gap: 18px; } }
+@media(max-width:420px) { .catalog-search { gap: 5px; } .catalog-search > .button { padding-inline: 12px; } .catalog-search > .button .icon { display: none; } .catalog-title-row h1 { font-size: 25px; } }
