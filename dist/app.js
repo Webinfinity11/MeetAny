@@ -55,10 +55,24 @@ function renderResults(){const grid=document.querySelector('#results-grid');if(!
  const category=categories.find(c=>c.id===filters.type);document.querySelector('#catalog-title').textContent=category?category.title:'იპოვე შენი პარტნიორი';document.title=(category?category.title:'კატეგორიები და კომპანიები')+' — MeetAny';const results=getResults(filters);document.querySelector('#result-count').innerHTML=`<strong>${results.length} კომპანია</strong> <span>· ${results.reduce((sum,c)=>sum+c.offer.length,0)} შეთავაზება</span>`;
  document.querySelector('#filter-results-button').textContent='შედეგების ნახვა ('+results.length+')';
  const chips=Object.entries(filters).filter(([k,v])=>v&&k!=='sort').map(([k,v])=>[k,k==='q'?v:filterValues[k][v]]);document.querySelector('#active-filters').innerHTML=chips.map(([k,v])=>`<button class="filter-chip" data-remove-filter="${k}" aria-label="ფილტრის წაშლა: ${esc(v)}">${esc(v)} ${icon('x')}</button>`).join('');
- document.querySelector('#filter-toggle').innerHTML=icon('sliders-horizontal')+' ფილტრები'+(chips.length?' ('+chips.length+')':'');
+ const extraCount=['type','collaboration','format','language'].filter(k=>filters[k]).length;document.querySelector('#filter-toggle').innerHTML=icon('sliders-horizontal')+' დამატებითი ფილტრები'+(extraCount?' ('+extraCount+')':'');document.querySelectorAll('#filters [data-reset]').forEach(button=>{button.hidden=!chips.length;});
  grid.innerHTML=results.length?results.map(card).join(''):`<div class="empty-state">${icon('search')}<h2>ამ პირობებით კომპანია ვერ მოიძებნა</h2><p>მოხსენი ერთ-ერთი არჩეული ფილტრი, შეცვალე საძიებო სიტყვა ან შექმენი შენი მოთხოვნა.</p><div class="form-actions"><button class="button button-outline" data-reset>ყველა ფილტრის გასუფთავება</button><button class="button" data-action="request">მოამზადე მოთხოვნა</button></div></div>`;
 }
-if(document.querySelector('#results-grid')){document.querySelector('.nav-home').classList.remove('active');document.querySelector('.nav-categories').classList.add('active');document.querySelector('#filters').addEventListener('change',e=>{const key=e.target.name==='type'?'type':e.target.id.replace('-filter','');if(Object.hasOwn(defaultFilters,key))setFilters({[key]:e.target.value});});document.querySelector('#filter-results-button').addEventListener('click',()=>{document.querySelector('#filters').classList.remove('is-open');const toggle=document.querySelector('#filter-toggle');toggle.setAttribute('aria-expanded','false');toggle.focus({preventScroll:true});document.querySelector('.results-toolbar').scrollIntoView({block:'start'});});document.querySelector('#sort-filter').addEventListener('change',e=>setFilters({sort:e.target.value}));document.querySelector('#catalog-search').addEventListener('submit',e=>{e.preventDefault();setFilters({q:document.querySelector('#catalog-query').value.trim()})});document.querySelector('#filter-toggle').addEventListener('click',e=>{const open=document.querySelector('#filters').classList.toggle('is-open');e.currentTarget.setAttribute('aria-expanded',String(open));if(open)document.querySelector('#filters').scrollIntoView({block:'start',behavior:'smooth'});});window.addEventListener('popstate',()=>{filters=readFilters();renderResults()});renderResults();}
+if(document.querySelector('#results-grid')){
+ document.querySelector('.nav-home').classList.remove('active');
+ document.querySelector('.nav-categories').classList.add('active');
+ const panel=document.querySelector('#additional-filters'),toggle=document.querySelector('#filter-toggle');
+ function setAdditionalOpen(open){panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));}
+ document.querySelector('#filters').addEventListener('change',e=>{const key=e.target.name==='type'?'type':e.target.id.replace('-filter','');if(Object.hasOwn(defaultFilters,key)){setFilters({[key]:e.target.value});if(key==='type'){const selected=document.querySelector('#type-options input:checked');if(selected)selected.focus({preventScroll:true});}}});
+ document.querySelector('#filter-results-button').addEventListener('click',()=>{setAdditionalOpen(false);toggle.focus({preventScroll:true});document.querySelector('.results-toolbar').scrollIntoView({block:'start'});});
+ document.querySelector('#sort-filter').addEventListener('change',e=>setFilters({sort:e.target.value}));
+ document.querySelector('#catalog-search').addEventListener('submit',e=>{e.preventDefault();setFilters({q:document.querySelector('#catalog-query').value.trim()});});
+ toggle.addEventListener('click',()=>setAdditionalOpen(panel.hidden));
+ panel.addEventListener('keydown',e=>{if(e.key==='Escape'){setAdditionalOpen(false);toggle.focus();}});
+ window.addEventListener('popstate',()=>{filters=readFilters();renderResults();});
+ setAdditionalOpen(['type','collaboration','format','language'].some(k=>filters[k]));
+ renderResults();
+}
 let requestDraft={};let lastDraft=null;
 function readValidDraft(form){
  const data={};
