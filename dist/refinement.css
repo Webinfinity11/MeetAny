@@ -745,3 +745,8 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .industry-list .industry-title { font-size: 12px; }
 @media(max-width:1000px) { .industry-list { grid-template-columns: repeat(4,minmax(0,1fr)); } }
 @media(max-width:420px) { .industry-list { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+.process-illustration { margin: 24px 0 22px; max-width: 550px; }
+.process-illustration > img { display: block; width: 100%; height: auto; }
+.process-illustration figcaption { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin-top: -8px; color: #526f93; font-size: 12px; text-align: center; font-feature-settings: "case" 1; }
+@media(max-width:420px) { .process-illustration figcaption { font-size: 11px; gap: 8px; } }
