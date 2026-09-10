@@ -540,3 +540,20 @@ img[src$="technology-office.jpg"] { object-position: center 65%; }
 .company-card .photo-offer-count { right: 10px; bottom: 10px; font-size: 11px; padding: 3px 8px; }
 @container(max-width:320px) { .company-card .card-facts { grid-template-columns: 1fr; gap: 8px; } }
 @media(max-width:720px) { .company-grid, .results-grid { row-gap: 26px; } .company-card .card-profile-button { min-height: 44px; } }
+
+/* One horizontal category row, with visible navigation controls. */
+.industry-section { position: relative; }
+.industry-heading-row { padding-right: 88px; }
+.industry-scroll-controls { position: absolute; right: 36px; top: 0; display: flex; gap: 6px; }
+.industry-scroll-button { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #dce5ef; border-radius: 6px; background: #fff; color: #3c6085; }
+.industry-scroll-button:first-child .icon { transform: rotate(180deg); }
+.industry-scroll-button .icon { width: 17px; height: 17px; }
+.industry-scroll-button:disabled { opacity: .35; cursor: default; }
+.industry-list { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(125px,1fr); gap: 4px; overflow-x: auto; padding: 10px; scrollbar-width: thin; scrollbar-color: #bfcede #f5f8fb; scroll-snap-type: x proximity; }
+.industry-list li { grid-column: auto; scroll-snap-align: start; }
+.industry-list a { min-height: 100px; padding: 8px 6px; }
+.industry-list li:last-child { grid-column: auto; }
+.industry-title { font-size: 13px; }
+@media(max-width:1150px) { .industry-scroll-controls { right: 30px; } }
+@media(max-width:720px) { .industry-scroll-controls { right: 24px; } .industry-heading-row { align-items: flex-start; } .industry-heading-row .textlink { font-size: 12px; } .industry-list { grid-auto-columns: 130px; } }
+@media(max-width:420px) { .industry-scroll-controls { right: 20px; } }
