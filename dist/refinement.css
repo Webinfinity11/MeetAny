@@ -379,3 +379,16 @@ button, input[type="button"], input[type="submit"], input[type="reset"],
  .filters.is-open { padding: 20px; border-radius: 9px; }
  .results-toolbar { scroll-margin-top: 20px; }
 }
+
+/* A clear, consistent completion to each company card. */
+.company-card .photo-offer-count { position: absolute; right: 12px; bottom: 12px; background: #ffffffed; color: #314c6b; padding: 4px 10px; border-radius: 5px; font-size: 12px; line-height: 1.7; }
+.company-card .company-bottom { display: block; border-top: 0; padding-top: 0; margin-top: 14px; }
+.company-card .card-profile-button { display: flex; width: 100%; min-height: 46px; justify-content: space-between; padding: 12px 16px; border: 1px solid #d9e3f0; border-radius: 8px; background: #edf3fc; color: #254d8a; font-size: 14px; font-weight: 600; box-shadow: none; }
+.company-card .card-profile-button:hover { background: #245ddd; border-color: #245ddd; color: #fff; }
+.company-card .card-profile-button .icon { width: 18px; height: 18px; }
+.company-card .card-facts { gap: 10px; padding: 13px 15px; background: #f6f8fb; }
+.company-card .card-facts dt { color: #61778f; }
+.company-card .card-facts dd { color: #314b67; }
+.company-card .company-description { margin-bottom: 16px; }
+.company-card .company-photo-wrap { isolation: isolate; }
+@media(max-width:420px) { .company-card .card-profile-button { min-height: 48px; } }

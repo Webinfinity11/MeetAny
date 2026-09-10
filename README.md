@@ -49,3 +49,5 @@ The request layout is now a quick single form with four visible essentials (need
 ## MVP page polish
 
 Company cards use shorter photos and labeled service-area/collaboration facts, with a clear offer count and profile action. Removed repeated tag rows and tightened spacing. The home introduction and featured heading are more direct. Company profiles prioritize offers before the longer description. Mobile catalog filtering includes a result-count button that closes the filter panel and returns focus/scroll to results; responsive card/profile rules preserve natural text wrapping. Validated all eight cards and filtered return links, offer-first order, 24 offer actions and local route/asset references. No backend capabilities were added.
+
+Company cards now end in a full-width “View profile” action with a restrained blue surface and clear hover/focus treatment. Offer counts move to the photo, avoiding a split footer. Facts and footer spacing are unified. Verified all eight card actions/counts and preservation of filtered return links.

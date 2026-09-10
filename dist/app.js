@@ -19,13 +19,13 @@ function card(c){
  return `<article class="company-card">
   <a class="company-photo-wrap" href="${href}" aria-label="${esc(c.name)} — კომპანიის ნახვა">
    <img class="company-photo" src="/assets/photos/${photo[0]}" alt="${photo[1]} — საილუსტრაციო ფოტო" width="800" height="533" loading="lazy" decoding="async">
-   <span class="photo-category">${category.title}</span>
+   <span class="photo-category">${category.title}</span><span class="photo-offer-count">${c.offer.length} შეთავაზება</span>
   </a>
   <div class="company-body">
    <div class="company-top">${companyLogo(c)}<div><h3><a href="${href}">${esc(c.name)}</a></h3><p class="company-location" aria-label="კომპანიის მდებარეობა: ${c.cityLabel}">${icon('map-pin')} ${c.cityLabel} <span>· საქართველო</span></p></div></div>
    <p class="company-description">${c.description}</p>
    <dl class="card-facts"><div><dt>${icon('globe')} მომსახურების არეალი</dt><dd>${c.area}</dd></div><div><dt>${icon('handshake')} თანამშრომლობა</dt><dd>${c.collaboration.map(x=>filterOptions.collaboration[x]).join(' · ')}</dd></div></dl>
-   <div class="company-bottom"><span class="card-offer-count"><strong>${c.offer.length}</strong> შეთავაზება</span><a class="details-button" href="${href}" aria-label="${esc(c.name)} — კომპანიის ნახვა">კომპანიის ნახვა ${icon('arrow-up-right')}</a></div>
+   <div class="company-bottom"><a class="button card-profile-button" href="${href}" aria-label="${esc(c.name)} — პროფილის ნახვა"><span>პროფილის ნახვა</span>${icon('arrow-right')}</a></div>
   </div>
  </article>`;
 }
