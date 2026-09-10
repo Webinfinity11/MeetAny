@@ -1,0 +1,54 @@
+/* Shared mobile-only refinement; desktop layouts remain unchanged. */
+.drawer-actions { display:flex; flex-direction:column; gap:12px; margin-top:28px; padding-top:24px; border-top:1px solid #e5ebf3; }
+.drawer-actions .design-switch,.drawer-actions .button { justify-content:center; min-height:46px; font-size:13px; }
+html.filters-modal-open { overflow:hidden; }
+dialog.mobile-filter-dialog,.design-two dialog.mobile-filter-dialog { position:fixed; inset:0 0 0 auto; width:min(390px,94vw); max-width:94vw; height:100dvh; max-height:100dvh; padding:16px; margin:0; border:0; border-radius:16px 0 0 16px; background:#fff; }
+.mobile-filter-dialog::backdrop { background:#122b4c70; backdrop-filter:blur(2px); }
+.filter-panel-close { display:grid; place-items:center; width:44px; height:44px; margin-left:auto; border:1px solid #e2e8f0; border-radius:9px; color:#526b86; background:#fff; }
+.mobile-filter-dialog #filters { display:block; background:#fff; border:0; padding:14px 4px 0; margin:0; }
+.mobile-filter-dialog .filter-results-button { position:sticky; bottom:0; min-height:48px; margin-bottom:0; box-shadow:0 -8px 20px #ffffffee; }
+@media(max-width:720px) {
+ .header .header-inner,.design-two .header .header-inner { display:flex; flex-wrap:nowrap; min-height:74px; padding:12px 20px; gap:12px; }
+ .header .header-actions { margin-left:auto; flex-wrap:nowrap; }
+ .header-actions > .design-switch,.header-actions > [data-action="add-company"],.header-actions > .language { display:none!important; }
+ .header .brand { font-size:27px; }
+ .header .brand img { width:36px; height:36px; }
+ .home-page { display:flex; flex-direction:column; }
+ .home-page > section { width:100%; }
+ .home-page > .home-discovery { order:0; }
+ .home-page > .category-section { order:1; }
+ .home-page > .featured-section { order:2; }
+ .home-page > .industry-section { order:3; }
+ .home-page > .market-sectors { order:4; }
+ .home-page > .partnership-banner { order:5; width:calc(100% - 40px); }
+ .home-page > .editorial-process { order:6; width:calc(100% - 48px); }
+ .home-refresh .home-discovery .discovery-steps { display:grid; grid-template-columns:1fr; gap:14px; margin-top:22px; padding-top:20px; }
+ .home-refresh .home-discovery .discovery-steps li { grid-template-columns:minmax(0,1fr) 52px; column-gap:12px; }
+ .home-refresh .home-discovery .need-process-art { width:52px; height:52px; }
+ .home-refresh .home-discovery .discovery-step-heading { margin:0; }
+ .home-refresh .home-discovery .discovery-step-number { font-size:11px; }
+ .home-refresh .home-discovery .discovery-steps h2 { font-size:13px; margin:0; }
+ .home-refresh .home-discovery .discovery-steps p { font-size:11px; line-height:1.5; }
+ .home-refresh .category-section { padding-top:0; padding-bottom:24px; }
+ .home-refresh .category-section .section-heading { margin-bottom:16px; }
+ .home-refresh .discovery-category > img { height:105px; }
+ .home-refresh .category-grid { gap:18px 14px; }
+ .design-two .category-section { padding-top:22px; padding-bottom:20px; }
+ .design-two .category-grid { gap:12px; }
+ .design-two .category-card { padding:14px 12px; gap:8px; }
+ .design-two .category-card .category-icon { width:46px; height:46px; flex-basis:46px; }
+ .design-two .category-card h3 { font-size:12px; }
+ .design-two .category-card p { font-size:10px; line-height:1.6; }
+ .design-two .featured-section { padding-top:12px; }
+ .design-two .company-listing .listing-media { height:140px; min-height:140px; }
+ .design-two .company-listing .listing-content { padding:15px; }
+ .design-two .listing-description { min-height:0; }
+ .design-two .listing-facts { margin-bottom:12px; }
+ .design-two .listing-footer { padding-top:10px; }
+ .profile-layout .profile-content { grid-row:1; }
+ .profile-layout .profile-facts { grid-row:2; margin-top:24px; }
+ .profile-layout { padding-top:20px; }
+ #filter-toggle { color:#fff; }
+ .home-page .industry-section { padding-top:24px; }
+ .home-page .industry-list a { min-height:96px; }
+}

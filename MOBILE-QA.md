@@ -9,3 +9,6 @@ Both variants: mobile menu open/close; search suggestions visible and clickable;
 Fixed: V2 footer contrast, 16px mobile search fields, 44px navigation/action tap targets, sticky form actions, duplicated request form separators.
 
 Lazy images were scrolled into view/decoded before judging image loading. Initial offscreen lazy images were not classified as failures.
+
+## Mobile usability pass
+Single-row 75px header; add-company and variant switch moved into menu. Companies promoted before industry/photo directories. V1 process tightened on mobile; V2 card media reduced. Profile offers precede facts. Filters now use native modal with focus containment, Escape/backdrop/close support, scroll lock and desktop sidebar restoration. Both variants passed filter selection, result count, modal cancellation, resizing and menu-to-company-form checks. Repeated all 30 viewport/route checks successfully.

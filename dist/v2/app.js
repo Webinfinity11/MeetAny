@@ -91,7 +91,17 @@ function renderResults(){const grid=document.querySelector('#results-grid');if(!
 if(document.querySelector('#results-grid')){
  document.querySelector('.nav-home').classList.remove('active');document.querySelector('.nav-categories').classList.add('active');
  const panel=document.querySelector('#filters'),toggle=document.querySelector('#filter-toggle');
- function setFilterPanel(open){panel.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));}
+ const filterDialog=document.createElement('dialog');filterDialog.className='mobile-filter-dialog';filterDialog.id='mobile-filter-dialog';filterDialog.setAttribute('aria-label','ფილტრები');filterDialog.innerHTML=`<button type="button" class="filter-panel-close" aria-label="ფილტრების დახურვა">${icon('x')}</button>`;document.body.append(filterDialog);
+ const panelMarker=document.createComment('filter sidebar');panel.before(panelMarker);
+ function setFilterPanel(open){
+  if(open&&window.innerWidth<=720){filterDialog.append(panel);panel.classList.add('is-open');filterDialog.showModal();document.documentElement.classList.add('filters-modal-open');toggle.setAttribute('aria-expanded','true');filterDialog.querySelector('.filter-panel-close').focus();}
+  else if(filterDialog.open)filterDialog.close();
+  else{panel.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));}
+ }
+ filterDialog.querySelector('.filter-panel-close').addEventListener('click',()=>filterDialog.close());
+ filterDialog.addEventListener('close',()=>{panelMarker.after(panel);panel.classList.remove('is-open');document.documentElement.classList.remove('filters-modal-open');toggle.setAttribute('aria-expanded','false');toggle.focus({preventScroll:true});});
+ filterDialog.addEventListener('click',e=>{if(e.target===filterDialog){const r=filterDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)filterDialog.close();}});
+ window.matchMedia('(min-width:721px)').addEventListener('change',e=>{if(e.matches&&filterDialog.open)filterDialog.close();});
  panel.addEventListener('change',e=>{const key=e.target.name,value=e.target.value;if(Object.hasOwn(defaultFilters,key)){setFilters({[key]:nextFilterSelection(key,value,e.target.checked)});const options=document.querySelectorAll('#'+key+'-options input');[...options].find(input=>input.value===value)?.focus({preventScroll:true});}});
  document.querySelector('#filter-results-button').addEventListener('click',()=>{setFilterPanel(false);toggle.focus({preventScroll:true});document.querySelector('.results-toolbar').scrollIntoView({block:'start'});});
  document.querySelector('#sort-filter').addEventListener('change',e=>setFilters({sort:e.target.value}));
@@ -100,7 +110,7 @@ if(document.querySelector('#results-grid')){
  queryInput.addEventListener('search',()=>{if(!queryInput.value)setFilters({q:''});});
  clearQuery.addEventListener('click',()=>{setFilters({q:''});queryInput.focus();});
  document.querySelector('#catalog-search').addEventListener('submit',e=>{e.preventDefault();setFilters({q:document.querySelector('#catalog-query').value.trim()});});
- toggle.addEventListener('click',()=>{const open=!panel.classList.contains('is-open');setFilterPanel(open);if(open)panel.scrollIntoView({block:'start',behavior:'smooth'});});
+ toggle.addEventListener('click',()=>{const open=!panel.classList.contains('is-open');setFilterPanel(open);if(open&&window.innerWidth>720)panel.scrollIntoView({block:'start',behavior:'smooth'});});
  panel.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('is-open')){setFilterPanel(false);toggle.focus();}});
  window.addEventListener('popstate',()=>{filters=readFilters();renderResults();});renderResults();
 }
@@ -214,7 +224,7 @@ const menuButton=document.querySelector('.mobile-menu');
 if(menuButton){
  const drawer=document.createElement('dialog');drawer.className='mobile-drawer';drawer.id='mobile-drawer';drawer.setAttribute('aria-labelledby','mobile-drawer-title');
  drawer.innerHTML=`<div class="drawer-heading"><span id="mobile-drawer-title">მენიუ</span><button type="button" class="drawer-close" aria-label="მენიუს დახურვა">${icon('x')}</button></div><nav class="drawer-links" aria-label="მობილური ნავიგაცია">${document.querySelector('#main-nav').innerHTML}</nav>`;
- document.body.append(drawer);menuButton.setAttribute('aria-controls','mobile-drawer');
+ const drawerActions=document.createElement('div');drawerActions.className='drawer-actions';document.querySelectorAll('.header-actions .design-switch,.header-actions [data-action="add-company"]').forEach(el=>drawerActions.append(el.cloneNode(true)));drawer.append(drawerActions);drawerActions.querySelector('[data-action]')?.addEventListener('click',()=>drawer.close());document.body.append(drawer);menuButton.setAttribute('aria-controls','mobile-drawer');
  const close=()=>drawer.close();
  menuButton.addEventListener('click',()=>{drawer.showModal();document.documentElement.classList.add('drawer-open');menuButton.setAttribute('aria-expanded','true');drawer.querySelector('.drawer-close').focus();});
  drawer.querySelector('.drawer-close').addEventListener('click',close);
@@ -269,3 +279,5 @@ if(galleryDialog){
 
 const discoveryQuery=document.querySelector('.discovery-query');
 if(discoveryQuery){const input=discoveryQuery.querySelector('input');input.addEventListener('focus',()=>discoveryQuery.classList.remove('suggestions-dismissed'));input.addEventListener('input',()=>discoveryQuery.classList.remove('suggestions-dismissed'));discoveryQuery.addEventListener('keydown',event=>{if(event.key==='Escape'){discoveryQuery.classList.add('suggestions-dismissed');input.focus();discoveryQuery.classList.add('suggestions-dismissed');}});}
+
+document.querySelectorAll('.drawer-links a').forEach(a=>{const source=[...document.querySelectorAll('#main-nav a')].find(n=>n.getAttribute('href')===a.getAttribute('href'));a.classList.toggle('active',!!source?.classList.contains('active'));if(source?.classList.contains('active'))a.setAttribute('aria-current','page');});
