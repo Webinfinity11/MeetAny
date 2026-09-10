@@ -6,29 +6,20 @@ const app = fs.readFileSync('dist/app.js', 'utf8');
 vm.runInContext(fs.readFileSync('dist/company-details.js', 'utf8') + '\n' + app.slice(0, app.indexOf('const grid=')), ctx);
 const entries = vm.runInContext('Object.entries(filterOptions.industry).map(([id,title])=>({id,title,count:companies.filter(c=>c.industry===id).length}))', ctx);
 const details = {
- textiles: ['package', 'თეთრეული და სასტუმროს ტექსტილი'],
- marketing: ['briefcase-business', 'ბრენდინგი, კონტენტი და დიზაინი'],
+ textiles: ['shirt', 'თეთრეული და სასტუმროს ტექსტილი'],
+ marketing: ['megaphone', 'ბრენდინგი, კონტენტი და დიზაინი'],
  logistics: ['truck', 'გადაზიდვა და დისტრიბუცია'],
- food: ['package', 'პროდუქტი კაფეებისა და რესტორნებისთვის'],
+ food: ['utensils', 'პროდუქტი კაფეებისა და რესტორნებისთვის'],
  packaging: ['package', 'ყუთები და ბრენდირებული შეფუთვა'],
  tourism: ['map-pin', 'სასტუმროები და ერთობლივი პაკეტები'],
- finance: ['clipboard-list', 'აღრიცხვა და ანგარიშგება']
+ finance: ['calculator', 'აღრიცხვა და ანგარიშგება']
 };
-const icon = name => `<svg class="icon" aria-hidden="true"><use href="/assets/icons.svg#${name}"></use></svg>`;
+const icon = name => `<svg class="icon" aria-hidden="true"><use href="/assets/icons.svg?v=category-symbols#${name}"></use></svg>`;
+const shortTitles = {textiles:'ტექსტილი',marketing:'მარკეტინგი',logistics:'ლოგისტიკა',food:'საკვები',packaging:'შეფუთვა',tourism:'ტურიზმი',finance:'ფინანსები'};
 const markup = `<!-- industry-directory:start -->
 <section class="industry-section" id="industries" aria-labelledby="industry-heading">
- <div class="industry-layout">
-  <div class="industry-intro">
-   <span class="section-kicker">საქმიანობის მიმართულებები</span>
-   <h2 id="industry-heading">იპოვე კომპანია<br>შენი სფეროდან</h2>
-   <p>აირჩიე მიმართულება და გაეცანი შესაბამის შეთავაზებებს.</p>
-   <img class="industry-sculpture" src="/assets/connection-transparent.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
-  </div>
-  <div class="industry-directory">
-   <ul class="industry-list">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-copy"><span class="industry-title tt">${title}</span><span class="industry-description">${details[id][1]}</span><span class="industry-count">${count} კომპანია</span></span>${icon('arrow-up-right')}</a></li>`).join('')}</ul>
-   <p class="industry-demo">მიმართულებები სადემონსტრაციო კატალოგიდან</p>
-  </div>
- </div>
+ <div class="industry-heading-row"><h2 id="industry-heading">საქმიანობის მიხედვით</h2><span>სადემონსტრაციო კატალოგი</span></div>
+ <ul class="industry-list">${entries.map(({id,title,count})=>`<li><a href="/categories/?industry=${id}" aria-label="${title} — ${count} კომპანია"><span class="industry-icon">${icon(details[id][0])}</span><span class="industry-title tt">${shortTitles[id]}</span><span class="industry-count">${count} კომპანია</span></a></li>`).join('')}</ul>
 </section>
 <!-- industry-directory:end -->`;
 const file = 'dist/index.html';
