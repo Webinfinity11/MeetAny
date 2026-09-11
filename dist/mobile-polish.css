@@ -48,7 +48,7 @@ dialog.mobile-filter-dialog,.design-two dialog.mobile-filter-dialog { position:f
  .profile-layout .profile-content { grid-row:1; }
  .profile-layout .profile-facts { grid-row:2; margin-top:24px; }
  .profile-layout { padding-top:20px; }
- #filter-toggle { color:#fff; }
+ .design-two #filter-toggle { color:#fff; }
  .home-page .industry-section { padding-top:24px; }
  .home-page .industry-list a { min-height:96px; }
 }
