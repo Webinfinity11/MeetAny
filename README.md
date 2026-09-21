@@ -59,3 +59,13 @@ Expanded catalog: 11 industries, 12 fictional company profiles and 36 offers. Ad
 Catalog selection supports multiple industries, cities and offer types (OR within a group, AND across groups). URLs preserve selections as canonical comma-separated values; old single-value links still work. Secondary groups use native details disclosures with selected counts. Individual choices can be removed from result chips. Distribution can also match product supply; joint projects can also match service provision.
 
 Profile galleries: four images per profile, 24 additional licensed Pexels photographs across eight business groups, captions and native dialog viewer with previous/next, arrow keys and return focus. Provenance in dist/assets/photos/gallery/sources.json. Homepage shows eight featured industries; all eleven remain in the catalog.
+
+## Beta requests board (Design 02)
+
+Design 02 adds a requests board for client presentations: a client posts a free-text request (e.g. "1000 chairs"), companies send written offers with an optional price, and only the request owner sees offer text and prices (others see the count). Choosing an offer reveals phone and email to both sides. Registration requires a +995 mobile number. Requests stay open for 14 days and can be extended by 7 days, closed or deleted; expired requests refuse offers. `/v2/admin/` hides or deletes requests, blocks users and marks companies as verified. Request pages share to WhatsApp and Facebook, and seeded requests have static share pages with Open Graph tags.
+
+This is a beta. `dist/v2/market-store.js` keeps all data in the browser's localStorage, seeded with fictional accounts and requests, so nothing is sent to a server and data is not shared between devices. The floating "ბეტა" button switches between demo client, company and admin accounts and resets the demo. A real backend replaces only `market-store.js`. Design 01 is unchanged.
+
+Pages: `/v2/requests/`, `/v2/requests/{slug}/` and `/v2/requests/view/?id=`, `/v2/account/`, `/v2/admin/`, `/v2/terms/`. After changing the market files or v2 markup, run `node scripts/generate-market.cjs` (idempotent). It rebuilds these pages and wires the nav link and assets into the existing v2 pages.
+
+Validation: a headless Chromium run checked 40 cases. These covered sealed offers across four roles, contact reveal only after choosing, rejection of bad phone and price input, 14-day expiry and extension, admin hide, block and verify, v1 isolation, no JavaScript errors, and no horizontal overflow at 390px and 320px.
