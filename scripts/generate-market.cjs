@@ -30,8 +30,8 @@ const existing = [path.join(v2, 'index.html'), path.join(v2, 'categories', 'inde
   ...fs.readdirSync(path.join(v2, 'companies')).map(d => path.join(v2, 'companies', d, 'index.html'))].filter(f => fs.existsSync(f));
 for (const file of existing) {
   let html = wire(fs.readFileSync(file, 'utf8'));
-  if (file.endsWith(path.join('v2', 'index.html')) && !html.includes('id="latest-requests"'))
-    html = html.replace('<section class="featured-section"', '<section class="latest-requests" id="latest-requests" aria-label="ბოლო განცხადებები"></section><section class="featured-section"');
+  // The home page layout stays as designed; the board is reached from the navigation.
+  html = html.replace('<section class="latest-requests" id="latest-requests" aria-label="ბოლო განცხადებები"></section>', '');
   fs.writeFileSync(file, html);
 }
 
