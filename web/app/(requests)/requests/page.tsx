@@ -1,4 +1,10 @@
-// Populated client-side by market.js's mountRequests() (site/dist/market.js), unchanged.
+import { Suspense } from "react";
+import { RequestsPageContent } from "../../components/market/RequestsPageContent";
+
 export default function RequestsPage() {
-  return <div id="requests-root" dangerouslySetInnerHTML={{ __html: "" }} />;
+  return (
+    <Suspense>
+      <RequestsPageContent />
+    </Suspense>
+  );
 }

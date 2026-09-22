@@ -1,5 +1,10 @@
-// market.js opens the new-request dialog over the list once (body[data-open="new-request"]),
-// then replaces the URL with /requests/ — see renderAll() in site/dist/market.js.
+import { Suspense } from "react";
+import { RequestsPageContent } from "../../../components/market/RequestsPageContent";
+
 export default function RequestsNewPage() {
-  return <div id="requests-root" dangerouslySetInnerHTML={{ __html: "" }} />;
+  return (
+    <Suspense>
+      <RequestsPageContent autoOpenNew />
+    </Suspense>
+  );
 }

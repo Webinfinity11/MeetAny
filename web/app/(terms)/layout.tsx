@@ -13,5 +13,9 @@ export const metadata: Metadata = {
 export const viewport = siteViewport;
 
 export default function TermsLayout({ children }: { children: React.ReactNode }) {
-  return <SiteShell dataMarketPage="terms">{children}</SiteShell>;
+  return (
+    <SiteShell dataMarketPage="terms" proto={false}>
+      {children}
+    </SiteShell>
+  );
 }
