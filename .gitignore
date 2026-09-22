@@ -2,3 +2,5 @@
 node_modules/
 .vercel
 .env*
+DEMO-ACCOUNTS.local.md
+DEMO-ACCOUNTS.local.md.lock
