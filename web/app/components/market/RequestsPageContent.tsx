@@ -3,8 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Icon } from "../Icon";
-import { PageBand } from "./PageBand";
-import { SectionHead } from "./SectionHead";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
@@ -157,7 +155,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="city-desktop">
-          ქალაქი
+          სად არის საჭირო
         </label>
         <select className="ma-select" id="city-desktop" value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="">ყველა ქალაქი</option>
@@ -175,28 +173,21 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
   );
 
   return (
-    <div className="ma-page">
-      <PageBand
-        eyebrow="MeetAny · საქმიანი კავშირები"
-        title="მოთხოვნები"
-        description="ნებისმიერს შეუძლია დაწეროს, რა სჭირდება — კომპანიები პასუხობენ შეთავაზებით."
-        searchSlot={
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="query">
-              მოთხოვნის ძიება
-            </label>
-            <input
-              className="ma-input"
-              id="query"
-              type="search"
-              placeholder="რა მიმართულებას ეძებ?"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+    <div className="ma-page requests-catalog">
+      <header className="requests-intro">
+        <div>
+          <span className="ma-eyebrow">იპოვე საქმე შენი კომპანიისთვის</span>
+          <h1 className="ma-h1">მოთხოვნები</h1>
+          <p>ნახე რა სჭირდებათ და შესთავაზე შენი პირობები.</p>
+        </div>
+        <div className="ma-field catalog-search">
+          <label className="ma-field__label" htmlFor="query">მოთხოვნის ძიება</label>
+          <div className="catalog-search__input">
+            <Icon name="search" />
+            <input className="ma-input" id="query" type="search" placeholder="მაგ. ავეჯი ან შეფუთვა" value={query} onChange={(e) => setQuery(e.target.value)} />
           </div>
-        }
-      />
-      <SectionHead eyebrow="შენი შემდეგი საქმიანი კავშირი" title="მოთხოვნების სია" />
+        </div>
+      </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar ma-panel" aria-label="ფილტრები">
           {filtersBody}

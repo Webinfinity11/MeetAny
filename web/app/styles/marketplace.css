@@ -219,3 +219,30 @@
  .ma-proto .request-detail>.r2-band{padding:var(--space-5)}
  .request-detail-aside{padding:var(--space-5)}
 }
+
+/* Task-led catalog introductions: work discovery and supplier discovery. */
+.requests-intro,.companies-intro{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6);margin-bottom:var(--space-8)}
+.requests-intro{padding-bottom:var(--space-6);border-bottom:1px solid var(--border)}
+.requests-intro .ma-eyebrow,.companies-intro .ma-eyebrow{display:block;color:var(--action);margin-bottom:var(--space-2)}
+.requests-intro p{margin-top:var(--space-2);color:var(--text-3);font-size:var(--fs-sm)}
+.catalog-search{min-width:0;align-self:center}
+.catalog-search__input{position:relative}
+.catalog-search__input>.icon{position:absolute;left:var(--space-4);top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+.catalog-search__input>.ma-input{width:100%;padding-left:var(--space-12)}
+.companies-intro{padding:var(--space-8);background:var(--blue-50);border-radius:var(--radius-lg);align-items:center}
+.companies-intro__identity>p{font-size:var(--fs-h2);line-height:var(--lh-h2);color:var(--text-2);margin-top:var(--space-3)}
+.companies-intro__search{min-width:0;display:grid;gap:var(--space-3)}
+.companies-intro__search>p{font-size:var(--fs-sm);color:var(--text-3)}
+.ma-proto .requests-catalog .ma-rcard--row{box-shadow:none;padding:var(--space-5);gap:var(--space-4)}
+.requests-catalog .ma-rcard--row>.ma-stack{gap:var(--space-3)}
+.requests-catalog .ma-proto-rowend{align-content:start}
+@media(min-width:768px){
+ .requests-intro{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:var(--space-8)}
+ .companies-intro{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-12)}
+}
+@media(max-width:767px){
+ .companies-intro{padding:var(--space-5)}
+ .requests-intro,.companies-intro{margin-bottom:var(--space-6)}
+ .requests-catalog .ma-proto-rowend{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3)}
+ .requests-catalog .ma-proto-rowend>.ma-btn{margin-left:auto}
+}

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "../Icon";
-import { PageBand } from "./PageBand";
 import { SectionHead } from "./SectionHead";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
@@ -121,7 +120,7 @@ export function CompaniesPageContent() {
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="company-city-desktop">
-          ქალაქი
+          მომსახურების ქალაქი
         </label>
         <select className="ma-select" id="company-city-desktop" value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="">ყველა ქალაქი</option>
@@ -143,33 +142,29 @@ export function CompaniesPageContent() {
   );
 
   return (
-    <div className="ma-page">
-      <PageBand
-        eyebrow="MeetAny · საქმიანი კავშირები"
-        title="კომპანიები"
-        description="აღმოაჩინე პარტნიორი შენი ბიზნესისთვის."
-        searchSlot={
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="company-query">
-              კომპანიის ძიება
-            </label>
-            <input
-              className="ma-input"
-              id="company-query"
-              type="search"
-              placeholder="სახელი ან მომსახურება"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+    <div className="ma-page companies-catalog">
+      <header className="companies-intro">
+        <div className="companies-intro__identity">
+          <span className="ma-eyebrow">კომპანიების კატალოგი</span>
+          <h1 className="ma-h1">კომპანიები</h1>
+          <p>იპოვე, ვინ ამზადებს,<br />აწვდის ან გეხმარება.</p>
+        </div>
+        <div className="companies-intro__search">
+          <div className="ma-field catalog-search">
+            <label className="ma-field__label" htmlFor="company-query">რა პროდუქტს ან მომსახურებას ეძებ?</label>
+            <div className="catalog-search__input">
+              <Icon name="search" />
+              <input className="ma-input" id="company-query" type="search" placeholder="სახელი ან მომსახურება" value={query} onChange={(e) => setQuery(e.target.value)} />
+            </div>
           </div>
-        }
-      />
+          <p>გაეცანი კომპანიებს და დაუკავშირდი პირდაპირ.</p>
+        </div>
+      </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar ma-panel" aria-label="კომპანიების ფილტრები">
           {filtersBody}
         </aside>
         <section className="ma-stack">
-          <SectionHead eyebrow="კომპანიების კატალოგი" title="იპოვე შენი პარტნიორი" />
           <button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}>
             <Icon name="sliders-horizontal" />
             ფილტრი ({filterCount})

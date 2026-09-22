@@ -58,9 +58,7 @@ export function RequestRow({ r }: { r: RequestRowData }) {
             </span>
           ) : null}
         </div>
-        <div className="ma-small ma-muted">
-          {r.neededBy ? `საჭიროა ${neededByLabel(r.neededBy)}` : "საჭირო თარიღი არ არის მითითებული"}
-        </div>
+        {r.neededBy ? <div className="ma-small ma-muted">საჭიროა {neededByLabel(r.neededBy)}</div> : null}
       </div>
       <div className="ma-proto-rowend">
         <span className="ma-rcard__offers">
