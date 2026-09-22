@@ -24,6 +24,15 @@ async function go(route,p=page) {await p.goto(base+route); await loaded(p);}
 async function capture(name,width) {
   if (['companies','company','request'].includes(name)) await page.locator('a[href^="tel:"]').first().waitFor({timeout:30000});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), `${name}: horizontal overflow`);
+  const filterOverflow = await page.locator(".ma-proto-filters").evaluateAll(groups => groups.flatMap(group => {
+    const bounds = group.getBoundingClientRect();
+    if (!bounds.width) return [];
+    return Array.from(group.querySelectorAll("button, select")).filter(control => {
+      const rect = control.getBoundingClientRect();
+      return rect.width && (rect.right > bounds.right + 0.5 || rect.left < bounds.left - 0.5 || control.scrollWidth > control.clientWidth + 1);
+    }).map(control => control.textContent);
+  }));
+  assert.deepEqual(filterOverflow, [], `${name}: filter controls overflow their container`);
   await page.evaluate(async () => {await Promise.all(Array.from(document.querySelectorAll('main img')).map(img => {img.loading='eager'; return img.decode().catch(()=>{});}));});
   await page.screenshot({path:path.join(shots,`${name}-${width}.png`),fullPage:true});
   console.log('checked',name,width);
