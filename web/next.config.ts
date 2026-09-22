@@ -20,7 +20,9 @@ const nextConfig: NextConfig = {
       { source: "/v1", destination: "/", permanent: false },
       { source: "/v1/:path*", destination: "/", permanent: false },
       { source: "/v2", destination: "/", permanent: true },
-      { source: "/v2/:path*", destination: "/:path*", permanent: true },
+      // skipTrailingSlashRedirect (above) means Next won't add the trailing slash back onto a
+      // wildcard-substituted destination on its own, so it's spelled out here explicitly.
+      { source: "/v2/:path*", destination: "/:path*/", permanent: true },
       { source: "/categories", destination: "/companies/", permanent: false },
       { source: "/categories/", destination: "/companies/", permanent: false },
       {
