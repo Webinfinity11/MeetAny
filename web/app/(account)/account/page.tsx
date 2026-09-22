@@ -1,4 +1,10 @@
-// Populated client-side by market.js's renderAccountPage() (site/dist/market.js), unchanged.
+import { Suspense } from "react";
+import { AccountPageContent } from "../../components/market/AccountPageContent";
+
 export default function AccountPage() {
-  return <div id="account-root" dangerouslySetInnerHTML={{ __html: "" }} />;
+  return (
+    <Suspense>
+      <AccountPageContent />
+    </Suspense>
+  );
 }
