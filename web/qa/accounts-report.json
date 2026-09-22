@@ -1,0 +1,12 @@
+{
+  "roles": [
+    "client",
+    "company",
+    "admin"
+  ],
+  "widths": [
+    1280,
+    390
+  ],
+  "errors": []
+}

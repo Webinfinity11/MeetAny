@@ -1,0 +1,25 @@
+{
+  "report": [
+    {
+      "page": "account-company",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "chosen",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "demoLogin": true,
+      "createPhoto": true,
+      "edit": true,
+      "closeReopen": true,
+      "offerEditWithdraw": true,
+      "choose": true,
+      "delete": true,
+      "admin": true
+    }
+  ],
+  "errors": []
+}

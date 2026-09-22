@@ -1,0 +1,102 @@
+{
+  "report": [
+    {
+      "page": "home",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "requests",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "new",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "request",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "companies",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "company",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "account",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "admin",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "terms",
+      "width": 1280,
+      "passed": true
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "requests",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "new",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "request",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "companies",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "company",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "account",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "admin",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "page": "terms",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "filters": true,
+      "history": true,
+      "phone": true,
+      "photos": true,
+      "dialogs": true
+    }
+  ],
+  "errors": []
+}
