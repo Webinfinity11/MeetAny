@@ -1,0 +1,4 @@
+const {chromium}=require('../../.qa/node_modules/playwright-core');
+const fs=require('node:fs');
+const [source,target,x,y,w,h,outW,outH]=process.argv.slice(2);
+(async()=>{const b=await chromium.launch({executablePath:require('node:os').homedir()+'/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'});const p=await b.newPage();const result=await p.evaluate(async({url,x,y,w,h,outW,outH})=>{const im=new Image();im.src=url;await im.decode();const c=document.createElement('canvas');c.width=outW;c.height=outH;c.getContext('2d').drawImage(im,x,y,w,h,0,0,outW,outH);return c.toDataURL('image/png').split(',')[1]},{url:'data:image/png;base64,'+fs.readFileSync(source).toString('base64'),x:+x,y:+y,w:+w,h:+h,outW:+outW,outH:+outH});fs.writeFileSync(target,Buffer.from(result,'base64'));await b.close()})();
