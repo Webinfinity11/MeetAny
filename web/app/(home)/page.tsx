@@ -1,15 +1,7 @@
 import Link from "next/link";
 import { Icon } from "../components/Icon";
 import { DiscoverySearch } from "../components/DiscoverySearch";
-import { CompanyCard } from "../components/CompanyCard";
-import { categories, industries, sectors, featuredCompanies } from "../lib/home-data";
-
-const categoryIcons: Record<string, string> = {
-  suppliers: "package",
-  services: "briefcase-business",
-  distributors: "truck",
-  partners: "handshake",
-};
+import { industries, sectors } from "../lib/home-data";
 
 export default function HomePage() {
   return (
@@ -36,27 +28,9 @@ export default function HomePage() {
             კატალოგის ნახვა <Icon name="arrow-right" />
           </Link>
         </div>
-        <div className="category-grid" id="category-grid">
-          {categories.map((c, index) => (
-            <Link key={c.id} className="category-card" href="/companies/">
-              <span className="category-icon" aria-hidden="true">
-                <img
-                  className="category-3d-sheet"
-                  src="/assets/category-business-3d.png"
-                  alt=""
-                  style={{ "--category-x": `${-100 * (index % 2)}%`, "--category-y": `${-100 * Math.floor(index / 2)}%` } as React.CSSProperties}
-                  decoding="async"
-                />
-                <Icon name={categoryIcons[c.id]} />
-              </span>
-              <div>
-                <h3>{c.title}</h3>
-                <p>{c.sub}</p>
-              </div>
-              <Icon name="arrow-up-right" className="category-arrow" />
-            </Link>
-          ))}
-        </div>
+        {/* Populated client-side by app.js (site/dist/app.js), unchanged — matches site/dist/index.html.
+            dangerouslySetInnerHTML keeps React from diffing children app.js owns after mount. */}
+        <div className="category-grid" id="category-grid" dangerouslySetInnerHTML={{ __html: "" }} />
       </section>
 
       <section className="industry-section" id="industries" aria-labelledby="industry-heading">
@@ -122,11 +96,9 @@ export default function HomePage() {
             ყველა კომპანია <Icon name="arrow-right" />
           </Link>
         </div>
-        <div className="company-grid" id="featured-companies">
-          {featuredCompanies.map((company) => (
-            <CompanyCard key={company.id} company={company} />
-          ))}
-        </div>
+        {/* Populated client-side by market.js's renderLegacyHome() (site/dist/market.js), unchanged.
+            dangerouslySetInnerHTML keeps React from diffing children market.js owns after mount. */}
+        <div className="company-grid" id="featured-companies" dangerouslySetInnerHTML={{ __html: "" }} />
       </section>
 
       <section className="partnership-banner" aria-labelledby="partnership-heading">

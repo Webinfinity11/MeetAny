@@ -1,6 +1,7 @@
-export function Icon({ name, className = "" }: { name: string; className?: string }) {
+export function Icon({ name, className }: { name: string; className?: string }) {
+  const cls = className ? "icon " + className : "icon";
   return (
-    <svg className={`icon${className ? " " + className : ""}`} aria-hidden="true">
+    <svg className={cls} aria-hidden="true">
       <use href={`/icons.svg#${name}`} />
     </svg>
   );

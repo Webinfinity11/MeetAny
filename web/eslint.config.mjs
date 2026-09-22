@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Unmodified copies of site/dist/*.js (see app/components/SiteScripts.tsx).
+    "public/**",
   ]),
 ]);
 
