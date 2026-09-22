@@ -36,6 +36,7 @@ export function neededByLabel(value: string): string {
 }
 
 export function dateLabel(value: string): string {
-  const [y, m, d] = value.split("-").map(Number);
+  // Accepts a plain "YYYY-MM-DD" or a full ISO timestamp (e.g. profiles' created_at/verified_at).
+  const [y, m, d] = value.slice(0, 10).split("-").map(Number);
   return `${d} ${MONTHS[m - 1]}, ${y}`;
 }

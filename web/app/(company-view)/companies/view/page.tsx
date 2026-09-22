@@ -1,4 +1,10 @@
-// Populated client-side by market.js's renderCompanyPage() (site/dist/market.js), unchanged.
+import { Suspense } from "react";
+import { CompanyProfilePageContent } from "../../../components/market/CompanyProfilePageContent";
+
 export default function CompanyViewPage() {
-  return <div id="company-root" dangerouslySetInnerHTML={{ __html: "" }} />;
+  return (
+    <Suspense>
+      <CompanyProfilePageContent />
+    </Suspense>
+  );
 }
