@@ -1,4 +1,10 @@
-// Populated client-side by market.js's renderAdminPage() (site/dist/market.js), unchanged.
+import { Suspense } from "react";
+import { AdminPageContent } from "../../components/market/AdminPageContent";
+
 export default function AdminPage() {
-  return <div id="admin-root" dangerouslySetInnerHTML={{ __html: "" }} />;
+  return (
+    <Suspense>
+      <AdminPageContent />
+    </Suspense>
+  );
 }
