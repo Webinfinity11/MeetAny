@@ -1,0 +1,16 @@
+{
+  "tool": "built-in imagegen",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "grid": "2x2",
+  "order": [
+    "suppliers: parcel",
+    "services: briefcase",
+    "distributors: cargo truck",
+    "partners: handshake"
+  ],
+  "alpha_verified": true,
+  "prompt": "Premium realistic 3D business category objects on a genuinely transparent 2x2 square sprite sheet: shipping parcel, business briefcase, cargo delivery truck, business handshake. Icy blue and cobalt palette, consistent camera, material and studio lighting, all objects uncropped with transparent gutters. No frames, backdrop, text, stars or rings."
+}
