@@ -153,3 +153,7 @@ update public.profiles set role = 'admin' where email = 'someone@example.ge';
 ```
 
 Pages: `/v2/requests/`, `/v2/requests/view/?id=<uuid>` (the canonical and shared link), `/v2/account/`, `/v2/admin/`, `/v2/terms/`. After changing the market files or v2 markup, run `node scripts/generate-market.cjs` (idempotent). It rebuilds these pages and wires `config.js`, the nav link and the market assets into the existing v2 pages.
+
+## Archive
+
+Design 01 შენარჩუნებულია `archive/v1/`-ში; ძველი გენერატორი, მობილური QA და დემოს სცენარი ასევე `archive/`-შია (იხ. [არქივის აღწერა](archive/README.md)). არქივი deploy-ში არ შედის: საჯარო ფაილების წყაროა `dist/`, ხოლო `.vercelignore` გამორიცხავს `archive`-ს. `/v1` და `/v1/*` დროებით გადამისამართდება `/`-ზე.

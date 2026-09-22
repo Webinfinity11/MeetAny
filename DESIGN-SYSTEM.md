@@ -4,7 +4,7 @@
 
 The site is served at the root: `/`, `/requests/`, `/requests/new/`, `/requests/view/?id=`, `/companies/`, `/companies/view/?id=`, `/account/`, `/admin/`, `/terms/`. Files live directly in `dist/` (no `v2` folder). Old `/v2/...` links redirect permanently to the root URL (`vercel.json`). `/api/db/*` is the data API (`api/db.js`).
 
-Design 01 is archived in `dist/v1/` with its own stylesheets and scripts: not linked from anywhere, `noindex`, disallowed in `robots.txt`, reachable only by the URL `/v1/`. Do not delete it.
+Design 01 ინახება `site/archive/v1/`-ში; deploy-ში არ შედის (`outputDirectory: dist` და `.vercelignore`-ის `archive`). `/v1` და `/v1/*` დროებითი redirect-ით გადადის `/`-ზე. არქივი არ წაშალოთ.
 
 Local: `node scripts/dev-server.cjs` → http://127.0.0.1:4031/. It applies the same `vercel.json` redirects and rewrites and runs `api/*` with `.env.dev.local`.
 

@@ -1,6 +1,6 @@
 // Builds the MeetAny pages from scripts/shell.html and wires the home page (dist/index.html).
 // Idempotent: run `node scripts/generate-market.cjs` after changing market files, icons or the shell.
-// The archived Design 01 (dist/v1, hidden) is never touched.
+// The archived Design 01 lives in site/archive/v1 and is never touched
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const root = path.join(__dirname, '..', 'dist');
 const SITE = 'https://meet-any.vercel.app';
