@@ -19,10 +19,7 @@ export type CompanyListingData = {
   stats: { sent: number; chosen: number };
 };
 
-// The v1 catalog card (site/archive/v1/app.js's card(), home.css's .company-listing) with the
-// P2 additions layered on top: a verified badge and up to 3 offer chips (owner decision
-// 2026-09-22). Companies have no photo of their own yet, so the card uses one representative
-// photo per industry (lib/categories.ts categoryPhoto) instead.
+// Compact industry-photo listing with service chips and a public phone link.
 export function CompanyListingCard({ c }: { c: CompanyListingData }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const photo = categoryPhoto[c.industry] || categoryPhoto.other;
@@ -32,6 +29,7 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
         <img src={`/assets/photos/${photo}`} alt="" width={800} height={533} loading="lazy" decoding="async" />
       </Link>
       <div className="listing-content">
+        <div className="listing-summary">
         <div className="listing-heading">
           <CompanyAvatar name={c.name} />
           <div>
@@ -45,19 +43,12 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
             {cities[c.city] || c.city}
           </span>
         </div>
-        {c.verified ? (
-          <div className="listing-badges">
-            <span className="ma-badge ma-badge--success">
-              <Icon name="check" />
-              დადასტურებული
-            </span>
-          </div>
-        ) : null}
         {c.phone ? (
           <div className="listing-badges">
             <CallButton phone={c.phone} variant="secondary" />
           </div>
         ) : null}
+        </div>
         <p className="listing-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>
         {c.offers.length ? (
           <div className="listing-chips">

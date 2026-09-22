@@ -153,7 +153,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     <div className="ma-proto-filters">
       <div>
         <h2 className="ma-title">კატეგორია</h2>
-        <FacetList all={categoryFacets} loading={!ready} allLabel={`ყველა კატეგორია${ready ? ` (${allCount})` : ""}`} activeId={category} onSelect={setCategory} />
+        <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="city-desktop">

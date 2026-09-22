@@ -117,7 +117,7 @@ export function CompaniesPageContent() {
     <div className="ma-proto-filters">
       <div>
         <h2 className="ma-title">დარგი</h2>
-        <FacetList all={industryFacets} loading={!ready} allLabel={`ყველა დარგი${ready ? ` (${allCount})` : ""}`} activeId={industry} onSelect={setIndustry} />
+        <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="company-city-desktop">

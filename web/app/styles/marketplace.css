@@ -92,9 +92,15 @@
 .ma-proto .ma-rcard--row,.ma-proto .r2-company-row{border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);padding:var(--space-6)}
 .ma-proto .ma-rcard--row .ma-rcard__title{font-size:var(--fs-title);line-height:var(--lh-title)}
 .ma-proto .ma-proto-rowend{border-left:0}
-.ma-proto-filter{background:var(--bg-subtle);margin-bottom:var(--space-2);font-size:var(--fs-sm);line-height:var(--lh-sm);gap:var(--space-1);padding-inline:var(--space-1)}
-.ma-proto-filter>span:nth-last-child(2){flex:1;white-space:nowrap}
-.ma-proto-filter .r2-object{flex-basis:var(--space-5);width:var(--space-5);height:var(--space-5)}
+/* Category navigation keeps labels and counts in separate, stable columns. */
+.ma-proto-filter{margin-bottom:var(--space-1);font-size:var(--fs-sm);line-height:var(--lh-sm);gap:var(--space-2);padding-inline:var(--space-2)}
+.ma-proto-filter .facet-label{flex:1;white-space:nowrap}
+.ma-proto-filter .facet-count{min-width:var(--space-6);text-align:center;font-size:var(--fs-xs);color:var(--text-3);border-radius:var(--radius-pill);background:var(--bg-subtle)}
+.ma-proto-filter .r2-object{flex-basis:var(--space-5);width:var(--space-5);height:var(--space-5);background:transparent;color:var(--text-3)}
+.ma-proto-filter[aria-pressed=true]{box-shadow:inset var(--space-1) 0 0 var(--action)}
+.ma-proto-filter[aria-pressed=true] :is(.r2-object,.facet-count){color:var(--action)}
+.ma-proto-filter[aria-pressed=true]:hover{background:var(--selected-bg)}
+.r2-object{flex-basis:var(--space-5);width:var(--space-5);height:var(--space-5)}
 .ma-proto-filter[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--action)}
 .r2-object{position:relative;display:block;flex:0 0 var(--space-10);width:var(--space-10);height:var(--space-10);overflow:hidden}
 .r2-object img{position:absolute;width:400%;height:200%;max-width:none}
@@ -163,20 +169,53 @@
 
 @media(min-width:1024px){.ma-proto .ma-proto-sidebar{padding:var(--space-4)}.ma-proto-sidebar :is([data-clear],[data-company-clear]){padding-inline:var(--space-2)}}
 
-/* Companies catalog card (owner decision 2026-09-22): the v1 photo-listing layout
-   (.company-listing etc., from home.css — loaded on this page for exactly these classes)
-   plus P2 additions (verified badge, offer chips). Two overrides on top of home.css: the
-   action button reads the theme's main blue instead of home.css's dark listing-action fill,
-   and the offers link grows to a full 44px tap target. */
-.ma-proto .listing-media{min-height:150px}
+/* Catalog: image and identity share a header; details use the whole row. */
+.ma-proto .company-listing{grid-template-columns:calc(var(--space-20) * 2) minmax(0,1fr);gap:var(--space-3) var(--space-5)}
+.ma-proto .listing-media{align-self:start;min-height:0;aspect-ratio:3 / 2;grid-area:1 / 1}
+.ma-proto .listing-content{display:contents}
+.ma-proto .listing-summary{grid-area:1 / 2;display:grid;align-content:center;gap:var(--space-3);min-width:0}
+.ma-proto .listing-heading{flex-wrap:wrap;gap:var(--space-3)}
+.ma-proto .listing-heading h3 a{color:var(--text)}
+.ma-proto .listing-heading h3 a:hover{color:var(--action)}
+.ma-proto .listing-badges{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin:0}
+.ma-proto :is(.listing-description,.listing-chips,.listing-facts,.listing-footer){grid-column:1 / -1;margin:0}
+.ma-proto .listing-facts{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-5)}
+.ma-proto .listing-footer{border-top:1px solid var(--border-subtle);padding-top:var(--space-3)}
 .ma-proto .company-listing .listing-action{background:var(--action)}
 .ma-proto .company-listing .listing-action:hover{background:var(--action-hover,var(--blue-600))}
 .ma-proto .listing-offers{min-height:var(--tap-min)}
-.ma-proto .listing-heading{flex-wrap:wrap}
-.ma-proto .listing-badges{display:flex;align-items:center;gap:var(--space-2);margin:var(--space-2) 0 0}
-.ma-proto .listing-chips{margin:var(--space-2) 0 0}
-/* Mobile catalog uses display:contents for its body, so added blocks span both columns. */
-.ma-proto .listing-badges{flex-wrap:wrap}
+@media(max-width:600px){
+ .ma-proto .company-listing{grid-template-columns:var(--space-24) minmax(0,1fr);gap:var(--space-3)}
+ .ma-proto .listing-summary{display:contents}
+ .ma-proto .listing-heading{grid-area:1 / 2}
+ .ma-proto .listing-heading .ma-avatar{display:none}
+ .ma-proto .listing-badges{grid-column:1 / -1}
+}
+
+/* Request detail: reading column and compact contact aside. */
+.request-detail{display:grid;gap:var(--space-6)}
+.request-detail>.ma-back{justify-self:start;margin:0}
+.ma-proto .request-detail>.r2-band{margin:0;padding:var(--space-6) var(--space-8);min-height:0}
+.request-detail-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-8);align-items:start}
+.request-detail-main{display:grid;gap:var(--space-5);min-width:0}
+.request-description{display:grid;gap:var(--space-5)}
+.request-description .ma-prose{max-width:65ch;margin:0}
+.request-detail .request-detail-facts{display:flex;flex-wrap:wrap;gap:var(--space-6);padding-block:var(--space-4);border-block:1px solid var(--border-subtle)}
+.request-detail .request-detail-facts>div{display:grid;gap:var(--space-2);padding:0;border:0;min-width:var(--space-24)}
+.request-detail .request-detail-facts dd{text-align:left}
+.request-detail .ma-photo{margin:0}
+.request-detail .ma-photo img{aspect-ratio:auto;max-height:calc(var(--space-24) * 4);object-fit:contain;object-position:left center}
+.request-detail-aside{display:grid;gap:var(--space-5);min-width:0;padding:var(--space-6);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-subtle)}
+.request-author{display:grid;gap:var(--space-3);justify-items:start}
+.request-detail-aside>.ma-panel{padding:var(--space-5) 0 0;border:0;border-top:1px solid var(--border);border-radius:0;box-shadow:none;background:transparent}
+.request-detail-aside .ma-note{margin:0}
+.request-detail-aside .ma-h3{font-size:var(--fs-body);line-height:var(--lh-body)}
+.request-detail .ma-share{padding-top:var(--space-1)}
+.request-detail .ma-share .ma-btn{font-size:var(--fs-xs);padding-inline:var(--space-3)}
+.request-responses{display:grid;gap:var(--space-5);padding-top:var(--space-6);border-top:1px solid var(--border)}
+.request-responses>.ma-panel__actions{display:flex;flex-wrap:wrap}
+@media(min-width:1024px){.request-detail-grid{grid-template-columns:minmax(0,1fr) calc(var(--space-20) * 4 + var(--space-6))}}
 @media(max-width:767px){
- .ma-proto .listing-badges,.ma-proto .listing-chips{grid-column:1 / -1}
+ .ma-proto .request-detail>.r2-band{padding:var(--space-5)}
+ .request-detail-aside{padding:var(--space-5)}
 }
