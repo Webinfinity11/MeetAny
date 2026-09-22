@@ -1,4 +1,4 @@
-const icon=(name,extra='')=>'<svg class="icon '+extra+'" aria-hidden="true"><use href="/icons.svg#'+name+'"></use></svg>';
+const icon=(name,extra='')=>'<svg class="icon '+extra+'" aria-hidden="true"><use href="/assets/icons-flat.svg#'+name+'"></use></svg>';
 const categoryIcons={suppliers:'package',services:'briefcase-business',distributors:'truck',partners:'handshake'};
 const categories=[{id:'suppliers',title:'მომწოდებელი',sub:'პროდუქტი და წარმოება'},{id:'services',title:'მომსახურება',sub:'ექსპერტიზა შენი ბიზნესისთვის'},{id:'distributors',title:'დისტრიბუტორი',sub:'ახალი ბაზარი და გაყიდვები'},{id:'partners',title:'ბიზნესპარტნიორი',sub:'ერთობლივი შესაძლებლობები'}];
 const companies=[{id:'linen',name:'Linen House',initials:'lh.',type:'suppliers',city:'tbilisi',cityLabel:'თბილისი',description:'სასტუმროს თეთრეული და ტექსტილი — შენი სტუმრების კომფორტისთვის.',tags:['სასტუმროები','ტექსტილი'],color:'#357da4',bg:'#e9f3f9',offer:['თეთრეულის და პირსახოცების მიწოდება','სასტუმროებისა და რესტორნების ტექსტილი','შეკვეთის პირობების ინდივიდუალური შეთანხმება'],area:'თბილისი, ბათუმი',words:'თეთრეული მომწოდებელი ტექსტილი სასტუმრო თბილისი ბათუმი',languages:'ქართული, ინგლისური'},
@@ -15,7 +15,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const photos={linen:['hotel-linen.jpg','სასტუმროს ოთახი და თეთრეული'],studio:['creative-team.jpg','გუნდი შემოქმედებით სამუშაო სივრცეში'],route:['logistics-warehouse.jpg','ლოგისტიკური საწყობის თაროები'],fresh:['fresh-produce.jpg','ახალი ხილი და ბოსტნეული'],pack:['cardboard-packaging.jpg','მუყაოს შეფუთვის ყუთები'],bridge:['logistics-warehouse.jpg','სადისტრიბუციო საწყობი'],stay:['hotel-linen.jpg','სასტუმროს ნომერი'],account:['creative-team.jpg','სამუშაო სივრცე']};
 Object.assign(photos,{"pixel": ["technology-office.jpg", "ტექნოლოგიური გუნდის სამუშაო სივრცე"], "build": ["construction-interior.jpg", "შენობის ინტერიერის მოწყობის სამუშაოები"], "legal": ["legal-office.jpg", "საქმიანი შეხვედრის სივრცე"], "clean": ["commercial-cleaning.jpg", "კომერციული სივრცის დასუფთავება"]});
 function companyLogo(c,extra=''){const photo=photos[c.id];return '<span class="company-logo company-photo-avatar '+extra+'"><img src="/assets/photos/'+photo[0]+'" alt="'+esc(c.name)+' — სამუშაო გარემოს ფოტო" loading="lazy" decoding="async"></span>';}
-function profileHref(c){return "/companies/";}
+function profileHref(c){const base="/v1/companies/"+c.slug+"/";return location.pathname==="/v1/categories/"?base+"?from="+encodeURIComponent("/v1/categories/"+location.search):base;}
 function card(c){
  const photo=photos[c.id],href=esc(profileHref(c));
  return `<article class="company-listing">
@@ -28,7 +28,7 @@ function card(c){
   </div>
  </article>`;
 }
-const grid=document.querySelector('#category-grid');if(grid)grid.innerHTML=categories.map((c,index)=>`<a class="category-card" href="/companies/"><span class="category-icon" aria-hidden="true"><img class="category-3d-sheet" src="/assets/category-business-3d.png" alt="" style="--category-x:${-100*(index%2)}%;--category-y:${-100*Math.floor(index/2)}%" decoding="async">${icon(categoryIcons[c.id])}</span><div><h3>${c.title}</h3><p>${c.sub}</p></div>${icon('arrow-up-right','category-arrow')}</a>`).join('');
+const grid=document.querySelector('#category-grid');if(grid&&!grid.hasAttribute('data-static'))grid.innerHTML=categories.map((c,index)=>`<a class="category-card" href="/v1/categories/?type=${c.id}"><span class="category-icon" aria-hidden="true"><img class="category-3d-sheet" src="/assets/category-business-3d.png" alt="" style="--category-x:${-100*(index%2)}%;--category-y:${-100*Math.floor(index/2)}%" decoding="async">${icon(categoryIcons[c.id])}</span><div><h3>${c.title}</h3><p>${c.sub}</p></div>${icon('arrow-up-right','category-arrow')}</a>`).join('');
 const featured=document.querySelector('#featured-companies');if(featured)featured.innerHTML=companies.slice(0,3).map(card).join('');
 document.querySelector('.nav-home')?.classList.add('active');
 document.addEventListener('click',e=>{const close=e.target.closest('[data-close]');if(close)close.closest('dialog').close();});
@@ -60,7 +60,7 @@ function removeFilterSelection(key,value){return multiFilterKeys.includes(key)?s
 function companyServiceTypes(c){return c.id==='bridge'?['suppliers','distributors']:c.id==='stay'?['services','partners']:[c.type];}
 function readFilters(search=location.search){const p=new URLSearchParams(search);const data={};for(const k of Object.keys(defaultFilters)){const value=p.get(k);if(!value)continue;try{validateFilters({[k]:value});data[k]=value;}catch{}}return validateFilters(data);}
 function filterQuery(f){const p=new URLSearchParams();for(const [k,v] of Object.entries(f))if(v&&!(k==='sort'&&v==='relevance'))p.set(k,v);return p.toString();}
-function safeCatalogFrom(raw){try{if(!raw)return '/categories/';const u=new URL(raw,location.origin);if(u.origin!==location.origin||!['/categories','/categories/'].includes(u.pathname))return '/categories/';const q=filterQuery(readFilters(u.search));return '/categories/'+(q?'?'+q:'');}catch{return '/categories/';}}
+function safeCatalogFrom(raw){try{if(!raw)return '/v1/categories/';const u=new URL(raw,location.origin);if(u.origin!==location.origin||!['/categories','/v1/categories/'].includes(u.pathname))return '/v1/categories/';const q=filterQuery(readFilters(u.search));return '/v1/categories/'+(q?'?'+q:'');}catch{return '/v1/categories/';}}
 let filters=readFilters();
 const stopWords=['ვეძებ','მინდა','მჭირდება','და','ან','საჭიროა','ბიზნესისთვის','სანდო'];
 function searchTerms(q){return q.toLocaleLowerCase().split(/[\s,.;!?]+/).filter(x=>x&&!stopWords.includes(x)).map(x=>x.replace(/(ისთვის|ებში|ების|ებს|ის|ს)$/u,''));}

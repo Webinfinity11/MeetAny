@@ -60,12 +60,96 @@ Catalog selection supports multiple industries, cities and offer types (OR withi
 
 Profile galleries: four images per profile, 24 additional licensed Pexels photographs across eight business groups, captions and native dialog viewer with previous/next, arrow keys and return focus. Provenance in dist/assets/photos/gallery/sources.json. Homepage shows eight featured industries; all eleven remain in the catalog.
 
-## Beta requests board (Design 02)
+## Requests board (Design 02)
 
-Design 02 adds a requests board for client presentations: a client posts a free-text request (e.g. "1000 chairs"), companies send written offers with an optional price, and only the request owner sees offer text and prices (others see the count). Choosing an offer reveals phone and email to both sides. Registration requires a +995 mobile number. Requests stay open for 14 days and can be extended by 7 days, closed or deleted; expired requests refuse offers. `/v2/admin/` hides or deletes requests, blocks users and marks companies as verified. Request pages share to WhatsApp and Facebook, and seeded requests have static share pages with Open Graph tags.
+Design 02 adds a requests board: a client posts a free-text request (e.g. "1000 chairs"), companies send written offers with an optional price, and only the request owner sees offer text and prices (others see the count). Choosing an offer reveals phone and email to both sides. Registration uses email and password, a verification code sent by email, and requires a +995 mobile number. Requests stay open for 14 days and can be extended by 7 days, closed or deleted; expired requests refuse offers. `/v2/admin/` hides or deletes requests, blocks users and marks companies as verified. Request pages share to WhatsApp and Facebook. Design 01 is unchanged.
 
-This is a beta. `dist/v2/market-store.js` keeps all data in the browser's localStorage, seeded with fictional accounts and requests, so nothing is sent to a server and data is not shared between devices. The floating "ბეტა" button switches between demo client, company and admin accounts and resets the demo. A real backend replaces only `market-store.js`. Design 01 is unchanged.
+Backend: **Neon Postgres + Neon Auth + Neon Data API**, photos in **Vercel Blob**. `dist/market-store.js` talks to Neon Auth and the Data API with plain `fetch()` (no SDK), keeps a synchronous in-memory cache for the UI and maps server error codes to the Georgian messages. The Vercel Blob browser client (`@vercel/blob@2.8.0/client`, jsDelivr) is loaded only when a photo is uploaded. There are no demo accounts and no localStorage data.
 
-Pages: `/v2/requests/`, `/v2/requests/{slug}/` and `/v2/requests/view/?id=`, `/v2/account/`, `/v2/admin/`, `/v2/terms/`. After changing the market files or v2 markup, run `node scripts/generate-market.cjs` (idempotent). It rebuilds these pages and wires the nav link and assets into the existing v2 pages.
+### Database (`db/`)
 
-Validation: a headless Chromium run checked 40 cases. These covered sealed offers across four roles, contact reveal only after choosing, rejection of bad phone and price input, 14-day expiry and extension, admin hide, block and verify, v1 isolation, no JavaScript errors, and no horizontal overflow at 390px and 320px.
+`db/schema.sql` (re-runnable; it stops with a clear message if Neon Auth or the Data API is not enabled yet):
+
+- `profiles`: one row per Neon Auth user (`neon_auth."user"`, on delete cascade), created by the `complete_profile` RPC after the email code is verified. Role is `client` or `company`; `admin` is only set by hand. Phone and email are readable only by the owner (`my_profile`) and admins.
+- `requests`: public unless hidden; at most 5 open per user; `expires_at` defaults to 14 days; `photo_url` must be a Blob URL inside the uploader's own `<user id>/` folder.
+- `offers`: sealed. Only the request author, the offer author and admins can read them; one offer per company per request.
+- RPCs (security definer, caller checked server side): `complete_profile`, `my_profile`, `offer_counts`, `create_request`, `close_request`, `extend_request`, `delete_request`, `send_offer`, `withdraw_offer`, `choose_offer`, `contact_for_request` and the `admin_*` functions. All writes go through RPCs; errors carry stable `MA…` codes.
+- `meetany_private.settings`: server-only settings (the Blob store origin, `photo_origin`).
+
+`db/CONTRACT.md` documents every table, RPC, error code, the auth endpoints and the upload rules. `db/tests/run.sh` loads a Neon stub and the schema twice into a throwaway local PostgreSQL database and runs the RLS and security tests.
+
+### Accounts (check before touching infrastructure)
+
+| service | account / scope | resource |
+|---|---|---|
+| Vercel | team `infinity-solutions` (user `webinfinity11-5453`) | project `meet-any` → https://meet-any.vercel.app |
+| Neon | `webinfinity11@gmail.com`, org `Infinity` (`org-green-pine-75686842`) | project `MeetAny` (`fancy-surf-61327851`, aws-us-east-2), **working branch `auth-probe`** (`br-round-union-b59brwnl`), endpoint `ep-withered-glade-b54ts1g5`, database `neondb` |
+| Neon Auth | same project, branch `auth-probe` | `https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth` (JWKS: `…/neondb/auth/.well-known/jwks.json`) |
+| MeetAny API | Vercel Function `api/db.js` (`/api/db/*`) | replaces the Neon Data API; connects with `DATABASE_URL` (secret) |
+| Vercel Blob | team `infinity-solutions`, connected to `meet-any` (production + preview) | public store `meetany-photos` (`store_k3KP1SyoWHTMw3eR`, iad1), origin `https://k3kp1syowhtmw3er.public.blob.vercel-storage.com` |
+
+Backend (2026-09-22). The Neon Data API does not accept Neon Auth tokens ("jwk not found", reproduced on a fresh branch set up exactly as documented), so it is not used. `api/db.js` verifies the Neon Auth JWT itself (EdDSA, `api/_neon-jwt.js`), then runs each call in a transaction as `anonymous` or `authenticated` with the claims in `request.jwt.claims` (`api/_db.js`); RLS, column grants and the RPCs in `db/schema.sql` decide access, via `meetany_private.uid()`. It speaks the PostgREST subset the store uses, so `config.js` only sets `dataApiUrl: '/api/db'`.
+
+Branches: `auth-probe` is the working branch (Neon Auth could not be re-enabled on the old default branch `production` after it was disabled; that branch has no auth and is unused). Renaming `auth-probe` to `production` and making it the default, then deleting the old one, is still to do in the Neon console.
+
+Email verification is **off** for now: Neon Auth does not require it or send codes, `meetany_private.settings` has `require_email_verification = off`, and `REQUIRE_EMAIL_VERIFICATION=off` for the functions. To turn it on later: enable it in Neon Auth (`neonctl neon-auth config email-password update --require-email-verification true --send-verification-email-on-sign-up true`), set the setting to `on` (or delete the row), set the env var to `on`, and add custom SMTP.
+
+Local: `node scripts/dev-server.cjs` (http://127.0.0.1:4031) serves `dist/`, applies `vercel.json` and runs `api/*` with `.env.dev.local` (gitignored: `DATABASE_URL`, `NEON_AUTH_BASE_URL`, `REQUIRE_EMAIL_VERIFICATION`). Neon Auth trusts `https://meet-any.vercel.app`, `http://127.0.0.1:4031`, `http://localhost:4031`, and "Allow localhost" is on. **Before launch**: remove the localhost domains and turn localhost off, and set on Vercel (production + preview): `DATABASE_URL` (pooled `neondb_owner` string of `auth-probe`, sensitive), `NEON_AUTH_BASE_URL` (the URL above), `REQUIRE_EMAIL_VERIFICATION=off`; remove `NEON_DATA_API_URL`.
+
+Not these: Neon `grubela22@gmail.com` is a different account (its "ვაკანსიები" project is another app), and the Vercel Neon integration databases `linenet-db` / `mcdirect-db` belong to other projects. Before any `neonctl` command run `npx neonctl me` and confirm `webinfinity11@gmail.com`; if not, `npx neonctl auth` and sign in as infinity11. Link the site with `vercel link --yes --project meet-any --scope infinity-solutions` (an old `.vercel` link pointing at a `meetany` project in another org is stale). Deploy from `site/` with `vercel deploy --prod`.
+
+### Neon console setup (once per project / branch)
+
+1. Create the project in an AWS region; database `neondb`.
+2. **Auth**: enable Neon Auth. Sign-up with Email on, **Verify at sign-up** on, method **Verification code** (OTP), require email verification on, auto sign-in after verification on, send the code again on sign-in on. Application name `MeetAny`; add `https://meet-any.vercel.app` to the domains and turn "Allow localhost" off in production. The shared Neon email sender is rate-limited and meant for testing; use custom SMTP for production. Neon Auth requires passwords of at least 8 characters.
+3. **Data API**: enable it for `neondb` with Neon Auth as the provider. Leave "Grant public schema access" **unchecked** (the schema sets its own grants), expose only `public`, allow the origin `https://meet-any.vercel.app`.
+   Status 2026-09-22: the Data API answers every Neon Auth JWT (anonymous and user, EdDSA, kid matches the public JWKS) with `400 {"message":"jwk not found"}`. This happened both with `--auth-provider neon_auth` and with an explicit external JWKS (`…/neondb/auth/.well-known/jwks.json`, audience = the Neon Auth origin, role `authenticator`, the current setup). Recreating the Data API and restarting the compute did not help. Until Neon fixes this, the board shows "სერვისი დროებით მიუწვდომელია".
+4. SQL editor: run `db/schema.sql`, then save the Blob store origin:
+   ```sql
+   insert into meetany_private.settings (key, value)
+   values ('photo_origin', 'https://<storeId>.public.blob.vercel-storage.com')
+   on conflict (key) do update set value = excluded.value;
+   ```
+5. Data API: **Refresh schema cache** (after every schema change).
+
+### Public config (`dist/config.js`)
+
+| key | value |
+|---|---|
+| `authUrl` | the Neon Auth URL (`https://ep-xxx.neonauth.<region>.aws.neon.tech/neondb/auth`), or `/api/auth` when the rewrite below is set up |
+| `dataApiUrl` | the Data API URL (`https://ep-xxx.apirest.<region>.aws.neon.tech/neondb/rest/v1`) |
+| `uploadUrl` | `/api/blob-upload` |
+
+These are public values. Never put a connection string, password, Blob token or signing key in `dist/` or git. Until `config.js` is filled in, the board shows "სერვისი დროებით მიუწვდომელია".
+
+Neon Auth keeps the session in a cookie on its own domain, which Safari treats as a third-party cookie. To make it first-party, add a rewrite to `vercel.json` with your (public) Neon Auth URL and set `authUrl: '/api/auth'`:
+
+```json
+"rewrites": [{ "source": "/api/auth/:path*", "destination": "https://ep-xxx.neonauth.<region>.aws.neon.tech/neondb/auth/:path*" }]
+```
+
+Tested 2026-09-22: this does **not** work. Neon Auth rejects proxied requests with `400 {"code":"INVALID_HOSTNAME"}` because Vercel forwards `X-Forwarded-Host: meet-any.vercel.app`, so `config.js` uses the direct Neon Auth URL. Neon sets the session cookie with `SameSite=None; Secure; Partitioned` (CHIPS).
+
+### Vercel
+
+- `api/blob-upload.js` (Vercel Function, dependencies in the root `package.json`, installed by `"installCommand": "npm ci"`; the site is still served from `dist/`): verifies the Neon Auth JWT against the Neon JWKS (EdDSA, pinned issuer and audience), checks the caller has a non-blocked profile, and signs a one-file upload token for `<user id>/<name>.<jpg|png|webp|gif>`, image/jpeg, png, webp or gif only, at most 5 MB. `DELETE` removes the caller's own photo when publishing the request failed.
+- Create a **public** Blob store and connect it to the project.
+- Environment variables (Project → Settings → Environment Variables):
+
+| name | secret | value |
+|---|---|---|
+| `BLOB_READ_WRITE_TOKEN` | yes | added automatically when the Blob store is connected |
+| `NEON_AUTH_BASE_URL` | no | the Neon Auth URL |
+| `NEON_DATA_API_URL` | no | the Data API URL |
+
+No database connection string is needed on Vercel or in the browser.
+
+### Admins
+
+Register the account normally (including the email code), then run in the Neon SQL editor:
+
+```sql
+update public.profiles set role = 'admin' where email = 'someone@example.ge';
+```
+
+Pages: `/v2/requests/`, `/v2/requests/view/?id=<uuid>` (the canonical and shared link), `/v2/account/`, `/v2/admin/`, `/v2/terms/`. After changing the market files or v2 markup, run `node scripts/generate-market.cjs` (idempotent). It rebuilds these pages and wires `config.js`, the nav link and the market assets into the existing v2 pages.

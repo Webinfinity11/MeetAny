@@ -1,0 +1,14 @@
+{
+  "name": "meetany-site",
+  "private": true,
+  "type": "module",
+  "description": "MeetAny static site (dist/) plus the Vercel Function that authorizes photo uploads to Vercel Blob (api/).",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
+    "@vercel/blob": "2.8.0",
+    "jose": "^6.1.0"
+  }
+}

@@ -2,6 +2,54 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "buildCommand": "",
-  "installCommand": "",
-  "outputDirectory": "dist"
+  "installCommand": "npm ci",
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/v2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/v2/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/v2/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/categories",
+      "destination": "/companies/",
+      "permanent": false
+    },
+    {
+      "source": "/categories/",
+      "destination": "/companies/",
+      "permanent": false
+    },
+    {
+      "source": "/companies/:slug(accord-legal|axis-build|balance-partners|bridge-distribution|clear-space|forma-studio|fresh-market|linen-house|pack-and-co|pixel-works|route-logistics|stay-collective)",
+      "destination": "/companies/",
+      "permanent": false
+    },
+    {
+      "source": "/companies/:slug(accord-legal|axis-build|balance-partners|bridge-distribution|clear-space|forma-studio|fresh-market|linen-house|pack-and-co|pixel-works|route-logistics|stay-collective)/",
+      "destination": "/companies/",
+      "permanent": false
+    },
+    {
+      "source": "/requests/:slug(1000-chairs|branded-boxes|concrete-m300|hotel-booking-website|hotel-linen-200|post-renovation-cleaning|tbilisi-batumi-cargo|weekly-produce)/",
+      "destination": "/requests/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/db/:path*",
+      "destination": "/api/db?path=:path*"
+    }
+  ]
 }
