@@ -19,6 +19,25 @@ export const categoryIcon: Record<string, string> = {
   other: "shapes",
 };
 
+// Companies have no photo field of their own yet (owner decision 2026-09-22: ship the catalog
+// card with the industry photo now, a real per-company upload is a separate later step). One
+// representative photo per category from site/web/public/assets/photos/.
+export const categoryPhoto: Record<string, string> = {
+  furniture: "workshop-banner.jpg",
+  construction: "construction-interior.jpg",
+  textiles: "hotel-linen.jpg",
+  food: "fresh-produce.jpg",
+  packaging: "cardboard-packaging.jpg",
+  logistics: "logistics-warehouse.jpg",
+  cleaning: "commercial-cleaning.jpg",
+  technology: "technology-office.jpg",
+  marketing: "creative-team.jpg",
+  finance: "meeting.jpg",
+  legal: "legal-office.jpg",
+  tourism: "hotel-linen.jpg",
+  other: "meeting.jpg",
+};
+
 export const categories: Record<string, string> = {
   furniture: "ავეჯი და ინვენტარი",
   construction: "მშენებლობა და რემონტი",

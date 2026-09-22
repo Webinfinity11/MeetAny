@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "../styles/tokens.css";
 import "../styles/market.css";
+// .company-listing/.listing-* (the v1 photo-card layout, owner decision 2026-09-22) live only
+// in home.css; nothing else in it matches this page's markup.
+import "../styles/home.css";
 import "../styles/proto.css";
 import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";

@@ -10,7 +10,7 @@ import { TagList } from "./TagList";
 import { MobileActionBar } from "./MobileActionBar";
 import { statsLabel } from "./CompanyRow";
 import { useMarketStore } from "../../lib/market-client";
-import { categories, cities } from "../../lib/categories";
+import { categories, categoryPhoto, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
 
 export function CompanyProfilePageContent() {
@@ -58,7 +58,10 @@ export function CompanyProfilePageContent() {
 
   return (
     <div className="ma-page">
-      <header className="r2-band ma-page-head">
+      <header
+        className="r2-band ma-page-head"
+        style={{ "--band-photo": `url(/assets/photos/${categoryPhoto[c.industry] || categoryPhoto.other})` } as React.CSSProperties}
+      >
         <CompanyAvatar name={name} size="xl" />
         <div>
           <span className="ma-eyebrow">კომპანიის პროფილი</span>

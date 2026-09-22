@@ -8,7 +8,7 @@ import { SectionHead } from "./SectionHead";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
-import { CompanyRow, type CompanyRowData } from "./CompanyRow";
+import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
 import { DirectionPhotoCard } from "./DirectionPhotoCard";
 import { PartnershipCTA } from "./PartnershipCTA";
 import { useMarketStore } from "../../lib/market-client";
@@ -22,6 +22,7 @@ type MappedCompany = {
   city: string;
   serviceCities: string[];
   offers: string[];
+  about: string;
   verified: boolean;
 };
 
@@ -64,15 +65,16 @@ export function CompaniesPageContent() {
   const allCount = ready && available ? list({ industry: "" }).length : 0;
   const cityOptions = ["tbilisi", "batumi", "kutaisi"];
 
-  const rows: CompanyRowData[] = useMemo(() => {
+  const rows: CompanyListingData[] = useMemo(() => {
     if (!store) return [];
     return results.map((c) => ({
       id: c.id,
       name: c.company || c.name,
       industry: c.industry,
       city: c.city,
-      serviceCities: (c.serviceCities || []).map((id: string) => cities[id] || id),
+      serviceCities: c.serviceCities || [],
       offers: c.offers || [],
+      about: c.about || "",
       verified: c.verified,
       stats: store.companyStats(c.id),
     }));
@@ -179,7 +181,7 @@ export function CompaniesPageContent() {
                 </button>
               </div>
             ) : (
-              rows.map((c) => <CompanyRow key={c.id} c={c} />)
+              rows.map((c) => <CompanyListingCard key={c.id} c={c} />)
             )}
           </div>
         </section>

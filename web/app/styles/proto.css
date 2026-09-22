@@ -81,7 +81,7 @@
 /* Round 2: home visual language. No independent colour/type/radius tokens. */
 .ma-proto :is(h3,h4,.ma-title,.ma-proto-filter){font-feature-settings:normal;letter-spacing:normal}
 .ma-proto .r2-band{display:flex;flex-wrap:wrap;position:relative;isolation:isolate;overflow:hidden;background:var(--blue-900);color:var(--white);padding:var(--space-10);border-radius:var(--radius-lg);gap:var(--space-6);margin-bottom:var(--space-8)}
-.r2-band::before{content:"";position:absolute;inset:0;z-index:-1;background:url('/assets/photos/logistics-warehouse.jpg') center/cover;opacity:.13}
+.r2-band::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--band-photo,url('/assets/photos/logistics-warehouse.jpg')) center/cover;opacity:.13}
 .ma-proto .r2-band :is(h1,.ma-lead,.ma-eyebrow){color:var(--white)}
 .r2-band .ma-page-head__text{flex-basis:100%;max-width:none}
 .r2-band .ma-eyebrow{display:block;margin-bottom:var(--space-3)}
@@ -160,3 +160,16 @@
 @media(max-width:767px){.r2-results-bar{align-items:stretch;flex-direction:column}.r2-results-bar>.ma-field,.r2-results-bar .ma-select{width:100%}}
 
 @media(min-width:1024px){.ma-proto .ma-proto-sidebar{padding:var(--space-4)}.ma-proto-sidebar :is([data-clear],[data-company-clear]){padding-inline:var(--space-2)}}
+
+/* Companies catalog card (owner decision 2026-09-22): the v1 photo-listing layout
+   (.company-listing etc., from home.css — loaded on this page for exactly these classes)
+   plus P2 additions (verified badge, offer chips). Two overrides on top of home.css: the
+   action button reads the theme's main blue instead of home.css's dark listing-action fill,
+   and the offers link grows to a full 44px tap target. */
+.ma-proto .listing-media{min-height:150px}
+.ma-proto .company-listing .listing-action{background:var(--action)}
+.ma-proto .company-listing .listing-action:hover{background:var(--action-hover,var(--blue-600))}
+.ma-proto .listing-offers{min-height:var(--tap-min)}
+.ma-proto .listing-heading{flex-wrap:wrap}
+.ma-proto .listing-badges{display:flex;align-items:center;gap:var(--space-2);margin:var(--space-2) 0 0}
+.ma-proto .listing-chips{margin:var(--space-2) 0 0}
