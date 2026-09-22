@@ -1,4 +1,4 @@
-function initials(name: string): string {
+export function initials(name: string): string {
   const clean = String(name || "?").replace(/[„""]/g, "");
   const parts = clean.split(/\s+/).filter(Boolean);
   return (parts.length > 1 ? parts[0][0] + parts[1][0] : clean.slice(0, 2)).toUpperCase();

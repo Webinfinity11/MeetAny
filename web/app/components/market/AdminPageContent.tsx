@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { PageBand } from "./PageBand";
 import { SectionHead } from "./SectionHead";
@@ -49,7 +50,9 @@ export function AdminPageContent() {
     return { stats, requests, users };
   }, [store, me]);
 
-  if (!ready || !available) {
+  if (ready && !available) return <div className="ma-page"><p role="alert">სერვისი დროებით მიუწვდომელია. სცადე თავიდან.</p></div>;
+
+  if (!ready) {
     return (
       <div className="ma-page" aria-busy="true">
         <p role="status">იტვირთება…</p>
@@ -92,6 +95,7 @@ export function AdminPageContent() {
         else if (pendingAction.action === "unblock") await store.adminSetBlocked(pendingAction.id, false);
       }
       setPendingAction(null);
+      toast("ცვლილება შენახულია.");
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {

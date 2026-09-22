@@ -52,7 +52,7 @@ export function DiscoverySearch() {
         <nav className="discovery-suggestions" aria-label="ძიების მაგალითები">
           <p>ან აირჩიე მომსახურება</p>
           {suggestions.map((s) => (
-            <a key={s.label} href="/companies/">
+            <a key={s.label} href={`/companies/?q=${encodeURIComponent(s.label)}`}>
               <Icon name={s.icon} />
               <span>{s.label}</span>
               <Icon name="chevron-right" />

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { PageBand } from "./PageBand";
 import { CompanyAvatar } from "./CompanyAvatar";
@@ -167,7 +168,7 @@ export function AccountPageContent() {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const tab = searchParams.get("tab") === "profile" ? "profile" : "overview";
+  const tab = ["profile", "settings"].includes(searchParams.get("tab") || "") ? "profile" : "overview";
 
   const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
 
@@ -182,7 +183,9 @@ export function AccountPageContent() {
     return { matching: [] as unknown[], myOffers: [] as unknown[], myRequests };
   }, [store, me]);
 
-  if (!ready || !available) {
+  if (ready && !available) return <div className="ma-page"><p role="alert">სერვისი დროებით მიუწვდომელია. სცადე თავიდან.</p></div>;
+
+  if (!ready) {
     return (
       <div className="ma-page" aria-busy="true">
         <p role="status">იტვირთება…</p>
@@ -331,7 +334,7 @@ export function AccountPageContent() {
                         <div className="ma-cluster">
                           <span className={`ma-badge ma-badge--${state === "open" ? "success" : "neutral"}`}>{store?.stateLabels?.[state] || state}</span>
                           {(state === "open" || state === "expired" || state === "closed") ? (
-                            <button type="button" className="ma-btn ma-btn--secondary" onClick={async () => await store?.extendRequest(r.id)}>
+                            <button type="button" className="ma-btn ma-btn--secondary" onClick={async () => {try {await store?.extendRequest(r.id); toast("ვადა გაგრძელდა.");} catch(err) {toast((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}}}>
                               +{store?.EXTEND_DAYS ?? 7} დღე
                             </button>
                           ) : null}

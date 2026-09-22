@@ -1,14 +1,14 @@
 # MeetAny database contract (frontend <-> Neon)
 
-This file is the **only** interface the frontend (`dist/v2/market-store.js`) and the upload
-function (`api/blob-upload.js`) may rely on.
+This file is the **only** interface the frontend (`web/app/lib/market-store.js`) and the upload
+function (`web/app/lib/blob-upload-handler.js`) may rely on.
 Source of truth: `db/schema.sql`. Tests: `db/tests/run.sh`.
 
 Stack: **Neon Postgres** + **Neon Auth** (managed Better Auth, email + password, email code) +
 **Neon Data API** (PostgREST-compatible REST over the database, validates Neon Auth JWTs) +
-**Vercel Blob** (request photos, uploaded from the browser through `api/blob-upload.js`).
+**Vercel Blob** (request photos, uploaded from the browser through `web/app/lib/blob-upload-handler.js`).
 
-- Client: plain `fetch()` (no SDK). Public config in `window.MEETANY_CONFIG` (`dist/v2/config.js`):
+- Client: plain `fetch()` (no SDK). Public config in the config in `web/app/lib/market-store.js`:
 
   | key | example | notes |
   |---|---|---|
@@ -17,7 +17,7 @@ Stack: **Neon Postgres** + **Neon Auth** (managed Better Auth, email + password,
   | `uploadUrl` | `/api/blob-upload` | Vercel Function that authorizes Blob uploads |
 
   All three are public values. No connection string, password, Blob token or signing key is ever
-  in `dist/` or git.
+  in `web/public/` or git.
 - **All writes go through RPCs** (`POST {dataApiUrl}/rpc/<name>`). The Data API roles
   `anonymous` / `authenticated` have **no** INSERT/UPDATE/DELETE privilege on any table; a direct
   write fails with `42501`.
@@ -342,7 +342,7 @@ Neon Auth's own `role` column is not used.
 
 ## 6. Photos: Vercel Blob
 
-### 6.1 Upload (browser -> `api/blob-upload.js` -> Vercel Blob)
+### 6.1 Upload (browser -> `web/app/lib/blob-upload-handler.js` -> Vercel Blob)
 
 - Public Blob store, files served at `https://<storeId>.public.blob.vercel-storage.com/<pathname>`.
 - Browser (pinned CDN module, no bundler):
@@ -353,7 +353,7 @@ Neon Auth's own `role` column is not used.
     contentType: 'image/jpeg', headers: { Authorization: 'Bearer ' + userJwt } });
   // blob.url -> pass as p_photo_url to create_request
   ```
-- `api/blob-upload.js` (`handleUpload`, `onBeforeGenerateToken`) must, before minting a client token:
+- `web/app/lib/blob-upload-handler.js` (`handleUpload`, `onBeforeGenerateToken`) must, before minting a client token:
   - verify the JWT from `Authorization` with `jose` against `{NEON_AUTH_BASE_URL}/.well-known/jwks.json`:
     `algorithms: ['EdDSA']`, `issuer` = `audience` = origin of `NEON_AUTH_BASE_URL`,
     `role === 'authenticated'`, `emailVerified === true`, `sub` a uuid -> else 401;

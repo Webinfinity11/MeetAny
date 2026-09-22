@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // site/dist's URLs all carry a trailing slash (/requests/, /companies/, …); matching that
-  // here keeps every href identical between the server-rendered HTML and the client, which a
-  // mismatched convention was turning into hydration errors.
+  // Preserve the published URLs and avoid redirects for API fetches.
   trailingSlash: true,
   // market-store.js's own fetch() calls to /api/db/... never carry a trailing slash; without
   // this they'd get a 308 redirect on every single request (real client-observed latency —
@@ -12,9 +10,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  // Mirrors site/vercel.json's redirects (the archived Design 01, the old /v2/ prefix,
-  // /categories and the retired static company/request slugs). site/dist keeps its own copy
-  // of this file for as long as it's still deployed; keep the two in sync by hand.
+  // Historical published links continue to resolve to the current catalog.
   async redirects() {
     return [
       { source: "/v1", destination: "/", permanent: false },

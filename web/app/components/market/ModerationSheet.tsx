@@ -20,18 +20,19 @@ export function ModerationSheet({
   onCancel: () => void;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
-    if (open && !d.open) d.showModal();
+    if (open && !d.open) {opener.current = document.activeElement as HTMLElement; d.showModal();}
     if (!open && d.open) d.close();
   }, [open]);
 
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
-    const onClose = () => onCancel();
+    const onClose = () => {onCancel(); if (opener.current?.isConnected) opener.current.focus();};
     d.addEventListener("close", onClose);
     return () => d.removeEventListener("close", onClose);
   }, [onCancel]);

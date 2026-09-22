@@ -1,13 +1,8 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { SiteScripts } from "./SiteScripts";
-import { LogoutHandler } from "./market/LogoutHandler";
+import { Toasts } from "./Toasts";
 
-// The shared root layout body for every generated page (requests, companies, account, admin,
-// terms) — same shell.html structure the site/dist pages use. Each of these pages is its own
-// Next.js root layout group (see app/(requests)/, app/(companies)/, …) so that navigating
-// between them is a full page load and market.js's page-keyed renderers[] re-run from scratch,
-// exactly like the static site.
+// Shared marketplace shell; each route group uses the same aligned container.
 export function SiteShell({
   dataMarketPage,
   dataOpen,
@@ -16,8 +11,8 @@ export function SiteShell({
 }: {
   dataMarketPage: string;
   dataOpen?: string;
-  // proto.css's home-visual-language rules (r2-band, r2-section-head, …) are scoped under
-  // .ma-proto so they never leak onto the unmodified terms page, which doesn't load proto.css.
+  // marketplace.css's home-visual-language rules (r2-band, r2-section-head, …) are scoped under
+  // .ma-proto so they never leak onto the unmodified terms page, which doesn't load marketplace.css.
   proto?: boolean;
   children: React.ReactNode;
 }) {
@@ -32,9 +27,7 @@ export function SiteShell({
           <div className="ma-container">{children}</div>
         </main>
         <Footer />
-        <div className="ma-toasts" id="ma-toasts" aria-live="polite" aria-atomic="false" />
-        <LogoutHandler />
-        <SiteScripts />
+        <Toasts />
       </body>
     </html>
   );

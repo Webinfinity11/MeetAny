@@ -1,0 +1,181 @@
+/* Approved marketplace layouts. Visual values use the shared design tokens. */
+.ma-proto [hidden]{display:none!important}
+.ma-proto :is(h3,h4){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
+.ma-proto :is(a,button,input,select,textarea){min-width:0}
+.ma-proto .ma-tabs{margin-inline:0;padding-inline:0;flex-wrap:wrap;overflow:visible}
+.ma-proto .ma-tab{white-space:normal}
+.ma-proto .ma-badge{white-space:normal;max-width:100%}
+.ma-proto .ma-panel,.ma-proto .ma-stack{min-width:0}
+.ma-proto .ma-link{display:inline-flex;align-items:center;min-height:var(--tap-min);min-width:var(--tap-min)}
+.ma-proto .ma-ocard__name{display:inline-flex;align-items:center;min-height:var(--tap-min);text-decoration:underline;text-underline-offset:var(--space-1)}
+.ma-proto .ma-kv>div{flex-wrap:wrap}
+.ma-proto .ma-kv dd{overflow-wrap:anywhere}
+.ma-proto-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.ma-proto-toolbar .ma-field{flex:1}
+.ma-proto-columns{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6);align-items:start}
+.ma-proto-sidebar{display:none}
+.ma-proto-filters{display:grid;gap:var(--space-5)}
+.ma-proto-filter{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);text-align:left;width:100%;min-height:var(--tap-min);padding:var(--space-2) var(--space-3);border:0;border-radius:var(--radius-md);background:var(--white);color:var(--text-2)}
+.ma-proto-filter[aria-pressed=true]{background:var(--selected-bg);color:var(--selected-text);font-weight:var(--fw-semibold)}
+.ma-proto-filter:disabled{color:var(--text-disabled)}
+.ma-proto-filter:hover:not(:disabled){background:var(--bg-subtle)}
+.ma-proto-filter span:last-child{font-variant-numeric:tabular-nums}
+.ma-rcard--row{display:grid;height:auto;grid-template-columns:minmax(0,1fr);gap:var(--space-4)}
+.ma-rcard--row .ma-rcard__title{display:block;overflow:visible;-webkit-line-clamp:unset}
+.ma-proto-rowtitle{display:flex;align-items:center;min-height:var(--tap-min);text-decoration:none;color:var(--text)}
+.ma-proto-rowtitle:hover{color:var(--action)}
+.ma-proto-rowmeta{display:grid;gap:var(--space-2)}
+.ma-proto-rowend{display:grid;gap:var(--space-2);align-content:center;justify-items:start;padding-top:var(--space-3);border-top:1px solid var(--border-subtle)}
+.ma-proto-price{padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--bg-subtle);color:var(--text-2);line-height:var(--lh-body);overflow-wrap:anywhere}
+.ma-proto-price strong{color:var(--text);font-weight:var(--fw-bold)}
+.ma-proto-offers{max-width:calc(var(--container) - var(--space-24) * 2)}
+.ma-proto-account{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6);align-items:start}
+.ma-proto-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+.ma-proto-kpis .ma-stat{border:1px solid var(--border-subtle)}
+.ma-table-wrap{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.ma-table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);line-height:var(--lh-sm);table-layout:fixed}
+.ma-table :is(th,td){padding:var(--space-4);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.ma-table th{background:var(--bg-subtle);color:var(--text-2);font-weight:var(--fw-semibold)}
+.ma-table td{border-top:1px solid var(--border-subtle)}
+.ma-table small{display:block;color:var(--text-3)}
+.ma-table .ma-proto-tableactions{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.ma-proto-preview{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3)}
+.ma-proto-preview img{width:var(--space-24);height:calc(var(--space-16) + var(--space-2));object-fit:cover;border-radius:var(--radius-md)}
+.ma-proto .ma-sheet--wide{height:min(88dvh,calc(var(--space-24) * 9));max-height:88dvh}
+.ma-proto .ma-sheet__footer{position:sticky;bottom:0;background:var(--white)}
+.ma-proto .ma-sheet__title{padding-top:0}
+.ma-proto .ma-drop{flex-wrap:wrap}
+.ma-proto .ma-drop input{width:100%;max-width:100%;min-height:100%}
+.ma-proto .ma-check{align-items:center}
+.ma-proto .ma-check input{margin:0}
+.ma-proto-state{margin-top:var(--space-8);padding-top:var(--space-4);border-top:1px solid var(--border-subtle)}
+.ma-proto-state summary{display:flex;align-items:center;min-height:var(--tap-min);cursor:pointer;color:var(--text-3)}
+.ma-proto-notice{padding:var(--space-3) var(--gutter);background:var(--bg-subtle);color:var(--text-2);font-size:var(--fs-sm)}
+@media(min-width:768px){
+ .ma-proto-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .ma-rcard--row{grid-template-columns:minmax(0,1fr) minmax(0,0.4fr)}
+ .ma-proto-rowend{border-top:0;border-left:1px solid var(--border-subtle);padding:0 0 0 var(--space-4)}
+}
+@media(min-width:1024px){
+ .ma-proto-columns{--filter-sidebar-width:280px;grid-template-columns:var(--filter-sidebar-width) minmax(0,1fr);gap:var(--space-8)}
+ .ma-proto-sidebar{display:block}
+ .ma-proto-account{grid-template-columns:calc(var(--space-24) * 3 + var(--space-3)) minmax(0,1fr)}
+ .ma-proto-kpis{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media(max-width:767.98px){
+ .ma-proto .ma-sheet--full{height:100dvh;max-height:100dvh}
+ .ma-table,.ma-table tbody,.ma-table tr,.ma-table td{display:block;width:100%}
+ .ma-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .ma-table tr+tr{border-top:1px solid var(--border)}
+ .ma-table td{border:0;padding:var(--space-2) var(--space-4)}
+ .ma-table td:first-child{padding-top:var(--space-4)}
+ .ma-table td:last-child{padding-bottom:var(--space-4)}
+ .ma-table td::before{content:attr(data-label);display:block;color:var(--text-3);font-size:var(--fs-xs)}
+ .ma-proto-toolbar{align-items:stretch}
+ .ma-proto-toolbar .ma-field{flex-basis:100%}
+}
+.ma-proto .ma-stat__label{overflow-wrap:anywhere}
+.ma-proto .ma-sheet__header>div{flex:1;min-width:0}
+@media(max-width:419.98px){.ma-proto .ma-ocard__price{display:none}}
+@media(max-width:359.98px){.ma-proto-kpis .ma-stat{padding:var(--space-3)}.ma-proto-kpis .ma-stat__label{font-size:var(--fs-xs);line-height:var(--lh-xs)}}
+/* Round 2: home visual language. No independent colour/type/radius tokens. */
+.ma-proto :is(h3,h4,.ma-title){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
+.ma-proto .r2-band{display:flex;flex-wrap:wrap;position:relative;isolation:isolate;overflow:hidden;background:var(--blue-900);color:var(--white);padding:var(--space-10);border-radius:var(--radius-lg);gap:var(--space-6);margin-bottom:var(--space-8)}
+.r2-band::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--band-photo,url('/assets/photos/logistics-warehouse.jpg')) center/cover;opacity:.13}
+.ma-proto .r2-band :is(h1,.ma-lead,.ma-eyebrow){color:var(--white)}
+.r2-band .ma-page-head__text{flex-basis:100%;max-width:none}
+.r2-band .ma-eyebrow{display:block;margin-bottom:var(--space-3)}
+.r2-search{width:100%;padding:var(--space-5);background:var(--white);border-radius:var(--radius-lg);color:var(--text)}
+.r2-search .ma-input{width:100%}
+.ma-proto .ma-avatar{background:var(--action);color:var(--white);border-radius:var(--radius-md);flex-shrink:0}
+.ma-proto .ma-rcard--row,.ma-proto .r2-company-row{border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);padding:var(--space-6)}
+.ma-proto .ma-rcard--row .ma-rcard__title{font-size:var(--fs-title);line-height:var(--lh-title)}
+.ma-proto .ma-proto-rowend{border-left:0}
+.ma-proto-filter{background:var(--bg-subtle);margin-bottom:var(--space-2);font-size:var(--fs-sm);line-height:var(--lh-sm)}
+.ma-proto-filter>span:nth-last-child(2){flex:1;white-space:nowrap}
+.ma-proto-filter .r2-object{flex-basis:var(--space-6);width:var(--space-6);height:var(--space-6)}
+.ma-proto-filter[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--action)}
+.r2-object{position:relative;display:block;flex:0 0 var(--space-10);width:var(--space-10);height:var(--space-10);overflow:hidden}
+.r2-object img{position:absolute;width:400%;height:200%;max-width:none}
+.r2-object--business img{width:200%;height:200%;left:0;top:0}
+/* Category/industry facets in the requests and companies sidebars: a Lucide icon on a light-blue
+   square (owner decision 2026-09-22), not the home page's 3D sprite. */
+.r2-object--icon{display:flex;align-items:center;justify-content:center;background:var(--blue-50);border-radius:var(--radius-md);color:var(--action);overflow:visible}
+.r2-object--icon .icon{width:20px;height:20px}
+.r2-more summary{min-height:var(--tap-min);display:flex;align-items:center;cursor:pointer;color:var(--text-link);font-size:var(--fs-sm)}
+.r2-section{margin-block:var(--space-6)}
+.r2-section-head{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-5)}
+.r2-section-head h2{font-size:var(--fs-h2);line-height:var(--lh-h2)}
+.r2-section-head .ma-eyebrow{display:block;color:var(--action);margin-bottom:var(--space-2)}
+.r2-section-head .ma-eyebrow::before{content:'— ';color:var(--action)}
+.r2-company-row{display:flex;gap:var(--space-4);align-items:flex-start;background:var(--white)}
+.r2-company-body{flex:1;min-width:0}
+.r2-company-body p{margin-block:var(--space-2)}
+.r2-company-end{display:grid;justify-items:end;gap:var(--space-3);font-size:var(--fs-sm);color:var(--text-3)}
+.r2-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}
+.r2-chip{padding:var(--space-1) var(--space-3);border-radius:var(--radius-pill);background:var(--bg-subtle);font-size:var(--fs-sm);color:var(--text-2)}
+.r2-cta{display:grid;grid-template-columns:1fr 1fr;background:var(--blue-50);border-radius:var(--radius-lg);overflow:hidden;margin-top:var(--space-8)}
+.r2-cta>div{padding:var(--space-8)}
+.r2-cta img{width:100%;height:100%;object-fit:cover;min-height:var(--space-24)}
+.r2-cta h2{margin-bottom:var(--space-5)}
+.r2-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-6);background:var(--bg-subtle);border-radius:var(--radius-lg);padding:var(--space-6);margin-top:var(--space-8)}
+.r2-steps strong{display:block;color:var(--action);margin-bottom:var(--space-3)}
+.r2-steps .icon{background:var(--blue-100);border-radius:var(--radius-pill);padding:var(--space-3);width:var(--space-12);height:var(--space-12);margin-bottom:var(--space-3)}
+.r2-facts{background:var(--bg-subtle)}
+.ma-proto .ma-footer a{min-height:var(--tap-min);display:inline-flex;align-items:center}
+.ma-proto .ma-header__brand{min-height:var(--tap-min)}
+.ma-proto .ma-sheet__header:has(#request-title){background:var(--blue-900)}
+.ma-proto .ma-sheet__header:has(#request-title) :is(h2,.ma-eyebrow,button){color:var(--white)}
+.ma-proto .ma-sheet__header:has(#request-title) button{background:var(--blue-800)}
+.r2-sticky{display:none}
+@media(max-width:767px){
+ .ma-proto .r2-band{padding:var(--space-6);gap:var(--space-4)}
+ .r2-search{padding:var(--space-3)}
+ .ma-proto .ma-rcard--row,.ma-proto .r2-company-row{padding:var(--space-4)}
+ .r2-company-row{flex-wrap:wrap}.r2-company-body{flex-basis:65%}.r2-company-end{width:100%;justify-items:start;border-top:1px solid var(--border-subtle);padding-top:var(--space-3)}
+ .r2-cta,.r2-steps{grid-template-columns:1fr}.r2-cta img{max-height:calc(var(--space-24)*2)}
+ .r2-sticky{display:flex;position:sticky;bottom:0;padding:var(--space-3);background:var(--white);box-shadow:var(--shadow-3);z-index:var(--z-sticky)}
+ .r2-sticky .ma-btn{width:100%}
+ .ma-proto #filters{height:auto;max-height:90dvh;margin-top:auto;margin-bottom:0;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+}
+.ma-proto .ma-header__link{min-height:var(--tap-min)}
+/* Static review pages must remain visible when the panel suspends animation clocks. */
+.ma-proto .ma-main{animation:none}
+.ma-proto .ma-sheet[open],.ma-proto .ma-sheet::backdrop{animation:none}
+.r2-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+.r2-photo-card{display:block;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;color:var(--text);text-decoration:none}
+.r2-photo-card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.r2-photo-card span{display:flex;align-items:center;min-height:var(--tap-min);padding:var(--space-4);font-weight:var(--fw-semibold)}
+@media(max-width:767px){.r2-photo-grid{grid-template-columns:1fr}}
+.ma-proto .r2-band:has(>.ma-avatar){justify-content:flex-start;align-items:center}
+
+/* Approved results bar: selected filters and count, then sorting. */
+.r2-results-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.r2-results-summary{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-3);min-width:0}
+.r2-results-summary p{margin:0}
+.r2-results-summary .ma-cluster:empty{display:none}
+.r2-results-bar>.ma-field{flex:0 0 auto;position:relative}
+.r2-results-bar>.ma-field>label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.ma-proto-toolbar:has(>.ma-lg-down):not(:has(.ma-field)){display:none}
+@media(max-width:1023px){.ma-proto-toolbar:has(>.ma-lg-down):not(:has(.ma-field)){display:flex}}
+@media(max-width:767px){.r2-results-bar{align-items:stretch;flex-direction:column}.r2-results-bar>.ma-field,.r2-results-bar .ma-select{width:100%}}
+
+@media(min-width:1024px){.ma-proto .ma-proto-sidebar{padding:var(--space-4)}.ma-proto-sidebar :is([data-clear],[data-company-clear]){padding-inline:var(--space-2)}}
+
+/* Companies catalog card (owner decision 2026-09-22): the v1 photo-listing layout
+   (.company-listing etc., from home.css — loaded on this page for exactly these classes)
+   plus P2 additions (verified badge, offer chips). Two overrides on top of home.css: the
+   action button reads the theme's main blue instead of home.css's dark listing-action fill,
+   and the offers link grows to a full 44px tap target. */
+.ma-proto .listing-media{min-height:150px}
+.ma-proto .company-listing .listing-action{background:var(--action)}
+.ma-proto .company-listing .listing-action:hover{background:var(--action-hover,var(--blue-600))}
+.ma-proto .listing-offers{min-height:var(--tap-min)}
+.ma-proto .listing-heading{flex-wrap:wrap}
+.ma-proto .listing-badges{display:flex;align-items:center;gap:var(--space-2);margin:var(--space-2) 0 0}
+.ma-proto .listing-chips{margin:var(--space-2) 0 0}
+/* Mobile catalog uses display:contents for its body, so added blocks span both columns. */
+.ma-proto .listing-badges{flex-wrap:wrap}
+@media(max-width:767px){
+ .ma-proto .listing-badges,.ma-proto .listing-chips{grid-column:1 / -1}
+}

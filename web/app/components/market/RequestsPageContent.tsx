@@ -11,6 +11,7 @@ import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
+import { useFilters } from "../../lib/use-filters";
 import { RequestFormSheet } from "./RequestFormSheet";
 
 type MappedRequest = {
@@ -40,10 +41,12 @@ function skeleton() {
 export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boolean }) {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
-  const [city, setCity] = useState(searchParams.get("city") || "");
-  const [category, setCategory] = useState(searchParams.get("category") || "");
-  const [query, setQuery] = useState(searchParams.get("q") || "");
-  const [sort, setSort] = useState(searchParams.get("sort") || "newest");
+  const filters = useFilters("/requests/");
+  const city = filters.get("city"), category = filters.get("category"), query = filters.get("q"), sort = filters.get("sort", "newest");
+  const setCity = (city: string) => filters.set({city});
+  const setCategory = (category: string) => filters.set({category});
+  const setQuery = (q: string) => filters.set({q});
+  const setSort = (sort: string) => filters.set({sort});
   const [sheetOpen, setSheetOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(autoOpenNew);
   const formCategory = searchParams.get("category") || "";
@@ -52,18 +55,9 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
   useEffect(() => {
     if (!autoOpenNew) return;
     // /requests/new/ opens the form once over the list, then the address becomes the list URL —
-    // matches site/dist/market.js's renderAll() for body[data-open="new-request"].
+    // preserves the published /requests/new/ entry point.
     window.history.replaceState(window.history.state, "", "/requests/" + window.location.search);
   }, [autoOpenNew]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    for (const [key, value] of Object.entries({ city, category, q: query, sort: sort === "newest" ? "" : sort })) {
-      if (value) params.set(key, value); else params.delete(key);
-    }
-    const search = params.toString();
-    window.history.replaceState(window.history.state, "", `/requests/${search ? `?${search}` : ""}`);
-  }, [city, category, query, sort]);
 
   const list = useCallback(
     (overrides: Partial<{ category: string; city: string; q: string }>) =>
@@ -81,7 +75,8 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
 
   const sorted = useMemo(() => {
     const arr = [...results];
-    if (sort === "expiring" && store) arr.sort((a, b) => (store.daysLeft as (r: unknown) => number)(a) - (store.daysLeft as (r: unknown) => number)(b));
+    if (["expiring", "ending"].includes(sort) && store) arr.sort((a, b) => (store.daysLeft as (r: unknown) => number)(a) - (store.daysLeft as (r: unknown) => number)(b));
+    if (sort === "few" && store) arr.sort((a,b) => store.offerCount(a.id) - store.offerCount(b.id));
     return arr;
   }, [results, sort, store]);
 
@@ -145,11 +140,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     if (key === "city") setCity("");
     else setCategory("");
   };
-  const clearFilters = () => {
-    setCity("");
-    setCategory("");
-    setQuery("");
-  };
+  const clearFilters = () => filters.set({city: "", category: "", q: "", sort: ""});
 
   const filterCount = Number(!!city) + Number(!!category);
   const countLabel = !available
@@ -233,6 +224,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
               options: [
                 { value: "newest", label: "ახლად დამატებული" },
                 { value: "expiring", label: "მალე იწურება" },
+                { value: "few", label: "ნაკლები შეთავაზება" },
               ],
             }}
           />

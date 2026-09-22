@@ -1,4 +1,4 @@
-// Postgres access for the API functions. The leading underscore keeps this file from becoming a route.
+// Postgres access shared by the Next Route Handlers.
 // DATABASE_URL (Vercel env, secret) is the neondb_owner connection string of the Neon branch.
 // Every request runs in its own transaction as the caller's role (anonymous / authenticated),
 // with the verified JWT claims in request.jwt.claims, so the RLS policies and SECURITY DEFINER

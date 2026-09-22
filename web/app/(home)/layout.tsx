@@ -4,7 +4,7 @@ import "../styles/home.css";
 import "../styles/market.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { SiteScripts } from "../components/SiteScripts";
+import { Toasts } from "../components/Toasts";
 
 export const metadata: Metadata = {
   title: "MeetAny — იპოვე შენი ბიზნესპარტნიორი",
@@ -38,8 +38,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
         </div>
-        <div className="ma-toasts" id="ma-toasts" aria-live="polite" aria-atomic="false" />
-        <SiteScripts home />
+        <Toasts />
       </body>
     </html>
   );

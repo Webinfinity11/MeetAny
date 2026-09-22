@@ -1,6 +1,5 @@
-// MeetAny data API (replaces the Neon Data API). Served at /api/db/* (vercel.json rewrites
-// /api/db/:path* to /api/db?path=:path*). It speaks the small PostgREST subset that
-// dist/v2/market-store.js uses, so the browser code only needs config.dataApiUrl = '/api/db':
+// MeetAny data API, served by the Next /api/db/[...path] Route Handler.
+// It implements the PostgREST subset used by app/lib/market-store.js:
 //   GET  /api/db/<table>?select=a,b|*&<col>=eq.<v>|in.(<v>,…)|is.null&order=<col>.asc|desc&limit=<n>
 //        tables: requests, offers, profiles
 //   POST /api/db/rpc/<function>   JSON body = named arguments of public.<function>

@@ -2,10 +2,10 @@
    Built from the rules of the old sheets (style.css, refinement.css, design.css, industry-objects.css,
    mobile-polish.css, interface-polish.css) that match an element on this page; every colour, radius and
    font now reads a token, so the theme knobs in tokens.css restyle the home page too.
-   Loaded only by dist/index.html (tokens.css, home.css, market.css). This file is now the source: edit it
+   Loaded by the home layout and the company catalog. This file is the source: edit it
    directly, tokens only. Mtavruli only through the rules below (h1/h2 and buttons), like every page. */
 body.design-two{font-feature-settings:normal}
-body.design-two :is(h1,h2),body.design-two .ma-sheet :is(h1,h2){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
+body.design-two :is(h1,h2,h3,h4),body.design-two .ma-sheet :is(h1,h2){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
 body.design-two :is(.button,.ma-btn,.m-btn){font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
 /* Step headings follow the shared heading typography. */
 body.design-two .discovery-steps h2{font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}

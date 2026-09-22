@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { PhotoField } from "./PhotoField";
 import { useMarketStore } from "../../lib/market-client";
@@ -8,11 +10,13 @@ import { categories, cities, units } from "../../lib/categories";
 
 export function RequestFormSheet({
   open,
+  existing,
   initialCategory = "",
   onClose,
   triggerRef,
 }: {
   open: boolean;
+  existing?: {id: string; title: string; category: string; city: string; quantity: number | null; unit: string | null; neededBy: string | null; body: string; photo: string | null};
   initialCategory?: string;
   onClose: () => void;
   triggerRef?: React.RefObject<HTMLElement | null>;
@@ -20,21 +24,24 @@ export function RequestFormSheet({
   const { store } = useMarketStore();
   const ref = useRef<HTMLDialogElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState(initialCategory);
-  const [city, setCity] = useState("tbilisi");
-  const [quantity, setQuantity] = useState("");
-  const [unit, setUnit] = useState("pcs");
-  const [neededBy, setNeededBy] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState(existing?.title || "");
+  const [category, setCategory] = useState(existing?.category || initialCategory);
+  const [city, setCity] = useState(existing?.city || "tbilisi");
+  const [quantity, setQuantity] = useState(existing?.quantity != null ? String(existing.quantity) : "");
+  const [unit, setUnit] = useState(existing?.unit || "pcs");
+  const [neededBy, setNeededBy] = useState(existing?.neededBy || "");
+  const [body, setBody] = useState(existing?.body || "");
   const [photo, setPhoto] = useState<File | null>(null);
   const [pending, setPending] = useState(false);
+  const dirty = useRef(false);
+  const opener = useRef<HTMLElement | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
     if (open && !d.open) {
+      opener.current = document.activeElement as HTMLElement;
       d.showModal();
       titleRef.current?.focus();
     }
@@ -46,7 +53,7 @@ export function RequestFormSheet({
     if (!d) return;
     const onCloseEvent = () => {
       onClose();
-      triggerRef?.current?.focus();
+      (triggerRef?.current || opener.current)?.focus();
     };
     d.addEventListener("close", onCloseEvent);
     return () => d.removeEventListener("close", onCloseEvent);
@@ -61,7 +68,7 @@ export function RequestFormSheet({
     setPending(true);
     setError(null);
     try {
-      await (store.createRequest as (input: unknown) => Promise<unknown>)({
+      const input = {
         title,
         category,
         city,
@@ -70,7 +77,11 @@ export function RequestFormSheet({
         neededBy: neededBy || undefined,
         body,
         photo,
-      });
+      };
+      if (existing) await store.updateRequest(existing.id, input);
+      else await store.createRequest(input);
+      dirty.current = false;
+      toast(existing ? "მოთხოვნა განახლდა." : "მოთხოვნა გამოქვეყნდა.");
       setTitle("");
       setCategory("");
       setQuantity("");
@@ -85,8 +96,12 @@ export function RequestFormSheet({
     }
   }
 
+  function close() {
+    if (pending) return;
+    if (!dirty.current || window.confirm("შეყვანილი ტექსტი არ შეინახება. დავხურო?")) ref.current?.close();
+  }
   return (
-    <dialog className="ma-sheet ma-sheet--wide ma-sheet--full" id="new-request" ref={ref} aria-labelledby="request-title">
+    <dialog className="ma-sheet ma-sheet--wide ma-sheet--full" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
       <header className="ma-sheet__header">
         <div>
           <span className="ma-eyebrow ma-eyebrow--brand">ახალი მოთხოვნა</span>
@@ -94,13 +109,14 @@ export function RequestFormSheet({
             რა გჭირდება?
           </h2>
         </div>
-        <button className="ma-sheet__close" aria-label="ფორმის დახურვა" onClick={() => ref.current?.close()}>
+        <button className="ma-sheet__close" aria-label="ფორმის დახურვა" onClick={close}>
           <Icon name="x" />
         </button>
       </header>
       <div className="ma-sheet__body">
+        {store?.isReady() && !store.currentUser() ? <p className="ma-note">გამოქვეყნებისთვის <Link className="ma-link" href="/account/">შედი ანგარიშში</Link> ან დარეგისტრირდი.</p> : null}
         <p className="ma-lead">მოკლედ აღწერე საჭიროება. შეთავაზებებს მხოლოდ შენ ნახავ.</p>
-        <form className="ma-form" id="new-request-form" onSubmit={submit}>
+        <form className="ma-form" id="new-request-form" onSubmit={submit} onChange={() => {dirty.current = true;}}>
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="title">
               სათაური *
@@ -196,7 +212,7 @@ export function RequestFormSheet({
               onChange={(e) => setBody(e.target.value)}
             />
           </div>
-          <PhotoField file={photo} onChange={setPhoto} />
+          {!existing ? <PhotoField file={photo} onChange={setPhoto} /> : existing.photo ? <p className="ma-note">არსებული ფოტო შენარჩუნდება.</p> : null}
           <p className="ma-note">
             <Icon name="clock" />
             მოთხოვნა 14 დღე იქნება აქტიური. ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.
@@ -209,11 +225,11 @@ export function RequestFormSheet({
         </form>
       </div>
       <footer className="ma-sheet__footer">
-        <button className="ma-btn ma-btn--secondary" type="button" onClick={() => ref.current?.close()}>
+        <button className="ma-btn ma-btn--secondary" type="button" onClick={close}>
           გაუქმება
         </button>
-        <button className="ma-btn ma-btn--primary" type="submit" form="new-request-form" disabled={pending}>
-          {pending ? "იგზავნება…" : "გამოქვეყნება"} <Icon name="arrow-right" />
+        <button className="ma-btn ma-btn--primary" type="submit" form="new-request-form" disabled={pending || !store?.currentUser()}>
+          {pending ? "იგზავნება…" : existing ? "შენახვა" : "გამოქვეყნება"} <Icon name="arrow-right" />
         </button>
       </footer>
     </dialog>

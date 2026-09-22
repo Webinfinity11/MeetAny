@@ -40,7 +40,9 @@ export function CompanyProfilePageContent() {
     };
   }, [id]);
 
-  if (!ready || !available) {
+  if (ready && !available) return <div className="ma-page"><p role="alert">სერვისი დროებით მიუწვდომელია. სცადე თავიდან.</p></div>;
+
+  if (!ready) {
     return (
       <div className="ma-page" aria-busy="true">
         <p role="status">იტვირთება…</p>

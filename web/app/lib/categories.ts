@@ -1,8 +1,3 @@
-// Labels mirror site/dist/market-store.js (categories, cities, units, priceTypes) exactly —
-// MarketStore is the source of truth for these at runtime; this module only adds the Lucide
-// icon per category (owner decision 2026-09-22: light-blue square icon, not the 3D sprite,
-// in the requests/companies sidebars — site/scripts/generate-industries.cjs:8-20 for industries,
-// extended here with the two request-only categories "furniture" and "other").
 export const categoryIcon: Record<string, string> = {
   furniture: "armchair",
   construction: "hard-hat",

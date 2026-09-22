@@ -1,10 +1,6 @@
 "use client";
 
-// Phone is a public column (db/CONTRACT.md "UI: საჯარო ტელეფონი" — profiles_select_public
-// RLS policy + a column grant for anon/authenticated). Fetched directly here rather than
-// through window.MarketStore (public/market-store.js, kept byte-identical to site/dist) since
-// its own PUBLIC_PROFILE column list and list_companies() RPC don't carry phone. A blocked
-// profile simply doesn't come back — id absent from the returned map, not an error.
+// Public phone projection only. Never request email or select=* for profiles.
 export async function fetchPhones(ids: string[]): Promise<Record<string, string>> {
   const unique = [...new Set(ids)].filter(Boolean);
   if (!unique.length) return {};

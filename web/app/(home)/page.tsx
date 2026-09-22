@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Icon } from "../components/Icon";
 import { DiscoverySearch } from "../components/DiscoverySearch";
-import { industries, sectors } from "../lib/home-data";
+import { sectors } from "../lib/home-data";
+
+import { HomeCategories, HomeIndustries, HomeFeatured } from "../components/HomeLive";
 
 export default function HomePage() {
   return (
@@ -28,9 +30,7 @@ export default function HomePage() {
             კატალოგის ნახვა <Icon name="arrow-right" />
           </Link>
         </div>
-        {/* Populated client-side by app.js (site/dist/app.js), unchanged — matches site/dist/index.html.
-            dangerouslySetInnerHTML keeps React from diffing children app.js owns after mount. */}
-        <div className="category-grid" id="category-grid" dangerouslySetInnerHTML={{ __html: "" }} />
+        <HomeCategories />
       </section>
 
       <section className="industry-section" id="industries" aria-labelledby="industry-heading">
@@ -43,25 +43,7 @@ export default function HomePage() {
             <Icon name="arrow-right" />
           </Link>
         </div>
-        <ul className="industry-list" id="industry-list" aria-label="საქმიანობის მიმართულებები">
-          {industries.map((ind) => (
-            <li key={ind.id}>
-              <Link href={`/companies/?industry=${ind.id}`} aria-label={ind.name}>
-                <span className="industry-icon industry-object" aria-hidden="true">
-                  <img
-                    src="/assets/industry-objects.png"
-                    alt=""
-                    style={{ "--object-x": ind.x, "--object-y": ind.y } as React.CSSProperties}
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </span>
-                <span className="industry-title tt">{ind.title}</span>
-                <span className="industry-count" />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <HomeIndustries />
       </section>
 
       <section className="market-sectors">
@@ -96,9 +78,7 @@ export default function HomePage() {
             ყველა კომპანია <Icon name="arrow-right" />
           </Link>
         </div>
-        {/* Populated client-side by market.js's renderLegacyHome() (site/dist/market.js), unchanged.
-            dangerouslySetInnerHTML keeps React from diffing children market.js owns after mount. */}
-        <div className="company-grid" id="featured-companies" dangerouslySetInnerHTML={{ __html: "" }} />
+        <HomeFeatured />
       </section>
 
       <section className="partnership-banner" aria-labelledby="partnership-heading">

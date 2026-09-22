@@ -25,6 +25,9 @@ export function PhotoField({ file, onChange }: { file: File | null; onChange: (f
       onChange(null);
       return;
     }
+    if (next.size > 5 * 1024 * 1024) {
+      setError("ფოტო მაქსიმუმ 5 MB უნდა იყოს."); onChange(null); return;
+    }
     if (!ALLOWED.includes(next.type)) {
       setError("აირჩიე JPG, PNG, WEBP ან GIF სურათი.");
       onChange(null);

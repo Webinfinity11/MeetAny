@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Icon } from "../Icon";
 import { PageBand } from "./PageBand";
 import { SectionHead } from "./SectionHead";
@@ -13,6 +12,7 @@ import { DirectionPhotoCard } from "./DirectionPhotoCard";
 import { PartnershipCTA } from "./PartnershipCTA";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
+import { useFilters } from "../../lib/use-filters";
 import { fetchPhones } from "../../lib/phones";
 
 type MappedCompany = {
@@ -43,18 +43,20 @@ function skeleton() {
 
 export function CompaniesPageContent() {
   const { store, ready, available } = useMarketStore();
-  const searchParams = useSearchParams();
-  const [industry, setIndustry] = useState(searchParams.get("industry") || "");
-  const [city, setCity] = useState("");
-  const [verified, setVerified] = useState(false);
-  const [query, setQuery] = useState("");
+  const filters = useFilters("/companies/");
+  const industry = filters.get("industry"), city = filters.get("city"), query = filters.get("q"), verified = filters.get("verified") === "1";
+  const type = filters.get("type");
+  const setIndustry = (industry: string) => filters.set({industry});
+  const setCity = (city: string) => filters.set({city});
+  const setQuery = (q: string) => filters.set({q});
+  const setVerified = (value: boolean) => filters.set({verified: value ? "1" : ""});
   const [sheetOpen, setSheetOpen] = useState(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
 
   const list = useCallback(
     (overrides: Partial<{ industry: string; city: string; verified: boolean }>) =>
-      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, verified, q: query, ...overrides }) || [],
-    [store, industry, city, verified, query],
+      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, verified, type, q: query, ...overrides }) || [],
+    [store, industry, city, verified, query, type],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -95,21 +97,18 @@ export function CompaniesPageContent() {
   }, [results, store, phones]);
 
   const activeItems = [
+    ...(type ? [{key: "type", label: ({suppliers: "მომწოდებლები", services: "მომსახურება", distributors: "დისტრიბუტორები", partners: "ბიზნესპარტნიორები"} as Record<string, string>)[type] || type}] : []),
     ...(industry ? [{ key: "industry", label: categories[industry] }] : []),
     ...(city ? [{ key: "city", label: cities[city] }] : []),
     ...(verified ? [{ key: "verified", label: "დადასტურებული" }] : []),
   ];
   const removeFilter = (key: string) => {
-    if (key === "industry") setIndustry("");
+    if (key === "type") filters.set({type: ""});
+    else if (key === "industry") setIndustry("");
     else if (key === "city") setCity("");
     else setVerified(false);
   };
-  const clearFilters = () => {
-    setIndustry("");
-    setCity("");
-    setVerified(false);
-    setQuery("");
-  };
+  const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: ""});
   const filterCount = Number(!!industry) + Number(!!city) + Number(verified);
 
   const countLabel = !available ? "" : !ready ? "კომპანიები იტვირთება…" : `${rows.length} კომპანია`;

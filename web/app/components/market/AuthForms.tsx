@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 
-type Mode = "login" | "register";
+type Mode = "login" | "register" | "reset";
 
-function LoginForm({ onSwitch }: { onSwitch: () => void }) {
+function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () => void }) {
   const { store } = useMarketStore();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -23,8 +23,10 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
     try {
       await store.login(email, password);
       router.refresh();
+      window.dispatchEvent(new Event("meetany:auth"));
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "შესვლა ვერ მოხერხდა.");
+      window.dispatchEvent(new Event("meetany:auth"));
     } finally {
       setPending(false);
     }
@@ -32,6 +34,7 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
 
   return (
     <form className="ma-form" onSubmit={submit}>
+      <button type="button" className="ma-btn ma-btn--ghost" onClick={onReset}>პაროლი დაგავიწყდა?</button>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="login-email">
           ელფოსტა
@@ -62,10 +65,12 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
 function RegisterForm({ initialRole }: { initialRole: string }) {
   const { store } = useMarketStore();
   const router = useRouter();
-  const [role, setRole] = useState(initialRole === "company" ? "company" : "client");
-  const [name, setName] = useState("");
-  const [company, setCompany] = useState("");
-  const [phone, setPhone] = useState("+995 ");
+  const profileRequired = !!store?.needsProfile();
+  const profile = store?.pendingProfile();
+  const [role, setRole] = useState(profile?.role || (initialRole === "company" ? "company" : "client"));
+  const [name, setName] = useState(profile?.name || "");
+  const [company, setCompany] = useState(profile?.company || "");
+  const [phone, setPhone] = useState(profile?.phone || "+995 ");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("tbilisi");
   const [industry, setIndustry] = useState("");
@@ -82,6 +87,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     try {
       await store.register({ role, name, company, phone, email, city, industry, password, acceptTerms });
       router.refresh();
+      window.dispatchEvent(new Event("meetany:auth"));
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "რეგისტრაცია ვერ შესრულდა.");
     } finally {
@@ -129,7 +135,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-email">
             ელფოსტა *
           </label>
-          <input className="ma-input" id="reg-email" type="email" required maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.ge" />
+          <input className="ma-input" id="reg-email" type="email" required={!profileRequired} disabled={profileRequired} maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.ge" />
         </div>
       </div>
       <div className="ma-form__row ma-form__row--2">
@@ -167,7 +173,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
         <label className="ma-field__label" htmlFor="reg-password">
           პაროლი * <span className="ma-field__opt">მინიმუმ 8 სიმბოლო</span>
         </label>
-        <input className="ma-input" id="reg-password" type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="ma-input" id="reg-password" type="password" required={!profileRequired} disabled={profileRequired} minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       <label className="ma-check">
         <input type="checkbox" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />
@@ -186,7 +192,17 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
 }
 
 export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
-  const [mode, setMode] = useState<Mode>("login");
+  const searchParams = useSearchParams();
+  const {store} = useMarketStore();
+  const [mode, setMode] = useState<Mode>(searchParams.get("tab") === "register" || initialRole ? "register" : "login");
+  const [, refresh] = useState(0);
+  useEffect(() => {
+    const update = () => refresh(n => n + 1);
+    window.addEventListener("meetany:auth", update);
+    return () => window.removeEventListener("meetany:auth", update);
+  }, []);
+  if (store?.pendingEmail()) return <RecoveryForm verification onDone={() => refresh(n => n + 1)} />;
+  if (store?.needsProfile()) return <section className="ma-panel"><h2>პროფილის დასრულება</h2><RegisterForm initialRole={initialRole}/></section>;
   return (
     <section className="ma-panel">
       <nav className="ma-tabs" aria-label="შესვლა ან რეგისტრაცია">
@@ -197,7 +213,45 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
           რეგისტრაცია
         </button>
       </nav>
-      {mode === "login" ? <LoginForm onSwitch={() => setMode("register")} /> : <RegisterForm initialRole={initialRole} />}
+      {mode === "reset" ? <RecoveryForm onDone={() => setMode("login")} /> : mode === "login" ? <LoginForm onSwitch={() => setMode("register")} onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
     </section>
   );
+}
+
+function RecoveryForm({ verification = false, onDone }: {verification?: boolean; onDone: () => void}) {
+  const {store} = useMarketStore();
+  const [email, setEmail] = useState(store?.pendingResetEmail() || "");
+  const [sent, setSent] = useState(verification || !!store?.pendingResetEmail());
+  const [code, setCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  async function submit(e: React.FormEvent) {
+    e.preventDefault(); if (!store || pending) return;
+    setPending(true); setError("");
+    try {
+      if (verification) {await store.verifyEmailCode(code); onDone();}
+      else if (sent) {await store.resetPassword(code, password); onDone();}
+      else {await store.requestPasswordReset(email); setSent(true);}
+    } catch (err) {setError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
+    finally {setPending(false);}
+  }
+  return <form className="ma-form" onSubmit={submit}>
+    <h2>{verification ? "ელფოსტის დადასტურება" : "პაროლის აღდგენა"}</h2>
+    {!sent ? <label className="ma-field">ელფოსტა<input className="ma-input" type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label> : <>
+      <p>შეამოწმე ელფოსტა და შეიყვანე მიღებული კოდი.</p>
+      <label className="ma-field">კოდი<input className="ma-input" required autoComplete="one-time-code" value={code} onChange={e => setCode(e.target.value)}/></label>
+      {!verification ? <label className="ma-field">ახალი პაროლი<input className="ma-input" type="password" minLength={8} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)}/></label> : null}
+      <button type="button" className="ma-btn ma-btn--ghost" disabled={pending} onClick={async () => {
+        setPending(true); setError("");
+        try {if (verification) await store?.resendCode(); else await store?.requestPasswordReset(email); setNotice("კოდი ხელახლა გაიგზავნა.");}
+        catch(err) {setError((err as {userMessage?: string}).userMessage || "ვერ გაიგზავნა.");}
+        finally {setPending(false);}
+      }}>კოდის ხელახლა გაგზავნა</button>
+    </>}
+    {notice ? <p role="status">{notice}</p> : null}{error ? <p className="ma-field__error" role="alert">{error}</p> : null}
+    <button className="ma-btn ma-btn--primary" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</button>
+    {!verification ? <button type="button" className="ma-btn ma-btn--ghost" onClick={onDone}>შესვლაზე დაბრუნება</button> : null}
+  </form>;
 }
