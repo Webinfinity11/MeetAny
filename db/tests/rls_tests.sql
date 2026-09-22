@@ -140,9 +140,9 @@ begin
     perform t.ok(exists (select 1 from unnest(r.proconfig) c where c like 'search_path=%'),
                  'security definer ' || r.sig || ' pins search_path');
   end loop;
-  perform t.ok(not has_column_privilege('anonymous', 'public.profiles', 'phone', 'SELECT'), 'anonymous cannot read profiles.phone');
+  perform t.ok(has_column_privilege('anonymous', 'public.profiles', 'phone', 'SELECT'), 'anonymous can read profiles.phone');
   perform t.ok(not has_column_privilege('anonymous', 'public.profiles', 'email', 'SELECT'), 'anonymous cannot read profiles.email');
-  perform t.ok(not has_column_privilege('authenticated', 'public.profiles', 'phone', 'SELECT'), 'authenticated cannot read profiles.phone');
+  perform t.ok(has_column_privilege('authenticated', 'public.profiles', 'phone', 'SELECT'), 'authenticated can read profiles.phone');
   perform t.ok(not has_column_privilege('authenticated', 'public.profiles', 'email', 'SELECT'), 'authenticated cannot read profiles.email');
   perform t.ok(not has_column_privilege('authenticated', 'public.profiles', 'name', 'SELECT'), 'authenticated cannot read profiles.name');
   perform t.ok(not has_column_privilege('authenticated', 'public.profiles', 'blocked', 'SELECT'), 'authenticated cannot read profiles.blocked');
@@ -283,14 +283,15 @@ select t.ok(not exists (select 1 from public.profiles where id = t.get('gone')) 
 select t.as_anon();
 select t.lives($$select id, role, company, industry, verified, city from public.profiles$$, 'anon reads public profile columns');
 select t.ok((select count(*) from public.profiles) = 10, 'anon sees all profiles (public columns)');
-select t.throws($$select phone from public.profiles$$, '42501', 'anon cannot select phone');
+select t.ok((select phone from public.profiles where id = t.uid('nino')) = '+995 555 120 450', 'anon reads client phone');
+select t.ok((select phone from public.profiles where id = t.uid('wood')) = '+995 555 781 900', 'anon reads company phone');
 select t.throws($$select email from public.profiles$$, '42501', 'anon cannot select email');
 select t.throws($$select * from public.profiles$$, '42501', 'anon cannot select *');
 select t.ok((select count(*) from public.my_profile()) = 0, 'anon my_profile() is empty');
 select t.throws($$update public.profiles set company = 'x'$$, '42501', 'anon cannot update profiles');
 
 select t.as_user('wood');
-select t.throws($$select phone from public.profiles where id = auth.uid()$$, '42501', 'user cannot read own phone via table (use my_profile)');
+select t.ok((select phone from public.profiles where id = auth.uid()) = '+995 555 781 900', 'user reads own public phone');
 select t.throws($$select email, name from public.profiles where id = '$$ || t.uid('nino') || $$'$$, '42501', 'user cannot read other user email/name');
 select t.ok((select phone from public.my_profile()) = '+995 555 781 900', 'my_profile returns own phone');
 select t.ok((select count(*) from public.my_profile()) = 1, 'my_profile returns exactly one row');
@@ -610,7 +611,12 @@ select t.ok((select count(*) from public.requests where id = t.get('spam')) = 0,
 -- blocking
 select t.lives(format('select public.admin_set_blocked(%L, true)', t.uid('bad')), 'admin blocks client');
 select t.lives(format('select public.admin_set_blocked(%L, true)', t.uid('badco')), 'admin blocks company');
+select t.as_anon();
+select t.ok((select count(phone) from public.profiles where id in (t.uid('bad'), t.uid('badco'))) = 0, 'anon cannot read blocked client or company phone');
+select t.as_user('wood');
+select t.ok((select count(phone) from public.profiles where id in (t.uid('bad'), t.uid('badco'))) = 0, 'authenticated cannot read blocked phones');
 select t.as_user('bad');
+select t.ok((select count(phone) from public.profiles where id = auth.uid()) = 0, 'blocked caller cannot read own phone through public table');
 select t.throws($$select public.create_request('დაბლოკილის განცხადება', 'დაბლოკილი ვერ უნდა დადოს', 'food', 'gori')$$, 'MA002', 'blocked user create_request -> MA002');
 select t.ok((select blocked from public.my_profile()), 'blocked user sees own blocked flag via my_profile');
 select t.as_user('badco');
@@ -709,7 +715,7 @@ select t.throws($$select public.admin_list_users()$$, 'MA001', 'no-profile: admi
 select t.throws($$select public.admin_stats()$$, 'MA001', 'no-profile: admin_stats -> MA001');
 select t.throws(format('select public.admin_set_hidden(%L, true)', t.get('np_req')), 'MA001', 'no-profile: admin_set_hidden -> MA001');
 select t.throws(format('select public.admin_set_blocked(%L, true)', t.uid('bad')), 'MA001', 'no-profile: admin_set_blocked -> MA001');
-select t.throws($$select phone from public.profiles$$, '42501', 'no-profile: cannot read phones');
+select t.ok((select phone from public.profiles where id = t.uid('wood')) = '+995 555 781 900', 'no-profile: reads public phones');
 select t.throws($$insert into public.profiles (id, name, company, phone, email, city) values (auth.uid(), 'Self Made', 'Self Made', '+995 555 222 444', 'noprofile@example.ge', 'tbilisi')$$, '42501', 'no-profile: cannot insert own profile directly');
 select t.as_super();
 select t.ok((select count(*) from public.requests where id = t.get('np_req')) = 1, 'no-profile: nothing was changed');

@@ -62,7 +62,7 @@ Profile galleries: four images per profile, 24 additional licensed Pexels photog
 
 ## Requests board (Design 02)
 
-Design 02 adds a requests board: a client posts a free-text request (e.g. "1000 chairs"), companies send written offers with an optional price, and only the request owner sees offer text and prices (others see the count). Choosing an offer reveals phone and email to both sides. Registration uses email and password, a verification code sent by email, and requires a +995 mobile number. Requests stay open for 14 days and can be extended by 7 days, closed or deleted; expired requests refuse offers. `/v2/admin/` hides or deletes requests, blocks users and marks companies as verified. Request pages share to WhatsApp and Facebook. Design 01 is unchanged.
+Design 02 adds a requests board: a client posts a free-text request (e.g. "1000 chairs"), companies send written offers with an optional price, and only the request owner sees offer text and prices (others see the count). კომპანიისა და კერძო პირის ტელეფონი საჯაროა, თუ პროფილი დაბლოკილი არ არის; შეთავაზების არჩევის შემდეგ მხარეებს ელფოსტაც ეძლევათ. Registration uses email and password, a verification code sent by email, and requires a +995 mobile number. Requests stay open for 14 days and can be extended by 7 days, closed or deleted; expired requests refuse offers. `/v2/admin/` hides or deletes requests, blocks users and marks companies as verified. Request pages share to WhatsApp and Facebook. Design 01 is unchanged.
 
 Backend: **Neon Postgres + Neon Auth + Neon Data API**, photos in **Vercel Blob**. `dist/market-store.js` talks to Neon Auth and the Data API with plain `fetch()` (no SDK), keeps a synchronous in-memory cache for the UI and maps server error codes to the Georgian messages. The Vercel Blob browser client (`@vercel/blob@2.8.0/client`, jsDelivr) is loaded only when a photo is uploaded. There are no demo accounts and no localStorage data.
 
@@ -70,8 +70,9 @@ Backend: **Neon Postgres + Neon Auth + Neon Data API**, photos in **Vercel Blob*
 
 `db/schema.sql` (re-runnable; it stops with a clear message if Neon Auth or the Data API is not enabled yet):
 
-- `profiles`: one row per Neon Auth user (`neon_auth."user"`, on delete cascade), created by the `complete_profile` RPC after the email code is verified. Role is `client` or `company`; `admin` is only set by hand. Phone and email are readable only by the owner (`my_profile`) and admins.
+- `profiles`: one row per Neon Auth user (`neon_auth."user"`, on delete cascade), created by the `complete_profile` RPC after the email code is verified. Role is `client` or `company`; `admin` is only set by hand. ტელეფონი საჯაროდ იკითხება `GET /api/db/profiles?select=id,company,phone`-ით; RLS მალავს დაბლოკილ პროფილებს. ელფოსტა რჩება კერძო: `my_profile`, `admin_list_users` და არჩეული შეთავაზების მხარეებისთვის `contact_for_request`.
 - `requests`: public unless hidden; at most 5 open per user; `expires_at` defaults to 14 days; `photo_url` must be a Blob URL inside the uploader's own `<user id>/` folder.
+- ფასის ველის გარეშე UI აგზავნის `send_offer`-ში `p_price: null`, `p_price_type: "negotiable"` („შეთანხმებით“); ორივეს გამოტოვებაც დასაშვებია. სვეტები შენარჩუნებულია; `MA211`/`MA212` მოქმედებს.
 - `offers`: sealed. Only the request author, the offer author and admins can read them; one offer per company per request.
 - RPCs (security definer, caller checked server side): `complete_profile`, `my_profile`, `offer_counts`, `create_request`, `close_request`, `extend_request`, `delete_request`, `send_offer`, `withdraw_offer`, `choose_offer`, `contact_for_request` and the `admin_*` functions. All writes go through RPCs; errors carry stable `MA…` codes.
 - `meetany_private.settings`: server-only settings (the Blob store origin, `photo_origin`).

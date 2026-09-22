@@ -119,6 +119,8 @@ select t.lives(format($$select t.put('fl_og', (public.send_offer(%L, 'Rival boxe
 select t.ok((select price_type = 'total' and not vat_included and delivery_days is null and not delivery_included from public.offers where id = t.get('fl_og')), 'F3 old call with price -> total, defaults');
 select t.lives(format($$select public.send_offer(%L, 'Rival boxes, price after a call', null)$$, t.get('fl_req')), 'F3 three-argument send_offer without price');
 select t.ok((select price is null and price_type = 'negotiable' from public.offers where id = t.get('fl_og')), 'F3 old call without price -> negotiable');
+select t.lives(format($$select public.send_offer(p_request_id => %L, p_body => 'Rival boxes, contact us for details')$$, t.get('fl_req')), 'F3 UI can omit both price arguments');
+select t.ok((select price is null and price_type = 'negotiable' from public.offers where id = t.get('fl_og')), 'F3 omitted price arguments store negotiable');
 select t.lives(format($$select public.send_offer(%L, 'Rival boxes, per box price', 1.5, 'unit', true, 7)$$, t.get('fl_req')), 'F3 rival unit offer');
 select t.as_super();
 select t.throws(format($$insert into public.offers (request_id, company_id, body, price, price_type) values (%L, %L, 'direct negotiable offer', 5, 'negotiable')$$,
@@ -197,7 +199,7 @@ select t.ok((select verified_at is null from public.profiles where id = t.uid('f
 update public.profiles set verified_at = now() where id = t.uid('fl_g');
 select t.ok((select verified_at is null from public.profiles where id = t.uid('fl_g')), 'F6 verified_at cannot exist without verified');
 select t.as_anon();
-select t.throws($$select phone from public.profiles$$, '42501', 'F6 phone still private');
+select t.ok((select phone from public.profiles where id = t.uid('fl_c')) = '+995 533 000 001', 'F6 phone is public');
 
 -- ============================================================= F7. privileges on the new signatures
 select t.as_super();

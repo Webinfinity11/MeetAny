@@ -59,6 +59,7 @@ Response: JSON array. Add `Prefer: count=exact` to get the total in `Content-Ran
 | `id` | uuid | = `neon_auth."user".id` = JWT `sub` |
 | `role` | text | `client` \| `company` \| `admin` |
 | `company` | text | 2–100 chars; for clients defaults to `name` |
+| `phone` | text | საჯარო ნომერი კომპანიისა და კერძო პირისთვის, ფორმატი `+995 5XX XXX XXX` |
 | `industry` | text \| null | category key; non-null for companies, null for clients |
 | `verified` | boolean | set by admin only |
 | `verified_at` | timestamptz \| null | when the company was verified (`admin_set_verified`); null when not verified. Existing verified companies were back-filled with `created_at`. A trigger keeps it consistent with `verified` on every write path |
@@ -69,14 +70,14 @@ Response: JSON array. Add `Prefer: count=exact` to get the total in `Content-Ran
 | `service_cities` | text[] | city keys, fixed city order |
 | `created_at` | timestamptz | |
 
-- Readable by anonymous and authenticated, all rows.
-- **Always list columns explicitly.** `select=*`, or selecting `name`, `phone`, `email`, `blocked`,
+- ანონიმი და ავტორიზებული მომხმარებელი კითხულობენ მხოლოდ დაუბლოკავ პროფილებს (`not blocked`). დაბლოკილი პროფილის მთელი რიგი საჯარო კითხვიდან დამალულია; საკუთარი სრული პროფილი და ადმინისტრატორის წვდომა ქვემოთ მოცემული RPC-ებით რჩება.
+- **Always list columns explicitly.** `select=*`, or selecting `name`, `email`, `blocked`,
   fails with `42501 permission denied` (column-level grants), even for your own row.
 - Own full row -> `rpc/my_profile`. Everybody's full row (admin) -> `rpc/admin_list_users`.
 - A signed-in user whose profile is not completed yet (§5.3) has no row here.
 
 ```
-GET {dataApiUrl}/profiles?select=id,role,company,industry,verified,verified_at,city&id=in.(<id1>,<id2>)
+GET {dataApiUrl}/profiles?select=id,role,company,phone,industry,verified,verified_at,city&id=in.(<id1>,<id2>)
 ```
 
 ### 2.2 `public.requests`
@@ -456,3 +457,9 @@ loads `stub_neon.sql` (Data API roles, `auth.*` over `request.jwt.claims`, `neon
 `schema.sql` twice (re-runnability), then `rls_tests.sql`, `security_tests.sql`, `profile_tests.sql`
 and `fields_tests.sql` (request/offer terms, sealed terms, `verified_at`), drops the
 database, and exits non-zero on the first failing assertion (`TEST FAILED: <name>`).
+
+### UI: საჯარო ტელეფონი და შეთავაზება ფასის გარეშე (2026-09-22)
+
+ტელეფონი წაიკითხეთ `GET /api/db/profiles?select=id,role,company,phone`-ით, საჭიროებისას `&id=eq.<uuid>` ფილტრით. ანონიმურ მოთხოვნას ავტორიზაციის სათაური არ სჭირდება. ელფოსტა საჯარო სვეტი არ არის; `select=*` და `select=email` აკრძალულია. `contact_for_request` უცვლელად რჩება არჩეული შეთავაზების მხარეებისთვის ელფოსტის მისაღებად.
+
+ფასის ველის გარეშე UI-მ უნდა გამოიძახოს `POST /api/db/rpc/send_offer` შემდეგი JSON-ით: `{"p_request_id":"<uuid>","p_body":"<შეთავაზების ტექსტი>","p_price":null,"p_price_type":"negotiable"}`. ქართულად ეს არის „შეთანხმებით“; API-ში იგზავნება `negotiable`. ორივე ფასის არგუმენტის გამოტოვებაც იგივე შედეგს იძლევა. `negotiable` რიცხვით ფასს არ იღებს (`MA211`); `unit`/`total` ფასის გარეშე უარყოფილია (`MA212`). არსებული ფასის სვეტები და ძველი შეთავაზებები შენარჩუნებულია.

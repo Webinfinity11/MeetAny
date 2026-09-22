@@ -8,7 +8,7 @@
 --   * Every write goes through the SECURITY DEFINER RPCs below; the API roles
 --     (anonymous / authenticated) have no INSERT/UPDATE/DELETE privilege on any table.
 --   * Reads go through RLS. profiles exposes only public columns via column grants
---     (phone/email are readable only through my_profile(), contact_for_request()
+--     (phone is public for non-blocked profiles; email is readable only through my_profile(), contact_for_request()
 --     and admin_list_users()).
 --   * Offers are sealed: RLS lets only the request author, the offer author and
 --     admins read them. Everyone else gets numbers only via offer_counts().
@@ -435,7 +435,7 @@ alter table public.offers enable row level security;
 
 drop policy if exists profiles_select_public on public.profiles;
 create policy profiles_select_public on public.profiles
-  for select to anonymous, authenticated using (true);  -- column grants below limit what is readable
+  for select to anonymous, authenticated using (not blocked);  -- blocked profiles are not public
 
 drop policy if exists requests_select_visible on public.requests;
 create policy requests_select_visible on public.requests
@@ -450,7 +450,7 @@ create policy offers_select_sealed on public.offers
          or meetany_private.is_admin());
 
 revoke all on public.profiles, public.requests, public.offers from public, anonymous, authenticated;
-grant select (id, role, company, industry, verified, verified_at, city, about, offers, seeks, service_cities, created_at)
+grant select (id, role, company, phone, industry, verified, verified_at, city, about, offers, seeks, service_cities, created_at)
   on public.profiles to anonymous, authenticated;
 grant select on public.requests to anonymous, authenticated;
 grant select on public.offers to authenticated;

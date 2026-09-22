@@ -19,11 +19,12 @@ select t.signup('pf_g', 'pf.rival@example.ge', '{"role":"company","name":"Rival 
 select t.as_anon();
 select t.lives($$select id, role, company, industry, verified, city, about, offers, seeks, service_cities, created_at from public.profiles$$,
   'P1 anonymous reads the public profile columns');
-select t.throws($$select phone from public.profiles$$, '42501', 'P1 anonymous still cannot read phone');
+select t.ok((select phone from public.profiles where id = t.uid('pf_f')) = '+995 522 000 002', 'P1 anonymous reads company phone');
 select t.throws($$select email from public.profiles$$, '42501', 'P1 anonymous still cannot read email');
 select t.throws($$select name from public.profiles$$, '42501', 'P1 anonymous cannot read the personal name');
 select t.as_user('pf_g');
-select t.throws($$select phone, email from public.profiles$$, '42501', 'P1 other users cannot read phone/email');
+select t.ok((select phone from public.profiles where id = t.uid('pf_c')) = '+995 522 000 001', 'P1 other users read client phone');
+select t.throws($$select email from public.profiles$$, '42501', 'P1 other users cannot read email');
 select t.throws(format($$update public.profiles set about = 'hacked' where id = %L$$, t.uid('pf_f')), '42501', 'P1 no direct UPDATE on profiles');
 select t.throws(format($$update public.profiles set verified = true where id = %L$$, t.uid('pf_g')), '42501', 'P1 cannot verify self with direct UPDATE');
 
