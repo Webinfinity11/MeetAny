@@ -173,12 +173,12 @@ export function AccountPageContent() {
 
   const data = useMemo(() => {
     if (!store || !me) return null;
+    const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true });
     if (me.role === "company") {
       const matching = (store.listRequests({ category: me.industry }) as { id: string; ownerId: string }[]).filter((r) => r.ownerId !== me.id);
       const myOffers = store.myOffers(me);
-      return { matching, myOffers, myRequests: [] as unknown[] };
+      return { matching, myOffers, myRequests };
     }
-    const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true });
     return { matching: [] as unknown[], myOffers: [] as unknown[], myRequests };
   }, [store, me]);
 
@@ -193,7 +193,7 @@ export function AccountPageContent() {
   if (!me) {
     return (
       <div className="ma-page">
-        <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="შედი ანგარიშში" description="MeetAny აკავშირებს ბიზნესებს: კლიენტები წერენ მოთხოვნებს, კომპანიები კი უგზავნიან შეთავაზებებს ფასით." />
+        <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="შედი ანგარიშში" description="MeetAny აკავშირებს ბიზნესებს: ნებისმიერს შეუძლია დაწეროს მოთხოვნა, კომპანიები კი პასუხობენ შეთავაზებით." />
         <AuthForms initialRole={searchParams.get("role") || ""} />
       </div>
     );
@@ -257,7 +257,7 @@ export function AccountPageContent() {
           </div>
           <p className="ma-note">
             <Icon name="lock" />
-            ტელეფონი და ელფოსტა მეორე მხარეს ეჩვენება შეთავაზების არჩევის შემდეგ.
+            ტელეფონი საჯაროდ ჩანს. ელფოსტა მეორე მხარეს ეჩვენება შეთავაზების არჩევის შემდეგ.
           </p>
         </aside>
         <div className="ma-stack">
@@ -314,42 +314,41 @@ export function AccountPageContent() {
                     <p className="ma-muted">ჯერ შეთავაზება არ გაგზავნილა.</p>
                   )}
                 </>
-              ) : (
-                <section className="ma-stack">
-                  <h2 className="ma-h3">ჩემი მოთხოვნები</h2>
-                  {(data?.myRequests as { id: string; title: string; city: string; expiresAt: string; hidden: boolean }[] | undefined)?.length ? (
-                    (data!.myRequests as { id: string; title: string; city: string }[]).map((r) => {
-                      const state = store?.requestState(r);
-                      return (
-                        <article className="ma-card ma-proto-toolbar" key={r.id}>
-                          <div>
-                            <Link className="ma-proto-rowtitle ma-title" href={`/requests/view/?id=${r.id}`}>
-                              {r.title}
-                            </Link>
-                            <p className="ma-small ma-muted">{cities[r.city] || r.city}</p>
-                          </div>
-                          <div className="ma-cluster">
-                            <span className={`ma-badge ma-badge--${state === "open" ? "success" : "neutral"}`}>{store?.stateLabels?.[state] || state}</span>
-                            {(state === "open" || state === "expired" || state === "closed") ? (
-                              <button type="button" className="ma-btn ma-btn--secondary" onClick={async () => await store?.extendRequest(r.id)}>
-                                +{store?.EXTEND_DAYS ?? 7} დღე
-                              </button>
-                            ) : null}
-                          </div>
-                        </article>
-                      );
-                    })
-                  ) : (
-                    <div className="ma-empty">
-                      <h2 className="ma-empty__title">ჯერ მოთხოვნა არ გაქვს</h2>
-                      <p className="ma-empty__text">დაამატე პირველი მოთხოვნა — კომპანიები ფასსა და პირობებს შემოგთავაზებენ.</p>
-                      <Link className="ma-btn ma-btn--primary" href="/requests/new/">
-                        მოთხოვნის დამატება
-                      </Link>
-                    </div>
-                  )}
-                </section>
-              )}
+              ) : null}
+              <section className="ma-stack">
+                <h2 className="ma-h3">ჩემი მოთხოვნები</h2>
+                {(data?.myRequests as { id: string; title: string; city: string; expiresAt: string; hidden: boolean }[] | undefined)?.length ? (
+                  (data!.myRequests as { id: string; title: string; city: string }[]).map((r) => {
+                    const state = store?.requestState(r);
+                    return (
+                      <article className="ma-card ma-proto-toolbar" key={r.id}>
+                        <div>
+                          <Link className="ma-proto-rowtitle ma-title" href={`/requests/view/?id=${r.id}`}>
+                            {r.title}
+                          </Link>
+                          <p className="ma-small ma-muted">{cities[r.city] || r.city}</p>
+                        </div>
+                        <div className="ma-cluster">
+                          <span className={`ma-badge ma-badge--${state === "open" ? "success" : "neutral"}`}>{store?.stateLabels?.[state] || state}</span>
+                          {(state === "open" || state === "expired" || state === "closed") ? (
+                            <button type="button" className="ma-btn ma-btn--secondary" onClick={async () => await store?.extendRequest(r.id)}>
+                              +{store?.EXTEND_DAYS ?? 7} დღე
+                            </button>
+                          ) : null}
+                        </div>
+                      </article>
+                    );
+                  })
+                ) : (
+                  <div className="ma-empty">
+                    <h2 className="ma-empty__title">ჯერ მოთხოვნა არ გაქვს</h2>
+                    <p className="ma-empty__text">დაამატე პირველი მოთხოვნა — კომპანიები პირობებით გიპასუხებენ.</p>
+                    <Link className="ma-btn ma-btn--primary" href="/requests/new/">
+                      მოთხოვნის დამატება
+                    </Link>
+                  </div>
+                )}
+              </section>
             </div>
           )}
         </div>

@@ -121,7 +121,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       <div className="ma-form__row ma-form__row--2">
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-phone">
-            მობილური ტელეფონი *
+            მობილური ტელეფონი * <span className="ma-field__opt">ნომერი საჯაროდ გამოჩნდება</span>
           </label>
           <input className="ma-input" id="reg-phone" type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+995 5XX XXX XXX" />
         </div>

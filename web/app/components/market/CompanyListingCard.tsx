@@ -3,6 +3,7 @@ import { Icon } from "../Icon";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { TagList } from "./TagList";
 import { statsLabel } from "./CompanyRow";
+import { CallButton } from "./CallButton";
 import { categories, categoryPhoto, cities } from "../../lib/categories";
 
 export type CompanyListingData = {
@@ -14,6 +15,7 @@ export type CompanyListingData = {
   offers: string[];
   about: string;
   verified: boolean;
+  phone?: string;
   stats: { sent: number; chosen: number };
 };
 
@@ -49,6 +51,11 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
               <Icon name="check" />
               დადასტურებული
             </span>
+          </div>
+        ) : null}
+        {c.phone ? (
+          <div className="listing-badges">
+            <CallButton phone={c.phone} variant="secondary" />
           </div>
         ) : null}
         <p className="listing-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>

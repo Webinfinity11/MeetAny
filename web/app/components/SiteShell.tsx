@@ -29,7 +29,7 @@ export function SiteShell({
         </a>
         <Header />
         <main id="main" className="ma-main" tabIndex={-1}>
-          {children}
+          <div className="ma-container">{children}</div>
         </main>
         <Footer />
         <div className="ma-toasts" id="ma-toasts" aria-live="polite" aria-atomic="false" />

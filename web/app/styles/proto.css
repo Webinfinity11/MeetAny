@@ -79,7 +79,7 @@
 @media(max-width:419.98px){.ma-proto .ma-ocard__price{display:none}}
 @media(max-width:359.98px){.ma-proto-kpis .ma-stat{padding:var(--space-3)}.ma-proto-kpis .ma-stat__label{font-size:var(--fs-xs);line-height:var(--lh-xs)}}
 /* Round 2: home visual language. No independent colour/type/radius tokens. */
-.ma-proto :is(h3,h4,.ma-title,.ma-proto-filter){font-feature-settings:normal;letter-spacing:normal}
+.ma-proto :is(h3,h4,.ma-title){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
 .ma-proto .r2-band{display:flex;flex-wrap:wrap;position:relative;isolation:isolate;overflow:hidden;background:var(--blue-900);color:var(--white);padding:var(--space-10);border-radius:var(--radius-lg);gap:var(--space-6);margin-bottom:var(--space-8)}
 .r2-band::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--band-photo,url('/assets/photos/logistics-warehouse.jpg')) center/cover;opacity:.13}
 .ma-proto .r2-band :is(h1,.ma-lead,.ma-eyebrow){color:var(--white)}
@@ -92,7 +92,8 @@
 .ma-proto .ma-rcard--row .ma-rcard__title{font-size:var(--fs-title);line-height:var(--lh-title)}
 .ma-proto .ma-proto-rowend{border-left:0}
 .ma-proto-filter{background:var(--bg-subtle);margin-bottom:var(--space-2);font-size:var(--fs-sm);line-height:var(--lh-sm)}
-.ma-proto-filter>span:nth-last-child(2){flex:1}
+.ma-proto-filter>span:nth-last-child(2){flex:1;white-space:nowrap}
+.ma-proto-filter .r2-object{flex-basis:var(--space-6);width:var(--space-6);height:var(--space-6)}
 .ma-proto-filter[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--action)}
 .r2-object{position:relative;display:block;flex:0 0 var(--space-10);width:var(--space-10);height:var(--space-10);overflow:hidden}
 .r2-object img{position:absolute;width:400%;height:200%;max-width:none}

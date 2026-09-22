@@ -6,18 +6,20 @@ export type Facet = { id: string; label: string; count: number };
 // a "მეტი კატეგორია (n)" <details> (P2-SPEC-GE.md "ფილტრების საერთო ქცევა").
 export function FacetList({
   all,
+  loading = false,
   allLabel,
   activeId,
   onSelect,
 }: {
   all: Facet[];
+  loading?: boolean;
   allLabel: string;
   activeId: string;
   onSelect: (id: string) => void;
 }) {
   const entries: Facet[] = [{ id: "", label: allLabel, count: -1 }, ...all];
-  const shown = entries.filter((e) => e.count !== 0);
-  const hidden = entries.filter((e) => e.count === 0);
+  const shown = entries.filter((e) => loading || e.count !== 0 || e.id === activeId);
+  const hidden = entries.filter((e) => !loading && e.count === 0 && e.id !== activeId);
   const button = (f: Facet) => (
     <button
       key={f.id}
@@ -28,7 +30,7 @@ export function FacetList({
     >
       {f.id ? <CategoryIcon id={f.id} /> : <span className="r2-object r2-object--icon" aria-hidden="true" />}
       <span>{f.label}</span>
-      <span>{f.count >= 0 ? f.count : ""}</span>
+      <span>{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>
   );
   return (

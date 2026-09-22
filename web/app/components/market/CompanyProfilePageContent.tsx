@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
@@ -8,10 +8,12 @@ import { CompanyAvatar } from "./CompanyAvatar";
 import { SectionHead } from "./SectionHead";
 import { TagList } from "./TagList";
 import { MobileActionBar } from "./MobileActionBar";
+import { CallButton } from "./CallButton";
 import { statsLabel } from "./CompanyRow";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, categoryPhoto, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
+import { fetchPhone } from "../../lib/phones";
 
 export function CompanyProfilePageContent() {
   const { store, ready, available } = useMarketStore();
@@ -28,6 +30,15 @@ export function CompanyProfilePageContent() {
     );
     return { c, stats, openRequests };
   }, [store, ready, available, id]);
+
+  const [phone, setPhone] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    if (id) fetchPhone(id).then((p) => !cancelled && setPhone(p));
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
   if (!ready || !available) {
     return (
@@ -78,6 +89,11 @@ export function CompanyProfilePageContent() {
             ) : null}
             <span>{statsLabel(stats)}</span>
           </div>
+          {phone ? (
+            <div className="ma-cluster">
+              <CallButton phone={phone} />
+            </div>
+          ) : null}
         </div>
       </header>
 

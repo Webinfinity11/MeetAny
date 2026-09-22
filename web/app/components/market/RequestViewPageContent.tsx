@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
@@ -8,16 +8,17 @@ import { PageBand } from "./PageBand";
 import { SectionHead } from "./SectionHead";
 import { OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
+import { CallButton } from "./CallButton";
 import { useMarketStore } from "../../lib/market-client";
-import { categories, cities, priceTypes } from "../../lib/categories";
+import { categories, cities } from "../../lib/categories";
+import { fetchPhone } from "../../lib/phones";
 
+// No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number). Omitting
+// price/priceType makes market-store.js's sendOffer() default to price:null,
+// priceType:'negotiable' on its own — see db/CONTRACT.md "შეთავაზება ფასის გარეშე".
 function SendOfferForm({ requestId, existing, onDone }: { requestId: string; existing?: OfferCardData; onDone: () => void }) {
   const { store } = useMarketStore();
-  const [priceType, setPriceType] = useState(existing?.priceType || "total");
-  const [price, setPrice] = useState(existing?.price != null ? String(existing.price) : "");
-  const [vatIncluded, setVatIncluded] = useState(existing?.vatIncluded ?? true);
   const [deliveryDays, setDeliveryDays] = useState(existing?.deliveryDays != null ? String(existing.deliveryDays) : "");
-  const [deliveryIncluded, setDeliveryIncluded] = useState(existing?.deliveryIncluded ?? false);
   const [body, setBody] = useState(existing?.body || "");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +29,7 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
     setPending(true);
     setError(null);
     try {
-      await store.sendOffer(requestId, { priceType, price: price || undefined, vatIncluded, deliveryDays: deliveryDays || undefined, deliveryIncluded, body });
+      await store.sendOffer(requestId, { deliveryDays: deliveryDays || undefined, body });
       onDone();
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "შეთავაზება ვერ გაიგზავნა. სცადე თავიდან.");
@@ -39,45 +40,11 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
 
   return (
     <form className="ma-form" onSubmit={submit}>
-      <div className="ma-form__row ma-form__row--2">
-        <div className="ma-field">
-          <label className="ma-field__label" htmlFor="of-price-type">
-            ფასის ტიპი *
-          </label>
-          <select className="ma-select" id="of-price-type" value={priceType} onChange={(e) => setPriceType(e.target.value)}>
-            {Object.entries(priceTypes).map(([id, label]) => (
-              <option key={id} value={id}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
-        {priceType !== "negotiable" ? (
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="of-price">
-              ფასი (₾) *
-            </label>
-            <input className="ma-input" id="of-price" inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />
-          </div>
-        ) : null}
-      </div>
-      {priceType !== "negotiable" ? (
-        <label className="ma-check">
-          <input type="checkbox" checked={vatIncluded} onChange={(e) => setVatIncluded(e.target.checked)} />
-          <span>დღგ ჩათვლილია ფასში</span>
+      <div className="ma-field">
+        <label className="ma-field__label" htmlFor="of-days">
+          მიწოდება (დღე) <span className="ma-field__opt">არასავალდებულო</span>
         </label>
-      ) : null}
-      <div className="ma-form__row ma-form__row--2">
-        <div className="ma-field">
-          <label className="ma-field__label" htmlFor="of-days">
-            მიწოდება (დღე) <span className="ma-field__opt">არასავალდებულო</span>
-          </label>
-          <input className="ma-input" id="of-days" inputMode="numeric" value={deliveryDays} onChange={(e) => setDeliveryDays(e.target.value)} />
-        </div>
-        <label className="ma-check">
-          <input type="checkbox" checked={deliveryIncluded} onChange={(e) => setDeliveryIncluded(e.target.checked)} />
-          <span>მიწოდება შედის ფასში</span>
-        </label>
+        <input className="ma-input" id="of-days" inputMode="numeric" value={deliveryDays} onChange={(e) => setDeliveryDays(e.target.value)} />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="of-body">
@@ -120,7 +87,7 @@ export function RequestViewPageContent() {
     const isOwner = !!me && r.ownerId === me.id;
     const myOffer = me?.role === "company" ? offers.find((o: { companyUserId: string }) => o.companyUserId === me.id) : null;
     const contact = store.contactFor(r, me);
-    const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; price: number | null; priceType: string; vatIncluded: boolean; deliveryDays: number | null; deliveryIncluded: boolean; body: string; status: string }): OfferCardData => {
+    const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; deliveryDays: number | null; body: string; status: string }): OfferCardData => {
       const c = store.userById(o.companyUserId);
       const isNew = now - Date.parse(o.createdAt) < 24 * 3600e3 && o.status === "sent";
       return {
@@ -129,11 +96,7 @@ export function RequestViewPageContent() {
         companyHref: `/companies/view/?id=${encodeURIComponent(o.companyUserId)}`,
         city: c ? cities[c.city] || c.city : "",
         createdAt: o.createdAt,
-        price: o.price,
-        priceType: o.priceType,
-        vatIncluded: o.vatIncluded,
         deliveryDays: o.deliveryDays,
-        deliveryIncluded: o.deliveryIncluded,
         body: o.body,
         status: o.status,
         isNew,
@@ -142,6 +105,15 @@ export function RequestViewPageContent() {
     const mappedOffers: OfferCardData[] = offers.map(mapOffer);
     return { r, me, owner, offers: mappedOffers, offerCount, state, isOwner, myOffer: myOffer ? mapOffer(myOffer) : null, contact };
   }, [store, ready, available, id, now]);
+
+  const [ownerPhone, setOwnerPhone] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    if (data?.r.ownerId) fetchPhone(data.r.ownerId).then((p) => !cancelled && setOwnerPhone(p));
+    return () => {
+      cancelled = true;
+    };
+  }, [data?.r.ownerId]);
 
   if (!ready || !available) {
     return (
@@ -168,7 +140,7 @@ export function RequestViewPageContent() {
     );
   }
 
-  const { r, me, offers, offerCount, state, isOwner, myOffer, contact } = data;
+  const { r, me, owner, offers, offerCount, state, isOwner, myOffer, contact } = data;
   const closed = state !== "open";
 
   async function confirmChoose() {
@@ -199,12 +171,18 @@ export function RequestViewPageContent() {
           {closed ? ` · ${state === "closed" ? "დახურული" : state === "chosen" ? "მომწოდებელი არჩეულია" : "ვადაგასული"}` : ""}
         </span>
       </div>
+      {!isOwner && owner ? (
+        <div className="ma-cluster">
+          <span className="ma-small ma-muted">გამომგზავნი: {owner.company || owner.name}</span>
+          {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" /> : null}
+        </div>
+      ) : null}
 
       {isOwner ? (
         <>
           <p className="ma-note">
             <Icon name="lock" />
-            ფასებსა და შეთავაზებების ტექსტს მხოლოდ შენ ხედავ.
+            შეთავაზების ტექსტს მხოლოდ შენ ხედავ.
           </p>
           {contact ? (
             <section className="ma-panel">

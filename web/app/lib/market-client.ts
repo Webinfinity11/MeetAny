@@ -20,7 +20,6 @@ export function useMarketStore(): { store: Store | undefined; ready: boolean; av
   // though window.MarketStore may already exist by then — it is only read inside this effect,
   // never during render, so hydration never has something to disagree about.
   const [store, setStore] = useState<Store | undefined>(undefined);
-  const [, bump] = useState(0);
 
   useEffect(() => {
     let unsub: (() => void) | undefined;
@@ -28,9 +27,9 @@ export function useMarketStore(): { store: Store | undefined; ready: boolean; av
     const attach = () => {
       const s = window.MarketStore;
       if (!s) return false;
-      setStore(s);
-      unsub = s.subscribe(() => bump((n) => n + 1));
-      s.ready().then(() => bump((n) => n + 1));
+      setStore({ ...s });
+      unsub = s.subscribe(() => setStore({ ...s }));
+      s.ready().then(() => setStore({ ...s }));
       return true;
     };
     if (!attach()) poll = setInterval(() => attach() && clearInterval(poll), 50);

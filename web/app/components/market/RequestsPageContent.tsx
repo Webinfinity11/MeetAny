@@ -40,10 +40,10 @@ function skeleton() {
 export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boolean }) {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
-  const [city, setCity] = useState("tbilisi");
-  const [category, setCategory] = useState("");
-  const [query, setQuery] = useState("");
-  const [sort, setSort] = useState("newest");
+  const [city, setCity] = useState(searchParams.get("city") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "");
+  const [query, setQuery] = useState(searchParams.get("q") || "");
+  const [sort, setSort] = useState(searchParams.get("sort") || "newest");
   const [sheetOpen, setSheetOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(autoOpenNew);
   const formCategory = searchParams.get("category") || "";
@@ -55,6 +55,15 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     // matches site/dist/market.js's renderAll() for body[data-open="new-request"].
     window.history.replaceState(window.history.state, "", "/requests/" + window.location.search);
   }, [autoOpenNew]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    for (const [key, value] of Object.entries({ city, category, q: query, sort: sort === "newest" ? "" : sort })) {
+      if (value) params.set(key, value); else params.delete(key);
+    }
+    const search = params.toString();
+    window.history.replaceState(window.history.state, "", `/requests/${search ? `?${search}` : ""}`);
+  }, [city, category, query, sort]);
 
   const list = useCallback(
     (overrides: Partial<{ category: string; city: string; q: string }>) =>
@@ -81,7 +90,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     [list],
   );
   const cityFacets: Facet[] = useMemo(
-    () => Object.entries(cities).slice(0, 2).map(([id, label]) => ({ id, label, count: list({ city: id }).length })),
+    () => Object.entries(cities).map(([id, label]) => ({ id, label, count: list({ city: id }).length })),
     [list],
   );
   const allCount = ready && available ? list({ category: "" }).length : 0;
@@ -153,17 +162,17 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     <div className="ma-proto-filters">
       <div>
         <h2 className="ma-title">კატეგორია</h2>
-        <FacetList all={categoryFacets} allLabel={`ყველა კატეგორია (${allCount})`} activeId={category} onSelect={setCategory} />
+        <FacetList all={categoryFacets} loading={!ready} allLabel={`ყველა კატეგორია${ready ? ` (${allCount})` : ""}`} activeId={category} onSelect={setCategory} />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="city-desktop">
           ქალაქი
         </label>
         <select className="ma-select" id="city-desktop" value={city} onChange={(e) => setCity(e.target.value)}>
-          <option value="">ყველა ქალაქი ({allCount})</option>
+          <option value="">ყველა ქალაქი</option>
           {cityFacets.map((f) => (
             <option key={f.id} value={f.id}>
-              {f.label} ({f.count})
+              {f.label}{ready ? ` (${f.count})` : ""}
             </option>
           ))}
         </select>
@@ -179,7 +188,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
       <PageBand
         eyebrow="MeetAny · საქმიანი კავშირები"
         title="მოთხოვნები"
-        description="იპოვე მოთხოვნა, რომელსაც შენი კომპანია უპასუხებს."
+        description="ნებისმიერს შეუძლია დაწეროს, რა სჭირდება — კომპანიები პასუხობენ შეთავაზებით."
         searchSlot={
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="query">

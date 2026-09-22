@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Icon } from "../Icon";
 import { PageBand } from "./PageBand";
@@ -13,6 +13,7 @@ import { DirectionPhotoCard } from "./DirectionPhotoCard";
 import { PartnershipCTA } from "./PartnershipCTA";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
+import { fetchPhones } from "../../lib/phones";
 
 type MappedCompany = {
   id: string;
@@ -63,7 +64,19 @@ export function CompaniesPageContent() {
     [list],
   );
   const allCount = ready && available ? list({ industry: "" }).length : 0;
-  const cityOptions = ["tbilisi", "batumi", "kutaisi"];
+  const cityOptions = Object.keys(cities);
+
+  const resultIds = useMemo(() => results.map((c) => c.id).join(","), [results]);
+  const [phones, setPhones] = useState<Record<string, string>>({});
+  useEffect(() => {
+    let cancelled = false;
+    fetchPhones(resultIds ? resultIds.split(",") : []).then((map) => {
+      if (!cancelled) setPhones(map);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [resultIds]);
 
   const rows: CompanyListingData[] = useMemo(() => {
     if (!store) return [];
@@ -76,9 +89,10 @@ export function CompaniesPageContent() {
       offers: c.offers || [],
       about: c.about || "",
       verified: c.verified,
+      phone: phones[c.id],
       stats: store.companyStats(c.id),
     }));
-  }, [results, store]);
+  }, [results, store, phones]);
 
   const activeItems = [
     ...(industry ? [{ key: "industry", label: categories[industry] }] : []),
@@ -104,7 +118,7 @@ export function CompaniesPageContent() {
     <div className="ma-proto-filters">
       <div>
         <h2 className="ma-title">დარგი</h2>
-        <FacetList all={industryFacets} allLabel={`ყველა დარგი (${allCount})`} activeId={industry} onSelect={setIndustry} />
+        <FacetList all={industryFacets} loading={!ready} allLabel={`ყველა დარგი${ready ? ` (${allCount})` : ""}`} activeId={industry} onSelect={setIndustry} />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="company-city-desktop">

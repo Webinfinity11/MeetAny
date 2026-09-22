@@ -46,7 +46,7 @@ export function ChooseOfferSheet({
       </header>
       <div className="ma-sheet__body">
         <p>
-          არჩევის შემდეგ <b>{companyName}</b>-ს გაეზიარება შენი საკონტაქტო ინფორმაცია. საბოლოო პირობებს კომპანიასთან
+          არჩევის შემდეგ <b>{companyName}</b>-ს გაეზიარება შენი ელფოსტა. საბოლოო პირობებს კომპანიასთან
           შეათანხმებ.
         </p>
         {error ? (

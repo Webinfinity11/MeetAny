@@ -7,7 +7,7 @@ import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
   title: "მოთხოვნები — MeetAny",
-  description: "ბიზნესის საჭიროებები: დადე განცხადება და მიიღე კომპანიების შეთავაზებები ფასით.",
+  description: "ბიზნესის საჭიროებები: დადე განცხადება და მიიღე კომპანიების შეთავაზებები.",
   icons: siteIcons,
 };
 

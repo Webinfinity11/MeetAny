@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { CompanyAvatar } from "./CompanyAvatar";
-import { priceTypes } from "../../lib/categories";
 
 export type OfferCardData = {
   id: string;
@@ -9,30 +8,14 @@ export type OfferCardData = {
   companyHref: string;
   city: string;
   createdAt: string;
-  price: number | null;
-  priceType: string;
-  vatIncluded: boolean;
   deliveryDays: number | null;
-  deliveryIncluded: boolean;
   body: string;
   status: string;
   isNew: boolean;
 };
 
-function priceLabel(o: OfferCardData): string {
-  return o.price != null ? `${o.price.toLocaleString("ka-GE")} ₾` : "შეთანხმებით";
-}
-
-function summary(o: OfferCardData): string {
-  const parts = [priceLabel(o), priceTypes[o.priceType] || "ფასი"];
-  if (o.priceType !== "negotiable") parts.push(o.vatIncluded ? "დღგ-ს ჩათვლით" : "დღგ-ს გარეშე");
-  else parts.push("დღგ დასაზუსტებელია");
-  if (o.deliveryDays != null) parts.push(`მიწოდება ${o.deliveryDays} დღეში`);
-  else parts.push("მიწოდების ვადა დასაზუსტებელია");
-  if (o.deliveryIncluded && o.priceType !== "negotiable") parts.push("მიწოდება შედის ფასში");
-  return parts.join(" · ");
-}
-
+// No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number, so the offer
+// is text plus an optional delivery time — see db/CONTRACT.md "შეთავაზება ფასის გარეშე").
 export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean }) {
   const cls =
     o.status === "chosen"
@@ -57,16 +40,10 @@ export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoo
           </div>
           <div className="ma-meta">
             <span>{o.city}</span>
+            {o.deliveryDays != null ? <span>მიწოდება {o.deliveryDays} დღეში</span> : null}
           </div>
         </div>
-        <div className="ma-ocard__price">
-          <strong className="ma-ocard__amount">{priceLabel(o)}</strong>
-          <span className="ma-ocard__unit">{priceTypes[o.priceType] || "ფასი"}</span>
-        </div>
       </header>
-      <p className="ma-proto-price">
-        <strong>{priceLabel(o)}</strong> · {summary(o)}
-      </p>
       <p className="ma-ocard__body">{o.body}</p>
       <Link className="ma-link" href={o.companyHref}>
         კომპანიის პროფილის ნახვა <Icon name="arrow-up-right" />
@@ -75,7 +52,7 @@ export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoo
         {o.status === "chosen" ? (
           <p className="ma-note">
             <Icon name="check" />
-            შეთავაზება არჩეულია. საკონტაქტო ინფორმაცია ქვემოთ გამოჩნდება.
+            შეთავაზება არჩეულია. ელფოსტა ქვემოთ გამოჩნდება.
           </p>
         ) : canChoose && o.status !== "declined" ? (
           <button type="button" className="ma-btn ma-btn--primary" onClick={onChoose}>
