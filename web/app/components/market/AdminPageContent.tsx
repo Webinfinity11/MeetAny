@@ -9,6 +9,7 @@ import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { useAdminData } from "../../lib/use-admin-data";
 import { AdminAuditTable, type AdminAuditEvent } from "./AdminAuditTable";
+import { AdminContacts } from "./AdminContacts";
 import { AdminFilters } from "./AdminFilters";
 import styles from "./admin.module.css";
 import { ModerationSheet } from "./ModerationSheet";
@@ -32,7 +33,7 @@ export function AdminPageContent() {
     router.replace(`/admin/?${next}`, { scroll: false });
   }
   const selectedTab = searchParams.get("tab");
-  const tab = selectedTab === "users" || selectedTab === "audit" ? selectedTab : "requests";
+  const tab = selectedTab === "users" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "requests";
   const cursor = searchParams.get("cursor") || "";
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [busy, setBusy] = useState(false);
@@ -40,7 +41,7 @@ export function AdminPageContent() {
 
   const me = ready && available ? store?.currentUser() : null;
 
-  const admin = useAdminData({ store, enabled: !!me && me.role === "admin", tab, query, status, role, cursor });
+  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && tab !== "contacts", tab: tab === "contacts" ? "audit" : tab, query, status, role, cursor });
 
   const data = useMemo(() => {
     if (!store || !me || me.role !== "admin") return null;
@@ -164,8 +165,10 @@ export function AdminPageContent() {
           მომხმარებლები
         </Link>
         <Link className="ma-tab" href="/admin/?tab=audit" aria-current={tab === "audit" ? "page" : undefined}>მოქმედებების ჟურნალი</Link>
+        <Link className="ma-tab" href="/admin/?tab=contacts" aria-current={tab === "contacts" ? "page" : undefined}>კონტაქტები</Link>
       </nav>
 
+      {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} /> : <>
       {tab !== "audit" ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
       {admin.mode === "legacy" && tab !== "audit" ? <>
         <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი.</p>
@@ -329,6 +332,7 @@ export function AdminPageContent() {
         {admin.page.hasMore && admin.page.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი<Icon name="arrow-right" /></button> : null}
       </nav> : null}
 
+      </>}
       <ModerationSheet
         open={!!pendingAction}
         title={

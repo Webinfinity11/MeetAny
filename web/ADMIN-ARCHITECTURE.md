@@ -17,7 +17,7 @@ The operational interface supports both the legacy APIs and capability-detected 
 - Users/companies: query, role, blocked/verification state, profile detail and moderation.
 - Moderation: reusable action contracts and confirmation; reason requirements, pending/error states and authorized RPC execution.
 - Audit: server-backed, cursor-paginated moderation history in API v1. Legacy mode explicitly indicates that a schema update is required.
-- Contact analytics: a future ingestion/reporting module; do not display placeholder counts as real activity.
+- Contacts: private server ingestion, admin-only period totals/top targets and cursor-paginated events. Number disclosure and telephone-link activation are separate actions.
 
 Avoid an all-purpose component that fetches the full marketplace and implements every module. Keep filters, table rendering, mutation confirmation and data access separable. Current roles remain client/company/admin. Add support/moderator capabilities only alongside an explicit policy and server enforcement; UI-only role restrictions are insufficient.
 
@@ -33,11 +33,17 @@ Four moderation RPCs now insert minimal before/after flags and explicit reasons 
 
 701 SQL assertions passed in throwaway local databases, loading the schema twice. Tests include authorization, blocked actors, 1,105 requests/users with equal timestamps, full cursor traversal, filtered counts, immutable history and rollback/storage failure. Browser checks cover mocked API v1 rows outside the cache, request/user filters, next/first page, audit, errors/retry and small screens. Legacy moderation checks intercept writes and cover required reasons and pending-dialog protection. Remote API v1 end-to-end validation still requires applying the reviewed migration to a test environment.
 
-## Contact event contract available in the UI
+## Contact activity (implemented on auth-probe, 2026-09-23)
 
-`CallButton` emits `meetany:contact-action` as a browser CustomEvent. Detail: `action` (`reveal` or `call`), `source`, optional `contactId`, optional `requestId`. The phone number is omitted. `reveal` means a visitor requested the number; `call` means they activated the telephone link. Neither proves a completed telephone conversation.
+`CallButton` starts with “ნომრის ნახვა”, then reveals a focused telephone link. It retains `meetany:contact-action` (`action`, `source`, optional `contactId`/`requestId`; never the phone). `market-store.logContactEvent` sends each action with the current user JWT or anonymous token through the existing database transport, with keepalive and isolated error handling. Disclosure is a UI interaction; the existing public phone API is unchanged. `call` means activating the telephone link, not a completed conversation.
 
-Events are currently not sent or persisted. Later ingestion should validate allowed sources, generate server timestamps, define deduplication and abuse controls, separate test traffic, and follow the agreed analytics/consent policy. Client events are untrusted and must never authorize access or affect billing. An eventual dashboard should separate reveals, call-link activations and unique actors according to a documented definition.
+The “კონტაქტები” admin tab uses `AdminContacts` and `useAdminContacts` independently of the catalog cache. It displays six real totals (reveal/call today, trailing 7 days, trailing 30 days), top 10 companies and top 10 requests for the selected period, and who contacted which target, timestamp in Asia/Tbilisi, action and source. Target links lead to existing detail pages; deleted targets retain history without a broken link. Anonymous callers are labeled explicitly.
+
+URL filters: `tab=contacts`, `kind=reveal|call`, `target=company|request`, `period=day|week|month`, and JSON `cursor`. Kind/target constrain the event list; the period also controls top lists. The totals always show all three periods. “მეტის ჩვენება” appends the next server page; filter changes clear the cursor; direct cursor URLs load that page. Loading, empty, error/retry, stale response cancellation and first-page navigation are handled explicitly. Pagination preserves its lower date bound in the URL cursor (`from`), alongside the database insertion boundary `asOf`.
+
+The database enforces admin reads, validates targets and source/kind enums, and serializes writes for rolling-minute dedupe and anonymous global cap. Anonymous activity is a shared bucket, so separate visitors can be undercounted. See [contact API contract](../db/CONTRACT.md#contact-events-2026-09-23) for signatures, rate limits and privacy boundaries. No backfill, completed-call tracking, unique-visitor metric or retention cleanup is implemented.
+
+Validation: 164 new contact SQL assertions; 955 total SQL assertions passed with schema loaded twice and migration reapplied. `qa/contact.mjs` checks reveal/call, focused link, reload reset, telemetry-failure tolerance, real anonymous/authenticated admin RPC persistence, URL filters, append pagination/retry with deterministic fixtures, and layouts at 390/1440. Screenshots: `qa/shots/contacts-companies-390.png`, `qa/shots/contacts-admin-1440.png`. Migration was applied to auth-probe and its table/three RPCs checked through `information_schema`; production was not changed.
 
 ## Release evidence and next gates
 

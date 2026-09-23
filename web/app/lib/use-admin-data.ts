@@ -50,3 +50,51 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
   const mode: "legacy" | "loading" | "ready" | "error" = !supported ? "legacy" : !current ? "loading" : current.error ? "error" : "ready";
   return { mode, page: current?.page || null, error: current?.error || null, reload };
 }
+
+export type ContactRow = {
+  id: string; actor_id: string | null; actor_name: string | null; actor_company: string | null;
+  target_kind: "company" | "request"; target_id: string; target_name: string | null; target_exists: boolean;
+  kind: "reveal" | "call"; source: string; created_at: string;
+};
+export type ContactStats = {
+  totals: Record<string, { reveals: number; calls: number }>;
+  companies: ContactTop[]; requests: ContactTop[];
+};
+type ContactTop = Pick<ContactRow, "target_kind" | "target_id" | "target_name" | "target_exists"> & { reveals: number; calls: number };
+type ContactResult = { key: string; filterKey: string; page: AdminPage | null; rows: ContactRow[]; stats: ContactStats | null; error: string | null };
+
+export function useAdminContacts({ store, kind, target, period, cursor }: {
+  store: Store; kind: string; target: string; period: string; cursor: string;
+}) {
+  const [revision, setRevision] = useState(0);
+  const [result, setResult] = useState<ContactResult | null>(null);
+  const filterKey = JSON.stringify([kind, target, period, revision, store.currentUser()?.id]);
+  const key = JSON.stringify([filterKey, cursor]);
+  useEffect(() => {
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      try {
+        const p_cursor = cursor ? JSON.parse(cursor) : null;
+        // Keep the date window fixed while traversing the insertion-bound cursor.
+        const at = p_cursor?.asOf ? new Date(p_cursor.asOf).getTime() : Date.now();
+        const boundary = period === "day" ? Math.floor((at + 4 * 3600000) / 86400000) * 86400000 - 4 * 3600000
+          : at - (period === "week" ? 7 : 30) * 86400000;
+        const from = p_cursor?.from || new Date(boundary).toISOString();
+        const [page, stats] = await Promise.all([
+          store.adminContactEvents({ p_cursor, p_kind: kind || null, p_target_kind: target || null, p_from: from, p_limit: 25 }),
+          store.adminContactStats({ p_period: period }),
+        ]);
+        if (page.nextCursor) page.nextCursor = { ...page.nextCursor, from };
+        if (!cancelled) setResult(previous => {
+          const append = cursor && previous?.filterKey === filterKey && JSON.stringify(previous.page?.nextCursor) === cursor;
+          return { key, filterKey, page, stats, error: null, rows: append ? [...previous.rows, ...page.items] : page.items };
+        });
+      } catch (err) {
+        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, error: (err as { userMessage?: string }).userMessage || "კონტაქტების ჩატვირთვა ვერ მოხერხდა." });
+      }
+    }, 200);
+    return () => { cancelled = true; window.clearTimeout(timer); };
+  }, [store, kind, target, period, cursor, key, filterKey]);
+  const current = result?.key === key ? result : null;
+  return { ...current, loading: !current, reload: () => setRevision(value => value + 1) };
+}

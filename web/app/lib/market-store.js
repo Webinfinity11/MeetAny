@@ -110,16 +110,16 @@ export function createMarketStore({initial=null,background=true}={}){
  }
 
  /* ---------- Data API ---------- */
- async function db(path,{method='GET',body,retried=false}={}){
+ async function db(path,{method='GET',body,retried=false,keepalive=false}={}){
   const bearer=await token();
   let res;
   try{
-   res=await fetch(API+path,{method,headers:{Authorization:'Bearer '+bearer,Accept:'application/json',...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body!==undefined?JSON.stringify(body):undefined});
+   res=await fetch(API+path,{method,keepalive,headers:{Authorization:'Bearer '+bearer,Accept:'application/json',...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body!==undefined?JSON.stringify(body):undefined});
   }catch(err){throw userError(GENERIC,'NETWORK',err);}
   if(res.status===401&&!retried){
    // Expired or revoked token: fetch a fresh one once and retry.
    if(bearer===userJwt){userExp=0;await loadUserJwt();}else{anon=null;}
-   return db(path,{method,body,retried:true});
+   return db(path,{method,body,retried:true,keepalive});
   }
   const text=await res.text();
   let data=null;if(text){try{data=JSON.parse(text);}catch{data=null;}}
@@ -680,6 +680,12 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
  const adminListAudit=args=>rpc('admin_list_audit',args);
+ const adminContactEvents=args=>rpc('admin_contact_events',args);
+ const adminContactStats=args=>rpc('admin_contact_stats',args);
+ // Contact remains usable during telemetry failures; authentication is shared with db().
+ const logContactEvent=(targetKind,targetId,kind,source)=>db('/rpc/log_contact_event',{method:'POST',keepalive:true,body:{
+  p_target_kind:targetKind,p_target_id:targetId,p_kind:kind,p_source:source,
+ }}).catch(()=>null);
 
  const adminSetHidden=(requestId,hidden,reason)=>mutate('admin_set_hidden',{p_request_id:requestId,p_hidden:!!hidden,p_reason:hidden&&reason?String(reason).trim():null},mapRequest);
  const adminDeleteRequest=requestId=>mutate('admin_delete_request',{p_request_id:requestId});
@@ -697,6 +703,6 @@ export function createMarketStore({initial=null,background=true}={}){
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,listCompanies,getCompany,companyStats,
-  adminSearchRequests,adminSearchUsers,adminListAudit,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }
