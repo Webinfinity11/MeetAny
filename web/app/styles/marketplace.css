@@ -490,3 +490,18 @@
  .companies-catalog .r2-results-controls>.ma-field{flex:1;min-width:0;text-align:right}
  .companies-catalog .r2-results-controls .ma-select{width:100%;font-size:var(--fs-xs)}
 }
+
+/* P9 T9.6: request-only tier prototype, URL variants share one card contract. */
+.requests-catalog .request-tier-zone{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+.ma-proto .requests-catalog .request-card--vip{background:var(--tier-vip-bg);border-color:var(--tier-vip-border)}
+.ma-proto .requests-catalog .request-card--top{background:var(--tier-top-bg);border-color:var(--tier-top-border)}
+.requests-catalog .request-tier-badge{display:inline-flex;align-items:center;padding:0 var(--space-2);border-radius:var(--radius-xs);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-semibold);font-feature-settings:var(--ff-heading)}
+.requests-catalog .request-tier-badge--vip{background:var(--tier-vip-badge-bg);color:var(--white)}
+.requests-catalog .request-tier-badge--top{background:var(--tier-top-badge-bg);color:var(--tier-top-text)}
+.requests-catalog .request-tier-badge--new{background:var(--success-50);color:var(--success-700)}
+.requests-catalog .request-card-meta .ma-rcard__left--soon{color:var(--warning-600);font-weight:var(--fw-semibold)}
+.ma-proto .requests-catalog .request-card--featured.request-card--vip{padding:calc(var(--card-pad) * 1.25);border-width:1.5px}
+.ma-proto .requests-catalog .request-card--featured.request-card--top{padding:calc(var(--card-pad) * 1.1)}
+.ma-proto .requests-catalog .request-card--featured.request-card--vip .ma-rcard__title{font-size:var(--fs-h3);line-height:var(--lh-h3)}
+.requests-catalog .request-card--featured.request-card--vip .request-card-photo{width:var(--space-20);height:var(--space-20)}
+@media(max-width:899px){.requests-catalog .request-tier-zone{grid-template-columns:minmax(0,1fr)}}

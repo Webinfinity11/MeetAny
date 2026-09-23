@@ -10,6 +10,7 @@ import { Icon } from "../Icon";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
+import { requestDemoTier } from "../../lib/tier-demo";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
@@ -44,6 +45,7 @@ function skeleton() {
 export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpenNew?: boolean; initial?: PublicSnapshot }) {
   const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
+  const variant = searchParams.get("variant") === "b" ? "b" : "a";
   const filters = useFilters("/requests/");
   const city = filters.get("city"), category = filters.get("category"), query = filters.get("q"), sort = filters.get("sort", "newest");
   const period = filters.get("period"), unanswered = filters.get("unanswered") === "1", withPhoto = filters.get("photo") === "1", urgent = filters.get("urgent") === "1";
@@ -51,6 +53,13 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const setCategory = (category: string) => filters.set({category});
   const setQuery = (q: string) => filters.set({q});
   const setSort = (sort: string) => filters.set({sort});
+  const [now, setNow] = useState(0);
+  useEffect(() => {
+    const refresh = () => setNow(Date.now());
+    const first = window.setTimeout(refresh, 0);
+    const timer = window.setInterval(refresh, 60000);
+    return () => { window.clearTimeout(first); window.clearInterval(timer); };
+  }, []);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(autoOpenNew);
   const formCategory = searchParams.get("category") || "";
@@ -115,6 +124,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         neededBy: string | null;
       };
       return {
+        isNew: now - Date.parse(r.createdAt) >= 0 && now - Date.parse(r.createdAt) < 86400000,
         id: r.id,
         title: r.title,
         category: r.category,
@@ -133,7 +143,16 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         showOwnOfferBadge: me?.role === "company" && !isOwn,
       };
     });
-  }, [sorted, store]);
+  }, [sorted, store, now]);
+
+  // Rank only already-filtered rows, retaining the selected sort within each tier.
+  const vipRows = rows.filter(r => requestDemoTier(r.title) === "vip");
+  const topRows = rows.filter(r => requestDemoTier(r.title) === "top");
+  const featuredRows = [...vipRows.slice(0, 2), ...topRows.slice(0, 2)];
+  const featuredIds = new Set(featuredRows.map(r => r.id));
+  const compactRows = variant === "b"
+    ? [...vipRows, ...topRows, ...rows.filter(r => !requestDemoTier(r.title))]
+    : rows.filter(r => !featuredIds.has(r.id));
 
   const activeItems = [
     ...(["1", "7"].includes(period) ? [{key: "period", label: period === "1" ? "ბოლო 24 საათი" : "ბოლო 7 დღე"}] : []),
@@ -241,7 +260,12 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                         </button>
                       </div>
                     )
-                  : rows.map((r, index) => <RequestRow key={r.id} r={r} priority={index < 4} />)}
+                  : <>
+                      {variant === "a" && featuredRows.length > 0 ? <div className="request-tier-zone">
+                        {featuredRows.map(r => <RequestRow key={r.id} r={r} tier={requestDemoTier(r.title)} size="featured" priority />)}
+                      </div> : null}
+                      {compactRows.map((r, index) => <RequestRow key={r.id} r={r} tier={requestDemoTier(r.title)} priority={index < 4} />)}
+                    </>}
           </div>
         </section>
       </div>

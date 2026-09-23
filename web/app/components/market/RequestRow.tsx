@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CategoryIcon } from "./CategoryIcon";
+import type { RequestTier } from "../../lib/tier-demo";
 import { categories, units } from "../../lib/categories";
 
 export type RequestRowData = {
+  isNew?: boolean;
   id: string;
   title: string;
   category: string;
@@ -24,7 +26,7 @@ export type RequestRowData = {
   showOwnOfferBadge: boolean;
 };
 
-export function RequestRow({ r, priority = false }: { r: RequestRowData; priority?: boolean }) {
+export function RequestRow({ r, priority = false, tier, size = "compact" }: { r: RequestRowData; priority?: boolean; tier?: RequestTier; size?: "compact" | "featured" }) {
   const [failedPhoto, setFailedPhoto] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const closedLike = r.state === "closed" || r.state === "expired" || r.state === "chosen";
@@ -33,8 +35,8 @@ export function RequestRow({ r, priority = false }: { r: RequestRowData; priorit
       : r.state === "chosen" ? "მომწოდებელი არჩეულია"
         : r.daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${r.daysLeft} დღე`;
   return (
-    <article className={`ma-rcard ma-rcard--row request-card${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
-      <div className="request-card-context"><span className="request-card-category"><CategoryIcon id={r.category} />{categories[r.category] || r.category}</span><span aria-hidden="true">·</span><span>{r.ownerName}</span></div>
+    <article className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${size === "featured" ? " request-card--featured" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
+      <div className="request-card-context">{tier ? <span className={`request-tier-badge request-tier-badge--${tier}`}>{tier === "vip" ? "VIP" : "ტოპ"}</span> : null}{r.isNew ? <span className="request-tier-badge request-tier-badge--new">ახალი</span> : null}<span className="request-card-category"><CategoryIcon id={r.category} />{categories[r.category] || r.category}</span><span aria-hidden="true">·</span><span>{r.ownerName}</span></div>
       <div className="request-card-heading">
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         {r.photo && r.photo !== failedPhoto ? <span className="request-card-photo"><img src={r.photo} alt="" width={64} height={64} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} /></span> : null}
