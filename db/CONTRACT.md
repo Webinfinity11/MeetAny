@@ -484,3 +484,45 @@ Additive, rerunnable migration: `migrations/20260923-contact-events.sql`; the sa
 - `admin_contact_events(p_cursor jsonb default null, p_kind text default null, p_target_kind text default null, p_from timestamptz default null, p_to timestamptz default null, p_limit integer default 25)` requires `require_admin()`. Date range is `[from,to)`. Invalid enum, nonfinite/inverted dates, malformed cursor, or nonpositive limit returns `22023`. Limit is capped at 100. Response follows admin API v1: `{items,nextCursor,hasMore,filteredTotal,asOf}`. Order is `(created_at DESC,id DESC)` with `meetany_private.admin_page_cursor`; filters and exact count apply before cursor slicing. This insertion boundary is not a long-lived MVCC snapshot. Items add `actor_name`, `actor_company`, `target_name`, `target_exists`. Deleted signed-in actors are distinguished from anonymous actors.
 
 No new MA codes: existing `MA001` (missing profile), `MA002` (blocked actor), `MA003` (non-admin) apply. Anonymous admin calls and all direct table access are denied by `42501`. There is no retention cleanup or historical backfill in this migration. Browser QA creates real test-branch analytics events, which remain visible there.
+
+## Messaging / T10.7 stage 1 (2026-09-23)
+
+`migrations/20260923-messaging.sql` is additive and rerunnable; the same SQL is appended to `schema.sql`. Apply only to **auth-probe** with `node web/scripts/apply-migration.mjs messaging` (pinned endpoint, DATABASE_URL from environment, error codes only). No UI, realtime service, emails, or catalog refresh is part of this stage.
+
+Private tables have RLS enabled, no app-role table privileges/policies, and are accessible only through `SECURITY DEFINER` RPCs with empty `search_path`. `conversations` references both profiles with `ON DELETE CASCADE`; `messages` references conversation and sender with cascade. Deleting either participant removes the entire conversation and its messages. Request deletion sets `request_id` to null, preserving the immutable `context_key` and history. A trigger prevents changing participants or context; `(client_id,company_id,context_key)` is unique. Context is the original request UUID text or `general`. General and deleted-request conversations never merge.
+
+`client_id` means the customer side of the conversation, not necessarily a profile whose role is `client`. A company may initiate with a request author: call `start_conversation(own_company_id, request_id)`, which sets `client_id` to that request's author. The request author can call the same RPC with the target company ID and gets the same conversation. A third party cannot attach another user's request. Without a request, the caller is `client_id`. `company_id` must identify a nonblocked company; participants must differ. Hidden/missing requests and blocked request authors cannot start new conversations. Existing history remains accessible independently of the request's current state. All participant RPCs use `require_user`, so blocked callers receive MA002 (including reads); admin reads use `require_admin`.
+
+| RPC | Result / behavior |
+|---|---|
+| `start_conversation(p_company_id uuid, p_request_id uuid default null)` | Conversation object; creates or returns the unique existing conversation. |
+| `send_message(p_conversation_id uuid, p_body text)` | Message object. Sender comes only from caller identity. Trims leading/trailing whitespace; 1–2000 Unicode characters, not bytes. |
+| `list_my_conversations()` | Array, ordered by `last_message_at DESC NULLS LAST`, then `created_at DESC,id DESC`; conversation fields plus `other_id`, `other_name`, `other_company`, `last_message` (message object or null), `unread_count`. |
+| `list_messages(p_conversation_id uuid, p_after timestamptz default null)` | Array ordered by `created_at,id` ascending; strictly later than `p_after`, or complete history when null. Unauthorized and nonexistent IDs both return MA501. |
+| `mark_read(p_conversation_id uuid)` | `{marked,read_at}`; marks only unread messages sent by the other participant and updates the caller's `client_last_read_at` or `company_last_read_at`. Idempotent. |
+| `unread_message_count()` | Integer count of incoming unread messages over the caller's conversations. |
+| `admin_list_conversations(p_cursor jsonb default null)` | Existing admin page envelope: `{items,hasMore,nextCursor,filteredTotal,asOf}`, 25 rows, descending immutable `(created_at,id)`. Includes participant names/companies and latest message. |
+| `admin_conversation_messages(p_conversation_id uuid,p_cursor jsonb default null)` | Same admin page envelope, 25 messages, newest first. Does not mark messages read. |
+| `admin_message_stats()` | `{totals:{day:{conversations,messages},week:{conversations,messages},month:{conversations,messages}}}`. Counts records created today (Asia/Tbilisi midnight), last 7 days, last 30 days; these are not counts of active conversations. |
+
+Conversation fields: `id,client_id,company_id,request_id,context_key,created_at,last_message_at,client_last_read_at,company_last_read_at`. Last-message/read timestamps start null. Message fields: `id,conversation_id,sender_id,body,created_at,read_at`. Only the receiving participant marks read; sending does not implicitly mark incoming messages read. Admin cursor validation uses the existing `admin_page_cursor`; pagination fixes the creation-time horizon, while read state and latest-message metadata remain current.
+
+**Limits and concurrency:** at most 20 accepted messages per sender in a sliding minute across all conversations; at least two seconds between messages from the same sender in one conversation (MA506 for either limit). Opposite participants have independent limits. A transaction advisory lock serializes sends per sender; a conversation row lock serializes sends with `mark_read`. Server message timestamps strictly increase per conversation, preserving polling order. Preserve the raw timestamp string, including PostgreSQL microseconds, for `p_after`; do not round through JavaScript `Date`. Poll every 5–10 seconds in the future UI. `p_after` only retrieves new messages, not updated receipts on old messages; fetch full history when receipt reconciliation is needed.
+
+Indexes cover participant lists, request deletion, admin pagination, `(conversation_id,created_at,id)`, sender time windows and incoming unread messages. There is no direct participant or admin table access. Message bodies are plain text; future UI must render them as text, never unescaped HTML.
+
+| Code | Meaning |
+|---|---|
+| MA501 | Conversation missing or caller is not a participant. |
+| MA502 | Company missing, wrong role or blocked. |
+| MA503 | Cannot message oneself. |
+| MA504 | Request missing/hidden, author blocked, or caller is neither author nor target company. |
+| MA505 | Message must contain 1–2000 characters after whitespace trim. |
+| MA506 | Sender minute cap or conversation two-second cooldown exceeded. |
+| MA507 | Conversation participants/context cannot change. |
+
+Errors use existing `meetany_private.fail` (`P0001`, MA code prefix and hint). Store `MSG` maps MA501–MA507 to Georgian. Store methods `startConversation(companyId,requestId?)`, `sendMessage(id,body)`, `listConversations()`, `listMessages(id,after?)`, `markRead(id)`, `unreadMessageCount()` call `rpc()` directly; object fields are camelCase (`lastMessage` is also mapped). `startConversation` returns base metadata, with unavailable enrichment fields null/zero; `listConversations` supplies names, latest message and unread count. No store cache, `mutate()`, `refresh()` or public snapshot invalidation occurs. All nine messaging RPCs are explicitly excluded from `db-handler.js` snapshot invalidation.
+
+Validation: `db/tests/messaging_tests.sql` is included in `bash db/tests/run.sh`; schema loads twice and the migration is reapplied before tests. The suite checks identities/permissions, body limits, rate limits, polling, unread/read receipts, both initiation directions, deletion semantics, RLS and admin cursor traversal.
+
+Verified on 2026-09-23: **auth-probe applied**, information_schema confirms 2 private tables and 9 public RPCs. Local suite: **135 messaging assertions, 1100 total**, all passed. `npx tsc --noEmit` passed; `npm run lint` reports 0 errors and 16 pre-existing warnings. Live smoke used real demo hotel/wood authentication, dev `3001` API and all six store methods: camelCase mapping, trimmed body, send/read, strict-after polling, unread **1 → 0**, and no catalog refresh. The smoke conversation and cascading messages were deleted through owner SQL. Production was untouched; no deployment/build or UI changes were needed.

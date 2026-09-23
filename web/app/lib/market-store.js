@@ -29,6 +29,9 @@ export function createMarketStore({initial=null,background=true}={}){
  MA301:'საკუთარ ანგარიშს ვერ დაბლოკავ.',MA302:'მომხმარებელი ვერ მოიძებნა.',MA303:'დადასტურება შეიძლება მხოლოდ კომპანიისთვის.',MA304:'მიზეზი უნდა იყოს 3-დან 500 სიმბოლომდე.',
   MA401:'მიუთითე სახელი და გვარი.',MA402:'მიუთითე კომპანიის დასახელება.',MA403:'მიუთითე სწორი ელფოსტა.',MA404:'მიუთითე მობილურის ნომერი ფორმატით: +995 5XX XXX XXX.',
   MA405:'ეს ტელეფონის ნომერი უკვე გამოყენებულია.',MA407:'აირჩიე საქმიანობის მიმართულება.',MA408:CHECK_EMAIL,
+  MA501:'მიმოწერა ვერ მოიძებნა ან მასზე წვდომა არ გაქვს.',MA502:'კომპანია მიუწვდომელია.',MA503:'საკუთარ თავს ვერ მისწერ.',
+  MA504:'ამ მოთხოვნაზე მიმოწერის დაწყება შეუძლებელია.',MA505:'შეტყობინება უნდა შეიცავდეს 1–2000 სიმბოლოს.',
+  MA506:'შეტყობინებებს ძალიან სწრაფად აგზავნი. ცოტა ხანში სცადე თავიდან.',MA507:'მიმოწერის მონაწილეებისა და კონტექსტის შეცვლა შეუძლებელია.',
   MA410:'კომპანიის აღწერა მაქსიმუმ 1000 სიმბოლოა.',MA411:'ჩამონათვალში შეიძლება 8 პუნქტამდე, თითო 120 სიმბოლომდე.'
  };
  const PASSWORD_MIN=8,PASSWORD_SHORT='პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან.',TERMS='რეგისტრაციისთვის საჭიროა წესებზე თანხმობა.';
@@ -676,6 +679,19 @@ export function createMarketStore({initial=null,background=true}={}){
  function getCompany(id){return cache.companies.find(c=>c.id===id)||null;}
  function companyStats(id){return cache.companyStats[id]||{sent:0,chosen:0};}
 
+ /* ---------- messaging (caller-owned polling; no catalog cache or refresh) ---------- */
+ const mapMessage=m=>m?{id:m.id,conversationId:m.conversation_id,senderId:m.sender_id,body:m.body,createdAt:m.created_at,readAt:m.read_at}:null;
+ const mapConversation=c=>({id:c.id,clientId:c.client_id,companyId:c.company_id,requestId:c.request_id,contextKey:c.context_key,
+  createdAt:c.created_at,lastMessageAt:c.last_message_at,clientLastReadAt:c.client_last_read_at,companyLastReadAt:c.company_last_read_at,
+  otherId:c.other_id??null,otherName:c.other_name??null,otherCompany:c.other_company??null,
+  lastMessage:mapMessage(c.last_message),unreadCount:Number(c.unread_count||0)});
+ const startConversation=(companyId,requestId=null)=>rpc('start_conversation',{p_company_id:companyId,p_request_id:requestId}).then(mapConversation);
+ const sendMessage=(id,body)=>rpc('send_message',{p_conversation_id:id,p_body:body}).then(mapMessage);
+ const listConversations=()=>rpc('list_my_conversations').then(data=>rows(data).map(mapConversation));
+ const listMessages=(id,after=null)=>rpc('list_messages',{p_conversation_id:id,p_after:after}).then(data=>rows(data).map(mapMessage));
+ const markRead=id=>rpc('mark_read',{p_conversation_id:id}).then(data=>({marked:Number(data.marked),readAt:data.read_at}));
+ const unreadMessageCount=()=>rpc('unread_message_count').then(Number);
+
  /* ---------- admin ---------- */
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
@@ -703,6 +719,7 @@ export function createMarketStore({initial=null,background=true}={}){
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,listCompanies,getCompany,companyStats,
+  startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
   adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }

@@ -12,6 +12,8 @@ import { invalidatePublicSnapshot } from './public-snapshot.js';
 
 // Exclude reads and contact analytics, but retain admin writes that affect catalogs.
 const SNAPSHOT_READS = new Set([
+  'start_conversation', 'send_message', 'list_my_conversations', 'list_messages', 'mark_read',
+  'unread_message_count', 'admin_message_stats', 'admin_list_conversations', 'admin_conversation_messages',
   'log_contact_event', 'my_profile', 'list_companies', 'company_stats', 'offer_counts',
   'contact_for_request', 'engagement_state', 'list_notifications',
   'admin_list_users', 'admin_search_requests', 'admin_search_users', 'admin_list_audit',
