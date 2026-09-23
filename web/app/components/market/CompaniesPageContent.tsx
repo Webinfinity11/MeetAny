@@ -43,19 +43,18 @@ function skeleton() {
 export function CompaniesPageContent() {
   const { store, ready, available } = useMarketStore();
   const filters = useFilters("/companies/");
-  const industry = filters.get("industry"), city = filters.get("city"), query = filters.get("q"), verified = filters.get("verified") === "1";
+  const industry = filters.get("industry"), city = filters.get("city"), query = filters.get("q");
   const type = filters.get("type");
   const setIndustry = (industry: string) => filters.set({industry});
   const setCity = (city: string) => filters.set({city});
   const setQuery = (q: string) => filters.set({q});
-  const setVerified = (value: boolean) => filters.set({verified: value ? "1" : ""});
   const [sheetOpen, setSheetOpen] = useState(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
 
   const list = useCallback(
-    (overrides: Partial<{ industry: string; city: string; verified: boolean }>) =>
-      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, verified, type, q: query, ...overrides }) || [],
-    [store, industry, city, verified, query, type],
+    (overrides: Partial<{ industry: string; city: string }>) =>
+      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type, q: query, ...overrides }) || [],
+    [store, industry, city, query, type],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -99,30 +98,28 @@ export function CompaniesPageContent() {
     ...(type ? [{key: "type", label: ({suppliers: "მომწოდებლები", services: "მომსახურება", distributors: "დისტრიბუტორები", partners: "ბიზნესპარტნიორები"} as Record<string, string>)[type] || type}] : []),
     ...(industry ? [{ key: "industry", label: categories[industry] }] : []),
     ...(city ? [{ key: "city", label: cities[city] }] : []),
-    ...(verified ? [{ key: "verified", label: "დადასტურებული" }] : []),
   ];
   const removeFilter = (key: string) => {
     if (key === "type") filters.set({type: ""});
     else if (key === "industry") setIndustry("");
     else if (key === "city") setCity("");
-    else setVerified(false);
   };
   const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: ""});
-  const filterCount = Number(!!industry) + Number(!!city) + Number(verified);
+  const filterCount = Number(!!industry) + Number(!!city);
 
   const countLabel = !available ? "" : !ready ? "კომპანიები იტვირთება…" : `${rows.length} კომპანია`;
 
-  const filtersBody = (
+  const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="ma-proto-filters">
       <div>
         <h2 className="ma-title">დარგი</h2>
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
       </div>
       <div className="ma-field">
-        <label className="ma-field__label" htmlFor="company-city-desktop">
+        <label className="ma-field__label" htmlFor={`company-city-${placement}`}>
           მომსახურების ქალაქი
         </label>
-        <select className="ma-select" id="company-city-desktop" value={city} onChange={(e) => setCity(e.target.value)}>
+        <select className="ma-select" id={`company-city-${placement}`} value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="">ყველა ქალაქი</option>
           {cityOptions.map((id) => (
             <option key={id} value={id}>
@@ -131,10 +128,6 @@ export function CompaniesPageContent() {
           ))}
         </select>
       </div>
-      <label className="ma-check">
-        <input type="checkbox" role="switch" checked={verified} onChange={(e) => setVerified(e.target.checked)} />
-        <span>მხოლოდ დადასტურებული</span>
-      </label>
       <button type="button" className="ma-btn ma-btn--ghost" onClick={clearFilters}>
         ფილტრების გასუფთავება
       </button>
@@ -162,7 +155,7 @@ export function CompaniesPageContent() {
       </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar ma-panel" aria-label="კომპანიების ფილტრები">
-          {filtersBody}
+          {filtersBody("desktop")}
         </aside>
         <section className="ma-stack">
           <button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}>
@@ -223,7 +216,7 @@ export function CompaniesPageContent() {
           </button>
         }
       >
-        {filtersBody}
+        {filtersBody("mobile")}
       </MobileFilterSheet>
     </div>
   );

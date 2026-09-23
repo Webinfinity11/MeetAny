@@ -246,3 +246,7 @@
  .requests-catalog .ma-proto-rowend{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3)}
  .requests-catalog .ma-proto-rowend>.ma-btn{margin-left:auto}
 }
+
+/* Profile sections already have a parent gap; avoid adding two section margins as well. */
+.company-profile .ma-proto-account>.ma-stack{gap:var(--space-8)}
+.company-profile .ma-proto-account>.ma-stack>.r2-section{margin-block:0}

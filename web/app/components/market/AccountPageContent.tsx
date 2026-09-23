@@ -75,7 +75,7 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
             <label className="ma-field__label" htmlFor="company">
               კომპანიის დასახელება{isCompany ? " *" : ""}
             </label>
-            <input className="ma-input" id="company" maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
+            <input className="ma-input" id="company" required={isCompany} maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
           </div>
         </div>
         <div className="ma-form__row ma-form__row--2">
@@ -196,7 +196,7 @@ export function AccountPageContent() {
   if (!me) {
     return (
       <div className="ma-page">
-        <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="შედი ანგარიშში" description="MeetAny აკავშირებს ბიზნესებს: ნებისმიერს შეუძლია დაწეროს მოთხოვნა, კომპანიები კი პასუხობენ შეთავაზებით." />
+        <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="შენი ანგარიში" description="MeetAny აკავშირებს ბიზნესებს: ნებისმიერს შეუძლია დაწეროს მოთხოვნა, კომპანიები კი პასუხობენ შეთავაზებით." />
         <AuthForms initialRole={searchParams.get("role") || ""} />
       </div>
     );
@@ -215,7 +215,6 @@ export function AccountPageContent() {
           <p className="ma-small ma-muted">
             {me.name} · {isCompany ? "კომპანია" : "კლიენტი"}
           </p>
-          {isCompany && me.verified ? <span className="ma-badge ma-badge--success">დადასტურებული</span> : null}
           {me.blocked ? <span className="ma-badge ma-badge--danger">დაბლოკილია</span> : null}
           <dl className="ma-kv">
             <div>

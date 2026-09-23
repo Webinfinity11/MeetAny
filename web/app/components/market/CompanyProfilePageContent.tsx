@@ -70,7 +70,7 @@ export function CompanyProfilePageContent() {
   const ctaHref = `/requests/new/?category=${encodeURIComponent(c.industry)}`;
 
   return (
-    <div className="ma-page">
+    <div className="ma-page company-profile">
       <header
         className="r2-band ma-page-head"
         style={{ "--band-photo": `url(/assets/photos/${categoryPhoto[c.industry] || categoryPhoto.other})` } as React.CSSProperties}
@@ -83,12 +83,6 @@ export function CompanyProfilePageContent() {
             {categories[c.industry] || c.industry} · {cities[c.city] || c.city}
           </p>
           <div className="ma-cluster">
-            {c.verified ? (
-              <span className="ma-badge ma-badge--success">
-                <Icon name="check" />
-                დადასტურებული
-              </span>
-            ) : null}
             <span>{statsLabel(stats)}</span>
           </div>
           {phone ? (
@@ -115,12 +109,6 @@ export function CompanyProfilePageContent() {
               <dt>წევრია</dt>
               <dd>{dateLabel(c.createdAt)}</dd>
             </div>
-            {c.verifiedAt ? (
-              <div>
-                <dt>დადასტურებულია</dt>
-                <dd>{dateLabel(c.verifiedAt)}</dd>
-              </div>
-            ) : null}
             <div>
               <dt>გაგზავნილი</dt>
               <dd>{stats.sent}</dd>

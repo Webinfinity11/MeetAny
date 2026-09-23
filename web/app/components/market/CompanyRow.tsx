@@ -28,12 +28,7 @@ export function CompanyRow({ c }: { c: CompanyRowData }) {
         <Link className="ma-title ma-proto-rowtitle" href={href}>
           {c.name}
         </Link>
-        {c.verified ? (
-          <span className="ma-badge ma-badge--success">
-            <Icon name="check" />
-            დადასტურებული
-          </span>
-        ) : null}
+
         <p className="ma-small ma-muted">
           {categories[c.industry] || c.industry} · {cities[c.city] || c.city}
         </p>

@@ -147,17 +147,17 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
       ? "მოთხოვნები იტვირთება…"
       : `${rows.length} ღია მოთხოვნა`;
 
-  const filtersBody = (
+  const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="ma-proto-filters">
       <div>
         <h2 className="ma-title">კატეგორია</h2>
         <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
       </div>
       <div className="ma-field">
-        <label className="ma-field__label" htmlFor="city-desktop">
+        <label className="ma-field__label" htmlFor={`city-${placement}`}>
           სად არის საჭირო
         </label>
-        <select className="ma-select" id="city-desktop" value={city} onChange={(e) => setCity(e.target.value)}>
+        <select className="ma-select" id={`city-${placement}`} value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="">ყველა ქალაქი</option>
           {cityFacets.map((f) => (
             <option key={f.id} value={f.id}>
@@ -190,7 +190,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
       </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar ma-panel" aria-label="ფილტრები">
-          {filtersBody}
+          {filtersBody("desktop")}
         </aside>
         <section className="ma-stack" aria-label="მოთხოვნების სია">
           <div className="ma-proto-toolbar">
@@ -262,7 +262,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
           </button>
         }
       >
-        {filtersBody}
+        {filtersBody("mobile")}
       </MobileFilterSheet>
 
       <RequestFormSheet open={formOpen} initialCategory={formCategory} onClose={() => setFormOpen(false)} />

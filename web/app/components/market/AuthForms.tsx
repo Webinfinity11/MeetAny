@@ -39,13 +39,13 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
         <label className="ma-field__label" htmlFor="login-email">
           ელფოსტა
         </label>
-        <input className="ma-input" id="login-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.ge" />
+        <input className="ma-input" id="login-email" autoComplete="username" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.ge" />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="login-password">
           პაროლი
         </label>
-        <input className="ma-input" id="login-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="ma-input" id="login-password" autoComplete="current-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       {error ? (
         <p className="ma-field__error" role="alert">
@@ -121,7 +121,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-company">
             კომპანია / ობიექტი{role === "client" ? " · არასავალდებულო" : " *"}
           </label>
-          <input className="ma-input" id="reg-company" maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
+          <input className="ma-input" id="reg-company" required={role === "company"} maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
         </div>
       </div>
       <div className="ma-form__row ma-form__row--2">
