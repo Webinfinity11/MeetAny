@@ -1,5 +1,7 @@
 "use client";
 
+import { ServiceUnavailable } from "./ServiceUnavailable";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
@@ -22,6 +24,7 @@ type MappedCompany = {
   offers: string[];
   about: string;
   verified: boolean;
+  createdAt: string;
 };
 
 function skeleton() {
@@ -42,7 +45,7 @@ export function CompaniesPageContent() {
   const { store, ready, available } = useMarketStore();
   const filters = useFilters("/companies/");
   const industry = filters.get("industry"), city = filters.get("city"), query = filters.get("q");
-  const type = filters.get("type");
+  const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "newest");
   const setIndustry = (industry: string) => filters.set({industry});
   const setCity = (city: string) => filters.set({city});
   const setQuery = (q: string) => filters.set({q});
@@ -51,8 +54,8 @@ export function CompaniesPageContent() {
 
   const list = useCallback(
     (overrides: Partial<{ industry: string; city: string }>) =>
-      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type, q: query, ...overrides }) || [],
-    [store, industry, city, query, type],
+      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type, q: query, ...overrides })?.filter(c => !coverage || c.city === "georgia" || c.serviceCities?.includes("georgia")) || [],
+    [store, industry, city, query, type, coverage],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -78,7 +81,7 @@ export function CompaniesPageContent() {
 
   const rows: CompanyListingData[] = useMemo(() => {
     if (!store) return [];
-    return results.map((c) => ({
+    return [...results].sort((a, b) => sort === "name" ? (a.company || a.name).localeCompare(b.company || b.name, "ka") : Date.parse(b.createdAt) - Date.parse(a.createdAt)).map((c) => ({
       id: c.id,
       name: c.company || c.name,
       industry: c.industry,
@@ -90,9 +93,10 @@ export function CompaniesPageContent() {
       phone: phones[c.id],
       stats: store.companyStats(c.id),
     }));
-  }, [results, store, phones]);
+  }, [results, store, phones, sort]);
 
   const activeItems = [
+    ...(coverage ? [{key: "coverage", label: "მთელი საქართველო"}] : []),
     ...(type ? [{key: "type", label: ({suppliers: "მომწოდებლები", services: "მომსახურება", distributors: "დისტრიბუტორები", partners: "ბიზნესპარტნიორები"} as Record<string, string>)[type] || type}] : []),
     ...(industry ? [{ key: "industry", label: categories[industry] }] : []),
     ...(city ? [{ key: "city", label: cities[city] }] : []),
@@ -101,9 +105,10 @@ export function CompaniesPageContent() {
     if (key === "type") filters.set({type: ""});
     else if (key === "industry") setIndustry("");
     else if (key === "city") setCity("");
+    else filters.set({[key]: ""});
   };
-  const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: ""});
-  const filterCount = Number(!!industry) + Number(!!city);
+  const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: "", coverage: "", sort: ""});
+  const filterCount = activeItems.length;
 
   const countLabel = !available ? "" : !ready ? "კომპანიები იტვირთება…" : `${rows.length} კომპანია`;
 
@@ -126,7 +131,16 @@ export function CompaniesPageContent() {
           ))}
         </select>
       </div>
-      <button type="button" className="ma-btn ma-btn--ghost" onClick={clearFilters}>
+      <div className="ma-field filter-section">
+        <label className="ma-field__label" htmlFor={`company-type-${placement}`}>საქმიანობის მიმართულება</label>
+        <select className="ma-select" id={`company-type-${placement}`} value={type} onChange={e => filters.set({type: e.target.value})}>
+          <option value="">ყველა მიმართულება</option><option value="suppliers">პროდუქციის მომწოდებლები</option><option value="services">მომსახურების კომპანიები</option><option value="distributors">ლოგისტიკა და დისტრიბუცია</option><option value="partners">თანამშრომლობის მსურველები</option>
+        </select>
+      </div>
+      <fieldset className="filter-section filter-options"><legend>მომსახურების არეალი</legend>
+        <label className="ma-check"><input type="checkbox" checked={coverage} onChange={e => filters.set({coverage: e.target.checked ? "national" : ""})} /><span>ემსახურება მთელ საქართველოს</span></label>
+      </fieldset>
+      <button type="button" className="ma-btn ma-btn--ghost filter-reset" onClick={clearFilters}>
         ფილტრების გასუფთავება
       </button>
     </div>
@@ -136,21 +150,19 @@ export function CompaniesPageContent() {
     <div className="ma-page companies-catalog">
       <header className="companies-intro">
         <h1 className="ma-h1">კომპანიები</h1>
-        <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} />
+        <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} />
       </header>
       <div className="ma-proto-columns">
-        <aside className="ma-proto-sidebar ma-panel" aria-label="კომპანიების ფილტრები">
+        <aside className="ma-proto-sidebar filter-rail" aria-label="კომპანიების ფილტრები">
           {filtersBody("desktop")}
         </aside>
         <section className="ma-stack">
-          <ResultsBar items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel}
+          <ResultsBar items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
             filterButton={<button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი ({filterCount})</button>}
           />
           <div className="ma-stack">
             {!available ? (
-              <div className="ma-empty">
-                <h2 className="ma-empty__title">სერვისი დროებით მიუწვდომელია</h2>
-              </div>
+              <ServiceUnavailable />
             ) : !ready ? (
               skeleton()
             ) : rows.length === 0 ? (

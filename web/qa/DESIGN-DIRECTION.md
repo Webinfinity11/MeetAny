@@ -51,3 +51,11 @@ The owner requested closer attention to icons, buttons and a recognizable MeetAn
 Icons keep the established Lucide family and stroke weight, now with an explicit 24-unit viewBox, decorative semantics and a semantic data attribute. Only forward navigation arrows move on hover; contact icons stay still. Buttons no longer shrink under a press. Reduced-motion preference suppresses arrow movement. Calls separate the label from the tabular, nonwrapping number. Mobile creation reads “დამატება” at every width, with the full accessible name “მოთხოვნის დამატება”; the plus icon is omitted only below 360px to preserve readable text and touch targets.
 
 This is a refinement of a consistent B2B interface, not evidence that observers will attribute its design to a human. Distinctive content and actual company photography remain important to its identity.
+
+## Guided search and a sector index, 2026-09-23
+
+Following the owner's request, the filter rail is now an unboxed directory index with custom sector drawings, plain counts and an underlined selection. Conditions are separated by rules. Category drawings use an original shared 32-unit SVG grid and blue filled planes; action icons retain the established Lucide family. This supersedes the earlier category-icon direction.
+
+Additional filters use existing data only: request publication time, zero offers, expiration within three days and a photo; company activity type and explicitly nationwide coverage. Activity type reuses existing store classification (industry-based supplier/service/distribution, declared partnership interests), not a newly verified company attribute. Company sorting offers registration date and Georgian name order.
+
+Search now offers categories and live records on focus, narrowing on input. Category selection refines the catalog; record selection opens its detail page. The same combobox serves home and catalogs, with explicit keyboard selection, focus handling and empty-result feedback. Mobile search-type labels wrap rather than clipping. No country filters, invented inventory, or generated company facts were introduced.

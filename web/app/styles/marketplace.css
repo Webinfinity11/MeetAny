@@ -167,7 +167,7 @@
 @media(max-width:1023px){.ma-proto-toolbar:has(>.ma-lg-down):not(:has(.ma-field)){display:flex}}
 @media(max-width:767px){.r2-results-bar{align-items:stretch;flex-direction:column}.r2-results-controls>.ma-field,.r2-results-bar .ma-select{width:100%}}
 
-@media(min-width:1024px){.ma-proto .ma-proto-sidebar{padding:var(--space-4)}.ma-proto-sidebar :is([data-clear],[data-company-clear]){padding-inline:var(--space-2)}}
+@media(min-width:1024px){.ma-proto .ma-proto-sidebar{padding:0 var(--space-5) 0 0}.ma-proto-sidebar :is([data-clear],[data-company-clear]){padding-inline:var(--space-2)}}
 
 /* Catalog: image and identity share a header; details use the whole row. */
 .ma-proto .company-listing{grid-template-columns:calc(var(--space-16) * 2) minmax(0,1fr);gap:var(--space-3) var(--space-5)}
@@ -221,13 +221,6 @@
 
 /* Search leads the catalogs; the result structure distinguishes their tasks. */
 .requests-intro,.companies-intro{display:grid;gap:var(--space-5);padding-bottom:var(--space-6);margin-bottom:var(--space-6);border-bottom:1px solid var(--border)}
-.catalog-search{min-width:0;align-self:center}
-.catalog-search__input{position:relative}
-.catalog-search__input>.icon{position:absolute;left:var(--space-4);top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
-.catalog-search__input>.ma-input{width:100%;padding-inline:var(--space-12)}
-.catalog-search__input>.ma-input::-webkit-search-cancel-button{appearance:none}
-.catalog-search__clear{position:absolute;right:0;top:0;bottom:0;width:var(--tap-min);min-height:var(--tap-min);display:grid;place-items:center;border:0;background:transparent;color:var(--text-3);border-radius:var(--control-radius);cursor:pointer}
-.catalog-search__clear:hover{color:var(--action);background:var(--bg-subtle)}
 .companies-intro .catalog-search{max-width:calc(var(--space-24) * 9)}
 .ma-proto .requests-catalog .ma-rcard--row{box-shadow:none;padding:var(--space-5);gap:var(--space-4)}
 .requests-catalog .ma-rcard--row>.ma-stack{gap:var(--space-3)}
@@ -306,3 +299,21 @@
 .ma-proto .ma-rcard--row:hover,.ma-proto .ma-rcard--row:active{transform:none;border-color:var(--border-strong)}
 .ma-proto .company-listing{box-shadow:none;transition:border-color var(--dur-fast) var(--ease)}
 .ma-proto .company-listing:hover{border-color:var(--border-strong)}
+
+/* Filters read as a directory index, with a separate conditions section. */
+.filter-rail{border:0;border-radius:0;box-shadow:none;padding:0 var(--space-5) 0 0;border-right:1px solid var(--border-subtle)}
+.filter-rail .ma-title{font-size:var(--fs-sm);line-height:var(--lh-sm);padding-bottom:var(--space-3);border-bottom:2px solid var(--text);margin-bottom:var(--space-2)}
+.ma-proto-filter{border-radius:0;background:transparent;padding:var(--space-2) 0;gap:var(--space-3);margin:0;min-height:var(--control-h-lg)}
+.ma-proto-filter .facet-label{white-space:normal;text-wrap:pretty}
+.ma-proto-filter .facet-count{min-width:var(--space-4);border-radius:0;background:transparent;text-align:right}
+.ma-proto-filter[aria-pressed=true]{box-shadow:none;background:transparent;color:var(--text);font-weight:var(--fw-bold)}
+.ma-proto-filter[aria-pressed=true]:hover{background:var(--bg-subtle)}
+.ma-proto-filter[aria-pressed=true] .sector-icon{color:var(--action)}
+.ma-proto-filter[aria-pressed=true] .facet-label{text-decoration:underline;text-decoration-color:var(--action);text-underline-offset:var(--space-2);text-decoration-thickness:2px}
+.ma-proto-filter[aria-pressed=true] .sector-plane{fill:var(--blue-200)}
+.filter-section{padding-top:var(--space-5);border:0;border-top:1px solid var(--border-subtle);margin:0;min-width:0}
+.filter-options{display:grid;gap:var(--space-1);padding-inline:0}
+.filter-options legend{float:left;width:100%;padding:0;margin-bottom:var(--space-2);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
+.filter-options .ma-check{min-height:var(--tap-min);font-size:var(--fs-sm);line-height:var(--lh-sm);align-items:center}
+.filter-options .ma-check input{flex:none;accent-color:var(--action)}
+.filter-reset{justify-content:flex-start;padding-inline:0;color:var(--text-3);font-size:var(--fs-xs)}

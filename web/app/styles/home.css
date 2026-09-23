@@ -445,7 +445,7 @@ h1, h2, h3, .tt, button, input[type="button"], input[type="submit"], input[type=
 .discovery-query > .icon { width: 21px; height: 21px; flex: 0 0 auto; margin-left: 14px; color: var(--ink-500); }
 .discovery-query input { border: 0px; outline: 0px; background: transparent; color: var(--ink-800); font-size: 16px; min-width: 0px; width: 100%; padding: 12px 0px; }
 .discovery-query input::placeholder { color: var(--ink-400); }
-.discovery-search:focus-within { outline: var(--blue-200) solid 3px; outline-offset: 2px; }
+.discovery-search:focus-within { outline: none; }
 .discovery-search > .button { background: var(--ink-900); border-radius: var(--radius-sm); min-height: 46px; padding: 12px 22px; font-size: 14px; }
 .discovery-search > .button:hover { background: var(--ink-800); }
 .discovery-suggestions { display: none; position: absolute; top: calc(100% + 8px); left: 0px; right: 0px; padding: 16px; border-radius: var(--radius-md); background: var(--white); color: var(--ink-900); box-shadow: color-mix(in srgb,var(--ink-900) 15%,transparent) 0px 12px 30px; }
@@ -783,4 +783,22 @@ body.design-two :is(.category-card,.market-sector-grid a,.industry-list a,.butto
   body.design-two .listing-heading h3 a{position:relative}
   body.design-two .listing-heading h3 a::before{content:"";position:absolute;inset:calc(-1 * var(--space-3)) 0;min-height:var(--tap-min)}
   body.design-two .market-search-types label{min-height:var(--tap-min);display:inline-flex;align-items:center}
+}
+
+/* Same real-data combobox as the catalogs; hero layout remains unchanged. */
+.design-two .discovery-search>.catalog-search{flex:1;min-width:0;margin:0;align-self:center}
+.design-two .discovery-search .catalog-search .ma-input{height:var(--control-h-lg);border-color:transparent;background:transparent}
+.design-two .discovery-search .catalog-search .ma-input:focus{border-color:var(--action)}
+.design-two .home-discovery{overflow:visible}
+.design-two .discovery-search{position:relative;z-index:var(--z-sticky)}
+@media(max-width:767.98px){.design-two .discovery-search>.catalog-search{width:100%}.search-suggestion{padding-inline:var(--space-2);gap:var(--space-2)}}
+@media(max-width:479.98px){
+ body.design-two .market-search-types{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1fr) minmax(0,1.15fr);gap:var(--space-2);overflow:visible}
+ body.design-two .market-search-types label{white-space:normal;font-size:var(--fs-xs);line-height:var(--lh-xs);justify-content:center;text-align:center;padding-bottom:var(--space-3)}
+}
+
+.search-type-short{display:none}
+@media(max-width:479.98px){
+ .search-type-short{display:inline}
+ .search-type-full{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 }

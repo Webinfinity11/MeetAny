@@ -1,5 +1,7 @@
 "use client";
 
+import { ServiceUnavailable } from "./ServiceUnavailable";
+
 import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -183,7 +185,7 @@ export function AccountPageContent() {
     return { matching: [] as unknown[], myOffers: [] as unknown[], myRequests };
   }, [store, me]);
 
-  if (ready && !available) return <div className="ma-page"><p role="alert">სერვისი დროებით მიუწვდომელია. სცადე თავიდან.</p></div>;
+  if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 
   if (!ready) {
     return (

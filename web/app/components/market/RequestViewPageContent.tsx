@@ -1,5 +1,7 @@
 "use client";
 
+import { ServiceUnavailable } from "./ServiceUnavailable";
+
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -14,7 +16,7 @@ import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities, units } from "../../lib/categories";
-import { fetchPhone } from "../../lib/phones";
+import { usePublicPhone } from "../../lib/phones";
 
 // No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number). Omitting
 // price/priceType makes market-store.js's sendOffer() default to price:null,
@@ -148,16 +150,9 @@ export function RequestViewPageContent() {
     return { r, me, owner, offers: mappedOffers, offerCount, state, isOwner, myOffer: myOffer ? mapOffer(myOffer) : null, contact };
   }, [store, ready, available, id, seen]);
 
-  const [ownerPhone, setOwnerPhone] = useState<string | null>(null);
-  useEffect(() => {
-    let cancelled = false;
-    if (data?.r.ownerId) fetchPhone(data.r.ownerId).then((p) => !cancelled && setOwnerPhone(p));
-    return () => {
-      cancelled = true;
-    };
-  }, [data?.r.ownerId]);
+  const ownerPhone = usePublicPhone(data?.r.ownerId);
 
-  if (ready && !available) return <div className="ma-page"><p role="alert">სერვისი დროებით მიუწვდომელია. სცადე თავიდან.</p></div>;
+  if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 
   if (!ready) {
     return (

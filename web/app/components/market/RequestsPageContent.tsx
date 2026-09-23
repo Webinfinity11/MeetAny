@@ -1,5 +1,7 @@
 "use client";
 
+import { ServiceUnavailable } from "./ServiceUnavailable";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogSearch } from "./CatalogSearch";
@@ -20,6 +22,7 @@ type MappedRequest = {
   city: string;
   ownerId: string;
   createdAt: string;
+  photo: string | null;
 };
 
 function skeleton() {
@@ -42,6 +45,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
   const city = filters.get("city"), category = filters.get("category"), query = filters.get("q"), sort = filters.get("sort", "newest");
+  const period = filters.get("period"), unanswered = filters.get("unanswered") === "1", withPhoto = filters.get("photo") === "1", urgent = filters.get("urgent") === "1";
   const setCity = (city: string) => filters.set({city});
   const setCategory = (category: string) => filters.set({category});
   const setQuery = (q: string) => filters.set({q});
@@ -66,8 +70,8 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
         q: query,
         state: "open",
         ...overrides,
-      }) || [],
-    [store, category, city, query],
+      })?.filter(r => (!unanswered || store?.offerCount(r.id) === 0) && (!withPhoto || !!r.photo) && (!urgent || store?.daysLeft(r) <= 3) && (!period || !["1", "7"].includes(period) || Date.now() - Date.parse(r.createdAt) <= Number(period) * 86400000)) || [],
+    [store, category, city, query, period, unanswered, withPhoto, urgent],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -132,16 +136,20 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
   }, [sorted, store]);
 
   const activeItems = [
+    ...(["1", "7"].includes(period) ? [{key: "period", label: period === "1" ? "ბოლო 24 საათი" : "ბოლო 7 დღე"}] : []),
+    ...(unanswered ? [{key: "unanswered", label: "პასუხის გარეშე"}] : []),
+    ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
+    ...(urgent ? [{key: "urgent", label: "ვადა: 3 დღემდე"}] : []),
     ...(city ? [{ key: "city", label: cities[city] }] : []),
     ...(category ? [{ key: "category", label: categories[category] }] : []),
   ];
   const removeFilter = (key: string) => {
     if (key === "city") setCity("");
-    else setCategory("");
+    else filters.set({[key]: ""});
   };
-  const clearFilters = () => filters.set({city: "", category: "", q: "", sort: ""});
+  const clearFilters = () => filters.set({city: "", category: "", q: "", sort: "", period: "", unanswered: "", photo: "", urgent: ""});
 
-  const filterCount = Number(!!city) + Number(!!category);
+  const filterCount = activeItems.length;
   const countLabel = !available
     ? ""
     : !ready
@@ -167,7 +175,18 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
           ))}
         </select>
       </div>
-      <button type="button" className="ma-btn ma-btn--ghost" onClick={clearFilters}>
+      <div className="ma-field filter-section">
+        <label className="ma-field__label" htmlFor={`period-${placement}`}>გამოქვეყნების დრო</label>
+        <select className="ma-select" id={`period-${placement}`} value={period} onChange={e => filters.set({period: e.target.value})}>
+          <option value="">ნებისმიერ დროს</option><option value="1">ბოლო 24 საათი</option><option value="7">ბოლო 7 დღე</option>
+        </select>
+      </div>
+      <fieldset className="filter-section filter-options"><legend>დამატებითი პირობები</legend>
+        <label className="ma-check"><input type="checkbox" checked={unanswered} onChange={e => filters.set({unanswered: e.target.checked ? "1" : ""})} /><span>ჯერ არ აქვს შეთავაზება</span></label>
+        <label className="ma-check"><input type="checkbox" checked={urgent} onChange={e => filters.set({urgent: e.target.checked ? "1" : ""})} /><span>ვადა იწურება 3 დღეში</span></label>
+        <label className="ma-check"><input type="checkbox" checked={withPhoto} onChange={e => filters.set({photo: e.target.checked ? "1" : ""})} /><span>მხოლოდ ფოტოთი</span></label>
+      </fieldset>
+      <button type="button" className="ma-btn ma-btn--ghost filter-reset" onClick={clearFilters}>
         ფილტრების გასუფთავება
       </button>
     </div>
@@ -177,10 +196,10 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     <div className="ma-page requests-catalog">
       <header className="requests-intro">
         <h1 className="ma-h1">მოთხოვნები</h1>
-        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი ან შეფუთვა" value={query} onChange={setQuery} />
+        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი ან შეფუთვა" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
       </header>
       <div className="ma-proto-columns">
-        <aside className="ma-proto-sidebar ma-panel" aria-label="ფილტრები">
+        <aside className="ma-proto-sidebar filter-rail" aria-label="ფილტრები">
           {filtersBody("desktop")}
         </aside>
         <section className="ma-stack" aria-label="მოთხოვნების სია">
@@ -203,13 +222,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
           <div className="ma-stack">
             {!available
               ? (
-                  <div className="ma-empty">
-                    <span className="ma-empty__icon">
-                      <Icon name="refresh-cw" />
-                    </span>
-                    <h2 className="ma-empty__title">სერვისი დროებით მიუწვდომელია</h2>
-                    <p className="ma-empty__text">სცადე ცოტა ხანში — გვერდი თავიდან ჩატვირთე.</p>
-                  </div>
+                  <ServiceUnavailable />
                 )
               : !ready
                 ? skeleton()
