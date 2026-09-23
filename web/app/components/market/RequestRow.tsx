@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { CategoryIcon } from "./CategoryIcon";
 import type { RequestTier } from "../../lib/tier-demo";
@@ -26,7 +26,7 @@ export type RequestRowData = {
   showOwnOfferBadge: boolean;
 };
 
-export function RequestRow({ r, priority = false, tier, size = "compact" }: { r: RequestRowData; priority?: boolean; tier?: RequestTier; size?: "compact" | "featured" }) {
+export function RequestRow({ r, priority = false, tier, size = "compact", entranceIndex }: { r: RequestRowData; priority?: boolean; tier?: RequestTier; size?: "compact" | "featured"; entranceIndex?: number }) {
   const [failedPhoto, setFailedPhoto] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const closedLike = r.state === "closed" || r.state === "expired" || r.state === "chosen";
@@ -35,7 +35,7 @@ export function RequestRow({ r, priority = false, tier, size = "compact" }: { r:
       : r.state === "chosen" ? "მომწოდებელი არჩეულია"
         : r.daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${r.daysLeft} დღე`;
   return (
-    <article className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${size === "featured" ? " request-card--featured" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
+    <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${size === "featured" ? " request-card--featured" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       <div className="request-card-visual" aria-hidden="true">
         {r.photo && r.photo !== failedPhoto
           ? <img src={r.photo} alt="" width={240} height={180} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />

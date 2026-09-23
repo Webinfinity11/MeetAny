@@ -165,8 +165,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
 
   return (
     <div className={`ma-page requests-catalog catalog-page request-board request-board--${variant}`}>
-      <header className="catalog-header">
-        <h1 className="ma-h1">მოთხოვნები</h1>
+      <div className="request-board-band">
+        <header className="catalog-header">
+        <div className="request-board-heading"><h1 className="ma-h1">მოთხოვნები</h1><p>{countLabel}</p></div>
         {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
 
         <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
@@ -180,9 +181,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             {Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
           </select>
         </div> : null}
-      </header>
-      <section className="ma-stack" aria-label="მოთხოვნების სია">
-          <ResultsBar
+        </header>
+        <ResultsBar
             items={[]}
             onRemove={key => filters.set({[key]: ""})}
             onClear={clearFilters}
@@ -196,7 +196,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
               {value: "few", label: "ნაკლები პასუხი"},
             ]}}
           />
-          <div className="request-card-grid">
+      </div>
+      <section aria-label="მოთხოვნების სია">
+          <div className="request-card-grid" key={tab}>
             {!available
               ? (
                   <ServiceUnavailable />
@@ -205,12 +207,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                 ? skeleton()
                 : rows.length === 0
                   ? (
-                      <div className="ma-empty">
+                      <div className="ma-empty request-board-empty">
                         <span className="ma-empty__icon">
                           <Icon name="search" />
                         </span>
-                        <h2 className="ma-empty__title">მოთხოვნა ვერ მოიძებნა</h2>
-                        <p className="ma-empty__text">სცადე სხვა სიტყვა ან დაბრუნდი ყველა მოთხოვნაზე.</p>
+                        <p className="ma-empty__text">{tab === "new" ? "ახალი მოთხოვნა ჯერ არ არის." : "მოთხოვნა ვერ მოიძებნა."}</p>
                         <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>
                           საწყის ხედზე დაბრუნება
                         </button>
@@ -218,9 +219,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                     )
                   : <>
                       {variant === "a" && featuredRows.length > 0 ? <div className="request-tier-zone">
-                        {featuredRows.map(r => <RequestRow key={r.id} r={r} tier={requestDemoTier(r.title)} size="featured" priority />)}
+                        {featuredRows.map((r, index) => <RequestRow entranceIndex={index} key={r.id} r={r} tier={requestDemoTier(r.title)} size="featured" priority />)}
                       </div> : null}
-                      {compactRows.map((r, index) => <RequestRow key={r.id} r={r} tier={requestDemoTier(r.title)} priority={index < 4} />)}
+                      {compactRows.map((r, index) => <RequestRow entranceIndex={variant === "a" ? featuredRows.length + index : index} key={r.id} r={r} tier={requestDemoTier(r.title)} priority={index < 4} />)}
                     </>}
           </div>
         </section>
