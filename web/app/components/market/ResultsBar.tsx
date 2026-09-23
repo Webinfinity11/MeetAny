@@ -40,6 +40,7 @@ export function ResultsBar({
   countLabel,
   filterButton,
   utility,
+  tabs,
   sort,
 }: {
   items: ActiveFilterItem[];
@@ -48,10 +49,12 @@ export function ResultsBar({
   countLabel: string;
   filterButton?: React.ReactNode;
   utility?: React.ReactNode;
+  tabs?: React.ReactNode;
   sort?: { value: string; options: { value: string; label: string }[]; onChange: (v: string) => void };
 }) {
   return (
     <div className="r2-results-bar">
+      {tabs}
       <div className="r2-results-summary">
         <ActiveFilters items={items} onRemove={onRemove} onClear={onClear} />
         <p className="ma-small ma-muted" role="status">

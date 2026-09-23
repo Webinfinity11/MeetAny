@@ -36,11 +36,15 @@ export function RequestRow({ r, priority = false, tier, size = "compact" }: { r:
         : r.daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${r.daysLeft} დღე`;
   return (
     <article className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${size === "featured" ? " request-card--featured" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
-      <div className="request-card-context">{tier ? <span className={`request-tier-badge request-tier-badge--${tier}`}>{tier === "vip" ? "VIP" : "ტოპ"}</span> : null}{r.isNew ? <span className="request-tier-badge request-tier-badge--new">ახალი</span> : null}<span className="request-card-category"><CategoryIcon id={r.category} />{categories[r.category] || r.category}</span><span aria-hidden="true">·</span><span>{r.ownerName}</span></div>
-      <div className="request-card-heading">
-        <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
-        {r.photo && r.photo !== failedPhoto ? <span className="request-card-photo"><img src={r.photo} alt="" width={64} height={64} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} /></span> : null}
+      <div className="request-card-visual" aria-hidden="true">
+        {r.photo && r.photo !== failedPhoto
+          ? <img src={r.photo} alt="" width={240} height={180} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
+          : <CategoryIcon id={r.category} />}
       </div>
+      <div className="request-card-content">
+      <div className="request-card-context">{tier ? <span className={`request-tier-badge request-tier-badge--${tier}`}>{tier === "vip" ? "VIP" : "ტოპ"}</span> : null}{r.isNew ? <span className="request-tier-badge request-tier-badge--new">ახალი</span> : null}<span className="request-card-category"><CategoryIcon id={r.category} />{categories[r.category] || r.category}</span></div>
+      <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
+      <p className="request-card-owner">{r.ownerName}</p>
       <div className="request-card-meta">
         <span>{r.cityLabel}</span>
         {r.quantity != null && r.unit ? <span>{r.quantity} {units[r.unit]}</span> : null}
@@ -51,6 +55,7 @@ export function RequestRow({ r, priority = false, tier, size = "compact" }: { r:
         {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
         {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
       </div> : null}
+      </div>
     </article>
   );
 }
