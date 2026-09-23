@@ -8,6 +8,15 @@
 // db/schema.sql. Errors keep the PostgREST shape {message, code, details, hint}.
 import { verifyCaller } from './neon-jwt.js';
 import { asCaller } from './db.js';
+import { invalidatePublicSnapshot } from './public-snapshot.js';
+
+// Exclude reads and contact analytics, but retain admin writes that affect catalogs.
+const SNAPSHOT_READS = new Set([
+  'log_contact_event', 'my_profile', 'list_companies', 'company_stats', 'offer_counts',
+  'contact_for_request', 'engagement_state', 'list_notifications',
+  'admin_list_users', 'admin_search_requests', 'admin_search_users', 'admin_list_audit',
+  'admin_stats', 'admin_contact_events', 'admin_contact_stats',
+]);
 
 const TABLES = new Set(['requests', 'offers', 'profiles']);
 const IDENT = /^[a-z_][a-z0-9_]{0,62}$/;
@@ -121,7 +130,9 @@ export default {
         if (text.length > MAX_BODY) return reply(413, { message: 'body too large', code: 'PGRST413', details: null, hint: null });
         let args = {};
         if (text.trim()) { try { args = JSON.parse(text); } catch { throw bad('invalid JSON body', 'PGRST102'); } }
-        result = await asCaller(claims, (db) => rpcCall(db, path.slice(4), args));
+        const name = path.slice(4);
+        result = await asCaller(claims, (db) => rpcCall(db, name, args));
+        if (!SNAPSHOT_READS.has(name)) invalidatePublicSnapshot();
       } else if (TABLES.has(path) || path.startsWith('rpc/')) {
         return new Response(null, { status: 405, headers: { Allow: TABLES.has(path) ? 'GET' : 'POST' } });
       } else {

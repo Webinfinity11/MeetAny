@@ -17,9 +17,13 @@ export function useMarketStore(initial?: PublicSnapshot): { store: Store | undef
   const preview = useMemo(() => initial ? createMarketStore({initial, background: false}) : undefined, [initial]);
   const [store, setStore] = useState<Store>();
   useEffect(() => {
+    const existing = !!singleton;
     const source = getMarketStore(initial);
     const update = () => setStore({ ...source });
     const unsubscribe = source.subscribe(update);
+    // Catalog navigation can restore an old router payload. Keep authenticated data
+    // and fetch current API data instead of overwriting it with that public seed.
+    if (existing && initial !== undefined) void source.refresh();
     source.ready().then(update);
     update();
     return unsubscribe;

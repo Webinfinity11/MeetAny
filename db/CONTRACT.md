@@ -470,6 +470,8 @@ database, and exits non-zero on the first failing assertion (`TEST FAILED: <name
 
 მხოლოდ საჯარო snapshot ინახება პროცესის მეხსიერებაში მაქსიმუმ 30 წამით; ვადის გასვლის შემდეგ წაკითხვა თავიდან სრულდება, ერთდროული მოთხოვნები ერთ promise-ს იზიარებს. წარუმატებელი წაკითხვა არ ქეშდება და კლიენტის არსებული retry მუშაობს. ცივი ქეშის შევსება Neon-მდე ქსელის დაყოვნებაზეა დამოკიდებული. ბრაუზერის cache თავდაპირველად snapshot-ით ივსება; არსებული ფონური refresh ავტორიზებული მომხმარებლის პროფილს, შეთავაზებებსა და კონტაქტებს ჩვეულებრივად კითხულობს. კერძო მონაცემები სერვერულ ქეშში არ ხვდება.
 
+წარმატებული ჩაწერის RPC საჯარო snapshot-ის ქეშს იმავე პროცესში მაშინვე აუქმებს (მიმდინარე ძველი წაკითხვაც ვეღარ აღადგენს მას); Vercel-ის სხვა ინსტანსებზე მაქსიმუმ 30-წამიანი TTL რჩება. წაკითხვისა და `log_contact_event` RPC-ები ქეშს არ აუქმებს. კატალოგზე დაბრუნებისას კლიენტის singleton API-დან ფონურად ახლდება; `mutate()` refresh-ს ელოდება და `emit → setStore` სიას თავიდან აგებს. Next-ის გვერდისა და Route Handler-ის მოდულები პროცესის ერთ საჯარო ქეშს `globalThis`-ით იზიარებს.
+
 ## Contact events (2026-09-23)
 
 Additive, rerunnable migration: `migrations/20260923-contact-events.sql`; the same SQL is included in `schema.sql`. Applied and verified on **auth-probe** only. `web/scripts/apply-migration.mjs` is pinned to that branch's endpoint, uses `@neondatabase/serverless`, reads credentials only from environment/`.env.local`, and prints only object verification or an error code.

@@ -34,15 +34,27 @@ async function readPublicSnapshot() {
 // Public data only: never retain caller claims, profiles' emails or private offers.
 // A hard TTL bounds staleness; failed reads are not cached. Concurrent page requests
 // share the same refresh rather than exhausting the five-connection pool.
-let cached = null;
-let expires = 0;
-let pending = null;
+// Next compiles pages and Route Handlers into separate module graphs. Share the
+// public cache on the process global so a handler invalidates the page's copy too.
+const key = Symbol.for('meetany.publicSnapshot');
+const state = globalThis[key] ??= { cached: null, expires: 0, pending: null, revision: 0 };
+export function invalidatePublicSnapshot() {
+  state.cached = null;
+  state.expires = 0;
+  state.pending = null;
+  state.revision++;
+}
 export async function loadPublicSnapshot() {
-  if (cached && Date.now() < expires) return cached;
-  if (!pending) pending = readPublicSnapshot().then(snapshot => {
-    cached = snapshot;
-    expires = snapshot ? Date.now() + 30_000 : 0;
-    return snapshot;
-  }).finally(() => { pending = null; });
-  return pending;
+  if (state.cached && Date.now() < state.expires) return state.cached;
+  if (!state.pending) {
+    const started = state.revision;
+    state.pending = readPublicSnapshot().then(snapshot => {
+      // A read started before a committed write must never repopulate the cache.
+      if (started !== state.revision) return loadPublicSnapshot();
+      state.cached = snapshot;
+      state.expires = snapshot ? Date.now() + 30_000 : 0;
+      return snapshot;
+    }).finally(() => { if (started === state.revision) state.pending = null; });
+  }
+  return state.pending;
 }

@@ -225,9 +225,8 @@ export function RequestViewPageContent() {
               <p>
                 {contact.name} · {contact.company}
               </p>
-              <p>
-                {contact.phone} · {contact.email}
-              </p>
+              <p>{contact.email}</p>
+              {contact.phone ? <CallButton phone={contact.phone} requestId={r.id} contactId={store?.visibleOffers(r.id).find((o: { id: string; companyUserId: string }) => o.id === r.chosenOfferId)?.companyUserId} source="chosen-offer" /> : null}
             </section>
           ) : null}
           {isOwner ? <div className="ma-panel__actions">

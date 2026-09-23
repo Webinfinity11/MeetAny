@@ -204,7 +204,7 @@
 .request-detail .request-detail-facts>div{display:grid;gap:var(--space-2);padding:0;border:0;min-width:var(--space-24)}
 .request-detail .request-detail-facts dd{text-align:left}
 .request-detail .ma-photo{margin:0}
-.request-detail .ma-photo img{aspect-ratio:auto;max-height:calc(var(--space-24) * 4);object-fit:contain;object-position:left center}
+.request-detail .ma-photo img{display:block;width:100%;max-height:calc(var(--space-24) * 4);object-fit:cover;object-position:center}
 .request-detail-aside{display:grid;gap:var(--space-5);min-width:0;padding:var(--space-6);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-subtle)}
 .request-author{display:grid;gap:var(--space-3);justify-items:start}
 .request-detail-aside>.ma-panel{padding:var(--space-5) 0 0;border:0;border-top:1px solid var(--border);border-radius:0;box-shadow:none;background:transparent}
