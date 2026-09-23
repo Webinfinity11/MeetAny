@@ -241,7 +241,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                         </button>
                       </div>
                     )
-                  : rows.map((r) => <RequestRow key={r.id} r={r} />)}
+                  : rows.map((r, index) => <RequestRow key={r.id} r={r} priority={index < 4} />)}
           </div>
         </section>
       </div>

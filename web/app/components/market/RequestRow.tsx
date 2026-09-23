@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { CategoryIcon } from "./CategoryIcon";
 import { categories, units } from "../../lib/categories";
@@ -21,7 +24,8 @@ export type RequestRowData = {
   showOwnOfferBadge: boolean;
 };
 
-export function RequestRow({ r }: { r: RequestRowData }) {
+export function RequestRow({ r, priority = false }: { r: RequestRowData; priority?: boolean }) {
+  const [failedPhoto, setFailedPhoto] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const closedLike = r.state === "closed" || r.state === "expired" || r.state === "chosen";
   const status = r.state === "closed" ? "დახურულია"
@@ -33,7 +37,7 @@ export function RequestRow({ r }: { r: RequestRowData }) {
       <div className="request-card-context"><span className="request-card-category"><CategoryIcon id={r.category} />{categories[r.category] || r.category}</span><span aria-hidden="true">·</span><span>{r.ownerName}</span></div>
       <div className="request-card-heading">
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
-        {r.photo ? <span className="request-card-photo"><img src={r.photo} alt="" width={64} height={64} loading="lazy" /></span> : null}
+        {r.photo && r.photo !== failedPhoto ? <span className="request-card-photo"><img src={r.photo} alt="" width={64} height={64} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} /></span> : null}
       </div>
       <div className="request-card-meta">
         <span>{r.cityLabel}</span>

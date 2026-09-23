@@ -378,7 +378,7 @@
 .ma-proto .request-card .ma-rcard__title{flex:1;min-width:0;font-size:var(--fs-h3);line-height:var(--lh-title);display:block;overflow:visible;overflow-wrap:anywhere}
 .request-card .ma-rcard__title a{color:var(--text);text-decoration:none}
 .request-card .ma-rcard__title a:hover{color:var(--action)}
-.request-card-photo{flex:none;width:var(--space-12);height:var(--space-12);border-radius:var(--radius-md);overflow:hidden;background:var(--bg-subtle)}
+.request-card-photo{flex:none;width:var(--space-12);height:var(--space-12);border-radius:var(--radius-md);overflow:hidden;background:transparent}
 .request-card-photo img{width:100%;height:100%;object-fit:cover}
 .request-card-owner{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 var(--space-2);font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-2);overflow-wrap:anywhere}
 .request-card-owner>span{font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
@@ -472,4 +472,15 @@
  .catalog-header>.ma-h1{flex-basis:100%}
  .catalog-header>.catalog-search{flex-basis:50%}
  .catalog-header>.catalog-filter-toggle{flex:none;padding-inline:var(--space-3)}
+}
+
+/* Catalog utilities share the filter/sort row. */
+.ma-proto-filter--empty:not([aria-pressed=true]){color:var(--text-3)}
+.companies-catalog .r2-results-controls>.catalog-utility{font-size:var(--fs-xs);padding-inline:var(--space-2);gap:var(--space-1);white-space:nowrap}
+@media(max-width:1023px){
+ .companies-catalog .r2-results-summary{flex-basis:100%}
+ .companies-catalog .r2-results-controls{width:100%;gap:var(--space-2)}
+ .companies-catalog .r2-results-controls>.catalog-filter-toggle{font-size:var(--fs-xs);padding-inline:var(--space-2);gap:var(--space-1)}
+ .companies-catalog .r2-results-controls>.ma-field{flex:1;min-width:0;text-align:right}
+ .companies-catalog .r2-results-controls .ma-select{width:100%;font-size:var(--fs-xs)}
 }

@@ -39,6 +39,7 @@ export function ResultsBar({
   onClear,
   countLabel,
   filterButton,
+  utility,
   sort,
 }: {
   items: ActiveFilterItem[];
@@ -46,6 +47,7 @@ export function ResultsBar({
   onClear: () => void;
   countLabel: string;
   filterButton?: React.ReactNode;
+  utility?: React.ReactNode;
   sort?: { value: string; options: { value: string; label: string }[]; onChange: (v: string) => void };
 }) {
   return (
@@ -58,6 +60,7 @@ export function ResultsBar({
       </div>
       <div className="r2-results-controls">
         {filterButton}
+        {utility}
         {sort ? (
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="sort">

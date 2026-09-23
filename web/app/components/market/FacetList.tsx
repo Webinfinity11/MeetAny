@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { CategoryIcon } from "./CategoryIcon";
 
 const shortLabels: Record<string, string> = {
@@ -12,8 +11,6 @@ const shortLabels: Record<string, string> = {
 
 export type Facet = { id: string; label: string; count: number };
 
-// The requests/companies sidebar category list: non-zero facets first, zero-count ones behind
-// a "მეტი კატეგორია (n)" <details> (P2-SPEC-GE.md "ფილტრების საერთო ქცევა").
 export function FacetList({
   all,
   loading = false,
@@ -29,15 +26,12 @@ export function FacetList({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const entries: Facet[] = [{ id: "", label: allLabel, count: allCount }, ...all];
-  const shown = entries.filter((e) => loading || !e.id || e.count !== 0 || e.id === activeId);
-  const hidden = entries.filter((e) => !loading && !!e.id && e.count === 0 && e.id !== activeId);
+  const entries: Facet[] = [{ id: "", label: allLabel, count: allCount }, ...[...all].sort((a, b) => b.count - a.count)];
   const button = (f: Facet) => (
     <button
       key={f.id}
       type="button"
-      className="ma-proto-filter"
+      className={`ma-proto-filter${!loading && f.id && f.count === 0 ? " ma-proto-filter--empty" : ""}`}
       title={f.label}
       aria-label={f.label}
       aria-pressed={activeId === f.id}
@@ -50,22 +44,7 @@ export function FacetList({
   );
   return (
     <div>
-      {shown.map(button)}
-      {hidden.length ? (
-        <details className="r2-more" onToggle={(event) => {
-          const details = event.currentTarget;
-          setExpanded(details.open);
-          if (details.open) {
-            details.scrollIntoView({
-              block: "start",
-              behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
-            });
-          }
-        }}>
-          <summary>{expanded ? "ნაკლები კატეგორია" : `მეტი კატეგორია (${hidden.length})`}</summary>
-          {hidden.map(button)}
-        </details>
-      ) : null}
+      {entries.map(button)}
     </div>
   );
 }
