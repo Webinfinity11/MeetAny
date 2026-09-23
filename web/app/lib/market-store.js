@@ -1,6 +1,7 @@
 /* Shared browser data/auth layer. Called once by market-client.ts after mount.
    Every mutation refreshes cache and notifies React subscribers. See db/CONTRACT.md. */
-export function createMarketStore(){
+/** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
+export function createMarketStore({initial=null,background=true}={}){
  const DAY=86400000,REQUEST_DAYS=14,EXTEND_DAYS=7;
  const PENDING_KEY='meetany.pendingProfile';
 
@@ -59,7 +60,7 @@ export function createMarketStore(){
  // Absolute http(s) URL, or a same-origin path such as "/api/auth"; anything else -> null.
  function baseUrl(v){
   if(placeholder(v))return null;
-  try{const u=new URL(v.trim(),location.origin);return /^https?:$/.test(u.protocol)?u.href.replace(/\/+$/,''):null;}catch{return null;}
+  try{const u=new URL(v.trim(),typeof location!=='undefined'?location.origin:'http://localhost');return /^https?:$/.test(u.protocol)?u.href.replace(/\/+$/,''):null;}catch{return null;}
  }
  const AUTH=baseUrl(config.authUrl),API=baseUrl(config.dataApiUrl),UPLOAD=baseUrl(config.uploadUrl||'/api/blob-upload');
  const configured=!!(AUTH&&API);
@@ -193,6 +194,21 @@ export function createMarketStore(){
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
  const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at';
 
+
+ // A render-local public store never starts auth/network work. The browser singleton
+ // keeps its authenticated cache on navigation; only an unready singleton is seeded.
+ function seedPublic(snapshot){
+  if(!snapshot||isReady)return;
+  cache.requests=snapshot.requests.map(mapRequest);
+  cache.companies=snapshot.companies.map(c=>mapUser({...c,role:'company'}));
+  for(const p of snapshot.profiles)cache.profiles[p.id]=mapUser(p);
+  for(const c of cache.companies)cache.profiles[c.id]=c;
+  for(const s of snapshot.companyStats)cache.companyStats[s.company_id]={sent:Number(s.offers_sent)||0,chosen:Number(s.offers_chosen)||0};
+  for(const c of snapshot.counts)cache.counts[c.request_id]=Number(c.offers)||0;
+  isReady=true;loadFailed=false;
+ }
+ seedPublic(initial);
+
  async function load(){
   if(!userJwt||Date.now()>=userExp-60e3)await loadUserJwt();
   const uid=authUser?.id||null;
@@ -245,7 +261,7 @@ export function createMarketStore(){
    .then(()=>{running=null;isReady=true;emit();});
   return running;
  }
- const readyPromise=configured?refresh():Promise.resolve().then(()=>{isReady=true;emit();});
+ const readyPromise=background&&typeof window!=='undefined'?(configured?refresh():Promise.resolve().then(()=>{isReady=true;emit();})):Promise.resolve();
 
  function client(){if(!configured)fail(UNAVAILABLE);}
  async function rpc(name,args={}){client();return db('/rpc/'+name,{method:'POST',body:args});}
@@ -675,7 +691,7 @@ export function createMarketStore(){
   refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
-  ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,
+  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
   requestPasswordReset,resetPassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,

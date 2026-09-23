@@ -11,7 +11,7 @@ import { type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
-import { useMarketStore } from "../../lib/market-client";
+import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
 import { RequestFormSheet } from "./RequestFormSheet";
@@ -41,8 +41,8 @@ function skeleton() {
   );
 }
 
-export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boolean }) {
-  const { store, ready, available } = useMarketStore();
+export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpenNew?: boolean; initial?: PublicSnapshot }) {
+  const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
   const city = filters.get("city"), category = filters.get("category"), query = filters.get("q"), sort = filters.get("sort", "newest");

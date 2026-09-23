@@ -11,7 +11,7 @@ import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
-import { useMarketStore } from "../../lib/market-client";
+import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
 import { fetchPhones } from "../../lib/phones";
@@ -20,6 +20,7 @@ type MappedCompany = {
   id: string;
   company?: string;
   name: string;
+  phone?: string;
   industry: string;
   city: string;
   serviceCities: string[];
@@ -43,8 +44,8 @@ function skeleton() {
   );
 }
 
-export function CompaniesPageContent() {
-  const { store, ready, available } = useMarketStore();
+export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) {
+  const { store, ready, available } = useMarketStore(initial);
   const filters = useFilters("/companies/");
   const industry = filters.get("industry"), city = filters.get("city"), query = filters.get("q");
   const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "newest");
@@ -69,7 +70,7 @@ export function CompaniesPageContent() {
   const allCount = ready && available ? list({ industry: "" }).length : 0;
   const cityOptions = Object.keys(cities);
 
-  const resultIds = useMemo(() => results.map((c) => c.id).join(","), [results]);
+  const resultIds = useMemo(() => results.filter(c => c.phone === undefined).map((c) => c.id).join(","), [results]);
   const [phones, setPhones] = useState<Record<string, string>>({});
   useEffect(() => {
     let cancelled = false;
@@ -92,7 +93,7 @@ export function CompaniesPageContent() {
       offers: c.offers || [],
       about: c.about || "",
       verified: c.verified,
-      phone: phones[c.id],
+      phone: c.phone || phones[c.id],
       stats: store.companyStats(c.id),
     }));
   }, [results, store, phones, sort]);
