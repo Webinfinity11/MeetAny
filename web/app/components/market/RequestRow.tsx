@@ -25,53 +25,33 @@ export type RequestRowData = {
 export function RequestRow({ r }: { r: RequestRowData }) {
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const closedLike = r.state === "closed" || r.state === "expired" || r.state === "chosen";
+  const status = r.state === "closed" ? "დახურულია"
+    : r.state === "expired" ? "ვადაგასულია"
+      : r.state === "chosen" ? "მომწოდებელი არჩეულია"
+        : r.daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${r.daysLeft} დღე`;
   return (
-    <article className={`ma-rcard ma-rcard--row${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
-      <div className="ma-stack">
-        <div className="request-row-heading">
-          <h2 className="ma-rcard__title"><Link className="ma-proto-rowtitle" href={href}>{r.title}</Link></h2>
-          {r.photo ? <img className="ma-rcard__photo" src={r.photo} alt="" width={48} height={48} loading="lazy" /> : null}
-        </div>
-        <div className="ma-rcard__kicker">
-          <span className="ma-small ma-muted">{categories[r.category] || r.category}</span>
-          <span className="ma-rcard__time">{r.ownerName}</span>
-        </div>
-        {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
-        <div className="ma-facts">
-          <span className="ma-fact">
-            <Icon name="map-pin" />
-            {r.cityLabel}
-          </span>
-          {r.quantity != null && r.unit ? (
-            <span className="ma-fact">
-              <Icon name="package" />
-              {r.quantity} {units[r.unit]}
-            </span>
-          ) : null}
-        </div>
-        {r.neededBy ? <div className="ma-small ma-muted">საჭიროა {neededByLabel(r.neededBy)}</div> : null}
+    <article className={`ma-rcard ma-rcard--row request-card${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
+      <div className="request-card-category">{categories[r.category] || r.category}</div>
+      <div className="request-card-heading">
+        <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
+        {r.photo ? <Link className="request-card-photo" href={href} aria-label={`${r.title} — ფოტოს ნახვა`}><img src={r.photo} alt="" width={64} height={64} loading="lazy" /></Link> : null}
       </div>
-      <div className="ma-proto-rowend">
-        <span className="ma-rcard__offers">
-          <b>{r.offerCount}</b> შეთავაზება
-        </span>
-        <span className={`ma-small ${r.state === "open" && r.daysLeft < 4 ? "ma-rcard__left--soon" : "ma-muted"}`}>
-          {r.state === "closed"
-            ? "დახურულია"
-            : r.state === "expired"
-              ? "ვადაგასულია"
-              : r.state === "chosen"
-                ? "მომწოდებელი არჩეულია"
-                : `დარჩა ${r.daysLeft} დღე`}
-        </span>
-        {r.showOwnOfferBadge && r.ownOfferStatus ? (
-          <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>
-            შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}
-          </span>
-        ) : null}
-        <Link className="ma-btn ma-btn--secondary" href={href}>
-          დეტალების ნახვა <Icon name="arrow-right" />
-        </Link>
+      <p className="request-card-owner"><span>გამომქვეყნებელი</span>{r.ownerName}</p>
+      <dl className="request-card-facts">
+        <div><dt>სად არის საჭირო</dt><dd>{r.cityLabel}</dd></div>
+        {r.quantity != null && r.unit ? <div><dt>რაოდენობა</dt><dd>{r.quantity} {units[r.unit]}</dd></div> : null}
+        {r.neededBy ? <div className="request-card-needed"><dt>საჭიროა</dt><dd>{neededByLabel(r.neededBy)}</dd></div> : null}
+      </dl>
+      {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card-badges">
+        {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
+        {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
+      </div> : null}
+      <div className="request-card-bottom">
+        <div className="request-card-response">
+          <span className="ma-rcard__offers"><b>{r.offerCount}</b> შეთავაზება</span>
+          <span className="request-card-deadline"><span>{closedLike ? "სტატუსი" : "შეთავაზების ვადა"}</span><strong className={r.state === "open" && r.daysLeft < 4 ? "ma-rcard__left--soon" : ""}>{status}</strong></span>
+        </div>
+        <Link className="ma-btn ma-btn--secondary" href={href}>მოთხოვნის ნახვა <Icon name="arrow-right" /></Link>
       </div>
     </article>
   );

@@ -12,3 +12,8 @@ assert.deepEqual(await runWorker({db,send:async()=>{throw Error('sensitive provi
 assert.equal(queries[1].args[3],'delivery_error');assert.equal(queries[1].args[1],job.lease);
 claimed=false;assert.deepEqual(await runWorker({db,send:async()=>{},from:'test@example.test',origin:'https://example.test'}),{sent:1,failed:0});
 console.log('PASS worker stable payload/key, provider error, redacted failure, lease acknowledgement and success (no email sent)');
+
+claimed=false;queries.length=0;
+assert.deepEqual(await runWorker({db,send:async()=>{},from:'test@example.test',origin:'https://example.test',requestAlerts:true}),{sent:1,failed:0});
+assert(queries[0].sql.includes('claim_request_alert_email'));assert(queries[1].sql.includes('finish_request_alert_email'));
+console.log('PASS request alert queue uses dedicated claim and finish functions (no email sent)');

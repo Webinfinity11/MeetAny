@@ -66,8 +66,8 @@ try {
   await page.getByRole('button',{name:'მენიუ',exact:true}).click();
   await page.keyboard.press('Escape');
   assert(await page.getByRole('button',{name:'მენიუ',exact:true}).evaluate(e=>e===document.activeElement));
-  await page.getByRole('button',{name:/ფილტრი \(/}).click(); await page.keyboard.press('Escape');
-  assert(await page.getByRole('button',{name:/ფილტრი \(/}).evaluate(e=>e===document.activeElement));
+  await page.getByRole('button',{name:/ყველა ფილტრი|ფილტრი \(/}).click(); await page.keyboard.press('Escape');
+  assert(await page.getByRole('button',{name:/ყველა ფილტრი|ფილტრი \(/}).evaluate(e=>e===document.activeElement));
   report.push({filters:true,history:true,phone:true,photos:true,dialogs:true});
   }
   if(process.env.QA_DEMO==='1') {

@@ -14,16 +14,17 @@ export async function deliverNotification(job, { apiKey, fetcher = fetch }) {
  return data.id;
 }
 
-export async function runWorker({ db, send, from, origin, limit = 10 }) {
+export async function runWorker({ db, send, from, origin, limit = 10, requestAlerts = false }) {
+ const queue = requestAlerts ? "request_alert_email" : "notification_email";
  let sent = 0, failed = 0;
  for (let i=0; i<Math.min(limit,50); i++) {
-  const { rows } = await db.query('select meetany_private.claim_notification_email($1,$2) as job', [from, origin]);
+  const { rows } = await db.query(`select meetany_private.claim_${queue}($1,$2) as job`, [from, origin]);
   const job = rows[0]?.job;
   if (!job) break;
   let success = false, error = null;
   try { await send(job); success = true; }
   catch (err) { error = /^provider_(http_\d{3}|missing_id)$/.test(err.message) ? err.message : 'delivery_error'; }
-  const result = await db.query('select meetany_private.finish_notification_email($1,$2,$3,$4) as finished', [job.id, job.lease, success, error]);
+  const result = await db.query(`select meetany_private.finish_${queue}($1,$2,$3,$4) as finished`, [job.id, job.lease, success, error]);
   if (result.rows[0]?.finished) { if (success) sent++; else failed++; }
  }
  return { sent, failed };
@@ -35,7 +36,10 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   console.error('Notification delivery is disabled or not configured.');process.exitCode=1;
  } else {
   const pool = new Pool({ connectionString: DATABASE_URL, max: 1 });
-  try { console.log(await runWorker({db:pool,from:NOTIFICATION_FROM,origin:APP_ORIGIN,send:job=>deliverNotification(job,{apiKey:RESEND_API_KEY})})); }
+  try {
+   const options={db:pool,from:NOTIFICATION_FROM,origin:APP_ORIGIN,send:job=>deliverNotification(job,{apiKey:RESEND_API_KEY})};
+   console.log({offers:await runWorker(options),requests:await runWorker({...options,requestAlerts:true})});
+  }
   catch { console.error('Notification worker failed; inspect delivery queue.');process.exitCode=1; }
   finally {await pool.end();}
  }

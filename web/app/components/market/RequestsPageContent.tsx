@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
-import { FacetList, type Facet } from "./FacetList";
+import { type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
@@ -91,7 +92,6 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     () => Object.entries(cities).map(([id, label]) => ({ id, label, count: list({ city: id }).length })),
     [list],
   );
-  const allCount = ready && available ? list({ category: "" }).length : 0;
 
   const rows: RequestRowData[] = useMemo(() => {
     if (!store) return [];
@@ -158,9 +158,12 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
 
   const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="ma-proto-filters">
-      <div>
-        <h2 className="ma-title">კატეგორია</h2>
-        <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
+      <div className="ma-field">
+        <label className="ma-field__label" htmlFor="request-category">კატეგორია</label>
+        <select className="ma-select" id="request-category" value={category} onChange={e => setCategory(e.target.value)}>
+          <option value="">ყველა კატეგორია</option>
+          {categoryFacets.map(f => <option key={f.id} value={f.id}>{f.label}{ready ? ` (${f.count})` : ""}</option>)}
+        </select>
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor={`city-${placement}`}>
@@ -196,15 +199,17 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
     <div className="ma-page requests-catalog">
       <header className="requests-intro">
         <h1 className="ma-h1">მოთხოვნები</h1>
-        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი ან შეფუთვა" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
+        {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
       </header>
-      <div className="ma-proto-columns">
-        <aside className="ma-proto-sidebar filter-rail" aria-label="ფილტრები">
-          {filtersBody("desktop")}
-        </aside>
+      <div className="request-search-toolbar">
+        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
+        <button type="button" className="ma-btn ma-btn--secondary" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}>
+          <Icon name="sliders-horizontal" />ფილტრები{filterCount > 0 ? ` (${filterCount})` : ""}
+        </button>
+      </div>
+      <div className="request-catalog-results">
         <section className="ma-stack" aria-label="მოთხოვნების სია">
           <ResultsBar
-            filterButton={<button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი ({filterCount})</button>}
             items={activeItems}
             onRemove={removeFilter}
             onClear={clearFilters}
@@ -219,7 +224,7 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
               ],
             }}
           />
-          <div className="ma-stack">
+          <div className="request-card-grid">
             {!available
               ? (
                   <ServiceUnavailable />

@@ -59,3 +59,17 @@ Following the owner's request, the filter rail is now an unboxed directory index
 Additional filters use existing data only: request publication time, zero offers, expiration within three days and a photo; company activity type and explicitly nationwide coverage. Activity type reuses existing store classification (industry-based supplier/service/distribution, declared partnership interests), not a newly verified company attribute. Company sorting offers registration date and Georgian name order.
 
 Search now offers categories and live records on focus, narrowing on input. Category selection refines the catalog; record selection opens its detail page. The same combobox serves home and catalogs, with explicit keyboard selection, focus handling and empty-result feedback. Mobile search-type labels wrap rather than clipping. No country filters, invented inventory, or generated company facts were introduced.
+
+## Supplier rows and request cards — 2026-09-23
+
+The owner selected wide company rows with a left-hand filter rail and two-column request cards with compact filters above. This supersedes the earlier inverse layout. Phones show a single request-card column; detailed request filters move into the dialog so results remain visible near the top.
+
+Company records group identity/photo/save, readable description, labeled services, then a single service-area/contact section. The redundant upper-right city remains removed. Services beyond the three-item preview have a link to the complete list. Phone/profile actions stay together. The saved-company link remains at the catalog heading.
+
+Request cards separate category/title from publisher, place and quantity in a labeled facts panel, and offer activity/deadline in the footer. The needed-by date, when supplied, is a separate fact from the offer deadline. Optional quantities/dates are omitted when absent rather than invented. Full titles wrap; own-request/offer states remain visible. Mobile quick filters scroll horizontally, and the full filter dialog preserves access to every category and condition. URL/history/reload behavior remains intact.
+
+Validated 1440/1024/768/390/320 layouts, actual phone reveal, category expansion/collapse, search keyboard interactions, filter combinations and empty results, reload/history, and dialog focus/Escape. Build and targeted TypeScript/ESLint pass with existing image warnings. Current visual artifacts: `/tmp/catalog-refined-{requests,companies}-{width}.png` and `/tmp/refined-viewport-{requests,companies}-{width}.png`; discovery QA shots also updated. These are layout/interaction checks, not measured user research. No deployment.
+
+## Spacing correction — local only
+
+Set explicit small-text line heights instead of inherited 26px lines, compact publisher/fact spacing, and placed a content-width request action beside response/deadline metadata. First desktop request card reduced from 463px to 308px without truncating content. Supplier rows have tighter photo/text spacing and paired mobile contact actions; a revealed phone receives a full row to avoid clipping. Verified 1440/1024/768/390/320, button text fit, 44px minimum tap height, no horizontal overflow, and phone reveal. Screenshots: `/tmp/spacing-after-{requests,companies}-{width}.png`. Current local URL: http://localhost:3001. No remote deployment for this correction.

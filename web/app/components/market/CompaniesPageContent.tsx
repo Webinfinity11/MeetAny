@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -149,18 +151,15 @@ export function CompaniesPageContent() {
   return (
     <div className="ma-page companies-catalog">
       <header className="companies-intro">
-        <h1 className="ma-h1">კომპანიები</h1>
+        <div className="company-directory-heading"><h1 className="ma-h1">კომპანიები</h1><Link className="ma-btn ma-btn--secondary" href="/account/?tab=saved">შენახული კომპანიები <Icon name="arrow-right" /></Link></div>
         <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} />
       </header>
       <div className="ma-proto-columns">
-        <aside className="ma-proto-sidebar filter-rail" aria-label="კომპანიების ფილტრები">
-          {filtersBody("desktop")}
-        </aside>
-        <section className="ma-stack">
-          <ResultsBar items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
-            filterButton={<button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი ({filterCount})</button>}
+        <aside className="ma-proto-sidebar filter-rail" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
+        <section className="ma-stack" aria-label="კომპანიების სია">
+          <ResultsBar filterButton={<button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი ({filterCount})</button>} items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
           />
-          <div className="ma-stack">
+          <div className="company-directory-list">
             {!available ? (
               <ServiceUnavailable />
             ) : !ready ? (

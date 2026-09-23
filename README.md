@@ -46,4 +46,4 @@ bash db/tests/run.sh
 
 ## გამოქვეყნება
 
-ამ სამუშაოში deploy არ სრულდება. Vercel-ის production ჯერ ძველი ვერსიაა. გადართვა ცალკე, მფლობელთან შეთანხმებული ნაბიჯია: Root Directory — `web` (რეპოს ძირი `site`), გარემოს ცვლადები და საბოლოო production deploy.
+2026-09-23: მიმდინარე ვერსიის Preview გამოქვეყნებულია: https://meet-bnc6jgspq-infinity-solutions.vercel.app (Vercel-ის ავტორიზაციით). პროექტის Root Directory არის `web`, framework — Next.js. Preview იყენებს შემოწმებულ `auth-probe` ბაზას. Production მისამართი ჯერ ძველ ვერსიაზეა; მის ცარიელ ბაზასა და მიმდინარე სადემო ბაზას შორის არჩევანი მფლობელთან დასაზუსტებელია. Production სქემა/მონაცემები არ შეცვლილა. `.vercelignore` გამორიცხავს საიდუმლო და QA ფაილებს.

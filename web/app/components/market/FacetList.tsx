@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { CategoryIcon } from "./CategoryIcon";
 
 const shortLabels: Record<string, string> = {
@@ -26,6 +29,7 @@ export function FacetList({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const entries: Facet[] = [{ id: "", label: allLabel, count: allCount }, ...all];
   const shown = entries.filter((e) => loading || !e.id || e.count !== 0 || e.id === activeId);
   const hidden = entries.filter((e) => !loading && !!e.id && e.count === 0 && e.id !== activeId);
@@ -48,8 +52,17 @@ export function FacetList({
     <div>
       {shown.map(button)}
       {hidden.length ? (
-        <details className="r2-more">
-          <summary>მეტი კატეგორია ({hidden.length})</summary>
+        <details className="r2-more" onToggle={(event) => {
+          const details = event.currentTarget;
+          setExpanded(details.open);
+          if (details.open) {
+            details.scrollIntoView({
+              block: "start",
+              behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+            });
+          }
+        }}>
+          <summary>{expanded ? "ნაკლები კატეგორია" : `მეტი კატეგორია (${hidden.length})`}</summary>
           {hidden.map(button)}
         </details>
       ) : null}

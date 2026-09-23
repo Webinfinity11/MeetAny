@@ -6,18 +6,22 @@ import { categories, cities } from "../../lib/categories";
 import { Icon } from "../Icon";
 import { toast } from "../Toasts";
 import { SaveCompanyButton } from "./SaveCompanyButton";
+import { RequestAlertSettings } from "./RequestAlertSettings";
 import styles from "./engagement.module.css";
 type Cursor = { created_at: string; id: string; asOf: string } | null;
-type Notice = { id: string; kind: string; title: string; request_id: string; created_at: string; read_at: string | null };
+type Notice = { id: string; kind: string; title: string; request_id: string; created_at: string; read_at: string | null; category?: string; city?: string; needed_by?: string | null };
 type Saved = { company_id: string; company: string; city: string; industry: string };
 type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
-const label = (kind: string) => kind === "offer_chosen" ? "შენი შეთავაზება აირჩიეს" : "ახალი შეთავაზება მიიღე";
-const date = (value: string) => new Intl.DateTimeFormat("ka-GE", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(value));
+const label = (kind: string) => kind === "request_match" ? "ახალი მოთხოვნა შენს კატეგორიაში" : kind === "offer_chosen" ? "შენი შეთავაზება აირჩიეს" : "ახალი შეთავაზება მიიღე";
+const date = (value: string, withTime = true) => {
+ const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {timeZone: withTime ? "Asia/Tbilisi" : "UTC",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date(value)).map(p => [p.type,p.value]));
+ return `${parts.day}.${parts.month}.${parts.year}${withTime ? `, ${parts.hour}:${parts.minute}` : ""}`;
+};
 function NoticeRows({ items }: { items: Notice[] }) {
  const { store } = useMarketStore();
  return <>{items.map(n => <article key={n.id} className={styles.row} data-unread={!n.read_at}>
-  <Link href={`/requests/view/?id=${n.request_id}`} onClick={() => { if (!n.read_at) void store?.markNotificationRead(n.id).catch(() => toast("წაკითხვის მონიშვნა ვერ შესრულდა.")); }}>{label(n.kind)}{!n.read_at ? <span className="sr-only"> — წაუკითხავი</span> : null}</Link>
-  <p>{n.title}</p><time className={styles.meta} dateTime={n.created_at}>{date(n.created_at)}</time>
+  <Link href={`/requests/view/?id=${n.request_id}`} onClick={() => { if (!n.read_at) void store?.markNotificationRead(n.id).catch(() => toast("წაკითხვის მონიშვნა ვერ შესრულდა.")); }}>{label(n.kind)}{!n.read_at ? <span className="ma-sr-only"> — წაუკითხავი</span> : null}</Link>
+  <p>{n.title}</p>{n.kind === "request_match" ? <span className={styles.meta}>{categories[n.category || ""]} · {cities[n.city || ""]}{n.needed_by ? ` · საჭიროა ${date(n.needed_by, false)}` : ""}</span> : null}<time className={styles.meta} dateTime={n.created_at}>{date(n.created_at)}</time>
  </article>)}</>;
 }
 export function NotificationBell() {
@@ -77,6 +81,7 @@ export function EngagementPanel({ kind }: { kind: "saved" | "notifications" }) {
  return <section className={styles.stack}>
   <h1 className="ma-h2">{kind === "saved" ? "შენახული კომპანიები" : "შეტყობინებები"}</h1>
   {state?.status !== "ready" ? <div role="status"><p>სერვისი დროებით მიუწვდომელია.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => store?.refreshEngagement()}>ხელახლა ცდა</button></div> : <>
+   {kind === "notifications" && state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery}/> : null}
    {kind === "notifications" ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending || !state.emailDelivery} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე{!state.emailDelivery ? <span className={styles.meta}> — მალე დაემატება</span> : null}</label> : null}
    {!current ? <p role="status">იტვირთება…</p> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</button></div> : <>
     {!current.page?.items.length ? <p>{kind === "saved" ? "კომპანია ჯერ არ შეგინახავს. კატალოგში შენახვის ნიშნით მონიშნე საინტერესო მომწოდებლები." : "შეტყობინებები ჯერ არ გაქვს."}</p> : kind === "notifications" ? <NoticeRows items={current.page.items}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>

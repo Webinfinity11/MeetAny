@@ -175,6 +175,11 @@ export function createMarketStore(){
   requireUser();engagementRevision++;await rpc('set_notification_email',{p_enabled:enabled});if(engagementTask)await engagementTask.promise;await refreshEngagement();
  }
 
+ async function setRequestAlertPreferences(preferences){
+  requireUser();engagementRevision++;
+  const saved=await rpc('set_request_alert_preferences',{p_enabled:preferences.enabled,p_categories:preferences.categories,p_cities:preferences.cities,p_email_mode:preferences.emailMode});
+  if(engagementTask)await engagementTask.promise;await refreshEngagement();return saved;
+ }
  const listeners=new Set();
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
@@ -667,7 +672,7 @@ export function createMarketStore(){
 
  return {categories,cities,units,priceTypes,QUANTITY_MAX,DELIVERY_DAYS_MAX,todayDate,maxNeededBy,stateLabels,REQUEST_DAYS,EXTEND_DAYS,PASSWORD_MIN,UNAVAILABLE_MESSAGE:UNAVAILABLE,CHECK_EMAIL_MESSAGE:CHECK_EMAIL,normalizePhone,
   engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}},
-  refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,
+  refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
   ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,

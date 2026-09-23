@@ -2,3 +2,12 @@
 .openai
 node_modules
 archive
+DEMO-ACCOUNTS.local.md
+DEMO-ACCOUNTS.local.md.lock
+web/.env*
+web/.next
+web/node_modules
+web/qa
+web/scripts
+web/*.tsbuildinfo
+/db/
