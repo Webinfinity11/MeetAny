@@ -18,7 +18,7 @@ export function SiteShell({
 }) {
   return (
     <html lang="ka">
-      <body className={proto ? "ma ma-proto" : "ma"} data-market-page={dataMarketPage} data-open={dataOpen}>
+      <body className={proto ? "ma ma-proto ma-frame" : "ma ma-frame"} data-market-page={dataMarketPage} data-open={dataOpen}>
         <a className="ma-skip" href="#main">
           ძირითად შინაარსზე გადასვლა
         </a>

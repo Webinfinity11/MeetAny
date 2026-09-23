@@ -1,5 +1,7 @@
 "use client";
 
+import { ProfileSkeleton } from "./Skeletons";
+
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useMemo } from "react";
@@ -35,13 +37,7 @@ export function CompanyProfilePageContent() {
 
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready) {
-    return (
-      <div className="ma-page" aria-busy="true">
-        <p role="status">იტვირთება…</p>
-      </div>
-    );
-  }
+  if (!ready) return <ProfileSkeleton />;
   if (!data) {
     return (
       <div className="ma-page">

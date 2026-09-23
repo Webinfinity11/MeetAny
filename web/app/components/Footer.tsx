@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
   return (
     <footer className="ma-footer">
       <div className="ma-footer__inner ma-container">
@@ -24,8 +28,8 @@ export function Footer() {
             </Link>
           </div>
           <nav className="ma-footer__nav" aria-label="ქვედა ნავიგაცია">
-            <Link href="/requests/">მოთხოვნები</Link>
-            <Link href="/companies/">კომპანიები</Link>
+            <Link href="/requests/" aria-current={pathname.startsWith("/requests/") ? "page" : undefined}>მოთხოვნები</Link>
+            <Link href="/companies/" aria-current={pathname.startsWith("/companies/") ? "page" : undefined}>კომპანიები</Link>
             <Link href="/#how">როგორ მუშაობს</Link>
           </nav>
         </div>
@@ -33,7 +37,7 @@ export function Footer() {
           <span>© MeetAny, 2026</span>
           <nav className="ma-footer__legal" aria-label="ინფორმაცია">
             <Link href="/terms/#contact">კონტაქტი</Link>
-            <Link href="/terms/">წესები და კონფიდენციალურობა</Link>
+            <Link href="/terms/" aria-current={pathname === "/terms/" ? "page" : undefined}>წესები და კონფიდენციალურობა</Link>
           </nav>
         </div>
       </div>

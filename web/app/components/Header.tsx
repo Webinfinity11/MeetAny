@@ -7,6 +7,7 @@ import { NotificationBell } from "./market/EngagementPanels";
 import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
 import { toast } from "./Toasts";
+import { NavigationProgress } from "./ProgressBar";
 
 export function Header() {
   const { store, ready } = useMarketStore();
@@ -46,6 +47,7 @@ export function Header() {
   const nav = (cls: string) => [["requests", "მოთხოვნები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/#how"]].map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(`/${id}/`) ? "page" : undefined}>{title}</Link>);
   const add = <Link className="ma-btn ma-btn--primary ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Link>;
   return <>
+    <NavigationProgress />
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">

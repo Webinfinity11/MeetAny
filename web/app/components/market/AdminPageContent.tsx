@@ -1,5 +1,7 @@
 "use client";
 
+import { AccountSkeleton, ListSkeleton } from "./Skeletons";
+
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useMemo, useState } from "react";
@@ -76,13 +78,7 @@ export function AdminPageContent() {
 
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready) {
-    return (
-      <div className="ma-page" aria-busy="true">
-        <p role="status">იტვირთება…</p>
-      </div>
-    );
-  }
+  if (!ready) return <AccountSkeleton admin label="ადმინ-პანელი იტვირთება…" />;
 
   if (!me || me.role !== "admin") {
     return (
@@ -176,7 +172,7 @@ export function AdminPageContent() {
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
       </> : null}
       {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">ამ გვერდზე {admin.page.items.length} ჩანაწერია · ფილტრებით სულ {admin.page.filteredTotal}.</p> : null}
-      {admin.mode === "loading" ? <p role="status" aria-live="polite">ჩანაწერები იტვირთება…</p> : null}
+      {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "error" ? <div role="alert"><p>{admin.error || "ჩანაწერების ჩატვირთვა ვერ მოხერხდა."}</p><button type="button" className="ma-btn ma-btn--secondary" onClick={admin.reload}>ხელახლა ცდა</button>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</button> : null}</div> : null}
       {tab === "audit" ? admin.mode === "legacy" ? <p className={styles.note}>მოქმედებების ჟურნალისთვის საჭიროა მონაცემთა ბაზის განახლება. წარსული მოქმედებების ისტორია ამ ვერსიაში არ ინახება.</p> : admin.mode === "ready" ? <AdminAuditTable events={(admin.page?.items || []) as unknown as AdminAuditEvent[]} /> : null : null}
       {canShowRecords && tab === "requests" ? (

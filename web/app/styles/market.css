@@ -49,7 +49,10 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 /* Container: 1200 content, gutters 16/24/32. */
 .ma-container{width:100%;max-width:calc(var(--container) + 2 * var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
 .ma-container--narrow{max-width:calc(720px + 2 * var(--gutter))}
-.ma-main{display:block;min-height:60vh;min-height:60dvh}
+.ma-frame,body.design-two>.site-shell{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.ma-frame>.ma-header,.ma-frame>.ma-footer,body.design-two>.site-shell>.ma-header,body.design-two>.site-shell>.ma-footer{flex-shrink:0}
+.ma-main{display:block;flex:1;min-width:0}
+body.design-two>.site-shell>main.home-page{flex:1}
 /* Page: vertical rhythm of one screen. */
 .ma-page{padding-block:var(--space-6) var(--space-12)}
 @media (min-width:768px){.ma-page{padding-block:var(--space-8) var(--space-20)}}
@@ -562,6 +565,38 @@ a.ma-contact__value:hover{color:var(--blue-700);text-decoration:underline;text-u
 .ma-skel--block{height:120px;border-radius:var(--radius-lg)}
 .ma-skel--w40{width:40%}.ma-skel--w60{width:60%}.ma-skel--w90{width:90%}
 @keyframes ma-shimmer{to{background-position:-200% 0}}
+/* Shared loading silhouettes: blue-tinted shapes follow the destination's hierarchy. */
+.ma-loading{position:relative;min-width:0}
+.ma-loading__shapes{display:grid;gap:var(--space-6)}
+.ma-loading .ma-skel{height:var(--space-3);background-image:linear-gradient(100deg,var(--blue-50) 20%,var(--white) 45%,var(--blue-100) 70%);animation-duration:calc(var(--motion-base) * 8)}
+.ma-loading .ma-skel--h1{width:70%;height:var(--space-8)}
+.ma-loading .ma-skel--title{height:var(--space-5)}
+.ma-loading .ma-skel--btn{height:var(--control-h);max-width:100%}
+.ma-loading .ma-skel--tile{width:var(--space-12);height:var(--space-12)}
+.ma-loading .ma-skel--avatar{width:var(--space-16);height:var(--space-16);flex:none;border-radius:var(--radius-lg)}
+.ma-loading .ma-skel--media{height:calc(var(--space-20) * 2);width:100%;border-radius:var(--radius-lg)}
+.ma-loading__copy{display:grid;align-content:start;gap:var(--space-3);min-width:0;flex:1}
+.ma-loading__heading{display:flex;align-items:center;gap:var(--space-4);padding-block:var(--space-4) var(--space-6);border-bottom:1px solid var(--border-subtle)}
+.ma-loading__heading .ma-loading__copy{max-width:720px}
+.ma-loading__search,.ma-loading__tabs{display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
+.ma-loading__search{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--bg-subtle)}
+.ma-loading__split,.ma-loading__companies{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:var(--space-6)}
+.ma-loading__panel{display:grid;align-content:start;gap:var(--space-8);min-width:0;padding:var(--space-6);border:1px solid var(--border-subtle);border-radius:var(--radius-lg)}
+.ma-loading__rows{display:grid;gap:var(--space-4)}
+.ma-loading__row{display:flex;align-items:start;gap:var(--space-4);padding:var(--space-5) 0;border-bottom:1px solid var(--border-subtle)}
+.ma-loading__facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+.ma-loading__stat{display:grid;gap:var(--space-4);padding:var(--space-5);background:var(--bg-subtle);border-radius:var(--radius-lg)}
+.ma-loading--compact{padding:0;width:100%}
+.ma-loading--compact .ma-loading__row:first-child{padding-top:0}
+@media(min-width:768px){.ma-loading__companies{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1024px){.ma-loading__split{grid-template-columns:minmax(0,8fr) minmax(280px,4fr)}}
+@media(max-width:479.98px){.ma-loading__panel{padding:var(--space-4)}.ma-loading__stat{padding:var(--space-3)}.ma-loading .ma-skel--avatar{width:var(--space-12);height:var(--space-12)}}
+/* Loading boundaries own this bar, including navigation between separate root layouts. */
+.ma-progress{position:fixed;inset:0 0 auto;height:3px;z-index:var(--z-toast);overflow:hidden;background:var(--blue-50);pointer-events:none}
+.ma-progress>span{display:block;width:40%;height:100%;background:var(--action);transform-origin:left;animation:ma-progress calc(var(--motion-base) * 8) var(--motion-ease) infinite}
+body:has(.ma-loading) .ma-navigation-progress{display:none}
+@keyframes ma-progress{from{transform:translateX(-100%)}to{transform:translateX(350%)}}
+@media(prefers-reduced-motion:reduce){.ma-loading .ma-skel,.ma-progress>span{animation:none!important}.ma-progress>span{width:100%;transform:none}}
 /* Toast: success / info only, 5s, closable; stacked bottom-centre (above the sticky action bar). */
 .ma-toasts{position:fixed;left:var(--space-4);right:var(--space-4);bottom:calc(var(--space-4) + env(safe-area-inset-bottom));z-index:var(--z-toast);display:grid;justify-items:center;gap:var(--space-2);pointer-events:none}
 body:has(.ma-actionbar) .ma-toasts{bottom:calc(88px + env(safe-area-inset-bottom))}
@@ -615,7 +650,7 @@ body:has(.ma-actionbar) .ma-toasts{bottom:calc(88px + env(safe-area-inset-bottom
 /* Header: 56 → 64px, sticky, translucent white. Logo · nav (≥1024) · role actions (filled by shell.js). */
 .ma-header{position:sticky;top:0;z-index:var(--z-header);margin:0;padding:0;border:0;border-bottom:1px solid var(--border-subtle);background:color-mix(in srgb,var(--white) 94%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(12px);backdrop-filter:saturate(1.6) blur(12px);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body)}
 .ma-header__inner{display:flex;align-items:center;gap:var(--space-6);height:var(--header-h)}
-.ma-header__brand{display:inline-flex;align-items:center;gap:8px;flex:none;min-height:var(--tap-min);padding:0 4px;margin-left:-4px;border-radius:var(--radius-md);text-decoration:none}
+.ma-header__brand{display:inline-flex;align-items:center;gap:8px;flex:none;min-height:var(--tap-min);padding:0 4px 0 0;margin-left:0;border-radius:var(--radius-md);text-decoration:none}
 .ma-header__brand img{display:block;width:auto;max-width:none}
 .ma-header__symbol{height:28px}
 .ma-header__wordmark{height:22px}
@@ -933,9 +968,12 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
    so prefers-reduced-motion (tokens.css) turns all of it off.
    ====================================================================== */
 @keyframes ma-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* The page arrives softly once: .ma-main persists while the screens re-render inside it,
-   so filtering or typing never replays the animation. */
-.ma-main,body.design-two main{animation:ma-rise var(--dur-slow) var(--ease) both}
+/* Reveal the content after its skeleton leaves. Keep the initial frame readable even
+   when a background WebView pauses animation frames. Filtering does not replay it. */
+@keyframes ma-content-in{from{opacity:.72;transform:translateY(4px)}to{opacity:1;transform:none}}
+body.design-two main{animation:ma-rise var(--dur-slow) var(--ease) both}
+.ma-main>.ma-container>:not(.ma-loading):not(:has(.ma-loading)){animation:ma-content-in var(--motion-base) var(--motion-ease) both}
+@media(prefers-reduced-motion:reduce){.ma-main>.ma-container>*{animation:none!important}}
 /* Cards lift slightly under a pointer. */
 .ma-rcard,.ma-ccard,.ma-ocard,.m-company,.ma-card{transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur-fast) var(--ease)}
 @media (hover:hover){
@@ -1237,6 +1275,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-footer__legal{display:flex;flex-wrap:wrap;gap:0 var(--space-5)}
 .ma-footer__legal a{display:inline-flex;align-items:center;min-height:var(--tap-min);color:var(--text-3);text-decoration:none}
 .ma-footer__legal a:hover{color:var(--blue-700);text-decoration:underline}
+.ma-footer a[aria-current="page"]{color:var(--blue-700);text-decoration:underline;text-underline-offset:var(--space-1)}
 @media (min-width:1024px) and (max-width:1199.98px){
  .ma-header__inner{gap:var(--space-3)}
  .ma-header__link{padding-inline:var(--space-2)}

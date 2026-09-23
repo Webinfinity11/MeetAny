@@ -1,5 +1,7 @@
 "use client";
 
+import { DetailSkeleton } from "./Skeletons";
+
 import { useRequestDetail } from "../../lib/use-request-detail";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
@@ -156,15 +158,7 @@ export function RequestViewPageContent() {
 
   if ((ready && !available) || detail.error) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready || detail.loading) {
-    return (
-      <div className="ma-page">
-        <div className="ma-stack" aria-busy="true">
-          <p role="status">იტვირთება…</p>
-        </div>
-      </div>
-    );
-  }
+  if (!ready || detail.loading) return <DetailSkeleton />;
   if (!data) {
     return (
       <div className="ma-page">

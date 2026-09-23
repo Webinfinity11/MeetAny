@@ -1,4 +1,5 @@
 "use client";
+import { ListSkeleton } from "./Skeletons";
 
 import Link from "next/link";
 import type { Store } from "../../lib/market-client";
@@ -21,7 +22,7 @@ export function AdminContacts({ store, kind, target, period, cursor, onChange }:
       <div><label htmlFor="contact-target">სამიზნე</label><select id="contact-target" className="ma-select" value={target} onChange={e => onChange("target", e.target.value)}><option value="">ყველა სამიზნე</option><option value="company">კომპანია</option><option value="request">მოთხოვნა</option></select></div>
       <div><label htmlFor="contact-period">პერიოდი</label><select id="contact-period" className="ma-select" value={period} onChange={e => onChange("period", e.target.value)}><option value="day">დღეს</option><option value="week">7 დღე</option><option value="month">30 დღე</option></select></div>
     </div>
-    {data.loading ? <p role="status">კონტაქტები იტვირთება…</p> : data.error ? <div role="alert"><p>{data.error}</p><button className="ma-btn ma-btn--secondary" onClick={data.reload}>ხელახლა ცდა</button>{cursor ? <button className="ma-btn ma-btn--secondary" onClick={() => onChange("cursor", "")}>პირველი გვერდი</button> : null}</div> : data.stats ? <>
+    {data.loading ? <ListSkeleton compact kind="records" label="კონტაქტები იტვირთება…" /> : data.error ? <div role="alert"><p>{data.error}</p><button className="ma-btn ma-btn--secondary" onClick={data.reload}>ხელახლა ცდა</button>{cursor ? <button className="ma-btn ma-btn--secondary" onClick={() => onChange("cursor", "")}>პირველი გვერდი</button> : null}</div> : data.stats ? <>
       <div className="ma-proto-kpis">{[["day", "დღეს"], ["week", "7 დღე"], ["month", "30 დღე"]].flatMap(([key, label]) => [
         <div className="ma-stat" key={`${key}-reveal`}><strong className="ma-stat__value">{data.stats!.totals[key].reveals}</strong><span className="ma-stat__label">ნახვები · {label}</span></div>,
         <div className="ma-stat" key={`${key}-call`}><strong className="ma-stat__value">{data.stats!.totals[key].calls}</strong><span className="ma-stat__label">დარეკვები · {label}</span></div>,

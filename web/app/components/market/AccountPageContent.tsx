@@ -1,5 +1,7 @@
 "use client";
 
+import { AccountSkeleton } from "./Skeletons";
+
 import { EngagementPanel } from "./EngagementPanels";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
@@ -189,13 +191,7 @@ export function AccountPageContent() {
 
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready) {
-    return (
-      <div className="ma-page" aria-busy="true">
-        <p role="status">იტვირთება…</p>
-      </div>
-    );
-  }
+  if (!ready) return <AccountSkeleton />;
 
   if (!me) {
     return (
