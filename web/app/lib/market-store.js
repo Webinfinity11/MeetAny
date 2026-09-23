@@ -607,7 +607,8 @@ export function createMarketStore({initial=null,background=true}={}){
  async function updateRequest(id,input){
   client();requireUser();
   // Full replacement on the server: pass every field (omitted quantity/unit/neededBy are cleared).
-  const fields=validateRequest(input,getRequest(id)?.neededBy||null);
+  const current=getRequest(id);
+  const fields=validateRequest({...input,addressNote:input.addressNote===undefined?current?.addressNote:input.addressNote},current?.neededBy||null);
   return mutate('update_request',{p_request_id:id,p_title:fields.title,p_body:fields.body,p_category:fields.category,p_city:fields.city,
    p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy,p_address_note:fields.addressNote},mapRequest);
  }
@@ -652,7 +653,9 @@ export function createMarketStore({initial=null,background=true}={}){
  async function updateProfile(input){
   client();const me=requireUser();
   const name=clean(input.name,80),company=clean(input.company,100),about=String(input.about??'').trim();
-  const address=String(input.address??'').trim()||null,lat=input.lat??null,lng=input.lng??null;
+  const address=String((input.address===undefined?me.address:input.address)??'').trim()||null;
+  const lat=input.lat===undefined?(me.lat??null):input.lat===''?null:input.lat;
+  const lng=input.lng===undefined?(me.lng??null):input.lng===''?null:input.lng;
   if(address&&[...address].length>200)fail(MSG.MA412,'MA412');
   if(!((lat===null&&lng===null)||(Number.isFinite(lat)&&Number.isFinite(lng)&&lat>=-90&&lat<=90&&lng>=-180&&lng<=180)))fail(MSG.MA413,'MA413');
   const offers=lines(input.offers),seeks=lines(input.seeks);
