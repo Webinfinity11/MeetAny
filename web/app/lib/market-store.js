@@ -21,6 +21,9 @@ export function createMarketStore({initial=null,background=true}={}){
   MA105:'ერთდროულად შეიძლება 5 ღია განცხადება. დახურე ძველი და სცადე თავიდან.',MA106:'განცხადება ვერ მოიძებნა.',MA107:'ეს განცხადება შენ არ გეკუთვნის.',
   MA108:'არჩეული ან დამალული განცხადება ვერ გაგრძელდება.',MA109:'ატვირთე მხოლოდ სურათი.',
   MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიე რაოდენობის ერთეული.',MA113:'აირჩიე დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
+  MA114:'მისამართი ან რაიონი უნდა შეიცავდეს მაქსიმუმ 120 სიმბოლოს.',
+  MA412:'მისამართი უნდა შეიცავდეს მაქსიმუმ 200 სიმბოლოს.',
+  MA413:'მიუთითე ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
   MA110:'განცხადებას ვეღარ შეცვლი: მასზე უკვე მოვიდა შეთავაზება ან მომწოდებელი არჩეულია.',
   MA201:'შეთავაზების გაგზავნა შეუძლია მხოლოდ კომპანიის ანგარიშს.',MA202:'საკუთარ განცხადებაზე შეთავაზებას ვერ გააგზავნი.',MA203:'განცხადება აღარ იღებს შეთავაზებებს.',
   MA204:'აღწერე შეთავაზება მინიმუმ 10 სიმბოლოთი.',MA205:'ფასი უნდა იყოს დადებითი რიცხვი.',MA206:'შეთავაზება ვერ მოიძებნა.',MA207:'არჩეული შეთავაზება ვერ გაუქმდება.',
@@ -187,15 +190,15 @@ export function createMarketStore({initial=null,background=true}={}){
  const listeners=new Set();
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
- const mapUser=p=>p&&({id:p.id,role:p.role,name:p.name,company:p.company,email:p.email,phone:p.phone,city:p.city,industry:p.industry||undefined,verified:!!p.verified,verifiedAt:p.verified&&p.verified_at||null,blocked:!!p.blocked,blockedReason:p.blocked&&p.blocked_reason||null,createdAt:p.created_at,
+ const mapUser=p=>p&&({id:p.id,role:p.role,name:p.name,company:p.company,email:p.email,phone:p.phone,city:p.city,address:p.address||null,lat:p.lat??null,lng:p.lng??null,industry:p.industry||undefined,verified:!!p.verified,verifiedAt:p.verified&&p.verified_at||null,blocked:!!p.blocked,blockedReason:p.blocked&&p.blocked_reason||null,createdAt:p.created_at,
   about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[]});
- const mapRequest=r=>({id:r.id,ownerId:r.owner_id,title:r.title,body:r.body,category:r.category,city:r.city,photo:r.photo_url||null,
+ const mapRequest=r=>({id:r.id,ownerId:r.owner_id,title:r.title,body:r.body,category:r.category,city:r.city,addressNote:r.address_note||null,photo:r.photo_url||null,
   quantity:r.quantity==null?null:Number(r.quantity),unit:r.quantity!=null&&Object.hasOwn(units,r.unit)?r.unit:null,neededBy:r.needed_by?String(r.needed_by).slice(0,10):null,status:r.status,hidden:!!r.hidden,hiddenReason:r.hidden&&r.hidden_reason||null,chosenOfferId:r.chosen_offer_id||null,createdAt:r.created_at,expiresAt:r.expires_at});
  const mapOffer=o=>({id:o.id,requestId:o.request_id,companyUserId:o.company_id,body:o.body,price:o.price==null?null:Number(o.price),
   priceType:Object.hasOwn(priceTypes,o.price_type)?o.price_type:(o.price==null?'negotiable':'total'),vatIncluded:!!o.vat_included,
   deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
- const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at';
+ const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng';
 
 
  // A render-local public store never starts auth/network work. The browser singleton
@@ -547,7 +550,9 @@ export function createMarketStore({initial=null,background=true}={}){
   if(body.length<10)fail(MSG.MA102,'MA102');
   if(!Object.hasOwn(categories,input.category))fail(MSG.MA103,'MA103');
   if(!Object.hasOwn(cities,input.city))fail(MSG.MA104,'MA104');
-  return {title,body,category:input.category,city:input.city,...validateTerms(input,keepDate)};
+  const addressNote=String(input.addressNote??'').trim()||null;
+  if(addressNote&&[...addressNote].length>120)fail(MSG.MA114,'MA114');
+  return {title,body,addressNote,category:input.category,city:input.city,...validateTerms(input,keepDate)};
  }
  function toBlob(photo){
   if(typeof Blob!=='undefined'&&photo instanceof Blob)return photo;
@@ -593,7 +598,7 @@ export function createMarketStore({initial=null,background=true}={}){
   const photo=hasPhoto?await uploadPhoto(user,input.photo):null;
   try{
    return await mutate('create_request',{p_title:fields.title,p_body:fields.body,p_category:fields.category,p_city:fields.city,p_photo_url:photo?photo.url:null,
-    p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy},mapRequest);
+    p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy,p_address_note:fields.addressNote},mapRequest);
   }catch(err){
    if(photo)removePhoto(photo.url);
    throw err;
@@ -604,7 +609,7 @@ export function createMarketStore({initial=null,background=true}={}){
   // Full replacement on the server: pass every field (omitted quantity/unit/neededBy are cleared).
   const fields=validateRequest(input,getRequest(id)?.neededBy||null);
   return mutate('update_request',{p_request_id:id,p_title:fields.title,p_body:fields.body,p_category:fields.category,p_city:fields.city,
-   p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy},mapRequest);
+   p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy,p_address_note:fields.addressNote},mapRequest);
  }
  const closeRequest=id=>mutate('close_request',{p_request_id:id},mapRequest);
  const extendRequest=id=>mutate('extend_request',{p_request_id:id},mapRequest);
@@ -647,6 +652,9 @@ export function createMarketStore({initial=null,background=true}={}){
  async function updateProfile(input){
   client();const me=requireUser();
   const name=clean(input.name,80),company=clean(input.company,100),about=String(input.about??'').trim();
+  const address=String(input.address??'').trim()||null,lat=input.lat??null,lng=input.lng??null;
+  if(address&&[...address].length>200)fail(MSG.MA412,'MA412');
+  if(!((lat===null&&lng===null)||(Number.isFinite(lat)&&Number.isFinite(lng)&&lat>=-90&&lat<=90&&lng>=-180&&lng<=180)))fail(MSG.MA413,'MA413');
   const offers=lines(input.offers),seeks=lines(input.seeks);
   const serviceCities=(Array.isArray(input.serviceCities)?input.serviceCities:[]).filter(c=>Object.hasOwn(cities,c));
   if(name.length<2)fail(MSG.MA401,'MA401');
@@ -656,7 +664,16 @@ export function createMarketStore({initial=null,background=true}={}){
   if(about.length>1000)fail(MSG.MA410,'MA410');
   if(offers.length>8||seeks.length>8||[...offers,...seeks].some(x=>x.length>120))fail(MSG.MA411,'MA411');
   return mutate('update_my_profile',{p_name:name,p_company:company,p_city:input.city,p_industry:me.role==='company'?input.industry:null,
-   p_about:about,p_offers:offers,p_seeks:seeks,p_service_cities:serviceCities},mapUser);
+   p_about:about,p_offers:offers,p_seeks:seeks,p_service_cities:serviceCities,p_address:address,p_lat:lat,p_lng:lng},mapUser);
+ }
+ function directionsUrl(profile){
+  if(!profile)return null;
+  const {lat,lng}=profile;
+  const coordinates=Number.isFinite(lat)&&Number.isFinite(lng)&&lat>=-90&&lat<=90&&lng>=-180&&lng<=180;
+  const address=String(profile.address??'').trim();
+  if(!coordinates&&!address)return null;
+  const destination=coordinates?`${lat},${lng}`:encodeURIComponent(address+', '+(cities[profile.city]||profile.city||''));
+  return 'https://www.google.com/maps/dir/?api=1&destination='+destination;
  }
  // Companies for the public catalog: search in name, about and offers; industry and city filters.
  // A company serves a city when it is its own city, a listed service city, or it serves all Georgia.
@@ -718,7 +735,7 @@ export function createMarketStore({initial=null,background=true}={}){
   requestPasswordReset,resetPassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
-  updateProfile,listCompanies,getCompany,companyStats,
+  updateProfile,listCompanies,getCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
   adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};

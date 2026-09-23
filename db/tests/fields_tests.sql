@@ -211,8 +211,8 @@ select t.ok((select count(*) from pg_proc p join pg_namespace n on n.oid = p.pro
 do $$
 declare sig text;
 begin
-  foreach sig in array array['public.create_request(text,text,text,text,text,numeric,text,date)',
-                             'public.update_request(uuid,text,text,text,text,numeric,text,date)',
+  foreach sig in array array['public.create_request(text,text,text,text,text,numeric,text,date,text)',
+                             'public.update_request(uuid,text,text,text,text,numeric,text,date,text)',
                              'public.send_offer(uuid,text,numeric,text,boolean,integer,boolean)',
                              'public.list_companies()', 'public.admin_set_verified(uuid,boolean)'] loop
     perform t.ok((select prosecdef and 'search_path=""' = any (proconfig) from pg_proc where oid = sig::regprocedure), 'F7 ' || sig || ' definer + pinned search_path');
@@ -220,7 +220,7 @@ begin
   end loop;
 end $$;
 select t.ok(has_function_privilege('anonymous', 'public.send_offer(uuid,text,numeric,text,boolean,integer,boolean)', 'EXECUTE'), 'F7 send_offer executable by the API roles');
-select t.ok(has_function_privilege('authenticated', 'public.create_request(text,text,text,text,text,numeric,text,date)', 'EXECUTE'), 'F7 create_request executable by authenticated');
+select t.ok(has_function_privilege('authenticated', 'public.create_request(text,text,text,text,text,numeric,text,date,text)', 'EXECUTE'), 'F7 create_request executable by authenticated');
 select t.ok(not has_function_privilege('anonymous', 'meetany_private.check_terms(numeric,text,date,date)', 'EXECUTE'), 'F7 check_terms private');
 select t.ok(not has_function_privilege('authenticated', 'meetany_private.profiles_verified_at()', 'EXECUTE'), 'F7 trigger function private');
 select t.ok(not has_function_privilege('anonymous', 'public.admin_set_verified(uuid,boolean)', 'EXECUTE'), 'F7 admin_set_verified not for anonymous');

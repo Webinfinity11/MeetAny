@@ -27,9 +27,9 @@ const accounts = [
   {key:'hotel', role:'client', name:'ნინო ზღვისპირელი', company:'სასტუმრო ზღვის ხედი', city:'batumi'},
   {key:'cafe', role:'client', name:'მარიამ გემოვანი', company:'კაფე მზიანი დილა', city:'tbilisi'},
   {key:'shop', role:'client', name:'გიორგი სავაჭრო', company:'მაღაზია იმერული კუთხე', city:'kutaisi'},
-  {key:'wood', role:'company', name:'დავით სახელოსნო', company:'ხის ხაზი', city:'tbilisi', industry:'furniture', about:'ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებისა და მაღაზიებისთვის. ვეხმარებით ზომების შერჩევაში, ვამზადებთ ესკიზს და ვგეგმავთ მონტაჟს.', offers:['მაგიდებისა და სკამების დამზადება','სავაჭრო თაროები','ავეჯის მიტანა და მონტაჟი'], seeks:['ხის მასალის მომწოდებლები','ავეჯის ფურნიტურა'], cities:['tbilisi','kutaisi','batumi']},
-  {key:'linen', role:'company', name:'თამარ ქსოვილი', company:'რბილი სივრცე', city:'batumi', industry:'textiles', about:'ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და სუფრებს. შეკვეთამდე ვამზადებთ ქსოვილის ნიმუშებს; ზომები და შეფუთვა დამკვეთის საჭიროებას ერგება.', offers:['სასტუმროს თეთრეული','ფარდების შეკერვა','კაფის სუფრები და ხელსახოცები'], seeks:['ბამბის ქსოვილის მომწოდებლები','სასტუმროებთან თანამშრომლობა'], cities:['batumi','kutaisi','tbilisi']},
-  {key:'supply', role:'company', name:'ლევან მომარაგება', company:'რეგიონის მომარაგება', city:'kutaisi', industry:'logistics', about:'ვგეგმავთ რეგიონულ გადაზიდვებს და ვაწვდით ბიზნესებს მუყაოს შეფუთვას. წინასწარ ვათანხმებთ აღების დროს, მარშრუტს და ტვირთის მოცულობას.', offers:['ტვირთის რეგიონული გადაზიდვა','მუყაოს ყუთები','შეკვეთების განაწილება'], seeks:['ადგილობრივი მწარმოებლები','შეფუთვის მომწოდებლები'], cities:['kutaisi','tbilisi','batumi','zugdidi']},
+  {key:'wood', address:'აკაკი წერეთლის გამზირი 116', lat:41.7438, lng:44.7793, role:'company', name:'დავით სახელოსნო', company:'ხის ხაზი', city:'tbilisi', industry:'furniture', about:'ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებისა და მაღაზიებისთვის. ვეხმარებით ზომების შერჩევაში, ვამზადებთ ესკიზს და ვგეგმავთ მონტაჟს.', offers:['მაგიდებისა და სკამების დამზადება','სავაჭრო თაროები','ავეჯის მიტანა და მონტაჟი'], seeks:['ხის მასალის მომწოდებლები','ავეჯის ფურნიტურა'], cities:['tbilisi','kutaisi','batumi']},
+  {key:'linen', address:'ფარნავაზ მეფის ქუჩა 82', lat:41.6447, lng:41.634, role:'company', name:'თამარ ქსოვილი', company:'რბილი სივრცე', city:'batumi', industry:'textiles', about:'ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და სუფრებს. შეკვეთამდე ვამზადებთ ქსოვილის ნიმუშებს; ზომები და შეფუთვა დამკვეთის საჭიროებას ერგება.', offers:['სასტუმროს თეთრეული','ფარდების შეკერვა','კაფის სუფრები და ხელსახოცები'], seeks:['ბამბის ქსოვილის მომწოდებლები','სასტუმროებთან თანამშრომლობა'], cities:['batumi','kutaisi','tbilisi']},
+  {key:'supply', address:'ილია ჭავჭავაძის გამზირი 32', lat:42.2543, lng:42.676, role:'company', name:'ლევან მომარაგება', company:'რეგიონის მომარაგება', city:'kutaisi', industry:'logistics', about:'ვგეგმავთ რეგიონულ გადაზიდვებს და ვაწვდით ბიზნესებს მუყაოს შეფუთვას. წინასწარ ვათანხმებთ აღების დროს, მარშრუტს და ტვირთის მოცულობას.', offers:['ტვირთის რეგიონული გადაზიდვა','მუყაოს ყუთები','შეკვეთების განაწილება'], seeks:['ადგილობრივი მწარმოებლები','შეფუთვის მომწოდებლები'], cities:['kutaisi','tbilisi','batumi','zugdidi']},
   {key:'admin', role:'admin', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi'},
 ].map((a,i)=>({...a,email:`demo-${a.key}@meetany.ge`,phone:`+995 555 900 ${101+i}`}));
 // Three clients, at most four open requests each. First request is chosen after offers are sent.
@@ -101,7 +101,7 @@ async function seed() {
     await login(a);
     const p=await rpc(a,'complete_profile',{p_role:a.role==='admin'?'client':a.role,p_name:a.name,p_company:a.company,p_phone:a.phone,p_city:a.city,p_industry:a.industry||null});
     assert.equal(p.id,a.id);
-    if(a.role==='company') await rpc(a,'update_my_profile',{p_name:a.name,p_company:a.company,p_city:a.city,p_industry:a.industry,p_about:a.about,p_offers:a.offers,p_seeks:a.seeks,p_service_cities:a.cities});
+    if(a.role==='company') await rpc(a,'update_my_profile',{p_name:a.name,p_company:a.company,p_city:a.city,p_industry:a.industry,p_about:a.about,p_offers:a.offers,p_seeks:a.seeks,p_service_cities:a.cities,p_address:a.address,p_lat:a.lat,p_lng:a.lng});
     console.log('ანგარიში მზადაა:',a.email);
   }
   const admin=byKey('admin');

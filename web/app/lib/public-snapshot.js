@@ -2,7 +2,7 @@ import 'server-only';
 import { asCaller } from './db';
 
 // Same JSON projection as /api/db; timestamps stay strings. All reads use RLS.
-const PUBLIC_PROFILE = 'id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at';
+const PUBLIC_PROFILE = 'id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng';
 const read = (sql, values = []) => asCaller({ role: 'anonymous' }, async db =>
   (await db.query(sql, values)).rows[0].j);
 const collect = sql => `select coalesce(json_agg(t), '[]'::json) as j from (${sql}) t`;
