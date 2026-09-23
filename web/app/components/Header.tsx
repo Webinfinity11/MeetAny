@@ -17,7 +17,6 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [pending, setPending] = useState(false);
-  const name = me?.company || me?.name || "ანგარიში";
   const links = me ? [
     ...(me.role === "admin" ? [["shield-check", "ადმინი", "/admin/"]] : []),
     ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
@@ -55,7 +54,7 @@ export function Header() {
             requestAnimationFrame(() => {const items = Array.from(dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') || []); const index = items.indexOf(document.activeElement as HTMLElement); const next = e.key === "Home" ? 0 : e.key === "End" ? items.length - 1 : (index + (e.key === "ArrowUp" ? -1 : 1) + items.length) % items.length; items[next]?.focus();});
           }
         }}>
-          <button className="ma-menu__trigger" aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}>{name}<Icon name="chevron-down"/></button>
+          <button className="ma-menu__trigger" aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}><Icon name="user-round"/><span>ჩემი ანგარიში</span><Icon name="chevron-down"/></button>
           <div className="ma-menu__list" id="ma-account-menu" role="menu" hidden={!accountOpen}>
             {links.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
             <button className="ma-menu__item ma-menu__item--danger" role="menuitem" disabled={pending} onClick={logout}>გასვლა</button>
@@ -67,7 +66,7 @@ export function Header() {
     <dialog ref={mobile} id="ma-mnav" className="ma-mnav" aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
       <div className="ma-mnav__head">{brand}<button className="ma-mnav__close" aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
       <div className="ma-mnav__body"><nav className="ma-mnav__group" aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
-        <div className="ma-mnav__group"><span className="ma-eyebrow">{me ? name : "ანგარიში"}</span>{links.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}{me ? <button className="ma-mnav__link" disabled={pending} onClick={logout}>გასვლა</button> : null}</div>
+        <div className="ma-mnav__group"><span className="ma-eyebrow">{me ? "ჩემი ანგარიში" : "ანგარიში"}</span>{links.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}{me ? <button className="ma-mnav__link" disabled={pending} onClick={logout}>გასვლა</button> : null}</div>
       </div><div className="ma-mnav__foot">{add}</div>
     </dialog>
   </>;

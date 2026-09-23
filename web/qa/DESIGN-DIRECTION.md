@@ -32,3 +32,13 @@ Reviewed [wlw](https://www.wlw.de/en), [Europages](https://www.europages.co.uk/)
 This supersedes the earlier light-blue catalog introduction: both catalog headers now use concise titles and search. Companies remain a directory with capability chips, small photos and call/profile actions. Requests prioritize the need itself, followed by category, author and logistics. Removed category-photo promotions and the large CTA from the company results page; all categories remain accessible through filters. Company activity statistics remain in profiles. Mobile filter/sort controls share one row. Search has an explicit clear control that restores input focus. No country/language filters are presented before the data and behavior exist.
 
 These are implementation and browser checks, not a claim of measured usability improvement with users.
+
+## Profile and shared navigation review, 2026-09-23
+
+The profile previously prioritized an industry stock photo, repeated section eyebrows, and a large facts sidebar over capabilities and contact. The header also used an unbounded company name as its account control, while footer navigation mixed discovery and legal links at the same level.
+
+Changed: compact company identity with a visible call action; a separate service-area row; description and services in the main column; collaboration interests in a secondary panel; open requests below; activity statistics as secondary metadata at the end. Removed the decorative photo hero, duplicate section labels, facts sidebar and oversized concluding CTA. The category-specific request action remains beside open requests. Header account control is now “ჩემი ანგარიში” for every signed-in role, including the mobile navigation heading. Footer separates discovery from contact/legal links and removes the promotional sentence.
+
+Critical review criteria going forward: Can a visitor identify the page purpose and next action? Does the first screen prioritize useful information? Are labels understandable without inference? Are secondary details taking attention from decisions? Does real Georgian text fit at intermediate widths? Do empty, long-content and authenticated states remain usable?
+
+Remaining design limitations: catalog company images still represent a category rather than a specific business; mobile header creation is an icon-only control (with an accessible label), whose discoverability should be checked with users. These are distinct from verified layout failures. Browser screenshots and successful builds do not establish usability with real businesses; that needs task-based observation (find a supplier, call, publish a need, send an offer).

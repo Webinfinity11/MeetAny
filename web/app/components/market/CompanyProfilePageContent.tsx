@@ -5,13 +5,9 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { CompanyAvatar } from "./CompanyAvatar";
-import { SectionHead } from "./SectionHead";
-import { TagList } from "./TagList";
-import { MobileActionBar } from "./MobileActionBar";
 import { CallButton } from "./CallButton";
-import { statsLabel } from "./CompanyRow";
 import { useMarketStore } from "../../lib/market-client";
-import { categories, categoryPhoto, cities } from "../../lib/categories";
+import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
 import { fetchPhone } from "../../lib/phones";
 
@@ -71,101 +67,56 @@ export function CompanyProfilePageContent() {
 
   return (
     <div className="ma-page company-profile">
-      <header
-        className="r2-band ma-page-head"
-        style={{ "--band-photo": `url(/assets/photos/${categoryPhoto[c.industry] || categoryPhoto.other})` } as React.CSSProperties}
-      >
+      <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიები</Link>
+      <header className="company-profile-head">
         <CompanyAvatar name={name} size="xl" />
-        <div>
-          <span className="ma-eyebrow">კომპანიის პროფილი</span>
+        <div className="company-profile-identity">
           <h1 className="ma-h1">{name}</h1>
-          <p className="ma-lead">
-            {categories[c.industry] || c.industry} · {cities[c.city] || c.city}
-          </p>
-          <div className="ma-cluster">
-            <span>{statsLabel(stats)}</span>
-          </div>
-          {phone ? (
-            <div className="ma-cluster">
-              <CallButton phone={phone} />
-            </div>
-          ) : null}
+          <p>{categories[c.industry] || c.industry}</p>
+          <span className="company-profile-city"><Icon name="map-pin" />{cities[c.city] || c.city}</span>
         </div>
+        {phone ? <div className="company-profile-contact"><CallButton phone={phone} /></div> : null}
       </header>
-
-      <div className="ma-proto-account">
-        <aside className="ma-panel r2-facts">
-          <h2 className="ma-h3">ფაქტები</h2>
-          <dl className="ma-kv">
-            <div>
-              <dt>ქალაქი</dt>
-              <dd>{cities[c.city] || c.city}</dd>
-            </div>
-            <div>
-              <dt>ემსახურება</dt>
-              <dd>{(c.serviceCities || []).map((id: string) => cities[id] || id).join(", ") || "არ არის მითითებული"}</dd>
-            </div>
-            <div>
-              <dt>წევრია</dt>
-              <dd>{dateLabel(c.createdAt)}</dd>
-            </div>
-            <div>
-              <dt>გაგზავნილი</dt>
-              <dd>{stats.sent}</dd>
-            </div>
-            <div>
-              <dt>არჩეული</dt>
-              <dd>{stats.chosen}</dd>
-            </div>
-          </dl>
-        </aside>
-        <div className="ma-stack">
-          <section className="r2-section">
-            <SectionHead eyebrow="კომპანიის შესახებ" title="ჩვენს შესახებ" />
-            <p>{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>
-          </section>
-          <section className="r2-section">
-            <SectionHead eyebrow="მომსახურება" title="რას გთავაზობთ" />
-            <TagList items={c.offers || []} emptyLabel="შეთავაზებები ჯერ არ არის მითითებული." />
-          </section>
-          <section className="r2-section">
-            <SectionHead eyebrow="თანამშრომლობა" title="რას ვეძებთ" />
-            <TagList items={c.seeks || []} emptyLabel="საჭიროებები ჯერ არ არის მითითებული." />
-          </section>
-          <section className="r2-section">
-            <SectionHead eyebrow="კომპანიის საჭიროებები" title="ღია მოთხოვნები" />
-            {openRequests.length ? (
-              <div className="ma-stack">
-                {openRequests.map((r) => (
-                  <article className="ma-panel" key={r.id}>
-                    <Link className="ma-title ma-proto-rowtitle" href={`/requests/view/?id=${r.id}`}>
-                      {r.title}
-                    </Link>
-                    <p className="ma-muted">
-                      {r.city} · {r.offerCount} შეთავაზება
-                    </p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="ma-muted">ამ კომპანიას ღია მოთხოვნა ჯერ არ აქვს.</p>
-            )}
-          </section>
-        </div>
+      <div className="company-profile-coverage">
+        <Icon name="globe" />
+        <div><span>მომსახურების არეალი</span><p>{(c.serviceCities || []).map((id: string) => cities[id] || id).join(" · ") || "არ არის მითითებული"}</p></div>
       </div>
 
-      <section className="r2-cta">
-        <div>
-          <span className="ma-eyebrow ma-eyebrow--brand">იპოვე შესაბამისი პარტნიორი</span>
-          <h2 className="ma-h2">გჭირდება {categories[c.industry] || c.industry}?</h2>
-          <Link className="ma-btn ma-btn--primary" href={ctaHref}>
-            მოთხოვნის დამატება ამ დარგში
-          </Link>
+      <div className="company-profile-body">
+        <div className="company-profile-main">
+          <section aria-labelledby="company-about">
+            <h2 id="company-about" className="ma-h3">კომპანიის შესახებ</h2>
+            <p className="company-profile-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>
+          </section>
+          <section id="offers" aria-labelledby="company-services">
+            <h2 id="company-services" className="ma-h3">პროდუქტები და მომსახურება</h2>
+            {c.offers?.length ? <ul className="company-profile-services">{c.offers.map((offer: string) => <li key={offer}>{offer}</li>)}</ul> : <p className="ma-muted">ჯერ არ არის მითითებული.</p>}
+          </section>
         </div>
-        <img src="/assets/photos/workshop-process-banner.jpg" alt="" width={640} height={420} />
-      </section>
+        <aside className="company-profile-partnership" aria-labelledby="company-partnership">
+          <h2 id="company-partnership" className="ma-h3">თანამშრომლობის ინტერესები</h2>
+          {c.seeks?.length ? <ul>{c.seeks.map((seek: string) => <li key={seek}>{seek}</li>)}</ul> : <p className="ma-muted">ჯერ არ არის მითითებული.</p>}
+          {phone ? <a className="ma-link" href={`tel:${phone.replace(/[^+\d]/g, "")}`}>დაუკავშირდი კომპანიას <Icon name="arrow-right" /></a> : null}
+        </aside>
+      </div>
 
-      <MobileActionBar label="მოთხოვნის დამატება ამ დარგში" href={ctaHref} />
+      <section className="company-profile-requests" aria-labelledby="company-requests">
+        <div className="company-profile-section-head">
+          <h2 id="company-requests" className="ma-h3">ღია მოთხოვნები <span>{openRequests.length}</span></h2>
+          <Link className="ma-link" href={ctaHref}>ამ დარგში მოთხოვნის დამატება <Icon name="plus" /></Link>
+        </div>
+        {openRequests.length ? <div className="company-profile-request-list">
+          {openRequests.map((r) => <article key={r.id}>
+            <Link className="ma-title ma-proto-rowtitle" href={`/requests/view/?id=${r.id}`}>{r.title}<Icon name="arrow-right" /></Link>
+            <p className="ma-small ma-muted">{r.city} · {r.offerCount} შეთავაზება</p>
+          </article>)}
+        </div> : <p className="ma-muted">ამ კომპანიას ღია მოთხოვნა ჯერ არ აქვს.</p>}
+      </section>
+      <dl className="company-profile-activity">
+        <div><dt>წევრია</dt><dd>{dateLabel(c.createdAt)}</dd></div>
+        <div><dt>გაგზავნილი შეთავაზება</dt><dd>{stats.sent}</dd></div>
+        <div><dt>არჩეული შეთავაზება</dt><dd>{stats.chosen}</dd></div>
+      </dl>
     </div>
   );
 }

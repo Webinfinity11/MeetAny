@@ -254,6 +254,49 @@
  .ma-proto .listing-footer>.ma-btn,.ma-proto .listing-footer>.listing-action{width:100%;justify-content:center;margin-left:0}
 }
 
-/* Profile sections already have a parent gap; avoid adding two section margins as well. */
-.company-profile .ma-proto-account>.ma-stack{gap:var(--space-8)}
-.company-profile .ma-proto-account>.ma-stack>.r2-section{margin-block:0}
+/* Company profile: identity/contact, capabilities, then collaboration. */
+.company-profile{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6)}
+.company-profile>.ma-back{margin:0;justify-self:start}
+.company-profile-head{display:flex;align-items:center;gap:var(--space-5);flex-wrap:wrap}
+.company-profile-head>.ma-avatar{width:var(--space-16);height:var(--space-16);font-size:var(--fs-h2)}
+.company-profile-identity{flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-2);overflow-wrap:anywhere}
+.company-profile-identity>h1{overflow-wrap:anywhere}
+.company-profile-identity>p,.company-profile-city{color:var(--text-3);font-size:var(--fs-sm)}
+.company-profile-city{display:flex;align-items:center;gap:var(--space-1)}
+.company-profile-city .icon,.company-profile-coverage>.icon{width:var(--space-5);height:var(--space-5);flex:none}
+.company-profile-contact{margin-left:auto}
+.company-profile-coverage{display:flex;align-items:center;gap:var(--space-3);padding-block:var(--space-4);border-block:1px solid var(--border-subtle)}
+.company-profile-coverage>.icon{color:var(--text-3)}
+.company-profile-coverage>div{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:baseline}
+.company-profile-coverage span{font-size:var(--fs-sm);color:var(--text-3)}
+.company-profile-coverage p{font-size:var(--fs-sm);color:var(--text)}
+.company-profile-body{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-8);align-items:start}
+.company-profile-main{display:grid;gap:var(--space-8);min-width:0}
+.company-profile-main section{display:grid;gap:var(--space-4);scroll-margin-top:var(--space-24)}
+.company-profile-description{max-width:65ch;line-height:var(--lh-body-lg);white-space:pre-line;overflow-wrap:anywhere}
+.company-profile-services{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-3);grid-template-columns:minmax(0,1fr)}
+.company-profile-services li{padding:var(--space-3) var(--space-4);border-left:var(--space-1) solid var(--blue-100);background:var(--bg-subtle);overflow-wrap:anywhere}
+.company-profile-partnership{display:grid;gap:var(--space-4);padding:var(--space-5);background:var(--blue-50);border-radius:var(--radius-lg);min-width:0}
+.company-profile-partnership ul{display:grid;gap:var(--space-3);margin:0;padding-left:var(--space-5)}
+.company-profile-partnership li{padding-left:var(--space-1);overflow-wrap:anywhere;line-height:var(--lh-body)}
+.company-profile-partnership .ma-link{font-size:var(--fs-sm);justify-self:start}
+.company-profile-requests{display:grid;gap:var(--space-3);padding-top:var(--space-6);border-top:1px solid var(--border-subtle)}
+.company-profile-section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}
+.company-profile-section-head h2{display:flex;align-items:center;gap:var(--space-2)}
+.company-profile-section-head h2 span{font-size:var(--fs-sm);color:var(--text-3);font-variant-numeric:tabular-nums}
+.company-profile-section-head>.ma-link{font-size:var(--fs-sm)}
+.company-profile-request-list{display:grid;gap:var(--space-3)}
+.company-profile-request-list article{padding-block:var(--space-3);border-bottom:1px solid var(--border-subtle)}
+.company-profile-request-list .ma-proto-rowtitle{justify-content:space-between;gap:var(--space-4)}
+.company-profile-request-list .icon{flex:none}
+.company-profile-activity{display:flex;flex-wrap:wrap;gap:var(--space-3) var(--space-6);padding-top:var(--space-4);border-top:1px solid var(--border-subtle);margin:0;font-size:var(--fs-xs);color:var(--text-3)}
+.company-profile-activity>div{display:flex;gap:var(--space-2)}
+.company-profile-activity dd{margin:0}
+@media(min-width:1024px){.company-profile-body{grid-template-columns:minmax(0,1fr) calc(var(--space-20) * 4 + var(--space-6))}}
+@media(max-width:767px){
+ .company-profile-head{align-items:flex-start;gap:var(--space-3)}
+ .company-profile-head>.ma-avatar{width:var(--space-12);height:var(--space-12);font-size:var(--fs-h3)}
+ .company-profile-contact{width:100%;margin:0}
+ .company-profile-contact>.ma-btn{width:100%;justify-content:center}
+ .company-profile-body,.company-profile-main{gap:var(--space-6)}
+}
