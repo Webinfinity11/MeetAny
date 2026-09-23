@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { CompanyAvatar } from "./CompanyAvatar";
+import { SaveCompanyButton } from "./SaveCompanyButton";
 import { CallButton } from "./CallButton";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
@@ -62,7 +63,7 @@ export function CompanyProfilePageContent() {
 
   return (
     <div className="ma-page company-profile">
-      <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიები</Link>
+      <div className="company-profile-tools"><Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიები</Link><SaveCompanyButton id={c.id} /></div>
       <header className="company-profile-head">
         <CompanyAvatar name={name} size="xl" />
         <div className="company-profile-identity">
@@ -70,7 +71,7 @@ export function CompanyProfilePageContent() {
           <p>{categories[c.industry] || c.industry}</p>
           <span className="company-profile-city"><Icon name="map-pin" />{cities[c.city] || c.city}</span>
         </div>
-        {phone ? <div className="company-profile-contact"><CallButton phone={phone} contactId={c.id} source="company-profile" /></div> : null}
+        <div className="company-profile-contact">{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}</div>
       </header>
       <div className="company-profile-coverage">
         <Icon name="globe" />

@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import { deliverNotification, runWorker } from '../scripts/notification-worker.mjs';
+const job={id:'event-one',lease:'lease-one',payload:{from:'test@example.test',to:['recipient@example.test'],subject:'Test',text:'Test'}};
+const calls=[];
+const fetcher=async(url,options)=>{calls.push({url,options});return {ok:true,json:async()=>({id:'provider-one'})};};
+await deliverNotification(job,{apiKey:'fake-test-key',fetcher});await deliverNotification(job,{apiKey:'fake-test-key',fetcher});
+assert.equal(calls[0].options.headers['Idempotency-Key'],calls[1].options.headers['Idempotency-Key']);assert.equal(calls[0].options.body,calls[1].options.body);
+await assert.rejects(deliverNotification(job,{apiKey:'fake',fetcher:async()=>({ok:false,status:503})}),/provider_http_503/);
+const queries=[];let claimed=false;
+const db={query:async(sql,args)=>{queries.push({sql,args});if(sql.includes('claim_')){if(claimed)return {rows:[{job:null}]};claimed=true;return {rows:[{job}]};}return {rows:[{finished:true}]};}};
+assert.deepEqual(await runWorker({db,send:async()=>{throw Error('sensitive provider response')},from:'test@example.test',origin:'https://example.test'}),{sent:0,failed:1});
+assert.equal(queries[1].args[3],'delivery_error');assert.equal(queries[1].args[1],job.lease);
+claimed=false;assert.deepEqual(await runWorker({db,send:async()=>{},from:'test@example.test',origin:'https://example.test'}),{sent:1,failed:0});
+console.log('PASS worker stable payload/key, provider error, redacted failure, lease acknowledgement and success (no email sent)');

@@ -317,3 +317,19 @@
 .filter-options .ma-check{min-height:var(--tap-min);font-size:var(--fs-sm);line-height:var(--lh-sm);align-items:center}
 .filter-options .ma-check input{flex:none;accent-color:var(--action)}
 .filter-reset{justify-content:flex-start;padding-inline:0;color:var(--text-3);font-size:var(--fs-xs)}
+
+/* Supplier list utilities follow the explicit Save pattern used by B2B directories. */
+.listing-utilities{display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-2);flex-shrink:0}
+.company-profile-tools{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3)}
+.company-profile-tools>.ma-back{margin:0}
+@media(max-width:600px){.ma-proto .listing-heading{flex-wrap:wrap}.listing-utilities{width:100%;flex-direction:row-reverse;justify-content:space-between;align-items:center}}
+@media(max-width:359px){.ma-header__actions .ma-header__cta{padding-inline:var(--space-2)}.ma-header__actions .ma-header__cta-short{font-size:var(--fs-xs)}}
+
+.ma-proto .listing-heading{justify-content:space-between}
+.listing-utilities{margin-left:auto}
+@media(max-width:359px){
+ .ma-header:has([aria-controls="notification-list"]) .ma-header__wordmark{height:var(--space-4)}
+ .ma-header:has([aria-controls="notification-list"]) .ma-header__symbol{height:var(--space-5)}
+ .ma-header:has([aria-controls="notification-list"]) .ma-header__brand{gap:var(--space-1)}
+ .ma-header__actions .ma-header__cta{flex-shrink:0}
+}

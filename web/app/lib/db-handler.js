@@ -111,7 +111,9 @@ export default {
     }
     try {
       let result;
-      if (request.method === 'GET' && TABLES.has(path)) {
+      if (request.method === 'GET' && path === 'capabilities') {
+        result = await asCaller(claims, async (db) => ({ engagement: !!(await db.query("select to_regprocedure('public.engagement_state()') is not null as enabled")).rows[0].enabled, emailDelivery: process.env.NOTIFICATION_EMAIL_ENABLED === 'true' && !!process.env.RESEND_API_KEY && !!process.env.NOTIFICATION_FROM && !!process.env.APP_ORIGIN }));
+      } else if (request.method === 'GET' && TABLES.has(path)) {
         const { sql, values } = tableQuery(path, url.searchParams);
         result = await asCaller(claims, async (db) => (await db.query(sql, values)).rows[0].j);
       } else if (request.method === 'POST' && path.startsWith('rpc/')) {

@@ -32,9 +32,13 @@ echo "== schema.sql loaded (1st run)"
 "${PSQL[@]}" -f "$SCHEMA"
 echo "== schema.sql loaded (2nd run, re-runnable)"
 
+"${PSQL[@]}" -f "$HERE/../migrations/20260923-engagement.sql"
+echo "== additive engagement migration re-applied"
+
 "${PSQL[@]}" -f "$HERE/rls_tests.sql"
 "${PSQL[@]}" -f "$HERE/security_tests.sql"
 "${PSQL[@]}" -f "$HERE/profile_tests.sql"
 "${PSQL[@]}" -f "$HERE/fields_tests.sql"
 "${PSQL[@]}" -f "$HERE/admin_tests.sql"
+"${PSQL[@]}" -f "$HERE/engagement_tests.sql"
 echo "== tests finished"

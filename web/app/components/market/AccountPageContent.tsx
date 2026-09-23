@@ -1,5 +1,6 @@
 "use client";
 
+import { EngagementPanel } from "./EngagementPanels";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useMemo, useState } from "react";
@@ -170,7 +171,8 @@ export function AccountPageContent() {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const tab = ["profile", "settings"].includes(searchParams.get("tab") || "") ? "profile" : "overview";
+  const rawTab = searchParams.get("tab") || "";
+  const tab = ["saved", "notifications"].includes(rawTab) ? rawTab : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
 
   const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
 
@@ -203,6 +205,17 @@ export function AccountPageContent() {
       </div>
     );
   }
+
+  if (tab === "saved" || tab === "notifications") return (
+    <div className="ma-page ma-stack">
+      <Link className="ma-back" href="/account/"><Icon name="arrow-left"/>ჩემი ანგარიში</Link>
+      <nav className="ma-tabs" aria-label="ანგარიშის განყოფილებები">
+        <Link className="ma-tab" href="/account/?tab=saved" aria-current={tab === "saved" ? "page" : undefined}>შენახული კომპანიები</Link>
+        <Link className="ma-tab" href="/account/?tab=notifications" aria-current={tab === "notifications" ? "page" : undefined}>შეტყობინებები</Link>
+      </nav>
+      <EngagementPanel key={tab} kind={tab}/>
+    </div>
+  );
 
   const isCompany = me.role === "company";
   const name = me.company || me.name;
@@ -266,6 +279,8 @@ export function AccountPageContent() {
         </aside>
         <div className="ma-stack">
           <nav className="ma-tabs" aria-label="ანგარიშის განყოფილებები">
+            <Link className="ma-tab" href="/account/?tab=saved">შენახული კომპანიები</Link>
+            <Link className="ma-tab" href="/account/?tab=notifications">შეტყობინებები</Link>
             <Link className="ma-tab" href="/account/" aria-current={tab === "overview" ? "page" : undefined}>
               მიმოხილვა
             </Link>

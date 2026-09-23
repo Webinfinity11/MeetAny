@@ -1,3 +1,4 @@
+import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { TagList } from "./TagList";
@@ -35,10 +36,10 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
                 <Link href={href}>{c.name}</Link>
               </h3>
             </div>
-            <span className="listing-city">
+            <div className="listing-utilities"><SaveCompanyButton id={c.id} /><span className="listing-city">
               <Icon name="map-pin" />
               {cities[c.city] || c.city}
-            </span>
+            </span></div>
           </div>
           </div>
         <p className="listing-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>

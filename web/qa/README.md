@@ -72,3 +72,14 @@
 Build passes; lint has zero errors and 16 existing warnings. Remote admin schema migration remains pending; see `db/ADMIN-MIGRATION.md`. Mock UI tests and local SQL tests do not substitute for remote post-migration integration checks.
 
 Post-change protected demo workflow also passed: create with photo, edit, close/reopen, send/edit/withdraw/resend offer, choose, delete own QA request, admin view; zero console errors. Own QA data was removed.
+
+## Saved companies and offer notifications
+
+- `node web/qa/notification-worker.mjs`: fake provider tests, no mail sent.
+- `QA_BROWSER_PATH=… node web/qa/engagement.mjs`: mocked RPCs with real demo login; guest intent, save/reload/remove, failed save, notification read and Escape, disabled email channel, 1280/390/320px.
+- `QA_BROWSER_PATH=… node web/qa/saved-live.mjs`: auth-probe only, saves an initially unsaved company with demo-hotel and removes that test save, checks account/profile/reload and CTA clipping.
+- `QA_DEMO=1 QA_DEMO_ONLY=1 QA_BROWSER_PATH=… node web/qa/browser.mjs`: existing isolated offer lifecycle now verifies recipient and chosen-supplier notifications when capability is enabled.
+
+Database rollout and delivery boundaries: `db/ENGAGEMENT-MIGRATION.md`. Placement references: Thomasnet's explicit Save action and Europages' upper company-profile utility area. Save is in the company heading/tools area, separate from the footer's phone/profile actions.
+
+Final evidence: 749 SQL assertions pass (schema twice plus additive migration rerun), production build passes, lint zero errors/16 existing warnings. Real auth-probe save persistence and both offer-event recipients passed; all QA-owned saves/requests were removed. Compact saved/notification pages omit the large account profile sidebar to keep the requested list directly accessible.

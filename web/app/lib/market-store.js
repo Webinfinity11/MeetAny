@@ -134,6 +134,47 @@ export function createMarketStore(){
  let isReady=false,loadFailed=!configured;
  let dataRevision=0;
  const requestLoads=new Map();
+ let engagement={owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
+ let engagementTask=null,engagementRevision=0,engagementCapabilities=null;
+ async function refreshEngagement(){
+  const actor=currentUser()?.id;
+  if(!actor||currentUser()?.blocked){engagement={...engagement,owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}};emit();return;}
+  if(engagement.owner!==actor)engagement={owner:actor,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
+  if(engagementTask?.actor===actor)return engagementTask.promise;
+  const revision=engagementRevision;
+  const work=(async()=>{
+   try{
+    const caps=engagementCapabilities||await db('/capabilities');
+    if(caps.engagement)engagementCapabilities=caps;
+    if(actor!==currentUser()?.id)return;
+    if(!caps.engagement){engagement={...engagement,owner:actor,status:'unavailable'};emit();return;}
+    let intent=null;
+    try{intent=JSON.parse(sessionStorage.getItem('meetany.saveIntent')||'null');}catch{}
+    if(intent&&Date.now()-intent.at<30*60*1000&&/^[0-9a-f-]{36}$/i.test(intent.id)){
+     try{await rpc('set_saved_company',{p_company_id:intent.id,p_saved:true});sessionStorage.removeItem('meetany.saveIntent');}
+     catch(err){if(err.code==='MA302')sessionStorage.removeItem('meetany.saveIntent');else throw err;}
+    }
+    const data=await rpc('engagement_state');
+    if(actor!==currentUser()?.id||revision!==engagementRevision)return;
+    engagement={...data,owner:actor,status:'ready',emailDelivery:caps.emailDelivery};emit();
+   }catch{if(actor===currentUser()?.id&&revision===engagementRevision){engagement={...engagement,owner:actor,status:'error'};emit();}}
+  })();
+  engagementTask={actor,promise:work};
+  try{await work;}finally{if(engagementTask?.promise===work)engagementTask=null;}
+ }
+ async function setSavedCompany(id,saved){
+  const actor=requireUser().id;
+  engagementRevision++;
+  await rpc('set_saved_company',{p_company_id:id,p_saved:saved});
+  if(actor===currentUser()?.id){engagement={...engagement,savedIds:saved?[...new Set([...engagement.savedIds,id])]:engagement.savedIds.filter(x=>x!==id)};emit();}
+ }
+ async function markNotificationRead(id){
+  requireUser();engagementRevision++;await rpc('mark_notification_read',{p_id:id});if(engagementTask)await engagementTask.promise;await refreshEngagement();
+ }
+ async function setNotificationEmail(enabled){
+  requireUser();engagementRevision++;await rpc('set_notification_email',{p_enabled:enabled});if(engagementTask)await engagementTask.promise;await refreshEngagement();
+ }
+
  const listeners=new Set();
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
@@ -187,6 +228,7 @@ export function createMarketStore(){
   }
   cache=next;
   dataRevision++;
+  await refreshEngagement();
  }
 
  // Refreshes are serialized: a call during a running refresh schedules exactly one more.
@@ -624,6 +666,10 @@ export function createMarketStore(){
  const adminSetVerified=(userId,verified)=>mutate('admin_set_verified',{p_user_id:userId,p_verified:!!verified});
 
  return {categories,cities,units,priceTypes,QUANTITY_MAX,DELIVERY_DAYS_MAX,todayDate,maxNeededBy,stateLabels,REQUEST_DAYS,EXTEND_DAYS,PASSWORD_MIN,UNAVAILABLE_MESSAGE:UNAVAILABLE,CHECK_EMAIL_MESSAGE:CHECK_EMAIL,normalizePhone,
+  engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}},
+  refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,
+  listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
+  listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
   ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
   requestPasswordReset,resetPassword,pendingResetEmail,

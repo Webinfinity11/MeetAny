@@ -124,11 +124,14 @@ try {
     await supplier.getByRole('button',{name:'შეთავაზების გაგზავნა',exact:true}).click();
     await supplier.getByRole('button',{name:'შეთავაზების რედაქტირება'}).waitFor({timeout:60000});
     await page.reload(); await loaded();
+    const engagementEnabled=(await (await page.request.get(base+'/api/db/capabilities')).json()).engagement;
+    if(engagementEnabled) await page.getByRole('button',{name:/^შეტყობინებები, \d+/}).waitFor({timeout:30000});
     assert.equal(await page.getByRole('button',{name:'რედაქტირება',exact:true}).count(),0);
     await page.getByRole('button',{name:'შეთავაზების არჩევა',exact:true}).click();
     await page.locator('#choose').getByRole('button',{name:'შეთავაზების არჩევა',exact:true}).click();
     await page.locator('#choose').waitFor({state:'hidden',timeout:60000});
     await capture('chosen',1280);
+    if(engagementEnabled){await supplier.reload();await loaded(supplier);await supplier.getByRole('button',{name:/^შეტყობინებები, \d+/}).waitFor({timeout:30000});}
     page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'წაშლა',exact:true}).click();
     await page.waitForURL('**/account/',{timeout:60000});
     await companyContext.close();
