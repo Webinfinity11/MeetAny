@@ -81,11 +81,16 @@
 @media(max-width:359.98px){.ma-proto-kpis .ma-stat{padding:var(--space-3)}.ma-proto-kpis .ma-stat__label{font-size:var(--fs-xs);line-height:var(--lh-xs)}}
 /* Round 2: home visual language. No independent colour/type/radius tokens. */
 .ma-proto :is(h3,h4,.ma-title){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
-.ma-proto .r2-band{display:flex;flex-wrap:wrap;position:relative;isolation:isolate;overflow:hidden;background:var(--blue-900);color:var(--white);padding:var(--space-10);border-radius:var(--radius-lg);gap:var(--space-6);margin-bottom:var(--space-8)}
-.r2-band::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--band-photo,url('/assets/photos/logistics-warehouse.jpg')) center/cover;opacity:.13}
-.ma-proto .r2-band :is(h1,.ma-lead,.ma-eyebrow){color:var(--white)}
-.r2-band .ma-page-head__text{flex-basis:100%;max-width:none}
-.r2-band .ma-eyebrow{display:block;margin-bottom:var(--space-3)}
+.ma-proto .r2-band{display:flex;flex-wrap:wrap;align-items:center;background:var(--bg);color:var(--text);padding:var(--space-5) 0;border-bottom:1px solid var(--border-subtle);gap:var(--space-4);margin-bottom:var(--space-6)}
+.ma-proto .r2-band>.ma-avatar{width:var(--space-16);height:var(--space-16);background:var(--action-subtle);color:var(--selected-text);font-size:var(--fs-h2)}
+.ma-proto .r2-band h1{color:var(--text);overflow-wrap:anywhere}
+.ma-proto .r2-band .ma-lead{color:var(--text-2);font-size:var(--fs-sm);line-height:var(--lh-sm)}
+.ma-proto .r2-band .ma-eyebrow{color:var(--text-3)}
+.r2-band .ma-page-head__text{flex:1;max-width:none}
+.r2-band .ma-page-head__actions{margin-left:auto}
+.ma-proto :is(.company-profile,.request-detail)>.r2-band{margin:0}
+.ma-proto .ma-page:has(>.ma-proto-kpis)>.r2-band{margin:0}
+.r2-band .ma-eyebrow{display:block;margin-bottom:var(--space-1)}
 .r2-search{width:100%;padding:var(--space-5);background:var(--white);border-radius:var(--radius-lg);color:var(--text)}
 .r2-search .ma-input{width:100%}
 .ma-proto .ma-avatar{background:var(--action);color:var(--white);border-radius:var(--radius-md);flex-shrink:0}
@@ -137,7 +142,9 @@
 .ma-proto .ma-sheet__header:has(#request-title) button{background:var(--blue-800)}
 .r2-sticky{display:none}
 @media(max-width:767px){
- .ma-proto .r2-band{padding:var(--space-6);gap:var(--space-4)}
+ .ma-proto .r2-band{padding:var(--space-3) 0;gap:var(--space-3)}
+ .ma-proto .r2-band>.ma-avatar{width:var(--space-12);height:var(--space-12);font-size:var(--fs-h3)}
+ .r2-band .ma-page-head__actions{flex-basis:100%;margin-left:0}
  .r2-search{padding:var(--space-3)}
  .ma-proto .ma-rcard--row,.ma-proto .r2-company-row{padding:var(--space-4)}
  .r2-company-row{flex-wrap:wrap}.r2-company-body{flex-basis:65%}.r2-company-end{width:100%;justify-items:start;border-top:1px solid var(--border-subtle);padding-top:var(--space-3)}
@@ -195,7 +202,7 @@
 /* Request detail: reading column and compact contact aside. */
 .request-detail{display:grid;gap:var(--space-6)}
 .request-detail>.ma-back{justify-self:start;margin:0}
-.ma-proto .request-detail>.r2-band{margin:0;padding:var(--space-6) var(--space-8);min-height:0}
+.ma-proto .request-detail>.r2-band{margin:0;min-height:0}
 .request-detail-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-8);align-items:start}
 .request-detail-main{display:grid;gap:var(--space-5);min-width:0}
 .request-description{display:grid;gap:var(--space-5)}
@@ -216,7 +223,6 @@
 .request-responses>.ma-panel__actions{display:flex;flex-wrap:wrap}
 @media(min-width:1024px){.request-detail-grid{grid-template-columns:minmax(0,1fr) calc(var(--space-20) * 4 + var(--space-6))}}
 @media(max-width:767px){
- .ma-proto .request-detail>.r2-band{padding:var(--space-5)}
  .request-detail-aside{padding:var(--space-5)}
 }
 

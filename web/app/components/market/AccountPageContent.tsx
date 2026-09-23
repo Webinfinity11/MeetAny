@@ -200,7 +200,7 @@ export function AccountPageContent() {
   if (!me) {
     return (
       <div className="ma-page">
-        <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="შენი ანგარიში" description="MeetAny აკავშირებს ბიზნესებს: ნებისმიერს შეუძლია დაწეროს მოთხოვნა, კომპანიები კი პასუხობენ შეთავაზებით." />
+        <PageBand eyebrow="MeetAny · ანგარიში" title="შენი ანგარიში" description="შედი ან შექმენი ანგარიში." />
         <AuthForms initialRole={searchParams.get("role") || ""} />
       </div>
     );
@@ -222,7 +222,7 @@ export function AccountPageContent() {
 
   return (
     <div className="ma-page">
-      <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="ჩემი ანგარიში" description="შენი მოთხოვნები, შეთავაზებები და პროფილი." />
+      <PageBand eyebrow="MeetAny · ანგარიში" title="ჩემი ანგარიში" description="შენი მოთხოვნები, შეთავაზებები და პროფილი." avatar={<CompanyAvatar name={name} size="lg" />} />
       <div className="ma-proto-account">
         <aside className="ma-panel">
           <CompanyAvatar name={name} size="xl" />

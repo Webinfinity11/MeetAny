@@ -56,6 +56,7 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 /* Page head: h1 + count on the left, actions on the right; wraps on small screens. */
 .ma-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--space-3) var(--space-6);margin-bottom:var(--space-6)}
 .ma-page-head__text{min-width:0;display:grid;gap:var(--space-1)}
+.ma-page-head__meta{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
 .ma-page-head__count{font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text-3);font-variant-numeric:tabular-nums}
 .ma-page-head__actions{display:flex;flex-wrap:wrap;gap:var(--space-2)}
 /* Breadcrumb: „მოთხოვნები › მჭირდება 1000 სკამი“. */

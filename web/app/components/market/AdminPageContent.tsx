@@ -10,6 +10,7 @@ import { Icon } from "../Icon";
 import { useAdminData } from "../../lib/use-admin-data";
 import { AdminAuditTable, type AdminAuditEvent } from "./AdminAuditTable";
 import { AdminContacts } from "./AdminContacts";
+import { PageBand } from "./PageBand";
 import { AdminFilters } from "./AdminFilters";
 import styles from "./admin.module.css";
 import { ModerationSheet } from "./ModerationSheet";
@@ -141,7 +142,7 @@ export function AdminPageContent() {
 
   return (
     <div className={`ma-page ${styles.workspace}`}>
-      <header className={styles.heading}><p>MeetAny · ადმინისტრირება</p><h1 className="ma-h1">პლატფორმის მართვა</h1></header>
+      <PageBand eyebrow="MeetAny · ადმინისტრირება" title="პლატფორმის მართვა" />
       <div className="ma-proto-kpis">
         {[
           ["users", "მომხმარებელი", stats.users],
