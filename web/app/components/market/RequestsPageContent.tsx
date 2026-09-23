@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
@@ -175,36 +176,16 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
   return (
     <div className="ma-page requests-catalog">
       <header className="requests-intro">
-        <div>
-          <span className="ma-eyebrow">იპოვე საქმე შენი კომპანიისთვის</span>
-          <h1 className="ma-h1">მოთხოვნები</h1>
-          <p>ნახე რა სჭირდებათ და შესთავაზე შენი პირობები.</p>
-        </div>
-        <div className="ma-field catalog-search">
-          <label className="ma-field__label" htmlFor="query">მოთხოვნის ძიება</label>
-          <div className="catalog-search__input">
-            <Icon name="search" />
-            <input className="ma-input" id="query" type="search" placeholder="მაგ. ავეჯი ან შეფუთვა" value={query} onChange={(e) => setQuery(e.target.value)} />
-          </div>
-        </div>
+        <h1 className="ma-h1">მოთხოვნები</h1>
+        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი ან შეფუთვა" value={query} onChange={setQuery} />
       </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar ma-panel" aria-label="ფილტრები">
           {filtersBody("desktop")}
         </aside>
         <section className="ma-stack" aria-label="მოთხოვნების სია">
-          <div className="ma-proto-toolbar">
-            <button
-              type="button"
-              className="ma-btn ma-btn--secondary ma-lg-down"
-              ref={filterButtonRef}
-              onClick={() => setSheetOpen(true)}
-            >
-              <Icon name="sliders-horizontal" />
-              ფილტრი ({filterCount})
-            </button>
-          </div>
           <ResultsBar
+            filterButton={<button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი ({filterCount})</button>}
             items={activeItems}
             onRemove={removeFilter}
             onClear={clearFilters}
@@ -213,9 +194,9 @@ export function RequestsPageContent({ autoOpenNew = false }: { autoOpenNew?: boo
               value: sort,
               onChange: setSort,
               options: [
-                { value: "newest", label: "ახლად დამატებული" },
+                { value: "newest", label: "უახლესი" },
                 { value: "expiring", label: "მალე იწურება" },
-                { value: "few", label: "ნაკლები შეთავაზება" },
+                { value: "few", label: "ნაკლები პასუხი" },
               ],
             }}
           />

@@ -161,16 +161,16 @@
 .r2-results-summary{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-3);min-width:0}
 .r2-results-summary p{margin:0}
 .r2-results-summary .ma-cluster:empty{display:none}
-.r2-results-bar>.ma-field{flex:0 0 auto;position:relative}
-.r2-results-bar>.ma-field>label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.r2-results-controls>.ma-field{flex:0 0 auto;position:relative}
+.r2-results-controls>.ma-field>label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .ma-proto-toolbar:has(>.ma-lg-down):not(:has(.ma-field)){display:none}
 @media(max-width:1023px){.ma-proto-toolbar:has(>.ma-lg-down):not(:has(.ma-field)){display:flex}}
-@media(max-width:767px){.r2-results-bar{align-items:stretch;flex-direction:column}.r2-results-bar>.ma-field,.r2-results-bar .ma-select{width:100%}}
+@media(max-width:767px){.r2-results-bar{align-items:stretch;flex-direction:column}.r2-results-controls>.ma-field,.r2-results-bar .ma-select{width:100%}}
 
 @media(min-width:1024px){.ma-proto .ma-proto-sidebar{padding:var(--space-4)}.ma-proto-sidebar :is([data-clear],[data-company-clear]){padding-inline:var(--space-2)}}
 
 /* Catalog: image and identity share a header; details use the whole row. */
-.ma-proto .company-listing{grid-template-columns:calc(var(--space-20) * 2) minmax(0,1fr);gap:var(--space-3) var(--space-5)}
+.ma-proto .company-listing{grid-template-columns:calc(var(--space-16) * 2) minmax(0,1fr);gap:var(--space-3) var(--space-5)}
 .ma-proto .listing-media{align-self:start;min-height:0;aspect-ratio:3 / 2;grid-area:1 / 1}
 .ma-proto .listing-content{display:contents}
 .ma-proto .listing-summary{grid-area:1 / 2;display:grid;align-content:center;gap:var(--space-3);min-width:0}
@@ -220,31 +220,38 @@
  .request-detail-aside{padding:var(--space-5)}
 }
 
-/* Task-led catalog introductions: work discovery and supplier discovery. */
-.requests-intro,.companies-intro{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-6);margin-bottom:var(--space-8)}
-.requests-intro{padding-bottom:var(--space-6);border-bottom:1px solid var(--border)}
-.requests-intro .ma-eyebrow,.companies-intro .ma-eyebrow{display:block;color:var(--action);margin-bottom:var(--space-2)}
-.requests-intro p{margin-top:var(--space-2);color:var(--text-3);font-size:var(--fs-sm)}
+/* Search leads the catalogs; the result structure distinguishes their tasks. */
+.requests-intro,.companies-intro{display:grid;gap:var(--space-5);padding-bottom:var(--space-6);margin-bottom:var(--space-6);border-bottom:1px solid var(--border)}
 .catalog-search{min-width:0;align-self:center}
 .catalog-search__input{position:relative}
 .catalog-search__input>.icon{position:absolute;left:var(--space-4);top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
-.catalog-search__input>.ma-input{width:100%;padding-left:var(--space-12)}
-.companies-intro{padding:var(--space-8);background:var(--blue-50);border-radius:var(--radius-lg);align-items:center}
-.companies-intro__identity>p{font-size:var(--fs-h2);line-height:var(--lh-h2);color:var(--text-2);margin-top:var(--space-3)}
-.companies-intro__search{min-width:0;display:grid;gap:var(--space-3)}
-.companies-intro__search>p{font-size:var(--fs-sm);color:var(--text-3)}
+.catalog-search__input>.ma-input{width:100%;padding-inline:var(--space-12)}
+.catalog-search__input>.ma-input::-webkit-search-cancel-button{appearance:none}
+.catalog-search__clear{position:absolute;right:0;top:0;bottom:0;width:var(--tap-min);min-height:var(--tap-min);display:grid;place-items:center;border:0;background:transparent;color:var(--text-3);border-radius:var(--control-radius);cursor:pointer}
+.catalog-search__clear:hover{color:var(--action);background:var(--bg-subtle)}
+.companies-intro .catalog-search{max-width:calc(var(--space-24) * 9)}
 .ma-proto .requests-catalog .ma-rcard--row{box-shadow:none;padding:var(--space-5);gap:var(--space-4)}
 .requests-catalog .ma-rcard--row>.ma-stack{gap:var(--space-3)}
 .requests-catalog .ma-proto-rowend{align-content:start}
+.ma-rcard--row>.ma-stack>.ma-rcard__kicker{flex:none;gap:var(--space-1);padding-top:0}
+.request-row-heading{display:flex;align-items:flex-start;gap:var(--space-3)}
+.request-row-heading h2{flex:1;min-width:0}
+.request-row-heading .ma-rcard__photo{flex:none}
+.r2-results-controls{display:flex;align-items:center;gap:var(--space-3);min-width:0}
+.ma-proto .listing-chips .r2-chips{margin-top:0}
 @media(min-width:768px){
  .requests-intro{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:var(--space-8)}
- .companies-intro{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-12)}
 }
 @media(max-width:767px){
- .companies-intro{padding:var(--space-5)}
- .requests-intro,.companies-intro{margin-bottom:var(--space-6)}
+ .r2-results-controls{order:-1;width:100%}
+ .r2-results-controls>.ma-field{flex:1;min-width:0}
+ .r2-results-controls>.ma-field .ma-select{font-size:var(--fs-sm);padding-inline:var(--space-2) var(--space-6)}
+ .r2-results-controls>.ma-btn{flex:none;padding-inline:var(--space-3)}
  .requests-catalog .ma-proto-rowend{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3)}
  .requests-catalog .ma-proto-rowend>.ma-btn{margin-left:auto}
+}
+@media(max-width:600px){
+ .ma-proto .listing-footer>.ma-btn,.ma-proto .listing-footer>.listing-action{width:100%;justify-content:center;margin-left:0}
 }
 
 /* Profile sections already have a parent gap; avoid adding two section margins as well. */

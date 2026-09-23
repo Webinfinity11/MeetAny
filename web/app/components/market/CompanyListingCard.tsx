@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { Icon } from "../Icon";
-import { CompanyAvatar } from "./CompanyAvatar";
 import { TagList } from "./TagList";
-import { statsLabel } from "./CompanyRow";
 import { CallButton } from "./CallButton";
 import { categories, categoryPhoto, cities } from "../../lib/categories";
 
@@ -30,25 +28,19 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
       </Link>
       <div className="listing-content">
         <div className="listing-summary">
-        <div className="listing-heading">
-          <CompanyAvatar name={c.name} />
-          <div>
-            <p className="listing-industry">{categories[c.industry] || c.industry}</p>
-            <h3>
-              <Link href={href}>{c.name}</Link>
-            </h3>
+          <div className="listing-heading">
+            <div>
+              <p className="listing-industry">{categories[c.industry] || c.industry}</p>
+              <h3>
+                <Link href={href}>{c.name}</Link>
+              </h3>
+            </div>
+            <span className="listing-city">
+              <Icon name="map-pin" />
+              {cities[c.city] || c.city}
+            </span>
           </div>
-          <span className="listing-city">
-            <Icon name="map-pin" />
-            {cities[c.city] || c.city}
-          </span>
-        </div>
-        {c.phone ? (
-          <div className="listing-badges">
-            <CallButton phone={c.phone} variant="secondary" />
           </div>
-        ) : null}
-        </div>
         <p className="listing-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>
         {c.offers.length ? (
           <div className="listing-chips">
@@ -63,20 +55,11 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
             </dt>
             <dd>{c.serviceCities.length ? c.serviceCities.map((id) => cities[id] || id).join(" · ") : "ქალაქები არ არის მითითებული"}</dd>
           </div>
-          <div>
-            <dt>
-              <Icon name="handshake" />
-              <span className="sr-only">თანამშრომლობა</span>
-            </dt>
-            <dd>{statsLabel(c.stats)}</dd>
-          </div>
         </dl>
         <div className="listing-footer">
-          <Link className="listing-offers" href={`${href}#offers`}>
-            {c.offers.length} შეთავაზება <Icon name="chevron-right" />
-          </Link>
+          {c.phone ? <CallButton phone={c.phone} variant="secondary" /> : null}
           <Link className="button listing-action" href={href} aria-label={`${c.name} — გაცნობა`}>
-            კომპანიის ნახვა <Icon name="arrow-up-right" />
+            პროფილის ნახვა <Icon name="arrow-right" />
           </Link>
         </div>
       </div>

@@ -1,14 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
-import { SectionHead } from "./SectionHead";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
-import { DirectionPhotoCard } from "./DirectionPhotoCard";
-import { PartnershipCTA } from "./PartnershipCTA";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
@@ -137,32 +135,17 @@ export function CompaniesPageContent() {
   return (
     <div className="ma-page companies-catalog">
       <header className="companies-intro">
-        <div className="companies-intro__identity">
-          <span className="ma-eyebrow">კომპანიების კატალოგი</span>
-          <h1 className="ma-h1">კომპანიები</h1>
-          <p>იპოვე, ვინ ამზადებს,<br />აწვდის ან გეხმარება.</p>
-        </div>
-        <div className="companies-intro__search">
-          <div className="ma-field catalog-search">
-            <label className="ma-field__label" htmlFor="company-query">რა პროდუქტს ან მომსახურებას ეძებ?</label>
-            <div className="catalog-search__input">
-              <Icon name="search" />
-              <input className="ma-input" id="company-query" type="search" placeholder="სახელი ან მომსახურება" value={query} onChange={(e) => setQuery(e.target.value)} />
-            </div>
-          </div>
-          <p>გაეცანი კომპანიებს და დაუკავშირდი პირდაპირ.</p>
-        </div>
+        <h1 className="ma-h1">კომპანიები</h1>
+        <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} />
       </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar ma-panel" aria-label="კომპანიების ფილტრები">
           {filtersBody("desktop")}
         </aside>
         <section className="ma-stack">
-          <button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}>
-            <Icon name="sliders-horizontal" />
-            ფილტრი ({filterCount})
-          </button>
-          <ResultsBar items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel} />
+          <ResultsBar items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel}
+            filterButton={<button type="button" className="ma-btn ma-btn--secondary ma-lg-down" ref={filterButtonRef} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი ({filterCount})</button>}
+          />
           <div className="ma-stack">
             {!available ? (
               <div className="ma-empty">
@@ -187,22 +170,6 @@ export function CompaniesPageContent() {
           </div>
         </section>
       </div>
-
-      <section className="r2-section">
-        <SectionHead eyebrow="აღმოაჩინე მეტი" title="მიმართულებები შენი ბიზნესისთვის" />
-        <div className="r2-photo-grid">
-          <DirectionPhotoCard title="ტექსტილი და სასტუმროები" imageSrc="/assets/photos/hotel-linen.jpg" href="/companies/?industry=textiles" />
-          <DirectionPhotoCard title="შეფუთვა და წარმოება" imageSrc="/assets/photos/cardboard-packaging.jpg" href="/companies/?industry=packaging" />
-          <DirectionPhotoCard title="საკვები და სასმელი" imageSrc="/assets/photos/fresh-produce.jpg" href="/companies/?industry=food" />
-        </div>
-      </section>
-
-      <PartnershipCTA
-        eyebrow="ადამიანები საქმიანი კავშირების მიღმა"
-        title="დიდი საქმე კარგი პარტნიორის პოვნით იწყება."
-        action={{ label: "მოთხოვნის დამატება", href: "/requests/new/" }}
-        imageSrc="/assets/photos/workshop-process-banner.jpg"
-      />
 
       <MobileFilterSheet
         id="filters"

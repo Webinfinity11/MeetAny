@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Icon } from "../Icon";
-import { CompanyAvatar } from "./CompanyAvatar";
 import { categories, units } from "../../lib/categories";
 import { neededByLabel } from "../../lib/format";
 
@@ -29,23 +28,15 @@ export function RequestRow({ r }: { r: RequestRowData }) {
   return (
     <article className={`ma-rcard ma-rcard--row${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       <div className="ma-stack">
-        <div className="ma-rcard__top">
-          {r.photo ? (
-            <img className="ma-rcard__photo" src={r.photo} alt="" width={48} height={48} />
-          ) : (
-            <CompanyAvatar name={r.ownerName} />
-          )}
-          <div className="ma-rcard__kicker">
-            <span className="ma-small ma-muted">{categories[r.category] || r.category}</span>
-            <span className="ma-rcard__time">{r.ownerName}</span>
-          </div>
-          {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
+        <div className="request-row-heading">
+          <h2 className="ma-rcard__title"><Link className="ma-proto-rowtitle" href={href}>{r.title}</Link></h2>
+          {r.photo ? <img className="ma-rcard__photo" src={r.photo} alt="" width={48} height={48} loading="lazy" /> : null}
         </div>
-        <h2 className="ma-rcard__title">
-          <Link className="ma-proto-rowtitle" href={href}>
-            {r.title}
-          </Link>
-        </h2>
+        <div className="ma-rcard__kicker">
+          <span className="ma-small ma-muted">{categories[r.category] || r.category}</span>
+          <span className="ma-rcard__time">{r.ownerName}</span>
+        </div>
+        {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
         <div className="ma-facts">
           <span className="ma-fact">
             <Icon name="map-pin" />

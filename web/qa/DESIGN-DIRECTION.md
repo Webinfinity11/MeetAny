@@ -23,3 +23,12 @@ Sources:
 - [Upwork: Job Search](https://support.upwork.com/hc/en-us/articles/211063078-How-to-search-for-jobs-on-Upwork) — keyword search and filters for finding relevant work. A workflow reference, not a layout to copy.
 
 Implemented during this review: shorter category labels with full accessible names, separate counts, compact company photos, removal of catalog verification badges, full-width company descriptions, and a request detail reading column with a contact aside and company response in the reading column. Distinct catalog introductions are implemented: compact white work-search header for requests, a light-blue supplier directory introduction for companies. Redundant section headings and missing-date placeholder text were removed. Search IDs, URL state, filtering and keyboard behavior are preserved.
+
+
+## Simplification after owner feedback, 2026-09-23
+
+Reviewed [wlw](https://www.wlw.de/en), [Europages](https://www.europages.co.uk/) and [iTrade](https://itrade.ge/ka) public entry points. The owner wants less interface friction, not a literal marketing statement of the international strategy. Our design interpretation is to prioritize search, results and direct contact.
+
+This supersedes the earlier light-blue catalog introduction: both catalog headers now use concise titles and search. Companies remain a directory with capability chips, small photos and call/profile actions. Requests prioritize the need itself, followed by category, author and logistics. Removed category-photo promotions and the large CTA from the company results page; all categories remain accessible through filters. Company activity statistics remain in profiles. Mobile filter/sort controls share one row. Search has an explicit clear control that restores input focus. No country/language filters are presented before the data and behavior exist.
+
+These are implementation and browser checks, not a claim of measured usability improvement with users.

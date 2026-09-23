@@ -38,12 +38,14 @@ export function ResultsBar({
   onRemove,
   onClear,
   countLabel,
+  filterButton,
   sort,
 }: {
   items: ActiveFilterItem[];
   onRemove: (key: string) => void;
   onClear: () => void;
   countLabel: string;
+  filterButton?: React.ReactNode;
   sort?: { value: string; options: { value: string; label: string }[]; onChange: (v: string) => void };
 }) {
   return (
@@ -54,25 +56,28 @@ export function ResultsBar({
           {countLabel}
         </p>
       </div>
-      {sort ? (
-        <div className="ma-field">
-          <label className="ma-field__label" htmlFor="sort">
-            დალაგება
-          </label>
-          <select
-            className="ma-select"
-            id="sort"
-            value={sort.value}
-            onChange={(e) => sort.onChange(e.target.value)}
-          >
-            {sort.options.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+      <div className="r2-results-controls">
+        {filterButton}
+        {sort ? (
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="sort">
+              დალაგება
+            </label>
+            <select
+              className="ma-select"
+              id="sort"
+              value={sort.value}
+              onChange={(e) => sort.onChange(e.target.value)}
+            >
+              {sort.options.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
         </div>
-      ) : null}
     </div>
   );
 }
