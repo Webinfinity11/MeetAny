@@ -132,6 +132,8 @@ export function createMarketStore(){
  /* ---------- cache ---------- */
  let cache={me:null,requests:[],offers:[],counts:{},profiles:{},contacts:{},users:null,stats:null,companies:[],companyStats:{}};
  let isReady=false,loadFailed=!configured;
+ let dataRevision=0;
+ const requestLoads=new Map();
  const listeners=new Set();
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
@@ -160,12 +162,13 @@ export function createMarketStore(){
   for(const s of statRows)next.companyStats[s.company_id]={sent:Number(s.offers_sent)||0,chosen:Number(s.offers_chosen)||0};
   const me=next.me,isAdmin=me&&me.role==='admin'&&!me.blocked;
   const ids=next.requests.map(r=>r.id);
-  const [countRows,offerRows,userRows,statsRow]=await Promise.all([
+  const [countRows,offerRows,statsRow]=await Promise.all([
    Promise.all(chunks(ids,500).map(part=>db('/rpc/offer_counts',{method:'POST',body:{ids:part}}).then(rows))).then(parts=>parts.flat()),
    me?db('/offers?select=*&order=created_at.asc').then(rows):[],
-   isAdmin?db('/rpc/admin_list_users',{method:'POST',body:{}}).then(rows):null,
    isAdmin?db('/rpc/admin_stats',{method:'POST',body:{}}).then(one):null
   ]);
+  // New admin APIs page users independently; retain legacy compatibility until migration.
+  const userRows=isAdmin&&!(Number(statsRow?.adminApiVersion)>=1)?await db('/rpc/admin_list_users',{method:'POST',body:{}}).then(rows):null;
   for(const row of countRows)next.counts[row.request_id]=Number(row.offers)||0;
   next.offers=offerRows.map(mapOffer);
   if(userRows){next.users=userRows.map(mapUser);for(const u of next.users)next.profiles[u.id]=u;}
@@ -183,6 +186,7 @@ export function createMarketStore(){
    for(const [id,c] of list)if(c)next.contacts[id]={name:c.name,company:c.company,phone:c.phone,email:c.email};
   }
   cache=next;
+  dataRevision++;
  }
 
  // Refreshes are serialized: a call during a running refresh schedules exactly one more.
@@ -401,6 +405,37 @@ export function createMarketStore(){
  }
  function allUsers(){return [...(cache.users||Object.values(cache.profiles))].sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0));}
 
+ // Detail routes load their own record: admin pagination can open records beyond the catalog cap.
+ async function ensureRequest(id){
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id||'')))return null;
+  const actor=currentUser()?.id||null,revision=dataRevision,key=[id,actor,revision].join(':');
+  if(requestLoads.has(key))return requestLoads.get(key);
+  const work=(async()=>{
+   const row=one(await db('/requests?select=*&id=eq.'+encodeURIComponent(id)+'&limit=1'));
+   if(!row){if(actor===(currentUser()?.id||null)&&revision===dataRevision){cache.requests=cache.requests.filter(r=>r.id!==id);emit();}return null;}
+   const request=mapRequest(row);
+   const [offerRows,countRows]=await Promise.all([
+    actor?db('/offers?select=*&request_id=eq.'+encodeURIComponent(id)+'&order=created_at.asc').then(rows):[],
+    rpc('offer_counts',{ids:[id]}).then(rows)
+   ]);
+   const offers=offerRows.map(mapOffer);
+   const profileIds=[...new Set([request.ownerId,...offers.map(o=>o.companyUserId)])];
+   const profiles=(await Promise.all(chunks(profileIds,100).map(part=>db('/profiles?select='+PUBLIC_PROFILE+'&id=in.'+inList(part)).then(rows)))).flat().map(mapUser);
+   const involved=actor&&request.chosenOfferId&&(request.ownerId===actor||offers.some(o=>o.id===request.chosenOfferId&&o.companyUserId===actor));
+   const contact=involved?one(await rpc('contact_for_request',{p_request_id:id})):null;
+   if(actor!==(currentUser()?.id||null)||revision!==dataRevision)return null;
+   cache.requests=[...cache.requests.filter(r=>r.id!==id),request];
+   cache.offers=[...cache.offers.filter(o=>o.requestId!==id),...offers];
+   cache.counts[id]=Number(countRows[0]?.offers)||0;
+   for(const profile of profiles)if(profile&&profile.id!==actor)cache.profiles[profile.id]=profile;
+   if(contact)cache.contacts[id]={name:contact.name,company:contact.company,phone:contact.phone,email:contact.email};
+   else delete cache.contacts[id];
+   emit();return request;
+  })();
+  requestLoads.set(key,work);
+  try{return await work;}finally{requestLoads.delete(key);}
+ }
+
  /* ---------- request writes ---------- */
  function requireUser(){const user=currentUser();if(!user)fail(MSG.MA001,'MA001');if(user.blocked)fail(MSG.MA002,'MA002');return user;}
  // Calendar dates as 'YYYY-MM-DD' in Georgian time (the server compares with the Asia/Tbilisi date).
@@ -579,18 +614,22 @@ export function createMarketStore(){
  function companyStats(id){return cache.companyStats[id]||{sent:0,chosen:0};}
 
  /* ---------- admin ---------- */
+ const adminSearchRequests=args=>rpc('admin_search_requests',args);
+ const adminSearchUsers=args=>rpc('admin_search_users',args);
+ const adminListAudit=args=>rpc('admin_list_audit',args);
+
  const adminSetHidden=(requestId,hidden,reason)=>mutate('admin_set_hidden',{p_request_id:requestId,p_hidden:!!hidden,p_reason:hidden&&reason?String(reason).trim():null},mapRequest);
  const adminDeleteRequest=requestId=>mutate('admin_delete_request',{p_request_id:requestId});
  const adminSetBlocked=(userId,blocked,reason)=>mutate('admin_set_blocked',{p_user_id:userId,p_blocked:!!blocked,p_reason:blocked&&reason?String(reason).trim():null});
  const adminSetVerified=(userId,verified)=>mutate('admin_set_verified',{p_user_id:userId,p_verified:!!verified});
 
  return {categories,cities,units,priceTypes,QUANTITY_MAX,DELIVERY_DAYS_MAX,todayDate,maxNeededBy,stateLabels,REQUEST_DAYS,EXTEND_DAYS,PASSWORD_MIN,UNAVAILABLE_MESSAGE:UNAVAILABLE,CHECK_EMAIL_MESSAGE:CHECK_EMAIL,normalizePhone,
-  ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,
+  ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
   requestPasswordReset,resetPassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,listCompanies,getCompany,companyStats,
-  adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminSearchRequests,adminSearchUsers,adminListAudit,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }

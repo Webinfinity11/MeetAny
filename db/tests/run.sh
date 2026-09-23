@@ -3,7 +3,8 @@
 #   db/tests/run.sh
 # Env: PGHOST (default /tmp), PGPORT (default 5432), PGUSER (default current user, must be superuser).
 # Loads: stub_neon.sql -> schema.sql -> schema.sql again (re-runnability) -> rls_tests.sql
-#        -> security_tests.sql -> profile_tests.sql -> fields_tests.sql (same database, reuse the rls_tests harness)
+#        -> security_tests.sql -> profile_tests.sql -> fields_tests.sql -> admin_tests.sql
+#        (same database, reuse the rls_tests harness)
 # Exit code is non-zero on any failure. The database is always dropped.
 set -euo pipefail
 
@@ -35,4 +36,5 @@ echo "== schema.sql loaded (2nd run, re-runnable)"
 "${PSQL[@]}" -f "$HERE/security_tests.sql"
 "${PSQL[@]}" -f "$HERE/profile_tests.sql"
 "${PSQL[@]}" -f "$HERE/fields_tests.sql"
+"${PSQL[@]}" -f "$HERE/admin_tests.sql"
 echo "== tests finished"

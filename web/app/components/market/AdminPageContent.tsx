@@ -3,12 +3,14 @@
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
-import { PageBand } from "./PageBand";
-import { SectionHead } from "./SectionHead";
+import { useAdminData } from "../../lib/use-admin-data";
+import { AdminAuditTable, type AdminAuditEvent } from "./AdminAuditTable";
+import { AdminFilters } from "./AdminFilters";
+import styles from "./admin.module.css";
 import { ModerationSheet } from "./ModerationSheet";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
@@ -19,12 +21,26 @@ type PendingAction = { kind: "requests" | "users"; action: string; id: string; l
 export function AdminPageContent() {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
-  const tab = searchParams.get("tab") === "users" ? "users" : "requests";
+  const router = useRouter();
+  const query = searchParams.get("q") || "";
+  const status = searchParams.get("status") || "";
+  const role = searchParams.get("role") || "";
+  function setFilter(key: string, value: string) {
+    const next = new URLSearchParams(searchParams.toString());
+    if (value) next.set(key, value); else next.delete(key);
+    if (key !== "cursor") next.delete("cursor");
+    router.replace(`/admin/?${next}`, { scroll: false });
+  }
+  const selectedTab = searchParams.get("tab");
+  const tab = selectedTab === "users" || selectedTab === "audit" ? selectedTab : "requests";
+  const cursor = searchParams.get("cursor") || "";
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const me = ready && available ? store?.currentUser() : null;
+
+  const admin = useAdminData({ store, enabled: !!me && me.role === "admin", tab, query, status, role, cursor });
 
   const data = useMemo(() => {
     if (!store || !me || me.role !== "admin") return null;
@@ -36,6 +52,10 @@ export function AdminPageContent() {
       createdAt: string;
       ownerId: string;
       hidden: boolean;
+      state?: string;
+      ownerName?: string;
+      ownerCompany?: string;
+      offerCount?: number;
     }[];
     const users = store.allUsers() as {
       id: string;
@@ -81,22 +101,35 @@ export function AdminPageContent() {
 
   const { stats, requests, users } = data!;
 
-  async function confirm() {
+  const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const matches = (value: string) => terms.every(term => value.toLocaleLowerCase().includes(term));
+  const cachedRequests = requests.filter(r => {
+    const owner = store?.userById(r.ownerId);
+    return (!status || store?.requestState(r) === status) && matches(`${r.title} ${r.id} ${owner?.company || ""} ${owner?.name || ""}`);
+  });
+  const cachedUsers = users.filter(u => (!role || u.role === role) && (!status || (status === "blocked" ? u.blocked : status === "verified" ? u.role === "company" && u.verified && !u.blocked : !u.blocked)) && matches(`${u.company || ""} ${u.name} ${u.email} ${u.phone} ${u.id}`));
+
+  const filteredRequests = admin.mode === "legacy" ? cachedRequests : (tab === "requests" ? admin.page?.items || [] : []) as unknown as typeof requests;
+  const filteredUsers = admin.mode === "legacy" ? cachedUsers : (tab === "users" ? admin.page?.items || [] : []) as unknown as typeof users;
+  const canShowRecords = admin.mode === "legacy" || admin.mode === "ready";
+
+  async function confirm(reason: string) {
     if (!pendingAction || !store) return;
     setBusy(true);
     setError(null);
     try {
       if (pendingAction.kind === "requests") {
-        if (pendingAction.action === "hide") await store.adminSetHidden(pendingAction.id, true, "ადმინის მიერ დამალული");
+        if (pendingAction.action === "hide") await store.adminSetHidden(pendingAction.id, true, reason);
         else if (pendingAction.action === "unhide") await store.adminSetHidden(pendingAction.id, false);
         else if (pendingAction.action === "delete") await store.adminDeleteRequest(pendingAction.id);
       } else {
         if (pendingAction.action === "verify") await store.adminSetVerified(pendingAction.id, true);
         else if (pendingAction.action === "unverify") await store.adminSetVerified(pendingAction.id, false);
-        else if (pendingAction.action === "block") await store.adminSetBlocked(pendingAction.id, true, "ადმინის მიერ დაბლოკილი");
+        else if (pendingAction.action === "block") await store.adminSetBlocked(pendingAction.id, true, reason);
         else if (pendingAction.action === "unblock") await store.adminSetBlocked(pendingAction.id, false);
       }
       setPendingAction(null);
+      admin.reload();
       toast("ცვლილება შენახულია.");
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
@@ -106,9 +139,8 @@ export function AdminPageContent() {
   }
 
   return (
-    <div className="ma-page">
-      <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title="ადმინ-პანელი" description="მოთხოვნების მოდერაცია და მომხმარებლების მართვა." />
-      <SectionHead eyebrow="ადმინისტრირება" title="პლატფორმის მიმოხილვა" />
+    <div className={`ma-page ${styles.workspace}`}>
+      <header className={styles.heading}><p>MeetAny · ადმინისტრირება</p><h1 className="ma-h1">პლატფორმის მართვა</h1></header>
       <div className="ma-proto-kpis">
         {[
           ["users", "მომხმარებელი", stats.users],
@@ -116,7 +148,7 @@ export function AdminPageContent() {
           ["verified", "დადასტურებული", stats.verified],
           ["open", "ღია მოთხოვნა", stats.open],
           ["offers", "შეთავაზება", stats.offers],
-          ["chosen", "არჩეული გარიგება", stats.chosen],
+          ["chosen", "არჩეული შეთავაზება", stats.chosen],
         ].map(([key, label, value]) => (
           <div className="ma-stat" key={key as string}>
             <strong className="ma-stat__value">{value as number}</strong>
@@ -131,9 +163,19 @@ export function AdminPageContent() {
         <Link className="ma-tab" href="/admin/?tab=users" aria-current={tab === "users" ? "page" : undefined}>
           მომხმარებლები
         </Link>
+        <Link className="ma-tab" href="/admin/?tab=audit" aria-current={tab === "audit" ? "page" : undefined}>მოქმედებების ჟურნალი</Link>
       </nav>
 
-      {tab === "requests" ? (
+      {tab !== "audit" ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
+      {admin.mode === "legacy" && tab !== "audit" ? <>
+        <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი.</p>
+        <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
+      </> : null}
+      {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">ამ გვერდზე {admin.page.items.length} ჩანაწერია · ფილტრებით სულ {admin.page.filteredTotal}.</p> : null}
+      {admin.mode === "loading" ? <p role="status" aria-live="polite">ჩანაწერები იტვირთება…</p> : null}
+      {admin.mode === "error" ? <div role="alert"><p>{admin.error || "ჩანაწერების ჩატვირთვა ვერ მოხერხდა."}</p><button type="button" className="ma-btn ma-btn--secondary" onClick={admin.reload}>ხელახლა ცდა</button>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</button> : null}</div> : null}
+      {tab === "audit" ? admin.mode === "legacy" ? <p className={styles.note}>მოქმედებების ჟურნალისთვის საჭიროა მონაცემთა ბაზის განახლება. წარსული მოქმედებების ისტორია ამ ვერსიაში არ ინახება.</p> : admin.mode === "ready" ? <AdminAuditTable events={(admin.page?.items || []) as unknown as AdminAuditEvent[]} /> : null : null}
+      {canShowRecords && tab === "requests" ? (
         <div className="ma-table-wrap">
           <table className="ma-table">
             <caption className="ma-sr-only">მოთხოვნა — მოდერაცია</caption>
@@ -147,10 +189,11 @@ export function AdminPageContent() {
               </tr>
             </thead>
             <tbody>
-              {requests.map((r) => {
+              {filteredRequests.length === 0 ? <tr><td colSpan={5}>ამ ფილტრებით მოთხოვნა ვერ მოიძებნა.</td></tr> : null}
+              {filteredRequests.map((r) => {
                 const owner = store?.userById(r.ownerId);
-                const state = store?.requestState(r);
-                const count = store?.offerCount(r.id) ?? 0;
+                const state = admin.mode === "ready" ? r.state : store?.requestState(r);
+                const count = admin.mode === "ready" ? r.offerCount ?? 0 : store?.offerCount(r.id) ?? 0;
                 return (
                   <tr key={r.id}>
                     <td data-label="მოთხოვნა">
@@ -162,8 +205,8 @@ export function AdminPageContent() {
                       </small>
                     </td>
                     <td data-label="ავტორი">
-                      {owner?.company || owner?.name || "—"}
-                      <small>{owner?.phone || ""}</small>
+                      {admin.mode === "ready" ? r.ownerCompany || r.ownerName || "—" : owner?.company || owner?.name || "—"}
+                      {admin.mode === "legacy" ? <small>{owner?.phone || ""}</small> : null}
                     </td>
                     <td data-label="სტატუსი">
                       <span
@@ -199,7 +242,7 @@ export function AdminPageContent() {
             </tbody>
           </table>
         </div>
-      ) : (
+      ) : canShowRecords && tab === "users" ? (
         <div className="ma-table-wrap">
           <table className="ma-table">
             <caption className="ma-sr-only">მომხმარებელი — მოდერაცია</caption>
@@ -213,7 +256,8 @@ export function AdminPageContent() {
               </tr>
             </thead>
             <tbody>
-              {users.map((u) => (
+              {filteredUsers.length === 0 ? <tr><td colSpan={5}>ამ ფილტრებით მომხმარებელი ვერ მოიძებნა.</td></tr> : null}
+              {filteredUsers.map((u) => (
                 <tr key={u.id}>
                   <td data-label="მომხმარებელი">
                     {u.company || u.name}
@@ -279,7 +323,11 @@ export function AdminPageContent() {
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
+      {admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">
+        {cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</button> : null}
+        {admin.page.hasMore && admin.page.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი<Icon name="arrow-right" /></button> : null}
+      </nav> : null}
 
       <ModerationSheet
         open={!!pendingAction}
@@ -289,6 +337,7 @@ export function AdminPageContent() {
             : ""
         }
         subject={pendingAction?.label || ""}
+        action={pendingAction?.action || ""}
         pending={busy}
         error={error}
         onConfirm={confirm}

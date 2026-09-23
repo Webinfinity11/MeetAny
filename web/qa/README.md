@@ -61,3 +61,14 @@
 ## მომრგვალებული აიქონები და ნომრის გახსნა — 2026-09-23
 
 `qa/contact.mjs` ამოწმებს, რომ კომპანიების სიაში, პროფილსა და მოთხოვნაზე ნომერი და tel ბმული დაჭერამდე არ ჩანს; ღილაკი კლავიატურითაც ხსნის ნომერს და ფოკუსი ბმულზე გადადის. მოწმდება ცალკე reveal/call მოვლენები, წყარო/ობიექტის იდენტიფიკატორი და ნომრის არყოფნა მოვლენის payload-ში. გადატვირთვა თავიდან მალავს ნომერს. კლიენტის მოვლენა არ ინახება და სრულ ზარს არ ნიშნავს. მომრგვალებული, გამარტივებული დარგობრივი აიქონები ჩანს `rounded-icons-{desktop,mobile}.png`-ში.
+
+## Administration API v1 and detail routes — 2026-09-23
+
+- `QA_BROWSER_PATH=… node web/qa/admin-v1.mjs` from `site`: demo-admin sign-in with local ignored ledger, mocked v1 RPCs (no data mutations). Checks server-only rows, next/first page, query cursor reset, role/verification filters, audit, error/retry and 320px overflow.
+- `QA_BROWSER_PATH=… node web/qa/admin-legacy.mjs`: existing-schema admin filters, URL reload, six metrics, required moderation reason and pending Escape/cancel protection; mutation is intercepted. Intended for the pre-v1 test database.
+- `QA_BROWSER_PATH=… node web/qa/request-detail.mjs`: omits a real request from initial catalog response, verifies ID-based detail load; failure/retry and invalid-ID state. Read-only.
+- `bash db/tests/run.sh`: 701 assertions, including 1,105 records per entity and equal-timestamp cursor traversal. Uses throwaway local databases, not remote data.
+
+Build passes; lint has zero errors and 16 existing warnings. Remote admin schema migration remains pending; see `db/ADMIN-MIGRATION.md`. Mock UI tests and local SQL tests do not substitute for remote post-migration integration checks.
+
+Post-change protected demo workflow also passed: create with photo, edit, close/reopen, send/edit/withdraw/resend offer, choose, delete own QA request, admin view; zero console errors. Own QA data was removed.

@@ -1,0 +1,20 @@
+.workspace { display: grid; gap: var(--space-5); }
+.heading { display: grid; gap: var(--space-2); }
+.heading p { margin: 0; color: var(--text-3); font-size: var(--fs-sm); }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3); padding-top: var(--space-2); }
+.filters > div { display: grid; gap: var(--space-2); flex: 1; min-width: 0; font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.filters .search { flex: 2; }
+.filters input, .filters select { width: 100%; min-width: 0; }
+.count { margin: 0; font-size: var(--fs-sm); color: var(--text-2); }
+.note { margin: 0; color: var(--text-3); font-size: var(--fs-xs); }
+.reason { display: grid; gap: var(--space-2); margin-top: var(--space-4); font-size: var(--fs-sm); }
+.reason textarea { width: 100%; min-height: var(--space-24); resize: vertical; }
+.consequence { color: var(--text-2); margin-top: var(--space-3); }
+@media (max-width: 767px) {
+  .filters .search { flex-basis: 100%; }
+  .filters > div { flex-basis: calc(50% - var(--space-3)); }
+}
+
+.moderationForm { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+
+.pagination { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); }

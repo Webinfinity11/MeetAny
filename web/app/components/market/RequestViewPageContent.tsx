@@ -1,5 +1,6 @@
 "use client";
 
+import { useRequestDetail } from "../../lib/use-request-detail";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useEffect, useMemo, useState } from "react";
@@ -90,6 +91,7 @@ export function RequestViewPageContent() {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
+  const detail = useRequestDetail(store, ready, available, id);
   const router = useRouter();
   const [editRequest, setEditRequest] = useState(false);
   const [editOffer, setEditOffer] = useState(false);
@@ -104,7 +106,7 @@ export function RequestViewPageContent() {
   const [seen, setSeen] = useState<{id: string; at: string | null} | null>(null);
   const meId = store?.currentUser()?.id;
   useEffect(() => {
-    if (!ready || store?.getRequest(id)?.ownerId !== meId || !meId) return;
+    if (!ready || detail.loading || seen?.id === id || store?.getRequest(id)?.ownerId !== meId || !meId) return;
     let active = true;
     Promise.resolve().then(() => {
       if (!active) return;
@@ -117,7 +119,7 @@ export function RequestViewPageContent() {
     return () => {active = false;};
     // Only capture the previous visit once, not after each offer refresh.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, meId, ready]);
+  }, [id, meId, ready, detail.loading]);
 
   const data = useMemo(() => {
     if (!store || !ready || !available || !id) return null;
@@ -152,9 +154,9 @@ export function RequestViewPageContent() {
 
   const ownerPhone = usePublicPhone(data?.r.ownerId);
 
-  if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
+  if ((ready && !available) || detail.error) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready) {
+  if (!ready || detail.loading) {
     return (
       <div className="ma-page">
         <div className="ma-stack" aria-busy="true">
