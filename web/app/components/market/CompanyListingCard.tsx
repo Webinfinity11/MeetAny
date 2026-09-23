@@ -1,6 +1,5 @@
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
-import { Icon } from "../Icon";
 import { TagList } from "./TagList";
 import { CallButton } from "./CallButton";
 import { categories, categoryPhoto, cities } from "../../lib/categories";
@@ -31,7 +30,6 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
         <div className="listing-summary">
           <div className="listing-heading">
             <div>
-              <p className="listing-industry">{categories[c.industry] || c.industry}</p>
               <h3>
                 <Link className="card-main-link" href={href}>{c.name}</Link>
               </h3>
@@ -39,28 +37,17 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
             <div className="listing-utilities"><SaveCompanyButton id={c.id} /></div>
           </div>
           </div>
-        <p className="listing-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>
+        <p className="listing-industry listing-location" title={[categories[c.industry] || c.industry, ...(c.serviceCities.length ? c.serviceCities : [c.city]).map(id => cities[id] || id)].join(" · ")}>{categories[c.industry] || c.industry} · {(c.serviceCities.length ? c.serviceCities : [c.city]).map(id => cities[id] || id).join(" · ")}</p>
         {c.offers.length ? (
           <div className="listing-chips">
-            <p className="supplier-label">პროდუქტები და მომსახურება</p>
             <TagList items={c.offers} limit={3} />
-            {c.offers.length > 3 ? <Link className="supplier-more" href={`${href}#offers`}>კიდევ {c.offers.length - 3} მომსახურება <Icon name="arrow-right" /></Link> : null}
           </div>
         ) : null}
         <div className="supplier-contact">
-        <dl className="listing-facts">
-          <div>
-            <dt>
-              <Icon name="globe" />
-              <span>მომსახურების არეალი</span>
-            </dt>
-            <dd>{c.serviceCities.length ? c.serviceCities.map((id) => cities[id] || id).join(" · ") : "ქალაქები არ არის მითითებული"}</dd>
-          </div>
-        </dl>
         <div className="listing-footer">
           {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
           <Link className="ma-btn ma-btn--primary listing-profile-link" href={href} aria-label={`${c.name} — გაცნობა`}>
-            პროფილის ნახვა <Icon name="arrow-right" />
+            პროფილი
           </Link>
         </div>
         </div>

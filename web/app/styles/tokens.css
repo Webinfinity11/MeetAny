@@ -23,6 +23,7 @@
   --theme-font:FiraGO;          /* one family for everything (Georgian + Latin) */
   --theme-radius:10px;          /* xs/sm = ×0.6, md = ×1, lg/xl = ×1.6 (6/10/16 ბაზა 10-ზე) */
   --theme-caps-headings:"case" 1; /* page and section headings in mtavruli; set to normal for mkhedruli */
+  --catalog-title-case:normal; /* P9 proposal: use var(--ff-heading) to restore mtavruli card titles */
   --theme-caps-buttons:"case" 1;  /* buttons in mtavruli; set to normal for mkhedruli */
   --theme-caps-tracking:.03em;  /* letter-spacing for mtavruli text (0 when caps are off) */
   --theme-icon-stroke:1.75;     /* Lucide outline weight for every icon */

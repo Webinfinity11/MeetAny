@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
-import { type Facet } from "./FacetList";
+import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
@@ -158,12 +158,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
 
   const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="ma-proto-filters">
-      <div className="ma-field">
-        <label className="ma-field__label" htmlFor="request-category">კატეგორია</label>
-        <select className="ma-select" id="request-category" value={category} onChange={e => setCategory(e.target.value)}>
-          <option value="">ყველა კატეგორია</option>
-          {categoryFacets.map(f => <option key={f.id} value={f.id}>{f.label}{ready ? ` (${f.count})` : ""}</option>)}
-        </select>
+      <div>
+        <h2 className="ma-title">კატეგორია</h2>
+        <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={ready ? list({ category: "" }).length : 0} activeId={category} onSelect={setCategory} />
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor={`city-${placement}`}>
@@ -196,18 +193,18 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   );
 
   return (
-    <div className="ma-page requests-catalog">
-      <header className="requests-intro">
+    <div className="ma-page requests-catalog catalog-page">
+      <header className="catalog-header">
         <h1 className="ma-h1">მოთხოვნები</h1>
         {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
-      </header>
-      <div className="request-search-toolbar">
+
         <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
-        <button type="button" className="ma-btn ma-btn--secondary" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}>
-          <Icon name="sliders-horizontal" />ფილტრები{filterCount > 0 ? ` (${filterCount})` : ""}
+        <button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}>
+          <Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` (${filterCount})` : ""}
         </button>
-      </div>
-      <div className="request-catalog-results">
+      </header>
+      <div className="ma-proto-columns">
+        <aside className="ma-proto-sidebar filter-rail" aria-label="მოთხოვნების ფილტრები">{filtersBody("desktop")}</aside>
         <section className="ma-stack" aria-label="მოთხოვნების სია">
           <ResultsBar
             items={activeItems}
