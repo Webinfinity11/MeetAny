@@ -103,6 +103,8 @@
   --radius-xs:calc(var(--theme-radius) * .6); --radius-sm:calc(var(--theme-radius) * .6); --radius-md:var(--theme-radius);
   --radius-lg:calc(var(--theme-radius) * 1.6); --radius-xl:calc(var(--theme-radius) * 1.6); --radius-pill:999px;
 
+  --radius-control:var(--radius-sm); /* compact, consistent action silhouette */
+
   /* ---------- elevation (navy-tinted, low) ---------- */
   --shadow-0:none;
   --shadow-1:0 1px 2px color-mix(in srgb,var(--theme-ink) 6%,transparent),0 1px 1px color-mix(in srgb,var(--theme-ink) 4%,transparent);  /* cards at rest (+1px border) */

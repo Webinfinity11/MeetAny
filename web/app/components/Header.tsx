@@ -41,7 +41,7 @@ export function Header() {
   }
   const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><img className="ma-header__symbol" src="/assets/meetany-symbol-transparent.png" alt="" width={1496} height={1051}/><img className="ma-header__wordmark" src="/assets/meetany-wordmark.png" alt="MeetAny" width={683} height={171}/></Link>;
   const nav = (cls: string) => [["requests", "მოთხოვნები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/#how"]].map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(`/${id}/`) ? "page" : undefined}>{title}</Link>);
-  const add = <Link className="ma-btn ma-btn--primary ma-header__cta" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span></Link>;
+  const add = <Link className="ma-btn ma-btn--primary ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Link>;
   return <>
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>

@@ -58,7 +58,7 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
         </dl>
         <div className="listing-footer">
           {c.phone ? <CallButton phone={c.phone} variant="secondary" /> : null}
-          <Link className="button listing-action" href={href} aria-label={`${c.name} — გაცნობა`}>
+          <Link className="ma-btn ma-btn--primary listing-profile-link" href={href} aria-label={`${c.name} — გაცნობა`}>
             პროფილის ნახვა <Icon name="arrow-right" />
           </Link>
         </div>

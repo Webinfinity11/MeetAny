@@ -41,4 +41,13 @@ Changed: compact company identity with a visible call action; a separate service
 
 Critical review criteria going forward: Can a visitor identify the page purpose and next action? Does the first screen prioritize useful information? Are labels understandable without inference? Are secondary details taking attention from decisions? Does real Georgian text fit at intermediate widths? Do empty, long-content and authenticated states remain usable?
 
-Remaining design limitations: catalog company images still represent a category rather than a specific business; mobile header creation is an icon-only control (with an accessible label), whose discoverability should be checked with users. These are distinct from verified layout failures. Browser screenshots and successful builds do not establish usability with real businesses; that needs task-based observation (find a supplier, call, publish a need, send an offer).
+Remaining design limitations: catalog company images still represent a category rather than a specific business. The mobile creation control now includes a visible label (see the detail pass below). These are distinct from verified layout failures. Browser screenshots and successful builds do not establish usability with real businesses; that needs task-based observation (find a supplier, call, publish a need, send an offer).
+
+
+## Interaction and visual detail pass, 2026-09-23
+
+The owner requested closer attention to icons, buttons and a recognizable MeetAny identity. Kept the Georgian type hierarchy, logo and blue/navy palette; refined the working interface with a compact control radius, a line marking the active desktop navigation destination, quieter stable list rows and outlined service labels. Company profile navigation now uses the same button component classes as other actions, removing the conflicting legacy `.button` rules.
+
+Icons keep the established Lucide family and stroke weight, now with an explicit 24-unit viewBox, decorative semantics and a semantic data attribute. Only forward navigation arrows move on hover; contact icons stay still. Buttons no longer shrink under a press. Reduced-motion preference suppresses arrow movement. Calls separate the label from the tabular, nonwrapping number. Mobile creation reads “დამატება” at every width, with the full accessible name “მოთხოვნის დამატება”; the plus icon is omitted only below 360px to preserve readable text and touch targets.
+
+This is a refinement of a consistent B2B interface, not evidence that observers will attribute its design to a human. Distinctive content and actual company photography remain important to its identity.

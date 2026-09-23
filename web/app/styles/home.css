@@ -515,7 +515,7 @@ h1, h2, h3, .tt, button, input[type="button"], input[type="submit"], input[type=
 /* ---- from /design.css ---- */
 :root { --ink: var(--ink-900); --blue: var(--blue-600); --muted: var(--ink-500); --line: var(--ink-150); --wash: var(--blue-50); }
 body.design-two { background: var(--white); color: var(--ink); }
-.design-two .button { border-radius: var(--radius-md); background: var(--blue-600); }
+.design-two .button { border-radius: var(--radius-control); background: var(--blue-600); }
 .design-two .button:hover { background: var(--blue-700); }
 .design-two .home-discovery { position: relative; isolation: isolate; background: var(--blue-900); border-radius: 0; max-width: none; margin: 0px; padding: 48px max(36px, -592px + 50vw) 52px; color: white; }
 .design-two .home-discovery::before { content: ""; position: absolute; inset: 0px; z-index: -1; background: url("/assets/photos/logistics-warehouse.jpg") center 48% / cover; opacity: 0.13; }

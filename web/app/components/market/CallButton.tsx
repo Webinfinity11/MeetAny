@@ -4,9 +4,9 @@ import { Icon } from "../Icon";
 // styled as a regular ma-btn so it keeps the same ≥44px tap target as every other button.
 export function CallButton({ phone, variant = "primary" }: { phone: string; variant?: "primary" | "secondary" }) {
   return (
-    <a className={`ma-btn ma-btn--${variant}`} href={`tel:${phone.replace(/\s+/g, "")}`}>
+    <a className={`ma-btn ma-btn--${variant} ma-call`} href={`tel:${phone.replace(/[^+\d]/g, "")}`}>
       <Icon name="phone" />
-      დარეკვა · {phone}
+      <span>დარეკვა</span><span className="ma-call__number">{phone}</span>
     </a>
   );
 }
