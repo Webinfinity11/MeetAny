@@ -263,7 +263,7 @@ export function RequestViewPageContent() {
                 <div className="ma-cluster"><button className="ma-btn ma-btn--secondary" onClick={() => setEditOffer(!editOffer)}>შეთავაზების რედაქტირება</button><button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => action("withdraw")}>შეთავაზების გაუქმება</button></div>
                 {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)}/> : null}
               </div> : null}
-              {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone}/> : null}</section> : null}
+              {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
           ) : closed ? (
             <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
@@ -329,7 +329,7 @@ export function RequestViewPageContent() {
             <section className="request-author">
               <span className="ma-small ma-muted">მოთხოვნის ავტორი</span>
               <h2 className="ma-h3">{owner.company || owner.name}</h2>
-              {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" /> : null}
+              {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" contactId={r.ownerId} requestId={r.id} source="request-owner" /> : null}
             </section>
           ) : null}
           {!isOwner && me?.role !== "admin" && me?.role !== "company" ? responsePanel : null}

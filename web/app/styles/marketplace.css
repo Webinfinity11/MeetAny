@@ -310,7 +310,7 @@
 .ma-proto-filter[aria-pressed=true]:hover{background:var(--bg-subtle)}
 .ma-proto-filter[aria-pressed=true] .sector-icon{color:var(--action)}
 .ma-proto-filter[aria-pressed=true] .facet-label{text-decoration:underline;text-decoration-color:var(--action);text-underline-offset:var(--space-2);text-decoration-thickness:2px}
-.ma-proto-filter[aria-pressed=true] .sector-plane{fill:var(--blue-200)}
+.ma-proto-filter[aria-pressed=true] .sector-fill{fill:var(--blue-100)}
 .filter-section{padding-top:var(--space-5);border:0;border-top:1px solid var(--border-subtle);margin:0;min-width:0}
 .filter-options{display:grid;gap:var(--space-1);padding-inline:0}
 .filter-options legend{float:left;width:100%;padding:0;margin-bottom:var(--space-2);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}

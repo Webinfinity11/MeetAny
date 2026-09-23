@@ -22,7 +22,7 @@ async function loaded(p=page) {
 }
 async function go(route,p=page) {await p.goto(base+route); await loaded(p);}
 async function capture(name,width) {
-  if (['companies','company','request'].includes(name)) await page.locator('a[href^="tel:"]').first().waitFor({timeout:30000});
+  if (['companies','company','request'].includes(name)) await page.locator('.ma-call').first().waitFor({timeout:30000});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), `${name}: horizontal overflow`);
   const filterOverflow = await page.locator(".ma-proto-filters").evaluateAll(groups => groups.flatMap(group => {
     const bounds = group.getBoundingClientRect();
@@ -59,8 +59,8 @@ try {
   await page.locator('#city-desktop').first().selectOption('kutaisi'); await page.goBack();
   assert.equal(await page.locator('#city-desktop').first().inputValue(),'batumi');
   await go('/companies/');
-  await page.locator('a[href^="tel:"]').first().waitFor();
-  assert((await page.locator('a[href^="tel:"]').first().boundingBox()).height>=44);
+  await page.locator('.ma-call').first().waitFor();
+  assert((await page.locator('.ma-call').first().boundingBox()).height>=44);
   assert(await page.locator('.listing-media img').first().evaluate(e=>e.complete && e.naturalWidth>0));
   await page.setViewportSize({width:390,height:900});
   await page.getByRole('button',{name:'მენიუ',exact:true}).click();

@@ -1,0 +1,15 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+const root=path.resolve(import.meta.dirname,'..');
+const browser=await chromium.launch({headless:true,...(process.env.QA_BROWSER_PATH?{executablePath:process.env.QA_BROWSER_PATH}:{})});
+const p=await browser.newPage({viewport:{width:1440,height:950}});const errors=[];p.on('pageerror',e=>errors.push(e.message));
+await p.addInitScript(()=>{window.contactEvents=[];window.addEventListener('meetany:contact-action',e=>window.contactEvents.push(e.detail));document.addEventListener('click',e=>{if(e.target.closest('a[href^="tel:"]'))e.preventDefault();},true);});
+try{
+ await p.goto('http://localhost:3000/companies/');await p.locator('.ma-call').first().waitFor();assert.equal(await p.locator('main a[href^="tel:"]').count(),0);assert.equal(await p.locator('.ma-call__number').count(),0);
+ await p.locator('.ma-call').first().click();const link=p.locator('a.ma-call').first();await link.waitFor();assert(await link.evaluate(e=>e===document.activeElement));assert.match(await link.getAttribute('href'),/^tel:\+?\d+$/);let events=await p.evaluate(()=>window.contactEvents);assert.equal(events.length,1);assert.equal(events[0].action,'reveal');assert.equal(events[0].source,'company-list');assert(events[0].contactId);assert(!('phone' in events[0]));await link.click();events=await p.evaluate(()=>window.contactEvents);assert.equal(events.length,2);assert.equal(events[1].action,'call');
+ await p.reload();await p.locator('.ma-call').first().waitFor();assert.equal(await p.locator('a.ma-call').count(),0);await p.locator('.listing-heading h3 a').first().click();await p.locator('.company-profile-contact button').waitFor();assert.equal(await p.locator('main a[href^="tel:"]').count(),0);await p.locator('.company-profile-contact button').press('Enter');await p.locator('.company-profile-contact a').waitFor();
+ await p.goto('http://localhost:3000/requests/');await p.locator('.request-row-heading a').first().click();await p.locator('.ma-call').first().waitFor();assert.equal(await p.locator('main a[href^="tel:"]').count(),0);await p.locator('.ma-call').first().click();assert(await p.locator('main a[href^="tel:"]').first().isVisible());assert.equal((await p.evaluate(()=>window.contactEvents)).at(-1).source,'request-owner');
+ await p.goto('http://localhost:3000/requests/');await p.locator('main article').first().waitFor();await p.evaluate(()=>document.fonts.ready);await p.screenshot({path:path.join(root,'qa/shots/rounded-icons-desktop.png')});await p.setViewportSize({width:390,height:900});await p.getByRole('button',{name:/ფილტრი \(/}).click();assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.screenshot({path:path.join(root,'qa/shots/rounded-icons-mobile.png')});
+ assert.deepEqual(errors,[]);console.log('PASS hidden phones, click/keyboard disclosure, focus, event metadata without phone, call event, reload reset, rounded icons at 1440/390');
+}finally{await browser.close();}

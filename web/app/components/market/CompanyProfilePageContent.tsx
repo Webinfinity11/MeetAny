@@ -70,7 +70,7 @@ export function CompanyProfilePageContent() {
           <p>{categories[c.industry] || c.industry}</p>
           <span className="company-profile-city"><Icon name="map-pin" />{cities[c.city] || c.city}</span>
         </div>
-        {phone ? <div className="company-profile-contact"><CallButton phone={phone} /></div> : null}
+        {phone ? <div className="company-profile-contact"><CallButton phone={phone} contactId={c.id} source="company-profile" /></div> : null}
       </header>
       <div className="company-profile-coverage">
         <Icon name="globe" />
@@ -91,7 +91,7 @@ export function CompanyProfilePageContent() {
         <aside className="company-profile-partnership" aria-labelledby="company-partnership">
           <h2 id="company-partnership" className="ma-h3">თანამშრომლობის ინტერესები</h2>
           {c.seeks?.length ? <ul>{c.seeks.map((seek: string) => <li key={seek}>{seek}</li>)}</ul> : <p className="ma-muted">ჯერ არ არის მითითებული.</p>}
-          {phone ? <a className="ma-link" href={`tel:${phone.replace(/[^+\d]/g, "")}`}>დაუკავშირდი კომპანიას <Icon name="arrow-right" /></a> : null}
+          {phone ? <CallButton phone={phone} variant="secondary" contactId={c.id} source="company-partnership" /> : null}
         </aside>
       </div>
 
