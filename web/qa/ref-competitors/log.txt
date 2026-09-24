@@ -1,0 +1,60 @@
+OK ss-list-1440 https://home.ss.ge/ka/udzravi-qoneba/l/bina/iyideba?cityIdList=95
+SKIP ss-list-390: page.goto: Timeout 30000ms exceeded.
+SKIP ss-item-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP ss-item-390: დეტალური ბმული ვერ მოიძებნა
+SKIP myhome-list-1440: დაბლოკილია: Just a moment...
+SKIP myhome-list-390: დაბლოკილია: Just a moment...
+SKIP myhome-item-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP myhome-item-390: დეტალური ბმული ვერ მოიძებნა
+SKIP biznesebi-list-1440: დაბლოკილია: Just a moment...
+SKIP biznesebi-list-390: დაბლოკილია: Just a moment...
+SKIP biznesebi-company-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP biznesebi-company-390: დეტალური ბმული ვერ მოიძებნა
+OK jobs-list-1440 https://jobs.ge/ka/
+OK jobs-list-390 https://jobs.ge/ka/
+SKIP mymarket-list-1440: დაბლოკილია: Just a moment...
+SKIP mymarket-list-390: დაბლოკილია: Just a moment...
+SKIP mymarket-item-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP mymarket-item-390: დეტალური ბმული ვერ მოიძებნა
+OK europages-list-1440 https://www.europages.co.uk/companies/furniture.html
+OK europages-list-390 https://www.europages.co.uk/companies/furniture.html
+SKIP europages-profile-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP europages-profile-390: დეტალური ბმული ვერ მოიძებნა
+OK kompass-list-1440 https://us.kompass.com/a/furniture/
+OK kompass-list-390 https://us.kompass.com/a/furniture/
+SKIP kompass-company-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP kompass-company-390: დეტალური ბმული ვერ მოიძებნა
+OK alibaba-rfq-1440 https://sourcing.alibaba.com/rfq/rfq_search_list.htm?country=AE&recently=Y
+OK alibaba-rfq-390 https://sourcing.alibaba.com/rfq/rfq_search_list.htm?country=AE&recently=Y
+OK thumbtack-list-1440 https://www.thumbtack.com/k/house-cleaning/near-me
+OK thumbtack-list-390 https://www.thumbtack.com/k/house-cleaning/near-me
+SKIP thumbtack-pro-1440: დეტალური ბმული ვერ მოიძებნა
+SKIP thumbtack-pro-390: დეტალური ბმული ვერ მოიძებნა
+OK houzz-pros-1440 https://www.houzz.com/professionals/interior-designers
+OK houzz-pros-390 https://www.houzz.com/professionals/interior-designers
+SKIP upwork-jobs-1440: დაბლოკილია: Just a moment...
+SKIP upwork-jobs-390: დაბლოკილია: Just a moment...
+OK linear-home-1440 https://linear.app/
+OK linear-home-390 https://linear.app/
+OK linear-inner-1440 https://linear.app/customers
+OK linear-inner-390 https://linear.app/customers
+OK stripe-home-1440 https://stripe.com/
+OK stripe-home-390 https://stripe.com/
+OK stripe-inner-1440 https://stripe.com/payments
+OK stripe-inner-390 https://stripe.com/payments
+SKIP ss-list-1440: page.goto: Timeout 30000ms exceeded.
+OK ss-list-390 https://home.ss.ge/ka/udzravi-qoneba/l/bina/iyideba?cityIdList=95
+SKIP ss-item-1440: დეტალური ბმული ვერ მოიძებნა
+OK ss-item-390 https://home.ss.ge/ka/udzravi-qoneba/iyideba-3-otaxiani-bina-did-dighomshi-36774387
+OK europages-list-1440 https://www.europages.co.uk/companies/furniture.html
+OK europages-list-390 https://www.europages.co.uk/companies/furniture.html
+OK europages-profile-1440 https://www.europages.co.uk/en/company/2-expo-sp-zoo-22279154
+OK europages-profile-390 https://www.europages.co.uk/en/company/2-expo-sp-zoo-22279154
+OK thumbtack-list-1440 https://www.thumbtack.com/k/house-cleaning/near-me
+OK thumbtack-list-390 https://www.thumbtack.com/k/house-cleaning/near-me
+OK thumbtack-pro-1440 https://www.thumbtack.com/ca/menlo-park/house-cleaning/hilda-chavez-cleaning-services/service/548048316559269891
+OK thumbtack-pro-390 https://www.thumbtack.com/ca/menlo-park/house-cleaning/hilda-chavez-cleaning-services/service/548048316559269891
+OK ss-list-1440 https://home.ss.ge/ka/udzravi-qoneba/l/bina/iyideba?cityIdList=95
+OK ss-list-390 https://home.ss.ge/ka/udzravi-qoneba/l/bina/iyideba?cityIdList=95
+OK ss-item-1440 https://home.ss.ge/ka/udzravi-qoneba/iyideba-3-otaxiani-bina-saburtaloze-35744152
+OK ss-item-390 https://home.ss.ge/ka/udzravi-qoneba/qiravdeba-2-otaxiani-bina-eliaze-36198472
