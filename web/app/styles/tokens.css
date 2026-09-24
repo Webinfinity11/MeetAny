@@ -79,8 +79,8 @@
   --action:var(--blue-600); --action-hover:var(--blue-700); --action-press:var(--blue-800); --action-subtle:var(--blue-50);
   --selected-bg:var(--blue-50); --selected-text:var(--blue-700);
   --catalog-band-bg:var(--blue-900);
-  --avatar-bg:var(--blue-600);
-  --avatar-text:var(--white);
+  --avatar-bg:var(--blue-100);
+  --avatar-text:var(--blue-700);
   --scrim:color-mix(in srgb,var(--ink-950) 48%,transparent);
 
   /* ---------- focus: on every interactive element ---------- */

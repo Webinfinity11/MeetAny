@@ -38,7 +38,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       {c.offers.length ? <p className="listing-products">{c.offers.join(" · ")}</p> : null}
       {c.phone || c.directions ? <div className="supplier-contact">
         {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
-        {c.directions ? <a className="listing-directions" href={c.directions} target="_blank" rel="noopener noreferrer" aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" />მიმართულება</a> : null}
+        {c.directions ? <a className="listing-directions" href={c.directions} target="_blank" rel="noopener noreferrer" aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" /><span className="listing-directions__text">მიმართულება</span></a> : null}
       </div> : null}
     </article>
   );

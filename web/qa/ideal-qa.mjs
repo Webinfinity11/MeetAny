@@ -80,9 +80,14 @@ try {
  await page.locator('.request-board-tabs a').filter({hasText:'ყველა'}).click();
  await page.waitForFunction(()=>!location.search.includes('tab='));
  assert.equal(await page.locator('.request-card-grid').getAttribute('data-tab-changed'),'');
- await page.locator('select[aria-label="ქალაქი"]').selectOption('tbilisi');
+ assert(await page.locator('.request-board-choices').isHidden());
+ const requestToggle=page.locator('.catalog-filter-toggle');await requestToggle.click();await page.locator('#filters[open]').waitFor();
+ await page.locator('#request-city-mobile').selectOption('tbilisi');await page.waitForURL('**city=tbilisi*');
+ assert.equal((await requestToggle.textContent()).trim(),'ფილტრი · 1');
+ await page.locator('#filters button[aria-label="ფილტრების დახურვა"]').click();
+ assert(await requestToggle.evaluate(e=>e===document.activeElement));
  await page.locator('.r2-results-summary button').filter({hasText:'გასუფთავება'}).click();await page.waitForFunction(()=>!location.search.includes('city='));
- check('request tabs, no repeated entrance, filter reset');
+ check('request tabs, no repeated entrance, mobile filter sheet (city, count, focus return), filter reset');
  for(const route of ['/companies/','/requests/']) {
   await page.emulateMedia({reducedMotion:'reduce'});await go(route);await page.locator('.supplier-row,.request-card').first().waitFor();
   assert.equal(await page.locator('.catalog-page').evaluate(e=>[e,...e.querySelectorAll('*')].filter(n=>{const s=getComputedStyle(n);return s.animationName!=='none'||s.transitionDuration.split(',').some(x=>parseFloat(x)!==0);}).length),0);
@@ -93,11 +98,12 @@ try {
  await page.emulateMedia({reducedMotion:'reduce'});await go('/requests/');
  const {RequestRow}=loadTS(path.join(root,'app/components/market/RequestRow.tsx'));
  const base={id:'qa-fixture',title:'გრძელი ქართული მოთხოვნის სათაური სრული ტექსტით და დამატებითი სიტყვებით',category:'furniture',city:'tbilisi',cityLabel:'თბილისი, ზუგდიდი, ქუთაისი',photo:null,quantity:12,unit:'piece',neededBy:null,ownerName:'ორგანიზაციის გრძელი ქართული დასახელება',offerCount:0,state:'open',daysLeft:2,isOwn:false,showOwnOfferBadge:false};
- const fixtures=[{}, {isNew:true}, {state:'closed',isOwn:true}, {state:'expired'}, {state:'chosen',showOwnOfferBadge:true,ownOfferStatus:'chosen'}, {state:'hidden'}];
+ const fixtures=[{}, {isNew:true}, {state:'closed',isOwn:true}, {state:'expired'}, {state:'chosen',showOwnOfferBadge:true,ownOfferStatus:'chosen'}, {state:'hidden'}, {daysLeft:12}];
  const html=fixtures.map((props,i)=>renderToStaticMarkup(React.createElement(RequestRow,{r:{...base,...props,id:`qa-${i}`}}))).join('');
  await page.locator('.request-card-grid').evaluate((e,html)=>{e.innerHTML=html;},html);
  for(const status of ['დახურულია','ვადაგასულია','მომწოდებელი არჩეულია','დამალულია'])assert((await page.locator('.request-card-status').allTextContents()).some(t=>t.includes(status)));
  assert.equal(await page.locator('.request-card-urgent').count(),2);
+ assert.equal(await page.locator('.request-card-status').nth(6).locator(':scope>span').count(),1); // 12 days left: offers only, no deadline
  assert.equal(await page.locator('.request-card-visual').count(),0);
  await page.addStyleTag({content:'nextjs-portal{display:none!important}'});
  for(const [width,height] of [[1440,1000],[390,844]]) {

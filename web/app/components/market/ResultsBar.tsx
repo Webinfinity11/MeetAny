@@ -60,9 +60,9 @@ export function ResultsBar({
         {filterButton}
         {utility}
         {sort ? (
-          <div className="ma-field">
+          <div className="ma-field catalog-sort">
             <label className="ma-field__label" htmlFor="sort">
-              დალაგება
+              დალაგება:
             </label>
             <select
               className="ma-select"

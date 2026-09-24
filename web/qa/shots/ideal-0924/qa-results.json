@@ -6,7 +6,7 @@
     "guest save opens sign-in",
     "authenticated save toggles and restores initial state",
     "VIP/top/default, absent and failed photo remove visual DOM",
-    "request tabs, no repeated entrance, filter reset",
+    "request tabs, no repeated entrance, mobile filter sheet (city, count, focus return), filter reset",
     "reduced-motion disables all catalog animation/transition; overflow 0",
     "real RequestRow fixtures: new, own, closed, expired, chosen offer, hidden, long title/cities",
     "pageerror 0"

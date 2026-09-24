@@ -29,11 +29,13 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
   const [failedPhoto, setFailedPhoto] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const closedLike = r.state === "closed" || r.state === "expired" || r.state === "chosen";
-  const status = r.state === "closed" ? "დახურულია"
+  // Deadline is shown only when it carries information: a closing state or seven days or fewer left.
+  const deadline = r.state === "closed" ? "დახურულია"
     : r.state === "hidden" ? "დამალულია"
     : r.state === "expired" ? "ვადაგასულია"
       : r.state === "chosen" ? "მომწოდებელი არჩეულია"
-        : r.daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${r.daysLeft} დღე`;
+        : r.daysLeft <= 0 ? "დღეს იწურება" : r.daysLeft <= 7 ? `კიდევ ${r.daysLeft} დღე` : null;
+  const urgent = r.state === "open" && r.daysLeft <= 7;
   return (
     <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       {r.photo && r.photo !== failedPhoto ? <div className="request-card-visual" aria-hidden="true">
@@ -45,6 +47,7 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
         <p className="request-card-meta">
           {[categories[r.category] || r.category, r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}
           {r.isNew ? <> · <span className="request-tier-badge--new">ახალი</span></> : null}
+          <span className="request-card-meta-status"> · <span>{r.offerCount} შეთავაზება</span>{deadline ? <> · <span className={urgent ? "request-card-meta-urgent" : undefined}>{deadline}</span></> : null}</span>
         </p>
       {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card-badges">
         {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
@@ -52,8 +55,8 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
       </div> : null}
       </div>
       <div className="request-card-status">
-        <span className="request-card-offers">{r.offerCount} შეთავაზება</span>
-        <span className={r.state === "open" && r.daysLeft < 4 ? "request-card-urgent" : ""}>{status}</span>
+        <span className="request-card-offers"><strong>{r.offerCount}</strong> <span>შეთავაზება</span></span>
+        {deadline ? <span className={urgent ? "request-card-urgent" : undefined}>{deadline}</span> : null}
       </div>
     </article>
   );

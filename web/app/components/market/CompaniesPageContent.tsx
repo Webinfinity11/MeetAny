@@ -165,7 +165,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar filter-rail" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
         <section className="ma-stack" aria-label="კომპანიების სია">
-          <ResultsBar filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` (${filterCount})` : ""}</button>}
+          <ResultsBar filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
             utility={ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
           />

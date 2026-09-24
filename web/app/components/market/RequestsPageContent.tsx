@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
 import { ResultsBar } from "./ResultsBar";
+import { MobileFilterSheet } from "./MobileFilterSheet";
 import { requestDemoTier } from "../../lib/tier-demo";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
@@ -163,6 +164,26 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const topRows = rows.filter(r => requestDemoTier(r.title) === "top");
   const compactRows = [...vipRows, ...topRows, ...rows.filter(r => !requestDemoTier(r.title))];
 
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const activeItems = [
+    ...(category ? [{key: "category", label: categories[category] || category}] : []),
+    ...(city ? [{key: "city", label: cities[city] || city}] : []),
+    ...(period ? [{key: "period", label: "პერიოდი"}] : []),
+    ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
+    ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
+    ...(urgent ? [{key: "urgent", label: "სასწრაფო"}] : []),
+  ];
+  // Desktop shows the choices inline; below 768px the same selects live in the filter sheet with visible labels.
+  const choice = (placement: "desktop" | "mobile", kind: "category" | "city") => {
+    const id = `request-${kind}-${placement}`, label = kind === "category" ? "კატეგორია" : "ქალაქი";
+    const select = <select className="ma-select" id={id} aria-label={placement === "desktop" ? label : undefined} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
+      <option value="">{kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
+      {Object.entries(kind === "category" ? categories : cities).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
+    </select>;
+    return placement === "desktop" ? select : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;
+  };
+
   const clearFilters = () => filters.set({city: "", category: "", q: "", sort: "", period: "", unanswered: "", photo: "", urgent: "", tab: ""});
 
   const countLabel = !available
@@ -179,29 +200,14 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         </header>
         {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
         <ResultsBar
-            items={[
-              ...(category ? [{key: "category", label: categories[category] || category}] : []),
-              ...(city ? [{key: "city", label: cities[city] || city}] : []),
-              ...(period ? [{key: "period", label: "პერიოდი"}] : []),
-              ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
-              ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
-              ...(urgent ? [{key: "urgent", label: "სასწრაფო"}] : []),
-            ]}
+            items={activeItems}
             onRemove={key => filters.set({[key]: ""})}
             onClear={clearFilters}
+            filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length > 0 ? ` · ${activeItems.length}` : ""}</button>}
             tabs={<><nav className="request-board-tabs" aria-label="მოთხოვნების ხედები">
               {tabs.map(item => <Link key={item.id} href={tabHref(item.id)} scroll={false} aria-current={tab === item.id ? "page" : undefined}>{item.label}</Link>)}
             </nav>
-        <div className="request-board-choices">
-          <select className="ma-select" aria-label="კატეგორია" value={category} onChange={e => setCategory(e.target.value)}>
-            <option value="">ყველა კატეგორია</option>
-            {Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
-          </select>
-          <select className="ma-select" aria-label="ქალაქი" value={city} onChange={e => setCity(e.target.value)}>
-            <option value="">ყველა ქალაქი</option>
-            {Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
-          </select>
-        </div>
+            <div className="request-board-choices">{choice("desktop", "category")}{choice("desktop", "city")}</div>
             </>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
@@ -231,6 +237,16 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                     </>}
           </div>
         </section>
+      <MobileFilterSheet
+        id="filters"
+        title="ფილტრები"
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+        triggerRef={filterButtonRef}
+        footer={<button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>{rows.length} მოთხოვნის ჩვენება</button>}
+      >
+        <div className="ma-proto-filters">{choice("mobile", "category")}{choice("mobile", "city")}</div>
+      </MobileFilterSheet>
       <RequestFormSheet open={formOpen} initialCategory={formCategory} onClose={() => setFormOpen(false)} />
     </div>
   );
