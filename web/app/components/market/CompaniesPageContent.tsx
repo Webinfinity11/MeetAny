@@ -36,7 +36,7 @@ type MappedCompany = {
 function skeleton() {
   return (
     <div className="ma-stack" aria-busy="true" aria-label="მონაცემები იტვირთება">
-      <p role="status">იტვირთება…</p>
+      <p>იტვირთება…</p>
       {[0, 1, 2].map((i) => (
         <div className="ma-card ma-stack" key={i}>
           <span className="ma-skel ma-skel--title" />
@@ -159,7 +159,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   return (
     <div className="ma-page companies-catalog catalog-page">
       <header className="catalog-header">
-        <h1 className="ma-h1">კომპანიები</h1>
+        <div className="catalog-heading"><h1 className="ma-h1">კომპანიები</h1><p role="status">{countLabel}</p></div>
         <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} />
       </header>
       <div className="ma-proto-columns">
@@ -167,7 +167,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <section className="ma-stack" aria-label="კომპანიების სია">
           <ResultsBar filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` (${filterCount})` : ""}</button>}
             utility={ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}
-            items={activeItems} onRemove={removeFilter} onClear={clearFilters} countLabel={countLabel} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
+            items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
           />
           <div className="company-directory-list">
             {!available ? (
@@ -176,17 +176,13 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
               skeleton()
             ) : rows.length === 0 ? (
               <div className="ma-empty">
-                <span className="ma-empty__icon">
-                  <Icon name="search" />
-                </span>
-                <h2 className="ma-empty__title">კომპანია ვერ მოიძებნა</h2>
-                <p className="ma-empty__text">შეცვალე ან გაასუფთავე ფილტრები.</p>
+                <p className="ma-empty__text">კომპანია ვერ მოიძებნა.</p>
                 <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>
-                  საწყის ხედზე დაბრუნება
+                  ფილტრების გასუფთავება
                 </button>
               </div>
             ) : (
-              rows.map((c) => <CompanyListingCard key={c.id} c={c} />)
+              rows.map((c, index) => <CompanyListingCard key={c.id} c={c} entranceIndex={index} />)
             )}
           </div>
         </section>

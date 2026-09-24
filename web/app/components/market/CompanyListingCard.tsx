@@ -1,9 +1,10 @@
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
-import { TagList } from "./TagList";
+import { CompanyAvatar } from "./CompanyAvatar";
+import type { CSSProperties } from "react";
 import { CallButton } from "./CallButton";
 import { Icon } from "../Icon";
-import { categories, categoryPhoto, cities } from "../../lib/categories";
+import { categories, cities } from "../../lib/categories";
 
 export type CompanyListingData = {
   id: string;
@@ -22,45 +23,23 @@ export type CompanyListingData = {
   stats: { sent: number; chosen: number };
 };
 
-// Compact industry-photo listing with service chips and a public phone link.
-export function CompanyListingCard({ c }: { c: CompanyListingData }) {
+export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData; entranceIndex?: number }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
-  const photo = categoryPhoto[c.industry] || categoryPhoto.other;
-  const places = [categories[c.industry] || c.industry, ...(c.serviceCities.length ? c.serviceCities : [c.city]).map(id => cities[id] || id)].join(" · ");
+  const cityIds = [...new Set((c.serviceCities.filter(Boolean).length ? c.serviceCities : [c.city]).filter(Boolean))];
+  const places = cityIds.slice(0, 2).map(id => cities[id] || id).join(", ") + (cityIds.length > 2 ? ` +${cityIds.length - 2}` : "");
   return (
-    <article className="company-listing supplier-row">
-      <Link className="listing-media" href={href} aria-label={`${c.name} — კომპანიის პროფილი`}>
-        <img src={`/assets/photos/${photo}`} alt="" width={800} height={533} loading="lazy" decoding="async" />
-      </Link>
-      <div className="listing-content">
-        <div className="listing-summary">
-          <div className="listing-heading">
-            <div>
-              <h3>
-                <Link className="card-main-link" href={href}>{c.name}</Link>
-              </h3>
-            </div>
-            <div className="listing-utilities"><SaveCompanyButton id={c.id} /></div>
-          </div>
-          </div>
-        <p className={c.directions ? "listing-industry listing-location listing-location--directions" : "listing-industry listing-location"} title={places}>
-          {c.directions ? <span className="listing-location__text">{places}</span> : places}
-          {c.directions ? <a className="listing-directions ma-small" href={c.directions} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" />მიმართულება</a> : null}
-        </p>
-        {c.offers.length ? (
-          <div className="listing-chips">
-            <TagList items={c.offers} limit={3} />
-          </div>
-        ) : null}
-        <div className="supplier-contact">
-        <div className="listing-footer">
-          {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
-          <Link className="ma-btn ma-btn--primary listing-profile-link" href={href} aria-label={`${c.name} — გაცნობა`}>
-            პროფილი
-          </Link>
-        </div>
-        </div>
+    <article className="company-listing supplier-row" data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined}>
+      <CompanyAvatar name={c.name} size="lg" />
+      <div className="listing-identity">
+        <h3><Link className="card-main-link" href={href}>{c.name}</Link></h3>
+        <p className="listing-location">{[categories[c.industry] || c.industry, places].filter(Boolean).join(" · ")}</p>
       </div>
+      <div className="listing-utilities"><SaveCompanyButton id={c.id} /></div>
+      {c.offers.length ? <p className="listing-products">{c.offers.join(" · ")}</p> : null}
+      {c.phone || c.directions ? <div className="supplier-contact">
+        {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
+        {c.directions ? <a className="listing-directions" href={c.directions} target="_blank" rel="noopener noreferrer" aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" />მიმართულება</a> : null}
+      </div> : null}
     </article>
   );
 }

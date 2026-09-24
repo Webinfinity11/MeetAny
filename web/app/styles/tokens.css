@@ -78,6 +78,9 @@
   --border:var(--ink-200); --border-subtle:var(--ink-150); --border-input:var(--ink-400); --border-strong:var(--ink-300);
   --action:var(--blue-600); --action-hover:var(--blue-700); --action-press:var(--blue-800); --action-subtle:var(--blue-50);
   --selected-bg:var(--blue-50); --selected-text:var(--blue-700);
+  --catalog-band-bg:var(--blue-900);
+  --avatar-bg:var(--blue-600);
+  --avatar-text:var(--white);
   --scrim:color-mix(in srgb,var(--ink-950) 48%,transparent);
 
   /* ---------- focus: on every interactive element ---------- */

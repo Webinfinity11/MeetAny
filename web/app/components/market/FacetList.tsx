@@ -1,6 +1,5 @@
 "use client";
 
-import { CategoryIcon } from "./CategoryIcon";
 
 const shortLabels: Record<string, string> = {
   furniture: "ავეჯი და ინვენტარი", construction: "მშენებლობა", textiles: "ტექსტილი",
@@ -37,7 +36,6 @@ export function FacetList({
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
-      <CategoryIcon id={f.id} />
       <span className="facet-label">{shortLabels[f.id] || f.label}</span>
       <span className="facet-count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>

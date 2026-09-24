@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
@@ -28,7 +28,7 @@ type MappedRequest = {
 function skeleton() {
   return (
     <div className="ma-stack" aria-busy="true" aria-label="მონაცემები იტვირთება">
-      <p role="status">იტვირთება…</p>
+      <p>იტვირთება…</p>
       {[0, 1, 2].map((i) => (
         <div className="ma-card ma-stack" key={i}>
           <span className="ma-skel ma-skel--title" />
@@ -43,7 +43,6 @@ function skeleton() {
 export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpenNew?: boolean; initial?: PublicSnapshot }) {
   const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
-  const variant = searchParams.get("variant") === "b" ? "b" : "a";
   const filters = useFilters("/requests/");
   const city = filters.get("city"), category = filters.get("category"), query = filters.get("q"), sort = filters.get("sort", "newest");
   const period = filters.get("period"), unanswered = filters.get("unanswered") === "1", withPhoto = filters.get("photo") === "1", urgent = filters.get("urgent") === "1";
@@ -58,11 +57,25 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     const timer = window.setInterval(refresh, 60000);
     return () => { window.clearTimeout(first); window.clearInterval(timer); };
   }, []);
-  const me = store?.currentUser() as { role: string; industry?: string } | null;
-  const industry = me?.role === "company" ? me.industry : undefined;
   const requestedTab = filters.get("tab", "all");
-  const tab = ["new", "expiring", ...(industry ? ["industry"] : [])].includes(requestedTab) ? requestedTab : "all";
-  const tabs = [{id: "all", label: "ყველა"}, {id: "new", label: "ახალი"}, {id: "expiring", label: "მალე იწურება"}, ...(industry ? [{id: "industry", label: "ჩემს დარგში"}] : [])];
+  const tab = ["new", "expiring"].includes(requestedTab) ? requestedTab : "all";
+  const listRef = useRef<HTMLDivElement>(null);
+  const previousTab = useRef(tab);
+  useEffect(() => {
+    if (previousTab.current === tab) return;
+    previousTab.current = tab;
+    const list = listRef.current;
+    if (!list) return;
+    list.dataset.tabChanged = "";
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const style = getComputedStyle(list);
+    const animation = list.animate([{opacity: .5}, {opacity: 1}], {
+      duration: parseFloat(style.getPropertyValue("--motion-fast")),
+      easing: style.getPropertyValue("--motion-ease").trim(),
+    });
+    return () => animation.cancel();
+  }, [tab]);
+  const tabs = [{id: "all", label: "ყველა"}, {id: "new", label: "ახალი"}, {id: "expiring", label: "მალე იწურება"}];
   const tabHref = (id: string) => {
     const next = new URLSearchParams(searchParams.toString());
     if (id === "all") next.delete("tab"); else next.set("tab", id);
@@ -92,9 +105,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
 
   const results = useMemo(() => (ready && available ? list({}).filter(r =>
     tab === "new" ? now - Date.parse(r.createdAt) >= 0 && now - Date.parse(r.createdAt) < 86400000
-      : tab === "expiring" ? store?.daysLeft(r) <= 3
-        : tab === "industry" ? r.category === industry : true
-  ) : []), [ready, available, list, tab, now, store, industry]);
+      : tab === "expiring" ? store?.daysLeft(r) <= 3 : true
+  ) : []), [ready, available, list, tab, now, store]);
 
   const sorted = useMemo(() => {
     const arr = [...results];
@@ -149,11 +161,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   // Rank only already-filtered rows, retaining the selected sort within each tier.
   const vipRows = rows.filter(r => requestDemoTier(r.title) === "vip");
   const topRows = rows.filter(r => requestDemoTier(r.title) === "top");
-  const featuredRows = [...vipRows, ...topRows];
-  const featuredIds = new Set(featuredRows.map(r => r.id));
-  const compactRows = variant === "b"
-    ? [...vipRows, ...topRows, ...rows.filter(r => !requestDemoTier(r.title))]
-    : rows.filter(r => !featuredIds.has(r.id));
+  const compactRows = [...vipRows, ...topRows, ...rows.filter(r => !requestDemoTier(r.title))];
 
   const clearFilters = () => filters.set({city: "", category: "", q: "", sort: "", period: "", unanswered: "", photo: "", urgent: "", tab: ""});
 
@@ -164,14 +172,27 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
       : `${rows.length} ღია მოთხოვნა`;
 
   return (
-    <div className={`ma-page requests-catalog catalog-page request-board request-board--${variant}`}>
-      <div className="request-board-band">
+    <div className="ma-page requests-catalog catalog-page request-board">
         <header className="catalog-header">
-        <div className="request-board-heading"><h1 className="ma-h1">მოთხოვნები</h1><p>{countLabel}</p></div>
-        {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
-
+        <div className="catalog-heading"><h1 className="ma-h1">მოთხოვნები</h1><p role="status">{countLabel}</p></div>
         <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
-        {variant === "b" ? <div className="request-board-choices">
+        </header>
+        {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
+        <ResultsBar
+            items={[
+              ...(category ? [{key: "category", label: categories[category] || category}] : []),
+              ...(city ? [{key: "city", label: cities[city] || city}] : []),
+              ...(period ? [{key: "period", label: "პერიოდი"}] : []),
+              ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
+              ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
+              ...(urgent ? [{key: "urgent", label: "სასწრაფო"}] : []),
+            ]}
+            onRemove={key => filters.set({[key]: ""})}
+            onClear={clearFilters}
+            tabs={<><nav className="request-board-tabs" aria-label="მოთხოვნების ხედები">
+              {tabs.map(item => <Link key={item.id} href={tabHref(item.id)} scroll={false} aria-current={tab === item.id ? "page" : undefined}>{item.label}</Link>)}
+            </nav>
+        <div className="request-board-choices">
           <select className="ma-select" aria-label="კატეგორია" value={category} onChange={e => setCategory(e.target.value)}>
             <option value="">ყველა კატეგორია</option>
             {Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
@@ -180,25 +201,16 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             <option value="">ყველა ქალაქი</option>
             {Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
           </select>
-        </div> : null}
-        </header>
-        <ResultsBar
-            items={[]}
-            onRemove={key => filters.set({[key]: ""})}
-            onClear={clearFilters}
-            countLabel={countLabel}
-            tabs={<nav className="request-board-tabs" aria-label="მოთხოვნების ხედები">
-              {tabs.map(item => <Link key={item.id} href={tabHref(item.id)} scroll={false} aria-current={tab === item.id ? "page" : undefined}>{item.label}</Link>)}
-            </nav>}
+        </div>
+            </>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
               {value: "expiring", label: "მალე იწურება"},
               {value: "few", label: "ნაკლები პასუხი"},
             ]}}
           />
-      </div>
       <section aria-label="მოთხოვნების სია">
-          <div className="request-card-grid" key={tab}>
+          <div className="request-card-grid" ref={listRef}>
             {!available
               ? (
                   <ServiceUnavailable />
@@ -208,20 +220,14 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                 : rows.length === 0
                   ? (
                       <div className="ma-empty request-board-empty">
-                        <span className="ma-empty__icon">
-                          <Icon name="search" />
-                        </span>
                         <p className="ma-empty__text">{tab === "new" ? "ახალი მოთხოვნა ჯერ არ არის." : "მოთხოვნა ვერ მოიძებნა."}</p>
                         <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>
-                          საწყის ხედზე დაბრუნება
+                          ფილტრების გასუფთავება
                         </button>
                       </div>
                     )
                   : <>
-                      {variant === "a" && featuredRows.length > 0 ? <div className="request-tier-zone">
-                        {featuredRows.map((r, index) => <RequestRow entranceIndex={index} key={r.id} r={r} tier={requestDemoTier(r.title)} size="featured" priority />)}
-                      </div> : null}
-                      {compactRows.map((r, index) => <RequestRow entranceIndex={variant === "a" ? featuredRows.length + index : index} key={r.id} r={r} tier={requestDemoTier(r.title)} priority={index < 4} />)}
+                      {compactRows.map((r, index) => <RequestRow entranceIndex={index} key={r.id} r={r} tier={requestDemoTier(r.title)} priority={index < 4} />)}
                     </>}
           </div>
         </section>

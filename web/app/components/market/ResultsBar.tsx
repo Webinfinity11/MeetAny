@@ -37,7 +37,6 @@ export function ResultsBar({
   items,
   onRemove,
   onClear,
-  countLabel,
   filterButton,
   utility,
   tabs,
@@ -46,7 +45,6 @@ export function ResultsBar({
   items: ActiveFilterItem[];
   onRemove: (key: string) => void;
   onClear: () => void;
-  countLabel: string;
   filterButton?: React.ReactNode;
   utility?: React.ReactNode;
   tabs?: React.ReactNode;
@@ -57,9 +55,6 @@ export function ResultsBar({
       {tabs}
       <div className="r2-results-summary">
         <ActiveFilters items={items} onRemove={onRemove} onClear={onClear} />
-        <p className="ma-small ma-muted" role="status">
-          {countLabel}
-        </p>
       </div>
       <div className="r2-results-controls">
         {filterButton}
