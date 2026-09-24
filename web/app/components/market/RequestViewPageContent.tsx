@@ -20,6 +20,7 @@ import { MessageButton } from "./ChatPopup";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
+import { addressLabel, postedLabel } from "../../lib/format";
 
 // No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number). Omitting
 // price/priceType makes market-store.js's sendOffer() default to price:null,
@@ -104,6 +105,8 @@ export function RequestViewPageContent() {
   const [chooseId, setChooseId] = useState<string | null>(null);
   const [choosePending, setChoosePending] = useState(false);
   const [chooseError, setChooseError] = useState<string | null>(null);
+  const [now, setNow] = useState(0);
+  useEffect(() => { const timer = window.setTimeout(() => setNow(Date.now()), 0); return () => window.clearTimeout(timer); }, []);
   // Mark offers received since this author last visited the request.
   const [seen, setSeen] = useState<{id: string; at: string | null} | null>(null);
   const meId = store?.currentUser()?.id;
@@ -180,10 +183,13 @@ export function RequestViewPageContent() {
   const orderedOffers = [...offers].sort((a,b) => offerSort === "delivery" ? (a.deliveryDays ?? Infinity) - (b.deliveryDays ?? Infinity) : Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const daysLeft: number = state === "open" ? store?.daysLeft(r) ?? 0 : 0;
   const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
+  // The deadline lives in the facts and the aside; the meta says what, where and when it was posted.
+  const posted = postedLabel(r.createdAt, now);
+  const placeLine = [r.addressNote ? addressLabel(r.addressNote) : null, posted ? `გამოქვეყნდა ${posted}` : null].filter(Boolean).join(" · ");
   const headMeta = (
     <span className="detail-meta">
-      {[categories[r.category] || r.category, cities[r.city] || r.city, r.addressNote, `${offerCount} შეთავაზება`].filter(Boolean).join(" · ")}
-      {statusText ? <> · <span className={state === "open" && daysLeft <= 7 ? "detail-meta__urgent" : undefined}>{statusText}</span></> : null}
+      <span className="detail-meta__line">{[categories[r.category] || r.category, cities[r.city] || r.city].filter(Boolean).join(" · ")}</span>
+      {placeLine ? <><span className="detail-meta__sep" aria-hidden="true"> · </span><span className="detail-meta__line">{placeLine}</span></> : null}
     </span>
   );
   const shareUrl = typeof window === "undefined" ? "" : `${window.location.origin}/requests/view/?id=${encodeURIComponent(r.id)}`;
@@ -284,8 +290,8 @@ export function RequestViewPageContent() {
       ) : (
         <section className="detail-aside__block" aria-label="შეთავაზების გაგზავნა">
           <p className="detail-aside__text">შეთავაზების გასაგზავნად შედი კომპანიის ანგარიშით.</p>
-          <Link className="ma-btn ma-btn--primary detail-aside__primary" href="/account/">
-            შესვლა
+          <Link className="ma-btn ma-btn--primary detail-aside__primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}>
+            შეთავაზების გაგზავნა
           </Link>
           <Link className="detail-link" href="/account/?tab=register&role=company">
             კომპანიის რეგისტრაცია
@@ -312,16 +318,10 @@ export function RequestViewPageContent() {
             </dl>
             {r.photo ? <figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure> : null}
           </section>
-          <div className="detail-share" aria-label="გაზიარება" role="group">
-            <button type="button" className="detail-link" onClick={async () => {try {await navigator.clipboard.writeText(shareUrl); toast("ბმული დაკოპირდა.");} catch {setActionError("ბმული ვერ დაკოპირდა.");}}}>ბმულის კოპირება</button>
-            <span aria-hidden="true">·</span>
-            <a className="detail-link" href={`https://wa.me/?text=${encodeURIComponent(r.title + "\n" + shareUrl)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            <span aria-hidden="true">·</span>
-            <a className="detail-link" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer">Facebook</a>
-          </div>
           {actionError ? <p role="alert" className="ma-field__error">{actionError}</p> : null}
         </div>
         <aside className="request-detail-aside" aria-label="კონტაქტი და შეთავაზება">
+          <p className="request-detail-summary">{offerCount} შეთავაზება{statusText ? <> · <span className={state === "open" && daysLeft <= 7 ? "detail-meta__urgent" : undefined}>{statusText}</span></> : null}</p>
           {owner ? (
             <section className="request-author">
               <span className="detail-label">მოთხოვნის ავტორი</span>
@@ -331,6 +331,13 @@ export function RequestViewPageContent() {
             </section>
           ) : null}
           {!isOwner && me?.role !== "admin" ? responsePanel : null}
+          <div className="detail-share" role="group" aria-labelledby="detail-share-label">
+            <span className="detail-label" id="detail-share-label">გაზიარება</span>
+            <div className="detail-share__links">
+              <button type="button" className="detail-link" onClick={async () => {try {await navigator.clipboard.writeText(shareUrl); toast("ბმული დაკოპირდა.");} catch {setActionError("ბმული ვერ დაკოპირდა.");}}}>ბმულის კოპირება</button>
+              <a className="detail-link" href={`https://wa.me/?text=${encodeURIComponent(r.title + "\n" + shareUrl)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            </div>
+          </div>
         </aside>
       </div>
       {isOwner || me?.role === "admin" ? <section className="request-responses">{responsePanel}</section> : null}

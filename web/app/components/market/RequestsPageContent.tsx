@@ -14,6 +14,7 @@ import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
+import { postedLabel } from "../../lib/format";
 import { RequestFormSheet } from "./RequestFormSheet";
 
 type MappedRequest = {
@@ -155,6 +156,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         isOwn,
         ownOfferStatus,
         showOwnOfferBadge: me?.role === "company" && !isOwn,
+        posted: postedLabel(r.createdAt, now),
       };
     });
   }, [sorted, store, now]);
@@ -177,11 +179,12 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   // Desktop shows the choices inline; below 768px the same selects live in the filter sheet with visible labels.
   const choice = (placement: "desktop" | "mobile", kind: "category" | "city") => {
     const id = `request-${kind}-${placement}`, label = kind === "category" ? "კატეგორია" : "ქალაქი";
-    const select = <select className="ma-select" id={id} aria-label={placement === "desktop" ? label : undefined} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
-      <option value="">{kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
+    const select = <select className="ma-select" id={id} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
+      <option value="">{placement === "desktop" ? "ყველა" : kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
       {Object.entries(kind === "category" ? categories : cities).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
     </select>;
-    return placement === "desktop" ? select : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;
+    // Desktop reads like the sort control: "კატეგორია: ყველა".
+    return placement === "desktop" ? <div className="ma-field request-board-choice"><label htmlFor={id}>{label}:</label>{select}</div> : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;
   };
 
   const clearFilters = () => filters.set({city: "", category: "", q: "", sort: "", period: "", unanswered: "", photo: "", urgent: "", tab: ""});
@@ -226,10 +229,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                 : rows.length === 0
                   ? (
                       <div className="ma-empty request-board-empty">
-                        <p className="ma-empty__text">{tab === "new" ? "ახალი მოთხოვნა ჯერ არ არის." : "მოთხოვნა ვერ მოიძებნა."}</p>
-                        <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>
-                          ფილტრების გასუფთავება
-                        </button>
+                        <p className="ma-empty__text">{tab === "new" ? "ახალი მოთხოვნა ჯერ არ არის." : "ამ პირობით მოთხოვნა არ არის."}</p>
+                        <button type="button" className="request-board-reset" onClick={clearFilters}>ფილტრების გასუფთავება</button>
                       </div>
                     )
                   : <>

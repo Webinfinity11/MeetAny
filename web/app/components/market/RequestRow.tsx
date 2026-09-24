@@ -23,6 +23,8 @@ export type RequestRowData = {
   isOwn: boolean;
   ownOfferStatus?: string | null;
   showOwnOfferBadge: boolean;
+  /** "დღეს" / "გუშინ" / "N დღის წინ", from createdAt; null before the client clock is known. */
+  posted?: string | null;
 };
 
 export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: RequestRowData; priority?: boolean; tier?: RequestTier; entranceIndex?: number }) {
@@ -39,12 +41,14 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
   return (
     <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       <div className="request-card-content">
-        {tier ? <span className={`request-tier-badge request-tier-badge--${tier}`}>{tier === "vip" ? "VIP" : "ტოპ"}</span> : null}
+        {tier === "vip" ? <span className="request-tier-badge request-tier-badge--vip">VIP</span> : tier === "top" ? <span className="request-tier-label">ტოპ</span> : null}
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         <p className="request-card-meta">
           {[categories[r.category] || r.category, r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}
-          {r.isNew ? <> · <span className="request-tier-badge--new">ახალი</span></> : null}
-          <span className="request-card-meta-status"> · <span>{r.offerCount} შეთავაზება</span>{deadline ? <> · <span className={urgent ? "request-card-meta-urgent" : undefined}>{deadline}</span></> : null}</span>
+          {/* Below 768px the offers column folds into the meta line; zero offers says nothing. */}
+          <span className="request-card-meta-status">{r.offerCount > 0 ? <> · <span>{r.offerCount} შეთავაზება</span></> : null}{deadline ? <> · <span className={urgent ? "request-card-meta-urgent" : undefined}>{deadline}</span></> : null}</span>
+          {r.posted ? <> · <span className="request-card-posted">{r.posted}</span></> : null}
+          {r.isNew ? <span className="request-card-new">ახალი</span> : null}
         </p>
       {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card-badges">
         {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
@@ -55,9 +59,8 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
         <img src={r.photo} alt="" width={240} height={160} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
       </div> : null}
       <div className="request-card-status">
-        {/* No offers yet reads as a soft "new", not "0"; left empty when the "new" badge already says so or the request is no longer open. */}
-        {r.offerCount > 0 ? <span className="request-card-offers"><strong>{r.offerCount}</strong> <span>შეთავაზება</span></span>
-          : r.isNew || r.state !== "open" ? null : <span className="request-card-offers--none">ახალი</span>}
+        {/* No offers yet leaves the column empty; "new" is said once, in the meta line. */}
+        {r.offerCount > 0 ? <span className="request-card-offers"><strong>{r.offerCount}</strong> <span>შეთავაზება</span></span> : null}
         {deadline ? <span className={urgent ? "request-card-urgent" : undefined}>{deadline}</span> : null}
       </div>
     </article>

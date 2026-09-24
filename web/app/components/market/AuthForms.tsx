@@ -8,9 +8,15 @@ import { PageBand } from "./PageBand";
 
 type Mode = "login" | "register" | "reset";
 
+// "?next=" after sign-in: a same-origin path only ("/x", never "//host" or "/\\host").
+function safeNext(value: string | null): string | null {
+  return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\") ? value : null;
+}
+
 function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () => void }) {
   const { store } = useMarketStore();
   const router = useRouter();
+  const next = safeNext(useSearchParams().get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
@@ -23,8 +29,9 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
     setError(null);
     try {
       await store.login(email, password);
-      router.refresh();
       window.dispatchEvent(new Event("meetany:auth"));
+      if (next && store.currentUser()) router.push(next);
+      else router.refresh();
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "შესვლა ვერ მოხერხდა.");
       window.dispatchEvent(new Event("meetany:auth"));

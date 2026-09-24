@@ -40,3 +40,17 @@ export function dateLabel(value: string): string {
   const [y, m, d] = value.slice(0, 10).split("-").map(Number);
   return `${d} ${MONTHS[m - 1]}, ${y}`;
 }
+
+// "დღეს" / "გუშინ" / "3 დღის წინ" — calendar days between a timestamp and `now` (local time).
+export function postedLabel(value: string, now: number): string | null {
+  const created = Date.parse(value);
+  if (!now || Number.isNaN(created)) return null;
+  const day = (t: number) => { const d = new Date(t); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); };
+  const days = Math.max(0, Math.round((day(now) - day(created)) / 86400000));
+  return days === 0 ? "დღეს" : days === 1 ? "გუშინ" : `${days} დღის წინ`;
+}
+
+// Keeps a street abbreviation with its number: "გორგილაძის ქ. 31" never breaks after "ქ.".
+export function addressLabel(value: string): string {
+  return value.replace(/(ქ\.|გამზ\.|ჩიხი|შესახ\.)\s+(?=\d)/g, "$1 ");
+}
