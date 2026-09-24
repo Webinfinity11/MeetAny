@@ -1,0 +1,4768 @@
+{
+ "LOGIN-1440": {
+  "scrollW": 1440,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     120,
+     121,
+     1200,
+     40
+    ],
+    "fs": "32px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     120,
+     169,
+     53,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "რეგისტრაცია",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     197,
+     169,
+     95,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ელფოსტა",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     246,
+     456,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     120,
+     274,
+     456,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "პაროლი",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     338,
+     59,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პაროლი დაგავიწყდა?",
+    "tag": "BUTTON",
+    "cls": "auth-link",
+    "box": [
+     423,
+     327,
+     153,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     120,
+     366,
+     456,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ჩვენება",
+    "tag": "BUTTON",
+    "cls": "auth-password__toggle",
+    "box": [
+     497,
+     366,
+     79,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "BUTTON",
+    "cls": "ma-btn ma-btn--primary ma-btn--block",
+    "box": [
+     120,
+     434,
+     456,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   }
+  ]
+ },
+ "LOGIN-EMPTY": "შესვლა\nშესვლა\nრეგისტრაცია\nელფოსტა\n\nჩაწერე სწორი ელფოსტა\n\nპაროლი\nპაროლი დაგავიწყდა?\nჩვენება\n\nმიუთითე პაროლი\n\nშესვლა",
+ "LOGIN-ERR": "შესვლა\nშესვლა\nრეგისტრაცია\nელფოსტა\n\nჩაწერე სწორი ელფოსტა\n\nპაროლი\nპაროლი დაგავიწყდა?\nჩვენება\n\nშესვლა",
+ "REG-1440": {
+  "scrollW": 1440,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "რეგისტრაცია",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     120,
+     121,
+     1200,
+     40
+    ],
+    "fs": "32px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     120,
+     169,
+     53,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "რეგისტრაცია",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     197,
+     169,
+     95,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მჭირდება მომსახურება ან პროდუქცია",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     120,
+     268,
+     298,
+     44
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     120,
+     281,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვთავაზობ მომსახურებას ან პროდუქციას",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     120,
+     320,
+     313,
+     44
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     120,
+     333,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სახელი და გვარი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     384,
+     220,
+     33
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     120,
+     423,
+     220,
+     55
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "კომპანია / ობიექტი არასავალდებულო",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     356,
+     384,
+     220,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     356,
+     434,
+     220,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "მობილური ტელეფონი * ნომერი საჯაროდ გამოჩ",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     498,
+     220,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "+995 ",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     120,
+     548,
+     220,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ელფოსტა *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     356,
+     498,
+     220,
+     33
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     356,
+     537,
+     220,
+     55
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ქალაქი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     612,
+     220,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "თბილისი | ბათუმი | ქუთაისი | რუსთავი | ზუგდიდი | თ",
+    "tag": "SELECT",
+    "cls": "ma-select",
+    "box": [
+     120,
+     640,
+     220,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": "url(\"data:image/svg+xml,%3Csvg xmlns='ht"
+   },
+   {
+    "t": "პაროლი * მინიმუმ 8 სიმბოლო",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     704,
+     456,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     120,
+     732,
+     456,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ჩვენება",
+    "tag": "BUTTON",
+    "cls": "auth-password__toggle",
+    "box": [
+     497,
+     732,
+     79,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ვეთანხმები წესებსა და პერსონალური მონაცე",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     120,
+     796,
+     456,
+     64
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     120,
+     819,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ანგარიშის შექმნა",
+    "tag": "BUTTON",
+    "cls": "ma-btn ma-btn--primary ma-btn--block",
+    "box": [
+     120,
+     884,
+     456,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   }
+  ]
+ },
+ "REG-EMPTY": "რეგისტრაცია\nშესვლა\nრეგისტრაცია\nვინ ხარ?\nმჭირდება მომსახურება ან პროდუქცია\nვთავაზობ მომსახურებას ან პროდუქციას\nსახელი და გვარი *\n\nმიუთითე სახელი და გვარი\n\nკომპანია / ობიექტი არასავალდებულო\nმობილური ტელეფონი * ნომერი საჯაროდ გამოჩნდება\n\nჩაწერე მობილურის ნომერი\n\nელფოსტა *\n\nჩაწერე სწორი ელფოსტა\n\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nპაროლი * მინიმუმ 8 სიმბოლო\nჩვენება\n\nმიუთითე პაროლი\n\nვეთანხმები წესებსა და პერსონალური მონაცემების დამუშავებას\n\nრეგისტრაციისთვის დაეთანხმე წესებს\n\nანგარიშის შექმნა",
+ "REG-ERR": "რეგისტრაცია\nშესვლა\nრეგისტრაცია\nვინ ხარ?\nმჭირდება მომსახურება ან პროდუქცია\nვთავაზობ მომსახურებას ან პროდუქციას\nსახელი და გვარი *\n\nმიუთითე სახელი და გვარი\n\nკომპანია / ობიექტი არასავალდებულო\nმობილური ტელეფონი * ნომერი საჯაროდ გამოჩნდება\n\nჩაწერე მობილურის ნომერი\n\nელფოსტა *\n\nჩაწერე სწორი ელფოსტა\n\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nპაროლი * მინიმუმ 8 სიმბოლო\nჩვენება\n\nმიუთითე პაროლი\n\nვეთანხმები წესებსა და პერსონალური მონაცემების დამუშავებას\n\nრეგისტრაციისთვის დაეთანხმე წესებს\n\nანგარიშის შექმნა",
+ "LOGIN-390": {
+  "scrollW": 390,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     16,
+     97,
+     358,
+     32
+    ],
+    "fs": "24px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     16,
+     137,
+     53,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "რეგისტრაცია",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     93,
+     137,
+     95,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ელფოსტა",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     206,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     234,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "პაროლი",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     298,
+     59,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პაროლი დაგავიწყდა?",
+    "tag": "BUTTON",
+    "cls": "auth-link",
+    "box": [
+     221,
+     287,
+     153,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     326,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ჩვენება",
+    "tag": "BUTTON",
+    "cls": "auth-password__toggle",
+    "box": [
+     295,
+     326,
+     79,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "BUTTON",
+    "cls": "ma-btn ma-btn--primary ma-btn--block",
+    "box": [
+     16,
+     394,
+     358,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   }
+  ]
+ },
+ "REG-390": {
+  "scrollW": 390,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "რეგისტრაცია",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     16,
+     97,
+     358,
+     32
+    ],
+    "fs": "24px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შესვლა",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     16,
+     137,
+     53,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "რეგისტრაცია",
+    "tag": "BUTTON",
+    "cls": "ma-tab",
+    "box": [
+     93,
+     137,
+     95,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მჭირდება მომსახურება ან პროდუქცია",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     16,
+     228,
+     298,
+     44
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     16,
+     241,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვთავაზობ მომსახურებას ან პროდუქციას",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     16,
+     280,
+     313,
+     44
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     16,
+     293,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სახელი და გვარი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     344,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     372,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "კომპანია / ობიექტი არასავალდებულო",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     432,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     460,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "მობილური ტელეფონი * ნომერი საჯაროდ გამოჩ",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     524,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "+995 ",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     552,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ელფოსტა *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     612,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     640,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ქალაქი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     704,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "თბილისი | ბათუმი | ქუთაისი | რუსთავი | ზუგდიდი | თ",
+    "tag": "SELECT",
+    "cls": "ma-select",
+    "box": [
+     16,
+     732,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": "url(\"data:image/svg+xml,%3Csvg xmlns='ht"
+   },
+   {
+    "t": "პაროლი * მინიმუმ 8 სიმბოლო",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     796,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     824,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ჩვენება",
+    "tag": "BUTTON",
+    "cls": "auth-password__toggle",
+    "box": [
+     295,
+     824,
+     79,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ვეთანხმები წესებსა და პერსონალური მონაცე",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     16,
+     888,
+     358,
+     64
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     16,
+     911,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ანგარიშის შექმნა",
+    "tag": "BUTTON",
+    "cls": "ma-btn ma-btn--primary ma-btn--block",
+    "box": [
+     16,
+     976,
+     358,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   }
+  ]
+ },
+ "account-1440": {
+  "scrollW": 1440,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "17px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი ანგარიში",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     120,
+     121,
+     1200,
+     40
+    ],
+    "fs": "32px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნები (3)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     120,
+     169,
+     110,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენახული (0)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     254,
+     169,
+     90,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მიმოწერები (1)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     368,
+     169,
+     106,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილი",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     498,
+     169,
+     71,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმრო „ლეგენდა“",
+    "tag": "H2",
+    "cls": "account-profile__name",
+    "box": [
+     120,
+     246,
+     300,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილის რედაქტირება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     120,
+     436,
+     180,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი მოთხოვნები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     460,
+     254,
+     199,
+     28
+    ],
+    "fs": "20px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნის დამატება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     1167,
+     246,
+     153,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროს საერთო სივრცის გენერალური დასუ",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     319,
+     420,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროს საერთო სივრცის გენერალური დასუ",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     321,
+     382,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვადის გაგრძელება +7 დღე",
+    "tag": "BUTTON",
+    "cls": "account-link",
+    "box": [
+     1137,
+     330,
+     183,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     430,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     432,
+     333,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვადის გაგრძელება +7 დღე",
+    "tag": "BUTTON",
+    "cls": "account-link",
+    "box": [
+     1137,
+     441,
+     183,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     537,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     539,
+     391,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   }
+  ]
+ },
+ "account-TEXT-1440": "ჩემი ანგარიში\nმოთხოვნები (3)\nშენახული (0)\nმიმოწერები (1)\nპროფილი\nსასტუმრო „ლეგენდა“\n\nნინო ბერიძე · კლიენტი\n\nქალაქი\nბათუმი\nტელეფონი\n+995 593 274 186\nელფოსტა\ndemo-hotel@meetany.ge\nპროფილის რედაქტირება\nჩემი მოთხოვნები\nმოთხოვნის დამატება\nსასტუმროს საერთო სივრცის გენერალური დასუფთავება\n\nდასუფთავება და მოვლა · ბათუმი · გამოქვეყნდა 2 დღის წინ\n\n2 შეთავაზება\n2 ახალი\nკიდევ 19 დღე\nვადის გაგრძელება +7 დღე\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\nლოგისტიკა და დისტრიბუცია · ბათუმი · გამოქვეყნდა 6 დღის წინ\n\n5 შეთავაზება\n5 ახალი\nკიდევ 26 დღე\nვადის გაგრძელება +7 დღე\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\nტექსტილი და სასტუმროები · ბათუმი · გამოქვეყნდა 9 დღის წინ\n\n3 შეთავაზება\nმომწოდებელი არჩეულია",
+ "PROFILE-1440": {
+  "scrollW": 1440,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "17px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი ანგარიში",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     120,
+     121,
+     1200,
+     40
+    ],
+    "fs": "32px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნები (3)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     120,
+     169,
+     110,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენახული (0)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     254,
+     169,
+     90,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მიმოწერები (1)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     368,
+     169,
+     106,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილი",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     498,
+     169,
+     71,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პირადი მონაცემები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     120,
+     246,
+     900,
+     28
+    ],
+    "fs": "20px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სახელი და გვარი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     320,
+     289,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ნინო ბერიძე",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     120,
+     348,
+     289,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "კომპანია / ორგანიზაცია",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     425,
+     320,
+     289,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმრო „ლეგენდა“",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     425,
+     348,
+     289,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ქალაქი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     731,
+     320,
+     289,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "თბილისი | ბათუმი | ქუთაისი | რუსთავი | ზუგდიდი | თ",
+    "tag": "SELECT",
+    "cls": "ma-select",
+    "box": [
+     731,
+     348,
+     289,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": "url(\"data:image/svg+xml,%3Csvg xmlns='ht"
+   },
+   {
+    "t": "ტელეფონი",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     120,
+     412,
+     289,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "+995 593 274 186",
+    "tag": "INPUT",
+    "cls": "ma-input ma-input--num",
+    "box": [
+     120,
+     440,
+     289,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ელფოსტა",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     425,
+     412,
+     595,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "demo-hotel@meetany.ge",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     425,
+     440,
+     595,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "შენახვა",
+    "tag": "BUTTON",
+    "cls": "ma-btn ma-btn--primary",
+    "box": [
+     120,
+     596,
+     99,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "account-link",
+    "box": [
+     120,
+     652,
+     52,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შეტყობინებები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     120,
+     736,
+     900,
+     28
+    ],
+    "fs": "20px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შეთავაზებების შესახებ ელფოსტითაც შემატყო",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     120,
+     780,
+     900,
+     44
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     120,
+     793,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     856,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     999,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     1142,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     1285,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     1428,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     1571,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     1714,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     1857,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     2000,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     120,
+     2143,
+     900,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   }
+  ]
+ },
+ "PROFILE-TEXT-1440": "ჩემი ანგარიში\nმოთხოვნები (3)\nშენახული (0)\nმიმოწერები (1)\nპროფილი\nპირადი მონაცემები\n\nსახელი და კომპანია ჩანს შენს მოთხოვნებზე.\n\nსახელი და გვარი *\nკომპანია / ორგანიზაცია\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\n\nტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.\n\nშენახვა\nგასვლა\nშეტყობინებები\nშეთავაზებების შესახებ ელფოსტითაც შემატყობინე\n— მალე დაემატება\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 20:59\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 20:59\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროს საერთო სივრცის გენერალური დასუფთავება\n\n24.09.2026, 20:58\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროს საერთო სივრცის გენერალური დასუფთავება\n\n24.09.2026, 20:58\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 18:59\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\n24.09.2026, 18:36",
+ "FORM-1440": {
+  "dlg": [
+   400,
+   99,
+   640,
+   803
+  ],
+  "scrollH": 803,
+  "ch": 803,
+  "text": "ახალი მოთხოვნა\nრა გჭირდება\nსათაური *\nკატეგორია *\nაირჩიე კატეგორია\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nაღწერა *\nდეტალები\nარასავალდებულო\nრაოდენობა\nცალი\nმ²\nკგ\nსაათი\nსერვისი\nსაჭიროა თარიღამდე\nრაიონი / ორიენტირი\nფოტო JPG, PNG, WEBP, GIF\nაირჩიე ფოტო ან ჩააგდე აქ\n\nმოთხოვნა 14 დღე იქნება აქტიური. ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.\n\nგაუქმება\nგამოქვეყნება",
+  "els": [
+   {
+    "t": "ახალი მოთხოვნა",
+    "tag": "H2",
+    "box": [
+     424,
+     119,
+     548,
+     28
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "box": [
+     984,
+     111,
+     44,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "სათაური *",
+    "tag": "LABEL",
+    "box": [
+     424,
+     222,
+     592,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     424,
+     250,
+     592,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "კატეგორია *",
+    "tag": "LABEL",
+    "box": [
+     424,
+     310,
+     288,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "აირჩიე კატეგორია\nავეჯი და ინვე",
+    "tag": "SELECT",
+    "box": [
+     424,
+     338,
+     288,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "ქალაქი *",
+    "tag": "LABEL",
+    "box": [
+     728,
+     310,
+     288,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "თბილისი\nბათუმი\nქუთაისი\nრუსთავი",
+    "tag": "SELECT",
+    "box": [
+     728,
+     338,
+     288,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "აღწერა *",
+    "tag": "LABEL",
+    "box": [
+     424,
+     398,
+     592,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "TEXTAREA",
+    "box": [
+     424,
+     426,
+     592,
+     132
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "რაოდენობა",
+    "tag": "LABEL",
+    "box": [
+     424,
+     629,
+     288,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     425,
+     658,
+     167,
+     42
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "ცალი\nმ²\nკგ\nსაათი\nსერვისი",
+    "tag": "SELECT",
+    "box": [
+     592,
+     658,
+     119,
+     42
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "საჭიროა თარიღამდე",
+    "tag": "LABEL",
+    "box": [
+     728,
+     629,
+     288,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     728,
+     657,
+     288,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "რაიონი / ორიენტირი",
+    "tag": "LABEL",
+    "box": [
+     424,
+     717,
+     288,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "მაგ. საბურთალო, ვაჟა-ფშაველას ",
+    "tag": "INPUT",
+    "box": [
+     424,
+     745,
+     288,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "აირჩიე ფოტო ან ჩააგდე აქ",
+    "tag": "LABEL",
+    "box": [
+     728,
+     745,
+     288,
+     72
+    ],
+    "rad": "10px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     729,
+     746,
+     286,
+     70
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "გაუქმება",
+    "tag": "BUTTON",
+    "box": [
+     789,
+     846,
+     62,
+     44
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "გამოქვეყნება",
+    "tag": "BUTTON",
+    "box": [
+     871,
+     846,
+     145,
+     44
+    ],
+    "rad": "6px"
+   }
+  ]
+ },
+ "FORM-ERR-1440": "ახალი მოთხოვნა\nრა გჭირდება\nსათაური *\n\nმიუთითე სათაური\n\nკატეგორია *\nაირჩიე კატეგორია\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\n\nაირჩიე კატეგორია\n\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nაღწერა *\n\nაღწერე, რა გჭირდება\n\nდეტალები\nარასავალდებულო\nრაოდენობა\nცალი\nმ²\nკგ\nსაათი\nსერვისი\nსაჭიროა თარიღამდე\nრაიონი / ორიენტირი\nფოტო JPG, PNG, WEBP, GIF\nაირჩიე ფოტო ან ჩააგდე აქ\n\nმოთხოვნა 14 დღე იქნება აქტიური. ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.\n\nგაუქმება\nგამოქვეყნება",
+ "account-390": {
+  "scrollW": 390,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "17px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი ანგარიში",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     16,
+     97,
+     358,
+     32
+    ],
+    "fs": "24px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნები (3)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     16,
+     137,
+     110,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენახული (0)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     150,
+     137,
+     90,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მიმოწერები (1)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     264,
+     137,
+     106,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილი",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     394,
+     137,
+     71,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმრო „ლეგენდა“",
+    "tag": "H2",
+    "cls": "account-profile__name",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილის რედაქტირება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი მოთხოვნები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     16,
+     245,
+     179,
+     26
+    ],
+    "fs": "18px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნის დამატება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     221,
+     236,
+     153,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროს საერთო სივრცის გენერალური დასუ",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     309,
+     358,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროს საერთო სივრცის გენერალური დასუ",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     311,
+     261,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვადის გაგრძელება +7 დღე",
+    "tag": "BUTTON",
+    "cls": "account-link",
+    "box": [
+     127,
+     428,
+     183,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     494,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     496,
+     333,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვადის გაგრძელება +7 დღე",
+    "tag": "BUTTON",
+    "cls": "account-link",
+    "box": [
+     127,
+     587,
+     183,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     653,
+     358,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     655,
+     283,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   }
+  ]
+ },
+ "account-TEXT-390": "ჩემი ანგარიში\nმოთხოვნები (3)\nშენახული (0)\nმიმოწერები (1)\nპროფილი\n\nსასტუმრო „ლეგენდა“ · კლიენტი\n\nჩემი მოთხოვნები\nმოთხოვნის დამატება\nსასტუმროს საერთო სივრცის გენერალური დასუფთავება\n\nდასუფთავება და მოვლა · ბათუმი · გამოქვეყნდა 2 დღის წინ\n\n2 შეთავაზება\n2 ახალი\nკიდევ 19 დღე\nვადის გაგრძელება +7 დღე\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\nლოგისტიკა და დისტრიბუცია · ბათუმი · გამოქვეყნდა 6 დღის წინ\n\n5 შეთავაზება\n5 ახალი\nკიდევ 26 დღე\nვადის გაგრძელება +7 დღე\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\nტექსტილი და სასტუმროები · ბათუმი · გამოქვეყნდა 9 დღის წინ\n\n3 შეთავაზება\nმომწოდებელი არჩეულია",
+ "PROFILE-390": {
+  "scrollW": 390,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "17px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი ანგარიში",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     16,
+     97,
+     358,
+     32
+    ],
+    "fs": "24px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნები (3)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     16,
+     137,
+     110,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენახული (0)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     150,
+     137,
+     90,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მიმოწერები (1)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     264,
+     137,
+     106,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილი",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     394,
+     137,
+     71,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პირადი მონაცემები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     16,
+     206,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სახელი და გვარი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     278,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ნინო ბერიძე",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     306,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "კომპანია / ორგანიზაცია",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     366,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმრო „ლეგენდა“",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     394,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ქალაქი *",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     454,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "თბილისი | ბათუმი | ქუთაისი | რუსთავი | ზუგდიდი | თ",
+    "tag": "SELECT",
+    "cls": "ma-select",
+    "box": [
+     16,
+     482,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": "url(\"data:image/svg+xml,%3Csvg xmlns='ht"
+   },
+   {
+    "t": "ტელეფონი",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     546,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "+995 593 274 186",
+    "tag": "INPUT",
+    "cls": "ma-input ma-input--num",
+    "box": [
+     16,
+     574,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "ელფოსტა",
+    "tag": "LABEL",
+    "cls": "ma-field__label",
+    "box": [
+     16,
+     684,
+     358,
+     22
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "demo-hotel@meetany.ge",
+    "tag": "INPUT",
+    "cls": "ma-input",
+    "box": [
+     16,
+     712,
+     358,
+     44
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "შენახვა",
+    "tag": "BUTTON",
+    "cls": "ma-btn ma-btn--primary",
+    "box": [
+     16,
+     840,
+     99,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "6px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "account-link",
+    "box": [
+     16,
+     896,
+     52,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შეტყობინებები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     16,
+     980,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შეთავაზებების შესახებ ელფოსტითაც შემატყო",
+    "tag": "LABEL",
+    "cls": "ma-check",
+    "box": [
+     16,
+     1022,
+     358,
+     64
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "on",
+    "tag": "INPUT",
+    "cls": "",
+    "box": [
+     16,
+     1045,
+     18,
+     18
+    ],
+    "fs": "14px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     1118,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     1261,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     1404,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     1573,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     1742,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     1885,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     2028,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     2171,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     2314,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ახალი შეთავაზება მიიღე | — წაუკითხავი",
+    "tag": "A",
+    "cls": "",
+    "box": [
+     16,
+     2457,
+     358,
+     26
+    ],
+    "fs": "16px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   }
+  ]
+ },
+ "PROFILE-TEXT-390": "ჩემი ანგარიში\nმოთხოვნები (3)\nშენახული (0)\nმიმოწერები (1)\nპროფილი\nპირადი მონაცემები\n\nსახელი და კომპანია ჩანს შენს მოთხოვნებზე.\n\nსახელი და გვარი *\nკომპანია / ორგანიზაცია\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\n\nტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.\n\nშენახვა\nგასვლა\nშეტყობინებები\nშეთავაზებების შესახებ ელფოსტითაც შემატყობინე\n— მალე დაემატება\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 20:59\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 20:59\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროს საერთო სივრცის გენერალური დასუფთავება\n\n24.09.2026, 20:58\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროს საერთო სივრცის გენერალური დასუფთავება\n\n24.09.2026, 20:58\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 18:59\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\n24.09.2026, 18:36\nახალი შეთავაზება მიიღე\n— წაუკითხავი\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\n24.09.2026, 18:36",
+ "FORM-390": {
+  "dlg": [
+   0,
+   0,
+   390,
+   844
+  ],
+  "scrollH": 844,
+  "ch": 844,
+  "text": "ახალი მოთხოვნა\nრა გჭირდება\nსათაური *\nკატეგორია *\nაირჩიე კატეგორია\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nაღწერა *\nდეტალები\nარასავალდებულო\nრაოდენობა\nცალი\nმ²\nკგ\nსაათი\nსერვისი\nსაჭიროა თარიღამდე\nრაიონი / ორიენტირი\nფოტო JPG, PNG, WEBP, GIF\nაირჩიე ფოტო ან ჩააგდე აქ\n\nმოთხოვნა 14 დღე იქნება აქტიური.\n\nგაუქმება\nგამოქვეყნება",
+  "els": [
+   {
+    "t": "ახალი მოთხოვნა",
+    "tag": "H2",
+    "box": [
+     16,
+     21,
+     306,
+     26
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "box": [
+     334,
+     12,
+     44,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "სათაური *",
+    "tag": "LABEL",
+    "box": [
+     16,
+     123,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     16,
+     151,
+     358,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "კატეგორია *",
+    "tag": "LABEL",
+    "box": [
+     16,
+     211,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "აირჩიე კატეგორია\nავეჯი და ინვე",
+    "tag": "SELECT",
+    "box": [
+     16,
+     239,
+     358,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "ქალაქი *",
+    "tag": "LABEL",
+    "box": [
+     16,
+     299,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "თბილისი\nბათუმი\nქუთაისი\nრუსთავი",
+    "tag": "SELECT",
+    "box": [
+     16,
+     327,
+     358,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "აღწერა *",
+    "tag": "LABEL",
+    "box": [
+     16,
+     387,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "TEXTAREA",
+    "box": [
+     16,
+     415,
+     358,
+     132
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "რაოდენობა",
+    "tag": "LABEL",
+    "box": [
+     16,
+     618,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     17,
+     647,
+     237,
+     42
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "ცალი\nმ²\nკგ\nსაათი\nსერვისი",
+    "tag": "SELECT",
+    "box": [
+     254,
+     647,
+     119,
+     42
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "საჭიროა თარიღამდე",
+    "tag": "LABEL",
+    "box": [
+     16,
+     706,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     16,
+     734,
+     358,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "რაიონი / ორიენტირი",
+    "tag": "LABEL",
+    "box": [
+     16,
+     794,
+     358,
+     22
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "მაგ. საბურთალო, ვაჟა-ფშაველას ",
+    "tag": "INPUT",
+    "box": [
+     16,
+     822,
+     358,
+     44
+    ],
+    "rad": "6px"
+   },
+   {
+    "t": "აირჩიე ფოტო ან ჩააგდე აქ",
+    "tag": "LABEL",
+    "box": [
+     16,
+     910,
+     358,
+     72
+    ],
+    "rad": "10px"
+   },
+   {
+    "t": "",
+    "tag": "INPUT",
+    "box": [
+     17,
+     911,
+     356,
+     70
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "გაუქმება",
+    "tag": "BUTTON",
+    "box": [
+     16,
+     788,
+     358,
+     44
+    ],
+    "rad": "0px"
+   },
+   {
+    "t": "გამოქვეყნება",
+    "tag": "BUTTON",
+    "box": [
+     16,
+     736,
+     358,
+     52
+    ],
+    "rad": "6px"
+   }
+  ]
+ },
+ "FORM-ERR-390": "ახალი მოთხოვნა\nრა გჭირდება\nსათაური *\n\nმიუთითე სათაური\n\nკატეგორია *\nაირჩიე კატეგორია\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\n\nაირჩიე კატეგორია\n\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nაღწერა *\n\nაღწერე, რა გჭირდება\n\nდეტალები\nარასავალდებულო\nრაოდენობა\nცალი\nმ²\nკგ\nსაათი\nსერვისი\nსაჭიროა თარიღამდე\nრაიონი / ორიენტირი\nფოტო JPG, PNG, WEBP, GIF\nაირჩიე ფოტო ან ჩააგდე აქ\n\nმოთხოვნა 14 დღე იქნება აქტიური.\n\nგაუქმება\nგამოქვეყნება",
+ "account-company-1440": {
+  "scrollW": 1440,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "17px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი ანგარიში",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     120,
+     121,
+     1200,
+     40
+    ],
+    "fs": "32px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შეთავაზებები (7)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     120,
+     169,
+     118,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენახული (0)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     262,
+     169,
+     90,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მიმოწერები",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     376,
+     169,
+     85,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილი",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     485,
+     169,
+     71,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "რეგიონის მომარაგება",
+    "tag": "H2",
+    "cls": "account-profile__name",
+    "box": [
+     120,
+     246,
+     300,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილის რედაქტირება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     120,
+     475,
+     180,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "საჯარო პროფილი",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     120,
+     519,
+     126,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი შეთავაზებები (7)",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     460,
+     246,
+     860,
+     28
+    ],
+    "fs": "20px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     303,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     305,
+     289,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     388,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     390,
+     338,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "საჭიროა 800 მუყაოს ყუთი 6 ბოთლზე",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     473,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "საჭიროა 800 მუყაოს ყუთი 6 ბოთლზე",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     475,
+     332,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     558,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     560,
+     333,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     665,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     667,
+     391,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "12 პალეტის გადაზიდვა თბილისიდან ქუთაისში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     750,
+     420,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "12 პალეტის გადაზიდვა თბილისიდან ქუთაისში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     752,
+     332,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     883,
+     420,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     885,
+     321,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენი მიმართულების მოთხოვნები (4)",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     460,
+     1000,
+     409,
+     28
+    ],
+    "fs": "20px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ყველა მოთხოვნა",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     1198,
+     992,
+     122,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "8 ლითონის თარო სათადარიგო ნაწილებისთვის",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     1065,
+     860,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "8 ლითონის თარო სათადარიგო ნაწილებისთვის",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     1067,
+     433,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     1150,
+     860,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     1152,
+     289,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     1235,
+     860,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     1237,
+     338,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     460,
+     1320,
+     860,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     460,
+     1322,
+     321,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი მოთხოვნები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     460,
+     1429,
+     199,
+     28
+    ],
+    "fs": "20px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნის დამატება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     460,
+     1495,
+     153,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   }
+  ]
+ },
+ "account-company-TEXT-1440": "ჩემი ანგარიში\nშეთავაზებები (7)\nშენახული (0)\nმიმოწერები\nპროფილი\nრეგიონის მომარაგება\n\nლევან მამულაშვილი · კომპანია\n\nქალაქი\nქუთაისი\nტელეფონი\n+995 577 265 031\nელფოსტა\ndemo-supply@meetany.ge\nმიმართულება\nავეჯი და ინვენტარი\nპროფილის რედაქტირება\nსაჯარო პროფილი\nჩემი შეთავაზებები (7)\n10 კომპაქტური ხის მაგიდა 70×70\n\nავეჯი და ინვენტარი · თბილისი · გაიგზავნა დღეს\n\nვეძებთ 24 ხის სკამს მარნის ტერასაზე\n\nავეჯი და ინვენტარი · თელავი · გაიგზავნა გუშინ\n\nსაჭიროა 800 მუყაოს ყუთი 6 ბოთლზე\n\nშეფუთვა და წარმოება · თელავი · გაიგზავნა 3 დღის წინ\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\nლოგისტიკა და დისტრიბუცია · ბათუმი · გაიგზავნა 5 დღის წინ\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\nტექსტილი და სასტუმროები · ბათუმი · გაიგზავნა 6 დღის წინ\n\nარ აირჩიეს\n12 პალეტის გადაზიდვა თბილისიდან ქუთაისში\n\nლოგისტიკა და დისტრიბუცია · ქუთაისი · გაიგზავნა 10 დღის წინ\n\n3 დივანი კლიენტების მოსაცდელში\n\nავეჯი და ინვენტარი · რუსთავი · გაიგზავნა 19 დღის წინ\n\nშენი მიმართულების მოთხოვნები (4)\nყველა მოთხოვნა\n8 ლითონის თარო სათადარიგო ნაწილებისთვის\n\nავეჯი და ინვენტარი · რუსთავი · გამოქვეყნდა დღეს\n\n10 კომპაქტური ხის მაგიდა 70×70\n\nავეჯი და ინვენტარი · თბილისი · გამოქვეყნდა გუშინ\n\nვეძებთ 24 ხის სკამს მარნის ტერასაზე\n\nავეჯი და ინვენტარი · თელავი · გამოქვეყნდა 4 დღის წინ\n\n3 დივანი კლიენტების მოსაცდელში\n\nავეჯი და ინვენტარი · რუსთავი · გამოქვეყნდა 20 დღის წინ\n\nჩემი მოთხოვნები\n\nმოთხოვნა ჯერ არ გაქვს — კომპანიები შეთავაზებას პირობებით გამოგიგზავნიან.\n\nმოთხოვნის დამატება",
+ "account-company-390": {
+  "scrollW": 390,
+  "els": [
+   {
+    "t": "",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__close",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "16px",
+    "fw": "400",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "გასვლა",
+    "tag": "BUTTON",
+    "cls": "ma-mnav__link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "17px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "10px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი ანგარიში",
+    "tag": "H1",
+    "cls": "ma-h1",
+    "box": [
+     16,
+     97,
+     358,
+     32
+    ],
+    "fs": "24px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შეთავაზებები (7)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     16,
+     137,
+     118,
+     44
+    ],
+    "fs": "14px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენახული (0)",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     158,
+     137,
+     90,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მიმოწერები",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     272,
+     137,
+     85,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილი",
+    "tag": "A",
+    "cls": "ma-tab",
+    "box": [
+     381,
+     137,
+     71,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "tabular-nums",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "რეგიონის მომარაგება",
+    "tag": "H2",
+    "cls": "account-profile__name",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "პროფილის რედაქტირება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "საჯარო პროფილი",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი შეთავაზებები (7)",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     16,
+     236,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     291,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     293,
+     289,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     380,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     382,
+     338,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "საჭიროა 800 მუყაოს ყუთი 6 ბოთლზე",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     469,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "საჭიროა 800 მუყაოს ყუთი 6 ბოთლზე",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     471,
+     332,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     580,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     582,
+     333,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     691,
+     358,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     693,
+     283,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "12 პალეტის გადაზიდვა თბილისიდან ქუთაისში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     850,
+     358,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "12 პალეტის გადაზიდვა თბილისიდან ქუთაისში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     852,
+     332,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     987,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     989,
+     321,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "შენი მიმართულების მოთხოვნები (4)",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     16,
+     1122,
+     358,
+     52
+    ],
+    "fs": "18px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ყველა მოთხოვნა",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     16,
+     1174,
+     122,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "8 ლითონის თარო სათადარიგო ნაწილებისთვის",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     1247,
+     358,
+     52
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "8 ლითონის თარო სათადარიგო ნაწილებისთვის",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     1249,
+     283,
+     48
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     1358,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "10 კომპაქტური ხის მაგიდა 70×70",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     1360,
+     289,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     1465,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     1467,
+     338,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "H3",
+    "cls": "account-row__title",
+    "box": [
+     16,
+     1572,
+     358,
+     26
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "3 დივანი კლიენტების მოსაცდელში",
+    "tag": "A",
+    "cls": "account-row__link",
+    "box": [
+     16,
+     1574,
+     321,
+     22
+    ],
+    "fs": "18px",
+    "fw": "600",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "ჩემი მოთხოვნები",
+    "tag": "H2",
+    "cls": "account-section__title",
+    "box": [
+     16,
+     1703,
+     179,
+     26
+    ],
+    "fs": "18px",
+    "fw": "700",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   },
+   {
+    "t": "მოთხოვნის დამატება",
+    "tag": "A",
+    "cls": "account-link",
+    "box": [
+     16,
+     1793,
+     153,
+     44
+    ],
+    "fs": "14px",
+    "fw": "500",
+    "ff": "FiraGO, \"Noto Sans G",
+    "tn": "normal",
+    "rad": "0px",
+    "bg": ""
+   }
+  ]
+ },
+ "account-company-TEXT-390": "ჩემი ანგარიში\nშეთავაზებები (7)\nშენახული (0)\nმიმოწერები\nპროფილი\n\nრეგიონის მომარაგება · კომპანია\n\nჩემი შეთავაზებები (7)\n10 კომპაქტური ხის მაგიდა 70×70\n\nავეჯი და ინვენტარი · თბილისი · გაიგზავნა დღეს\n\nვეძებთ 24 ხის სკამს მარნის ტერასაზე\n\nავეჯი და ინვენტარი · თელავი · გაიგზავნა გუშინ\n\nსაჭიროა 800 მუყაოს ყუთი 6 ბოთლზე\n\nშეფუთვა და წარმოება · თელავი · გაიგზავნა 3 დღის წინ\n\nბათუმი–თბილისი: 3 პალეტი კვირაში\n\nლოგისტიკა და დისტრიბუცია · ბათუმი · გაიგზავნა 5 დღის წინ\n\nსასტუმროსთვის 60 კომპლექტი თეთრეული\n\nტექსტილი და სასტუმროები · ბათუმი · გაიგზავნა 6 დღის წინ\n\nარ აირჩიეს\n12 პალეტის გადაზიდვა თბილისიდან ქუთაისში\n\nლოგისტიკა და დისტრიბუცია · ქუთაისი · გაიგზავნა 10 დღის წინ\n\n3 დივანი კლიენტების მოსაცდელში\n\nავეჯი და ინვენტარი · რუსთავი · გაიგზავნა 19 დღის წინ\n\nშენი მიმართულების მოთხოვნები (4)\nყველა მოთხოვნა\n8 ლითონის თარო სათადარიგო ნაწილებისთვის\n\nავეჯი და ინვენტარი · რუსთავი · გამოქვეყნდა დღეს\n\n10 კომპაქტური ხის მაგიდა 70×70\n\nავეჯი და ინვენტარი · თბილისი · გამოქვეყნდა გუშინ\n\nვეძებთ 24 ხის სკამს მარნის ტერასაზე\n\nავეჯი და ინვენტარი · თელავი · გამოქვეყნდა 4 დღის წინ\n\n3 დივანი კლიენტების მოსაცდელში\n\nავეჯი და ინვენტარი · რუსთავი · გამოქვეყნდა 20 დღის წინ\n\nჩემი მოთხოვნები\n\nმოთხოვნა ჯერ არ გაქვს — კომპანიები შეთავაზებას პირობებით გამოგიგზავნიან.\n\nმოთხოვნის დამატება"
+}
