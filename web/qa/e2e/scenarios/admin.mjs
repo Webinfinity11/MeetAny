@@ -12,15 +12,16 @@ export default async function(t) {
   const company = users.find(u => u.role === 'company' && !u.verified && !u.blocked && u.email.startsWith('demo-'));
   assert(company, 'არავერიფიცირებული დემო კომპანია ვერ მოიძებნა');
   t.restoreAfter({ id: company.id, email: company.email, fields: { blocked: company.blocked, blocked_reason: company.blocked_reason, verified: company.verified, verified_at: company.verified_at } });
-  await t.step('მომხმარებლების სია და T4.4 რაოდენობა', 'UI-ის მთვლელი ემთხვევა admin_list_users-სა და რეალურ პროფილებს', async () => {
+  await t.step('მომხმარებლების სია და T4.4 რაოდენობა', 'UI-ისა და admin_stats-ის მთვლელები ემთხვევა SQL-ისა და სიის არაადმინების რაოდენობას', async () => {
     await go(p, '/admin/?tab=users'); await p.locator('tbody tr').first().waitFor();
     const stats = await rpc(p, 'admin_stats');
     const actual = (await query('select count(*)::int total, count(*) filter(where role<>\'admin\')::int nonadmin, count(*) filter(where not blocked and role<>\'admin\')::int active from public.profiles'))[0];
-    const ui = Number(await p.locator('.ma-stat').filter({ has: p.getByText('მომხმარებელი', { exact: true }) }).locator('.ma-stat__value').innerText());
+    const ui = Number(await p.locator('.ma-stat').filter({ has: p.getByText('მომხმარებლები (ადმინების გარეშე)', { exact: true }) }).locator('.ma-stat__value').innerText());
     const evidence = { ui, api: stats.users, list: users.length, total: actual.total, nonadmin: actual.nonadmin, active: actual.active };
     t.counts = evidence;
-    assert.equal(users.length, actual.total);
-    assert.equal(ui, actual.total, 'T4.4: ' + JSON.stringify(evidence));
+    assert.equal(users.filter(user => user.role !== 'admin').length, actual.nonadmin);
+    assert.equal(Number(stats.users), actual.nonadmin, 'T4.4 API: ' + JSON.stringify(evidence));
+    assert.equal(ui, actual.nonadmin, 'T4.4 UI: ' + JSON.stringify(evidence));
     return evidence;
   }, p);
   await t.step('ვერიფიკაცია/ბლოკი და დაბრუნება', 'UI ქმედებები იცვლება; RPC და საჯარო GET სტატუსს ადასტურებს', async () => {

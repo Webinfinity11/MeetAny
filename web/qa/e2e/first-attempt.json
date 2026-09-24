@@ -2,7 +2,7 @@
   "startedAt": "2026-09-24T19:05:55.145Z",
   "origin": "http://localhost:3001",
   "run": "1790276755145",
-  "ms": 496273,
+  "ms": 387684,
   "results": [
     {
       "name": "guest",
@@ -124,10 +124,10 @@
     },
     {
       "name": "company",
-      "run": "1790277177912-company-retry",
+      "run": "1790276755145-company",
       "label": "კომპანია — პროფილი",
       "status": "FAIL",
-      "ms": 12231,
+      "ms": 11956,
       "steps": [
         {
           "name": "პროფილის მისამართი და პროდუქტები",
@@ -136,20 +136,20 @@
           "actual": "UI: სერვისი დროებით მიუწვდომელია",
           "visibleState": "ჩემი ანგარიში\nშეთავაზებები (6)\nშენახული (0)\nმიმოწერები\nპროფილი\nკომპანიის პროფილი\n\nეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში.\n\nლოგო\nხხ\nატვირთვა\n\nJPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ.\n\nსახელი და გვარი *\nკომპანიის დასახელება *\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\nმიმართულება *\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nკომპანიის შესახებ · მაქს. 1000 სიმბოლო\nრას ვთავაზობთ · თითო ხაზზე ერთი, მაქს. 8\nრას ვეძებთ · თითო ხაზზე ერთი, მაქს. 8\nრომელ ქალაქებს ემსახურებით?\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nმისამართი არასავალდებულო\n\nჩანს პროფილზე „მიმართულება“ ბმულით\n\nკოორდინატები არასავალდებულო\nგანედი\n",
           "network": [],
-          "screenshot": "qa/shots/e2e/company-1.png",
-          "ms": 4712
+          "screenshot": "qa/shots/e2e/company-first-1.png",
+          "ms": 4762
         },
         {
           "name": "კოორდინატების რედაქტირების UI",
           "status": "PASS",
           "expected": "პროფილის ფორმაში განედი და გრძედი რედაქტირებადია",
-          "ms": 1058
+          "ms": 1151
         },
         {
           "name": "კოორდინატების API და პროფილის დაბრუნება",
           "status": "PASS",
           "expected": "API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება",
-          "ms": 2041
+          "ms": 2095
         },
         {
           "name": "CSP დარღვევები",
@@ -181,71 +181,7 @@
           "photos": 0,
           "remaining": 0
         }
-      ],
-      "attempts": [
-        {
-          "name": "company",
-          "run": "1790276755145-company",
-          "label": "კომპანია — პროფილი",
-          "status": "FAIL",
-          "ms": 11956,
-          "steps": [
-            {
-              "name": "პროფილის მისამართი და პროდუქტები",
-              "status": "FAIL",
-              "expected": "შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება",
-              "actual": "UI: სერვისი დროებით მიუწვდომელია",
-              "visibleState": "ჩემი ანგარიში\nშეთავაზებები (6)\nშენახული (0)\nმიმოწერები\nპროფილი\nკომპანიის პროფილი\n\nეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში.\n\nლოგო\nხხ\nატვირთვა\n\nJPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ.\n\nსახელი და გვარი *\nკომპანიის დასახელება *\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\nმიმართულება *\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nკომპანიის შესახებ · მაქს. 1000 სიმბოლო\nრას ვთავაზობთ · თითო ხაზზე ერთი, მაქს. 8\nრას ვეძებთ · თითო ხაზზე ერთი, მაქს. 8\nრომელ ქალაქებს ემსახურებით?\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nმისამართი არასავალდებულო\n\nჩანს პროფილზე „მიმართულება“ ბმულით\n\nკოორდინატები არასავალდებულო\nგანედი\n",
-              "network": [],
-              "screenshot": "qa/shots/e2e/company-first-1.png",
-              "ms": 4762
-            },
-            {
-              "name": "კოორდინატების რედაქტირების UI",
-              "status": "PASS",
-              "expected": "პროფილის ფორმაში განედი და გრძედი რედაქტირებადია",
-              "ms": 1151
-            },
-            {
-              "name": "კოორდინატების API და პროფილის დაბრუნება",
-              "status": "PASS",
-              "expected": "API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება",
-              "ms": 2095
-            },
-            {
-              "name": "CSP დარღვევები",
-              "status": "PASS",
-              "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
-              "evidence": {
-                "violations": 0
-              },
-              "ms": 0
-            }
-          ],
-          "cleanup": [
-            {
-              "restore": "PASS",
-              "fields": [
-                "address",
-                "lat",
-                "lng",
-                "offers"
-              ],
-              "method": "auth-probe SQL; exact profile ID + email"
-            },
-            {
-              "messages": 0,
-              "conversations": 0,
-              "requests": 0,
-              "offers": 0,
-              "contacts": 0,
-              "photos": 0,
-              "remaining": 0
-            }
-          ]
-        }
-      ],
-      "retried": true
+      ]
     },
     {
       "name": "messaging",
@@ -660,42 +596,11 @@
   "seedVerify": {
     "status": "PASS",
     "code": 0,
-    "output": "{\"accounts\":19,\"companies\":12,\"requests\":14,\"open\":13,\"chosen\":1,\"fresh\":4,\"owners\":{\"hotel\":3,\"cafe\":3,\"shop\":2,\"winery\":2,\"dental\":2,\"garage\":2},\"photos\":[\"linen\",\"cleaning\",\"produce\"],\"offers\":42,\"offerCounts\":{\"0\":2,\"1\":2,\"2\":2,\"3\":2,\"4\":2,\"5\":2,\"6\":2},\"expiryDays\":[2,3,5,6,8,11,14,17,19,21,26,27,30],\"verified\":[\"wood\",\"linen\",\"web\",\"food\",\"port\",\"ads\"],\"industries\":{\"food\":1,\"marketing\":1,\"logistics\":1,\"technology\":2,\"textiles\":2,\"furniture\":3,\"cleaning\":1,\"construction\":1},\"sent\":{\"wood\":6,\"linen\":4,\"supply\":7,\"cleaning\":5,\"build\":6,\"web\":1,\"food\":0,\"port\":2,\"oak\":5,\"code\":1,\"ads\":3,\"stay\":2},\"joinedDays\":{\"wood\":92,\"linen\":78,\"supply\":64,\"build\":51,\"cleaning\":37,\"oak\":30,\"stay\":26,\"web\":23,\"port\":19,\"code\":11,\"ads\":8,\"food\":4},\"checks\":\"passed\"}\n"
+    "output": "{\"accounts\":19,\"companies\":12,\"requests\":14,\"open\":13,\"chosen\":1,\"fresh\":4,\"owners\":{\"hotel\":3,\"cafe\":3,\"shop\":2,\"winery\":2,\"dental\":2,\"garage\":2},\"photos\":[\"linen\",\"cleaning\",\"produce\"],\"offers\":42,\"offerCounts\":{\"0\":2,\"1\":2,\"2\":2,\"3\":2,\"4\":2,\"5\":2,\"6\":2},\"expiryDays\":[2,3,5,6,8,11,14,17,19,21,26,27,30],\"verified\":[\"wood\",\"linen\",\"web\",\"food\",\"port\",\"ads\"],\"industries\":{\"food\":1,\"marketing\":1,\"logistics\":1,\"technology\":2,\"textiles\":2,\"furniture\":3,\"cleaning\":1,\"construction\":1},\"sent\":{\"wood\":6,\"linen\":4,\"supply\":7,\"cleaning\":5,\"build\":6,\"web\":1,\"food\":0,\"port\":2,\"oak\":5,\"code\":1,\"ads\":3,\"stay\":2},\"joinedDays\":{\"wood\":92,\"linen\":78,\"supply\":64,\"build\":51,\"cleaning\":37,\"oak\":30,\"stay\":26,\"web\":23,\"port\":19,\"code\":11,\"ads\":8,\"food\":4},\"checks\":\"passed\"}\n",
+    "killed": false
   },
   "contractFindings": [
     "წინასწარ API-ზე delete_request საუბარს request_id=NULL-ით ტოვებდა. ახალი მიგრაციის შედეგი მოწმდება messaging ქვეკეისში; ცალკე SQL cleanup ორივე მდგომარეობას ამუშავებს.",
     "contact_events GET არ არის გამოქვეყნებული; შემოწმება იყენებს admin_contact_events RPC-სა და ადმინის UI-ს."
-  ],
-  "firstRunMs": 387684,
-  "retryMs": 108589,
-  "retryCleanup": {
-    "code": 0,
-    "output": "{\n  \"branch\": \"auth-probe\",\n  \"results\": [\n    {\n      \"run\": \"1790277177912-company-retry\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    }\n  ]\n}\n"
-  },
-  "csp": {
-    "violations": 0,
-    "checks": 10
-  },
-  "status": "FAIL",
-  "retryProcess": {
-    "code": 0,
-    "output": ""
-  },
-  "validation": {
-    "syntax": "PASS",
-    "unitTests": {
-      "passed": 5,
-      "failed": 0
-    }
-  },
-  "baseCommit": "abe2d9e",
-  "findings": [
-    {
-      "scenario": "company",
-      "step": "პროფილის მისამართი და პროდუქტები",
-      "observed": "go(/account/?tab=profile) detects service-unavailable text before editing; reproduced once; screenshot after assertion shows profile and notification skeletons",
-      "networkFailures": 0,
-      "inference": "EngagementPanels.tsx:108 renders service-unavailable for every status other than ready, including loading; possible source of transient text; exact origin not instrumented"
-    }
   ]
 }

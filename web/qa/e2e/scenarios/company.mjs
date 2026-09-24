@@ -57,7 +57,13 @@ export default async function(t) {
     assert.equal(await p.locator('#address').inputValue(), row.address);
   }, p);
   await t.step('კოორდინატების რედაქტირების UI', 'პროფილის ფორმაში განედი და გრძედი რედაქტირებადია', async () => {
-    assert(await p.locator('input[name="lat"],#lat,input[name="latitude"],#latitude').count(), 'პროფილში კოორდინატების ველები არ არსებობს; API p_lat/p_lng-ს იღებს');
+    await p.getByLabel('განედი', { exact: true }).fill('41.72');
+    await p.getByLabel('გრძედი', { exact: true }).fill('44.79');
+    await p.getByRole('button', { name: 'შენახვა', exact: true }).click();
+    await until(async () => {
+      const row = (await db(p, `profiles?select=id,lat,lng&id=eq.${original.id}`))[0];
+      return row.lat === 41.72 && row.lng === 44.79;
+    }, 'UI-დან კოორდინატები არ შენახულა');
   }, p);
   await t.step('კოორდინატების API და პროფილის დაბრუნება', 'API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება', async () => {
     await rpc(p, 'update_my_profile', { ...originalArgs, p_lat: 41.72, p_lng: 44.79 });
