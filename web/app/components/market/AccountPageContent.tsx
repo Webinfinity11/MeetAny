@@ -32,6 +32,7 @@ type AnyUser = {
   offers?: string[];
   seeks?: string[];
   serviceCities?: string[];
+  address?: string | null;
 };
 
 function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
@@ -45,6 +46,7 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
   const [offers, setOffers] = useState((me.offers || []).join("\n"));
   const [seeks, setSeeks] = useState((me.seeks || []).join("\n"));
   const [serviceCities, setServiceCities] = useState<string[]>(me.serviceCities || []);
+  const [address, setAddress] = useState(me.address || "");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -55,7 +57,7 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
     setPending(true);
     setError(null);
     try {
-      await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities });
+      await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address } : {}) });
       setSaved(true);
       onSaved();
     } catch (err) {
@@ -151,6 +153,13 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
                 ))}
               </div>
             </fieldset>
+            <div className="ma-field">
+              <label className="ma-field__label" htmlFor="address">
+                მისამართი <span className="ma-field__opt">არასავალდებულო</span>
+              </label>
+              <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
+              <p className="ma-field__help" id="address-help">ჩანს პროფილზე „მიმართულება“ ბმულით</p>
+            </div>
           </div>
         ) : null}
         <p className="ma-note">ტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>

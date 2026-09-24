@@ -58,6 +58,7 @@ export function CompanyProfilePageContent() {
   const { c, stats, openRequests } = data;
   const name = c.company || c.name;
   const ctaHref = `/requests/new/?category=${encodeURIComponent(c.industry)}`;
+  const directions: string | null = store?.directionsUrl(c) ?? null;
 
   return (
     <div className="ma-page company-profile">
@@ -67,7 +68,7 @@ export function CompanyProfilePageContent() {
         title={name}
         description={categories[c.industry] || c.industry}
         avatar={<CompanyAvatar name={name} size="xl" />}
-        meta={<span className="company-profile-city"><Icon name="map-pin" />{cities[c.city] || c.city}</span>}
+        meta={<span className="company-profile-city"><Icon name="map-pin" /><span>{cities[c.city] || c.city}{c.address ? ` · ${c.address}` : ""}{directions ? <a className="ma-link company-profile-directions" href={directions} target="_blank" rel="noopener noreferrer"><Icon name="arrow-up-right" />მიმართულება</a> : null}</span></span>}
         actions={<>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/></>}
       />
       <div className="company-profile-coverage">

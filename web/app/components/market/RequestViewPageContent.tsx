@@ -298,7 +298,7 @@ export function RequestViewPageContent() {
           <div className="ma-cluster">
             {isOwner ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
             <span className="ma-small ma-muted">
-              {cities[r.city]} · {offerCount} შეთავაზება
+              {cities[r.city]}{r.addressNote ? ` · ${r.addressNote}` : ""} · {offerCount} შეთავაზება
               {closed ? ` · ${state === "closed" ? "დახურული" : state === "chosen" ? "მომწოდებელი არჩეულია" : "ვადაგასული"}` : ""}
             </span>
           </div>

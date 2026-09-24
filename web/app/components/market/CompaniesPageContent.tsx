@@ -28,6 +28,9 @@ type MappedCompany = {
   about: string;
   verified: boolean;
   createdAt: string;
+  address?: string | null;
+  lat?: number | null;
+  lng?: number | null;
 };
 
 function skeleton() {
@@ -90,6 +93,10 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       industry: c.industry,
       city: c.city,
       serviceCities: c.serviceCities || [],
+      address: c.address ?? null,
+      lat: c.lat ?? null,
+      lng: c.lng ?? null,
+      directions: store.directionsUrl(c) ?? null,
       offers: c.offers || [],
       about: c.about || "",
       verified: c.verified,

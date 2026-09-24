@@ -16,7 +16,7 @@ export function RequestFormSheet({
   triggerRef,
 }: {
   open: boolean;
-  existing?: {id: string; title: string; category: string; city: string; quantity: number | null; unit: string | null; neededBy: string | null; body: string; photo: string | null};
+  existing?: {id: string; title: string; category: string; city: string; quantity: number | null; unit: string | null; neededBy: string | null; body: string; photo: string | null; addressNote?: string | null};
   initialCategory?: string;
   onClose: () => void;
   triggerRef?: React.RefObject<HTMLElement | null>;
@@ -27,6 +27,7 @@ export function RequestFormSheet({
   const [title, setTitle] = useState(existing?.title || "");
   const [category, setCategory] = useState(existing?.category || initialCategory);
   const [city, setCity] = useState(existing?.city || "tbilisi");
+  const [addressNote, setAddressNote] = useState(existing?.addressNote || "");
   const [quantity, setQuantity] = useState(existing?.quantity != null ? String(existing.quantity) : "");
   const [unit, setUnit] = useState(existing?.unit || "pcs");
   const [neededBy, setNeededBy] = useState(existing?.neededBy || "");
@@ -72,6 +73,7 @@ export function RequestFormSheet({
         title,
         category,
         city,
+        addressNote: addressNote.trim() || null,
         quantity: quantity || undefined,
         unit: quantity ? unit : undefined,
         neededBy: neededBy || undefined,
@@ -86,6 +88,7 @@ export function RequestFormSheet({
       setCategory("");
       setQuantity("");
       setNeededBy("");
+      setAddressNote("");
       setBody("");
       setPhoto(null);
       ref.current?.close();
@@ -160,6 +163,19 @@ export function RequestFormSheet({
                 ))}
               </select>
             </div>
+          </div>
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="addressNote">
+              რაიონი / ორიენტირი <span className="ma-field__opt">არასავალდებულო</span>
+            </label>
+            <input
+              className="ma-input"
+              id="addressNote"
+              maxLength={120}
+              placeholder="მაგ. საბურთალო, ვაჟა-ფშაველას გამზ."
+              value={addressNote}
+              onChange={(e) => setAddressNote(e.target.value)}
+            />
           </div>
           <div className="ma-form__row ma-form__row--2">
             <div className="ma-field">

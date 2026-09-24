@@ -2,6 +2,7 @@ import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
 import { TagList } from "./TagList";
 import { CallButton } from "./CallButton";
+import { Icon } from "../Icon";
 import { categories, categoryPhoto, cities } from "../../lib/categories";
 
 export type CompanyListingData = {
@@ -10,6 +11,10 @@ export type CompanyListingData = {
   industry: string;
   city: string;
   serviceCities: string[];
+  address?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  directions?: string | null;
   offers: string[];
   about: string;
   verified: boolean;
@@ -21,6 +26,7 @@ export type CompanyListingData = {
 export function CompanyListingCard({ c }: { c: CompanyListingData }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const photo = categoryPhoto[c.industry] || categoryPhoto.other;
+  const places = [categories[c.industry] || c.industry, ...(c.serviceCities.length ? c.serviceCities : [c.city]).map(id => cities[id] || id)].join(" · ");
   return (
     <article className="company-listing supplier-row">
       <Link className="listing-media" href={href} aria-label={`${c.name} — კომპანიის პროფილი`}>
@@ -37,7 +43,10 @@ export function CompanyListingCard({ c }: { c: CompanyListingData }) {
             <div className="listing-utilities"><SaveCompanyButton id={c.id} /></div>
           </div>
           </div>
-        <p className="listing-industry listing-location" title={[categories[c.industry] || c.industry, ...(c.serviceCities.length ? c.serviceCities : [c.city]).map(id => cities[id] || id)].join(" · ")}>{categories[c.industry] || c.industry} · {(c.serviceCities.length ? c.serviceCities : [c.city]).map(id => cities[id] || id).join(" · ")}</p>
+        <p className={c.directions ? "listing-industry listing-location listing-location--directions" : "listing-industry listing-location"} title={places}>
+          {c.directions ? <span className="listing-location__text">{places}</span> : places}
+          {c.directions ? <a className="listing-directions ma-small" href={c.directions} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" />მიმართულება</a> : null}
+        </p>
         {c.offers.length ? (
           <div className="listing-chips">
             <TagList items={c.offers} limit={3} />

@@ -598,3 +598,15 @@
 /* Keep photo intrinsic dimensions from stretching the VIP grid row. */
 .request-board .request-card--vip .request-card-visual{position:relative;align-self:stretch;height:auto}
 .request-board .request-card--vip .request-card-visual img{position:absolute;inset:0}
+
+/* T10.8: directions links — profile header and catalog card. */
+.company-profile-directions,.listing-directions{display:inline-flex;align-items:center;gap:var(--space-1);color:var(--text-link);font-weight:var(--fw-medium);transition:color var(--motion-fast) var(--motion-ease)}
+.company-profile-directions{margin-left:var(--space-2);vertical-align:middle;white-space:nowrap}
+.company-profile-directions:hover,.listing-directions:hover{color:var(--action-hover)}
+.company-profile-directions .icon,.listing-directions .icon{width:var(--space-4);height:var(--space-4);flex:none;transition:transform var(--motion-fast) var(--motion-ease)}
+.company-profile-directions:hover .icon,.listing-directions:hover .icon{transform:translate(1px,-1px)}
+.listing-location--directions{display:flex;align-items:baseline;gap:var(--space-2);min-width:0}
+.listing-location--directions .listing-location__text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.listing-directions{flex:none;text-decoration:none;font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.listing-directions:hover{text-decoration:underline;text-underline-offset:3px}
+@media(prefers-reduced-motion:reduce){.company-profile-directions,.listing-directions,.company-profile-directions .icon,.listing-directions .icon{transition:none}.company-profile-directions:hover .icon,.listing-directions:hover .icon{transform:none}}
