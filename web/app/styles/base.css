@@ -1,0 +1,41 @@
+/* base: shared tokens; original selector specificity is preserved. */
+.ma,.ma *,.ma *::before,.ma *::after,.ma-header,.ma-header *,.ma-footer,.ma-footer *,.ma-mnav,.ma-mnav *,.ma-sheet,.ma-sheet *{box-sizing:border-box}
+html:has(body.ma){-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + 16px)}
+body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-regular);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+.ma,.ma-header,.ma-footer,.ma-mnav,.ma-sheet,#form-dialog{font-feature-settings:normal}
+.ma :is(h1,h2),.ma :is(.ma-display,.ma-h1,.ma-h2,.ma-section__title,.ma-sheet__title),.ma-sheet :is(h1,h2,.ma-sheet__title),#form-dialog h2{font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
+.ma .ma-btn,.ma-header .ma-btn,.ma-mnav .ma-btn,.ma-sheet .ma-btn,.ma .m-btn,#form-dialog .m-btn{font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
+.ma :where(h1,h2,h3,h4,h5,h6){margin:0;font-weight:var(--fw-semibold);color:var(--text);overflow-wrap:break-word}
+.ma :where(p,ul,ol,dl,dd,figure,blockquote){margin:0}
+.ma :where(ul[class],ol[class]){list-style:none;padding:0}
+.ma :where(a){color:var(--text-link)}
+.ma :where(img,svg,video){max-width:100%}
+.ma :where(img){display:block;height:auto}
+.ma :where(button,input,select,textarea){font:inherit;color:inherit}
+.ma :where(button){cursor:pointer}
+.ma ::selection{background:var(--blue-100)}
+.ma .icon,.ma-header .icon,.ma-footer .icon,.ma-mnav .icon,.ma-sheet .icon{width:var(--icon);height:var(--icon);flex:none;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:round;stroke-linejoin:round}
+.ma :focus-visible,.ma-header :focus-visible,.ma-footer :focus-visible,.ma-mnav :focus-visible,.ma-sheet :focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.ma-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:calc(-1 * var(--space-hairline));overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.ma-skip{position:absolute;left:16px;top:-80px;z-index:100;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--ink-900);color:var(--white);font:var(--fw-semibold) var(--fs-sm)/var(--lh-sm) var(--font-sans);text-decoration:none;transition:top var(--dur) var(--ease)}
+.ma-skip:focus{top:12px}
+.ma-display{font-size:var(--fs-display);line-height:var(--lh-display);font-weight:var(--fw-bold);letter-spacing:-.01em}
+.ma-h1{font-size:var(--fs-h1);line-height:var(--lh-h1);font-weight:var(--fw-bold);letter-spacing:-.005em}
+.ma-h2{font-size:var(--fs-h2);line-height:var(--lh-h2);font-weight:var(--fw-bold)}
+.ma-h3{font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-semibold)}
+.ma-title{font-size:var(--fs-title);line-height:var(--lh-title);font-weight:var(--fw-semibold)}
+.ma-body-lg{font-size:var(--fs-body-lg);line-height:var(--lh-body-lg)}
+.ma-small{font-size:var(--fs-sm);line-height:var(--lh-sm)}
+.ma-xs{font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.ma-muted{color:var(--text-3)}
+.ma-num{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+.ma-eyebrow{display:block;font-size:var(--fs-eyebrow);line-height:var(--lh-eyebrow);font-weight:var(--fw-semibold);letter-spacing:var(--ls-eyebrow);color:var(--text-3);font-feature-settings:var(--ff-eyebrow)!important}
+.ma-eyebrow--brand{color:var(--blue-700)}
+.ma-prose{max-width:var(--measure);font-size:var(--fs-body-lg);line-height:var(--lh-body-lg);color:var(--ink-800);white-space:pre-line;overflow-wrap:break-word}
+.ma-lead{max-width:var(--measure);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text-2)}
+.ma-link{padding:0;border:0;background:none;font:inherit;color:var(--text-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer;border-radius:var(--radius-xs)}
+.ma-link:hover{color:var(--action-hover);text-decoration-thickness:2px}
+.ma-clamp-2,.ma-clamp-3{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.ma-clamp-2{-webkit-line-clamp:2;line-clamp:2}
+.ma-clamp-3{-webkit-line-clamp:3;line-clamp:3}
+.is-expanded.ma-clamp-2,.is-expanded.ma-clamp-3{display:block;-webkit-line-clamp:unset;overflow:visible}

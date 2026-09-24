@@ -1,6 +1,9 @@
 "use client";
 
 import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/primitives.css";
+import "./styles/patterns.css";
 import Link from "next/link";
 import { useEffect } from "react";
 import { StatusPage, statusPageStyles as styles } from "./components/StatusPage";

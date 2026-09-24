@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "../styles/tokens.css";
 import "../styles/home.css";
-import "../styles/market.css";
+import "../styles/base.css";
+import "../styles/primitives.css";
+import "../styles/patterns.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toasts } from "../components/Toasts";

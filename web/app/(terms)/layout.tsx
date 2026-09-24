@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "../styles/tokens.css";
-import "../styles/market.css";
+import "../styles/base.css";
+import "../styles/primitives.css";
+import "../styles/patterns.css";
 import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";
 
