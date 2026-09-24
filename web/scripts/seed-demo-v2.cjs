@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Realistic demo content (qa/DEMO-CONTENT-GE.md §ბ, §ე, §ვ) on Neon branch auth-probe only.
+// Realistic demo content (qa/DEMO-CONTENT-GE.md §ბ, §ე, §ვ, §ზ) on Neon branch auth-probe only.
 // Run: DEMO_API_ORIGIN=http://localhost:3001 node site/web/scripts/seed-demo-v2.cjs [--dry-run | --verify]
 // Same guards and ledger as seed-demo.cjs (which stays for the first-generation data).
 // Marketplace writes go through authenticated RPCs; the only SQL writes are the documented admin
@@ -37,8 +37,9 @@ const accounts = [
     about:'ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებისა და მაღაზიებისთვის. ვეხმარებით ზომების შერჩევაში, ვამზადებთ ესკიზს და ვგეგმავთ მონტაჟს.', offers:['მაგიდებისა და სკამების დამზადება','სავაჭრო თაროები','ავეჯის მიტანა და მონტაჟი'], seeks:['ხის მასალის მომწოდებლები','ავეჯის ფურნიტურა'], cities:['tbilisi','rustavi']},
   {key:'linen', role:'company', name:'თამარ ჯაფარიძე', company:'რბილი სივრცე', city:'batumi', industry:'textiles', phone:'+995 568 903 154', address:'ლუკა ასათიანის ქ. 4', lat:41.6469, lng:41.6372,
     about:'ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და სუფრებს. შეკვეთამდე ვამზადებთ ქსოვილის ნიმუშებს; ზომები და შეფუთვა დამკვეთის საჭიროებას ერგება.', offers:['სასტუმროს თეთრეული','ფარდების შეკერვა','კაფის სუფრები და ხელსახოცები'], seeks:['ბამბის ქსოვილის მომწოდებლები','სასტუმროებთან თანამშრომლობა'], cities:['batumi','kutaisi','tbilisi']},
-  {key:'supply', role:'company', name:'ლევან მამულაშვილი', company:'რეგიონის მომარაგება', city:'kutaisi', industry:'logistics', phone:'+995 577 265 031', address:'ილია ჭავჭავაძის გამზ. 32', lat:42.2543, lng:42.676,
-    about:'ვგეგმავთ რეგიონულ გადაზიდვებს და ვაწვდით ბიზნესებს მუყაოს შეფუთვას. წინასწარ ვათანხმებთ აღების დროს, მარშრუტს და ტვირთის მოცულობას.', offers:['ტვირთის რეგიონული გადაზიდვა','მუყაოს ყუთები','შეკვეთების განაწილება'], seeks:['ადგილობრივი მწარმოებლები','შეფუთვის მომწოდებლები'], cities:['kutaisi','tbilisi','batumi','zugdidi']},
+  // A HoReCa wholesaler (ready furniture, linen, packaging from stock, own trucks): furniture and inventory since §ზ.
+  {key:'supply', role:'company', name:'ლევან მამულაშვილი', company:'რეგიონის მომარაგება', city:'kutaisi', industry:'furniture', phone:'+995 577 265 031', address:'ილია ჭავჭავაძის გამზ. 32', lat:42.2543, lng:42.676,
+    about:'კაფეებს, სასტუმროებსა და მაღაზიებს ვაწვდით მზა ავეჯს, ინვენტარსა და შეფუთვას საწყობიდან. საკუთარი სატვირთოებით ვზიდავთ დასავლეთ საქართველოსა და თბილისში.', offers:['მზა მაგიდები, სკამები და დივნები','HoReCa ინვენტარი და თეთრეული საწყობიდან','მუყაოს ყუთები','საკუთარი ტრანსპორტით მიწოდება'], seeks:['ავეჯის მწარმოებლები','შეფუთვის მომწოდებლები'], cities:['kutaisi','tbilisi','batumi','zugdidi']},
   {key:'cleaning', role:'company', name:'ეკა ნაკაშიძე', company:'სუფთა სივრცე', city:'batumi', industry:'cleaning', phone:'+995 593 781 406', address:'ილია ჭავჭავაძის ქ. 20', lat:41.6452, lng:41.634,
     about:'ვასუფთავებთ სასტუმროებს, ოფისებსა და კაფეებს, მათ შორის რემონტის შემდეგ. ვმუშაობთ საკუთარი ინვენტარით; სასტუმროებს ვაწვდით თეთრეულს რეცხვითა და გამოცვლით.', offers:['გენერალური დასუფთავება','რემონტის შემდგომი დასუფთავება','თეთრეულის რეცხვა და იჯარა'], seeks:['სასტუმროები და ოფისები','საწმენდი საშუალებების მომწოდებლები'], cities:['batumi','kutaisi']},
   {key:'build', role:'company', name:'ზურაბ კვარაცხელია', company:'კახეთის მშენებელი', city:'kutaisi', industry:'construction', phone:'+995 551 118 729', address:'კოსტავას ქ. 14', lat:42.2713, lng:42.7045,
@@ -54,14 +55,19 @@ const accounts = [
     about:'შეკვეთით ვამზადებთ მასიური ხის მაგიდებს, კარადებს და სასტუმროს ნომრის ავეჯს. ვმუშაობთ წაბლითა და მუხით.', offers:['მასიური ხის მაგიდები','კარადები და თაროები','სასტუმროს ნომრის ავეჯი'], seeks:['ხის მასალის მომწოდებლები'], cities:['kutaisi','batumi']},
   {key:'code', role:'company', name:'სალომე გოგიჩაიშვილი', company:'კოდის ხიდი', city:'tbilisi', industry:'technology', phone:'+995 591 746 208', address:'პეკინის გამზ. 41', lat:41.7247, lng:44.7584,
     about:'ვქმნით ჯავშნის სისტემებს, ონლაინ მაღაზიებს და მობილურ აპებს კლინიკებისთვის, სასტუმროებისა და მაღაზიებისთვის.', offers:['ონლაინ ჯავშნის სისტემა','ონლაინ მაღაზია','მობილური აპლიკაცია','ბუღალტრულ პროგრამასთან დაკავშირება'], seeks:['UX დიზაინერები','ტესტერები'], cities:['tbilisi']},
+  {key:'ads', role:'company', name:'ქეთევან აბაშიძე', company:'ახალი ხედი', city:'tbilisi', industry:'marketing', phone:'+995 592 604 371', address:'მერაბ კოსტავას ქ. 37', lat:41.7079, lng:44.7869,
+    about:'მარკეტინგის სააგენტო მცირე და საშუალო ბიზნესისთვის: ბრენდის იდენტობა, შეფუთვის დიზაინი, სოციალური ქსელები და ვებგვერდის შინაარსი. ვმუშაობთ თვიური გეგმით და გაზომვადი მიზნებით.', offers:['ლოგო და ბრენდის იდენტობა','შეფუთვისა და ეტიკეტის დიზაინი','სოციალური ქსელების მართვა','მაღაზიის ინტერიერის ბრენდირება'], seeks:['ბეჭდვის სახელოსნოები','ფოტოგრაფები'], cities:['tbilisi','batumi','kutaisi','rustavi']},
+  {key:'stay', role:'company', name:'თეონა ცინცაძე', company:'ზღვის სტუმარი', city:'batumi', industry:'textiles', phone:'+995 598 146 723', address:'შოთა რუსთაველის ქ. 26', lat:41.6508, lng:41.6363,
+    about:'ბათუმის სასტუმროებსა და საოჯახო სასტუმროებს ვემსახურებით: ნომრების მოვლა საკუთარი დიასახლისების გუნდით, სტუმრების ტრანსფერი და ონლაინ ჯავშნების მართვა.', offers:['ნომრების მოვლა და დასუფთავება','სტუმრების ტრანსფერი აეროპორტიდან','ჯავშნების მართვა Booking-სა და Airbnb-ზე'], seeks:['სასტუმროები და საოჯახო სასტუმროები','თეთრეულის მომწოდებლები'], cities:['batumi','kutaisi']},
   {key:'admin', role:'admin', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi', phone:'+995 568 452 390'},
 ].map(a=>({...a,email:`demo-${a.key}@meetany.ge`}));
-const NEW_KEYS = ['cleaning','build','web','winery','dental','garage','food','port','oak','code'];
-const VERIFIED = ['wood','linen','web','food','port'];
+const NEW_KEYS = ['cleaning','build','web','winery','dental','garage','food','port','oak','code','ads','stay'];
+const VERIFIED = ['wood','linen','web','food','port','ads'];
 // Days since each company joined (profiles.created_at): three months to two days, so "member since"
 // and the "newest" sort mean something. Every company joins before its first offer.
-const JOINED = {wood:92,linen:78,supply:64,build:51,cleaning:37,web:23,food:15,oak:9,port:6,code:2};
-const INDUSTRY_COUNTS = {furniture:2,logistics:2,technology:2,textiles:1,cleaning:1,construction:1,food:1};
+const JOINED = {wood:92,linen:78,supply:64,build:51,cleaning:37,oak:30,stay:26,web:23,port:19,code:11,ads:8,food:4};
+// §ზ: no count is shared by three industries except 1 (3/2/2/1/1/1/1/1).
+const INDUSTRY_COUNTS = {furniture:3,technology:2,textiles:2,logistics:1,cleaning:1,construction:1,food:1,marketing:1};
 // Hand-typed QA chat messages end in " QA <timestamp>"; only that suffix is removed.
 const QA_CHAT = '%QA 1790%';
 // key: owner, title, body, category, city, photo (null = no photo), quantity, unit, address_note, needed_by,
@@ -82,7 +88,8 @@ const requests = [
   ['weekly','hotel','ბათუმი–თბილისი: 3 პალეტი კვირაში','ყოველ კვირას გვჭირდება 3 პალეტის (თეთრეული, ჰიგიენური საშუალებები) გადატანა თბილისის საწყობიდან ბათუმში. ვეძებთ მუდმივ გადამზიდს ერთი და იმავე დღით.','logistics','batumi',null,3,'pcs',null,null,144,26],
   ['sofas','garage','3 დივანი კლიენტების მოსაცდელში','მოსაცდელისთვის გვჭირდება სამი სამადგილიანი დივანი მუქი, ადვილად მოსავლელი გადასაკრავით (ტყავი ან ეკოტყავი). გვაინტერესებს მზა მოდელებიც და შეკვეთითაც დამზადება.','furniture','rustavi',null,3,'pcs',null,null,480,17],
 ].map(([key,owner,title,body,category,city,photo,quantity,unit,address,needed,age,left])=>({key,owner,title,body,category,city,photo,quantity,unit,address,needed,age,left}));
-// company, request, delivery days, hours after the request was published, text.
+// company, request, delivery days, hours after the request was published (2–72), text.
+// §ზ: offers per request are 0–6 and no count repeats on three requests.
 const offers = [
   ['linen','linen',12,5,'გთავაზობთ 60 კომპლექტს 100% ბამბისგან. ორ ნიმუშს ხვალვე მოგიტანთ სასტუმროში; ბათუმში მიწოდება ჩვენზეა.'],
   ['cleaning','linen',9,26,'სასტუმროს თეთრეულს ვაწვდით იჯარით, რეცხვითა და კვირაში ორჯერ გამოცვლით. თუ ყიდვა აუცილებელი არ არის, პირველი თვე საცდელად შეგვიძლია შევთანხმდეთ.'],
@@ -107,13 +114,37 @@ const offers = [
   ['supply','weekly',5,6,'ბათუმი–თბილისის მიმართულებით ყოველ სამშაბათს გვაქვს რეისი. 3 პალეტისთვის მუდმივ ადგილს დაგიჯავშნით.'],
   ['build','weekly',11,52,'სამშენებლო მასალის გამო კვირაში ორჯერ ვმოძრაობთ თბილისსა და ბათუმს შორის; 3 პალეტი დაგვეტევა.'],
   ['port','weekly',4,30,'ფოთსა და თბილისს შორის ყოველდღე დავდივართ, ბათუმამდე — ოთხშაბათობით. 3 პალეტისთვის მუდმივ ადგილს დაგიტოვებთ.'],
-  ['code','website',9,175,'ჯავშნის მოდული მზა გვაქვს და თქვენს საიტში ჩავაშენებთ. ორენოვანი ვერსია ექიმების გვერდებით — 9 სამუშაო დღეში.'],
+  ['code','website',9,60,'ჯავშნის მოდული მზა გვაქვს და თქვენს საიტში ჩავაშენებთ. ორენოვანი ვერსია ექიმების გვერდებით — 9 სამუშაო დღეში.'],
+  ['oak','chairs',25,40,'მასიური წაბლის სკამები ზურგით, ზეთ-ცვილის საფარით, რომელიც მზესა და ტენს უძლებს. 24 ცალს 25 დღეში დავამზადებთ; თელავში მიტანა შედის.'],
+  ['cleaning','cleaning',2,4,'ბათუმში ვართ და ობიექტს ხვალ დილით ვნახავთ. ოთხკაციანი ბრიგადა 450 კვ.მ-ს ფანჯრებისა და დერეფნების ჩათვლით ორ დღეში დაასრულებს.'],
+  ['stay','cleaning',3,8,'სასტუმროებს ვემსახურებით და საკუთარი დიასახლისების გუნდი გვყავს. საერთო სივრცეს ორ ღამეში დავასუფთავებთ, სტუმრების შეუწუხებლად; ინვენტარი ჩვენია.'],
+  ['oak','tables',16,9,'70×70 მაგიდებს მუხის მასივისგან ვამზადებთ, ზედაპირი ტენგამძლე ზეთით. ფოტოებსა და მასალის ნიმუშს ჩატში გამოგიგზავნით.'],
+  ['ads','boxes',8,30,'ყუთის დიზაინსა და ბეჭდვის მაკეტს მოვამზადებთ: ლოგოს განთავსება, ფერები და ეტიკეტის სტილი. მაკეტს ტირაჟამდე დაგიმტკიცებთ.'],
+  ['ads','website',30,48,'საიტთან ერთად მოვამზადებთ ექიმების ფოტოსესიას, მომსახურებების ტექსტებს და Google-ის ბიზნეს-პროფილს. ჯავშნის ფორმას პარტნიორი დეველოპერი ჩააშენებს.'],
+  ['oak','renovation',9,22,'ქუთაისში ვართ და სადურგლო ნაწილს ავიღებთ: თაროების მოხსნა და ხელახლა დაკიდება, ხის პლინტუსი. შეღებვას პარტნიორ მღებავებთან ერთად შევასრულებთ.'],
+  ['ads','renovation',10,55,'მაღაზიების ინტერიერის ბრენდირებას ვაკეთებთ: კედლები ფირმის ფერებში, ლოგო და ვიტრინის აბრა. შეღებვას ჩვენი პარტნიორი ბრიგადა ეტაპობრივად შეასრულებს.'],
+  ['port','delivery',3,14,'თბილისიდან ქუთაისის მიმართულებით ყოველდღე გვაქვს დახურული 20-ტონიანი მანქანა. 12 პალეტს ერთ რეისად წავიღებთ, ტვირთის დაზღვევით.'],
+  ['oak','delivery',5,58,'ავეჯის დახურული მანქანა თბილისიდან ქუთაისში ხშირად ცარიელი ბრუნდება. 12 პალეტს ორ რეისად ჩამოვიტანთ.'],
+  ['cleaning','weekly',7,20,'ჰიგიენურ საშუალებებს ბათუმში ჩვენი საწყობიდან მოგაწვდით, ასე რომ თბილისიდან მხოლოდ თეთრეულის გადატანა დაგრჩებათ. თეთრეულის იჯარაზეც შეგვიძლია ვისაუბროთ.'],
+  ['wood','weekly',6,66,'ბათუმის სასტუმროებში ავეჯს ყოველ პარასკევს ვზიდავთ და ფურგონში ადგილი გვრჩება. 3 პალეტს იმავე რეისით წამოვიღებთ.'],
+  ['supply','sofas',4,12,'საწყობში გვაქვს მზა სამადგილიანი დივნები შავ ეკოტყავში. რუსთავში მიტანა ოთხ დღეში.'],
+  ['wood','sofas',24,30,'დავამზადებთ სამადგილიან დივნებს ხის ჩარჩოთი და ეკოტყავის გადასაკრავით, მუქ ყავისფერში ან შავში. ნიმუშების ფოტოებს ჩატში გამოგიგზავნით.'],
+  ['build','sofas',20,36,'დივნის ჩარჩოს ჩვენი სადურგლო საამქრო ამზადებს, გადაკვრას კი პარტნიორი სახელოსნო. სამივე დივანს სამ კვირაში მოგაწვდით.'],
+  ['oak','sofas',28,50,'მუხის ჩარჩოზე ვამზადებთ დივნებს ტყავის მოსახსნელი ბალიშებით, რომლებიც ადვილად იწმინდება. სამ დივანს ოთხ კვირაში დავასრულებთ.'],
+  ['stay','sofas',6,62,'სასტუმროს ლობის განახლების შემდეგ გვრჩება სამი ტყავის სამადგილიანი დივანი კარგ მდგომარეობაში. ფოტოებს ჩატში გამოგიგზავნით; რუსთავამდე გადატანას ჩვენ მოვაგვარებთ.'],
+  ['linen','sofas',14,70,'თუ დივნები უკვე გაქვთ, ახალ გადასაკრავს შევკერავთ ეკოტყავისგან ან ტეფლონიანი ქსოვილისგან. ქსოვილის ნიმუშებს ფოსტით გამოგიგზავნით.'],
 ].map(([company,request,days,after,body])=>({company,request,days,after,body}));
 // Earlier QA data created by hand under unknown accounts (§ა): the admin removes it.
 const OLD_REQUESTS = ['ლობის ავეჯი: 3 დივანი და ჟურნალის მაგიდა','ყოველკვირეული ტვირთის გადაზიდვა ბათუმი–თბილისი','სასტუმროს თეთრეული 40 ნომრისთვის'];
 const OLD_COMPANIES = ['სწრაფი გადაზიდვა','ტექსტილ ჰაუსი','ავეჯის სახელოსნო „ხე“'];
 const CHOSEN = {request:'linen', company:'linen'};
 for (const r of requests) assert(offers.filter(o=>o.request===r.key).every(o=>o.after<r.age), 'Offer after now: '+r.key);
+for (const o of offers) assert(o.after>=2&&o.after<=72, 'Offer 2 h – 3 days after the request: '+o.company+'/'+o.request);
+assert.equal(new Set(offers.map(o=>o.company+'/'+o.request)).size, offers.length, 'Duplicate offer');
+// No value may appear three times: offers per request, companies per industry (1 excepted).
+const repeats=(values,skip)=>Object.entries(values.reduce((m,v)=>(m[v]=(m[v]||0)+1,m),{})).filter(([v,n])=>n>=3&&v!==String(skip));
+assert.deepEqual(repeats(requests.map(r=>offers.filter(o=>o.request===r.key).length)),[],'Offer counts repeat');
+assert.deepEqual(repeats(Object.values(INDUSTRY_COUNTS),1),[],'Industry counts repeat');
 for (const o of offers) assert(requests.find(r=>r.key===o.request).age-o.after<JOINED[o.company]*24, 'Offer before joining: '+o.company);
 // A request is re-created when anything the API cannot update changes (owner, photo, text after offers).
 const sig=r=>crypto.createHash('sha256').update(JSON.stringify([r.owner,r.title,r.body,r.category,r.city,r.photo,r.quantity,r.unit,r.address,r.needed])).digest('base64url').slice(0,16);
@@ -344,7 +375,8 @@ async function verify() {
   const pub=await api(null,`profiles?select=id,phone&id=in.(${companies.map(a=>a.id).join(',')})`);
   assert.equal(pub.filter(p=>p.phone).length,companies.length,'Public company phone missing');
   const sent={};for(const o of offers)sent[o.company]=(sent[o.company]||0)+1;
-  assert(companies.filter(a=>!sent[a.key]).length>=2,'Some companies should have sent no offer');
+  assert(companies.filter(a=>!sent[a.key]).length>=1,'Some company should have sent no offer');
+  assert(Object.values(counts).every(n=>n<=2),'Offer counts repeat on three requests');
   assert.equal((await sqlClient()`select count(*)::int n from meetany_private.messages where body like ${QA_CHAT} or body like '%ტესტ%'`)[0].n,0,'QA chat text left');
   assert.equal((await oldData(byKey('admin'))).reqs.length,0,'Old QA request still present');
   const phones=accounts.map(a=>a.phone);assert.equal(new Set(phones).size,phones.length);
