@@ -1,5 +1,6 @@
 "use client";
 import { ListSkeleton } from "./Skeletons";
+import { ServiceUnavailable } from "./ServiceUnavailable";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useMarketStore } from "../../lib/market-client";
@@ -13,6 +14,8 @@ type Cursor = { created_at: string; id: string; asOf: string } | null;
 type Notice = { id: string; kind: string; title: string; request_id: string; created_at: string; read_at: string | null; category?: string; city?: string; needed_by?: string | null };
 type Saved = { company_id: string; company: string; city: string; industry: string };
 type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
+// Store statuses: idle (not loaded yet) → ready | unavailable (feature off) | error (request failed).
+const failed = (status?: string) => status === "unavailable" || status === "error";
 const label = (kind: string) => kind === "request_match" ? "ახალი მოთხოვნა შენს კატეგორიაში" : kind === "offer_chosen" ? "შენი შეთავაზება აირჩიეს" : "ახალი შეთავაზება მიიღე";
 const date = (value: string, withTime = true) => {
  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {timeZone: withTime ? "Asia/Tbilisi" : "UTC",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date(value)).map(p => [p.type,p.value]));
@@ -75,7 +78,7 @@ export function NotificationBell() {
   <button ref={trigger} type="button" className={styles.save} aria-label={`შეტყობინებები${count ? `, ${count} წაუკითხავი` : ""}`} aria-expanded={open} aria-controls="notification-list" onClick={() => { setOpen(!open); if (!open) void refresh?.(); }}><Icon name="bell"/>{count ? <span className={styles.badge} aria-hidden="true">{count > 99 ? "99+" : count}</span> : null}</button>
   {open ? <div id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
    <div className={styles.head}><strong>შეტყობინებები</strong><button type="button" className="ma-btn ma-btn--ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></button></div>
-   {state?.status === "ready" ? state.notifications.items.length ? <div onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows items={state.notifications.items} limit={5}/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p>}
+   {state?.status === "ready" ? state.notifications.items.length ? <div onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows items={state.notifications.items} limit={5}/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : failed(state?.status) ? <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p> : <ListSkeleton compact label="შეტყობინებები იტვირთება…" />}
    <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება</Link>
   </div> : null}
  </div>;
@@ -97,6 +100,8 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
   return () => {cancelled=true;};
  }, [actor, load, cursor, key, state?.status]);
  const current = result?.key === key ? result : null;
+ // The store starts at "idle" and only refreshes on session events; make sure a first load is under way.
+ useEffect(() => { if (actor && state?.status === "idle") void store?.refreshEngagement(); }, [actor, state?.status, store]);
  async function email(enabled: boolean) {
   setPending(true);
   try {await store?.setNotificationEmail(enabled);toast("შეტყობინებების პარამეტრი შენახულია.");}
@@ -105,7 +110,7 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
  }
  return <section className={styles.stack}>
   <h2 className="account-section__title">{kind === "saved" ? "შენახული კომპანიები" : "შეტყობინებები"}</h2>
-  {state?.status !== "ready" ? <div role="status"><p>სერვისი დროებით მიუწვდომელია.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => store?.refreshEngagement()}>ხელახლა ცდა</button></div> : <>
+  {failed(state?.status) ? <ServiceUnavailable /> : state?.status !== "ready" ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : <>
    {kind === "notifications" && state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery}/> : null}
    {kind === "notifications" && state.emailDelivery ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე</label> : null}
    {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</button></div> : <>
