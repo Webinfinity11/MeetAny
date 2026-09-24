@@ -8,6 +8,7 @@ const plans={
  messaging:{tables:['conversations','messages'],routines:['start_conversation','send_message','list_my_conversations','list_messages','mark_read','unread_message_count','admin_message_stats','admin_list_conversations','admin_conversation_messages']},
  'admin-api':{tables:['moderation_audit'],routines:['admin_set_hidden','admin_delete_request','admin_set_blocked','admin_set_verified','admin_list_users','admin_search_requests','admin_search_users','admin_list_audit','admin_stats']},
  'empty-conversations':{file:'20260924-empty-conversations',tables:['conversations'],routines:['start_conversation','list_my_conversations']},
+ 'company-logo':{file:'20260924-company-logo',tables:[],routines:['update_my_profile','list_companies']},
 };
 let pool;
 try {
@@ -35,6 +36,17 @@ try {
    (select count(*)::int from pg_trigger where tgname='requests_delete_conversations' and tgrelid='public.requests'::regclass) trigger,
    (select count(*)::int from meetany_private.conversations where request_id is null and context_key<>'general') orphans`);
   if(v.started_by!==1||v.trigger!==1||v.orphans!==0) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
+ }
+ if(migration==='company-logo') {
+  const {rows:[v]}=await pool.query(`select
+   (select count(*)::int from information_schema.columns where table_schema='public' and table_name='profiles' and column_name='logo_url') logo_url,
+   (select count(*)::int from pg_constraint where conname='profiles_logo_url_check' and conrelid='public.profiles'::regclass) logo_check,
+   (select count(*)::int from pg_proc where proname='update_my_profile' and pronamespace='public'::regnamespace) overloads,
+   (select position('logo_url' in pg_get_function_result('public.list_companies()'::regprocedure))>0) catalog,
+   has_column_privilege('anonymous','public.profiles','logo_url','SELECT') public_select,
+   (select count(*)::int from meetany_private.settings where key='photo_origin') origin`);
+  if(v.logo_url!==1||v.logo_check!==1||v.overloads!==1||!v.catalog||!v.public_select) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
+  console.log({photoOriginConfigured:v.origin===1});
  }
  if(migration==='addresses') {
   const {rows:columns}=await pool.query(`select table_name,column_name,data_type from information_schema.columns where table_schema='public' and ((table_name='profiles' and column_name in ('address','lat','lng')) or (table_name='requests' and column_name='address_note')) order by table_name,column_name`);

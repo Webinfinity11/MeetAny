@@ -1,10 +1,12 @@
-// POST   /api/blob-upload  Vercel Blob client-upload token for a request photo (handleUpload).
-// DELETE /api/blob-upload  {url}: removes the caller's own photo (used when create_request fails).
+// POST   /api/blob-upload  Vercel Blob client-upload token for a request photo or company logo (handleUpload).
+// DELETE /api/blob-upload  {url}: removes the caller's own photo or logo (a failed create_request, a
+//                          replaced or removed logo).
 //
 // Rules (db/CONTRACT.md §6.1): Neon Auth JWT verified against the remote JWKS with pinned
 // issuer/audience; caller has a profile and is not blocked (rpc/my_profile with the caller's own
 // token); pathname is exactly <sub>/<name>.<jpg|png|webp|gif>; only jpeg/png/webp/gif, at most 5 MB,
-// random suffix, no overwrite, token valid 5 minutes.
+// random suffix, no overwrite, token valid 5 minutes. A logo is <sub>/logo-<name>.<ext>, at most 2 MB
+// (update_my_profile accepts only that file name, MA115).
 // Env: BLOB_READ_WRITE_TOKEN (secret, set by the Blob integration), NEON_AUTH_BASE_URL,
 // DATABASE_URL (secret) for the profile check through api/_db.js.
 import { handleUpload } from '@vercel/blob/client';
@@ -13,7 +15,8 @@ import { verifyNeonJwt, myProfile } from './neon-jwt.js';
 
 export const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 export const MAX_BYTES = 5 * 1024 * 1024;
-const NAME = /^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/[A-Za-z0-9_-]{1,64}\.(jpg|png|webp|gif)$/;
+export const LOGO_MAX_BYTES = 2 * 1024 * 1024;
+const NAME = /^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/([A-Za-z0-9_-]{1,64})\.(jpg|png|webp|gif)$/;
 const BLOB_HOST = /^[a-z0-9]+\.public\.blob\.vercel-storage\.com$/;
 
 const json = (status, body) => new Response(JSON.stringify(body), {
@@ -52,7 +55,7 @@ async function createToken(request) {
         if (!m || m[1] !== who.sub || multipart) throw Object.assign(new Error('forbidden pathname'), { forbidden: true });
         return {
           allowedContentTypes: ALLOWED_TYPES,
-          maximumSizeInBytes: MAX_BYTES,
+          maximumSizeInBytes: m[2].startsWith('logo-') ? LOGO_MAX_BYTES : MAX_BYTES,
           addRandomSuffix: true,
           allowOverwrite: false,
           cacheControlMaxAge: 31536000,

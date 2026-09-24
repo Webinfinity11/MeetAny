@@ -132,11 +132,11 @@ select t.ok((select count(*) from public.list_companies() where id = t.uid('pf_g
 
 -- ============================================================= P5. privileges on the new functions
 select t.as_super();
-select t.ok((select prosecdef from pg_proc where oid = 'public.update_my_profile(text,text,text,text,text,text[],text[],text[],text,double precision,double precision)'::regprocedure), 'P5 update_my_profile is security definer');
-select t.ok((select 'search_path=""' = any (proconfig) from pg_proc where oid = 'public.update_my_profile(text,text,text,text,text,text[],text[],text[],text,double precision,double precision)'::regprocedure), 'P5 update_my_profile pins search_path');
+select t.ok((select prosecdef from pg_proc where oid = 'public.update_my_profile(text,text,text,text,text,text[],text[],text[],text,double precision,double precision,text)'::regprocedure), 'P5 update_my_profile is security definer');
+select t.ok((select 'search_path=""' = any (proconfig) from pg_proc where oid = 'public.update_my_profile(text,text,text,text,text,text[],text[],text[],text,double precision,double precision,text)'::regprocedure), 'P5 update_my_profile pins search_path');
 select t.ok((select 'search_path=""' = any (proconfig) from pg_proc where oid = 'public.update_request(uuid,text,text,text,text,numeric,text,date,text)'::regprocedure), 'P5 update_request pins search_path');
 select t.ok((select 'search_path=""' = any (proconfig) from pg_proc where oid = 'public.company_stats(uuid[])'::regprocedure), 'P5 company_stats pins search_path');
-select t.ok(not has_function_privilege('public', 'public.update_my_profile(text,text,text,text,text,text[],text[],text[],text,double precision,double precision)', 'EXECUTE'), 'P5 PUBLIC cannot execute update_my_profile');
+select t.ok(not has_function_privilege('public', 'public.update_my_profile(text,text,text,text,text,text[],text[],text[],text,double precision,double precision,text)', 'EXECUTE'), 'P5 PUBLIC cannot execute update_my_profile');
 
 -- ============================================================= summary
 \o

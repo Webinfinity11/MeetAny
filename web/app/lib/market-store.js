@@ -24,6 +24,7 @@ export function createMarketStore({initial=null,background=true}={}){
   MA108:'არჩეული ან დამალული განცხადება ვერ გაგრძელდება.',MA109:'ატვირთე მხოლოდ სურათი.',
   MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიე რაოდენობის ერთეული.',MA113:'აირჩიე დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
   MA114:'მისამართი ან რაიონი უნდა შეიცავდეს მაქსიმუმ 120 სიმბოლოს.',
+  MA115:'ლოგო უნდა იყოს JPG, PNG, WEBP ან GIF სურათი, მაქსიმუმ 2 მბ.',
   MA412:'მისამართი უნდა შეიცავდეს მაქსიმუმ 200 სიმბოლოს.',
   MA413:'მიუთითე ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
   MA110:'განცხადებას ვეღარ შეცვლი: მასზე უკვე მოვიდა შეთავაზება ან მომწოდებელი არჩეულია.',
@@ -199,14 +200,14 @@ export function createMarketStore({initial=null,background=true}={}){
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
  const mapUser=p=>p&&({id:p.id,role:p.role,name:p.name,company:p.company,email:p.email,phone:p.phone,city:p.city,address:p.address||null,lat:p.lat??null,lng:p.lng??null,industry:p.industry||undefined,verified:!!p.verified,verifiedAt:p.verified&&p.verified_at||null,blocked:!!p.blocked,blockedReason:p.blocked&&p.blocked_reason||null,createdAt:p.created_at,
-  about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[]});
+  about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[],logoUrl:p.logo_url||null});
  const mapRequest=r=>({id:r.id,ownerId:r.owner_id,title:r.title,body:r.body,category:r.category,city:r.city,addressNote:r.address_note||null,photo:r.photo_url||null,
   quantity:r.quantity==null?null:Number(r.quantity),unit:r.quantity!=null&&Object.hasOwn(units,r.unit)?r.unit:null,neededBy:r.needed_by?String(r.needed_by).slice(0,10):null,status:r.status,hidden:!!r.hidden,hiddenReason:r.hidden&&r.hidden_reason||null,chosenOfferId:r.chosen_offer_id||null,createdAt:r.created_at,expiresAt:r.expires_at});
  const mapOffer=o=>({id:o.id,requestId:o.request_id,companyUserId:o.company_id,body:o.body,price:o.price==null?null:Number(o.price),
   priceType:Object.hasOwn(priceTypes,o.price_type)?o.price_type:(o.price==null?'negotiable':'total'),vatIncluded:!!o.vat_included,
   deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
- const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng';
+ const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url';
 
 
  // A render-local public store never starts auth/network work. The browser singleton
@@ -580,12 +581,13 @@ export function createMarketStore({initial=null,background=true}={}){
  // Browser -> Vercel Blob. uploadUrl (api/blob-upload.js) checks the Neon JWT, profile and path and
  // signs a one-file token (jpeg/png/webp/gif, <= 5 MB); the file itself goes straight to Blob.
  let blobClient=null;
- async function uploadPhoto(user,photo){
+ // A company logo is '<uid>/logo-<ts>.<ext>', at most 2 MB (MA115).
+ async function uploadPhoto(user,photo,{prefix='',maxBytes=5*1024*1024,code='MA109'}={}){
   const blob=toBlob(photo),ext=EXT[blob.type];
-  if(!ext)fail(MSG.MA109,'MA109');
-  if(blob.size>5*1024*1024)fail(MSG.MA109,'MA109');
+  if(!ext)fail(MSG[code],code);
+  if(blob.size>maxBytes)fail(MSG[code],code);
   if(!UPLOAD)fail(UNAVAILABLE);
-  const pathname=user.id+'/'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)+'.'+ext;
+  const pathname=user.id+'/'+prefix+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)+'.'+ext;
   const jwt=await token();
   if(jwt!==userJwt)fail(MSG.MA001,'MA001');
   let result;
@@ -595,13 +597,14 @@ export function createMarketStore({initial=null,background=true}={}){
    result=await upload(pathname,blob,{access:'public',handleUploadUrl:UPLOAD,contentType:blob.type,multipart:false,headers:{Authorization:'Bearer '+jwt}});
   }catch(err){
    blobClient=null;
-   if(/content type|too large|size|not allowed/i.test(err?.message||''))fail(MSG.MA109,'MA109');
+   if(/content type|too large|size|not allowed/i.test(err?.message||''))fail(MSG[code],code);
    throw toError(err);
   }
   if(!result?.url)fail(GENERIC);
   return {url:result.url};
  }
- // Best effort: removes the caller's own orphaned photo when create_request failed.
+ const uploadLogo=file=>uploadPhoto(requireUser(),file,{prefix:'logo-',maxBytes:2*1024*1024,code:'MA115'});
+ // Best effort: removes the caller's own orphaned photo when create_request failed (or a replaced logo).
  function removePhoto(url){
   token().then(jwt=>jwt===userJwt&&fetch(UPLOAD,{method:'DELETE',headers:{Authorization:'Bearer '+jwt,'Content-Type':'application/json'},body:JSON.stringify({url})})).catch(()=>{});
  }
@@ -664,8 +667,10 @@ export function createMarketStore({initial=null,background=true}={}){
  /* ---------- company profiles ---------- */
  // Lists come from textareas: one item per line.
  const lines=v=>(Array.isArray(v)?v:String(v??'').split('\n')).map(x=>String(x).trim()).filter(Boolean);
+ // logoUrl: undefined = keep, '' = remove, otherwise a URL from uploadLogo(). The replaced logo file is removed.
  async function updateProfile(input){
   client();const me=requireUser();
+  const logoUrl=input.logoUrl===undefined||input.logoUrl===null?null:String(input.logoUrl).trim();
   const name=clean(input.name,80),company=clean(input.company,100),about=String(input.about??'').trim();
   const address=String((input.address===undefined?me.address:input.address)??'').trim()||null;
   const lat=input.lat===undefined?(me.lat??null):input.lat===''?null:input.lat;
@@ -681,7 +686,9 @@ export function createMarketStore({initial=null,background=true}={}){
   if(about.length>1000)fail(MSG.MA410,'MA410');
   if(offers.length>8||seeks.length>8||[...offers,...seeks].some(x=>x.length>120))fail(MSG.MA411,'MA411');
   return mutate('update_my_profile',{p_name:name,p_company:company,p_city:input.city,p_industry:me.role==='company'?input.industry:null,
-   p_about:about,p_offers:offers,p_seeks:seeks,p_service_cities:serviceCities,p_address:address,p_lat:lat,p_lng:lng},mapUser);
+   p_about:about,p_offers:offers,p_seeks:seeks,p_service_cities:serviceCities,p_address:address,p_lat:lat,p_lng:lng,p_logo_url:logoUrl},mapUser)
+   .catch(err=>{if(logoUrl&&logoUrl!==me.logoUrl)removePhoto(logoUrl);throw err;})
+   .then(user=>{if(logoUrl!==null&&me.logoUrl&&me.logoUrl!==user?.logoUrl)removePhoto(me.logoUrl);return user;});
  }
  function directionsUrl(profile){
   if(!profile)return null;
@@ -755,7 +762,7 @@ export function createMarketStore({initial=null,background=true}={}){
   requestPasswordReset,resetPassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
-  updateProfile,listCompanies,getCompany,companyStats,directionsUrl,
+  updateProfile,uploadLogo,listCompanies,getCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
   adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};

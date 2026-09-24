@@ -2,7 +2,7 @@ import 'server-only';
 import { asCaller } from './db';
 
 // Same JSON projection as /api/db; timestamps stay strings. All reads use RLS.
-const PUBLIC_PROFILE = 'id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng';
+const PUBLIC_PROFILE = 'id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url';
 
 // One statement in one transaction: requests, companies and everything keyed by their ids.
 // Materialized CTEs keep the source order (newest requests first, list_companies() order).

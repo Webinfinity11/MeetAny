@@ -128,6 +128,7 @@ declare
     when 'MA112' then 'quantity needs a valid unit (pcs, m2, kg, hour, service)'
     when 'MA113' then 'needed-by date must be between today and 2 years ahead'
     when 'MA114' then 'address note is longer than 120 characters'
+    when 'MA115' then 'invalid logo url'
     when 'MA201' then 'only company accounts can send offers'
     when 'MA202' then 'cannot send an offer on own request'
     when 'MA203' then 'request no longer accepts offers'
@@ -447,6 +448,13 @@ alter table public.requests drop constraint if exists requests_address_note_chec
 alter table public.requests add constraint requests_address_note_check check
   (address_note is null or (address_note = btrim(address_note) and char_length(address_note) between 1 and 120));
 
+-- Optional public company logo (Vercel Blob, same URL shape as a request photo, in the owner's
+-- folder). update_my_profile additionally pins the Blob origin and a 'logo-' file name (MA115).
+alter table public.profiles add column if not exists logo_url text;
+alter table public.profiles drop constraint if exists profiles_logo_url_check;
+alter table public.profiles add constraint profiles_logo_url_check check
+  (logo_url is null or meetany_private.valid_photo_url(logo_url, id));
+
 -- ============================================================= RLS + grants
 alter table public.profiles enable row level security;
 alter table public.requests enable row level security;
@@ -469,7 +477,7 @@ create policy offers_select_sealed on public.offers
          or meetany_private.is_admin());
 
 revoke all on public.profiles, public.requests, public.offers from public, anonymous, authenticated;
-grant select (id, role, company, phone, industry, verified, verified_at, city, about, offers, seeks, service_cities, created_at, address, lat, lng)
+grant select (id, role, company, phone, industry, verified, verified_at, city, about, offers, seeks, service_cities, created_at, address, lat, lng, logo_url)
   on public.profiles to anonymous, authenticated;
 grant select on public.requests to anonymous, authenticated;
 grant select on public.offers to authenticated;
@@ -823,11 +831,15 @@ $$;
 
 -- The caller edits their own profile. Phone, email, role, verified and blocked are not editable here.
 -- Lists are trimmed, empty items dropped; service cities are de-duplicated in the fixed city order.
+-- p_logo_url: null = keep the current logo, '' = remove it, otherwise
+-- <Blob store origin>/<caller id>/logo-<name>.<ext> (MA115).
 drop function if exists public.update_my_profile(text, text, text, text, text, text[], text[], text[]);
+drop function if exists public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision);
 create or replace function public.update_my_profile(
   p_name text, p_company text, p_city text, p_industry text default null, p_about text default '',
   p_offers text[] default '{}', p_seeks text[] default '{}', p_service_cities text[] default '{}',
-  p_address text default null, p_lat double precision default null, p_lng double precision default null)
+  p_address text default null, p_lat double precision default null, p_lng double precision default null,
+  p_logo_url text default null)
 returns public.profiles
 language plpgsql security definer set search_path = '' as $$
 declare
@@ -842,9 +854,18 @@ declare
   v_seeks text[] := array(select btrim(x) from unnest(coalesce(p_seeks, '{}'::text[])) with ordinality u(x, n)
                           where btrim(coalesce(x, '')) <> '' order by n);
   v_cities text[];
+  v_logo text := btrim(p_logo_url);
+  v_origin text := meetany_private.photo_origin();
   p public.profiles;
 begin
   if char_length(v_name) < 2 then perform meetany_private.fail('MA401'); end if;
+  if v_logo <> '' and (
+       v_origin is null
+       or not meetany_private.valid_photo_url(v_logo, me.id)
+       or lower(left(v_logo, char_length(v_origin) + 1)) <> v_origin || '/'
+       or substr(v_logo, char_length(v_origin) + 2, 42) <> me.id::text || '/logo-') then
+    perform meetany_private.fail('MA115');
+  end if;
   if me.role = 'company' and char_length(v_company) < 2 then perform meetany_private.fail('MA402'); end if;
   if not meetany_private.is_city(p_city) then perform meetany_private.fail('MA104'); end if;
   if me.role = 'company' and not meetany_private.is_category(v_industry) then perform meetany_private.fail('MA407'); end if;
@@ -867,7 +888,8 @@ begin
          company = case when char_length(v_company) >= 2 then v_company else v_name end,
          city = p_city,
          industry = case when me.role = 'company' then v_industry else industry end,
-         about = v_about, offers = v_offers, seeks = v_seeks, service_cities = v_cities, address = v_address, lat = p_lat, lng = p_lng
+         about = v_about, offers = v_offers, seeks = v_seeks, service_cities = v_cities, address = v_address, lat = p_lat, lng = p_lng,
+         logo_url = case when v_logo is null then logo_url else nullif(v_logo, '') end
    where id = me.id
   returning * into p;
   return p;
@@ -891,17 +913,17 @@ $$;
 do $$
 begin
   if to_regprocedure('public.list_companies()') is not null
-     and pg_get_function_result(to_regprocedure('public.list_companies()')) not like '%address%' then
-    drop function public.list_companies();  -- result columns changed (address fields added)
+     and pg_get_function_result(to_regprocedure('public.list_companies()')) not like '%logo_url%' then
+    drop function public.list_companies();  -- result columns changed (address fields, logo_url added)
   end if;
 end $$;
 create or replace function public.list_companies()
 returns table (id uuid, company text, industry text, verified boolean, verified_at timestamptz, city text,
                about text, offers text[], seeks text[], service_cities text[], created_at timestamptz,
-               address text, lat double precision, lng double precision)
+               address text, lat double precision, lng double precision, logo_url text)
 language sql stable security definer set search_path = '' as $$
   select p.id, p.company, p.industry, p.verified, p.verified_at, p.city, p.about, p.offers, p.seeks,
-         p.service_cities, p.created_at, p.address, p.lat, p.lng
+         p.service_cities, p.created_at, p.address, p.lat, p.lng, p.logo_url
   from public.profiles p
   where p.role = 'company' and not p.blocked
   order by p.verified desc, p.created_at desc
@@ -1382,7 +1404,7 @@ revoke all on function
   public.send_offer(uuid, text, numeric, text, boolean, integer, boolean), public.withdraw_offer(uuid), public.choose_offer(uuid, timestamptz),
   public.contact_for_request(uuid),
   public.update_request(uuid, text, text, text, text, numeric, text, date, text),
-  public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision),
+  public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision, text),
   public.company_stats(uuid[]), public.list_companies(),
   public.admin_set_hidden(uuid, boolean, text), public.admin_delete_request(uuid),
   public.admin_set_blocked(uuid, boolean, text), public.admin_set_verified(uuid, boolean),
@@ -1397,7 +1419,7 @@ grant execute on function
   public.create_request(text, text, text, text, text, numeric, text, date, text), public.close_request(uuid),
   public.extend_request(uuid), public.delete_request(uuid),
   public.update_request(uuid, text, text, text, text, numeric, text, date, text),
-  public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision),
+  public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision, text),
   public.send_offer(uuid, text, numeric, text, boolean, integer, boolean), public.withdraw_offer(uuid), public.choose_offer(uuid, timestamptz),
   public.contact_for_request(uuid)
   to anonymous, authenticated;
