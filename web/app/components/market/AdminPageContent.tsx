@@ -110,6 +110,11 @@ export function AdminPageContent() {
   const filteredRequests = admin.mode === "legacy" ? cachedRequests : (tab === "requests" ? admin.page?.items || [] : []) as unknown as typeof requests;
   const filteredUsers = admin.mode === "legacy" ? cachedUsers : (tab === "users" ? admin.page?.items || [] : []) as unknown as typeof users;
   const canShowRecords = admin.mode === "legacy" || admin.mode === "ready";
+  // One definition for the KPI and the users tab: admin_stats().users counts non-admins only,
+  // the list also shows admins — say how many, so the two numbers add up.
+  const unfilteredUsers = admin.mode === "ready" ? (!query && !status && !role ? admin.page?.filteredTotal : undefined) : users.length;
+  const adminCount = unfilteredUsers === undefined ? 0 : Math.max(0, unfilteredUsers - stats.users);
+  const adminNote = tab === "users" && adminCount ? ` · მათ შორის ${adminCount} ადმინი — ზედა მთვლელში არ ითვლება` : "";
 
   async function confirm(reason: string) {
     if (!pendingAction || !store) return;
@@ -141,7 +146,7 @@ export function AdminPageContent() {
       <PageBand eyebrow="MeetAny · ადმინისტრირება" title="პლატფორმის მართვა" />
       <div className="ma-proto-kpis">
         {[
-          ["users", "მომხმარებელი", stats.users],
+          ["users", "მომხმარებლები (ადმინების გარეშე)", stats.users],
           ["companies", "კომპანია", stats.companies],
           ["verified", "დადასტურებული", stats.verified],
           ["open", "ღია მოთხოვნა", stats.open],
@@ -168,10 +173,10 @@ export function AdminPageContent() {
       {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} /> : <>
       {tab !== "audit" ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
       {admin.mode === "legacy" && tab !== "audit" ? <>
-        <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი.</p>
+        <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი{adminNote}.</p>
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
       </> : null}
-      {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">ამ გვერდზე {admin.page.items.length} ჩანაწერია · ფილტრებით სულ {admin.page.filteredTotal}.</p> : null}
+      {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">ამ გვერდზე {admin.page.items.length} ჩანაწერია · ფილტრებით სულ {admin.page.filteredTotal}{adminNote}.</p> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "error" ? <div role="alert"><p>{admin.error || "ჩანაწერების ჩატვირთვა ვერ მოხერხდა."}</p><button type="button" className="ma-btn ma-btn--secondary" onClick={admin.reload}>ხელახლა ცდა</button>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</button> : null}</div> : null}
       {tab === "audit" ? admin.mode === "legacy" ? <p className={styles.note}>მოქმედებების ჟურნალისთვის საჭიროა მონაცემთა ბაზის განახლება. წარსული მოქმედებების ისტორია ამ ვერსიაში არ ინახება.</p> : admin.mode === "ready" ? <AdminAuditTable events={(admin.page?.items || []) as unknown as AdminAuditEvent[]} /> : null : null}

@@ -35,7 +35,16 @@ type AnyUser = {
   seeks?: string[];
   serviceCities?: string[];
   address?: string | null;
+  lat?: number | null;
+  lng?: number | null;
 };
+
+/** "41,7151" → 41.7151; empty → null; anything else → NaN. */
+function parseCoord(value: string) {
+  const text = value.trim().replace(",", ".");
+  if (!text) return null;
+  return /^[-−]?\d+(\.\d+)?$/.test(text) ? Number(text.replace("−", "-")) : NaN;
+}
 
 function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
   const { store } = useMarketStore();
@@ -49,6 +58,8 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
   const [seeks, setSeeks] = useState((me.seeks || []).join("\n"));
   const [serviceCities, setServiceCities] = useState<string[]>(me.serviceCities || []);
   const [address, setAddress] = useState(me.address || "");
+  const [lat, setLat] = useState(me.lat == null ? "" : String(me.lat));
+  const [lng, setLng] = useState(me.lng == null ? "" : String(me.lng));
   const [logoUrl, setLogoUrl] = useState(me.logoUrl || "");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoChanged, setLogoChanged] = useState(false);
@@ -64,7 +75,15 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
     const errors: FieldErrors = {};
     if (name.trim().length < 2) errors.name = "მიუთითე სახელი და გვარი";
     if (isCompany && company.trim().length < 2) errors.company = "მიუთითე კომპანიის დასახელება";
-    if (!v.check(errors, ["name", "company"])) return;
+    const latValue = isCompany ? parseCoord(lat) : null;
+    const lngValue = isCompany ? parseCoord(lng) : null;
+    if (latValue !== null && !(latValue >= -90 && latValue <= 90)) errors.lat = "განედი უნდა იყოს რიცხვი −90-დან 90-მდე";
+    if (lngValue !== null && !(lngValue >= -180 && lngValue <= 180)) errors.lng = "გრძედი უნდა იყოს რიცხვი −180-დან 180-მდე";
+    if (!errors.lat && !errors.lng) {
+      if (latValue === null && lngValue !== null) errors.lat = "მიუთითე განედიც — ან წაშალე ორივე";
+      if (lngValue === null && latValue !== null) errors.lng = "მიუთითე გრძედიც — ან წაშალე ორივე";
+    }
+    if (!v.check(errors, ["name", "company", "lat", "lng"])) return;
     setPending(true);
     setError(null);
     setSaved(false);
@@ -76,7 +95,7 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
         nextLogo = uploaded.url;
         setUploading(false);
       }
-      await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address, ...(logoChanged ? { logoUrl: nextLogo } : {}) } : {}) });
+      await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address, lat: latValue, lng: lngValue, ...(logoChanged ? { logoUrl: nextLogo } : {}) } : {}) });
       setLogoUrl(nextLogo);
       setLogoFile(null);
       setLogoChanged(false);
@@ -200,6 +219,24 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
               <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
               <p className="ma-field__help" id="address-help">ჩანს პროფილზე „მიმართულება“ ბმულით</p>
             </div>
+            <fieldset className="ma-field account-coords" aria-describedby="coords-help">
+              <legend className="ma-field__label">
+                კოორდინატები <span className="ma-field__opt">არასავალდებულო</span>
+              </legend>
+              <div className="ma-form__row ma-form__row--2">
+                <div className="ma-field">
+                  <label className="ma-field__label" htmlFor="lat">განედი</label>
+                  <input className="ma-input ma-input--num" inputMode="decimal" autoComplete="off" maxLength={20} placeholder="41.7151" value={lat} onChange={(e) => {setLat(e.target.value); v.clear("lat"); v.clear("lng");}} {...v.control("lat")} />
+                  {v.message("lat")}
+                </div>
+                <div className="ma-field">
+                  <label className="ma-field__label" htmlFor="lng">გრძედი</label>
+                  <input className="ma-input ma-input--num" inputMode="decimal" autoComplete="off" maxLength={20} placeholder="44.8271" value={lng} onChange={(e) => {setLng(e.target.value); v.clear("lat"); v.clear("lng");}} {...v.control("lng")} />
+                  {v.message("lng")}
+                </div>
+              </div>
+              <p className="account-coords__help" id="coords-help">Google Maps-იდან: მარჯვენა ღილაკი → კოორდინატები. თუ მითითებულია, „მიმართულება“ ზუსტ წერტილზე მიგიყვანს.</p>
+            </fieldset>
           </div>
         ) : null}
         <p className="account-hint">ტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>

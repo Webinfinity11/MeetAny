@@ -548,10 +548,13 @@
 .account-page .ma-field__help{margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
 .account-page .ma-input[readonly]{background:var(--bg-subtle);border-color:var(--border);color:var(--text-2)}
 .account-page .ma-form{gap:var(--space-5)}
+.account-coords{margin:0;padding:0;border:0;min-width:0;gap:var(--space-2)}
+.account-coords__help{margin:0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
 @media(min-width:1024px){
  .account-layout{grid-template-columns:calc(var(--space-24) * 3 + var(--space-3)) minmax(0,1fr);gap:var(--space-10)}
  .ma-form__row--3{grid-template-columns:repeat(3,minmax(0,1fr))}
  .account-contact>.ma-field:nth-child(2):last-child{grid-column:span 2}
+ .account-coords .ma-form__row--2{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 /* Below 1024 the list comes first: the profile column gives way to one "name · role" line. */
 @media(max-width:1023.98px){
