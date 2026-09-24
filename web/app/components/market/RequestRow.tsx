@@ -38,9 +38,6 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
   const urgent = r.state === "open" && r.daysLeft <= 7;
   return (
     <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
-      {r.photo && r.photo !== failedPhoto ? <div className="request-card-visual" aria-hidden="true">
-        <img src={r.photo} alt="" width={240} height={160} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
-      </div> : null}
       <div className="request-card-content">
         {tier ? <span className={`request-tier-badge request-tier-badge--${tier}`}>{tier === "vip" ? "VIP" : "ტოპ"}</span> : null}
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
@@ -54,8 +51,13 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
         {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
       </div> : null}
       </div>
+      {r.photo && r.photo !== failedPhoto ? <div className="request-card-visual" aria-hidden="true">
+        <img src={r.photo} alt="" width={240} height={160} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
+      </div> : null}
       <div className="request-card-status">
-        <span className="request-card-offers"><strong>{r.offerCount}</strong> <span>შეთავაზება</span></span>
+        {/* No offers yet reads as a soft "new", not "0"; left empty when the "new" badge already says so or the request is no longer open. */}
+        {r.offerCount > 0 ? <span className="request-card-offers"><strong>{r.offerCount}</strong> <span>შეთავაზება</span></span>
+          : r.isNew || r.state !== "open" ? null : <span className="request-card-offers--none">ახალი</span>}
         {deadline ? <span className={urgent ? "request-card-urgent" : undefined}>{deadline}</span> : null}
       </div>
     </article>

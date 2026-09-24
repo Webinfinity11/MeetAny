@@ -25,7 +25,10 @@ export function FacetList({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
-  const entries: Facet[] = [{ id: "", label: allLabel, count: allCount }, ...[...all].sort((a, b) => b.count - a.count)];
+  const sorted = [...all].sort((a, b) => b.count - a.count);
+  // Industries with no companies sit in one labelled group at the end, all visible (no toggle).
+  const empty = loading ? [] : sorted.filter(f => f.count === 0);
+  const entries: Facet[] = [{ id: "", label: allLabel, count: allCount }, ...(loading ? sorted : sorted.filter(f => f.count !== 0))];
   const button = (f: Facet) => (
     <button
       key={f.id}
@@ -43,6 +46,10 @@ export function FacetList({
   return (
     <div>
       {entries.map(button)}
+      {empty.length ? <>
+        <p className="facet-group-title">სხვა დარგები</p>
+        {empty.map(button)}
+      </> : null}
     </div>
   );
 }

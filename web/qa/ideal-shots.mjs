@@ -17,6 +17,9 @@ const textX=()=>{
   railTitle:x(document.querySelector('.filter-rail .ma-title')),
   plainRowTitle:x(rows.find(r=>!r.matches('.request-card--photo,.request-card--vip'))?.querySelector('h2,h3')),
   fullRowsInFold:rows.filter(r=>{const b=r.getBoundingClientRect();return b.top>=0&&b.bottom<=innerHeight;}).length,
+  // Per row: kind, row left, title text x, offers/actions right edge, photo box, row height.
+  rows:rows.map(r=>{const b=e=>e&&e.getBoundingClientRect().width?e.getBoundingClientRect():null;const img=b(r.querySelector('.request-card-visual'));const end=b(r.querySelector('.request-card-status>*'))||b(r.querySelector('.listing-actions'));
+   return [(r.className.match(/request-card--(vip|top)/)||[])[1]||(r.matches('.request-card--photo')?'photo':'plain'),Math.round(r.getBoundingClientRect().left),x(r.querySelector('h2,h3')),end&&Math.round(end.right),img&&`${Math.round(img.left)}:${Math.round(img.width)}x${Math.round(img.height)}`,Math.round(r.getBoundingClientRect().height)];}),
  };
 };
 try {
@@ -33,7 +36,8 @@ try {
    const metrics=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-innerWidth,band:Math.round(document.querySelector('.catalog-header').getBoundingClientRect().height),controls:Math.round(document.querySelector('.r2-results-bar').getBoundingClientRect().height)}));
    Object.assign(metrics,await page.evaluate(textX));
    assert.equal(metrics.overflow,0);
-   if(width===390)assert(metrics.fullRowsInFold>=2,`${route} 390: ${metrics.fullRowsInFold} full rows in the first screen`);
+   // Requests: a full-width VIP photo on mobile (T11.6) leaves one full row in the first screen.
+   if(width===390)assert(metrics.fullRowsInFold>=(route==='requests'?1:2),`${route} 390: ${metrics.fullRowsInFold} full rows in the first screen`);
    await page.screenshot({path:path.join(out,`${route}-${width}.png`),fullPage:true});
    if(width===390)await page.screenshot({path:path.join(out,`${route}-390-fold.png`)});
    console.log(route,width,JSON.stringify(metrics));

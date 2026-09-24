@@ -32,14 +32,20 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       <CompanyAvatar name={c.name} size="lg" />
       <div className="listing-identity">
         <h3><Link className="card-main-link" href={href}>{c.name}</Link></h3>
-        <p className="listing-location">{[categories[c.industry] || c.industry, places].filter(Boolean).join(" · ")}</p>
+        <p className="listing-location">{[categories[c.industry] || c.industry, places].filter(Boolean).join(" · ")}
+          {/* Desktop: directions is a text link at the end of the meta line; mobile uses the icon button below. */}
+          {c.directions ? <span className="listing-directions-meta"> · <a className="listing-directions" href={c.directions} target="_blank" rel="noopener noreferrer" aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" />მიმართულება</a></span> : null}
+        </p>
       </div>
-      <div className="listing-utilities"><SaveCompanyButton id={c.id} /></div>
-      {c.offers.length ? <p className="listing-products">{c.offers.join(" · ")}</p> : null}
-      {c.phone || c.directions ? <div className="supplier-contact">
-        {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
-        {c.directions ? <a className="listing-directions" href={c.directions} target="_blank" rel="noopener noreferrer" aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" /><span className="listing-directions__text">მიმართულება</span></a> : null}
-      </div> : null}
+      {c.offers.length ? <p className="listing-products">{c.offers.join(" · ")}</p>
+        : c.about ? <p className="listing-about">{c.about}</p> : null}
+      <div className="listing-actions">
+        <div className="listing-utilities"><SaveCompanyButton id={c.id} /></div>
+        {c.phone || c.directions ? <div className="supplier-contact">
+          {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
+          {c.directions ? <a className="listing-directions listing-directions--icon" href={c.directions} target="_blank" rel="noopener noreferrer" aria-label={`${c.name} — მიმართულება Google Maps-ზე`}><Icon name="arrow-up-right" /></a> : null}
+        </div> : null}
+      </div>
     </article>
   );
 }

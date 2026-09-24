@@ -47,7 +47,7 @@
   --brand-gradient:linear-gradient(120deg,#4CCEFC 0%,#2A6DFB 30%,#C734B7 55%,#FC5632 78%,#FE8E2F 100%);
 
   /* P9 request tier prototype: aliases of the existing brand palette. */
-  --tier-vip-bg:var(--orange-50);
+  --tier-vip-bg:color-mix(in srgb,var(--theme-accent) 4%,#fff);
   --tier-vip-border:var(--orange-300);
   --tier-vip-text:var(--orange-700);
   --tier-vip-badge-bg:var(--orange-400);

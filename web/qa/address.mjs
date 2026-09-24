@@ -38,7 +38,7 @@ try {
   const pub = watch(await browser.newPage({viewport:{width:1440,height:1000}}));
   await go(pub,'/companies/');
   const card = pub.locator('.supplier-row').filter({has:pub.locator(`a[href="/companies/view/?id=${woodId}"]`)}).first();
-  const dir = card.locator('.listing-directions');
+  const dir = card.locator('.listing-directions:visible');
   await dir.waitFor({timeout:30000});
   assert.match(await dir.getAttribute('href'), /^https:\/\/www\.google\.com\/maps\//);
   await card.scrollIntoViewIfNeeded();

@@ -40,7 +40,7 @@ try {
  assert(await call.evaluate(e=>e===document.activeElement&&e.getAttribute('href').startsWith('tel:')));
  await overflow();check('phone reveal → tel + focus; no phone screenshot');
  await go('/companies/');
- const direction=page.locator('.listing-directions').first();
+ const direction=page.locator('.listing-directions:visible').first();
  assert.equal(await direction.getAttribute('target'),'_blank');
  assert((await direction.getAttribute('rel')).includes('noopener'));
  const target=await direction.getAttribute('href');

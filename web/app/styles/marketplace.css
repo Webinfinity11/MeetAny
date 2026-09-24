@@ -289,22 +289,25 @@
 .ma-proto .catalog-page :is(.listing-identity h3,.ma-rcard__title){display:block;margin:0;min-width:0;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-semibold);font-feature-settings:var(--catalog-title-case);letter-spacing:normal;white-space:normal;overflow:visible;overflow-wrap:anywhere;-webkit-line-clamp:unset}
 .companies-catalog .company-directory-list{display:grid;gap:var(--space-0)}
 .companies-catalog .ma-proto-columns>section{gap:0}
-.ma-proto .companies-catalog .supplier-row{display:grid;grid-template-columns:var(--space-12) minmax(0,1fr) minmax(calc(var(--space-24)*2 + var(--space-3)),max-content);gap:0 var(--space-5);align-items:start}
+.ma-proto .companies-catalog .supplier-row{display:grid;grid-template-columns:var(--space-12) minmax(0,1fr) max-content;gap:0 var(--space-5);align-items:start}
 .companies-catalog .supplier-row>.ma-avatar{grid-area:1 / 1 / 3;width:var(--space-12);height:var(--space-12);background:var(--avatar-bg);color:var(--avatar-text);font-size:var(--fs-title);font-weight:var(--fw-semibold);border-radius:var(--radius-md)}
 .companies-catalog .listing-identity{grid-area:1 / 2;min-width:0}
 .companies-catalog .listing-location{margin:var(--space-1) 0 0;color:var(--text-3);font-size:var(--fs-sm);line-height:var(--lh-sm);white-space:normal;overflow-wrap:anywhere}
+.companies-catalog .listing-about{grid-area:2 / 2;margin:var(--space-2) 0 0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .companies-catalog .listing-products{grid-area:2 / 2;margin:var(--space-2) 0 0;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-regular);color:var(--text-2);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;max-height:calc(var(--lh-sm)*2)}
-.companies-catalog .listing-utilities{grid-area:1 / 3;justify-self:end}
+/* Desktop: one action row [save][number], centred on the row. */
+.companies-catalog .listing-actions{grid-area:1 / 3 / 3 / 4;align-self:center;display:flex;align-items:center;gap:var(--space-2)}
 .companies-catalog .listing-utilities button{display:grid;place-items:center;width:var(--tap-min);height:var(--tap-min);min-width:var(--tap-min);padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;transform:none}
 .companies-catalog .listing-utilities button>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .companies-catalog .listing-utilities .icon{width:var(--icon);height:var(--icon)}
-.companies-catalog .supplier-contact{grid-area:2 / 3;display:flex;flex-direction:column;align-items:flex-end;gap:0;min-width:0;max-width:260px}
-.companies-catalog .supplier-contact .ma-btn{width:100%;white-space:normal;overflow-wrap:anywhere;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--white);color:var(--action);box-shadow:none;min-height:var(--tap-min)}
+.companies-catalog .supplier-contact{display:flex;align-items:center;gap:0;min-width:0;max-width:260px}
+.companies-catalog .supplier-contact .ma-btn{width:100%;min-width:calc(var(--space-24)*2 + var(--space-3));white-space:normal;overflow-wrap:anywhere;border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--white);color:var(--action);box-shadow:none;min-height:var(--tap-min)}
 /* Revealed number stays on one line; the column widens to max-content (≤260px) instead of wrapping. */
 .companies-catalog .supplier-contact .ma-btn[data-contact-action=call]{white-space:nowrap;overflow-wrap:normal}
-.companies-catalog .listing-directions{display:inline-flex;align-items:center;gap:var(--space-1);min-height:var(--tap-min);color:var(--text-link);text-decoration:none}
+.companies-catalog .listing-directions{display:inline-flex;align-items:center;gap:var(--space-1);color:var(--text-link);text-decoration:none;font-weight:var(--fw-medium);white-space:nowrap}
 .companies-catalog .listing-directions .icon{width:var(--icon-sm);height:var(--icon-sm)}
 .companies-catalog .listing-directions:hover{text-decoration:underline}
+.companies-catalog .listing-directions--icon{display:none}
 .companies-catalog .ma-proto-filters{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-5)}
 .companies-catalog .ma-proto-filters>*{min-width:0}
 .companies-catalog .filter-rail{border:0;box-shadow:none;padding:0}
@@ -313,6 +316,7 @@
 .companies-catalog .facet-label{white-space:nowrap}
 .companies-catalog .facet-count{font-size:var(--fs-xs);line-height:var(--lh-xs);font-variant-numeric:tabular-nums;color:var(--text-3)}
 .companies-catalog .ma-proto-filter--empty:not([aria-pressed=true]),.companies-catalog .ma-proto-filter--empty:not([aria-pressed=true]) .facet-count{color:var(--text-disabled)}
+.companies-catalog .facet-group-title{margin:var(--space-3) 0 0;font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3);font-feature-settings:var(--catalog-title-case);letter-spacing:normal}
 .companies-catalog .ma-proto-filter[aria-pressed=true]{color:var(--text-link);font-weight:var(--fw-semibold)}
 .companies-catalog .ma-proto-filter:hover{background:var(--bg-subtle)}
 .companies-catalog .filter-section,.companies-catalog .ma-proto-filters>.ma-field{border:0;border-top:1px solid var(--border-subtle);padding:var(--space-5) 0 0;margin:0;min-width:0}
@@ -336,12 +340,14 @@
  .catalog-page .catalog-header .ma-input{height:var(--control-h)}
  .ma-proto .companies-catalog .supplier-row{grid-template-columns:var(--space-12) minmax(0,1fr) var(--tap-min);gap:0 var(--space-3)}
  .companies-catalog .supplier-row>.ma-avatar{grid-area:1 / 1}
- .companies-catalog .listing-products{grid-area:auto / 1 / auto / -1;margin-top:var(--space-2)}
+ .companies-catalog :is(.listing-products,.listing-about){grid-area:auto / 1 / auto / -1;margin-top:var(--space-2)}
+ .companies-catalog .listing-actions{display:contents}
+ .companies-catalog .listing-utilities{grid-area:1 / 3;justify-self:end}
+ .companies-catalog .listing-directions-meta{display:none}
  .companies-catalog .supplier-contact{grid-area:auto / 1 / auto / -1;flex-direction:row;align-items:stretch;gap:var(--space-2);max-width:none;margin-top:var(--space-3)}
- .companies-catalog .supplier-contact .ma-btn{flex:1;width:auto}
- .companies-catalog .listing-directions{flex:none;justify-content:center;width:var(--tap-min);height:var(--tap-min);border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--white)}
+ .companies-catalog .supplier-contact .ma-btn{flex:1;width:auto;min-width:0}
+ .companies-catalog .listing-directions--icon{display:inline-flex;flex:none;justify-content:center;width:var(--tap-min);height:var(--tap-min);border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--white)}
  .companies-catalog .listing-directions .icon{width:var(--icon);height:var(--icon)}
- .companies-catalog .listing-directions__text{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
  .catalog-page .r2-results-controls{width:100%}
  .catalog-page .r2-results-controls>.catalog-sort{margin-left:auto}
  .catalog-page .r2-results-controls .catalog-sort .ma-select{height:var(--tap-min);min-height:var(--tap-min)}
@@ -350,12 +356,20 @@
 /* Requests use the same record surface, with an optional photo column. */
 .requests-catalog .request-card-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-0)}
 .requests-catalog .request-card-grid[data-tab-changed] [data-enter]{animation:none}
-.ma-proto .requests-catalog .request-card{display:grid;grid-template-columns:minmax(0,1fr) calc(var(--space-20)*2);gap:var(--space-5);height:auto;align-items:start}
-.ma-proto .requests-catalog .request-card--photo{grid-template-columns:calc(var(--space-24) + var(--space-6)) minmax(0,1fr) calc(var(--space-20)*2)}
-.ma-proto .requests-catalog .request-card--vip{border-left:3px solid var(--tier-vip-badge-bg);background:var(--tier-vip-bg);padding-block:var(--space-6);padding-inline:var(--space-3) var(--space-4)}
+/* One text axis: text always starts the row; the photo is a fixed column before the offers column,
+   left empty when a row has no photo. Only VIP keeps its large photo first. */
+.ma-proto .requests-catalog .request-card{display:grid;grid-template-columns:minmax(0,1fr) calc(var(--space-24) + var(--space-6)) calc(var(--space-20)*2);gap:var(--space-5);height:auto;align-items:start}
+.requests-catalog .request-card-content{grid-area:1 / 1}
+.requests-catalog .request-card-visual{grid-area:1 / 2}
+.requests-catalog .request-card-status{grid-area:1 / 3}
+/* VIP tint and stripe sit outside the row box, so its text and offers columns keep the list's edges. */
+.ma-proto .requests-catalog .request-card--vip{background:transparent;padding-block:var(--space-6)}
+.ma-proto .requests-catalog .request-card--vip::before{content:"";display:block;position:absolute;z-index:-1;inset:0 calc(-1 * var(--space-4));border-left:3px solid var(--tier-vip-badge-bg);background:var(--tier-vip-bg)}
+.ma-proto .requests-catalog .request-card--vip:hover{background:transparent}
 .ma-proto .requests-catalog .request-card--vip .ma-rcard__title{font-size:var(--fs-h2);line-height:var(--lh-h2)}
-.ma-proto .requests-catalog .request-card--vip:hover{background:var(--tier-vip-bg)}
 .ma-proto .requests-catalog .request-card--vip.request-card--photo{grid-template-columns:calc(var(--space-20)*2 + var(--space-10)) minmax(0,1fr) calc(var(--space-20)*2)}
+.requests-catalog .request-card--vip.request-card--photo .request-card-visual{grid-area:1 / 1}
+.requests-catalog .request-card--vip.request-card--photo .request-card-content{grid-area:1 / 2}
 .requests-catalog .ma-rcard--mine::before{display:none}
 .requests-catalog .request-card-visual{width:100%;aspect-ratio:3 / 2;border-radius:var(--radius-md);overflow:hidden}
 .requests-catalog .request-card-visual img{display:block;width:100%;height:100%;object-fit:cover}
@@ -365,6 +379,7 @@
 .requests-catalog .request-card-offers{display:grid;justify-items:end}
 .requests-catalog .request-card-offers strong{font-size:var(--fs-title);line-height:var(--lh-title);font-weight:var(--fw-semibold);color:var(--text);font-variant-numeric:tabular-nums}
 .requests-catalog .request-card-offers span{font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
+.requests-catalog .request-card-offers--none{font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);color:var(--text-3)}
 .requests-catalog .request-card-meta-status{display:none}
 .requests-catalog .request-card-meta-status>span{white-space:nowrap}
 .requests-catalog :is(.request-card-urgent,.request-card-meta-urgent){color:var(--warning-600);font-weight:var(--fw-medium)}
@@ -386,8 +401,11 @@
 @media(min-width:768px){.requests-catalog .catalog-filter-toggle{display:none}}
 @keyframes catalog-pulse{0%,100%{opacity:1}50%{opacity:.7}}
 @media(max-width:767px){
- .ma-proto .requests-catalog .request-card{grid-template-columns:minmax(0,1fr);gap:var(--space-3)}
- .ma-proto .requests-catalog .request-card--photo,.ma-proto .requests-catalog .request-card--vip.request-card--photo{grid-template-columns:var(--space-24) minmax(0,1fr)}
+ .ma-proto .requests-catalog .request-card{grid-template-columns:minmax(0,1fr) var(--space-24);gap:var(--space-3)}
+ .ma-proto .requests-catalog .request-card:not(.request-card--photo),.ma-proto .requests-catalog .request-card--vip,.ma-proto .requests-catalog .request-card--vip.request-card--photo{grid-template-columns:minmax(0,1fr)}
+ .requests-catalog .request-card--vip.request-card--photo .request-card-content{grid-area:2 / 1}
+ .requests-catalog .request-card--vip .request-card-visual{border-radius:var(--radius-md)}
+ .ma-proto .requests-catalog .request-card--vip .ma-rcard__title{font-size:var(--fs-h3);line-height:var(--lh-h3)}
  .requests-catalog .request-card-status{display:none}
  .requests-catalog .request-card-meta-status{display:inline}
  .requests-catalog .request-board-tabs{flex-basis:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
