@@ -295,3 +295,60 @@ ResultsBar-ის რაოდენობა გადავიდეს სა
 3. პასუხობს კითხვას „ეს ჰგავს AI-ით გაკეთებულს?“ და თითო ნიშანს აღწერს ელემენტით და კოორდინატით (გვერდი · სიგანე · ელემენტი · x/y), 14.1/14.2-ის სტრიქონზე მითითებით.
 4. გვერდი მიღებულია მხოლოდ მაშინ, როცა 14.1-ის სიიდან ნული რჩება და 14.2-ის ყველა ნიშანი დადასტურებულია; სხვაგვარად — შესწორება და ნაბიჯი 2 თავიდან.
 5. შედეგი იწერება `qa/ACCEPTANCE-GE.md`-ში: თარიღი, გვერდი, სქრინშოტების ბილიკები, ნაპოვნი ნიშნები, ვერდიქტი (მიღებულია / არ არის მიღებული).
+
+## 15. ტოკენების ფენები და ფაილების სტრუქტურა
+
+`app/styles/tokens.css` ერთადერთი მნიშვნელობების წყაროა. ფენები ამ თანმიმდევრობითაა:
+
+1. **primitive** — პალიტრა, FiraGO, ტიპოგრაფიული სკალა, დაშორებები, რადიუსები, ჩრდილები და მოძრაობა. ძველ ზუსტ ზომებს თავსებადობის სკალაც ინახავს, რათა გადატანამ პიქსელები არ შეცვალოს.
+2. **semantic** — დანიშნულება: `--bg`, `--text`, `--action`, `--border`, `--surface-*`, `--status-*`. ახალი გამოყენება როლის ტოკენს ირჩევს.
+3. **component** — საერთო კონტროლები: `--btn-*`, `--field-*`, `--row-*`, `--badge-*`, `--avatar-*`, `--sheet-*`. არსებული სახელები თავსებადობისთვის რჩება.
+
+CSS-ის იმპორტის რიგია `tokens → base → primitives → patterns → pages/<გვერდი>`. არ გამოიყენება cascade `@layer`: მისი დამატება არსებული წესების პრიორიტეტს შეცვლიდა. სელექტორების სპეციფიკურობა შენარჩუნებულია; media/container პირობები წესს მიჰყვება.
+
+| ფაილი `app/styles/`-ში | პასუხისმგებლობა |
+| --- | --- |
+| `tokens.css` | მნიშვნელობების სამი ფენა და responsive ტოკენები |
+| `base.css` | reset, body, ძირითადი ტიპოგრაფია, ხატულა, focus, skip link |
+| `primitives.css` | ღილაკი, ველები, badge, avatar, skeleton, toast, sheet |
+| `patterns.css` | shell/header/footer, გვერდის სათაური, რიგი, სექცია, empty state, ფილტრები, ტაბები, საერთო ძიება და chat popup |
+| `pages/catalog.css` | მოთხოვნების/კომპანიების სიები; ფორმის სტილების დამოკიდებულება |
+| `pages/detail.css` | მოთხოვნის დეტალი, კომპანიის პროფილი; რედაქტირების ფორმის დამოკიდებულება |
+| `pages/account.css` | ანგარიში, inbox, ავტორიზაცია, ლოგოს მართვა |
+| `pages/admin.css` | ადმინისტრირების ცხრილი და მაჩვენებლები |
+| `pages/forms.css` | მოთხოვნის დამატების/რედაქტირების sheet |
+| `home.css` | შეთანხმებული მთავარი გვერდი — უცვლელი |
+
+ჯგუფის layout პირდაპირ მხოლოდ თავის გვერდის ფაილს ტვირთავს. `/requests/new/` რეალურად `RequestsPageContent`-ს ხსნის sheet-ით, ამიტომ მისი ფაილია `catalog.css`. `catalog.css` და `detail.css` ერთსა და იმავე `forms.css`-ს `@import`-ით იყენებს. მთავარი გვერდი და terms გვერდის ფაილს არ ტვირთავს; მთავარი გვერდი pixel-diff-ის შესანარჩუნებლად ძველ რიგს ინარჩუნებს: `tokens → home → base → primitives → patterns` (კერძოდ, საერთო `.section-kicker` წესის პრიორიტეტი უცვლელია); `global-not-found` და `global-error` იღებს მხოლოდ საერთო ფენებს. კომპანიების layout ინარჩუნებს უკვე არსებულ `home.css` დამოკიდებულებას კატალოგის საბოლოო წესებამდე. ადგილობრივი CSS Modules საკუთარ კომპონენტებთან რჩება.
+
+### როგორ შევცვალო
+
+| ცვლილება | ფაილი + ტოკენი/კომპონენტი |
+| --- | --- |
+| ფერი | `tokens.css` → როლის `--action`, `--bg`, `--text`, `--border` და მისი primitive პალიტრა |
+| შრიფტი | `tokens.css` → `--font-sans`, `--fs-*`, `--lh-*`, მთავრული `--ff-heading`/`--ff-button` |
+| ღილაკი | `tokens.css` → `--btn-*`; `components/ui/Button.tsx` + `primitives.css` → ქცევა/მდგომარეობა |
+| დაშორება | `tokens.css` → `--space-*`; კონკრეტულ კომპონენტში შესაბამისი alias, მაგალითად `--row-gap` |
+| რადიუსი | `tokens.css` → `--radius-*`, `--btn-radius`, `--field-radius`, `--sheet-radius` |
+| ავატარის ტონები | `tokens.css` → `--avatar-1-bg/text` … `--avatar-6-bg/text`; `ui/Avatar.tsx` → სტაბილური `avatarTone` |
+| ჩრდილი | `tokens.css` → `--shadow-*`, `--focus-ring` და კომპონენტის ჩრდილის alias |
+
+### TypeScript პრიმიტივები
+
+ექსპორტები არის `app/components/ui/index.ts`-ში. პრიმიტივები იყენებს არსებულ `ma-*` კლასებს; გვერდების TSX-ის მიგრაცია არის T13.3 და ამ ეტაპზე არ შესრულებულა.
+
+| კომპონენტი | ძირითადი props |
+| --- | --- |
+| `Button` | `variant: primary/secondary/ghost/danger`, `size: sm/md/lg`, `icon`, `loading`, `href`, native button/link props |
+| `Badge` | `tone: vip/top/new/status`, `status: success/warning/danger/info/neutral`, native span props |
+| `Field` | `id`, `label`, `hint`, `error`, `required`, `children`, `className` |
+| `Input`, `Select`, `Textarea` | native props; Field-ის `id`, `required`, `aria-invalid`, `aria-describedby` ავტომატურად უკავშირდება |
+| `Avatar` | `name`, `logoUrl`, `size: 40/48/56`, native span props; ექვსი სტაბილური ტონი და დაზიანებული ლოგოს fallback |
+| `ListRow` | `media`, `body`, `meta`, `aside`, `href` + სავალდებულო `linkLabel`, `className` |
+| `Section` | `title`, `action`, `children`, `className`; მთავრული სათაური |
+| `EmptyState` | `text`, ერთი `action`, `className`; ხატულის გარეშე |
+| `Sheet` | `open`, `onClose`, `title`, `children`, `footer`, `className`; native modal dialog, აშკარა Tab/Shift+Tab focus trap, Escape, ფოკუსის დაბრუნება, მოძრავი body და უძრავი head/foot |
+
+`CompanyAvatar` არის `ui/Avatar`-ის თავსებადი wrapper: ძველი `sm/lg/xl` კლასები და მათი ზომები უცვლელად რჩება. ახალი რიცხვითი ზომები ცალკე modifier-ებით მუშაობს. `initials` რჩება მთავარი გვერდისთვის; `avatarInitials` და `avatarTone` ხელახლა ექსპორტირდება ძველი import-ების შესანარჩუნებლად.
+
+ცვლილების შემოწმება: `npm run lint`, `npx tsc --noEmit`, `npm run visual:diff` (47 კადრი, ზღვარი ≤0.1%, baseline-ის ფაილები `a841605` commit-იდან; manifest-ის საწყისი კოდის revision: `3c69b9c`). baseline არ განახლდეს რეფაქტორის გასატარებლად. ნედლი მნიშვნელობების AST აუდიტი ამოწმებს `font-size`, px spacing-ს, hex ფერს, `box-shadow`, `line-height` და `border-radius`-ს ყველა CSS-ში `tokens.css`/`home.css`-ის გარდა; ყველა ამ კატეგორიაში შედეგი უნდა იყოს 0. გეომეტრია (სიგანე, სიმაღლე, border-ის სისქე, breakpoint) ამ ექვსკატეგორიან მეტრიკაში არ შედის.
