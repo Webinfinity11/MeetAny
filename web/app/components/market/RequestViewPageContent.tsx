@@ -179,6 +179,14 @@ export function RequestViewPageContent() {
   const { r, me, owner, offers, offerCount, state, isOwner, myOffer, contact } = data;
   const closed = state !== "open";
   const orderedOffers = [...offers].sort((a,b) => offerSort === "delivery" ? (a.deliveryDays ?? Infinity) - (b.deliveryDays ?? Infinity) : Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const daysLeft: number = state === "open" ? store?.daysLeft(r) ?? 0 : 0;
+  const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
+  const headMeta = (
+    <span className="detail-meta">
+      {[categories[r.category] || r.category, cities[r.city] || r.city, r.addressNote, `${offerCount} შეთავაზება`].filter(Boolean).join(" · ")}
+      {statusText ? <> · <span className={state === "open" && daysLeft <= 7 ? "detail-meta__urgent" : undefined}>{statusText}</span></> : null}
+    </span>
+  );
   const shareUrl = typeof window === "undefined" ? "" : `${window.location.origin}/requests/view/?id=${encodeURIComponent(r.id)}`;
   async function action(kind: "extend" | "close" | "delete" | "withdraw") {
     if (!store || actionPending) return;
@@ -250,7 +258,7 @@ export function RequestViewPageContent() {
           )}
         </>
       ) : me?.role === "company" ? (
-        <section className="ma-panel">
+        <section className="detail-aside__block">
           {myOffer ? (
             <>
               <h2 className="ma-h3">შენი შეთავაზება</h2>
@@ -272,36 +280,26 @@ export function RequestViewPageContent() {
           )}
         </section>
       ) : (
-        <section className="ma-panel">
-          <h2 className="ma-h3">გაქვს შეთავაზება?</h2>
-          <p className="ma-note">შედი კომპანიის ანგარიშით და გაუგზავნე პირობები ავტორს. შეთავაზების ტექსტს მხოლოდ ის ნახავს.</p>
-          <div className="ma-panel__actions">
-            <Link className="ma-btn ma-btn--primary" href="/account/">
-              შესვლა
-            </Link>
-            <Link className="ma-btn ma-btn--secondary" href="/account/?tab=register&role=company">
-              კომპანიის რეგისტრაცია
-            </Link>
-          </div>
+        <section className="detail-aside__block" aria-label="შეთავაზების გაგზავნა">
+          <p className="detail-aside__text">შეთავაზების გასაგზავნად შედი კომპანიის ანგარიშით.</p>
+          <Link className="ma-btn ma-btn--primary detail-aside__primary" href="/account/">
+            შესვლა
+          </Link>
+          <Link className="detail-link" href="/account/?tab=register&role=company">
+            კომპანიის რეგისტრაცია
+          </Link>
         </section>
       ));
 
   return (
-    <div className="ma-page request-detail">
+    <div className="ma-page request-detail detail-page">
       <Link className="ma-back" href="/requests/">
         <Icon name="arrow-left" />
         მოთხოვნები
       </Link>
-      <PageBand eyebrow="MeetAny · საქმიანი კავშირები" title={isOwner ? "მიღებული შეთავაზებები" : r.title} description={isOwner ? r.title : categories[r.category]} />
+      <PageBand title={isOwner ? "მიღებული შეთავაზებები" : r.title} description={isOwner ? r.title : undefined} meta={headMeta} />
       <div className="request-detail-grid">
         <div className="request-detail-main">
-          <div className="ma-cluster">
-            {isOwner ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
-            <span className="ma-small ma-muted">
-              {cities[r.city]}{r.addressNote ? ` · ${r.addressNote}` : ""} · {offerCount} შეთავაზება
-              {closed ? ` · ${state === "closed" ? "დახურული" : state === "chosen" ? "მომწოდებელი არჩეულია" : "ვადაგასული"}` : ""}
-            </span>
-          </div>
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
             <h2 className="ma-h3">რა გვჭირდება</h2>
             <p className="ma-prose">{r.body}</p>
@@ -310,26 +308,27 @@ export function RequestViewPageContent() {
               {r.neededBy ? <div><dt>საჭიროა თარიღამდე</dt><dd>{r.neededBy}</dd></div> : null}
               <div><dt>ვადა</dt><dd>{state === "open" ? `დარჩენილია ${store?.daysLeft(r)} დღე` : store?.stateLabels[state]}</dd></div>
             </dl>
-            {r.photo ? <figure className="ma-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure> : null}
+            {r.photo ? <figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure> : null}
           </section>
-          <div className="ma-share">
-            <button className="ma-btn ma-btn--secondary" onClick={async () => {try {await navigator.clipboard.writeText(shareUrl); toast("ბმული დაკოპირდა.");} catch {setActionError("ბმული ვერ დაკოპირდა.");}}}>ბმულის კოპირება</button>
-            <a className="ma-btn ma-btn--secondary" href={`https://wa.me/?text=${encodeURIComponent(r.title + "\n" + shareUrl)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            <a className="ma-btn ma-btn--secondary" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer">Facebook</a>
+          <div className="detail-share" aria-label="გაზიარება" role="group">
+            <button type="button" className="detail-link" onClick={async () => {try {await navigator.clipboard.writeText(shareUrl); toast("ბმული დაკოპირდა.");} catch {setActionError("ბმული ვერ დაკოპირდა.");}}}>ბმულის კოპირება</button>
+            <span aria-hidden="true">·</span>
+            <a className="detail-link" href={`https://wa.me/?text=${encodeURIComponent(r.title + "\n" + shareUrl)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <span aria-hidden="true">·</span>
+            <a className="detail-link" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer">Facebook</a>
           </div>
           {actionError ? <p role="alert" className="ma-field__error">{actionError}</p> : null}
-          {!isOwner && me?.role === "company" ? responsePanel : null}
         </div>
         <aside className="request-detail-aside" aria-label="კონტაქტი და შეთავაზება">
           {owner ? (
             <section className="request-author">
-              <span className="ma-small ma-muted">მოთხოვნის ავტორი</span>
-              <h2 className="ma-h3">{owner.company || owner.name}</h2>
+              <span className="detail-label">მოთხოვნის ავტორი</span>
+              <h2 className="detail-author__name">{owner.company || owner.name}</h2>
               {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" contactId={r.ownerId} requestId={r.id} source="request-owner" /> : null}
               {!isOwner && me?.role === "company" ? <MessageButton companyId={me.id} requestId={r.id}/> : null}
             </section>
           ) : null}
-          {!isOwner && me?.role !== "admin" && me?.role !== "company" ? responsePanel : null}
+          {!isOwner && me?.role !== "admin" ? responsePanel : null}
         </aside>
       </div>
       {isOwner || me?.role === "admin" ? <section className="request-responses">{responsePanel}</section> : null}
