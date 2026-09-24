@@ -2,6 +2,14 @@
 
 `v1/` = T11.3-ის კადრები **კრიტიკამდე** (`../../DESIGN-CRITIQUE-GE.md`). `v2/` = T11.4-ის კადრები (კრიტიკის #1–#12, #15), **მშობლის მიმოხილვამდე**. ამ საქაღალდის `requests-*`/`companies-*` = T11.6 (ქვემოთ, პუნქტები 1–8). დანარჩენი ქვეთავები T11.4/T11.5a-ის ისტორიაა.
 
+## T11.9d — „ტოპ“ მეტა-ხაზში და dev overlay-ის „1 Issue“ (`../../acceptance/catalogs-v2.md` #1)
+
+`requests-1440|390` — ახალი (სკრიპტი `qa/top-meta-shots.mjs`, გაზომვები `top-meta-qa.json`); წინა ვერსიები `v9/`-შია.
+
+- „ტოპ“ აღარ დგას სათაურის ზემოთ: ახლა მეტა-ხაზის პირველი სიტყვაა, უბრალო ტექსტით („ტოპ · კატეგორია · ქალაქი …“, 14/22, `--text-2`, ფონისა და ბეიჯის გარეშე). `.request-tier-label` წაიშალა. VIP pill სათაურის წინ უცვლელია. გაზომვა: ტოპ-რიგებში სათაურის ზემოთ ელემენტი 0-ია, VIP-ში მხოლოდ `request-tier-badge--vip`.
+- **„1 Issue“ ჩვენი კოდი არ არის.** `.next/dev/logs/next-development.log`: 26 hydration mismatch ჩანაწერი, სამი სახის: (1) `<img loading>` `eager`↔`lazy` /requests/-ზე. მიზეზი QA სკრიპტების `ready()`-ია (`accept-*.mjs`, `requests-fix-shots.mjs` …), რომელიც `domcontentloaded`-ის შემდეგ, hydration-ის დასრულებამდე, `img.loading = 'eager'`-ს წერს. (2) `cz-shortcut-listen` `<body>`-ზე — ColorZilla-ს გაფართოება. (3) `style={{caret-color…}}` ველებზე — ბრაუზერის გაფართოება. MarketStore-ის `MA999`-ები Neon websocket-ის დროებითი შეცდომაა („non-101 status code“) და ქსელს უკავშირდება.
+- შემოწმება DOM-ის შეცვლის გარეშე (Playwright, `load`, lazy-სურათები scroll-ით): /requests/, /companies/, /account/, 1440 და 390 — overlay ცარიელია, console error 0, pageerror 0. ახალ სკრიპტს `loading` აღარ ეხება. ძველი სკრიპტები არ შეცვლილა. რჩევა: `ready()`-ში `loading='eager'` hydration-ის შემდეგ ან scroll-ით.
+
 ## T11.9b — /companies/ და /companies/view/: მიღების 13 ნიშანი (`../../acceptance/companies.md`)
 
 `companies-1440|390|390-fold`, `companies-1440-phone-open`, `companies-empty-1440` (ძიება „ქსქსქს“), `companies-sheet-390`, `company-view-1440|390`, `company-view-1440|390-500ms` (პროფილი ნავიგაციიდან 500ms-ზე) — სკრიპტი `qa/companies-fix-shots.mjs`, გაზომვები `companies-fix-qa.json`; სტუმარი, ნომერი DOM-ში დაფარულია კადრამდე. წინა ვერსიები `v6/`-შია.

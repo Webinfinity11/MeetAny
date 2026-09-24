@@ -41,10 +41,11 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
   return (
     <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       <div className="request-card-content">
-        {tier === "vip" ? <span className="request-tier-badge request-tier-badge--vip">VIP</span> : tier === "top" ? <span className="request-tier-label">ტოპ</span> : null}
+        {tier === "vip" ? <span className="request-tier-badge request-tier-badge--vip">VIP</span> : null}
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         <p className="request-card-meta">
-          {[categories[r.category] || r.category, r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}
+          {/* "Top" is plain meta text, first in the line — no label above the title. */}
+          {[tier === "top" ? "ტოპ" : null, categories[r.category] || r.category, r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}
           {/* Below 768px the offers column folds into the meta line; zero offers says nothing. */}
           <span className="request-card-meta-status">{r.offerCount > 0 ? <> · <span>{r.offerCount} შეთავაზება</span></> : null}{deadline ? <> · <span className={urgent ? "request-card-meta-urgent" : undefined}>{deadline}</span></> : null}</span>
           {r.posted ? <> · <span className="request-card-posted">{r.posted}</span></> : null}

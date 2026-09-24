@@ -419,7 +419,6 @@
 .requests-catalog .request-card-meta-status>span{white-space:nowrap}
 .requests-catalog :is(.request-card-urgent,.request-card-meta-urgent){color:var(--warning-600);font-weight:var(--fw-medium)}
 .requests-catalog .request-tier-badge{display:inline-flex;padding:0 var(--space-2);margin-bottom:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-medium);border:0;border-radius:0;background:var(--tier-vip-badge-bg);color:var(--text)}
-.requests-catalog .request-tier-label{display:block;margin-bottom:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3)}
 .requests-catalog .request-card-posted{white-space:nowrap}
 /* "New" is its own marker after the meta — a dot, never a "·" as well. */
 .requests-catalog .request-card-new{display:inline-flex;align-items:center;gap:var(--space-1);margin-left:var(--space-2);font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--success-700);font-weight:var(--fw-medium);white-space:nowrap}
