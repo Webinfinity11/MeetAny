@@ -51,7 +51,7 @@
   align-items: center;
   justify-content: center;
   min-height: var(--control-h);
-  padding: 10px 18px;
+  padding: var(--space-control-y) var(--space-control-x);
   border: 0;
   border-radius: var(--radius-control);
   background: var(--action);
