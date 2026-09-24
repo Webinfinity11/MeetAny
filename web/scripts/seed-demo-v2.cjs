@@ -1,10 +1,11 @@
 #!/usr/bin/env node
-// Realistic demo content (qa/DEMO-CONTENT-GE.md §ბ) on Neon branch auth-probe only.
+// Realistic demo content (qa/DEMO-CONTENT-GE.md §ბ, §ე, §ვ) on Neon branch auth-probe only.
 // Run: DEMO_API_ORIGIN=http://localhost:3001 node site/web/scripts/seed-demo-v2.cjs [--dry-run | --verify]
 // Same guards and ledger as seed-demo.cjs (which stays for the first-generation data).
 // Marketplace writes go through authenticated RPCs; the only SQL writes are the documented admin
 // promotion and one narrow transaction for what the API cannot set: requests.created_at/expires_at,
-// offers.created_at and profiles.phone of demo accounts. Nothing is printed from the ledger.
+// offers.created_at, profiles.phone/created_at of demo accounts and the QA suffix of three chat messages.
+// Nothing is printed from the ledger.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -42,12 +43,27 @@ const accounts = [
     about:'ვასუფთავებთ სასტუმროებს, ოფისებსა და კაფეებს, მათ შორის რემონტის შემდეგ. ვმუშაობთ საკუთარი ინვენტარით; სასტუმროებს ვაწვდით თეთრეულს რეცხვითა და გამოცვლით.', offers:['გენერალური დასუფთავება','რემონტის შემდგომი დასუფთავება','თეთრეულის რეცხვა და იჯარა'], seeks:['სასტუმროები და ოფისები','საწმენდი საშუალებების მომწოდებლები'], cities:['batumi','kutaisi']},
   {key:'build', role:'company', name:'ზურაბ კვარაცხელია', company:'კახეთის მშენებელი', city:'kutaisi', industry:'construction', phone:'+995 551 118 729', address:'კოსტავას ქ. 14', lat:42.2713, lng:42.7045,
     about:'ვასრულებთ შიდა რემონტს: შპაკლი, შეღებვა, იატაკი და სადურგლო სამუშაოები. გვაქვს საკუთარი სატვირთო მასალის მისატანად; ვმუშაობთ ეტაპობრივად, ობიექტის დაუკეტავად.', offers:['კედლების შეკეთება და შეღებვა','სადურგლო სამუშაოები','მასალის მიტანა'], seeks:['სამშენებლო მასალის მომწოდებლები'], cities:['kutaisi','tbilisi','batumi']},
-  {key:'web', role:'company', name:'ნიკა ლომიძე', company:'ვებსტუდია 7', city:'tbilisi', industry:'technology', phone:'+995 599 037 658', address:'ილია ჭავჭავაძის გამზ. 60', lat:41.7094, lng:44.7501,
+  {key:'web', role:'company', name:'ნიკა ლომიძე', company:'სტუდია ვები', city:'tbilisi', industry:'technology', phone:'+995 599 037 658', address:'ილია ჭავჭავაძის გამზ. 60', lat:41.7094, lng:44.7501,
     about:'ვაკეთებთ ვებგვერდებს და მარტივ ონლაინ შეკვეთის სისტემებს მცირე ბიზნესისთვის. ვმუშაობთ ეტაპებად: პროტოტიპი, პირველი ვერსია, გაშვება და მხარდაჭერა.', offers:['ვებგვერდის დამზადება','ონლაინ მენიუ და შეკვეთები','საიტის მხარდაჭერა'], seeks:['დიზაინერები','ფოტოგრაფები'], cities:ALL_CITIES},
+  {key:'food', role:'company', name:'ნათია ხუციშვილი', company:'მთის ბაღი', city:'tbilisi', industry:'food', phone:'+995 514 207 639', address:'დავით აღმაშენებლის ხეივანი 178', lat:41.7846, lng:44.7712,
+    about:'ფერმერთა კოოპერატივი: კახეთისა და ქართლის 14 მეურნეობის ბოსტნეულს, ხილსა და ყველს ვაწვდით კაფეებსა და სასტუმროებს. ვაწვდით კვირაში სამჯერ, ანგარიშფაქტურით.', offers:['სეზონური ბოსტნეული და მწვანილი','ხილი და კენკრა','ყველი და რძის ნაწარმი','კვირის გრაფიკით მიწოდება'], seeks:['კაფეები და რესტორნები','მაცივრიანი ტრანსპორტი'], cities:['tbilisi','rustavi','gori']},
+  // Poti is not in the city list, so the home city is "all Georgia" and the address names the town.
+  {key:'port', role:'company', name:'გელა ჟვანია', company:'კოლხეთის ტვირთი', city:'georgia', industry:'logistics', phone:'+995 595 318 074', address:'ფოთი, დავით აღმაშენებლის ქ. 12', lat:42.1466, lng:41.6727,
+    about:'ფოთის პორტიდან ვზიდავთ კონტეინერულ და პალეტურ ტვირთს დასავლეთ საქართველოსა და თბილისში. გვყავს 20-ტონიანი და მაცივრიანი მანქანები.', offers:['კონტეინერის გატანა პორტიდან','პალეტური გადაზიდვა','საბაჟო დოკუმენტების მომზადება'], seeks:['საწყობი თბილისში','იმპორტიორი კომპანიები'], cities:['batumi','kutaisi','zugdidi','tbilisi']},
+  {key:'oak', role:'company', name:'ბესიკ ლორთქიფანიძე', company:'იმერული დურგალი', city:'kutaisi', industry:'furniture', phone:'+995 574 862 015', address:'თამარ მეფის ქ. 49', lat:42.2685, lng:42.7069,
+    about:'შეკვეთით ვამზადებთ მასიური ხის მაგიდებს, კარადებს და სასტუმროს ნომრის ავეჯს. ვმუშაობთ წაბლითა და მუხით.', offers:['მასიური ხის მაგიდები','კარადები და თაროები','სასტუმროს ნომრის ავეჯი'], seeks:['ხის მასალის მომწოდებლები'], cities:['kutaisi','batumi']},
+  {key:'code', role:'company', name:'სალომე გოგიჩაიშვილი', company:'კოდის ხიდი', city:'tbilisi', industry:'technology', phone:'+995 591 746 208', address:'პეკინის გამზ. 41', lat:41.7247, lng:44.7584,
+    about:'ვქმნით ჯავშნის სისტემებს, ონლაინ მაღაზიებს და მობილურ აპებს კლინიკებისთვის, სასტუმროებისა და მაღაზიებისთვის.', offers:['ონლაინ ჯავშნის სისტემა','ონლაინ მაღაზია','მობილური აპლიკაცია','ბუღალტრულ პროგრამასთან დაკავშირება'], seeks:['UX დიზაინერები','ტესტერები'], cities:['tbilisi']},
   {key:'admin', role:'admin', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi', phone:'+995 568 452 390'},
 ].map(a=>({...a,email:`demo-${a.key}@meetany.ge`}));
-const NEW_KEYS = ['cleaning','build','web','winery','dental','garage'];
-const VERIFIED = ['wood','linen','web'];
+const NEW_KEYS = ['cleaning','build','web','winery','dental','garage','food','port','oak','code'];
+const VERIFIED = ['wood','linen','web','food','port'];
+// Days since each company joined (profiles.created_at): three months to two days, so "member since"
+// and the "newest" sort mean something. Every company joins before its first offer.
+const JOINED = {wood:92,linen:78,supply:64,build:51,cleaning:37,web:23,food:15,oak:9,port:6,code:2};
+const INDUSTRY_COUNTS = {furniture:2,logistics:2,technology:2,textiles:1,cleaning:1,construction:1,food:1};
+// Hand-typed QA chat messages end in " QA <timestamp>"; only that suffix is removed.
+const QA_CHAT = '%QA 1790%';
 // key: owner, title, body, category, city, photo (null = no photo), quantity, unit, address_note, needed_by,
 // age (hours since published), left (days until expiry). Keys R1–R11 are the seed-demo.cjs keys.
 const requests = [
@@ -90,12 +106,15 @@ const offers = [
   ['cleaning','renovation',8,40,'გვყავს მცირე სარემონტო ბრიგადა: შეღებვა და შემდეგ დასუფთავება ერთ პაკეტად. სამუშაოს ორ ეტაპად შევასრულებთ.'],
   ['supply','weekly',5,6,'ბათუმი–თბილისის მიმართულებით ყოველ სამშაბათს გვაქვს რეისი. 3 პალეტისთვის მუდმივ ადგილს დაგიჯავშნით.'],
   ['build','weekly',11,52,'სამშენებლო მასალის გამო კვირაში ორჯერ ვმოძრაობთ თბილისსა და ბათუმს შორის; 3 პალეტი დაგვეტევა.'],
+  ['port','weekly',4,30,'ფოთსა და თბილისს შორის ყოველდღე დავდივართ, ბათუმამდე — ოთხშაბათობით. 3 პალეტისთვის მუდმივ ადგილს დაგიტოვებთ.'],
+  ['code','website',9,175,'ჯავშნის მოდული მზა გვაქვს და თქვენს საიტში ჩავაშენებთ. ორენოვანი ვერსია ექიმების გვერდებით — 9 სამუშაო დღეში.'],
 ].map(([company,request,days,after,body])=>({company,request,days,after,body}));
 // Earlier QA data created by hand under unknown accounts (§ა): the admin removes it.
 const OLD_REQUESTS = ['ლობის ავეჯი: 3 დივანი და ჟურნალის მაგიდა','ყოველკვირეული ტვირთის გადაზიდვა ბათუმი–თბილისი','სასტუმროს თეთრეული 40 ნომრისთვის'];
 const OLD_COMPANIES = ['სწრაფი გადაზიდვა','ტექსტილ ჰაუსი','ავეჯის სახელოსნო „ხე“'];
 const CHOSEN = {request:'linen', company:'linen'};
 for (const r of requests) assert(offers.filter(o=>o.request===r.key).every(o=>o.after<r.age), 'Offer after now: '+r.key);
+for (const o of offers) assert(requests.find(r=>r.key===o.request).age-o.after<JOINED[o.company]*24, 'Offer before joining: '+o.company);
 // A request is re-created when anything the API cannot update changes (owner, photo, text after offers).
 const sig=r=>crypto.createHash('sha256').update(JSON.stringify([r.owner,r.title,r.body,r.category,r.city,r.photo,r.quantity,r.unit,r.address,r.needed])).digest('base64url').slice(0,16);
 let state, SUFFIX = '';
@@ -171,7 +190,8 @@ async function plan() {
     photos:requests.filter(r=>r.photo).map(r=>r.key), photosToUpload:requests.filter(r=>r.photo&&!state.requests[r.key]?.photo).length,
     owners:Object.fromEntries(accounts.filter(a=>a.role==='client').map(a=>[a.key,requests.filter(r=>r.owner===a.key).length])),
     offers:offers.length, chosen:`${CHOSEN.request}→${CHOSEN.company}`, verified:VERIFIED,
-    sql:{requests:requests.length,offers:offers.length,phones:accounts.length},
+    sql:{requests:requests.length,offers:offers.length,phones:accounts.length,joined:Object.keys(JOINED).length,qaMessages:(await sqlClient()`select count(*)::int n from meetany_private.messages where body like ${QA_CHAT}`)[0].n},
+    industries:INDUSTRY_COUNTS,
     offerCounts:Object.fromEntries(requests.map(r=>[r.key,offers.filter(o=>o.request===r.key).length])),
   },null,1));
 }
@@ -246,14 +266,17 @@ async function backdate() {
     of.push({id:row.id,request:state.v2.requests[r.key],company:byKey(o.company).id,age:r.age-o.after});
   }
   const ph=accounts.map(a=>({id:a.id,email:a.email,phone:a.phone}));
-  const [c1,c2,c3,taken]=await sql.transaction([
+  const jn=accounts.filter(a=>a.role==='company').map(a=>({id:a.id,email:a.email,days:JOINED[a.key]}));
+  const [c1,c2,c3,taken,qa]=await sql.transaction([
     sql`select count(*)::int n from public.requests t join jsonb_to_recordset(${JSON.stringify(rq)}::jsonb) v(id uuid,owner uuid,title text,age int,"left" int) on t.id=v.id and t.owner_id=v.owner and t.title=v.title`,
     sql`select count(*)::int n from public.offers t join jsonb_to_recordset(${JSON.stringify(of)}::jsonb) v(id uuid,request uuid,company uuid,age int) on t.id=v.id and t.request_id=v.request and t.company_id=v.company`,
     sql`select count(*)::int n from public.profiles t join jsonb_to_recordset(${JSON.stringify(ph)}::jsonb) v(id uuid,email text,phone text) on t.id=v.id and t.email=v.email`,
     sql`select count(*)::int n from public.profiles t join jsonb_to_recordset(${JSON.stringify(ph)}::jsonb) v(id uuid,email text,phone text) on t.phone=v.phone and t.id<>v.id`,
+    sql`select count(*)::int n from meetany_private.messages where body like ${QA_CHAT}`,
   ],{readOnly:true});
   assert.deepEqual([c1[0].n,c2[0].n,c3[0].n,taken[0].n],[rq.length,of.length,ph.length,0],'Backdate precheck failed');
-  const [u1,u2,u3]=await sql.transaction([
+  assert(qa[0].n<=3,'Unexpected QA chat messages: '+qa[0].n);
+  const [u1,u2,u3,u4,u5]=await sql.transaction([
     sql`update public.requests t set created_at=now()-make_interval(hours=>v.age), expires_at=now()+make_interval(days=>v."left")
         from jsonb_to_recordset(${JSON.stringify(rq)}::jsonb) v(id uuid,owner uuid,title text,age int,"left" int)
         where t.id=v.id and t.owner_id=v.owner and t.title=v.title returning t.id`,
@@ -263,9 +286,13 @@ async function backdate() {
     sql`update public.profiles t set phone=v.phone
         from jsonb_to_recordset(${JSON.stringify(ph)}::jsonb) v(id uuid,email text,phone text)
         where t.id=v.id and t.email=v.email and t.phone<>v.phone returning t.id`,
+    sql`update public.profiles t set created_at=now()-make_interval(days=>v.days)
+        from jsonb_to_recordset(${JSON.stringify(jn)}::jsonb) v(id uuid,email text,days int)
+        where t.id=v.id and t.email=v.email and t.role='company' returning t.id`,
+    sql`update meetany_private.messages set body=regexp_replace(body,${'\\s*QA 1790[0-9]+$'},'') where body like ${QA_CHAT} returning id`,
   ]);
-  assert.equal(u1.length,rq.length);assert.equal(u2.length,of.length);
-  console.log('SQL:',JSON.stringify({requests:u1.length,offers:u2.length,phones:u3.length}));
+  assert.equal(u1.length,rq.length);assert.equal(u2.length,of.length);assert.equal(u4.length,jn.length);assert.equal(u5.length,qa[0].n);
+  console.log('SQL:',JSON.stringify({requests:u1.length,offers:u2.length,phones:u3.length,joined:u4.length,chat:u5.length}));
 }
 async function verify() {
   for(const a of accounts) {
@@ -305,11 +332,24 @@ async function verify() {
   }
   const listed=await rpc(null,'list_companies');
   assert(OLD_COMPANIES.every(n=>!listed.some(c=>c.company===n)),'Old QA company still listed');
-  assert(accounts.filter(a=>a.role==='company').every(a=>listed.some(c=>c.id===a.id)));
+  const companies=accounts.filter(a=>a.role==='company');
+  assert(companies.every(a=>listed.some(c=>c.id===a.id)));
+  const industries={};for(const c of listed)industries[c.industry]=(industries[c.industry]||0)+1;
+  assert.deepEqual(industries,INDUSTRY_COUNTS,'Industry counts');
+  for(const a of companies) {
+    const c=listed.find(c=>c.id===a.id);
+    assert(Math.abs((now-new Date(c.created_at))/day-JOINED[a.key])<1,'Joined: '+a.key);
+    assert(!/\d/.test(a.company.split(/\s+/).slice(0,2).map(w=>w.replace(/[„“"]/g,'')[0]).join('')),'Digit initial: '+a.key);
+  }
+  const pub=await api(null,`profiles?select=id,phone&id=in.(${companies.map(a=>a.id).join(',')})`);
+  assert.equal(pub.filter(p=>p.phone).length,companies.length,'Public company phone missing');
+  const sent={};for(const o of offers)sent[o.company]=(sent[o.company]||0)+1;
+  assert(companies.filter(a=>!sent[a.key]).length>=2,'Some companies should have sent no offer');
+  assert.equal((await sqlClient()`select count(*)::int n from meetany_private.messages where body like ${QA_CHAT} or body like '%ტესტ%'`)[0].n,0,'QA chat text left');
   assert.equal((await oldData(byKey('admin'))).reqs.length,0,'Old QA request still present');
   const phones=accounts.map(a=>a.phone);assert.equal(new Set(phones).size,phones.length);
   for(const key of ['hotel',CHOSEN.company]) assert.equal((await rpc(byKey(key),'contact_for_request',{p_request_id:state.v2.requests[CHOSEN.request]})).length,1);
-  console.log(JSON.stringify({accounts:accounts.length,companies:accounts.filter(a=>a.role==='company').length,requests:own.length,open:open.length,chosen:1,fresh,owners:Object.fromEntries(accounts.filter(a=>a.role==='client').map(a=>[a.key,own.filter(r=>r.owner_id===a.id).length])),photos:requests.filter(r=>own.find(x=>x.id===state.v2.requests[r.key]).photo_url).map(r=>r.key),offers:offers.length,offerCounts:counts,expiryDays:[...left].sort((a,b)=>a-b),verified:VERIFIED,checks:'passed'}));
+  console.log(JSON.stringify({accounts:accounts.length,companies:accounts.filter(a=>a.role==='company').length,requests:own.length,open:open.length,chosen:1,fresh,owners:Object.fromEntries(accounts.filter(a=>a.role==='client').map(a=>[a.key,own.filter(r=>r.owner_id===a.id).length])),photos:requests.filter(r=>own.find(x=>x.id===state.v2.requests[r.key]).photo_url).map(r=>r.key),offers:offers.length,offerCounts:counts,expiryDays:[...left].sort((a,b)=>a-b),verified:VERIFIED,industries,sent:Object.fromEntries(companies.map(a=>[a.key,sent[a.key]||0])),joinedDays:JOINED,checks:'passed'}));
 }
 async function main() {
   const fd=fs.openSync(LOCK,'wx',0o600);fs.closeSync(fd);
