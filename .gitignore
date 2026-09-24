@@ -4,6 +4,7 @@ node_modules/
 .env*
 DEMO-ACCOUNTS.local.md
 DEMO-ACCOUNTS.local.md.lock
+*.local.bak.md
 
 # Preserved local QA artifacts from earlier work
 archive/prototype-local/
