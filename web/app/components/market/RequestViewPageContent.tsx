@@ -17,7 +17,7 @@ import { OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
-import { useMarketStore } from "../../lib/market-client";
+import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
 import { addressLabel, postedLabel } from "../../lib/format";
@@ -90,8 +90,8 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   );
 }
 
-export function RequestViewPageContent() {
-  const { store, ready, available } = useMarketStore();
+export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }) {
+  const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const detail = useRequestDetail(store, ready, available, id);
