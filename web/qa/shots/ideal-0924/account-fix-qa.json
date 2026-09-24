@@ -1,0 +1,248 @@
+{
+ "report": {
+  "login-1440-checks": {
+   "h1": "შესვლა",
+   "switchLink": false,
+   "placeholder": "",
+   "noValidate": true,
+   "fieldToButton": 24,
+   "formWidth": 456,
+   "forgotSameRow": true,
+   "toggle": "ჩვენება"
+  },
+  "login-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "form": 120,
+   "avatars": 0
+  },
+  "login-390-checks": {
+   "h1": "შესვლა",
+   "switchLink": false,
+   "placeholder": "",
+   "noValidate": true,
+   "fieldToButton": 24,
+   "formWidth": 358,
+   "forgotSameRow": true,
+   "toggle": "ჩვენება"
+  },
+  "login-390": {
+   "overflow": 0,
+   "h1": 16,
+   "tab": 16,
+   "form": 16,
+   "avatars": 0
+  },
+  "login-error-checks": {
+   "focus": "login-email",
+   "errors": [
+    "ჩაწერე სწორი ელფოსტა",
+    "მიუთითე პაროლი"
+   ],
+   "aria": [
+    "login-email",
+    "login-password"
+   ],
+   "described": "login-email-error"
+  },
+  "login-error-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "form": 120,
+   "avatars": 0
+  },
+  "login-wrong-checks": {
+   "text": "ელფოსტა ან პაროლი არასწორია.",
+   "buttonShift": 0
+  },
+  "register-error-checks": {
+   "h1": "რეგისტრაცია",
+   "focus": "reg-name",
+   "errors": [
+    "მიუთითე სახელი და გვარი",
+    "ჩაწერე მობილურის ნომერი",
+    "ჩაწერე სწორი ელფოსტა",
+    "მიუთითე პაროლი",
+    "რეგისტრაციისთვის დაეთანხმე წესებს"
+   ]
+  },
+  "account-profile-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "form": 120,
+   "avatars": 0
+  },
+  "account-profile-checks": {
+   "aside": false,
+   "row1": [
+    348,
+    348,
+    348
+   ],
+   "phoneReadOnly": true,
+   "note": "ტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.",
+   "alerts": true,
+   "logout": [
+    "გასვლა"
+   ]
+  },
+  "tab-alerts": {
+   "current": "პროფილი",
+   "alertsTop": 640
+  },
+  "account-1440-checks": {
+   "tabs": [
+    "მოთხოვნები (3)",
+    "შენახული (0)",
+    "მიმოწერები (1)",
+    "პროფილი"
+   ],
+   "rows": 3,
+   "firstRowBottom": 414,
+   "primaryButtons": 0,
+   "addLinks": 1,
+   "metas": [
+    "დასუფთავება და მოვლა · ბათუმი · გამოქვეყნდა 2 დღის წინ",
+    "ლოგისტიკა და დისტრიბუცია · ბათუმი · გამოქვეყნდა 6 დღის წინ",
+    "ტექსტილი და სასტუმროები · ბათუმი · გამოქვეყნდა 9 დღის წინ"
+   ],
+   "statuses": [
+    "მომწოდებელი არჩეულია"
+   ],
+   "seeOffersText": false,
+   "actionColumns": [
+    "1120-1320"
+   ],
+   "idline": "none"
+  },
+  "account-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "form": null,
+   "avatars": 0
+  },
+  "account-390-checks": {
+   "tabs": [
+    "მოთხოვნები (3)",
+    "შენახული (0)",
+    "მიმოწერები (1)",
+    "პროფილი"
+   ],
+   "rows": 3,
+   "firstRowBottom": 478,
+   "primaryButtons": 0,
+   "addLinks": 1,
+   "metas": [
+    "დასუფთავება და მოვლა · ბათუმი · გამოქვეყნდა 2 დღის წინ",
+    "ლოგისტიკა და დისტრიბუცია · ბათუმი · გამოქვეყნდა 6 დღის წინ",
+    "ტექსტილი და სასტუმროები · ბათუმი · გამოქვეყნდა 9 დღის წინ"
+   ],
+   "statuses": [
+    "მომწოდებელი არჩეულია"
+   ],
+   "seeOffersText": false,
+   "actionColumns": [
+    "16-374"
+   ],
+   "idline": "block"
+  },
+  "account-390-fold": {
+   "overflow": 0,
+   "h1": 16,
+   "tab": 16,
+   "form": null,
+   "avatars": 0
+  },
+  "account-390": {
+   "overflow": 0,
+   "h1": 16,
+   "tab": 16,
+   "form": null,
+   "avatars": 0
+  },
+  "request-new-1440-checks": {
+   "guestFlash": false,
+   "city": "batumi",
+   "height": 803,
+   "optionalInLabels": 0,
+   "groups": [
+    "რა გჭირდება",
+    "დეტალები არასავალდებულო"
+   ],
+   "dateLang": "ka",
+   "note": "მოთხოვნა 14 დღე იქნება აქტიური. ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.",
+   "overflowX": 0
+  },
+  "request-new-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": null,
+   "form": 424,
+   "avatars": 0
+  },
+  "request-new-390-checks": {
+   "guestFlash": false,
+   "city": "batumi",
+   "height": 844,
+   "optionalInLabels": 0,
+   "groups": [
+    "რა გჭირდება",
+    "დეტალები არასავალდებულო"
+   ],
+   "dateLang": "ka",
+   "note": "მოთხოვნა 14 დღე იქნება აქტიური. ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.",
+   "overflowX": 0
+  },
+  "request-new-390": {
+   "overflow": 0,
+   "h1": 16,
+   "tab": null,
+   "form": 16,
+   "avatars": 0
+  },
+  "request-new-errors-checks": {
+   "focus": "title",
+   "errors": [
+    "მიუთითე სათაური",
+    "აირჩიე კატეგორია",
+    "აღწერე, რა გჭირდება"
+   ]
+  },
+  "request-new-errors-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": null,
+   "form": 424,
+   "avatars": 0
+  },
+  "publish": {
+   "listed": true,
+   "deleted": true
+  },
+  "account-company-checks": {
+   "tabs": [
+    "შეთავაზებები (7)",
+    "შენახული (0)",
+    "მიმოწერები",
+    "პროფილი"
+   ],
+   "sections": [
+    "ჩემი შეთავაზებები (7)",
+    "შენი მიმართულების მოთხოვნები (4)",
+    "ჩემი მოთხოვნები"
+   ]
+  },
+  "account-company-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "form": null,
+   "avatars": 0
+  }
+ },
+ "pageerrors": []
+}

@@ -735,6 +735,8 @@ export function createMarketStore({initial=null,background=true}={}){
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
   seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,
+  // A signed-in session exists even when its profile has not loaded yet (e.g. a failed first refresh).
+  hasSession:()=>!!authUser,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
   requestPasswordReset,resetPassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,

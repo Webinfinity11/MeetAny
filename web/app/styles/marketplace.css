@@ -516,11 +516,17 @@
 .account-section{display:grid;gap:var(--space-3);min-width:0}
 .account-page .account-section__title{margin:0;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-bold);color:var(--text)}
 .account-rows{margin:0;padding:0;list-style:none;border-top:1px solid var(--border-subtle)}
-.account-row{display:grid;grid-template-columns:minmax(0,1fr) calc(var(--space-24) * 2 + var(--space-2)) calc(var(--space-24) * 2);gap:var(--space-5);align-items:start;padding-block:var(--space-4);border-bottom:1px solid var(--border-subtle)}
+.account-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) calc(var(--space-24) * 2 + var(--space-2)) calc(var(--space-24) * 2 + var(--space-2));gap:var(--space-5);align-items:start;padding-block:var(--space-4);border-bottom:1px solid var(--border-subtle)}
 .account-row--plain{grid-template-columns:minmax(0,1fr)}
 .account-row__main{display:grid;gap:var(--space-1);min-width:0}
 .account-row__title a{color:inherit;text-decoration:none}
 .account-row__title a:hover{text-decoration:underline;text-underline-offset:var(--space-1)}
+/* The whole row opens the request; actions sit above the stretched link. */
+.account-row__link::after{content:"";position:absolute;inset:0}
+.account-row:hover .account-row__link{text-decoration:underline;text-underline-offset:var(--space-1)}
+.account-row__actions>*{position:relative;z-index:1}
+.account-row__due{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);font-variant-numeric:tabular-nums}
+.account-row__due[data-soon]{color:var(--warning-600)}
 .account-row__stats{display:grid;gap:var(--space-1);align-content:start;font-size:var(--fs-sm);line-height:var(--lh-sm);font-variant-numeric:tabular-nums}
 .account-row__count{display:flex;flex-wrap:wrap;gap:0 var(--space-2)}
 .account-row__count strong{font-weight:var(--fw-semibold);color:var(--text)}
@@ -530,17 +536,39 @@
 .account-status[data-tone="open"]::before{background:var(--success-600)}
 .account-status[data-tone="chosen"]::before{background:var(--action)}
 .account-row__actions{display:grid;justify-items:end;align-content:start;text-align:right}
-.account-row__actions .account-link{justify-self:end;margin-top:calc((var(--lh-title) - var(--tap-min)) / 2)}
-.account-row__actions .account-link+.account-link{margin-top:calc(-1 * var(--space-3))}
-.account-section>.account-link{margin-top:calc(-1 * var(--space-2))}
+.account-row__actions .account-link{justify-self:end;margin-block:calc((var(--lh-sm) - var(--tap-min)) / 2)}
+.account-row__due+.account-link{margin-top:calc((var(--lh-sm) - var(--tap-min)) / 2)}
+.account-section__head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 var(--space-4)}
+.account-empty-block{display:grid;justify-items:start}
+.account-idline{display:none}
+.account-main--profile{max-width:calc(var(--space-24) * 9 + var(--space-8) + var(--space-1))}
+.ma-form__row--3{display:grid;gap:var(--space-4);grid-template-columns:minmax(0,1fr)}
+.account-page .ma-form__row>.ma-field{align-content:start}
+.account-form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2) var(--space-4)}
+.account-form-links{display:flex;flex-wrap:wrap;gap:0 var(--space-5);margin-top:calc(-1 * var(--space-2))}
+.account-page .ma-field__help{margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
+.account-page .ma-input[readonly]{background:var(--bg-subtle);border-color:var(--border);color:var(--text-2)}
 .account-page .ma-form{gap:var(--space-5)}
-@media(min-width:1024px){.account-layout{grid-template-columns:calc(var(--space-24) * 3 + var(--space-3)) minmax(0,1fr);gap:var(--space-10)}}
+@media(min-width:1024px){
+ .account-layout{grid-template-columns:calc(var(--space-24) * 3 + var(--space-3)) minmax(0,1fr);gap:var(--space-10)}
+ .ma-form__row--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .account-contact>.ma-field:nth-child(2):last-child{grid-column:span 2}
+}
+/* Below 1024 the list comes first: the profile column gives way to one "name · role" line. */
+@media(max-width:1023.98px){
+ .account-profile{display:none}
+ .account-idline{display:block;max-width:none;margin:calc(-1 * var(--space-2)) 0 var(--space-4);font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);overflow-wrap:anywhere}
+}
 @media(max-width:767.98px){
  :is(.account-page,.auth-page) .ma-tabs{margin-bottom:var(--space-6)}
- .account-row{grid-template-columns:minmax(0,1fr);gap:var(--space-2)}
+ .account-row{grid-template-columns:minmax(0,1fr);gap:var(--space-1)}
  .account-row__stats{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--space-4)}
- .account-row__actions{display:flex;flex-wrap:wrap;gap:0 var(--space-5);justify-items:start;text-align:left}
- .account-row__actions .account-link,.account-row__actions .account-link+.account-link{justify-self:start;margin:0}
+ .account-row__actions{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--space-4);justify-items:start;text-align:left}
+ .account-row__actions:empty{display:none}
+ .account-row__actions .account-link,.account-row__due+.account-link{justify-self:start;margin-block:calc((var(--lh-sm) - var(--tap-min)) / 2)}
+ /* Scroll hint: the strip fades at the right edge; a trailing spacer keeps the last tab clear. */
+ .account-page .ma-tabs{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - var(--space-6)),transparent);mask-image:linear-gradient(to right,#000 calc(100% - var(--space-6)),transparent)}
+ .account-page .ma-tabs::after{content:"";flex:none;width:var(--space-6)}
 }
 
 /* /account/?tab=messages (P11 T11.5c): inbox — 360px conversation list + open thread on ≥1024, one pane below.
@@ -604,17 +632,42 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 }
 @media(prefers-reduced-motion:reduce){:is(.inbox,.inbox-thread) *{transition:none!important;animation:none!important}}
 
-/* Guest /account/: one centred 440px column, no card. */
-.auth-page{width:min(calc(var(--space-24) * 4 + var(--space-10) + var(--space-2) + var(--space-6)),100%);margin-inline:auto}
+/* Guest /account/: a 440px column on the page's left axis (x=120 / 16), no card. */
+.auth-page>:not(.r2-band){max-width:calc(var(--space-24) * 4 + var(--space-10) + var(--space-2) + var(--space-6))}
 .auth-form{display:grid;min-width:0}
 .auth-page .ma-form{gap:var(--space-5)}
 .auth-page .ma-btn--block{width:100%}
-.auth-link--end{justify-self:end;margin-top:calc(-1 * var(--space-1))}
-.auth-switch,.auth-hint{margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
-.auth-switch{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--space-1);color:var(--text-2)}
+.auth-label-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);min-height:var(--lh-sm)}
+.auth-label-row .auth-link{margin-block:calc((var(--lh-sm) - var(--tap-min)) / 2)}
+.auth-password{position:relative;min-width:0}
+.auth-page .auth-password .ma-input{padding-right:calc(var(--space-20) + var(--space-2))}
+.auth-password__toggle{position:absolute;top:0;right:0;display:flex;align-items:center;min-width:var(--tap-min);height:var(--control-h);padding:0 var(--space-3);border:0;background:none;color:var(--text-link);font:inherit;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);cursor:pointer;border-radius:var(--radius-sm)}
+.auth-password__toggle:hover{color:var(--action-hover)}
+.auth-password__toggle:disabled{color:var(--text-disabled);cursor:not-allowed}
+/* Last field to button = --space-6; the server error takes a reserved 22px line inside that gap. */
+.auth-submit{display:grid;margin-top:calc(var(--space-6) - var(--space-5) - var(--lh-sm))}
+.auth-alert{min-height:var(--lh-sm);margin:0}
+.auth-hint{margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
 
 /* Request form sheet: white head, one 2-column grid, text cancel. */
 .ma-sheet.request-form{border-radius:var(--radius-lg);box-shadow:var(--shadow-4)}
+/* Height follows the content up to 90vh; head and footer stay, the body scrolls. */
+@media(min-width:768px){.ma-proto .ma-sheet.request-form{height:fit-content;max-height:90vh}}
+.request-form__skeleton{display:grid;gap:var(--space-4);padding-block:var(--space-2)}
+.request-form__skeleton .ma-skel:nth-child(2){width:70%}
+.request-form__skeleton .ma-skel:nth-child(3){width:45%}
+.request-form__guest{max-width:none;margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-2)}
+.request-form__group{display:grid;gap:var(--space-3);min-width:0}
+.request-form__group+.request-form__group{padding-top:var(--space-5);border-top:1px solid var(--border-subtle)}
+.ma-proto .request-form .request-form__group-title{display:flex;align-items:baseline;gap:var(--space-2);margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);color:var(--text);font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
+.request-form__group-opt{font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3);font-feature-settings:normal;letter-spacing:normal}
+.request-form__grid{display:grid;gap:var(--space-4);grid-template-columns:minmax(0,1fr)}
+.request-form__note{flex:1 1 0;min-width:0;max-width:none;margin:0 auto 0 0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
+.request-form__note.ma-field__error{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--danger-600)}
+@media(min-width:480px){
+ .request-form__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .request-form__wide,.request-form__grid>:last-child:nth-child(odd){grid-column:1 / -1}
+}
 .ma-proto .request-form .ma-sheet__header{align-items:center;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-6);border-bottom:1px solid var(--border-subtle);background:var(--white)}
 .ma-proto .request-form .ma-sheet__title{margin:0;padding:0;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-bold);color:var(--text)}
 .request-form .ma-sheet__close{width:var(--tap-min);height:var(--tap-min);margin:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-2)}
@@ -623,7 +676,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .request-form .ma-form{gap:var(--space-4)}
 .request-form__hint{margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
 .request-form .ma-note{font-size:var(--fs-sm);line-height:var(--lh-sm)}
-.request-form input[type="date"]{-webkit-appearance:none;appearance:none;display:block;height:var(--control-h);text-align:left}
+.request-form input[type="date"]{-webkit-appearance:none;appearance:none;display:block;height:var(--control-h);min-height:var(--control-h);text-align:left;border:1px solid var(--border-input);border-radius:var(--radius-sm);background:var(--white)}
 .request-form .ma-field{align-content:start}
 .request-form input[type="date"]::-webkit-date-and-time-value{text-align:left;min-height:var(--lh-body)}
 .request-form input[type="date"]::-webkit-datetime-edit{padding:0}
@@ -641,6 +694,8 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .ma-proto .request-form .ma-sheet__header{padding-left:var(--gutter)}
  .ma-proto .request-form .ma-sheet__footer{gap:0;padding:var(--space-3) var(--gutter) calc(var(--space-3) + env(safe-area-inset-bottom));box-shadow:var(--shadow-2)}
  .request-form__cancel{justify-content:center;width:100%}
+ .request-form__note{order:1;flex:none;width:100%;margin:0 0 var(--space-2)}
+ .request-form__note-more{display:none}
 }
 
 /* Request detail, owner view: one offers list with a count. */

@@ -46,7 +46,7 @@ export function PhotoField({ file, onChange }: { file: File | null; onChange: (f
   return (
     <div className="ma-field">
       <span className="ma-field__label">
-        ფოტო <span className="ma-field__opt">არასავალდებულო · JPG, PNG, WEBP, GIF</span>
+        ფოტო <span className="ma-field__opt">JPG, PNG, WEBP, GIF</span>
       </span>
       <label
         className={`ma-drop${isOver ? " is-over" : ""}`}

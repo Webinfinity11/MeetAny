@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { PageBand } from "./PageBand";
+import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 
 type Mode = "login" | "register" | "reset";
 
@@ -13,7 +14,31 @@ function safeNext(value: string | null): string | null {
   return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\") ? value : null;
 }
 
-function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () => void }) {
+const WRONG_LOGIN = "ელფოსტა ან პაროლი არასწორია.";
+
+// Password field with a text "show" toggle inside the control (44px hit area).
+function PasswordInput({ value, onChange, autoComplete, disabled, field }: { value: string; onChange: (value: string) => void; autoComplete: string; disabled?: boolean; field: Record<string, unknown> }) {
+  const [shown, setShown] = useState(false);
+  return (
+    <div className="auth-password">
+      <input className="ma-input" type={shown ? "text" : "password"} autoComplete={autoComplete} disabled={disabled} value={value} onChange={(e) => onChange(e.target.value)} {...field} />
+      <button type="button" className="auth-password__toggle" aria-pressed={shown} disabled={disabled} onClick={() => setShown((v) => !v)}>
+        {shown ? "დამალვა" : "ჩვენება"}
+      </button>
+    </div>
+  );
+}
+
+// Server error above the submit button in a reserved line, so the button never moves.
+function FormAlert({ error }: { error: string | null }) {
+  return (
+    <p className="ma-field__error auth-alert" role="alert">
+      {error || ""}
+    </p>
+  );
+}
+
+function LoginForm({ onReset }: { onReset: () => void }) {
   const { store } = useMarketStore();
   const router = useRouter();
   const next = safeNext(useSearchParams().get("next"));
@@ -21,19 +46,25 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const v = useFieldErrors();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!store || pending) return;
-    setPending(true);
     setError(null);
+    const errors: FieldErrors = {};
+    if (!isEmail(email)) errors["login-email"] = "ჩაწერე სწორი ელფოსტა";
+    if (!password) errors["login-password"] = "მიუთითე პაროლი";
+    if (!v.check(errors, ["login-email", "login-password"])) return;
+    setPending(true);
     try {
-      await store.login(email, password);
+      await store.login(email.trim(), password);
       window.dispatchEvent(new Event("meetany:auth"));
       if (next && store.currentUser()) router.push(next);
       else router.refresh();
     } catch (err) {
-      setError((err as { userMessage?: string })?.userMessage || "შესვლა ვერ მოხერხდა.");
+      const message = (err as { userMessage?: string })?.userMessage;
+      setError(message === "პაროლი არასწორია." ? WRONG_LOGIN : message || "შესვლა ვერ მოხერხდა.");
       window.dispatchEvent(new Event("meetany:auth"));
     } finally {
       setPending(false);
@@ -41,31 +72,30 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
   }
 
   return (
-    <form className="ma-form" onSubmit={submit}>
+    <form className="ma-form" onSubmit={submit} noValidate>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="login-email">
           ელფოსტა
         </label>
-        <input className="ma-input" id="login-email" autoComplete="username" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.ge" />
+        <input className="ma-input" autoComplete="username" type="email" inputMode="email" value={email} onChange={(e) => {setEmail(e.target.value); v.clear("login-email");}} {...v.control("login-email")} />
+        {v.message("login-email")}
       </div>
       <div className="ma-field">
-        <label className="ma-field__label" htmlFor="login-password">
-          პაროლი
-        </label>
-        <input className="ma-input" id="login-password" autoComplete="current-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="button" className="auth-link auth-link--end" onClick={onReset}>პაროლი დაგავიწყდა?</button>
+        <div className="auth-label-row">
+          <label className="ma-field__label" htmlFor="login-password">
+            პაროლი
+          </label>
+          <button type="button" className="auth-link" onClick={onReset}>პაროლი დაგავიწყდა?</button>
+        </div>
+        <PasswordInput autoComplete="current-password" value={password} onChange={(value) => {setPassword(value); v.clear("login-password");}} field={v.control("login-password")} />
+        {v.message("login-password")}
       </div>
-      {error ? (
-        <p className="ma-field__error" role="alert">
-          {error}
-        </p>
-      ) : null}
-      <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
-        {pending ? "შესვლა…" : "შესვლა"}
-      </button>
-      <p className="auth-switch">
-        არ გაქვს ანგარიში? <button type="button" className="auth-link" onClick={onSwitch}>დარეგისტრირდი</button>
-      </p>
+      <div className="auth-submit">
+        <FormAlert error={error} />
+        <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
+          {pending ? "შესვლა…" : "შესვლა"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -86,14 +116,25 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const v = useFieldErrors();
+  const edit = (id: string, set: (value: string) => void) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {set(e.target.value); v.clear(id);};
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!store || pending) return;
-    setPending(true);
     setError(null);
+    const errors: FieldErrors = {};
+    if (name.trim().length < 2) errors["reg-name"] = "მიუთითე სახელი და გვარი";
+    if (role === "company" && company.trim().length < 2) errors["reg-company"] = "მიუთითე კომპანიის დასახელება";
+    if (phone.replace(/\D/g, "").length < 9) errors["reg-phone"] = "ჩაწერე მობილურის ნომერი";
+    if (!profileRequired && !isEmail(email)) errors["reg-email"] = "ჩაწერე სწორი ელფოსტა";
+    if (role === "company" && !industry) errors["reg-industry"] = "აირჩიე მიმართულება";
+    if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "პაროლი მინიმუმ 8 სიმბოლოა" : "მიუთითე პაროლი";
+    if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმე წესებს";
+    if (!v.check(errors, ["reg-name", "reg-company", "reg-phone", "reg-email", "reg-industry", "reg-password", "reg-terms"])) return;
+    setPending(true);
     try {
-      await store.register({ role, name, company, phone, email, city, industry, password, acceptTerms });
+      await store.register({ role, name, company, phone, email: email.trim(), city, industry, password, acceptTerms });
       router.refresh();
       window.dispatchEvent(new Event("meetany:auth"));
     } catch (err) {
@@ -104,7 +145,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   }
 
   return (
-    <form className="ma-form" onSubmit={submit}>
+    <form className="ma-form" onSubmit={submit} noValidate>
       <fieldset className="ma-field">
         <legend className="ma-field__label">ვინ ხარ?</legend>
         <div className="ma-cluster">
@@ -123,13 +164,15 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-name">
             სახელი და გვარი *
           </label>
-          <input className="ma-input" id="reg-name" required maxLength={80} value={name} onChange={(e) => setName(e.target.value)} />
+          <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={edit("reg-name", setName)} {...v.control("reg-name")} />
+          {v.message("reg-name")}
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-company">
             კომპანია / ობიექტი{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
           </label>
-          <input className="ma-input" id="reg-company" required={role === "company"} maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
+          <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
+          {v.message("reg-company")}
         </div>
       </div>
       <div className="ma-form__row ma-form__row--2">
@@ -137,13 +180,15 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-phone">
             მობილური ტელეფონი * <span className="ma-field__opt">ნომერი საჯაროდ გამოჩნდება</span>
           </label>
-          <input className="ma-input" id="reg-phone" type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+995 5XX XXX XXX" />
+          <input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={edit("reg-phone", setPhone)} {...v.control("reg-phone")} />
+          {v.message("reg-phone")}
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-email">
             ელფოსტა *
           </label>
-          <input className="ma-input" id="reg-email" type="email" required={!profileRequired} disabled={profileRequired} maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.ge" />
+          <input className="ma-input" type="email" inputMode="email" autoComplete="email" disabled={profileRequired} maxLength={200} value={email} onChange={edit("reg-email", setEmail)} {...v.control("reg-email")} />
+          {v.message("reg-email")}
         </div>
       </div>
       <div className="ma-form__row ma-form__row--2">
@@ -164,7 +209,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
             <label className="ma-field__label" htmlFor="reg-industry">
               მიმართულება *
             </label>
-            <select className="ma-select" id="reg-industry" required value={industry} onChange={(e) => setIndustry(e.target.value)}>
+            <select className="ma-select" value={industry} onChange={edit("reg-industry", setIndustry)} {...v.control("reg-industry")}>
               <option value="" disabled>
                 აირჩიე მიმართულება
               </option>
@@ -174,6 +219,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
                 </option>
               ))}
             </select>
+            {v.message("reg-industry")}
           </div>
         ) : null}
       </div>
@@ -181,20 +227,22 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
         <label className="ma-field__label" htmlFor="reg-password">
           პაროლი * <span className="ma-field__opt">მინიმუმ 8 სიმბოლო</span>
         </label>
-        <input className="ma-input" id="reg-password" type="password" required={!profileRequired} disabled={profileRequired} minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordInput autoComplete="new-password" disabled={profileRequired} value={password} onChange={(value) => {setPassword(value); v.clear("reg-password");}} field={v.control("reg-password")} />
+        {v.message("reg-password")}
       </div>
-      <label className="ma-check">
-        <input type="checkbox" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />
-        <span>ვეთანხმები წესებსა და პერსონალური მონაცემების დამუშავებას</span>
-      </label>
-      {error ? (
-        <p className="ma-field__error" role="alert">
-          {error}
-        </p>
-      ) : null}
-      <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
-        {pending ? "იქმნება…" : "ანგარიშის შექმნა"}
-      </button>
+      <div className="ma-field">
+        <label className="ma-check">
+          <input type="checkbox" checked={acceptTerms} onChange={(e) => {setAcceptTerms(e.target.checked); v.clear("reg-terms");}} {...v.control("reg-terms")} />
+          <span>ვეთანხმები წესებსა და პერსონალური მონაცემების დამუშავებას</span>
+        </label>
+        {v.message("reg-terms")}
+      </div>
+      <div className="auth-submit">
+        <FormAlert error={error} />
+        <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
+          {pending ? "იქმნება…" : "ანგარიშის შექმნა"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -226,7 +274,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
         რეგისტრაცია
       </button>
     </nav>
-    {mode === "reset" ? <RecoveryForm onDone={() => setMode("login")} /> : mode === "login" ? <LoginForm onSwitch={() => setMode("register")} onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
+    {mode === "reset" ? <RecoveryForm onDone={() => setMode("login")} /> : mode === "login" ? <LoginForm onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
   </>);
 }
 
@@ -239,21 +287,27 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const v = useFieldErrors();
   async function submit(e: React.FormEvent) {
     e.preventDefault(); if (!store || pending) return;
+    const errors: FieldErrors = {};
+    if (!sent && !isEmail(email)) errors["reset-email"] = "ჩაწერე სწორი ელფოსტა";
+    if (sent && !code.trim()) errors["reset-code"] = "ჩაწერე ელფოსტით მიღებული კოდი";
+    if (sent && !verification && password.length < 8) errors["reset-password"] = password ? "პაროლი მინიმუმ 8 სიმბოლოა" : "მიუთითე ახალი პაროლი";
+    if (!v.check(errors, ["reset-email", "reset-code", "reset-password"])) return;
     setPending(true); setError("");
     try {
       if (verification) {await store.verifyEmailCode(code); onDone();}
       else if (sent) {await store.resetPassword(code, password); onDone();}
-      else {await store.requestPasswordReset(email); setSent(true);}
+      else {await store.requestPasswordReset(email.trim()); setSent(true);}
     } catch (err) {setError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
     finally {setPending(false);}
   }
-  return <form className="ma-form" onSubmit={submit}>
-    {!sent ? <label className="ma-field"><span className="ma-field__label">ელფოსტა</span><input className="ma-input" type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label> : <>
+  return <form className="ma-form" onSubmit={submit} noValidate>
+    {!sent ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-email">ელფოსტა</label><input className="ma-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={e => {setEmail(e.target.value); v.clear("reset-email");}} {...v.control("reset-email")}/>{v.message("reset-email")}</div> : <>
       <p className="auth-hint">შეამოწმე ელფოსტა და შეიყვანე მიღებული კოდი.</p>
-      <label className="ma-field"><span className="ma-field__label">კოდი</span><input className="ma-input" required autoComplete="one-time-code" value={code} onChange={e => setCode(e.target.value)}/></label>
-      {!verification ? <label className="ma-field"><span className="ma-field__label">ახალი პაროლი</span><input className="ma-input" type="password" minLength={8} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)}/></label> : null}
+      <div className="ma-field"><label className="ma-field__label" htmlFor="reset-code">კოდი</label><input className="ma-input" autoComplete="one-time-code" inputMode="numeric" value={code} onChange={e => {setCode(e.target.value); v.clear("reset-code");}} {...v.control("reset-code")}/>{v.message("reset-code")}</div>
+      {!verification ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-password">ახალი პაროლი</label><PasswordInput autoComplete="new-password" value={password} onChange={value => {setPassword(value); v.clear("reset-password");}} field={v.control("reset-password")}/>{v.message("reset-password")}</div> : null}
       <button type="button" className="auth-link" disabled={pending} onClick={async () => {
         setPending(true); setError("");
         try {if (verification) await store?.resendCode(); else await store?.requestPasswordReset(email); setNotice("კოდი ხელახლა გაიგზავნა.");}
@@ -261,8 +315,11 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
         finally {setPending(false);}
       }}>კოდის ხელახლა გაგზავნა</button>
     </>}
-    {notice ? <p className="auth-hint" role="status">{notice}</p> : null}{error ? <p className="ma-field__error" role="alert">{error}</p> : null}
-    <button className="ma-btn ma-btn--primary ma-btn--block" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</button>
+    {notice ? <p className="auth-hint" role="status">{notice}</p> : null}
+    <div className="auth-submit">
+      <FormAlert error={error || null} />
+      <button className="ma-btn ma-btn--primary ma-btn--block" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</button>
+    </div>
     {!verification ? <button type="button" className="auth-link" onClick={onDone}>შესვლაზე დაბრუნება</button> : null}
   </form>;
 }

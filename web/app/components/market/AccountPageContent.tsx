@@ -10,8 +10,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
 import { PageBand } from "./PageBand";
-import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms } from "./AuthForms";
+import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
@@ -35,7 +35,7 @@ type AnyUser = {
   address?: string | null;
 };
 
-function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
+function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
   const { store } = useMarketStore();
   const isCompany = me.role === "company";
   const [name, setName] = useState(me.name);
@@ -50,16 +50,21 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const v = useFieldErrors();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!store || pending) return;
+    const errors: FieldErrors = {};
+    if (name.trim().length < 2) errors.name = "მიუთითე სახელი და გვარი";
+    if (isCompany && company.trim().length < 2) errors.company = "მიუთითე კომპანიის დასახელება";
+    if (!v.check(errors, ["name", "company"])) return;
     setPending(true);
     setError(null);
+    setSaved(false);
     try {
       await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address } : {}) });
       setSaved(true);
-      onSaved();
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {
@@ -69,24 +74,24 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
 
   return (
     <section className="account-section">
-      <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პროფილი"}</h2>
+      <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პირადი მონაცემები"}</h2>
       <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
-      <form className="ma-form" onSubmit={submit}>
-        <div className="ma-form__row ma-form__row--2">
+      <form className="ma-form" onSubmit={submit} noValidate>
+        <div className="ma-form__row ma-form__row--3">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="name">
               სახელი და გვარი *
             </label>
-            <input className="ma-input" id="name" required maxLength={80} value={name} onChange={(e) => setName(e.target.value)} />
+            <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={(e) => {setName(e.target.value); v.clear("name");}} {...v.control("name")} />
+            {v.message("name")}
           </div>
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="company">
-              კომპანიის დასახელება{isCompany ? " *" : ""}
+              {isCompany ? "კომპანიის დასახელება *" : "კომპანია / ორგანიზაცია"}
             </label>
-            <input className="ma-input" id="company" required={isCompany} maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
+            <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={(e) => {setCompany(e.target.value); v.clear("company");}} {...v.control("company")} />
+            {v.message("company")}
           </div>
-        </div>
-        <div className="ma-form__row ma-form__row--2">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="profile-city">
               ქალაქი *
@@ -98,6 +103,21 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+        <div className="ma-form__row ma-form__row--3 account-contact">
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="profile-phone">
+              ტელეფონი
+            </label>
+            <input className="ma-input ma-input--num" id="profile-phone" readOnly value={me.phone} aria-describedby="profile-phone-help" />
+            <p className="ma-field__help" id="profile-phone-help">ტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.</p>
+          </div>
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="profile-email">
+              ელფოსტა
+            </label>
+            <input className="ma-input" id="profile-email" readOnly value={me.email} />
           </div>
           {isCompany ? (
             <div className="ma-field">
@@ -168,33 +188,37 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
             {error}
           </p>
         ) : null}
-        <div>
+        <div className="account-form-actions">
           <button className="ma-btn ma-btn--primary" type="submit" disabled={pending}>
             {pending ? "ინახება…" : "შენახვა"}
           </button>
+          {saved ? <p className="account-hint" role="status">ცვლილებები შენახულია.</p> : null}
         </div>
-        {saved ? <p role="status">ცვლილებები შენახულია.</p> : null}
+        <div className="account-form-links">
+          {isCompany ? <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link> : null}
+          <button type="button" className="account-link" onClick={onLogout}>გასვლა</button>
+        </div>
       </form>
     </section>
   );
 }
 
-type RequestItem = { id: string; title: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
+type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
 type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
-type Tab = "overview" | "saved" | "notifications" | "messages" | "profile";
+type Tab = "overview" | "saved" | "messages" | "profile";
 
 const DAY = 86400000;
 function postedLabel(createdAt: string, now: number) {
   const days = Math.floor((now - Date.parse(createdAt)) / DAY);
   return days <= 0 ? "გამოქვეყნდა დღეს" : days === 1 ? "გამოქვეყნდა გუშინ" : `გამოქვეყნდა ${days} დღის წინ`;
 }
+const requestMeta = (r: RequestItem, now: number) => [categories[r.category] || r.category, cities[r.city] || r.city, postedLabel(r.createdAt, now)].filter(Boolean).join(" · ");
 // Last visit per own request, written by RequestViewPageContent when the author opens it.
 function readSeen(): Record<string, string> {
   if (typeof window === "undefined") return {};
   try {return JSON.parse(localStorage.getItem("meetany.seen") || "{}") || {};} catch {return {};}
 }
-const requestTone = (state: string) => state === "open" ? "open" : state === "chosen" ? "chosen" : "done";
-const offerTone = (status: string) => status === "chosen" ? "open" : status === "declined" ? "done" : "chosen";
+const offerTone = (status: string) => status === "chosen" ? "chosen" : "done";
 const offerLabel = (status: string) => status === "chosen" ? "არჩეულია" : status === "declined" ? "არ აირჩიეს" : "გაგზავნილია";
 
 // One tab strip for both widths and every account view (registry design system).
@@ -219,7 +243,9 @@ export function AccountPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
-  const tab: Tab = rawTab === "saved" || rawTab === "notifications" || rawTab === "messages" ? rawTab : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
+  // Old links: ?tab=notifications / ?tab=alerts / ?tab=settings open the profile tab (alerts section).
+  const toAlerts = rawTab === "notifications" || rawTab === "alerts";
+  const tab: Tab = rawTab === "saved" || rawTab === "messages" ? rawTab : ["profile", "settings"].includes(rawTab) || toAlerts ? "profile" : "overview";
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
 
@@ -233,6 +259,11 @@ export function AccountPageContent() {
     const url = new URL(next, window.location.origin);
     if (url.origin === window.location.origin && ["/companies/view/", "/requests/view/"].includes(url.pathname)) router.replace(url.pathname + url.search + url.hash);
   }, [me?.id, router]);
+  const hasMe = !!me;
+  useEffect(() => {
+    if (!hasMe || tab !== "profile" || !(toAlerts || window.location.hash === "#alerts")) return;
+    document.getElementById("alerts")?.scrollIntoView({ block: "start" });
+  }, [hasMe, tab, toAlerts]);
 
   const data = useMemo(() => {
     if (!store || !me) return null;
@@ -253,22 +284,45 @@ export function AccountPageContent() {
 
   const isCompany = me.role === "company";
   const name = me.company || me.name;
+  const roleLabel = isCompany ? "კომპანია" : "კლიენტი";
   const engagement = store?.engagement();
   const savedCount = engagement?.status === "ready" ? (engagement.savedIds as string[]).length : null;
+  const myRequests = data?.myRequests ?? [];
+  const matching = data?.matching ?? [];
+  const myOffers = data?.myOffers ?? [];
   const tabs: { key: Tab; href: string; label: string }[] = [
-    { key: "overview", href: "/account/", label: isCompany ? "მიმოხილვა" : `მოთხოვნები (${data?.myRequests.length ?? 0})` },
-    { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული კომპანიები" : `შენახული კომპანიები (${savedCount})` },
-    { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები" },
+    { key: "overview", href: "/account/", label: isCompany ? `შეთავაზებები (${myOffers.length})` : `მოთხოვნები (${myRequests.length})` },
+    { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული" : `შენახული (${savedCount})` },
     { key: "messages", href: "/account/?tab=messages", label: unread ? `მიმოწერები (${unread})` : "მიმოწერები" },
     { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
   ];
 
-  if (tab === "saved" || tab === "notifications" || tab === "messages") return (
+  async function logout() {
+    await store?.logout();
+    router.push("/account/");
+    router.refresh();
+  }
+
+  if (tab === "saved" || tab === "messages") return (
     <div className="ma-page account-page">
       <PageBand title="ჩემი ანგარიში" />
       <AccountTabs tab={tab} items={tabs} />
       <div className="account-wide">
         {tab === "messages" ? (store ? <Inbox key={me.id} store={store} me={me}/> : null) : <EngagementPanel key={tab} kind={tab}/>}
+      </div>
+    </div>
+  );
+
+  if (tab === "profile") return (
+    <div className="ma-page account-page">
+      <PageBand title="ჩემი ანგარიში" />
+      <AccountTabs tab={tab} items={tabs} />
+      <div className="account-main account-main--profile">
+        {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
+        <ProfileForm me={me} onLogout={logout} />
+        <div id="alerts" className="account-alerts">
+          <EngagementPanel kind="notifications" />
+        </div>
       </div>
     </div>
   );
@@ -279,22 +333,66 @@ export function AccountPageContent() {
   }
 
   const requestHref = (id: string) => `/requests/view/?id=${encodeURIComponent(id)}`;
-  const myRequests = data?.myRequests ?? [];
-  const matching = data?.matching ?? [];
-  const myOffers = data?.myOffers ?? [];
+  const addRequest = <Link className="account-link" href="/requests/new/">მოთხოვნის დამატება</Link>;
+
+  const requestsSection = (
+    <section className="account-section">
+      <div className="account-section__head">
+        <h2 className="account-section__title">ჩემი მოთხოვნები</h2>
+        {myRequests.length ? addRequest : null}
+      </div>
+      {myRequests.length ? (
+        <ul className="account-rows">
+          {myRequests.map((r) => {
+            const state = store?.requestState(r) as string;
+            const count = store?.offerCount(r.id) ?? 0;
+            const seenAt = seen[r.id];
+            const fresh = (store?.visibleOffers(r.id, me) as OfferItem[] | undefined ?? []).filter((o) => o.status === "sent" && (!seenAt || Date.parse(o.createdAt) > Date.parse(seenAt))).length;
+            const left = state === "open" ? (store?.daysLeft(r, now) as number) : null;
+            return (
+              <li className="account-row" key={r.id}>
+                <div className="account-row__main">
+                  <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(r.id)}>{r.title}</Link></h3>
+                  <p className="account-row__meta">{requestMeta(r, now)}</p>
+                </div>
+                <div className="account-row__stats">
+                  <span className="account-row__count">
+                    <strong>{count} შეთავაზება</strong>
+                    {fresh ? <span className="account-row__new">{fresh} ახალი</span> : null}
+                  </span>
+                  {state !== "open" ? <Status tone={state === "chosen" ? "chosen" : "done"}>{store?.stateLabels?.[state] || state}</Status> : null}
+                </div>
+                <div className="account-row__actions">
+                  {left != null ? <span className="account-row__due" data-soon={left <= 2 ? "" : undefined}>{left <= 0 ? "ვადა დღეს იწურება" : `კიდევ ${left} დღე`}</span> : null}
+                  {state === "open" || state === "expired" || state === "closed" ? (
+                    <button type="button" className="account-link" onClick={() => extend(r.id)}>
+                      {state === "open" ? "ვადის გაგრძელება" : "ხელახლა გახსნა"} +{store?.EXTEND_DAYS ?? 7} დღე
+                    </button>
+                  ) : null}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <div className="account-empty-block">
+          <p className="account-empty">მოთხოვნა ჯერ არ გაქვს — კომპანიები შეთავაზებას პირობებით გამოგიგზავნიან.</p>
+          {addRequest}
+        </div>
+      )}
+    </section>
+  );
 
   return (
     <div className="ma-page account-page">
       <PageBand title="ჩემი ანგარიში" />
       <AccountTabs tab={tab} items={tabs} />
+      <p className="account-idline">{name} · {roleLabel}</p>
       <div className="account-layout">
         <aside className="account-profile" aria-label="პროფილი">
-          <div className="account-profile__id">
-            <CompanyAvatar name={name} size="lg" />
-            <div>
-              <h2 className="account-profile__name">{name}</h2>
-              <p className="account-profile__role">{me.name} · {isCompany ? "კომპანია" : "კლიენტი"}</p>
-            </div>
+          <div>
+            <h2 className="account-profile__name">{name}</h2>
+            <p className="account-profile__role">{me.company && me.company !== me.name ? `${me.name} · ` : ""}{roleLabel}</p>
           </div>
           {me.blocked ? <span className="ma-badge ma-badge--danger">დაბლოკილია</span> : null}
           <dl className="account-kv">
@@ -317,118 +415,61 @@ export function AccountPageContent() {
               </div>
             ) : null}
           </dl>
-          <Link className="ma-btn ma-btn--primary ma-btn--block" href="/requests/new/">
-            მოთხოვნის დამატება
-          </Link>
           <div className="account-profile__links">
+            <Link className="account-link" href="/account/?tab=profile">პროფილის რედაქტირება</Link>
             {isCompany ? <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link> : null}
-            <button
-              type="button"
-              className="account-link"
-              onClick={async () => {
-                await store?.logout();
-                router.push("/account/");
-                router.refresh();
-              }}
-            >
-              გასვლა
-            </button>
           </div>
-          <p className="account-profile__note">ტელეფონი საჯაროა; ელფოსტა — არჩევისას.</p>
         </aside>
         <div className="account-main">
-          {tab === "profile" ? (
-            <ProfileForm me={me} onSaved={() => undefined} />
-          ) : (
+          {isCompany ? (
             <>
-              {isCompany ? (
-                <>
-                  <section className="account-section">
-                    <h2 className="account-section__title">შენი მიმართულების მოთხოვნები ({matching.length})</h2>
-                    {matching.length ? (
-                      <ul className="account-rows">
-                        {matching.slice(0, 5).map((r) => (
-                          <li className="account-row account-row--plain" key={r.id}>
-                            <div className="account-row__main">
-                              <h3 className="account-row__title"><Link href={requestHref(r.id)}>{r.title}</Link></h3>
-                              <p className="account-row__meta">{cities[r.city] || r.city} · {postedLabel(r.createdAt, now)}</p>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="account-empty">შენი მიმართულებით მოთხოვნა ჯერ არ არის.</p>
-                    )}
-                    <Link className="account-link" href="/requests/">ყველა მოთხოვნა</Link>
-                  </section>
-                  <section className="account-section">
-                    <h2 className="account-section__title">ჩემი შეთავაზებები ({myOffers.length})</h2>
-                    {myOffers.length ? (
-                      <ul className="account-rows">
-                        {myOffers.map((o) => {
-                          const r = store?.getRequest(o.requestId) as RequestItem | null;
-                          return (
-                            <li className="account-row" key={o.id}>
-                              <div className="account-row__main">
-                                <h3 className="account-row__title"><Link href={requestHref(o.requestId)}>{r?.title || "მოთხოვნა"}</Link></h3>
-                                <p className="account-row__meta">{[r ? cities[r.city] || r.city : "", `გაიგზავნა ${postedLabel(o.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
-                              </div>
-                              <div className="account-row__stats">
-                                <Status tone={offerTone(o.status)}>{offerLabel(o.status)}</Status>
-                              </div>
-                              <div className="account-row__actions">
-                                <Link className="account-link" href={requestHref(o.requestId)}>მოთხოვნის ნახვა</Link>
-                              </div>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    ) : (
-                      <p className="account-empty">ჯერ შეთავაზება არ გაგზავნილა.</p>
-                    )}
-                  </section>
-                </>
-              ) : null}
               <section className="account-section">
-                <h2 className="account-section__title">ჩემი მოთხოვნები</h2>
-                {myRequests.length ? (
+                <h2 className="account-section__title">ჩემი შეთავაზებები ({myOffers.length})</h2>
+                {myOffers.length ? (
                   <ul className="account-rows">
-                    {myRequests.map((r) => {
-                      const state = store?.requestState(r) as string;
-                      const count = store?.offerCount(r.id) ?? 0;
-                      const seenAt = seen[r.id];
-                      const fresh = (store?.visibleOffers(r.id, me) as OfferItem[] | undefined ?? []).filter((o) => o.status === "sent" && (!seenAt || Date.parse(o.createdAt) > Date.parse(seenAt))).length;
+                    {myOffers.map((o) => {
+                      const r = store?.getRequest(o.requestId) as RequestItem | null;
                       return (
-                        <li className="account-row" key={r.id}>
+                        <li className="account-row" key={o.id}>
                           <div className="account-row__main">
-                            <h3 className="account-row__title"><Link href={requestHref(r.id)}>{r.title}</Link></h3>
-                            <p className="account-row__meta">{cities[r.city] || r.city} · {postedLabel(r.createdAt, now)}</p>
+                            <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(o.requestId)}>{r?.title || "მოთხოვნა"}</Link></h3>
+                            <p className="account-row__meta">{[r ? categories[r.category] || r.category : "", r ? cities[r.city] || r.city : "", `გაიგზავნა ${postedLabel(o.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
                           </div>
                           <div className="account-row__stats">
-                            <span className="account-row__count">
-                              <strong>{count} შეთავაზება</strong>
-                              {fresh ? <span className="account-row__new">{fresh} ახალი</span> : null}
-                            </span>
-                            <Status tone={requestTone(state)}>{store?.stateLabels?.[state] || state}</Status>
+                            {o.status !== "sent" ? <Status tone={offerTone(o.status)}>{offerLabel(o.status)}</Status> : null}
                           </div>
-                          <div className="account-row__actions">
-                            <Link className="account-link" href={requestHref(r.id)}>შეთავაზებების ნახვა</Link>
-                            {state === "open" || state === "expired" || state === "closed" ? (
-                              <button type="button" className="account-link" onClick={() => extend(r.id)}>
-                                {state === "open" ? "ვადის გაგრძელება" : "ხელახლა გახსნა"} +{store?.EXTEND_DAYS ?? 7} დღე
-                              </button>
-                            ) : null}
-                          </div>
+                          <div className="account-row__actions" />
                         </li>
                       );
                     })}
                   </ul>
                 ) : (
-                  <p className="account-empty">ჯერ მოთხოვნა არ გაქვს. დაამატე პირველი — კომპანიები პირობებით გიპასუხებენ.</p>
+                  <p className="account-empty">შეთავაზება ჯერ არ გაგიგზავნია.</p>
+                )}
+              </section>
+              <section className="account-section">
+                <div className="account-section__head">
+                  <h2 className="account-section__title">შენი მიმართულების მოთხოვნები ({matching.length})</h2>
+                  <Link className="account-link" href="/requests/">ყველა მოთხოვნა</Link>
+                </div>
+                {matching.length ? (
+                  <ul className="account-rows">
+                    {matching.slice(0, 5).map((r) => (
+                      <li className="account-row account-row--plain" key={r.id}>
+                        <div className="account-row__main">
+                          <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(r.id)}>{r.title}</Link></h3>
+                          <p className="account-row__meta">{requestMeta(r, now)}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="account-empty">შენი მიმართულებით მოთხოვნა ჯერ არ არის.</p>
                 )}
               </section>
             </>
-          )}
+          ) : null}
+          {requestsSection}
         </div>
       </div>
     </div>
