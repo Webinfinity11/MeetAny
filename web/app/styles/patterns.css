@@ -991,3 +991,15 @@ body.design-two main{animation:ma-rise var(--dur-slow) var(--ease) both}
 @media(min-width:1024px){
  .inbox[data-view]{grid-template-columns:calc(var(--space-24) * 3 + var(--space-16) + var(--space-2)) minmax(0,1fr);height:min(calc(var(--space-24) * 7),calc(100dvh - var(--header-h) - var(--space-8)))}
 }
+
+/* Generic registry row: shared spacing and divider, independent interactive aside. */
+.ma-list-row{position:relative;display:flex;align-items:flex-start;gap:var(--row-gap);padding-block:var(--row-pad);border-bottom:1px solid var(--row-divider)}
+.ma-list-row__media{flex:none}
+.ma-list-row__body{flex:1;min-width:0;display:grid;gap:var(--space-1)}
+.ma-list-row__meta{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
+.ma-list-row__aside{position:relative;z-index:1;flex:none}
+.ma-list-row__body :is(a,button,input,select,textarea):not(.ma-list-row__link){position:relative;z-index:1}
+.ma-list-row__link::after{content:"";position:absolute;inset:0}
+.ma-list-row:has(.ma-list-row__link):hover{background:var(--row-hover-bg)}
+@media(max-width:767.98px){.ma-list-row{flex-wrap:wrap}.ma-list-row__aside{width:100%}}
+.ma-list-row__link:focus-visible::after{box-shadow:var(--focus-ring);border-radius:var(--radius-sm)}

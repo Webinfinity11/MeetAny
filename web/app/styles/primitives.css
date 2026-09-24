@@ -244,3 +244,8 @@
 :is(.account-page,.auth-page,.request-form) :is(.ma-field__label,legend.ma-field__label){font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);color:var(--text);font-feature-settings:var(--catalog-title-case);letter-spacing:normal}
 :is(.account-page,.auth-page,.request-form) .ma-field__opt{margin-left:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3)}
 :is(.account-page,.auth-page,.request-form) .ma-check{font-size:var(--fs-sm);line-height:var(--lh-sm)}
+
+/* Numeric UI Avatar sizes do not change legacy CompanyAvatar geometry. */
+.ma-avatar--40{width:var(--avatar-size-sm);height:var(--avatar-size-sm)}
+.ma-avatar--48{width:var(--avatar-size-md);height:var(--avatar-size-md)}
+.ma-avatar--56{width:var(--avatar-size-lg);height:var(--avatar-size-lg);font-size:var(--fs-section-fixed)}
