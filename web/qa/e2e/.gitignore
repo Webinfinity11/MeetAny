@@ -1,0 +1,3 @@
+# Local recovery journals contain run-specific IDs and profile restore values.
+runs/
+*.tmp

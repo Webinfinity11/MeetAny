@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-09-24T18:35:13.438Z",
+  "command": "DEMO_API_ORIGIN=http://localhost:3001 node scripts/seed-demo-v2.cjs --verify",
+  "exitCode": 0,
+  "result": {
+    "accounts": 19,
+    "companies": 12,
+    "requests": 14,
+    "open": 13,
+    "chosen": 1,
+    "offers": 42,
+    "fresh": 4,
+    "checks": "passed"
+  }
+}

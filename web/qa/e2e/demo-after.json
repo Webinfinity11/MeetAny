@@ -1,0 +1,1696 @@
+[
+  {
+    "kind": "offers",
+    "row": {
+      "id": "0e184992-2b01-4f21-9ff1-f9e84b404db3",
+      "body": "სასტუმროს თეთრეულს ვაწვდით იჯარით, რეცხვითა და კვირაში ორჯერ გამოცვლით. თუ ყიდვა აუცილებელი არ არის, პირველი თვე საცდელად შეგვიძლია შევთანხმდეთ.",
+      "price": null,
+      "status": "declined",
+      "company_id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+      "created_at": "2026-09-16T19:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "6d2db057-7551-4e51-8b55-95c510fb6e61",
+      "updated_at": "2026-09-24T14:36:06.431305+00:00",
+      "vat_included": false,
+      "delivery_days": 9,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "1c7a235e-6092-467e-9188-ea682189c8f1",
+      "body": "მასიური წაბლის სკამები ზურგით, ზეთ-ცვილის საფარით, რომელიც მზესა და ტენს უძლებს. 24 ცალს 25 დღეში დავამზადებთ; თელავში მიტანა შედის.",
+      "price": null,
+      "status": "sent",
+      "company_id": "08b22cfb-9de5-420b-a342-90d8f0bfb812",
+      "created_at": "2026-09-22T09:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "a45dd21c-d462-4985-9bc8-8e3caf9bc6cf",
+      "updated_at": "2026-09-24T16:58:42.571732+00:00",
+      "vat_included": false,
+      "delivery_days": 25,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "1cbf9536-face-4847-8c13-044a95500dd9",
+      "body": "HoReCa ინვენტარსაც ვაწვდით: ხის მაგიდები 70×70 საწყობიდან. სპეციფიკაციასა და ფოტოებს ჩატში გამოგიგზავნით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+      "created_at": "2026-09-24T12:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "updated_at": "2026-09-24T14:36:30.013962+00:00",
+      "vat_included": false,
+      "delivery_days": 9,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "31c16787-b892-4f74-b41e-1383dc38ebc1",
+      "body": "ბათუმი–თბილისის მიმართულებით ყოველ სამშაბათს გვაქვს რეისი. 3 პალეტისთვის მუდმივ ადგილს დაგიჯავშნით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-18T23:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "updated_at": "2026-09-24T14:36:53.100731+00:00",
+      "vat_included": false,
+      "delivery_days": 5,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "3809f5f2-3f75-4edc-8a4d-a76f5f771cfe",
+      "body": "მუხის ჩარჩოზე ვამზადებთ დივნებს ტყავის მოსახსნელი ბალიშებით, რომლებიც ადვილად იწმინდება. სამ დივანს ოთხ კვირაში დავასრულებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "08b22cfb-9de5-420b-a342-90d8f0bfb812",
+      "created_at": "2026-09-06T19:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "updated_at": "2026-09-24T16:59:25.077654+00:00",
+      "vat_included": false,
+      "delivery_days": 28,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "3e27d7ba-cf94-4363-a5bb-c31aa04731c4",
+      "body": "6-ბოთლიანი ყუთები ტიხრებით, 800 ცალი, ხუთფენიანი გოფრით. ლოგოს ბეჭდვა დამატებით 10 სამუშაო დღეა; ნიმუშს თელავში ჩამოგიტანთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-21T13:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "69702a11-a620-4e9b-8ccd-1275466a11be",
+      "updated_at": "2026-09-24T14:36:33.527035+00:00",
+      "vat_included": false,
+      "delivery_days": 6,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "3fcfe3e8-77aa-4e8d-91f5-61acc64610a5",
+      "body": "საწყობში გვაქვს თეთრი ბამბის თეთრეული, 60 კომპლექტი ერთ პარტიად. ქუთაისიდან ბათუმში ორ დღეში ჩამოვიტანთ.",
+      "price": null,
+      "status": "declined",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-17T19:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "6d2db057-7551-4e51-8b55-95c510fb6e61",
+      "updated_at": "2026-09-24T14:36:08.174351+00:00",
+      "vat_included": false,
+      "delivery_days": 16,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "43d7698c-a62b-4c60-90fa-5cdf6b23001d",
+      "body": "ჩვენი მანქანა კვირაში ორჯერ მოდის თბილისიდან ქუთაისში. 12 პალეტს ორ რეისად გადმოვიტანთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "created_at": "2026-09-14T20:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b9aeb3ec-3d59-45d7-9937-46e3161dd225",
+      "updated_at": "2026-09-24T14:36:43.479049+00:00",
+      "vat_included": false,
+      "delivery_days": 3,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "462cf8c3-a369-4c96-b2eb-aeac9ffdee9e",
+      "body": "დივნის ჩარჩოს ჩვენი სადურგლო საამქრო ამზადებს, გადაკვრას კი პარტნიორი სახელოსნო. სამივე დივანს სამ კვირაში მოგაწვდით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "created_at": "2026-09-06T05:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "updated_at": "2026-09-24T16:59:23.290572+00:00",
+      "vat_included": false,
+      "delivery_days": 20,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "47bb917e-af7a-4c94-a899-8298ce37da40",
+      "body": "გვყავს მცირე სარემონტო ბრიგადა: შეღებვა და შემდეგ დასუფთავება ერთ პაკეტად. სამუშაოს ორ ეტაპად შევასრულებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+      "created_at": "2026-09-19T09:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "041595e2-265d-4318-a4cc-f805a3d6940d",
+      "updated_at": "2026-09-24T14:36:49.614416+00:00",
+      "vat_included": false,
+      "delivery_days": 8,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "5532d68b-8cf1-4587-8760-ffb5482a5980",
+      "body": "თუ დივნები უკვე გაქვთ, ახალ გადასაკრავს შევკერავთ ეკოტყავისგან ან ტეფლონიანი ქსოვილისგან. ქსოვილის ნიმუშებს ფოსტით გამოგიგზავნით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "created_at": "2026-09-07T15:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "updated_at": "2026-09-24T16:59:28.553567+00:00",
+      "vat_included": false,
+      "delivery_days": 14,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "56e9758f-44e9-48f5-9c48-f9b53cc6e5bf",
+      "body": "დავამზადებთ 24 სკამს მუხისგან, გარე გამოყენების ლაქით. ერთ სკამს ნიმუშად ერთ კვირაში გაჩვენებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-20T20:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "a45dd21c-d462-4985-9bc8-8e3caf9bc6cf",
+      "updated_at": "2026-09-24T14:36:13.414777+00:00",
+      "vat_included": false,
+      "delivery_days": 18,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "62c1cd30-e26e-4c4f-855f-701c4b8be959",
+      "body": "70×70 მაგიდებს მუხის მასივისგან ვამზადებთ, ზედაპირი ტენგამძლე ზეთით. ფოტოებსა და მასალის ნიმუშს ჩატში გამოგიგზავნით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "08b22cfb-9de5-420b-a342-90d8f0bfb812",
+      "created_at": "2026-09-24T02:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "updated_at": "2026-09-24T16:58:53.657339+00:00",
+      "vat_included": false,
+      "delivery_days": 16,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "6462a44f-dd3f-4614-bd8d-a7204dd9f23e",
+      "body": "ბათუმის სასტუმროებში ავეჯს ყოველ პარასკევს ვზიდავთ და ფურგონში ადგილი გვრჩება. 3 პალეტს იმავე რეისით წამოვიღებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-21T11:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "updated_at": "2026-09-24T16:59:18.042455+00:00",
+      "vat_included": false,
+      "delivery_days": 6,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "6507ded3-faa9-4597-8f30-33a75c3576c1",
+      "body": "ავეჯის დახურული მანქანა თბილისიდან ქუთაისში ხშირად ცარიელი ბრუნდება. 12 პალეტს ორ რეისად ჩამოვიტანთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "08b22cfb-9de5-420b-a342-90d8f0bfb812",
+      "created_at": "2026-09-16T03:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b9aeb3ec-3d59-45d7-9937-46e3161dd225",
+      "updated_at": "2026-09-24T16:59:06.741622+00:00",
+      "vat_included": false,
+      "delivery_days": 5,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "66cf31d1-555b-4e75-9a7c-06c621956347",
+      "body": "საწყობში გვაქვს მზა სამადგილიანი დივნები შავ ეკოტყავში. რუსთავში მიტანა ოთხ დღეში.",
+      "price": null,
+      "status": "sent",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-05T05:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "updated_at": "2026-09-24T16:59:19.864498+00:00",
+      "vat_included": false,
+      "delivery_days": 4,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "6966445f-3c06-4047-abe4-4a787936b287",
+      "body": "სასტუმროს ლობის განახლების შემდეგ გვრჩება სამი ტყავის სამადგილიანი დივანი კარგ მდგომარეობაში. ფოტოებს ჩატში გამოგიგზავნით; რუსთავამდე გადატანას ჩვენ მოვაგვარებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "f5afadad-23be-4a4d-89ce-e69bf257b07e",
+      "created_at": "2026-09-07T07:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "updated_at": "2026-09-24T16:59:26.848218+00:00",
+      "vat_included": false,
+      "delivery_days": 6,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "6b8d74f3-0235-42e0-b728-aa2fe75fd87d",
+      "body": "მაგიდები მუხის შპონით, ზედაპირი ტენგამძლე ლაქით. 70×70 ზომის ნიმუში სახელოსნოში გვაქვს — შეგიძლიათ მოხვიდეთ და ნახოთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-23T19:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "updated_at": "2026-09-24T14:36:23.055177+00:00",
+      "vat_included": false,
+      "delivery_days": 14,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "6ce8d835-0b32-425d-a556-afce06d43cf1",
+      "body": "ბათუმში ვართ და ობიექტს ხვალ დილით ვნახავთ. ოთხკაციანი ბრიგადა 450 კვ.მ-ს ფანჯრებისა და დერეფნების ჩათვლით ორ დღეში დაასრულებს.",
+      "price": null,
+      "status": "sent",
+      "company_id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+      "created_at": "2026-09-22T17:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b69007dd-c2e2-46f0-8d77-72adb252ce47",
+      "updated_at": "2026-09-24T16:58:44.368476+00:00",
+      "vat_included": false,
+      "delivery_days": 2,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "6da9c242-3387-492a-90cc-a524df7a5fc3",
+      "body": "ფოთსა და თბილისს შორის ყოველდღე დავდივართ, ბათუმამდე — ოთხშაბათობით. 3 პალეტისთვის მუდმივ ადგილს დაგიტოვებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "f7b2fa99-7d1f-4428-a5e1-fe399ea138f4",
+      "created_at": "2026-09-19T23:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "updated_at": "2026-09-24T14:59:07.227512+00:00",
+      "vat_included": false,
+      "delivery_days": 4,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "819b7c73-6c38-4a64-9c4a-34f1dfa30bf5",
+      "body": "AUDIT offer from company one",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-24T18:22:55.499492+00:00",
+      "price_type": "negotiable",
+      "request_id": "76a18310-8e49-475f-9a55-2d5c0627c64e",
+      "updated_at": "2026-09-24T18:22:55.499492+00:00",
+      "vat_included": false,
+      "delivery_days": null,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "94427d5b-1b33-4ea9-8cdd-9fd0b59611dc",
+      "body": "ვამზადებთ ლითონის ფეხით და ლამინირებული ზედაპირით. ათივე მაგიდას ორ კვირაში მოგაწვდით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "created_at": "2026-09-23T21:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "updated_at": "2026-09-24T14:36:24.780234+00:00",
+      "vat_included": false,
+      "delivery_days": 20,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "99419814-d277-4ee6-8f74-b2d90cda9aee",
+      "body": "ყუთის დიზაინსა და ბეჭდვის მაკეტს მოვამზადებთ: ლოგოს განთავსება, ფერები და ეტიკეტის სტილი. მაკეტს ტირაჟამდე დაგიმტკიცებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "ff0def53-f3f9-43a5-8121-aade9a8e9cab",
+      "created_at": "2026-09-20T23:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "69702a11-a620-4e9b-8ccd-1275466a11be",
+      "updated_at": "2026-09-24T16:58:56.177422+00:00",
+      "vat_included": false,
+      "delivery_days": 8,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "9ca3ba7a-776e-44fa-8e07-fbd64dab65cb",
+      "body": "დახურული სატვირთო ხუთშაბათს თბილისში იქნება. 12 პალეტი ერთ რეისად, დატვირთვა-ჩამოტვირთვა შედის.",
+      "price": null,
+      "status": "sent",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-13T20:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b9aeb3ec-3d59-45d7-9937-46e3161dd225",
+      "updated_at": "2026-09-24T14:36:41.390078+00:00",
+      "vat_included": false,
+      "delivery_days": 2,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "9f6c6561-6445-4ab2-be70-09650b787c21",
+      "body": "დავამზადებთ სამადგილიან დივნებს ხის ჩარჩოთი და ეკოტყავის გადასაკრავით, მუქ ყავისფერში ან შავში. ნიმუშების ფოტოებს ჩატში გამოგიგზავნით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-05T23:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "updated_at": "2026-09-24T16:59:21.569627+00:00",
+      "vat_included": false,
+      "delivery_days": 24,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "a05a70df-5fd0-49b9-8499-5a078905e0c7",
+      "body": "ჩვენი სადურგლო საამქრო ფიჭვის სკამებს ამზადებს; 24 ცალი სამ კვირაში. ადგილზე აწყობას ჩვენი ხელოსნები შეასრულებენ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "created_at": "2026-09-21T13:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "a45dd21c-d462-4985-9bc8-8e3caf9bc6cf",
+      "updated_at": "2026-09-24T14:36:15.175492+00:00",
+      "vat_included": false,
+      "delivery_days": 21,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "a07426ef-4134-4f4d-b609-36276b7cebfa",
+      "body": "ზომებს ორშაბათს ავიღებთ. დამაბნელებელი რულონური ქსოვილი ნაცრისფრის სამ ტონში გვაქვს; მონტაჟი შედის.",
+      "price": null,
+      "status": "sent",
+      "company_id": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "created_at": "2026-09-14T00:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "e428d3d0-381b-4ea9-8d48-fdedd1c5769c",
+      "updated_at": "2026-09-24T14:36:20.436943+00:00",
+      "vat_included": false,
+      "delivery_days": 10,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "a760207e-6b10-461a-9b5a-ce6e14bfa902",
+      "body": "გვაქვს მზა კომპაქტური მაგიდები 70×70, თეთრი და კაკლისფერი. საწყობიდან გამოგზავნა ხუთ დღეში.",
+      "price": null,
+      "status": "sent",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-24T00:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "updated_at": "2026-09-24T14:36:26.518494+00:00",
+      "vat_included": false,
+      "delivery_days": 5,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "a999cec5-c415-45ff-a496-8fc41551cd68",
+      "body": "საიტთან ერთად მოვამზადებთ ექიმების ფოტოსესიას, მომსახურებების ტექსტებს და Google-ის ბიზნეს-პროფილს. ჯავშნის ფორმას პარტნიორი დეველოპერი ჩააშენებს.",
+      "price": null,
+      "status": "sent",
+      "company_id": "ff0def53-f3f9-43a5-8121-aade9a8e9cab",
+      "created_at": "2026-09-18T17:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "30090b43-127e-4945-bcd1-34ee583863d1",
+      "updated_at": "2026-09-24T16:58:59.733402+00:00",
+      "vat_included": false,
+      "delivery_days": 30,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "ab84c19a-60a8-4076-8daa-d341aa86154d",
+      "body": "სამშენებლო მასალის გამო კვირაში ორჯერ ვმოძრაობთ თბილისსა და ბათუმს შორის; 3 პალეტი დაგვეტევა.",
+      "price": null,
+      "status": "sent",
+      "company_id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "created_at": "2026-09-20T21:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "updated_at": "2026-09-24T14:36:54.993281+00:00",
+      "vat_included": false,
+      "delivery_days": 11,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "b1e8984e-7e60-4997-bf3f-dda92c72008c",
+      "body": "საკუთარი დახურული ფურგონით ვმუშაობთ. 12 პალეტი ორ რეისად, ორ დღეში.",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-16T17:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b9aeb3ec-3d59-45d7-9937-46e3161dd225",
+      "updated_at": "2026-09-24T14:36:45.2165+00:00",
+      "vat_included": false,
+      "delivery_days": 4,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "b99906f8-d5a5-4a86-9837-75a2c6127a44",
+      "body": "თაროები ლითონის ჩარჩოთი და ფანერის ზედაპირით, 90×180 სმ, 150 კგ-მდე. მონტაჟს რუსთავში ერთ დღეში შევასრულებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "created_at": "2026-09-24T16:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "97e155bc-5aee-48e3-95da-2c690241404f",
+      "updated_at": "2026-09-24T14:36:38.768178+00:00",
+      "vat_included": false,
+      "delivery_days": 19,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "c11289df-9e83-4c1b-b94c-0b36fbe7a0c8",
+      "body": "პარტნიორ სახელოსნოსთან ერთად გთავაზობთ მაგიდებს სუფრების კომპლექტით. ქსოვილის ნიმუშებს კაფეში მოვიტანთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "created_at": "2026-09-24T04:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "updated_at": "2026-09-24T14:36:28.267163+00:00",
+      "vat_included": false,
+      "delivery_days": 12,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "c2fc7c78-0e6e-43a6-a759-6c4848669359",
+      "body": "ჯავშნის მოდული მზა გვაქვს და თქვენს საიტში ჩავაშენებთ. ორენოვანი ვერსია ექიმების გვერდებით — 9 სამუშაო დღეში.",
+      "price": null,
+      "status": "sent",
+      "company_id": "f08e2f75-3eec-442a-8fa9-eb3aca4d945a",
+      "created_at": "2026-09-19T05:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "30090b43-127e-4945-bcd1-34ee583863d1",
+      "updated_at": "2026-09-24T14:58:58.378931+00:00",
+      "vat_included": false,
+      "delivery_days": 9,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "c55b9f2b-10d8-475a-a761-63155e587866",
+      "body": "გთავაზობთ 60 კომპლექტს 100% ბამბისგან. ორ ნიმუშს ხვალვე მოგიტანთ სასტუმროში; ბათუმში მიწოდება ჩვენზეა.",
+      "price": null,
+      "status": "chosen",
+      "company_id": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "created_at": "2026-09-15T22:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "6d2db057-7551-4e51-8b55-95c510fb6e61",
+      "updated_at": "2026-09-24T14:36:04.686385+00:00",
+      "vat_included": false,
+      "delivery_days": 12,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "c7d5a7b1-ae73-4371-8697-9468ae92bd24",
+      "body": "თბილისიდან ქუთაისის მიმართულებით ყოველდღე გვაქვს დახურული 20-ტონიანი მანქანა. 12 პალეტს ერთ რეისად წავიღებთ, ტვირთის დაზღვევით.",
+      "price": null,
+      "status": "sent",
+      "company_id": "f7b2fa99-7d1f-4428-a5e1-fe399ea138f4",
+      "created_at": "2026-09-14T07:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b9aeb3ec-3d59-45d7-9937-46e3161dd225",
+      "updated_at": "2026-09-24T16:59:04.977369+00:00",
+      "vat_included": false,
+      "delivery_days": 3,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "c870cef1-6d07-4b73-94c5-15d414211ebe",
+      "body": "საწყობში გვაქვს 30 მზა ხის სკამი ბუნებრივ ფერში. ფოტოებს ჩატში გამოგიგზავნით, თელავში მიტანა — ერთ კვირაში.",
+      "price": null,
+      "status": "sent",
+      "company_id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "created_at": "2026-09-23T06:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "a45dd21c-d462-4985-9bc8-8e3caf9bc6cf",
+      "updated_at": "2026-09-24T14:36:16.907505+00:00",
+      "vat_included": false,
+      "delivery_days": 7,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "cc7c1c89-b2ce-4ab3-a288-f7041bd50f8c",
+      "body": "გავაკეთებთ ორენოვან საიტს ექიმების გვერდებით და ვიზიტის დაჯავშნით. სამუშაოს სამ ეტაპად დავგეგმავთ; პირველი ვერსია — ორ კვირაში.",
+      "price": null,
+      "status": "sent",
+      "company_id": "a5e8fc96-994d-4a70-9191-ad8a699898f9",
+      "created_at": "2026-09-19T15:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "30090b43-127e-4945-bcd1-34ee583863d1",
+      "updated_at": "2026-09-24T14:36:36.148846+00:00",
+      "vat_included": false,
+      "delivery_days": 21,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "dba975ed-ddf6-4bb1-b709-209750a79c66",
+      "body": "ბზარების შევსება, შპაკლი და ორი ფენა საღებავი. ვიმუშავებთ საღამოს 19:00-დან, რომ მაღაზია არ დაიკეტოს.",
+      "price": null,
+      "status": "sent",
+      "company_id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "created_at": "2026-09-18T02:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "041595e2-265d-4318-a4cc-f805a3d6940d",
+      "updated_at": "2026-09-24T14:36:47.869738+00:00",
+      "vat_included": false,
+      "delivery_days": 12,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "e117dbfb-7d09-4862-96f2-6707e6b63bc2",
+      "body": "ქუთაისში ვართ და სადურგლო ნაწილს ავიღებთ: თაროების მოხსნა და ხელახლა დაკიდება, ხის პლინტუსი. შეღებვას პარტნიორ მღებავებთან ერთად შევასრულებთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "08b22cfb-9de5-420b-a342-90d8f0bfb812",
+      "created_at": "2026-09-18T15:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "041595e2-265d-4318-a4cc-f805a3d6940d",
+      "updated_at": "2026-09-24T16:59:10.22763+00:00",
+      "vat_included": false,
+      "delivery_days": 9,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "e31d177a-7fe0-4441-bc60-6eec64c51ede",
+      "body": "ჰიგიენურ საშუალებებს ბათუმში ჩვენი საწყობიდან მოგაწვდით, ასე რომ თბილისიდან მხოლოდ თეთრეულის გადატანა დაგრჩებათ. თეთრეულის იჯარაზეც შეგვიძლია ვისაუბროთ.",
+      "price": null,
+      "status": "sent",
+      "company_id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+      "created_at": "2026-09-19T13:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "updated_at": "2026-09-24T16:59:16.386274+00:00",
+      "vat_included": false,
+      "delivery_days": 7,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "fd2f3fd1-67ab-4883-9267-c01e8f22da0e",
+      "body": "სასტუმროებს ვემსახურებით და საკუთარი დიასახლისების გუნდი გვყავს. საერთო სივრცეს ორ ღამეში დავასუფთავებთ, სტუმრების შეუწუხებლად; ინვენტარი ჩვენია.",
+      "price": null,
+      "status": "sent",
+      "company_id": "f5afadad-23be-4a4d-89ce-e69bf257b07e",
+      "created_at": "2026-09-22T21:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "b69007dd-c2e2-46f0-8d77-72adb252ce47",
+      "updated_at": "2026-09-24T16:58:46.11054+00:00",
+      "vat_included": false,
+      "delivery_days": 3,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "offers",
+    "row": {
+      "id": "ff3ce5fe-ec2d-4467-b5b1-4151ac15861d",
+      "body": "მაღაზიების ინტერიერის ბრენდირებას ვაკეთებთ: კედლები ფირმის ფერებში, ლოგო და ვიტრინის აბრა. შეღებვას ჩვენი პარტნიორი ბრიგადა ეტაპობრივად შეასრულებს.",
+      "price": null,
+      "status": "sent",
+      "company_id": "ff0def53-f3f9-43a5-8121-aade9a8e9cab",
+      "created_at": "2026-09-20T00:00:08.045352+00:00",
+      "price_type": "negotiable",
+      "request_id": "041595e2-265d-4318-a4cc-f805a3d6940d",
+      "updated_at": "2026-09-24T16:59:11.982519+00:00",
+      "vat_included": false,
+      "delivery_days": 10,
+      "delivery_included": false
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "08b22cfb-9de5-420b-a342-90d8f0bfb812",
+      "lat": 42.2685,
+      "lng": 42.7069,
+      "city": "kutaisi",
+      "name": "ბესიკ ლორთქიფანიძე",
+      "role": "company",
+      "about": "შეკვეთით ვამზადებთ მასიური ხის მაგიდებს, კარადებს და სასტუმროს ნომრის ავეჯს. ვმუშაობთ წაბლითა და მუხით.",
+      "email": "demo-oak@meetany.ge",
+      "phone": "+995 574 862 015",
+      "seeks": [
+        "ხის მასალის მომწოდებლები"
+      ],
+      "offers": [
+        "მასიური ხის მაგიდები",
+        "კარადები და თაროები",
+        "სასტუმროს ნომრის ავეჯი"
+      ],
+      "address": "თამარ მეფის ქ. 49",
+      "blocked": false,
+      "company": "იმერული დურგალი",
+      "industry": "furniture",
+      "verified": false,
+      "created_at": "2026-08-25T17:00:08.045352+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": [
+        "batumi",
+        "kutaisi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+      "lat": 41.6452,
+      "lng": 41.634,
+      "city": "batumi",
+      "name": "ეკა ნაკაშიძე",
+      "role": "company",
+      "about": "ვასუფთავებთ სასტუმროებს, ოფისებსა და კაფეებს, მათ შორის რემონტის შემდეგ. ვმუშაობთ საკუთარი ინვენტარით; სასტუმროებს ვაწვდით თეთრეულს რეცხვითა და გამოცვლით.",
+      "email": "demo-cleaning@meetany.ge",
+      "phone": "+995 593 781 406",
+      "seeks": [
+        "სასტუმროები და ოფისები",
+        "საწმენდი საშუალებების მომწოდებლები"
+      ],
+      "offers": [
+        "გენერალური დასუფთავება",
+        "რემონტის შემდგომი დასუფთავება",
+        "თეთრეულის რეცხვა და იჯარა"
+      ],
+      "address": "ილია ჭავჭავაძის ქ. 20",
+      "blocked": false,
+      "company": "სუფთა სივრცე",
+      "industry": "cleaning",
+      "verified": false,
+      "created_at": "2026-08-18T17:00:08.045352+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": [
+        "batumi",
+        "kutaisi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "2dcc2797-d07a-4752-a5f4-f61e9848bbe9",
+      "lat": null,
+      "lng": null,
+      "city": "telavi",
+      "name": "ლაშა ჯანგულაშვილი",
+      "role": "client",
+      "about": "",
+      "email": "demo-winery@meetany.ge",
+      "phone": "+995 577 604 918",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "მარანი „ქიზიყი“",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-24T14:34:45.587407+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "lat": 41.6469,
+      "lng": 41.6372,
+      "city": "batumi",
+      "name": "თამარ ჯაფარიძე",
+      "role": "company",
+      "about": "ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და სუფრებს. შეკვეთამდე ვამზადებთ ქსოვილის ნიმუშებს; ზომები და შეფუთვა დამკვეთის საჭიროებას ერგება.",
+      "email": "demo-linen@meetany.ge",
+      "phone": "+995 568 903 154",
+      "seeks": [
+        "ბამბის ქსოვილის მომწოდებლები",
+        "სასტუმროებთან თანამშრომლობა"
+      ],
+      "offers": [
+        "სასტუმროს თეთრეული",
+        "ფარდების შეკერვა",
+        "კაფის სუფრები და ხელსახოცები"
+      ],
+      "address": "ლუკა ასათიანის ქ. 4",
+      "blocked": false,
+      "company": "რბილი სივრცე",
+      "industry": "textiles",
+      "verified": true,
+      "created_at": "2026-07-08T17:00:08.045352+00:00",
+      "verified_at": "2026-09-22T11:52:09.423906+00:00",
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "batumi",
+        "kutaisi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+      "lat": 42.2713,
+      "lng": 42.7045,
+      "city": "kutaisi",
+      "name": "ზურაბ კვარაცხელია",
+      "role": "company",
+      "about": "ვასრულებთ შიდა რემონტს: შპაკლი, შეღებვა, იატაკი და სადურგლო სამუშაოები. გვაქვს საკუთარი სატვირთო მასალის მისატანად; ვმუშაობთ ეტაპობრივად, ობიექტის დაუკეტავად.",
+      "email": "demo-build@meetany.ge",
+      "phone": "+995 551 118 729",
+      "seeks": [
+        "სამშენებლო მასალის მომწოდებლები"
+      ],
+      "offers": [
+        "კედლების შეკეთება და შეღებვა",
+        "სადურგლო სამუშაოები",
+        "მასალის მიტანა"
+      ],
+      "address": "კოსტავას ქ. 14",
+      "blocked": false,
+      "company": "კახეთის მშენებელი",
+      "industry": "construction",
+      "verified": false,
+      "created_at": "2026-08-04T17:00:08.045352+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "batumi",
+        "kutaisi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "74cc28fc-47de-45cb-9563-93735b86855e",
+      "lat": 41.7438,
+      "lng": 44.7793,
+      "city": "tbilisi",
+      "name": "დავით ღვინიაშვილი",
+      "role": "company",
+      "about": "ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებისა და მაღაზიებისთვის. ვეხმარებით ზომების შერჩევაში, ვამზადებთ ესკიზს და ვგეგმავთ მონტაჟს.",
+      "email": "demo-wood@meetany.ge",
+      "phone": "+995 599 412 867",
+      "seeks": [
+        "ხის მასალის მომწოდებლები",
+        "ავეჯის ფურნიტურა"
+      ],
+      "offers": [
+        "მაგიდებისა და სკამების დამზადება",
+        "სავაჭრო თაროები",
+        "ავეჯის მიტანა და მონტაჟი"
+      ],
+      "address": "აკაკი წერეთლის გამზ. 116",
+      "blocked": false,
+      "company": "ხის ხაზი",
+      "industry": "furniture",
+      "verified": true,
+      "created_at": "2026-06-24T17:00:08.045352+00:00",
+      "verified_at": "2026-09-22T11:52:08.08858+00:00",
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "rustavi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "7c204e30-33f6-4bbd-a9aa-e7df37c9119f",
+      "lat": null,
+      "lng": null,
+      "city": "tbilisi",
+      "name": "ალექსანდრე მაისურაძე",
+      "role": "admin",
+      "about": "",
+      "email": "demo-admin@meetany.ge",
+      "phone": "+995 568 452 390",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "MeetAny",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-22T11:52:04.898647+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "85509946-985a-409d-86ad-26c87c185546",
+      "lat": 41.7846,
+      "lng": 44.7712,
+      "city": "tbilisi",
+      "name": "ნათია ხუციშვილი",
+      "role": "company",
+      "about": "ფერმერთა კოოპერატივი: კახეთისა და ქართლის 14 მეურნეობის ბოსტნეულს, ხილსა და ყველს ვაწვდით კაფეებსა და სასტუმროებს. ვაწვდით კვირაში სამჯერ, ანგარიშფაქტურით.",
+      "email": "demo-food@meetany.ge",
+      "phone": "+995 514 207 639",
+      "seeks": [
+        "კაფეები და რესტორნები",
+        "მაცივრიანი ტრანსპორტი"
+      ],
+      "offers": [
+        "სეზონური ბოსტნეული და მწვანილი",
+        "ხილი და კენკრა",
+        "ყველი და რძის ნაწარმი",
+        "კვირის გრაფიკით მიწოდება"
+      ],
+      "address": "დავით აღმაშენებლის ხეივანი 178",
+      "blocked": false,
+      "company": "მთის ბაღი",
+      "industry": "food",
+      "verified": true,
+      "created_at": "2026-09-20T17:00:08.045352+00:00",
+      "verified_at": "2026-09-24T14:58:38.583544+00:00",
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "rustavi",
+        "gori"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "95703e1b-7236-4661-bb11-49654c4a3b6f",
+      "lat": null,
+      "lng": null,
+      "city": "tbilisi",
+      "name": "ანა ქავთარაძე",
+      "role": "client",
+      "about": "",
+      "email": "demo-dental@meetany.ge",
+      "phone": "+995 599 286 351",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "სტომატოლოგიური კლინიკა „დენტა-ლაინი“",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-24T14:34:48.19343+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "97bfdfe6-76eb-476e-9d8b-61f4dc13a882",
+      "lat": null,
+      "lng": null,
+      "city": "tbilisi",
+      "name": "მარიამ ჭანტურია",
+      "role": "client",
+      "about": "",
+      "email": "demo-cafe@meetany.ge",
+      "phone": "+995 577 318 942",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "კაფე მზიანი დილა",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-22T11:50:37.193531+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "a5e8fc96-994d-4a70-9191-ad8a699898f9",
+      "lat": 41.7094,
+      "lng": 44.7501,
+      "city": "tbilisi",
+      "name": "ნიკა ლომიძე",
+      "role": "company",
+      "about": "ვაკეთებთ ვებგვერდებს და მარტივ ონლაინ შეკვეთის სისტემებს მცირე ბიზნესისთვის. ვმუშაობთ ეტაპებად: პროტოტიპი, პირველი ვერსია, გაშვება და მხარდაჭერა.",
+      "email": "demo-web@meetany.ge",
+      "phone": "+995 599 037 658",
+      "seeks": [
+        "დიზაინერები",
+        "ფოტოგრაფები"
+      ],
+      "offers": [
+        "ვებგვერდის დამზადება",
+        "ონლაინ მენიუ და შეკვეთები",
+        "საიტის მხარდაჭერა"
+      ],
+      "address": "ილია ჭავჭავაძის გამზ. 60",
+      "blocked": false,
+      "company": "სტუდია ვები",
+      "industry": "technology",
+      "verified": true,
+      "created_at": "2026-09-01T17:00:08.045352+00:00",
+      "verified_at": "2026-09-24T14:18:11.442014+00:00",
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "batumi",
+        "kutaisi",
+        "rustavi",
+        "zugdidi",
+        "telavi",
+        "gori",
+        "georgia"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "lat": null,
+      "lng": null,
+      "city": "batumi",
+      "name": "ნინო ბერიძე",
+      "role": "client",
+      "about": "",
+      "email": "demo-hotel@meetany.ge",
+      "phone": "+995 593 274 186",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "სასტუმრო „ლეგენდა“",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-22T11:50:34.557155+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "c260e12a-5f1b-4548-af33-785dd8d7f7dc",
+      "lat": null,
+      "lng": null,
+      "city": "rustavi",
+      "name": "ირაკლი ნოზაძე",
+      "role": "client",
+      "about": "",
+      "email": "demo-garage@meetany.ge",
+      "phone": "+995 551 873 042",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "ავტოსერვისი „მექანიკა“",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-24T14:34:50.76928+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+      "lat": 42.2543,
+      "lng": 42.676,
+      "city": "kutaisi",
+      "name": "ლევან მამულაშვილი",
+      "role": "company",
+      "about": "კაფეებს, სასტუმროებსა და მაღაზიებს ვაწვდით მზა ავეჯს, ინვენტარსა და შეფუთვას საწყობიდან. საკუთარი სატვირთოებით ვზიდავთ დასავლეთ საქართველოსა და თბილისში.",
+      "email": "demo-supply@meetany.ge",
+      "phone": "+995 577 265 031",
+      "seeks": [
+        "ავეჯის მწარმოებლები",
+        "შეფუთვის მომწოდებლები"
+      ],
+      "offers": [
+        "მზა მაგიდები, სკამები და დივნები",
+        "HoReCa ინვენტარი და თეთრეული საწყობიდან",
+        "მუყაოს ყუთები",
+        "საკუთარი ტრანსპორტით მიწოდება"
+      ],
+      "address": "ილია ჭავჭავაძის გამზ. 32",
+      "blocked": false,
+      "company": "რეგიონის მომარაგება",
+      "industry": "furniture",
+      "verified": false,
+      "created_at": "2026-07-22T17:00:08.045352+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "batumi",
+        "kutaisi",
+        "zugdidi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "debb7d06-549b-49a7-be89-6122a2fb1c63",
+      "lat": null,
+      "lng": null,
+      "city": "kutaisi",
+      "name": "გიორგი ხარაიშვილი",
+      "role": "client",
+      "about": "",
+      "email": "demo-shop@meetany.ge",
+      "phone": "+995 551 640 273",
+      "seeks": [],
+      "offers": [],
+      "address": null,
+      "blocked": false,
+      "company": "მაღაზია იმერული კუთხე",
+      "industry": null,
+      "verified": false,
+      "created_at": "2026-09-22T11:50:39.838707+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": []
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "f08e2f75-3eec-442a-8fa9-eb3aca4d945a",
+      "lat": 41.7247,
+      "lng": 44.7584,
+      "city": "tbilisi",
+      "name": "სალომე გოგიჩაიშვილი",
+      "role": "company",
+      "about": "ვქმნით ჯავშნის სისტემებს, ონლაინ მაღაზიებს და მობილურ აპებს კლინიკებისთვის, სასტუმროებისა და მაღაზიებისთვის.",
+      "email": "demo-code@meetany.ge",
+      "phone": "+995 591 746 208",
+      "seeks": [
+        "UX დიზაინერები",
+        "ტესტერები"
+      ],
+      "offers": [
+        "ონლაინ ჯავშნის სისტემა",
+        "ონლაინ მაღაზია",
+        "მობილური აპლიკაცია",
+        "ბუღალტრულ პროგრამასთან დაკავშირება"
+      ],
+      "address": "პეკინის გამზ. 41",
+      "blocked": false,
+      "company": "კოდის ხიდი",
+      "industry": "technology",
+      "verified": false,
+      "created_at": "2026-09-13T17:00:08.045352+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "f5afadad-23be-4a4d-89ce-e69bf257b07e",
+      "lat": 41.6508,
+      "lng": 41.6363,
+      "city": "batumi",
+      "name": "თეონა ცინცაძე",
+      "role": "company",
+      "about": "ბათუმის სასტუმროებსა და საოჯახო სასტუმროებს ვემსახურებით: ნომრების მოვლა საკუთარი დიასახლისების გუნდით, სტუმრების ტრანსფერი და ონლაინ ჯავშნების მართვა.",
+      "email": "demo-stay@meetany.ge",
+      "phone": "+995 598 146 723",
+      "seeks": [
+        "სასტუმროები და საოჯახო სასტუმროები",
+        "თეთრეულის მომწოდებლები"
+      ],
+      "offers": [
+        "ნომრების მოვლა და დასუფთავება",
+        "სტუმრების ტრანსფერი აეროპორტიდან",
+        "ჯავშნების მართვა Booking-სა და Airbnb-ზე"
+      ],
+      "address": "შოთა რუსთაველის ქ. 26",
+      "blocked": false,
+      "company": "ზღვის სტუმარი",
+      "industry": "textiles",
+      "verified": false,
+      "created_at": "2026-08-29T17:00:08.045352+00:00",
+      "verified_at": null,
+      "blocked_reason": null,
+      "service_cities": [
+        "batumi",
+        "kutaisi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "f7b2fa99-7d1f-4428-a5e1-fe399ea138f4",
+      "lat": 42.1466,
+      "lng": 41.6727,
+      "city": "georgia",
+      "name": "გელა ჟვანია",
+      "role": "company",
+      "about": "ფოთის პორტიდან ვზიდავთ კონტეინერულ და პალეტურ ტვირთს დასავლეთ საქართველოსა და თბილისში. გვყავს 20-ტონიანი და მაცივრიანი მანქანები.",
+      "email": "demo-port@meetany.ge",
+      "phone": "+995 595 318 074",
+      "seeks": [
+        "საწყობი თბილისში",
+        "იმპორტიორი კომპანიები"
+      ],
+      "offers": [
+        "კონტეინერის გატანა პორტიდან",
+        "პალეტური გადაზიდვა",
+        "საბაჟო დოკუმენტების მომზადება"
+      ],
+      "address": "ფოთი, დავით აღმაშენებლის ქ. 12",
+      "blocked": false,
+      "company": "კოლხეთის ტვირთი",
+      "industry": "logistics",
+      "verified": true,
+      "created_at": "2026-09-05T17:00:08.045352+00:00",
+      "verified_at": "2026-09-24T14:58:39.466524+00:00",
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "batumi",
+        "kutaisi",
+        "zugdidi"
+      ]
+    }
+  },
+  {
+    "kind": "profiles",
+    "row": {
+      "id": "ff0def53-f3f9-43a5-8121-aade9a8e9cab",
+      "lat": 41.7079,
+      "lng": 44.7869,
+      "city": "tbilisi",
+      "name": "ქეთევან აბაშიძე",
+      "role": "company",
+      "about": "მარკეტინგის სააგენტო მცირე და საშუალო ბიზნესისთვის: ბრენდის იდენტობა, შეფუთვის დიზაინი, სოციალური ქსელები და ვებგვერდის შინაარსი. ვმუშაობთ თვიური გეგმით და გაზომვადი მიზნებით.",
+      "email": "demo-ads@meetany.ge",
+      "phone": "+995 592 604 371",
+      "seeks": [
+        "ბეჭდვის სახელოსნოები",
+        "ფოტოგრაფები"
+      ],
+      "offers": [
+        "ლოგო და ბრენდის იდენტობა",
+        "შეფუთვისა და ეტიკეტის დიზაინი",
+        "სოციალური ქსელების მართვა",
+        "მაღაზიის ინტერიერის ბრენდირება"
+      ],
+      "address": "მერაბ კოსტავას ქ. 37",
+      "blocked": false,
+      "company": "ახალი ხედი",
+      "industry": "marketing",
+      "verified": true,
+      "created_at": "2026-09-16T17:00:08.045352+00:00",
+      "verified_at": "2026-09-24T16:58:32.78847+00:00",
+      "blocked_reason": null,
+      "service_cities": [
+        "tbilisi",
+        "batumi",
+        "kutaisi",
+        "rustavi"
+      ]
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "body": "ყოველ კვირას გვჭირდება 3 პალეტის (თეთრეული, ჰიგიენური საშუალებები) გადატანა თბილისის საწყობიდან ბათუმში. ვეძებთ მუდმივ გადამზიდს ერთი და იმავე დღით.",
+      "city": "batumi",
+      "unit": "pcs",
+      "title": "ბათუმი–თბილისი: 3 პალეტი კვირაში",
+      "hidden": false,
+      "status": "open",
+      "category": "logistics",
+      "owner_id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "quantity": 3,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-18T17:00:08.045352+00:00",
+      "expires_at": "2026-10-20T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "041595e2-265d-4318-a4cc-f805a3d6940d",
+      "body": "გვჭირდება კედლების მცირე შეკეთება და ორი ფენა თეთრი საღებავი. სამუშაო უნდა შესრულდეს ეტაპობრივად, მაღაზიის სამუშაო საათების გათვალისწინებით. მასალა ცალკე შეაფასეთ.",
+      "city": "kutaisi",
+      "unit": "m2",
+      "title": "მაღაზიის 120 კვ.მ კედლების შეღებვა",
+      "hidden": false,
+      "status": "open",
+      "category": "construction",
+      "owner_id": "debb7d06-549b-49a7-be89-6122a2fb1c63",
+      "quantity": 120,
+      "needed_by": "2026-10-08",
+      "photo_url": null,
+      "created_at": "2026-09-17T17:00:08.045352+00:00",
+      "expires_at": "2026-09-30T17:00:08.045352+00:00",
+      "address_note": "ასათიანის ქ. 17",
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "0bd15db7-2091-4ecf-9f99-45f72c8c9768",
+      "body": "მოსაცდელისთვის გვჭირდება სამი სამადგილიანი დივანი მუქი, ადვილად მოსავლელი გადასაკრავით (ტყავი ან ეკოტყავი). გვაინტერესებს მზა მოდელებიც და შეკვეთითაც დამზადება.",
+      "city": "rustavi",
+      "unit": "pcs",
+      "title": "3 დივანი კლიენტების მოსაცდელში",
+      "hidden": false,
+      "status": "open",
+      "category": "furniture",
+      "owner_id": "c260e12a-5f1b-4548-af33-785dd8d7f7dc",
+      "quantity": 3,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-04T17:00:08.045352+00:00",
+      "expires_at": "2026-10-11T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "30090b43-127e-4945-bcd1-34ee583863d1",
+      "body": "გვჭირდება ქართულ-ინგლისური, მობილურზე მორგებული საიტი: ექიმები, მომსახურებები და ვიზიტის დაჯავშნის ფორმა. ფოტოებსა და ტექსტებს მოგაწვდით. შემოგვთავაზეთ სამუშაოების გეგმა.",
+      "city": "tbilisi",
+      "unit": "service",
+      "title": "საჭიროა კლინიკის ვებგვერდი ონლაინ ჩაწერით",
+      "hidden": false,
+      "status": "open",
+      "category": "technology",
+      "owner_id": "95703e1b-7236-4661-bb11-49654c4a3b6f",
+      "quantity": 1,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-16T17:00:08.045352+00:00",
+      "expires_at": "2026-10-08T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "3753de77-ba27-4bc1-8720-172da867cdba",
+      "body": "ვეძებთ ღია ფერის სელის ან ბამბის სუფრებს 25 მაგიდისთვის და იმავე ქსოვილის ხელსახოცებს. საჭიროა რეცხვაგამძლე ქსოვილი; ნიმუში შეკვეთამდე.",
+      "city": "tbilisi",
+      "unit": "pcs",
+      "title": "ვეძებთ სელის სუფრებს და ხელსახოცებს 25 მაგიდაზე",
+      "hidden": false,
+      "status": "open",
+      "category": "textiles",
+      "owner_id": "97bfdfe6-76eb-476e-9d8b-61f4dc13a882",
+      "quantity": 25,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-24T02:00:08.045352+00:00",
+      "expires_at": "2026-10-05T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "618f9687-c636-4b5e-9c8c-bc7820bd72e2",
+      "body": "ვეძებთ მომწოდებელს კვირაში სამჯერ მიწოდებისთვის: პომიდორი, კიტრი, სალათის ფოთოლი და მწვანილი. კვირაში დაახლოებით 120 კგ. საჭიროა ანგარიშფაქტურა.",
+      "city": "tbilisi",
+      "unit": "kg",
+      "title": "სეზონური ბოსტნეული კვირაში სამჯერ",
+      "hidden": false,
+      "status": "open",
+      "category": "food",
+      "owner_id": "97bfdfe6-76eb-476e-9d8b-61f4dc13a882",
+      "quantity": 120,
+      "needed_by": null,
+      "photo_url": "https://k3kp1syowhtmw3er.public.blob.vercel-storage.com/97bfdfe6-76eb-476e-9d8b-61f4dc13a882/demo-produce-KrGYhtmAGbs9FgrvFcys8d6Y1iNFKA.jpg",
+      "created_at": "2026-09-24T11:00:08.045352+00:00",
+      "expires_at": "2026-10-24T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "69702a11-a620-4e9b-8ccd-1275466a11be",
+      "body": "ღვინის ბოთლებისთვის გვჭირდება გოფრირებული მუყაოს ყუთები შიდა ტიხრებით, 6 ბოთლი 0.75 ლ. ლოგოს ბეჭდვის პირობები მიუთითეთ ცალკე; შეკვეთამდე გვინდა ნიმუშის ნახვა.",
+      "city": "telavi",
+      "unit": "pcs",
+      "title": "საჭიროა 800 მუყაოს ყუთი 6 ბოთლზე",
+      "hidden": false,
+      "status": "open",
+      "category": "packaging",
+      "owner_id": "2dcc2797-d07a-4752-a5f4-f61e9848bbe9",
+      "quantity": 800,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-19T17:00:08.045352+00:00",
+      "expires_at": "2026-10-02T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "6d2db057-7551-4e51-8b55-95c510fb6e61",
+      "body": "გვჭირდება თეთრი ბამბის თეთრეული 30 ნომრისთვის, ორ-ორი კომპლექტი. გთხოვთ მიუთითოთ ქსოვილის სიმკვრივე, რეცხვის პირობები და ბათუმში მიწოდების ვადა.",
+      "city": "batumi",
+      "unit": "pcs",
+      "title": "სასტუმროსთვის 60 კომპლექტი თეთრეული",
+      "hidden": false,
+      "status": "open",
+      "category": "textiles",
+      "owner_id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "quantity": 60,
+      "needed_by": null,
+      "photo_url": "https://k3kp1syowhtmw3er.public.blob.vercel-storage.com/bacf1572-7493-4ac9-bfc7-95719e911c4c/demo-linen-1XjNfaY4CFzQj0x8C0X3V6RYigAaH7.jpg",
+      "created_at": "2026-09-15T17:00:08.045352+00:00",
+      "expires_at": "2026-09-29T17:00:08.045352+00:00",
+      "address_note": "ზ. ჟვანიას ქ. 12",
+      "hidden_reason": null,
+      "chosen_offer_id": "c55b9f2b-10d8-475a-a761-63155e587866"
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "76a18310-8e49-475f-9a55-2d5c0627c64e",
+      "body": "temporary request created by qa/audit-perms.mjs",
+      "city": "tbilisi",
+      "unit": null,
+      "title": "AUDIT test request",
+      "hidden": false,
+      "status": "open",
+      "category": "other",
+      "owner_id": "97bfdfe6-76eb-476e-9d8b-61f4dc13a882",
+      "quantity": null,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-24T18:22:47.684583+00:00",
+      "expires_at": "2026-10-08T18:22:47.684583+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "97e155bc-5aee-48e3-95da-2c690241404f",
+      "body": "სახელოსნოს საწყობისთვის გვჭირდება მყარი ლითონის თაროები, თითო სექცია 90 სმ სიგანის და 180 სმ სიმაღლის, 150 კგ-მდე დატვირთვით. აუცილებელია რუსთავში მონტაჟი.",
+      "city": "rustavi",
+      "unit": "pcs",
+      "title": "8 ლითონის თარო სათადარიგო ნაწილებისთვის",
+      "hidden": false,
+      "status": "open",
+      "category": "furniture",
+      "owner_id": "c260e12a-5f1b-4548-af33-785dd8d7f7dc",
+      "quantity": 8,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-24T14:00:08.045352+00:00",
+      "expires_at": "2026-10-15T17:00:08.045352+00:00",
+      "address_note": "მესხიშვილის ქ. 9",
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "a45dd21c-d462-4985-9bc8-8e3caf9bc6cf",
+      "body": "სადეგუსტაციო ტერასისთვის გვჭირდება გამძლე ხის სკამები. სასურველია ბუნებრივი ფერი და დამცავი საფარი. მიუთითეთ, შედის თუ არა თელავში მიტანა და აწყობა.",
+      "city": "telavi",
+      "unit": "pcs",
+      "title": "ვეძებთ 24 ხის სკამს მარნის ტერასაზე",
+      "hidden": false,
+      "status": "open",
+      "category": "furniture",
+      "owner_id": "2dcc2797-d07a-4752-a5f4-f61e9848bbe9",
+      "quantity": 24,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-20T17:00:08.045352+00:00",
+      "expires_at": "2026-09-29T17:00:08.045352+00:00",
+      "address_note": "ერეკლე II-ის გამზ. 21",
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "b69007dd-c2e2-46f0-8d77-72adb252ce47",
+      "body": "საჭიროა 450 კვ.მ საერთო სივრცის, ფანჯრებისა და დერეფნების დასუფთავება სტუმრების მიღებამდე. ინვენტარი და საწმენდი საშუალებები შემსრულებელმა უნდა მოიტანოს.",
+      "city": "batumi",
+      "unit": "m2",
+      "title": "სასტუმროს საერთო სივრცის გენერალური დასუფთავება",
+      "hidden": false,
+      "status": "open",
+      "category": "cleaning",
+      "owner_id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "quantity": 450,
+      "needed_by": null,
+      "photo_url": "https://k3kp1syowhtmw3er.public.blob.vercel-storage.com/bacf1572-7493-4ac9-bfc7-95719e911c4c/demo-cleaning-YM850kRNdjwhkItP3JGLASrnlnZpm2.jpg",
+      "created_at": "2026-09-22T13:00:08.045352+00:00",
+      "expires_at": "2026-10-13T17:00:08.045352+00:00",
+      "address_note": "გორგილაძის ქ. 31",
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "b9aeb3ec-3d59-45d7-9937-46e3161dd225",
+      "body": "საჭიროა 12 პალეტის შეფუთული არასაკვები საქონლის გადაზიდვა დახურული მანქანით. დატვირთვისა და ჩამოტვირთვის საათები წინასწარ შეთანხმდება. მიუთითეთ, რა შედის მომსახურებაში.",
+      "city": "kutaisi",
+      "unit": "pcs",
+      "title": "12 პალეტის გადაზიდვა თბილისიდან ქუთაისში",
+      "hidden": false,
+      "status": "open",
+      "category": "logistics",
+      "owner_id": "debb7d06-549b-49a7-be89-6122a2fb1c63",
+      "quantity": 12,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-13T17:00:08.045352+00:00",
+      "expires_at": "2026-09-27T17:00:08.045352+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "ce6b8184-b349-4d9f-9477-4520e1cf5ee2",
+      "body": "გვჭირდება 70×70 სმ მაგიდები მცირე კაფისთვის. ზედაპირი ადვილად უნდა იწმინდებოდეს. გთხოვთ გამოგვიგზავნოთ მასალის აღწერა, ნიმუშის ფოტო და დამზადების ვადა.",
+      "city": "tbilisi",
+      "unit": "pcs",
+      "title": "10 კომპაქტური ხის მაგიდა 70×70",
+      "hidden": false,
+      "status": "open",
+      "category": "furniture",
+      "owner_id": "97bfdfe6-76eb-476e-9d8b-61f4dc13a882",
+      "quantity": 10,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-23T17:00:08.045352+00:00",
+      "expires_at": "2026-10-21T17:00:08.045352+00:00",
+      "address_note": "ვაჟა-ფშაველას გამზ. 41",
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "e428d3d0-381b-4ea9-8d48-fdedd1c5769c",
+      "body": "კლინიკის კაბინეტებისთვის გვჭირდება ღია ნაცრისფერი დამაბნელებელი რულონური ფარდები, ადგილზე აზომვით. თითოეული ფანჯარა დაახლოებით 1.4 მეტრის სიგანისაა.",
+      "city": "tbilisi",
+      "unit": "pcs",
+      "title": "რულონური ფარდები 12 ფანჯარაზე, მონტაჟით",
+      "hidden": false,
+      "status": "open",
+      "category": "textiles",
+      "owner_id": "95703e1b-7236-4661-bb11-49654c4a3b6f",
+      "quantity": 12,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-12T17:00:08.045352+00:00",
+      "expires_at": "2026-09-26T17:00:08.045352+00:00",
+      "address_note": "ალ. ყაზბეგის გამზ. 24",
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  },
+  {
+    "kind": "requests",
+    "row": {
+      "id": "ea41fbdf-0a26-41ee-aabd-17b01ce7aaea",
+      "body": "temporary request created by qa/audit-perms.mjs",
+      "city": "tbilisi",
+      "unit": null,
+      "title": "AUDIT test request",
+      "hidden": false,
+      "status": "open",
+      "category": "other",
+      "owner_id": "97bfdfe6-76eb-476e-9d8b-61f4dc13a882",
+      "quantity": null,
+      "needed_by": null,
+      "photo_url": null,
+      "created_at": "2026-09-24T18:22:24.665758+00:00",
+      "expires_at": "2026-10-08T18:22:24.665758+00:00",
+      "address_note": null,
+      "hidden_reason": null,
+      "chosen_offer_id": null
+    }
+  }
+]

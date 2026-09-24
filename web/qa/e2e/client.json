@@ -1,0 +1,25 @@
+{
+  "name": "client",
+  "label": "კლიენტი — მოთხოვნა",
+  "status": "FAIL",
+  "ms": 5899,
+  "steps": [
+    {
+      "name": "სცენარის შესრულება",
+      "status": "FAIL",
+      "actual": "Unexpected end of JSON input",
+      "screenshot": "qa/shots/e2e/client-1.png"
+    }
+  ],
+  "cleanup": [
+    {
+      "messages": 0,
+      "conversations": 0,
+      "requests": 0,
+      "offers": 0,
+      "contacts": 0,
+      "photos": 0,
+      "remaining": 0
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "name": "company",
+  "label": "კომპანია — პროფილი",
+  "status": "FAIL",
+  "ms": 38077,
+  "steps": [
+    {
+      "name": "პროფილის მისამართი და პროდუქტები",
+      "status": "FAIL",
+      "expected": "შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება",
+      "actual": "locator.fill: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('#address')\n",
+      "screenshot": "qa/shots/e2e/company-1.png",
+      "ms": 25205
+    },
+    {
+      "name": "კოორდინატების რედაქტირების UI",
+      "status": "FAIL",
+      "expected": "პროფილის ფორმაში განედი და გრძედი რედაქტირებადია",
+      "actual": "პროფილში კოორდინატების ველები არ არსებობს; API p_lat/p_lng-ს იღებს",
+      "screenshot": "qa/shots/e2e/company-2.png",
+      "ms": 116
+    },
+    {
+      "name": "კოორდინატების API და პროფილის დაბრუნება",
+      "status": "PASS",
+      "expected": "API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება",
+      "ms": 7362
+    }
+  ],
+  "cleanup": [
+    {
+      "restore": "PASS",
+      "fields": [
+        "address",
+        "lat",
+        "lng",
+        "offers"
+      ],
+      "method": "auth-probe SQL; exact profile ID + email"
+    },
+    {
+      "messages": 0,
+      "conversations": 0,
+      "requests": 0,
+      "offers": 0,
+      "contacts": 0,
+      "photos": 0,
+      "remaining": 0
+    }
+  ]
+}

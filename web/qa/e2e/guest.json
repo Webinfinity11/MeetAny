@@ -1,0 +1,52 @@
+{
+  "name": "guest",
+  "label": "სტუმარი",
+  "status": "FAIL",
+  "ms": 54053,
+  "steps": [
+    {
+      "name": "მოთხოვნები: სია და დეტალი",
+      "status": "PASS",
+      "expected": "სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა",
+      "ms": 16864
+    },
+    {
+      "name": "მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება",
+      "status": "FAIL",
+      "expected": "URL და ხილული შედეგები შეესაბამება მონაცემებს",
+      "actual": "locator.click: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'ახალი', exact: true })\n    - locator resolved to <a href=\"/requests/?city=batumi&tab=new\">ახალი</a>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p class=\"search-suggestions__heading\">სწრაფი ძიება</p> from <header class=\"catalog-header\">…</header> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p class=\"search-suggestions__heading\">სწრაფი ძიება</p> from <header class=\"catalog-header\">…</header> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <p class=\"search-suggestions__heading\">სწრაფი ძიება</p> from <header class=\"catalog-header\">…</header> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+      "screenshot": "qa/shots/e2e/guest-1.png",
+      "ms": 14372
+    },
+    {
+      "name": "კომპანიები: ძიება, ფილტრი და დალაგება",
+      "status": "PASS",
+      "expected": "URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია",
+      "ms": 2097
+    },
+    {
+      "name": "კომპანიის დეტალი, ნომერი, tel:, მიმართულება, contact_events",
+      "status": "PASS",
+      "expected": "გამოჩენა/დარეკვა აღირიცხება; Maps სწორი ბმულია",
+      "evidence": {
+        "contactEvents": [
+          "bede8933-9f2c-4e33-a8de-20372ed43c94",
+          "5057065d-0cfe-471a-b7c6-7eb5503ffef6"
+        ],
+        "maps": "https://www.google.com/maps/dir/?api=1&destination=41.7846,44.7712"
+      },
+      "ms": 5771
+    }
+  ],
+  "cleanup": [
+    {
+      "messages": 0,
+      "conversations": 0,
+      "requests": 0,
+      "offers": 0,
+      "contacts": 2,
+      "photos": 0,
+      "remaining": 0
+    }
+  ]
+}

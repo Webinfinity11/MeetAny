@@ -1,0 +1,44 @@
+{
+  "name": "registration",
+  "label": "რეგისტრაცია / აღდგენა",
+  "status": "PASS",
+  "ms": 60786,
+  "steps": [
+    {
+      "name": "რეგისტრაცია / შესვლა / გასვლა: client",
+      "status": "PASS",
+      "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
+      "ms": 41189
+    },
+    {
+      "name": "რეგისტრაცია / შესვლა / გასვლა: company",
+      "status": "PASS",
+      "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
+      "ms": 42015
+    },
+    {
+      "name": "პაროლის აღდგენა: ვალიდაცია, კოდი, შეცდომა",
+      "status": "PASS",
+      "expected": "არასწორი ელფოსტა/ცარიელი კოდი ქართულად; არასწორი კოდი უარყოფილია",
+      "evidence": {
+        "limitation": "რეალური OTP-ის მიღება/წარმატებული reset ელფოსტის გარეშე არ შემოწმებულა"
+      },
+      "ms": 8025
+    }
+  ],
+  "cleanup": [
+    {
+      "messages": 0,
+      "conversations": 0,
+      "requests": 0,
+      "offers": 0,
+      "contacts": 0,
+      "photos": 0,
+      "remaining": 0
+    },
+    {
+      "accountsBlocked": 2,
+      "incompleteAccountsDeleted": 0
+    }
+  ]
+}
