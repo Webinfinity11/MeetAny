@@ -1,6 +1,6 @@
 // P12 full-stack audit: permission probes against the local /api/db (auth-probe branch).
 // Run: QA_ORIGIN=http://localhost:3001 node qa/audit-perms.mjs   (prints a ✅/❌ table; never prints secrets)
-// Writes only its own rows: one test request (+ one offer) that the admin deletes at the end,
+// Writes only its own rows: one test request (+ one offer) that the admin deletes in `finally` (with any AUDIT leftovers),
 // plus an empty "general" A<->wood conversation if the pair had none. Everything else is read-only or must be refused.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -41,6 +41,7 @@ const tok = {};
 for (const k of ['hotel', 'cafe', 'wood', 'linen', 'admin']) tok[k] = await login(k);
 const A = tok.hotel, B = tok.cafe, C1 = tok.wood, C2 = tok.linen, ADM = tok.admin;
 let testRequest = null;
+const photoRequests = [];
 try {
   // ---- tables, anonymous
   let r = await api(null, 'GET', 'profiles?select=*&limit=1');
@@ -172,7 +173,7 @@ try {
   const bad = ['https://evil.example.com/' + id('hotel') + '/x.jpg', 'javascript:alert(1)//' + id('hotel') + '/x.jpg', 'https://abc.public.blob.vercel-storage.com/' + id('cafe') + '/x.jpg', 'http://localhost/' + id('hotel') + '/x.jpg'];
   for (const url of bad) {
     r = await rpc(A, 'create_request', { p_title: 'AUDIT photo test', p_body: 'temporary photo url check', p_category: 'other', p_city: 'tbilisi', p_photo_url: url });
-    if (r.status === 200 && r.data?.id) await rpc(ADM, 'admin_delete_request', { p_request_id: r.data.id });
+    if (r.status === 200 && r.data?.id && (await rpc(ADM, 'admin_delete_request', { p_request_id: r.data.id })).status !== 200) photoRequests.push(r.data.id);
     check(`create_request photo_url ${url.slice(0, 40)}…`, 'MA109', desc(r), r.code === 'MA109');
   }
 
@@ -205,7 +206,11 @@ try {
   st = await blob(A, 'DELETE', { url: `https://abc123.public.blob.vercel-storage.com/${id('cafe')}/a.jpg` }); rows.push({ name: 'blob-upload: DELETE foreign photo', expected: '403', actual: String(st), ok: st === 403 }); console.log(`${st === 403 ? '✅' : '❌'} blob delete foreign ${st}`);
   st = await blob(null, 'DELETE', { url: 'https://abc123.public.blob.vercel-storage.com/x/a.jpg' }); rows.push({ name: 'blob-upload: anon DELETE', expected: '401', actual: String(st), ok: st === 401 }); console.log(`${st === 401 ? '✅' : '❌'} blob anon delete ${st}`);
 } finally {
-  if (testRequest) { const r = await rpc(ADM, 'admin_delete_request', { p_request_id: testRequest }); console.log('cleanup test request:', desc(r)); }
+  // Delete every request this run created, then sweep AUDIT-titled leftovers of earlier interrupted runs.
+  const created = new Set([testRequest, ...photoRequests].filter(Boolean));
+  const listed = await api(ADM, 'GET', `requests?select=id,title&owner_id=in.(${id('hotel')},${id('cafe')})&limit=1000`).catch(() => null);
+  for (const x of Array.isArray(listed?.data) ? listed.data : []) if (/^AUDIT\b/.test(x.title)) created.add(x.id);
+  for (const t of created) { const r = await rpc(ADM, 'admin_delete_request', { p_request_id: t }).catch(e => ({ status: 'ERR ' + e.message })); console.log(`cleanup request ${t.slice(0, 8)}:`, desc(r)); }
 }
 // ---- brute force observation (non-existent address only)
 const codes = [];

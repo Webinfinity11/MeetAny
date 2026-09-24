@@ -104,13 +104,17 @@ export function createMarketStore({initial=null,background=true}={}){
   catch(err){if(err.status===401||err.status===403||err.status===404)setUserJwt(null);else throw err;}
   return userJwt;
  }
- async function anonJwt(){
-  if(anon&&Date.now()<anonExp-60e3)return anon;
-  const {data}=await authFetch('/token/anonymous');
-  if(!data?.token)throw new Error('no anonymous token');
-  const e=Number(data.expires_at)||0;
-  anon=data.token;anonExp=e>1e12?e:e>0?e*1000:(Number(claimsOf(anon).exp)||0)*1000; // seconds or milliseconds
-  return anon;
+ // Parallel reads share one in-flight /token/anonymous request.
+ let anonTask=null;
+ function anonJwt(){
+  if(anon&&Date.now()<anonExp-60e3)return Promise.resolve(anon);
+  if(!anonTask)anonTask=authFetch('/token/anonymous').then(({data})=>{
+   if(!data?.token)throw new Error('no anonymous token');
+   const e=Number(data.expires_at)||0;
+   anon=data.token;anonExp=e>1e12?e:e>0?e*1000:(Number(claimsOf(anon).exp)||0)*1000; // seconds or milliseconds
+   return anon;
+  }).finally(()=>{anonTask=null;});
+  return anonTask;
  }
  async function token(){
   if(userJwt&&Date.now()<userExp-60e3)return userJwt;
@@ -149,25 +153,39 @@ export function createMarketStore({initial=null,background=true}={}){
  // A failed refresh keeps the previous data on screen; the flags say so, and mutations toast it.
  let dataStale=false,engagementStale=false;
  const warnStale=stale=>{if(stale&&typeof window!=='undefined')toast(STALE);};
- async function refreshEngagement(){
+ function pendingSaveIntent(){
+  let intent=null;
+  try{intent=JSON.parse(sessionStorage.getItem('meetany.saveIntent')||'null');}catch{}
+  return intent&&Date.now()-intent.at<30*60*1000&&/^[0-9a-f-]{36}$/i.test(intent.id)?intent:null;
+ }
+ // load() starts capabilities/engagement_state beside the catalog reads; results are used
+ // only for the same actor and revision, otherwise refreshEngagement fetches them again.
+ function prefetchEngagement(actor){
+  const settle=p=>p.then(value=>({value}),error=>({error}));
+  return {actor,revision:engagementRevision,
+   caps:engagementCapabilities?null:settle(db('/capabilities')),
+   state:pendingSaveIntent()?null:settle(rpc('engagement_state'))};
+ }
+ async function refreshEngagement(pre){
   const actor=currentUser()?.id;
   if(!actor||currentUser()?.blocked){engagement={...engagement,owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}};emit();return;}
   if(engagement.owner!==actor)engagement={owner:actor,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
   if(engagementTask?.actor===actor)return engagementTask.promise;
   const revision=engagementRevision;
+  if(pre&&(pre.actor!==actor||pre.revision!==revision))pre=null;
+  const take=async(task,fetch)=>{const r=task&&await task;if(r&&!r.error)return r.value;return fetch();};
   const work=(async()=>{
    try{
-    const caps=engagementCapabilities||await db('/capabilities');
+    const caps=engagementCapabilities||await take(pre?.caps,()=>db('/capabilities'));
     if(caps.engagement)engagementCapabilities=caps;
     if(actor!==currentUser()?.id)return;
     if(!caps.engagement){engagement={...engagement,owner:actor,status:'unavailable'};emit();return;}
-    let intent=null;
-    try{intent=JSON.parse(sessionStorage.getItem('meetany.saveIntent')||'null');}catch{}
-    if(intent&&Date.now()-intent.at<30*60*1000&&/^[0-9a-f-]{36}$/i.test(intent.id)){
+    const intent=pendingSaveIntent();
+    if(intent){
      try{await rpc('set_saved_company',{p_company_id:intent.id,p_saved:true});sessionStorage.removeItem('meetany.saveIntent');}
      catch(err){if(err.code==='MA302')sessionStorage.removeItem('meetany.saveIntent');else throw err;}
     }
-    const data=await rpc('engagement_state');
+    const data=await take(!intent&&pre?.state,()=>rpc('engagement_state'));
     if(actor!==currentUser()?.id||revision!==engagementRevision)return;
     engagement={...data,owner:actor,status:'ready',emailDelivery:caps.emailDelivery};engagementStale=false;emit();
    }catch(err){
@@ -224,47 +242,61 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  seedPublic(initial);
 
+ // Independent reads run side by side; each dependent read starts as soon as its input arrives.
  async function load(){
-  if(!userJwt||Date.now()>=userExp-60e3)await loadUserJwt();
-  const uid=authUser?.id||null;
-  const [reqRows,meRow,companyRows]=await Promise.all([
-   db('/requests?select=*&order=created_at.desc&limit=1000').then(rows),
-   uid?db('/rpc/my_profile',{method:'POST',body:{}}).then(one):null,
-   db('/rpc/list_companies',{method:'POST',body:{}}).then(rows)
-  ]);
-  const next={me:mapUser(meRow),requests:reqRows.map(mapRequest),offers:[],counts:{},profiles:{},contacts:{},users:null,stats:null,
-   companies:companyRows.map(c=>mapUser({...c,role:'company'})),companyStats:{}};
-  for(const c of next.companies)next.profiles[c.id]=c;
-  const statRows=(await Promise.all(chunks(next.companies.map(c=>c.id),500).map(part=>db('/rpc/company_stats',{method:'POST',body:{ids:part}}).then(rows)))).flat();
-  for(const s of statRows)next.companyStats[s.company_id]={sent:Number(s.offers_sent)||0,chosen:Number(s.offers_chosen)||0};
-  const me=next.me,isAdmin=me&&me.role==='admin'&&!me.blocked;
-  const ids=next.requests.map(r=>r.id);
-  const [countRows,offerRows,statsRow]=await Promise.all([
-   Promise.all(chunks(ids,500).map(part=>db('/rpc/offer_counts',{method:'POST',body:{ids:part}}).then(rows))).then(parts=>parts.flat()),
-   me?db('/offers?select=*&order=created_at.asc').then(rows):[],
-   isAdmin?db('/rpc/admin_stats',{method:'POST',body:{}}).then(one):null
-  ]);
-  // New admin APIs page users independently; retain legacy compatibility until migration.
-  const userRows=isAdmin&&!(Number(statsRow?.adminApiVersion)>=1)?await db('/rpc/admin_list_users',{method:'POST',body:{}}).then(rows):null;
-  for(const row of countRows)next.counts[row.request_id]=Number(row.offers)||0;
-  next.offers=offerRows.map(mapOffer);
-  if(userRows){next.users=userRows.map(mapUser);for(const u of next.users)next.profiles[u.id]=u;}
-  next.stats=statsRow||null;
-  // Public columns for request authors and offer authors not known yet.
-  const need=[...new Set([...next.requests.map(r=>r.ownerId),...next.offers.map(o=>o.companyUserId)])].filter(id=>!next.profiles[id]);
-  const profileRows=(await Promise.all(chunks(need,100).map(part=>db('/profiles?select='+PUBLIC_PROFILE+'&id=in.'+inList(part)).then(rows)))).flat();
-  for(const p of profileRows)next.profiles[p.id]=mapUser(p);
-  if(me)next.profiles[me.id]=me;
-  // Contacts open only between the request author and the chosen company.
-  if(me){
-   const byId=Object.fromEntries(next.offers.map(o=>[o.id,o]));
-   const involved=next.requests.filter(r=>r.chosenOfferId&&(r.ownerId===me.id||byId[r.chosenOfferId]?.companyUserId===me.id));
-   const list=await Promise.all(involved.map(r=>db('/rpc/contact_for_request',{method:'POST',body:{p_request_id:r.id}}).then(d=>[r.id,one(d)])));
-   for(const [id,c] of list)if(c)next.contacts[id]={name:c.name,company:c.company,phone:c.phone,email:c.email};
+  if(!userJwt||Date.now()>=userExp-60e3){
+   // A guest needs the anonymous token next, so ask for it while get-session answers.
+   if(!userJwt&&!anon)anonJwt().catch(()=>{});
+   await loadUserJwt();
   }
+  const uid=authUser?.id||null;
+  const post=(fn,body={})=>db('/rpc/'+fn,{method:'POST',body});
+  const reqP=db('/requests?select=*&order=created_at.desc&limit=1000').then(rows).then(r=>r.map(mapRequest));
+  const meP=uid?post('my_profile').then(one).then(mapUser):Promise.resolve(null);
+  const companiesP=post('list_companies').then(rows).then(r=>r.map(c=>mapUser({...c,role:'company'})));
+  // Offers are read for any session and kept only when the profile exists (RLS scopes them).
+  const offersP=uid?db('/offers?select=*&order=created_at.asc').then(rows).then(r=>r.map(mapOffer)):Promise.resolve([]);
+  const statsP=companiesP.then(cs=>Promise.all(chunks(cs.map(c=>c.id),500).map(part=>post('company_stats',{ids:part}).then(rows)))).then(parts=>parts.flat());
+  const countsP=reqP.then(rs=>Promise.all(chunks(rs.map(r=>r.id),500).map(part=>post('offer_counts',{ids:part}).then(rows)))).then(parts=>parts.flat());
+  const isAdminP=meP.then(me=>!!(me&&me.role==='admin'&&!me.blocked));
+  // New admin APIs page users independently; retain legacy compatibility until migration.
+  const adminP=isAdminP.then(async isAdmin=>{
+   if(!isAdmin)return {statsRow:null,userRows:null};
+   const statsRow=await post('admin_stats').then(one);
+   return {statsRow,userRows:Number(statsRow?.adminApiVersion)>=1?null:await post('admin_list_users').then(rows)};
+  });
+  const pre=uid?prefetchEngagement(uid):null;
+  // Public columns for request authors and offer authors not known yet.
+  const profilesP=Promise.all([reqP,companiesP,offersP,meP]).then(([rs,cs,os,me])=>{
+   const known=new Set(cs.map(c=>c.id));
+   const need=[...new Set([...rs.map(r=>r.ownerId),...(me?os:[]).map(o=>o.companyUserId)])].filter(id=>!known.has(id));
+   return Promise.all(chunks(need,100).map(part=>db('/profiles?select='+PUBLIC_PROFILE+'&id=in.'+inList(part)).then(rows))).then(parts=>parts.flat());
+  });
+  // Contacts open only between the request author and the chosen company.
+  const contactsP=Promise.all([reqP,offersP,meP]).then(([rs,os,me])=>{
+   if(!me)return [];
+   const byId=Object.fromEntries(os.map(o=>[o.id,o]));
+   const involved=rs.filter(r=>r.chosenOfferId&&(r.ownerId===me.id||byId[r.chosenOfferId]?.companyUserId===me.id));
+   return Promise.all(involved.map(r=>post('contact_for_request',{p_request_id:r.id}).then(d=>[r.id,one(d)])));
+  });
+  const all=[reqP,meP,companiesP,offersP,statsP,countsP,adminP,profilesP,contactsP];
+  // Every branch settles before a failure propagates, so no read is left unobserved.
+  const settled=await Promise.allSettled(all);
+  const failed=settled.find(s=>s.status==='rejected');
+  if(failed)throw failed.reason;
+  const [requests,me,companies,offerList,statRows,countRows,{statsRow,userRows},profileRows,contactList]=settled.map(s=>s.value);
+  const next={me,requests,offers:me?offerList:[],counts:{},profiles:{},contacts:{},users:null,stats:statsRow||null,companies,companyStats:{}};
+  for(const c of companies)next.profiles[c.id]=c;
+  for(const s of statRows)next.companyStats[s.company_id]={sent:Number(s.offers_sent)||0,chosen:Number(s.offers_chosen)||0};
+  for(const row of countRows)next.counts[row.request_id]=Number(row.offers)||0;
+  if(userRows){next.users=userRows.map(mapUser);for(const u of next.users)next.profiles[u.id]=u;}
+  for(const p of profileRows)if(!next.profiles[p.id])next.profiles[p.id]=mapUser(p);
+  if(me)next.profiles[me.id]=me;
+  for(const [id,c] of contactList)if(c)next.contacts[id]={name:c.name,company:c.company,phone:c.phone,email:c.email};
   cache=next;
   dataRevision++;
-  await refreshEngagement();
+  if(pre)pre.actor=me?.id||null;
+  await refreshEngagement(pre);
  }
 
  // Refreshes are serialized: a call during a running refresh schedules exactly one more.

@@ -1,0 +1,67 @@
+{
+ "guest /requests/": {
+  "networkidleMs": [
+   4893,
+   2824,
+   2678
+  ],
+  "median": 2824,
+  "lastCallEndMs": 2784,
+  "calls": 7,
+  "waterfall": [
+   "auth/token/anonymous 659→1267",
+   "auth/get-session 660→1234",
+   "requests 1274→2113",
+   "rpc/list_companies 1274→1928",
+   "rpc/company_stats 1929→2426",
+   "rpc/offer_counts 2114→2614",
+   "profiles 2114→2625"
+  ]
+ },
+ "guest /companies/": {
+  "networkidleMs": [
+   3073,
+   2956,
+   4071
+  ],
+  "median": 3073,
+  "lastCallEndMs": 3050,
+  "calls": 8,
+  "waterfall": [
+   "auth/token/anonymous 710→1208",
+   "auth/get-session 712→1208",
+   "requests 1210→1892",
+   "rpc/list_companies 1210→1889",
+   "rpc/company_stats 1889→2403",
+   "rpc/offer_counts 1892→2403",
+   "profiles 1892→2417",
+   "profiles 2460→4041"
+  ]
+ },
+ "client /account/": {
+  "networkidleMs": [
+   3208,
+   2949,
+   5909
+  ],
+  "median": 3208,
+  "lastCallEndMs": 3207,
+  "calls": 14,
+  "waterfall": [
+   "auth/token/anonymous 426→727",
+   "auth/get-session 426→729",
+   "requests 729→2513",
+   "rpc/my_profile 729→2120",
+   "rpc/list_companies 729→2508",
+   "offers 729→2190",
+   "capabilities 729→2178",
+   "rpc/engagement_state 729→2955",
+   "rpc/company_stats 2509→3461",
+   "rpc/offer_counts 2514→3461",
+   "profiles 2515→4283",
+   "rpc/contact_for_request 2515→4431",
+   "rpc/unread_message_count 4434→5098",
+   "rpc/unread_message_count 5099→5908"
+  ]
+ }
+}
