@@ -1,6 +1,8 @@
-# Admin API version 1 — reviewed migration required
+# Admin API version 1 — migration `migrations/20260923-admin-api.sql`
 
-The schema adds a foundation for paginated administration and transactional moderation history. It has only been tested against throwaway local PostgreSQL databases. **It has not been applied to the live auth-probe database or production.** Deploying the web client alone must retain the existing admin fallback.
+The schema adds a foundation for paginated administration and transactional moderation history. The block (moderation audit table through `admin_stats`, plus grants) is extracted verbatim from `schema.sql` into the rerunnable migration `db/migrations/20260923-admin-api.sql` (`create if not exists`, `create or replace`, drop/create trigger, one transaction with `lock_timeout 5s`).
+
+**Status 2026-09-24: applied to auth-probe** (`node web/scripts/apply-migration.mjs admin-api`, twice; host asserted to `ep-withered-glade-b54ts1g5`). The script verifies `moderation_audit`, the nine admin RPCs and `adminApiVersion` in `admin_stats`. Live check with the demo admin through the dev API: `rpc/admin_search_users`, `rpc/admin_search_requests`, `rpc/admin_list_audit`, `rpc/admin_stats` → 200, `adminApiVersion: 1`. **Production has not been migrated**; deploying the web client alone must retain the existing admin fallback.
 
 ## Capability and compatibility
 
@@ -25,7 +27,7 @@ States: `open`, `closed`, `expired`, `chosen`, `hidden`. Roles: `client`, `compa
 
 ## Audit guarantees and limits
 
-Successful hide/show/delete/block/unblock/verify/unverify calls insert history in the same transaction as the mutation. The row locks serialize before/after capture. Failed authorization/validation/storage or a transaction rollback cannot leave a successful audit record. Legacy deletion of an absent request remains idempotent and emits no event.
+Successful hide/show/delete/block/unblock/verify/unverify calls insert history in the same transaction as the mutation. The row locks serialize before/after capture. Failed authorization/validation/storage or a transaction rollback cannot leave a successful audit record. Legacy deletion of an absent request remains idempotent and emits no event. Since `20260924-empty-conversations.sql`, deleting a request (including `admin_delete_request`) also deletes that request's conversations and messages; the audit row is unaffected.
 
 Audit actor/target identifiers deliberately have no cascading foreign keys, so request or account deletion does not erase history. Flags contain only moderation booleans, never copied profile/contact data or request content. Reasons are the explicit administrator input (3–500 characters when supplied); administrators should avoid putting unnecessary personal data into reasons.
 
@@ -33,6 +35,6 @@ The private table has RLS enabled and no API role table privileges. Only the pro
 
 ## Validation and rollout
 
-`bash db/tests/run.sh` creates and drops a local database, loads the schema twice, then runs all existing and admin tests. The admin suite covers >1,000 users and requests with identical timestamps, full cursor traversal, filter counts, limits, invalid input, denied/blocked actors, immutable audit records, deleted targets, and rollback/storage failures.
+`bash db/tests/run.sh` creates and drops a local database, loads the schema twice, applies `20260923-admin-api.sql` twice on top (idempotency), then runs all existing and admin tests. The admin suite covers >1,000 users and requests with identical timestamps, full cursor traversal, filter counts, limits, invalid input, denied/blocked actors, immutable audit records, deleted targets, and rollback/storage failures.
 
 Before applying remotely: review the schema diff and backup/restore procedure, identify the target environment, and validate the migration there with authorized credentials. The additive table and indexes require normal migration planning for large installations. No production database operation is implicit in these code changes. Exact filtered counts and substring searches can scan matching tables; measure real query plans before adding trigram indexes or approximate counts. Offer counts are calculated only for returned request rows.

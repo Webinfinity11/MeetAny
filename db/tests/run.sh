@@ -4,6 +4,7 @@
 # Env: PGHOST (default /tmp), PGPORT (default 5432), PGUSER (default current user, must be superuser).
 # Loads: stub_neon.sql -> schema.sql -> schema.sql again (re-runnability) -> rls_tests.sql
 #        -> security_tests.sql -> profile_tests.sql -> fields_tests.sql -> admin_tests.sql
+#        -> ... -> messaging, empty-conversations migrations -> conversation_cleanup_tests.sql
 #        (same database, reuse the rls_tests harness)
 # Exit code is non-zero on any failure. The database is always dropped.
 set -euo pipefail
@@ -32,6 +33,9 @@ echo "== schema.sql loaded (1st run)"
 "${PSQL[@]}" -f "$SCHEMA"
 echo "== schema.sql loaded (2nd run, re-runnable)"
 
+"${PSQL[@]}" -f "$HERE/../migrations/20260923-admin-api.sql"
+"${PSQL[@]}" -f "$HERE/../migrations/20260923-admin-api.sql"
+echo "== admin API migration applied twice"
 "${PSQL[@]}" -f "$HERE/../migrations/20260923-engagement.sql"
 echo "== additive engagement migration re-applied"
 "${PSQL[@]}" -f "$HERE/../migrations/20260923-request-alerts.sql"
@@ -49,6 +53,9 @@ echo "== additive engagement migration re-applied"
 "${PSQL[@]}" -f "$HERE/../migrations/20260923-contact-events.sql"
 "${PSQL[@]}" -f "$HERE/contact_event_tests.sql"
 "${PSQL[@]}" -f "$HERE/../migrations/20260923-messaging.sql"
+"${PSQL[@]}" -f "$HERE/../migrations/20260924-empty-conversations.sql"
+"${PSQL[@]}" -f "$HERE/../migrations/20260924-empty-conversations.sql"
 "${PSQL[@]}" -f "$HERE/messaging_tests.sql"
 "${PSQL[@]}" -f "$HERE/address_tests.sql"
+"${PSQL[@]}" -f "$HERE/conversation_cleanup_tests.sql"
 echo "== tests finished"
