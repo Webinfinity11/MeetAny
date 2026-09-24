@@ -12,6 +12,30 @@ export type AdminPage = {
 };
 
 type Result = { key: string; page: AdminPage | null; error: string | null };
+
+// admin_list_audit returns ids only: name them from the store cache, then by id through the
+// admin search RPCs (both match the id). Unresolved ids (deleted records) stay unnamed.
+async function auditLabels(store: Store, items: Record<string, unknown>[]) {
+  const labels = new Map<string, string>();
+  const userLabel = (u: { name?: string; company?: string } | null | undefined) => u?.company || u?.name || "";
+  const me = store.currentUser();
+  const wanted = new Map<string, "user" | "request">();
+  for (const r of items) {
+    wanted.set(String(r.actor_id), "user");
+    wanted.set(String(r.target_id), r.target_type === "request" ? "request" : "user");
+  }
+  await Promise.all([...wanted].map(async ([id, kind]) => {
+    const cached = kind === "request" ? store.getRequest(id)?.title : userLabel(me?.id === id ? me : store.userById(id));
+    if (cached) { labels.set(id, cached); return; }
+    try {
+      const found = await (kind === "request" ? store.adminSearchRequests({ p_q: id, p_limit: 1 }) : store.adminSearchUsers({ p_q: id, p_limit: 1 }));
+      const row = found?.items?.find((x: Record<string, unknown>) => x.id === id);
+      const label = kind === "request" ? row?.title : userLabel(row);
+      if (label) labels.set(id, String(label));
+    } catch { /* fall back to the short id */ }
+  }));
+  return labels;
+}
 export function useAdminData({ store, enabled, tab, query, status, role, cursor }: {
   store: Store | undefined; enabled: boolean; tab: "requests" | "users" | "audit";
   query: string; status: string; role: string; cursor: string;
@@ -33,7 +57,10 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
             p_blocked: status === "blocked" ? true : ["active", "verified"].includes(status) ? false : null,
             p_verified: status === "verified" ? true : null })
           : store.adminListAudit(pagination));
-        const page: AdminPage = { ...raw, items: raw.items.map((r: Record<string, unknown>) => tab === "audit" ? r : tab === "users" ? {
+        const labels = tab === "audit" ? await auditLabels(store, raw.items) : null;
+        const page: AdminPage = { ...raw, items: raw.items.map((r: Record<string, unknown>) => labels ? {
+          ...r, actor_name: labels.get(String(r.actor_id)) || null, target_name: labels.get(String(r.target_id)) || null,
+        } : tab === "users" ? {
           ...r, createdAt: r.created_at, blockedReason: r.blocked_reason, verifiedAt: r.verified_at, serviceCities: r.service_cities,
         } : {
           ...r, createdAt: r.created_at, ownerId: r.owner_id, ownerName: r.owner_name, ownerCompany: r.owner_company,
