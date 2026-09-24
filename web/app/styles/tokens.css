@@ -11,42 +11,197 @@
 @font-face{font-family:FiraGO;src:url(/assets/fonts/FiraGO-Bold-ge.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+10A0-10FF,U+1C90-1CBF,U+2000-206F,U+20AC,U+20BE,U+2116,U+2122,U+2190-2193,U+2212,U+2215,U+2713,U+FEFF,U+FFFD}
 
 :root{
-  /* ======================================================================
-     THEME KNOBS: the only values to edit when the look changes. Every colour ramp, radius,
-     type treatment and icon below is derived from these, and every page (home included)
-     reads only tokens, so one edit here restyles the whole site. See DESIGN-SYSTEM.md.
-     ====================================================================== */
-  --theme-primary:#245DDD;      /* buttons, links, focus, selection; the blue ramp is mixed from it */
-  --theme-accent:#FE8E2F;       /* accent fill (dots, badges); the orange ramp is mixed from it */
-  --theme-ink:#172D44;          /* text and neutrals; the ink ramp is mixed from it */
-  --theme-surface:#FFFFFF;      /* page background */
-  --theme-font:FiraGO;          /* one family for everything (Georgian + Latin) */
-  --theme-radius:10px;          /* xs/sm = ×0.6, md = ×1, lg/xl = ×1.6 (6/10/16 ბაზა 10-ზე) */
-  --theme-caps-headings:"case" 1; /* page and section headings in mtavruli; set to normal for mkhedruli */
-  --catalog-title-case:normal; /* P9 proposal: use var(--ff-heading) to restore mtavruli card titles */
-  --theme-caps-buttons:"case" 1;  /* buttons in mtavruli; set to normal for mkhedruli */
-  --theme-caps-tracking:.03em;  /* letter-spacing for mtavruli text (0 when caps are off) */
-  --theme-icon-stroke:1.75;     /* Lucide outline weight for every icon */
 
-  /* ---------- colour: brand (derived) ---------- */
-  --blue-50:color-mix(in srgb,var(--theme-primary) 7%,#fff); --blue-100:color-mix(in srgb,var(--theme-primary) 15%,#fff);
-  --blue-200:color-mix(in srgb,var(--theme-primary) 28%,#fff); --blue-300:color-mix(in srgb,var(--theme-primary) 48%,#fff);
+  /* PRIMITIVE LAYER — palette, exact compatibility scales, radius, elevation and motion */
+  --theme-primary:#245DDD;
+  --theme-accent:#FE8E2F;
+  --theme-ink:#172D44;
+  --theme-surface:#FFFFFF;
+  --theme-font:FiraGO;
+  --theme-radius:10px;
+  --theme-caps-headings:"case" 1;
+  --theme-caps-buttons:"case" 1;
+  --theme-caps-tracking:.03em;
+  --theme-icon-stroke:1.75;
+  --blue-50:color-mix(in srgb,var(--theme-primary) 7%,#fff);
+  --blue-100:color-mix(in srgb,var(--theme-primary) 15%,#fff);
+  --blue-200:color-mix(in srgb,var(--theme-primary) 28%,#fff);
+  --blue-300:color-mix(in srgb,var(--theme-primary) 48%,#fff);
   --blue-400:color-mix(in srgb,var(--theme-primary) 72%,#fff);
-  --blue-500:color-mix(in srgb,var(--theme-primary) 90%,#fff);  /* logo-like tint: never used for buttons or text */
-  --blue-600:var(--theme-primary);                               /* PRIMARY action + links */
-  --blue-700:color-mix(in srgb,var(--theme-primary) 80%,#000); --blue-800:color-mix(in srgb,var(--theme-primary) 66%,#000);
+  --blue-500:color-mix(in srgb,var(--theme-primary) 90%,#fff);
+  --blue-600:var(--theme-primary);
+  --blue-700:color-mix(in srgb,var(--theme-primary) 80%,#000);
+  --blue-800:color-mix(in srgb,var(--theme-primary) 66%,#000);
   --blue-900:color-mix(in srgb,var(--theme-primary) 50%,#000);
-  --orange-50:color-mix(in srgb,var(--theme-accent) 8%,#fff); --orange-100:color-mix(in srgb,var(--theme-accent) 20%,#fff);
+  --orange-50:color-mix(in srgb,var(--theme-accent) 8%,#fff);
+  --orange-100:color-mix(in srgb,var(--theme-accent) 20%,#fff);
   --orange-300:color-mix(in srgb,var(--theme-accent) 62%,#fff);
-  --orange-400:var(--theme-accent);                               /* accent FILL only, never text */
-  --orange-500:color-mix(in srgb,var(--theme-accent) 88%,#000);   /* non-text UI marks 3:1 */
-  --orange-600:color-mix(in srgb,var(--theme-accent) 65%,#000);   /* accent TEXT on white ≥4.5 */
+  --orange-400:var(--theme-accent);
+  --orange-500:color-mix(in srgb,var(--theme-accent) 88%,#000);
+  --orange-600:color-mix(in srgb,var(--theme-accent) 65%,#000);
   --orange-700:color-mix(in srgb,var(--theme-accent) 52%,#000);
-  --cyan-400:#4CCEFC; --violet-500:#C734B7; --coral-500:#FC5632; --pink-500:#FC308C; /* gradient stops only */
-  /* The brand gradient appears ONLY as the chosen-offer ring and in the „შედგა!“ success sheet. */
+  --cyan-400:#4CCEFC;
+  --violet-500:#C734B7;
+  --coral-500:#FC5632;
+  --pink-500:#FC308C;
   --brand-gradient:linear-gradient(120deg,#4CCEFC 0%,#2A6DFB 30%,#C734B7 55%,#FC5632 78%,#FE8E2F 100%);
+  --ink-950:color-mix(in srgb,var(--theme-ink) 80%,#000);
+  --ink-900:var(--theme-ink);
+  --ink-800:color-mix(in srgb,var(--theme-ink) 90%,#fff);
+  --ink-700:color-mix(in srgb,var(--theme-ink) 80%,#fff);
+  --ink-600:color-mix(in srgb,var(--theme-ink) 70%,#fff);
+  --ink-500:color-mix(in srgb,var(--theme-ink) 65%,#fff);
+  --ink-400:color-mix(in srgb,var(--theme-ink) 50%,#fff);
+  --ink-300:color-mix(in srgb,var(--theme-ink) 28%,#fff);
+  --ink-200:color-mix(in srgb,var(--theme-ink) 16%,#fff);
+  --ink-150:color-mix(in srgb,var(--theme-ink) 11%,#fff);
+  --ink-100:color-mix(in srgb,var(--theme-ink) 7%,#fff);
+  --ink-50:color-mix(in srgb,var(--theme-ink) 3.5%,#fff);
+  --white:var(--theme-surface);
+  --success-50:#E8F6EF;
+  --success-100:#CDEBDC;
+  --success-600:#11805A;
+  --success-700:#0B6647;
+  --warning-50:#FFF6E5;
+  --warning-100:#FDE7BF;
+  --warning-600:#B25E09;
+  --warning-700:#8A4A06;
+  --danger-50:#FDECEC;
+  --danger-100:#F9CFCF;
+  --danger-600:#D12C2C;
+  --danger-700:#A81E1E;
+  --font-sans:var(--theme-font),"Noto Sans Georgian",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-num:var(--theme-font),system-ui,sans-serif;
+  --fs-display:40px;
+  --lh-display:48px;
+  --fs-h1:32px;
+  --lh-h1:40px;
+  --fs-h2:24px;
+  --lh-h2:32px;
+  --fs-h3:20px;
+  --lh-h3:28px;
+  --fs-title:18px;
+  --lh-title:26px;
+  --fs-body-lg:17px;
+  --lh-body-lg:28px;
+  --fs-body:16px;
+  --lh-body:26px;
+  --fs-sm:14px;
+  --lh-sm:22px;
+  --fs-xs:12px;
+  --lh-xs:18px;
+  --fs-eyebrow:11px;
+  --lh-eyebrow:16px;
+  --ls-eyebrow:.06em;
+  --ff-heading:var(--theme-caps-headings);
+  --ff-button:var(--theme-caps-buttons);
+  --ff-eyebrow:"case" 1;
+  --ls-heading:var(--theme-caps-tracking);
+  --ls-button:var(--theme-caps-tracking);
+  --fs-button:14px;
+  --lh-button:20px;
+  --fw-regular:400;
+  --fw-medium:500;
+  --fw-semibold:600;
+  --fw-bold:700;
+  --measure:68ch;
+  --space-0:0;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-10:40px;
+  --space-12:48px;
+  --space-16:64px;
+  --space-20:80px;
+  --space-24:96px;
+  --section-gap:48px;
+  --radius-xs:calc(var(--theme-radius) * .6);
+  --radius-sm:calc(var(--theme-radius) * .6);
+  --radius-md:var(--theme-radius);
+  --radius-lg:calc(var(--theme-radius) * 1.6);
+  --radius-xl:calc(var(--theme-radius) * 1.6);
+  --radius-pill:999px;
+  --radius-control:var(--radius-sm);
+  --shadow-0:none;
+  --shadow-1:0 1px 2px color-mix(in srgb,var(--theme-ink) 6%,transparent),0 1px 1px color-mix(in srgb,var(--theme-ink) 4%,transparent);
+  --shadow-2:0 2px 4px color-mix(in srgb,var(--theme-ink) 6%,transparent),0 6px 16px color-mix(in srgb,var(--theme-ink) 8%,transparent);
+  --shadow-3:0 8px 24px color-mix(in srgb,var(--theme-ink) 12%,transparent),0 2px 6px color-mix(in srgb,var(--theme-ink) 6%,transparent);
+  --shadow-4:0 24px 64px color-mix(in srgb,var(--ink-950) 24%,transparent);
+  --control-h-sm:36px;
+  --control-h:44px;
+  --control-h-lg:52px;
+  --tap-min:44px;
+  --icon-sm:16px;
+  --icon:20px;
+  --icon-lg:24px;
+  --icon-stroke:var(--theme-icon-stroke);
+  --icon-btn:18px;
+  --header-h:56px;
+  --container:1200px;
+  --gutter:16px;
+  --z-sticky:20;
+  --z-header:30;
+  --z-menu:40;
+  --z-toast:60;
+  --motion-fast:150ms;
+  --motion-base:220ms;
+  --motion-slow:320ms;
+  --motion-ease:cubic-bezier(.2,.8,.2,1);
+  --motion-ease-out:cubic-bezier(0,0,.2,1);
+  --motion-enter:200ms;
+  --motion-stagger:40ms;
+  --motion-pulse:2400ms;
+  --shadow-hover:var(--shadow-2);
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --dur-fast:120ms;
+  --dur:200ms;
+  --dur-slow:320ms;
+  --space-hairline:1px;
+  --space-control-y:10px;
+  --space-control-x:18px;
+  --space-control-roomy:14px;
+  --space-control-lg-x:22px;
+  --space-control-sm-y:7px;
+  --radius-circle:50%;
+  --space-compact:6px;
+  --space-three-quarter:3px;
+  --space-field-y:9px;
+  --lh-control:24px;
+  --space-affix:42px;
+  --space-control-lg:52px;
+  --space-half:2px;
+  --shadow-control:0 1px 2px color-mix(in srgb,var(--ink-900) 10%,transparent),0 0 0 1px color-mix(in srgb,var(--ink-900) 6%,transparent);
+  --lh-solid:1;
+  --fs-meta:13px;
+  --fs-section-fixed:20px;
+  --fs-stat:30px;
+  --fs-dialog-title:22px;
+  --radius-mark:2px;
+  --tab-active-shadow:inset 0 -2px var(--action);
+  --space-control-tight:5px;
+  --shadow-dock:0 -6px 16px color-mix(in srgb,var(--ink-900) 8%,transparent);
+  --space-dock:88px;
+  --space-list-indent:1.25em;
+  --fs-legacy-title:26px;
+  --space-control:44px;
+  --fs-control-copy:15px;
+  --lh-compact-ratio:1.45;
+  --space-7:28px;
+  --lh-stat:30px;
+  --space-section-compact:30px;
+  --lh-section-fixed:32px;
+  --space-panel-legacy:26px;
+  --space-affix-compact:38px;
+  --color-legacy-ink:#000;
+  --lh-control-ratio:1.5;
+  --lh-prose-ratio:1.7;
 
-  /* P9 request tier prototype: aliases of the existing brand palette. */
+  /* SEMANTIC LAYER — roles referencing primitive values */
+  --catalog-title-case:normal;
   --tier-vip-bg:color-mix(in srgb,var(--theme-accent) 4%,#fff);
   --tier-vip-border:var(--orange-300);
   --tier-vip-text:var(--orange-700);
@@ -55,99 +210,93 @@
   --tier-top-border:var(--blue-200);
   --tier-top-text:var(--blue-700);
   --tier-top-badge-bg:var(--blue-100);
-
-  /* ---------- colour: ink / neutral (derived from --theme-ink) ---------- */
-  --ink-950:color-mix(in srgb,var(--theme-ink) 80%,#000); --ink-900:var(--theme-ink);
-  --ink-800:color-mix(in srgb,var(--theme-ink) 90%,#fff); --ink-700:color-mix(in srgb,var(--theme-ink) 80%,#fff);
-  --ink-600:color-mix(in srgb,var(--theme-ink) 70%,#fff); --ink-500:color-mix(in srgb,var(--theme-ink) 65%,#fff);
-  --ink-400:color-mix(in srgb,var(--theme-ink) 50%,#fff); --ink-300:color-mix(in srgb,var(--theme-ink) 28%,#fff);
-  --ink-200:color-mix(in srgb,var(--theme-ink) 16%,#fff); --ink-150:color-mix(in srgb,var(--theme-ink) 11%,#fff);
-  --ink-100:color-mix(in srgb,var(--theme-ink) 7%,#fff); --ink-50:color-mix(in srgb,var(--theme-ink) 3.5%,#fff);
-  --white:var(--theme-surface);
-
-  /* ---------- colour: semantic ---------- */
-  --success-50:#E8F6EF; --success-100:#CDEBDC; --success-600:#11805A; --success-700:#0B6647;
-  --warning-50:#FFF6E5; --warning-100:#FDE7BF; --warning-600:#B25E09; --warning-700:#8A4A06;
-  --danger-50:#FDECEC;  --danger-100:#F9CFCF; --danger-600:#D12C2C;  --danger-700:#A81E1E;
-  --info-50:var(--blue-50); --info-700:var(--blue-700);
-
-  /* ---------- colour: roles ---------- */
-  --bg:var(--white); --bg-subtle:var(--ink-50); --bg-muted:var(--ink-100); --bg-inverse:var(--ink-900);
-  --text:var(--ink-900); --text-2:var(--ink-700); --text-3:var(--ink-600); --text-placeholder:var(--ink-500);
-  --text-disabled:var(--ink-400); --text-link:var(--blue-600); --text-on-brand:var(--white); --text-accent:var(--orange-600);
-  --border:var(--ink-200); --border-subtle:var(--ink-150); --border-input:var(--ink-400); --border-strong:var(--ink-300);
-  --action:var(--blue-600); --action-hover:var(--blue-700); --action-press:var(--blue-800); --action-subtle:var(--blue-50);
-  --selected-bg:var(--blue-50); --selected-text:var(--blue-700);
+  --info-50:var(--blue-50);
+  --info-700:var(--blue-700);
+  --bg:var(--white);
+  --bg-subtle:var(--ink-50);
+  --bg-muted:var(--ink-100);
+  --bg-inverse:var(--ink-900);
+  --text:var(--ink-900);
+  --text-2:var(--ink-700);
+  --text-3:var(--ink-600);
+  --text-placeholder:var(--ink-500);
+  --text-disabled:var(--ink-400);
+  --text-link:var(--blue-600);
+  --text-on-brand:var(--white);
+  --text-accent:var(--orange-600);
+  --border:var(--ink-200);
+  --border-subtle:var(--ink-150);
+  --border-input:var(--ink-400);
+  --border-strong:var(--ink-300);
+  --action:var(--blue-600);
+  --action-hover:var(--blue-700);
+  --action-press:var(--blue-800);
+  --action-subtle:var(--blue-50);
+  --selected-bg:var(--blue-50);
+  --selected-text:var(--blue-700);
   --catalog-band-bg:var(--blue-900);
+  --scrim:color-mix(in srgb,var(--ink-950) 48%,transparent);
+  --focus-ring:0 0 0 2px var(--white),0 0 0 4px var(--action);
+  --surface-page:var(--bg);
+  --surface-subtle:var(--bg-subtle);
+  --surface-muted:var(--bg-muted);
+  --status-success-bg:var(--success-50);
+  --status-success-text:var(--success-700);
+  --status-error-bg:var(--danger-50);
+  --status-error-text:var(--danger-700);
+
+  /* COMPONENT LAYER — shared component controls; legacy names remain supported */
   --avatar-bg:var(--blue-100);
   --avatar-text:var(--blue-700);
-  /* Initials tones, picked per name by CompanyAvatar (data-tone 1–6); text/bg contrast 6.5–8.5. */
-  --avatar-1-bg:var(--blue-100); --avatar-1-text:var(--blue-800);
-  --avatar-2-bg:#e2efee; --avatar-2-text:#0b5852;
-  --avatar-3-bg:#e8efe7; --avatar-3-text:#2f5e2c;
-  --avatar-4-bg:#f6eae1; --avatar-4-text:#873e07;
-  --avatar-5-bg:#f0e7f1; --avatar-5-text:#5e2c69;
-  --avatar-6-bg:#f6e7ea; --avatar-6-text:#87273b;
-  --scrim:color-mix(in srgb,var(--ink-950) 48%,transparent);
-
-  /* ---------- focus: on every interactive element ---------- */
-  --focus-ring:0 0 0 2px var(--white),0 0 0 4px var(--action);
-
-  /* ---------- type ---------- */
-  --font-sans:var(--theme-font),"Noto Sans Georgian",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-num:var(--theme-font),system-ui,sans-serif; /* + font-variant-numeric:tabular-nums for prices and counts */
-  --fs-display:40px; --lh-display:48px;   /* home hero only; 32/40 on mobile */
-  --fs-h1:32px; --lh-h1:40px;             /* 24/32 on mobile */
-  --fs-h2:24px; --lh-h2:32px;             /* 21/28 on mobile */
-  --fs-h3:20px; --lh-h3:28px;             /* 18/26 on mobile */
-  --fs-title:18px; --lh-title:26px;       /* card titles, weight 600 */
-  --fs-body-lg:17px; --lh-body-lg:28px;   /* request description on the detail page */
-  --fs-body:16px; --lh-body:26px;
-  --fs-sm:14px; --lh-sm:22px;
-  --fs-xs:12px; --lh-xs:18px;             /* minimum size for Georgian UI text */
-  --fs-eyebrow:11px; --lh-eyebrow:16px; --ls-eyebrow:.06em; /* eyebrow: always mtavruli */
-  /* Mtavruli roles (owner decision 2026-09-22: headings and buttons in mtavruli). Components read these,
-     never "case" directly; the --theme-caps-* knobs above switch them. */
-  --ff-heading:var(--theme-caps-headings); --ff-button:var(--theme-caps-buttons); --ff-eyebrow:"case" 1;
-  --ls-heading:var(--theme-caps-tracking); --ls-button:var(--theme-caps-tracking);
-  --fs-button:14px; --lh-button:20px;   /* 14 because buttons are mtavruli (wider glyphs) */
-  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
-  --measure:68ch;
-
-  /* ---------- space (4px base) ---------- */
-  --space-0:0; --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px; --space-6:24px;
-  --space-8:32px; --space-10:40px; --space-12:48px; --space-16:64px; --space-20:80px; --space-24:96px;
-  --card-pad:16px;          /* 20 at ≥768 */
-  --section-gap:48px;       /* 80 at ≥1024 */
-
-  /* ---------- radius: სამი რადიუსი 6/10/16 (მფლობელის გადაწყვეტილება 2026-09-22), xs≡sm, xl≡lg ---------- */
-  --radius-xs:calc(var(--theme-radius) * .6); --radius-sm:calc(var(--theme-radius) * .6); --radius-md:var(--theme-radius);
-  --radius-lg:calc(var(--theme-radius) * 1.6); --radius-xl:calc(var(--theme-radius) * 1.6); --radius-pill:999px;
-
-  --radius-control:var(--radius-sm); /* compact, consistent action silhouette */
-
-  /* ---------- elevation (navy-tinted, low) ---------- */
-  --shadow-0:none;
-  --shadow-1:0 1px 2px color-mix(in srgb,var(--theme-ink) 6%,transparent),0 1px 1px color-mix(in srgb,var(--theme-ink) 4%,transparent);  /* cards at rest (+1px border) */
-  --shadow-2:0 2px 4px color-mix(in srgb,var(--theme-ink) 6%,transparent),0 6px 16px color-mix(in srgb,var(--theme-ink) 8%,transparent);  /* hover, sticky bars */
-  --shadow-3:0 8px 24px color-mix(in srgb,var(--theme-ink) 12%,transparent),0 2px 6px color-mix(in srgb,var(--theme-ink) 6%,transparent);  /* menus, popovers */
-  --shadow-4:0 24px 64px color-mix(in srgb,var(--ink-950) 24%,transparent);                              /* sheets, modals */
-
-  /* ---------- sizes ---------- */
-  --control-h-sm:36px; --control-h:44px; --control-h-lg:52px; --tap-min:44px;
-  --icon-sm:16px; --icon:20px; --icon-lg:24px; --icon-stroke:var(--theme-icon-stroke); --icon-btn:18px;
-  --header-h:56px;          /* 64 at ≥768 */
-  --container:1200px; --gutter:16px; /* gutter 24 at ≥768, 32 at ≥1280 */
-
-  /* ---------- layers ---------- */
-  --z-sticky:20; --z-header:30; --z-menu:40; --z-toast:60;
-
-  /* ---------- motion ---------- */
-  --motion-fast:150ms; --motion-base:220ms; --motion-slow:320ms;
-  --motion-ease:cubic-bezier(.2,.8,.2,1); --motion-ease-out:cubic-bezier(0,0,.2,1);
-  --motion-enter:200ms; --motion-stagger:40ms; --motion-pulse:2400ms;
-  --shadow-hover:var(--shadow-2);
-  --ease:cubic-bezier(.2,.7,.2,1); --dur-fast:120ms; --dur:200ms; --dur-slow:320ms;
+  --avatar-1-bg:var(--blue-100);
+  --avatar-1-text:var(--blue-800);
+  --avatar-2-bg:#e2efee;
+  --avatar-2-text:#0b5852;
+  --avatar-3-bg:#e8efe7;
+  --avatar-3-text:#2f5e2c;
+  --avatar-4-bg:#f6eae1;
+  --avatar-4-text:#873e07;
+  --avatar-5-bg:#f0e7f1;
+  --avatar-5-text:#5e2c69;
+  --avatar-6-bg:#f6e7ea;
+  --avatar-6-text:#87273b;
+  --card-pad:16px;
+  --field-error-ring:0 0 0 2px var(--white),0 0 0 4px var(--danger-600);
+  --badge-accent-ring:0 0 0 3px var(--orange-50);
+  --card-selected-shadow:var(--shadow-1),0 0 0 6px var(--ink-100);
+  --field-focus-ring:0 0 0 2px var(--blue-300);
+  --field-active-ring:0 0 0 1px var(--action);
+  --btn-h:var(--control-h);
+  --btn-px:var(--space-control-x);
+  --btn-py:var(--space-control-y);
+  --btn-radius:var(--radius-control);
+  --btn-fs:var(--fs-button);
+  --btn-weight:var(--fw-semibold);
+  --btn-primary-bg:var(--action);
+  --btn-primary-text:var(--white);
+  --btn-secondary-bg:var(--white);
+  --btn-secondary-text:var(--text);
+  --btn-ghost-bg:transparent;
+  --btn-ghost-text:var(--text);
+  --btn-danger-bg:var(--danger-600);
+  --btn-danger-text:var(--white);
+  --row-pad:var(--space-4);
+  --row-gap:var(--space-5);
+  --row-divider:var(--border-subtle);
+  --row-hover-bg:var(--bg-subtle);
+  --field-h:var(--control-h);
+  --field-border:var(--border-input);
+  --field-radius:var(--radius-md);
+  --field-fs:var(--fs-body);
+  --field-error:var(--danger-600);
+  --badge-radius:var(--radius-pill);
+  --badge-fs:var(--fs-xs);
+  --badge-weight:var(--fw-semibold);
+  --avatar-size-sm:40px;
+  --avatar-size-md:48px;
+  --avatar-size-lg:56px;
+  --sheet-radius:var(--radius-lg);
+  --sheet-shadow:var(--shadow-4);
 }
 /* Breakpoints (min-width): 480 / 768 / 1024 / 1280. Mobile values are the defaults above for
    layout tokens; the type scale is desktop-first as in the source file. */
