@@ -1,8 +1,9 @@
 /* Shared browser data/auth layer. Called once by market-client.ts after mount.
    Every mutation refreshes cache and notifies React subscribers. See db/CONTRACT.md. */
+import { toast } from '../components/Toasts';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
 export function createMarketStore({initial=null,background=true}={}){
- const DAY=86400000,REQUEST_DAYS=14,EXTEND_DAYS=7;
+ const DAY=86400000,EXTEND_DAYS=7;
  const PENDING_KEY='meetany.pendingProfile';
 
  const categories={furniture:'ავეჯი და ინვენტარი',construction:'მშენებლობა და რემონტი',textiles:'ტექსტილი და სასტუმროები',food:'საკვები და სასმელი',packaging:'შეფუთვა და წარმოება',logistics:'ლოგისტიკა და დისტრიბუცია',cleaning:'დასუფთავება და მოვლა',technology:'IT და ტექნოლოგიები',marketing:'მარკეტინგი და დიზაინი',finance:'ბუღალტერია და ფინანსები',legal:'იურიდიული მომსახურება',tourism:'ტურიზმი',other:'სხვა'};
@@ -15,6 +16,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const UNAVAILABLE='სერვისი დროებით მიუწვდომელია';
  const GENERIC='რაღაც ვერ შესრულდა. სცადე თავიდან.';
  const CHECK_EMAIL='შეამოწმე ელფოსტა';
+ const STALE='მონაცემები ვერ განახლდა. გვერდზე შეიძლება ძველი ინფორმაცია ჩანდეს.';
  const MSG={
   MA001:'ამისთვის შედი ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისთვისაა.',
   MA101:'სათაური უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს.',MA102:'აღწერე საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიე კატეგორია.',MA104:'აირჩიე ქალაქი.',
@@ -143,6 +145,9 @@ export function createMarketStore({initial=null,background=true}={}){
  const requestLoads=new Map();
  let engagement={owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
  let engagementTask=null,engagementRevision=0,engagementCapabilities=null;
+ // A failed refresh keeps the previous data on screen; the flags say so, and mutations toast it.
+ let dataStale=false,engagementStale=false;
+ const warnStale=stale=>{if(stale&&typeof window!=='undefined')toast(STALE);};
  async function refreshEngagement(){
   const actor=currentUser()?.id;
   if(!actor||currentUser()?.blocked){engagement={...engagement,owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}};emit();return;}
@@ -163,8 +168,11 @@ export function createMarketStore({initial=null,background=true}={}){
     }
     const data=await rpc('engagement_state');
     if(actor!==currentUser()?.id||revision!==engagementRevision)return;
-    engagement={...data,owner:actor,status:'ready',emailDelivery:caps.emailDelivery};emit();
-   }catch{if(actor===currentUser()?.id&&revision===engagementRevision){engagement={...engagement,owner:actor,status:'error'};emit();}}
+    engagement={...data,owner:actor,status:'ready',emailDelivery:caps.emailDelivery};engagementStale=false;emit();
+   }catch(err){
+    console.error('MarketStore: engagement refresh failed',err);
+    if(actor===currentUser()?.id&&revision===engagementRevision){engagement={...engagement,owner:actor,status:'error'};engagementStale=true;emit();}
+   }
   })();
   engagementTask={actor,promise:work};
   try{await work;}finally{if(engagementTask?.promise===work)engagementTask=null;}
@@ -176,16 +184,16 @@ export function createMarketStore({initial=null,background=true}={}){
   if(actor===currentUser()?.id){engagement={...engagement,savedIds:saved?[...new Set([...engagement.savedIds,id])]:engagement.savedIds.filter(x=>x!==id)};emit();}
  }
  async function markNotificationRead(id){
-  requireUser();engagementRevision++;await rpc('mark_notification_read',{p_id:id});if(engagementTask)await engagementTask.promise;await refreshEngagement();
+  requireUser();engagementRevision++;await rpc('mark_notification_read',{p_id:id});if(engagementTask)await engagementTask.promise;await refreshEngagement();warnStale(engagementStale);
  }
  async function setNotificationEmail(enabled){
-  requireUser();engagementRevision++;await rpc('set_notification_email',{p_enabled:enabled});if(engagementTask)await engagementTask.promise;await refreshEngagement();
+  requireUser();engagementRevision++;await rpc('set_notification_email',{p_enabled:enabled});if(engagementTask)await engagementTask.promise;await refreshEngagement();warnStale(engagementStale);
  }
 
  async function setRequestAlertPreferences(preferences){
   requireUser();engagementRevision++;
   const saved=await rpc('set_request_alert_preferences',{p_enabled:preferences.enabled,p_categories:preferences.categories,p_cities:preferences.cities,p_email_mode:preferences.emailMode});
-  if(engagementTask)await engagementTask.promise;await refreshEngagement();return saved;
+  if(engagementTask)await engagementTask.promise;await refreshEngagement();warnStale(engagementStale);return saved;
  }
  const listeners=new Set();
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
@@ -259,19 +267,25 @@ export function createMarketStore({initial=null,background=true}={}){
  }
 
  // Refreshes are serialized: a call during a running refresh schedules exactly one more.
- let running=null,queued=null;
+ let running=null,queued=null,loadedAt=0;
  function refresh(){
   if(!configured)return Promise.resolve();
   if(running){if(!queued)queued=running.then(()=>{queued=null;return refresh();});return queued;}
-  running=load().then(()=>{loadFailed=false;},err=>{console.error('MarketStore: refresh failed',err);if(!isReady)loadFailed=true;})
+  running=load().then(()=>{loadFailed=false;dataStale=false;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!isReady)loadFailed=true;else dataStale=true;})
    .then(()=>{running=null;isReady=true;emit();});
   return running;
+ }
+ // Page mounts ask for current data; a load in flight or finished moments ago already is.
+ function revalidate(){
+  if(running)return queued||running;
+  if(Date.now()-loadedAt<5000)return Promise.resolve();
+  return refresh();
  }
  const readyPromise=background&&typeof window!=='undefined'?(configured?refresh():Promise.resolve().then(()=>{isReady=true;emit();})):Promise.resolve();
 
  function client(){if(!configured)fail(UNAVAILABLE);}
  async function rpc(name,args={}){client();return db('/rpc/'+name,{method:'POST',body:args});}
- async function mutate(name,args,map){const data=one(await rpc(name,args))||null;await refresh();return map&&data?map(data):data;}
+ async function mutate(name,args,map){const data=one(await rpc(name,args))||null;await refresh();warnStale(dataStale);return map&&data?map(data):data;}
 
  /* ---------- auth ---------- */
  function currentUser(){return cache.me;}
@@ -729,12 +743,12 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminSetBlocked=(userId,blocked,reason)=>mutate('admin_set_blocked',{p_user_id:userId,p_blocked:!!blocked,p_reason:blocked&&reason?String(reason).trim():null});
  const adminSetVerified=(userId,verified)=>mutate('admin_set_verified',{p_user_id:userId,p_verified:!!verified});
 
- return {categories,cities,units,priceTypes,QUANTITY_MAX,DELIVERY_DAYS_MAX,todayDate,maxNeededBy,stateLabels,REQUEST_DAYS,EXTEND_DAYS,PASSWORD_MIN,UNAVAILABLE_MESSAGE:UNAVAILABLE,CHECK_EMAIL_MESSAGE:CHECK_EMAIL,normalizePhone,
+ return {categories,cities,units,priceTypes,todayDate,maxNeededBy,stateLabels,EXTEND_DAYS,
   engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}},
   refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
-  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,refresh,dataRevision:()=>dataRevision,ensureRequest,
+  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,
   // A signed-in session exists even when its profile has not loaded yet (e.g. a failed first refresh).
   hasSession:()=>!!authUser,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,

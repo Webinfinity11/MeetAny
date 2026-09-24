@@ -22,8 +22,9 @@ export function useMarketStore(initial?: PublicSnapshot): { store: Store | undef
     const update = () => setStore({ ...source });
     const unsubscribe = source.subscribe(update);
     // Catalog navigation can restore an old router payload. Keep authenticated data
-    // and fetch current API data instead of overwriting it with that public seed.
-    if (existing && initial !== undefined) void source.refresh();
+    // and fetch current API data instead of overwriting it with that public seed,
+    // unless a load is already running or has just finished (the header's first load).
+    if (existing && initial !== undefined) void source.revalidate();
     source.ready().then(update);
     update();
     return unsubscribe;

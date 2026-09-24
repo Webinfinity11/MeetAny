@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Store } from "./market-client";
 import { toast } from "../components/Toasts";
 
-export type Message = { id: string; senderId: string; body: string; createdAt: string };
+export type Message = { id: string; senderId: string; body: string; createdAt: string; readAt?: string | null };
 export type Conversation = {
   id: string; clientId: string; companyId: string; requestId: string | null; contextKey?: string | null;
   otherId?: string | null; otherName: string | null; otherCompany: string | null;
@@ -17,54 +17,94 @@ export type ChatTarget = { companyId: string; requestId?: string; conversation?:
 export const chatChanged = () => window.dispatchEvent(new Event("meetany:chat-changed"));
 export const chatErrorText = (err: unknown) => (err as { userMessage?: string })?.userMessage || "მიმოწერა ვერ ჩაიტვირთა. სცადე ხელახლა.";
 
-/** Runs `update` now, every `ms`, on tab return and on chat changes elsewhere; `active()` turns false on cleanup. */
-function usePoll(update: ((active: () => boolean) => Promise<void>) | null, ms: number, deps: unknown[]) {
+type Feed = { unread: number | null; list: { items?: Conversation[]; error?: string } | null };
+type Source = {
+  state: Feed; listeners: Set<() => void>; listSubs: number;
+  read?: () => Promise<number>; list?: () => Promise<Conversation[]>;
+  run: () => Promise<void>; stop?: () => void;
+};
+const sources = new Map<string, Source>();
+
+/** One 60 s poll per signed-in user feeds every badge and inbox list: the list when anyone shows it
+ *  (its unread counts give the total), otherwise the unread count alone. Also runs on tab return
+ *  and on chat changes elsewhere. */
+function feed(owner: string): Source {
+  let source = sources.get(owner);
+  if (source) return source;
+  let busy = false, again = false, failed = false;
+  const src: Source = {
+    state: { unread: null, list: null }, listeners: new Set(), listSubs: 0,
+    run: async () => {
+      if (document.hidden || !src.listeners.size) return;
+      // A viewer that joins mid-request (a list after the badge) gets one more run right after.
+      if (busy) { again = true; return; }
+      busy = true; again = false;
+      try {
+        if (src.listSubs && src.list) {
+          const items = await src.list();
+          src.state = { unread: items.reduce((n, c) => n + c.unreadCount, 0), list: { items } };
+        } else if (src.read) {
+          src.state = { ...src.state, unread: await src.read() };
+        } else return;
+        failed = false;
+      } catch (err) {
+        const error = chatErrorText(err);
+        if (src.listSubs) src.state = { ...src.state, list: { error } };
+        if (!failed) toast(error);
+        failed = true;
+      } finally { busy = false; }
+      src.listeners.forEach(fn => fn());
+      if (again) void src.run();
+    },
+  };
+  sources.set(owner, source = src);
+  return source;
+}
+
+function useFeed(store: Store | undefined, owner: string | undefined, wantsList: boolean): [Feed | null, () => void] {
+  const read = store?.unreadMessageCount, list = store?.listConversations;
+  const [state, setState] = useState<{ owner: string; feed: Feed } | null>(null);
+  const on = !!owner && !!(wantsList ? list : read);
   useEffect(() => {
-    if (!update) return;
-    let on = true, busy = false;
-    const run = async () => {
-      if (document.hidden || busy) return;
-      busy = true;
-      try { await update(() => on); } finally { busy = false; }
+    if (!owner || !on) return;
+    const src = feed(owner);
+    src.read = read; src.list = list;
+    const update = () => setState({ owner, feed: src.state });
+    src.listeners.add(update);
+    if (wantsList) src.listSubs++;
+    if (src.listeners.size === 1) {
+      const run = () => void src.run();
+      const timer = window.setInterval(run, 60000);
+      window.addEventListener("meetany:chat-changed", run);
+      document.addEventListener("visibilitychange", run);
+      src.stop = () => { clearInterval(timer); window.removeEventListener("meetany:chat-changed", run); document.removeEventListener("visibilitychange", run); };
+    }
+    // A new list viewer needs items now; a badge reuses what the feed already has.
+    if (src.state.unread === null || (wantsList && !src.state.list)) void src.run(); else update();
+    return () => {
+      src.listeners.delete(update);
+      if (wantsList) src.listSubs--;
+      if (!src.listeners.size) { src.stop?.(); sources.delete(owner); }
     };
-    void run();
-    const timer = window.setInterval(run, ms);
-    window.addEventListener("meetany:chat-changed", run);
-    document.addEventListener("visibilitychange", run);
-    return () => { on = false; clearInterval(timer); window.removeEventListener("meetany:chat-changed", run); document.removeEventListener("visibilitychange", run); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [owner, on, wantsList, read, list]);
+  return [state && state.owner === owner ? state.feed : null, () => { if (owner) void sources.get(owner)?.run(); }];
 }
 
 /** Unread total for the signed-in user; null until the first answer. */
 export function useUnreadMessageCount(store: Store | undefined, owner: string | undefined, enabled = true) {
-  const read = store?.unreadMessageCount;
-  const [result, setResult] = useState<{ owner: string; count: number } | null>(null);
-  const failed = useRef(false);
-  usePoll(owner && enabled && read ? async active => {
-    try {
-      const count = await read();
-      if (active()) { setResult({ owner, count }); failed.current = false; }
-    } catch (err) { if (active() && !failed.current) { toast(chatErrorText(err)); failed.current = true; } }
-  } : null, 60000, [owner, enabled, read]);
-  return result && result.owner === owner ? result.count : null;
+  const [current] = useFeed(store, enabled ? owner : undefined, false);
+  return current ? current.unread : null;
 }
 
 /** The signed-in user's conversations, newest activity first (server order). */
 export function useConversationList(store: Store | undefined, owner: string | undefined) {
-  const list = store?.listConversations;
-  const [result, setResult] = useState<{ owner: string; items?: Conversation[]; error?: string } | null>(null);
-  const [revision, setRevision] = useState(0);
-  usePoll(owner && list ? async active => {
-    try { const items: Conversation[] = await list(); if (active()) setResult({ owner, items }); }
-    catch (err) { if (active()) { const error = chatErrorText(err); setResult({ owner, error }); toast(error); } }
-  } : null, 60000, [owner, list, revision]);
-  return { current: result?.owner === owner ? result : null, retry: () => setRevision(n => n + 1) };
+  const [current, retry] = useFeed(store, owner, true);
+  return { current: current?.list && owner ? { owner, ...current.list } : null, retry };
 }
 
 /** One open conversation: starts it if needed, polls every 5s, marks read while visible, sends. */
 export function useChatThread(store: Store, target: ChatTarget) {
-  const { startConversation, listConversations, listMessages, markRead } = store;
+  const { startConversation, listConversations, listMessages, markRead, currentUser } = store;
   const alive = useRef(true);
   const sending = useRef(false);
   const [conversation, setConversation] = useState<Conversation | null>(target.conversation || null);
@@ -80,6 +120,7 @@ export function useChatThread(store: Store, target: ChatTarget) {
     let active = true, busy = false, hadError = false;
     let id = target.conversation?.id || "";
     let after: string | null = null;
+    let unread = (target.conversation?.unreadCount || 0) > 0;
     const update = async () => {
       if (document.hidden || busy) return;
       busy = true;
@@ -91,17 +132,22 @@ export function useChatThread(store: Store, target: ChatTarget) {
           setConversation(created);
           const all: Conversation[] = await listConversations();
           if (!active) return;
-          setConversation(all.find(c => c.id === id) || created);
+          const found = all.find(c => c.id === id);
+          if (found?.unreadCount) unread = true;
+          setConversation(found || created);
           chatChanged();
         }
         const incoming: Message[] = await listMessages(id, after);
         if (!active) return;
         merge(incoming);
+        const me = currentUser()?.id;
+        if (incoming.some(m => m.senderId !== me && !m.readAt)) unread = true;
         // Advance only from the ordered fetch, never from a send response: a peer's
         // message may have committed between our last poll and our own send.
         if (incoming.length) after = incoming[incoming.length - 1].createdAt;
         setLoaded(true); setFailed(false);
-        if (!document.hidden) { const result = await markRead(id); if (active && result.marked) chatChanged(); }
+        // Mark read only when the other side has something unread; an idle open chat writes nothing.
+        if (unread && !document.hidden) { const result = await markRead(id); unread = false; if (active && result.marked) chatChanged(); }
         hadError = false;
       } catch (err) {
         if (active) { setFailed(true); if (!hadError) toast(chatErrorText(err)); hadError = true; }
@@ -111,7 +157,7 @@ export function useChatThread(store: Store, target: ChatTarget) {
     const timer = window.setInterval(update, 5000);
     document.addEventListener("visibilitychange", update);
     return () => { active = false; clearInterval(timer); document.removeEventListener("visibilitychange", update); };
-  }, [startConversation, listConversations, listMessages, markRead, target, revision]);
+  }, [startConversation, listConversations, listMessages, markRead, currentUser, target, revision]);
   /** Resolves true when the message was stored; `onStored` runs just before it joins the list. */
   async function send(body: string, onStored?: () => void) {
     if (!conversation || !loaded || sending.current || !body.trim() || body.length > 2000) return false;

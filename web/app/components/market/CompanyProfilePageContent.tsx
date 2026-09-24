@@ -35,9 +35,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   }, [store, ready, available, id]);
 
   // The snapshot/store already carries the public phone; the separate fetch is only a fallback.
-  const snapshotPhone: string | null = data?.c.phone || null;
-  const fetchedPhone = usePublicPhone(data && !snapshotPhone ? data.c.id : undefined);
-  const phone = snapshotPhone || fetchedPhone;
+  const phone = usePublicPhone(store, data?.c.id);
 
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 

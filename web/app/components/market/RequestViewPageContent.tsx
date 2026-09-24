@@ -157,7 +157,7 @@ export function RequestViewPageContent() {
     return { r, me, owner, offers: mappedOffers, offerCount, state, isOwner, myOffer: myOffer ? mapOffer(myOffer) : null, contact };
   }, [store, ready, available, id, seen]);
 
-  const ownerPhone = usePublicPhone(data?.r.ownerId);
+  const ownerPhone = usePublicPhone(store, data?.r.ownerId);
 
   if ((ready && !available) || detail.error) return <div className="ma-page"><ServiceUnavailable /></div>;
 

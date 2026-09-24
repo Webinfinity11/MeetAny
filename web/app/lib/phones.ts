@@ -22,16 +22,18 @@ export async function fetchPhone(id: string): Promise<string | null> {
   return map[id] || null;
 }
 
+// The store's public profiles already carry the phone; fetch only when it is not cached.
 // Key the response to its owner so client-side navigation cannot show a previous contact.
-export function usePublicPhone(id: string | undefined): string | null {
+export function usePublicPhone(store: { userById?: (id: string) => { phone?: string | null } | null } | undefined, id: string | undefined): string | null {
+  const known = id ? store?.userById?.(id)?.phone || null : null;
   const [result, setResult] = useState<{ id: string; phone: string | null } | null>(null);
   useEffect(() => {
-    if (!id) return;
+    if (!id || known) return;
     let cancelled = false;
     fetchPhone(id).then(phone => {
       if (!cancelled) setResult({ id, phone });
     });
     return () => { cancelled = true; };
-  }, [id]);
-  return result && result.id === id ? result.phone : null;
+  }, [id, known]);
+  return known || (result && result.id === id ? result.phone : null);
 }

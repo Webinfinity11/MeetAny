@@ -110,7 +110,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   const { messages, loaded, failed, pending, sendError, send, retry } = useChatThread(store, target);
   const d = describe(store, me, conversation);
   // Public company phone only (same projection as the profile page); clients have none.
-  const phone = usePublicPhone(d.isCompany ? d.otherId : undefined);
+  const phone = usePublicPhone(store, d.isCompany ? d.otherId : undefined);
   const [body, setBody] = useState("");
   const log = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
