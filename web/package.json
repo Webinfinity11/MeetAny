@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "e2e": "node qa/e2e/run.mjs"
+    "e2e": "node qa/e2e/run.mjs",
+    "visual:baseline": "node qa/visual/run.mjs --update",
+    "visual:diff": "node qa/visual/run.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -23,7 +25,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "pixelmatch": "^7.2.0",
     "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
     "typescript": "^5"
   }
 }

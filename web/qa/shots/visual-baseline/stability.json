@@ -1,0 +1,409 @@
+{
+  "head": "3c69b9c085bcea2d1260105849930e3efdce8d8e",
+  "sourceHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "baselineHead": "3c69b9c085bcea2d1260105849930e3efdce8d8e",
+  "update": false,
+  "only": null,
+  "results": [
+    {
+      "page": "guest-home",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 2831
+    },
+    {
+      "page": "guest-requests",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1816
+    },
+    {
+      "page": "guest-requests",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2368
+    },
+    {
+      "page": "guest-companies",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1923
+    },
+    {
+      "page": "guest-companies",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2353
+    },
+    {
+      "page": "guest-request-detail",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1252
+    },
+    {
+      "page": "guest-request-detail",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1651
+    },
+    {
+      "page": "guest-company-profile",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1117
+    },
+    {
+      "page": "guest-company-profile",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1273
+    },
+    {
+      "page": "guest-login",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "page": "guest-login",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "page": "guest-register",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1154
+    },
+    {
+      "page": "guest-register",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1336
+    },
+    {
+      "page": "guest-terms",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1873
+    },
+    {
+      "page": "guest-terms",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2691
+    },
+    {
+      "page": "guest-404",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "page": "guest-404",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "page": "client-account",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "page": "client-account",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1088
+    },
+    {
+      "page": "client-saved",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "page": "client-saved",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "page": "client-messages",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1164
+    },
+    {
+      "page": "client-messages",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "page": "client-conversation",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1164
+    },
+    {
+      "page": "client-conversation",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "page": "client-profile",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1337
+    },
+    {
+      "page": "client-profile",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1703
+    },
+    {
+      "page": "client-request-new",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1851
+    },
+    {
+      "page": "client-request-new",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2424
+    },
+    {
+      "page": "client-request-detail",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 2217
+    },
+    {
+      "page": "client-request-detail",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2597
+    },
+    {
+      "page": "company-account",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1785
+    },
+    {
+      "page": "company-account",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2129
+    },
+    {
+      "page": "company-profile",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 2054
+    },
+    {
+      "page": "company-profile",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2902
+    },
+    {
+      "page": "company-offer",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1292
+    },
+    {
+      "page": "company-offer",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1961
+    },
+    {
+      "page": "company-chat",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1292
+    },
+    {
+      "page": "company-chat",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1961
+    },
+    {
+      "page": "admin-requests",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1236
+    },
+    {
+      "page": "admin-requests",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2320
+    },
+    {
+      "page": "admin-users",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "page": "admin-users",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 1550
+    },
+    {
+      "page": "admin-audit",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1317
+    },
+    {
+      "page": "admin-audit",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2885
+    },
+    {
+      "page": "admin-contacts",
+      "viewport": 1440,
+      "percent": 0,
+      "pass": true,
+      "width": 1440,
+      "height": 1461
+    },
+    {
+      "page": "admin-contacts",
+      "viewport": 390,
+      "percent": 0,
+      "pass": true,
+      "width": 390,
+      "height": 2246
+    }
+  ],
+  "safety": [
+    {
+      "role": "guest",
+      "blocked": [],
+      "startConversationInterceptions": 0
+    },
+    {
+      "role": "hotel",
+      "blocked": [],
+      "startConversationInterceptions": 0
+    },
+    {
+      "role": "supply",
+      "blocked": [],
+      "startConversationInterceptions": 4
+    },
+    {
+      "role": "admin",
+      "blocked": [],
+      "startConversationInterceptions": 0
+    }
+  ],
+  "errors": [],
+  "complete": true
+}
