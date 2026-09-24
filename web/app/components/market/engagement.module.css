@@ -17,6 +17,7 @@
 .savedRow p { margin: 0; color: var(--text-2); }
 @media(max-width:767px) { .popover { position: fixed; top: var(--space-20); right: var(--space-4); } }
 
+.saveIcon { width: var(--tap-min); height: var(--tap-min); border-color: var(--border-strong); border-radius: var(--radius-sm); background: var(--white); color: var(--text-2); }
 .saveLabel { width: auto; min-height: var(--space-10); gap: var(--space-2); padding-inline: var(--space-3); border-color: transparent; background: transparent; font-size: var(--fs-sm); }
 
 .savedRow { flex-wrap: wrap; }

@@ -150,9 +150,10 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <fieldset className="filter-section filter-options"><legend>მომსახურების არეალი</legend>
         <label className="ma-check"><input type="checkbox" checked={coverage} onChange={e => filters.set({coverage: e.target.checked ? "national" : ""})} /><span>ემსახურება მთელ საქართველოს</span></label>
       </fieldset>
-      <button type="button" className="ma-btn ma-btn--ghost filter-reset" onClick={clearFilters}>
+      {/* Desktop only, and only with a filter on; the sheet has its own "გასუფთავება" in the footer. */}
+      {placement === "desktop" && filterCount > 0 ? <button type="button" className="catalog-reset filter-reset" onClick={clearFilters}>
         ფილტრების გასუფთავება
-      </button>
+      </button> : null}
     </div>
   );
 
@@ -176,10 +177,10 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
               skeleton()
             ) : rows.length === 0 ? (
               <div className="ma-empty">
-                <p className="ma-empty__text">კომპანია ვერ მოიძებნა.</p>
-                <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>
-                  ფილტრების გასუფთავება
-                </button>
+                <p className="ma-empty__text">{query ? `„${query}“-ზე კომპანია ვერ მოიძებნა.` : "ამ პირობით კომპანია არ არის."}</p>
+                {filterCount > 0
+                  ? <button type="button" className="catalog-reset" onClick={clearFilters}>ფილტრების გასუფთავება</button>
+                  : query ? <button type="button" className="catalog-reset" onClick={() => setQuery("")}>ძიების გასუფთავება</button> : null}
               </div>
             ) : (
               rows.map((c, index) => <CompanyListingCard key={c.id} c={c} entranceIndex={index} />)
@@ -194,11 +195,12 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         triggerRef={filterButtonRef}
-        footer={
+        footer={<>
+          <button type="button" className="catalog-reset" onClick={clearFilters} disabled={filterCount === 0}>გასუფთავება</button>
           <button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>
             {rows.length} კომპანიის ჩვენება
           </button>
-        }
+        </>}
       >
         {filtersBody("mobile")}
       </MobileFilterSheet>
