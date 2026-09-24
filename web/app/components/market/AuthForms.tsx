@@ -169,7 +169,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-company">
-            კომპანია / ობიექტი{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
+            კომპანია{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
           </label>
           <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
           {v.message("reg-company")}
@@ -178,10 +178,11 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       <div className="ma-form__row ma-form__row--2">
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-phone">
-            მობილური ტელეფონი * <span className="ma-field__opt">ნომერი საჯაროდ გამოჩნდება</span>
+            მობილური ტელეფონი *
           </label>
-          <input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={edit("reg-phone", setPhone)} {...v.control("reg-phone")} />
+          <input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={edit("reg-phone", setPhone)} {...v.control("reg-phone", "reg-phone-help")} />
           {v.message("reg-phone")}
+          <p className="ma-field__help" id="reg-phone-help">ნომერი საჯაროდ გამოჩნდება</p>
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-email">

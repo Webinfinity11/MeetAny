@@ -1,0 +1,95 @@
+{
+  "report": {
+    "register": {
+      "name": {
+        "x": 120,
+        "y": 412,
+        "w": 220,
+        "h": 44
+      },
+      "company": {
+        "x": 356,
+        "y": 412,
+        "w": 220,
+        "h": 44
+      },
+      "phone": {
+        "x": 120,
+        "y": 504,
+        "w": 220,
+        "h": 44
+      },
+      "email": {
+        "x": 356,
+        "y": 504,
+        "w": 220,
+        "h": 44
+      },
+      "labels": [
+        {
+          "x": 120,
+          "h": 22
+        },
+        {
+          "x": 356,
+          "h": 22
+        },
+        {
+          "x": 120,
+          "h": 22
+        },
+        {
+          "x": 356,
+          "h": 22
+        }
+      ],
+      "optSameLine": true
+    },
+    "profile-1440": {
+      "rows": 3,
+      "uniqueRows": 3,
+      "sameRequestTwice": false,
+      "times": [
+        "დღეს 20:59",
+        "დღეს 20:58",
+        "დღეს 18:36"
+      ],
+      "first": "5 ახალი შეთავაზება — ბათუმი–თბილისი: 3 პალეტი კვირაში — წაუკითხავი",
+      "allLink": null,
+      "allLinkLast": false,
+      "toggle": false,
+      "sectionHeight": 355,
+      "atEnd": 80
+    },
+    "profile-390": {
+      "rows": 3,
+      "uniqueRows": 3,
+      "sameRequestTwice": false,
+      "times": [
+        "დღეს 20:59",
+        "დღეს 20:58",
+        "დღეს 18:36"
+      ],
+      "first": "5 ახალი შეთავაზება — ბათუმი–თბილისი: 3 პალეტი კვირაში — წაუკითხავი",
+      "allLink": null,
+      "allLinkLast": false,
+      "toggle": false,
+      "sectionHeight": 431,
+      "atEnd": 48
+    },
+    "date": {
+      "type": null,
+      "placeholder": "დღ.თთ.წწწწ",
+      "button": {
+        "w": 44,
+        "h": 44
+      },
+      "invalid": "მიუთითე თარიღი დღ.თთ.წწწწ ფორმატით",
+      "fromPicker": "15.10.2026",
+      "errorCleared": true,
+      "normalized": "24.09.2026",
+      "today": "თარიღი ხვალიდან უნდა იყოს"
+    }
+  },
+  "errors": []
+}

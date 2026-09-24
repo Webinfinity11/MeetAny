@@ -9,6 +9,43 @@ import { useMarketStore } from "../../lib/market-client";
 import { categories, cities, units } from "../../lib/categories";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 
+// Needed-by dates: typed "დდ.თთ.წწწწ" in the field, ISO "YYYY-MM-DD" in state and on submit.
+const pad = (n: number) => String(n).padStart(2, "0");
+const isoToText = (iso: string) => (/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso.split("-").reverse().join(".") : "");
+function textToIso(text: string): string | null {
+  const t = text.trim();
+  const m = /^(\d{1,2})[.\/\- ](\d{1,2})[.\/\- ](\d{4})$/.exec(t) || /^(\d{2})(\d{2})(\d{4})$/.exec(t);
+  if (!m) return null;
+  const [d, mo, y] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const date = new Date(Date.UTC(y, mo - 1, d));
+  if (date.getUTCFullYear() !== y || date.getUTCMonth() !== mo - 1 || date.getUTCDate() !== d) return null;
+  return `${y}-${pad(mo)}-${pad(d)}`;
+}
+function addDay(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number);
+  const next = new Date(Date.UTC(y, m - 1, d + 1));
+  return `${next.getUTCFullYear()}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}`;
+}
+
+function DateField({ id, text, onText, min, max, field }: { id: string; text: string; onText: (text: string) => void; min?: string; max?: string; field: Record<string, unknown> }) {
+  const native = useRef<HTMLInputElement>(null);
+  function open() {
+    const input = native.current;
+    if (!input) return;
+    input.value = textToIso(text) || "";
+    try {input.showPicker();} catch {input.focus(); input.click();}
+  }
+  return (
+    <div className="request-date">
+      <input className="ma-input ma-input--num" id={id} inputMode="numeric" autoComplete="off" placeholder="დღ.თთ.წწწწ" maxLength={10} value={text} onChange={(e) => onText(e.target.value)} onBlur={() => {const iso = textToIso(text); if (iso) onText(isoToText(iso));}} {...field} />
+      <button type="button" className="request-date__button" aria-label="კალენდრის გახსნა" onClick={open}>
+        <Icon name="calendar" />
+      </button>
+      <input ref={native} className="request-date__native" type="date" tabIndex={-1} aria-hidden="true" min={min} max={max} onChange={(e) => {if (e.target.value) onText(isoToText(e.target.value));}} />
+    </div>
+  );
+}
+
 export function RequestFormSheet({
   open,
   existing,
@@ -32,7 +69,7 @@ export function RequestFormSheet({
   const [addressNote, setAddressNote] = useState(existing?.addressNote || "");
   const [quantity, setQuantity] = useState(existing?.quantity != null ? String(existing.quantity) : "");
   const [unit, setUnit] = useState(existing?.unit || "pcs");
-  const [neededBy, setNeededBy] = useState(existing?.neededBy || "");
+  const [neededByText, setNeededByText] = useState(isoToText(existing?.neededBy || ""));
   const [body, setBody] = useState(existing?.body || "");
   const [photo, setPhoto] = useState<File | null>(null);
   const [pending, setPending] = useState(false);
@@ -88,6 +125,7 @@ export function RequestFormSheet({
 
   const today = store?.todayDate ? (store.todayDate as () => string)() : undefined;
   const max = store?.maxNeededBy ? (store.maxNeededBy as () => string)() : undefined;
+  const tomorrow = today ? addDay(today) : undefined;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -99,7 +137,11 @@ export function RequestFormSheet({
     if (!category) errors.category = "აირჩიე კატეგორია";
     if (!city) errors.city = "აირჩიე ქალაქი";
     if (b.length < 10) errors.body = b ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე, რა გჭირდება";
-    if (!v.check(errors, ["title", "category", "city", "body"])) return;
+    const neededBy = neededByText.trim() ? textToIso(neededByText) : "";
+    if (neededBy === null) errors.neededBy = "მიუთითე თარიღი დღ.თთ.წწწწ ფორმატით";
+    else if (neededBy && neededBy !== existing?.neededBy && tomorrow && neededBy < tomorrow) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
+    else if (neededBy && neededBy !== existing?.neededBy && max && neededBy > max) errors.neededBy = `თარიღი არაუგვიანეს ${isoToText(max)}`;
+    if (!v.check(errors, ["title", "category", "city", "body", "neededBy"])) return;
     setPending(true);
     try {
       const input = {
@@ -120,7 +162,7 @@ export function RequestFormSheet({
       setTitle("");
       setCategory("");
       setQuantity("");
-      setNeededBy("");
+      setNeededByText("");
       setAddressNote("");
       setBody("");
       setCity("");
@@ -250,16 +292,8 @@ export function RequestFormSheet({
                 <label className="ma-field__label" htmlFor="neededBy">
                   საჭიროა თარიღამდე
                 </label>
-                <input
-                  className="ma-input ma-input--num"
-                  id="neededBy"
-                  type="date"
-                  lang="ka"
-                  min={today}
-                  max={max}
-                  value={neededBy}
-                  onChange={(e) => setNeededBy(e.target.value)}
-                />
+                <DateField id="neededBy" text={neededByText} onText={(text) => {setNeededByText(text); v.clear("neededBy");}} min={tomorrow} max={max} field={v.control("neededBy")} />
+                {v.message("neededBy")}
               </div>
               <div className="ma-field">
                 <label className="ma-field__label" htmlFor="addressNote">

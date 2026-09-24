@@ -18,12 +18,36 @@ const date = (value: string, withTime = true) => {
  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {timeZone: withTime ? "Asia/Tbilisi" : "UTC",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date(value)).map(p => [p.type,p.value]));
  return `${parts.day}.${parts.month}.${parts.year}${withTime ? `, ${parts.hour}:${parts.minute}` : ""}`;
 };
-function NoticeRows({ items }: { items: Notice[] }) {
+// Calendar day in Tbilisi as a UTC-midnight number, for "today / yesterday / N days ago".
+const tbilisiDay = (value: string | number) => Date.parse(new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Tbilisi", year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(value)));
+const clock = (value: string) => new Intl.DateTimeFormat("en-GB", {timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false}).format(new Date(value));
+function relative(value: string, now: number) {
+ const days = Math.round((tbilisiDay(now) - tbilisiDay(value)) / 86400000);
+ return days <= 0 ? `დღეს ${clock(value)}` : days === 1 ? `გუშინ ${clock(value)}` : days < 7 ? `${days} დღის წინ` : date(value, false);
+}
+// Same kind on the same request = one row ("3 ახალი შეთავაზება — სათაური"), newest first.
+type Group = { key: string; items: Notice[]; latest: Notice };
+function groupNotices(items: Notice[]): Group[] {
+ const groups = new Map<string, Group>();
+ for (const n of items) {
+  const key = `${n.kind}:${n.request_id}`;
+  const g = groups.get(key);
+  if (g) g.items.push(n); else groups.set(key, {key, items: [n], latest: n});
+ }
+ return [...groups.values()];
+}
+const groupLabel = (g: Group) => g.latest.kind === "offer_received" ? (g.items.length > 1 ? `${g.items.length} ახალი შეთავაზება` : "ახალი შეთავაზება") : label(g.latest.kind);
+function NoticeRows({ items, limit }: { items: Notice[]; limit?: number }) {
  const { store } = useMarketStore();
- return <>{items.map(n => <article key={n.id} className={styles.row} data-unread={!n.read_at}>
-  <Link href={`/requests/view/?id=${n.request_id}`} onClick={() => { if (!n.read_at) void store?.markNotificationRead(n.id).catch(() => toast("წაკითხვის მონიშვნა ვერ შესრულდა.")); }}>{label(n.kind)}{!n.read_at ? <span className="ma-sr-only"> — წაუკითხავი</span> : null}</Link>
-  <p>{n.title}</p>{n.kind === "request_match" ? <span className={styles.meta}>{categories[n.category || ""]} · {cities[n.city || ""]}{n.needed_by ? ` · საჭიროა ${date(n.needed_by, false)}` : ""}</span> : null}<time className={styles.meta} dateTime={n.created_at}>{date(n.created_at)}</time>
- </article>)}</>;
+ const [now] = useState(() => Date.now());
+ const groups = groupNotices(items);
+ return <>{(limit ? groups.slice(0, limit) : groups).map(g => {
+  const n = g.latest, unread = g.items.filter(x => !x.read_at);
+  return <article key={g.key} className={styles.row} data-unread={unread.length > 0}>
+   <Link href={`/requests/view/?id=${n.request_id}`} onClick={() => { for (const x of unread) void store?.markNotificationRead(x.id).catch(() => toast("წაკითხვის მონიშვნა ვერ შესრულდა.")); }}>{groupLabel(g)} — {n.title}{unread.length ? <span className="ma-sr-only"> — წაუკითხავი</span> : null}</Link>
+   {n.kind === "request_match" ? <span className={styles.meta}>{categories[n.category || ""]} · {cities[n.city || ""]}{n.needed_by ? ` · საჭიროა ${date(n.needed_by, false)}` : ""}</span> : null}<time className={styles.meta} dateTime={n.created_at}>{relative(n.created_at, now)}</time>
+  </article>;
+ })}</>;
 }
 export function NotificationBell() {
  const { store, ready } = useMarketStore();
@@ -51,12 +75,12 @@ export function NotificationBell() {
   <button ref={trigger} type="button" className={styles.save} aria-label={`შეტყობინებები${count ? `, ${count} წაუკითხავი` : ""}`} aria-expanded={open} aria-controls="notification-list" onClick={() => { setOpen(!open); if (!open) void refresh?.(); }}><Icon name="bell"/>{count ? <span className={styles.badge} aria-hidden="true">{count > 99 ? "99+" : count}</span> : null}</button>
   {open ? <div id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
    <div className={styles.head}><strong>შეტყობინებები</strong><button type="button" className="ma-btn ma-btn--ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></button></div>
-   {state?.status === "ready" ? state.notifications.items.length ? <div onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows items={state.notifications.items.slice(0,5)}/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p>}
-   <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications" onClick={() => setOpen(false)}>ყველა შეტყობინება</Link>
+   {state?.status === "ready" ? state.notifications.items.length ? <div onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows items={state.notifications.items} limit={5}/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p>}
+   <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება</Link>
   </div> : null}
  </div>;
 }
-export function EngagementPanel({ kind }: { kind: "saved" | "notifications" }) {
+export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notifications"; all?: boolean }) {
  const { store } = useMarketStore();
  const actor = store?.currentUser()?.id;
  const state = store?.engagement();
@@ -83,12 +107,13 @@ export function EngagementPanel({ kind }: { kind: "saved" | "notifications" }) {
   <h2 className="account-section__title">{kind === "saved" ? "შენახული კომპანიები" : "შეტყობინებები"}</h2>
   {state?.status !== "ready" ? <div role="status"><p>სერვისი დროებით მიუწვდომელია.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => store?.refreshEngagement()}>ხელახლა ცდა</button></div> : <>
    {kind === "notifications" && state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery}/> : null}
-   {kind === "notifications" ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending || !state.emailDelivery} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე{!state.emailDelivery ? <span className={styles.meta}> — მალე დაემატება</span> : null}</label> : null}
+   {kind === "notifications" && state.emailDelivery ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე</label> : null}
    {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</button></div> : <>
-    {!current.page?.items.length ? <p>{kind === "saved" ? "კომპანია ჯერ არ შეგინახავს. კატალოგში შენახვის ნიშნით მონიშნე საინტერესო მომწოდებლები." : "შეტყობინებები ჯერ არ გაქვს."}</p> : kind === "notifications" ? <NoticeRows items={current.page.items}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
+    {!current.page?.items.length ? <p>{kind === "saved" ? "კომპანია ჯერ არ შეგინახავს. კატალოგში შენახვის ნიშნით მონიშნე საინტერესო მომწოდებლები." : "შეტყობინებები ჯერ არ გაქვს."}</p> : kind === "notifications" ? <NoticeRows items={current.page.items} limit={all ? undefined : 5}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
      <div><h3 className="account-row__title"><Link href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p className="account-row__meta">{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
     </article>)}
-    <div className={styles.head}>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(null)}>პირველი გვერდი</button> : null}{current.page?.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(current.page!.nextCursor)}>შემდეგი გვერდი</button> : null}</div>
+    {kind === "notifications" && !all && current.page && (current.page.nextCursor || groupNotices(current.page.items).length > 5) ? <Link className="account-link" href="/account/?tab=profile&alerts=all#alerts">ყველა შეტყობინება ({current.page.items.length}{current.page.nextCursor ? "+" : ""})</Link> : null}
+    {all || kind === "saved" ? <div className={styles.head}>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(null)}>პირველი გვერდი</button> : null}{current.page?.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(current.page!.nextCursor)}>შემდეგი გვერდი</button> : null}</div> : null}
    </>}
    {kind === "saved" ? <Link href="/companies/" className="account-link">კომპანიების მოძებნა</Link> : null}
   </>}

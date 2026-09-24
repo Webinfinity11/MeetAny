@@ -263,7 +263,7 @@ export function AccountPageContent() {
   useEffect(() => {
     if (!hasMe || tab !== "profile" || !(toAlerts || window.location.hash === "#alerts")) return;
     document.getElementById("alerts")?.scrollIntoView({ block: "start" });
-  }, [hasMe, tab, toAlerts]);
+  }, [hasMe, tab, toAlerts, searchParams]);
 
   const data = useMemo(() => {
     if (!store || !me) return null;
@@ -321,7 +321,7 @@ export function AccountPageContent() {
         {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
         <ProfileForm me={me} onLogout={logout} />
         <div id="alerts" className="account-alerts">
-          <EngagementPanel kind="notifications" />
+          <EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"} />
         </div>
       </div>
     </div>
