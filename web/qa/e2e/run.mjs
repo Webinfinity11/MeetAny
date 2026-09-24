@@ -25,6 +25,10 @@ async function worker(name, run) {
     t.steps.push({ name: 'სცენარის შესრულება', status: 'FAIL', actual: safe(e.message), screenshot: await t.shot() });
   } finally {
     clearTimeout(timer);
+    await t.step('CSP დარღვევები', 'ბრაუზერში securitypolicyviolation რაოდენობა 0', async () => {
+      assert.equal(t.cspViolations.length, 0, safe(JSON.stringify(t.cspViolations)));
+      return { violations: 0 };
+    });
     // Stop further UI work before cleanup on timeout; ordinary runs keep authenticated contexts.
     if (t.stopped) await Promise.allSettled(t.contexts.map(c => c.close()));
     try { await t.cleanup(); }

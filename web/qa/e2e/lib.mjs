@@ -123,7 +123,7 @@ export class Scenario {
     validateRunId(run);
     this.branch = branch;
     this.browser = browser; this.name = name; this.run = run; this.marker = markerFor(run);
-    this.steps = []; this.contexts = []; this.accounts = new TrackedSet(() => this.persist()); this.offers = new TrackedSet(() => this.persist()); this.messages = new TrackedSet(() => this.persist()); this.conversations = new TrackedSet(() => this.persist()); this.requests = new TrackedSet(() => this.persist()); this.contacts = new TrackedSet(() => this.persist()); this.photos = new TrackedSet(() => this.persist()); this.emails = new TrackedSet(() => this.persist()); this.restores = []; this.cleanupLog = []; this.stopped = false;
+    this.steps = []; this.cspViolations = []; this.contexts = []; this.accounts = new TrackedSet(() => this.persist()); this.offers = new TrackedSet(() => this.persist()); this.messages = new TrackedSet(() => this.persist()); this.conversations = new TrackedSet(() => this.persist()); this.requests = new TrackedSet(() => this.persist()); this.contacts = new TrackedSet(() => this.persist()); this.photos = new TrackedSet(() => this.persist()); this.emails = new TrackedSet(() => this.persist()); this.restores = []; this.cleanupLog = []; this.stopped = false;
     this.journalFile = path.join(journalDir, run + '.json');
   }
   persist() {
@@ -144,6 +144,10 @@ export class Scenario {
     assert(cleaning || !this.stopped, 'სცენარის დრო ამოიწურა');
     const ctx = await this.browser.newContext({ viewport: { width: 1440, height: 1000 } });
     this.contexts.push(ctx);
+    await ctx.exposeBinding('qaCspViolation', (_source, event) => this.cspViolations.push(event));
+    await ctx.addInitScript(() => document.addEventListener('securitypolicyviolation', event => {
+      window.qaCspViolation({ directive: event.effectiveDirective, blockedURI: event.blockedURI, disposition: event.disposition });
+    }));
     const p = await ctx.newPage(); this.current = p; p.qaScenario = this;
     p.qaNetwork = [];
     p.on('requestfailed', r => p.qaNetwork.push({ path: new URL(r.url()).pathname, error: r.failure()?.errorText }));

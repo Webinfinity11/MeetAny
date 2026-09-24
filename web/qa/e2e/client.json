@@ -1,24 +1,57 @@
 {
   "name": "client",
+  "run": "1790275301743-client",
   "label": "კლიენტი — მოთხოვნა",
   "status": "FAIL",
-  "ms": 5899,
+  "ms": 66222,
   "steps": [
     {
-      "name": "სცენარის შესრულება",
+      "name": "მოთხოვნის შექმნა ფოტოთი",
       "status": "FAIL",
-      "actual": "Unexpected end of JSON input",
-      "screenshot": "qa/shots/e2e/client-1.png"
+      "expected": "ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს",
+      "actual": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('heading', { name: 'ხის მაგიდის მიწოდება [e2e:1790275301743-client]', exact: true }) to be visible\n",
+      "visibleState": "მოთხოვნები\nმიღებული შეთავაზებები\n\nხის მაგიდის მიწოდება [e2e:1790275301743-client]\n\nავეჯი და ინვენტარი · თბილისი · გამოქვეყნდა დღეს\nრა გვჭირდება\n\nგვჭირდება ხის მაგიდა, ადგილზე მიტანით და აწყობით.\n\nრაოდენობა\n2 ცალი\nვადა\nდარჩენილია 14 დღე\n\n0 შეთავაზება · კიდევ 14 დღე\n\nმოთხოვნის ავტორი\nსასტუმრო „ლეგენდა“\nნომრის ნახვა\nგაზიარება\nბმულის კოპირება\nWhatsApp\n\nშეთავაზების ტექსტს მხოლოდ შენ ხედავ.\n\nრედაქტირება\nვადის გაგრძელება (+7 დღე)\nდახურვა\nწაშლა\nდალაგება\nახალი შეთავაზებები\nმიწოდების ვადა\nპირობების შედარება\nშეთავაზებები (0)\nჯერ შეთავაზება არ მიგიღია\n\nკომპანიების პასუხები აქ გამოჩნდება. მოთხოვნა 14 დღეა აქტიური.",
+      "network": [],
+      "screenshot": "qa/shots/e2e/client-1.png",
+      "ms": 34433
+    },
+    {
+      "name": "რედაქტირება და ვადის გაგრძელება",
+      "status": "PASS",
+      "expected": "რაოდენობა 3 ხდება; ვადა იზრდება; UI ინახავს ცვლილებას",
+      "ms": 10121
+    },
+    {
+      "name": "დახურვა და ხელახლა გახსნა",
+      "status": "PASS",
+      "expected": "UI იცვლება; status closed შემდეგ open ხდება",
+      "ms": 16832
+    },
+    {
+      "name": "CSP დარღვევები",
+      "status": "PASS",
+      "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+      "evidence": {
+        "violations": 0
+      },
+      "ms": 0
     }
   ],
   "cleanup": [
     {
+      "phase": "before-delete",
       "messages": 0,
       "conversations": 0,
-      "requests": 0,
+      "requests": 1,
+      "offers": 0
+    },
+    {
+      "messages": 0,
+      "conversations": 0,
+      "requests": 1,
       "offers": 0,
       "contacts": 0,
-      "photos": 0,
+      "photos": 1,
       "remaining": 0
     }
   ]

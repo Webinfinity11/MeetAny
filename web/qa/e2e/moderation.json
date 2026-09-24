@@ -1,23 +1,44 @@
 {
   "name": "moderation",
+  "run": "1790275301743-moderation",
   "label": "ადმინი — მოთხოვნები / კონტაქტები",
   "status": "PASS",
-  "ms": 31511,
+  "ms": 27176,
   "steps": [
     {
       "name": "მოთხოვნის დამალვა და დაბრუნება",
       "status": "PASS",
       "expected": "საჯარო GET-ში ქრება და ჩნდება; UI სტატუსი იცვლება",
-      "ms": 20313
+      "ms": 17040
     },
     {
       "name": "ადმინის კონტაქტების აღრიცხვა",
       "status": "PASS",
       "expected": "ახალი contact_event-ის ID და მოქმედება UI ცხრილში ჩანს",
-      "ms": 3751
+      "ms": 2126
+    },
+    {
+      "name": "CSP დარღვევები",
+      "status": "PASS",
+      "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+      "evidence": {
+        "violations": 0
+      },
+      "ms": 0
     }
   ],
   "cleanup": [
+    {
+      "phase": "before-delete",
+      "messages": 0,
+      "conversations": 0,
+      "requests": 1,
+      "offers": 0
+    },
+    {
+      "phase": "before-delete-contacts",
+      "contacts": 1
+    },
     {
       "messages": 0,
       "conversations": 0,

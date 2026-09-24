@@ -1,20 +1,21 @@
 {
   "name": "registration",
+  "run": "1790275301743-registration",
   "label": "რეგისტრაცია / აღდგენა",
   "status": "PASS",
-  "ms": 60786,
+  "ms": 45425,
   "steps": [
     {
       "name": "რეგისტრაცია / შესვლა / გასვლა: client",
       "status": "PASS",
       "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
-      "ms": 41189
+      "ms": 29404
     },
     {
       "name": "რეგისტრაცია / შესვლა / გასვლა: company",
       "status": "PASS",
       "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
-      "ms": 42015
+      "ms": 30321
     },
     {
       "name": "პაროლის აღდგენა: ვალიდაცია, კოდი, შეცდომა",
@@ -23,7 +24,16 @@
       "evidence": {
         "limitation": "რეალური OTP-ის მიღება/წარმატებული reset ელფოსტის გარეშე არ შემოწმებულა"
       },
-      "ms": 8025
+      "ms": 5284
+    },
+    {
+      "name": "CSP დარღვევები",
+      "status": "PASS",
+      "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+      "evidence": {
+        "violations": 0
+      },
+      "ms": 0
     }
   ],
   "cleanup": [

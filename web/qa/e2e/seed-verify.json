@@ -1,7 +1,7 @@
 {
-  "status": "PASS",
-  "checkedAt": "2026-09-24T18:35:13.438Z",
+  "checkedAt": "2026-09-24T18:49:08.709Z",
   "command": "DEMO_API_ORIGIN=http://localhost:3001 node scripts/seed-demo-v2.cjs --verify",
+  "status": "PASS",
   "exitCode": 0,
   "result": {
     "accounts": 19,
@@ -9,8 +9,91 @@
     "requests": 14,
     "open": 13,
     "chosen": 1,
-    "offers": 42,
     "fresh": 4,
+    "owners": {
+      "hotel": 3,
+      "cafe": 3,
+      "shop": 2,
+      "winery": 2,
+      "dental": 2,
+      "garage": 2
+    },
+    "photos": [
+      "linen",
+      "cleaning",
+      "produce"
+    ],
+    "offers": 42,
+    "offerCounts": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "5": 2,
+      "6": 2
+    },
+    "expiryDays": [
+      2,
+      3,
+      5,
+      6,
+      8,
+      11,
+      14,
+      17,
+      19,
+      21,
+      26,
+      27,
+      30
+    ],
+    "verified": [
+      "wood",
+      "linen",
+      "web",
+      "food",
+      "port",
+      "ads"
+    ],
+    "industries": {
+      "food": 1,
+      "marketing": 1,
+      "logistics": 1,
+      "technology": 2,
+      "textiles": 2,
+      "furniture": 3,
+      "cleaning": 1,
+      "construction": 1
+    },
+    "sent": {
+      "wood": 6,
+      "linen": 4,
+      "supply": 7,
+      "cleaning": 5,
+      "build": 6,
+      "web": 1,
+      "food": 0,
+      "port": 2,
+      "oak": 5,
+      "code": 1,
+      "ads": 3,
+      "stay": 2
+    },
+    "joinedDays": {
+      "wood": 92,
+      "linen": 78,
+      "supply": 64,
+      "build": 51,
+      "cleaning": 37,
+      "oak": 30,
+      "stay": 26,
+      "web": 23,
+      "port": 19,
+      "code": 11,
+      "ads": 8,
+      "food": 4
+    },
     "checks": "passed"
   }
 }

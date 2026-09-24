@@ -1,0 +1,118 @@
+{
+  "name": "permissions",
+  "run": "1790275301743-permissions",
+  "label": "უფლებები",
+  "status": "PASS",
+  "ms": 19933,
+  "steps": [
+    {
+      "name": "უფლებები UI-ზე",
+      "status": "PASS",
+      "expected": "სხვის მოთხოვნაზე რედაქტირება/გაგრძელება/არჩევა არ ჩანს",
+      "ms": 5613
+    },
+    {
+      "name": "სხვისი update",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 400,
+        "code": "MA107"
+      },
+      "ms": 558
+    },
+    {
+      "name": "სხვისი extend",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 400,
+        "code": "MA107"
+      },
+      "ms": 510
+    },
+    {
+      "name": "სხვისი choose",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 400,
+        "code": "MA206"
+      },
+      "ms": 654
+    },
+    {
+      "name": "კომპანიის choose",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 400,
+        "code": "MA107"
+      },
+      "ms": 578
+    },
+    {
+      "name": "სხვისი საუბარი",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 400,
+        "code": "MA501"
+      },
+      "ms": 505
+    },
+    {
+      "name": "არაადმინის RPC",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 400,
+        "code": "MA003"
+      },
+      "ms": 522
+    },
+    {
+      "name": "სტუმრის admin RPC",
+      "status": "PASS",
+      "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+      "evidence": {
+        "status": 401,
+        "code": "42501"
+      },
+      "ms": 1231
+    },
+    {
+      "name": "მდგომარეობა შეტევების შემდეგ",
+      "status": "PASS",
+      "expected": "GET requests/offers უცვლელია",
+      "ms": 1044
+    },
+    {
+      "name": "CSP დარღვევები",
+      "status": "PASS",
+      "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+      "evidence": {
+        "violations": 0
+      },
+      "ms": 0
+    }
+  ],
+  "cleanup": [
+    {
+      "phase": "before-delete",
+      "messages": 0,
+      "conversations": 1,
+      "requests": 1,
+      "offers": 1
+    },
+    {
+      "messages": 0,
+      "conversations": 1,
+      "requests": 1,
+      "offers": 1,
+      "contacts": 0,
+      "photos": 0,
+      "remaining": 0
+    }
+  ]
+}

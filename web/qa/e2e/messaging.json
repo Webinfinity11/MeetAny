@@ -1,42 +1,59 @@
 {
   "name": "messaging",
+  "run": "1790275301743-messaging",
   "label": "კომპანია / კლიენტი — ჩატი",
-  "status": "FAIL",
-  "ms": 75969,
+  "status": "PASS",
+  "ms": 49546,
   "steps": [
     {
       "name": "კომპანია: შეთავაზების გაგზავნა",
       "status": "PASS",
       "expected": "UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას",
-      "ms": 21200
+      "ms": 12820
     },
     {
       "name": "ჩატი მოთხოვნიდან და წაუკითხავი ბეიჯი",
       "status": "PASS",
       "expected": "შეტყობინება RPC-შია და მიმღების ჰედერში წაუკითხავი იზრდება",
-      "ms": 18216
+      "ms": 10586
     },
     {
       "name": "კლიენტის პასუხი და კომპანიის ინბოქსი",
-      "status": "FAIL",
+      "status": "PASS",
       "expected": "?tab=messages&c=id აჩვენებს საუბარს; პასუხი ბაზაშია; კომპანიის unread იზრდება",
-      "actual": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('.ma-chat-badge').first() to be visible\n",
-      "screenshot": "qa/shots/e2e/messaging-1.png",
-      "ms": 26580
+      "ms": 18493
     },
     {
       "name": "მოთხოვნის წაშლის შემდეგ ჩატის კონტრაქტი",
-      "status": "FAIL",
-      "expected": "წაშლა მუშაობს; შენახული საუბარი ზუსტად აღირიცხება SQL cleanup-ისთვის",
-      "actual": "Unexpected end of JSON input",
-      "screenshot": "qa/shots/e2e/messaging-2.png",
-      "ms": 1807
+      "status": "PASS",
+      "expected": "წაშლის შემდეგ მოთხოვნა და მასთან დაკავშირებული საუბრები აღარ არსებობს",
+      "evidence": {
+        "requestDeleted": true,
+        "conversationsRetained": 0
+      },
+      "ms": 1810
+    },
+    {
+      "name": "CSP დარღვევები",
+      "status": "PASS",
+      "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+      "evidence": {
+        "violations": 0
+      },
+      "ms": 0
     }
   ],
   "cleanup": [
     {
-      "messages": 2,
-      "conversations": 1,
+      "phase": "before-delete",
+      "messages": 0,
+      "conversations": 0,
+      "requests": 0,
+      "offers": 0
+    },
+    {
+      "messages": 0,
+      "conversations": 0,
       "requests": 0,
       "offers": 0,
       "contacts": 0,

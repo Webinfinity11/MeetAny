@@ -16,7 +16,7 @@ export default async function(t) {
     request = (await db(p, 'requests?select=*')).find(r => r.title === title);
     assert(request?.photo_url); t.requests.add(request.id); t.photos.add(request.photo_url);
     await go(p, requestPath(request.id));
-    await p.getByRole('heading', { name: title, exact: true }).waitFor();
+    await p.locator('main').getByText(title, { exact: true }).waitFor();
     const img = p.locator(`main img[src="${request.photo_url}"]`); await img.waitFor();
     await until(() => img.evaluate(e => e.complete && e.naturalWidth > 0), 'ატვირთული ფოტო არ ჩაიტვირთა');
   }, p);

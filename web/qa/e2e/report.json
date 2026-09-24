@@ -1,37 +1,33 @@
 {
-  "status": "PRELIMINARY_MIXED_API",
-  "reason": "API files changed during the run; waiting for a stable revision",
-  "run": "1790273772670",
+  "startedAt": "2026-09-24T18:41:41.743Z",
   "origin": "http://localhost:3001",
-  "startedAt": "2026-09-24T18:16:12.670Z",
-  "stoppedAt": "2026-09-24T18:23:21.039Z",
-  "executedScenarioMs": 352651,
+  "run": "1790275301743",
+  "ms": 411545,
   "results": [
     {
       "name": "guest",
+      "run": "1790275301743-guest",
       "label": "სტუმარი",
-      "status": "FAIL",
-      "ms": 54053,
+      "status": "PASS",
+      "ms": 17799,
       "steps": [
         {
           "name": "მოთხოვნები: სია და დეტალი",
           "status": "PASS",
           "expected": "სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა",
-          "ms": 16864
+          "ms": 6316
         },
         {
           "name": "მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება",
-          "status": "FAIL",
+          "status": "PASS",
           "expected": "URL და ხილული შედეგები შეესაბამება მონაცემებს",
-          "actual": "locator.click: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'ახალი', exact: true })\n    - locator resolved to <a href=\"/requests/?city=batumi&tab=new\">ახალი</a>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p class=\"search-suggestions__heading\">სწრაფი ძიება</p> from <header class=\"catalog-header\">…</header> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p class=\"search-suggestions__heading\">სწრაფი ძიება</p> from <header class=\"catalog-header\">…</header> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <p class=\"search-suggestions__heading\">სწრაფი ძიება</p> from <header class=\"catalog-header\">…</header> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
-          "screenshot": "qa/shots/e2e/guest-1.png",
-          "ms": 14372
+          "ms": 819
         },
         {
           "name": "კომპანიები: ძიება, ფილტრი და დალაგება",
           "status": "PASS",
           "expected": "URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია",
-          "ms": 2097
+          "ms": 438
         },
         {
           "name": "კომპანიის დეტალი, ნომერი, tel:, მიმართულება, contact_events",
@@ -39,15 +35,28 @@
           "expected": "გამოჩენა/დარეკვა აღირიცხება; Maps სწორი ბმულია",
           "evidence": {
             "contactEvents": [
-              "bede8933-9f2c-4e33-a8de-20372ed43c94",
-              "5057065d-0cfe-471a-b7c6-7eb5503ffef6"
+              "f7c76347-7123-4e7b-8df2-c3e4532f9af2",
+              "84ca0a61-ed0b-465c-91cc-c88da1fa126b"
             ],
             "maps": "https://www.google.com/maps/dir/?api=1&destination=41.7846,44.7712"
           },
-          "ms": 5771
+          "ms": 3018
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
+        {
+          "phase": "before-delete-contacts",
+          "contacts": 2
+        },
         {
           "messages": 0,
           "conversations": 0,
@@ -61,21 +70,22 @@
     },
     {
       "name": "registration",
+      "run": "1790275301743-registration",
       "label": "რეგისტრაცია / აღდგენა",
       "status": "PASS",
-      "ms": 60786,
+      "ms": 45661,
       "steps": [
         {
           "name": "რეგისტრაცია / შესვლა / გასვლა: client",
           "status": "PASS",
           "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
-          "ms": 41189
+          "ms": 29404
         },
         {
           "name": "რეგისტრაცია / შესვლა / გასვლა: company",
           "status": "PASS",
           "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
-          "ms": 42015
+          "ms": 30321
         },
         {
           "name": "პაროლის აღდგენა: ვალიდაცია, კოდი, შეცდომა",
@@ -84,7 +94,16 @@
           "evidence": {
             "limitation": "რეალური OTP-ის მიღება/წარმატებული reset ელფოსტის გარეშე არ შემოწმებულა"
           },
-          "ms": 8025
+          "ms": 5284
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
@@ -105,31 +124,41 @@
     },
     {
       "name": "company",
+      "run": "1790275301743-company",
       "label": "კომპანია — პროფილი",
       "status": "FAIL",
-      "ms": 38077,
+      "ms": 15131,
       "steps": [
         {
           "name": "პროფილის მისამართი და პროდუქტები",
-          "status": "FAIL",
+          "status": "PASS",
           "expected": "შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება",
-          "actual": "locator.fill: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('#address')\n",
-          "screenshot": "qa/shots/e2e/company-1.png",
-          "ms": 25205
+          "ms": 9156
         },
         {
           "name": "კოორდინატების რედაქტირების UI",
           "status": "FAIL",
           "expected": "პროფილის ფორმაში განედი და გრძედი რედაქტირებადია",
           "actual": "პროფილში კოორდინატების ველები არ არსებობს; API p_lat/p_lng-ს იღებს",
-          "screenshot": "qa/shots/e2e/company-2.png",
-          "ms": 116
+          "visibleState": "ჩემი ანგარიში\nშეთავაზებები (6)\nშენახული (0)\nმიმოწერები\nპროფილი\nკომპანიის პროფილი\n\nეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში.\n\nსახელი და გვარი *\nკომპანიის დასახელება *\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\nმიმართულება *\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nკომპანიის შესახებ · მაქს. 1000 სიმბოლო\nრას ვთავაზობთ · თითო ხაზზე ერთი, მაქს. 8\nრას ვეძებთ · თითო ხაზზე ერთი, მაქს. 8\nრომელ ქალაქებს ემსახურებით?\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nმისამართი არასავალდებულო\n\nჩანს პროფილზე „მიმართულება“ ბმულით\n\nტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.\n\nშენახვა\n\nცვლილებები შენახულია.\n\nსაჯარო პროფილი\nგასვლა\nშეტყობინებე",
+          "network": [],
+          "screenshot": "qa/shots/e2e/company-1.png",
+          "ms": 82
         },
         {
           "name": "კოორდინატების API და პროფილის დაბრუნება",
           "status": "PASS",
           "expected": "API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება",
-          "ms": 7362
+          "ms": 2150
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
@@ -156,65 +185,57 @@
     },
     {
       "name": "messaging",
+      "run": "1790275301743-messaging",
       "label": "კომპანია / კლიენტი — ჩატი",
-      "status": "FAIL",
-      "ms": 75969,
+      "status": "PASS",
+      "ms": 49773,
       "steps": [
         {
           "name": "კომპანია: შეთავაზების გაგზავნა",
           "status": "PASS",
           "expected": "UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას",
-          "ms": 21200
+          "ms": 12820
         },
         {
           "name": "ჩატი მოთხოვნიდან და წაუკითხავი ბეიჯი",
           "status": "PASS",
           "expected": "შეტყობინება RPC-შია და მიმღების ჰედერში წაუკითხავი იზრდება",
-          "ms": 18216
+          "ms": 10586
         },
         {
           "name": "კლიენტის პასუხი და კომპანიის ინბოქსი",
-          "status": "FAIL",
+          "status": "PASS",
           "expected": "?tab=messages&c=id აჩვენებს საუბარს; პასუხი ბაზაშია; კომპანიის unread იზრდება",
-          "actual": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n  - waiting for locator('.ma-chat-badge').first() to be visible\n",
-          "screenshot": "qa/shots/e2e/messaging-1.png",
-          "ms": 26580
+          "ms": 18493
         },
         {
           "name": "მოთხოვნის წაშლის შემდეგ ჩატის კონტრაქტი",
-          "status": "FAIL",
-          "expected": "წაშლა მუშაობს; შენახული საუბარი ზუსტად აღირიცხება SQL cleanup-ისთვის",
-          "actual": "Unexpected end of JSON input",
-          "screenshot": "qa/shots/e2e/messaging-2.png",
-          "ms": 1807
+          "status": "PASS",
+          "expected": "წაშლის შემდეგ მოთხოვნა და მასთან დაკავშირებული საუბრები აღარ არსებობს",
+          "evidence": {
+            "requestDeleted": true,
+            "conversationsRetained": 0
+          },
+          "ms": 1810
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
         {
-          "messages": 2,
-          "conversations": 1,
+          "phase": "before-delete",
+          "messages": 0,
+          "conversations": 0,
           "requests": 0,
-          "offers": 0,
-          "contacts": 0,
-          "photos": 0,
-          "remaining": 0
-        }
-      ]
-    },
-    {
-      "name": "client",
-      "label": "კლიენტი — მოთხოვნა",
-      "status": "FAIL",
-      "ms": 5899,
-      "steps": [
-        {
-          "name": "სცენარის შესრულება",
-          "status": "FAIL",
-          "actual": "Unexpected end of JSON input",
-          "screenshot": "qa/shots/e2e/client-1.png"
-        }
-      ],
-      "cleanup": [
+          "offers": 0
+        },
         {
           "messages": 0,
           "conversations": 0,
@@ -227,25 +248,109 @@
       ]
     },
     {
+      "name": "client",
+      "run": "1790275301743-client",
+      "label": "კლიენტი — მოთხოვნა",
+      "status": "FAIL",
+      "ms": 66454,
+      "steps": [
+        {
+          "name": "მოთხოვნის შექმნა ფოტოთი",
+          "status": "FAIL",
+          "expected": "ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს",
+          "actual": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('heading', { name: 'ხის მაგიდის მიწოდება [e2e:1790275301743-client]', exact: true }) to be visible\n",
+          "visibleState": "მოთხოვნები\nმიღებული შეთავაზებები\n\nხის მაგიდის მიწოდება [e2e:1790275301743-client]\n\nავეჯი და ინვენტარი · თბილისი · გამოქვეყნდა დღეს\nრა გვჭირდება\n\nგვჭირდება ხის მაგიდა, ადგილზე მიტანით და აწყობით.\n\nრაოდენობა\n2 ცალი\nვადა\nდარჩენილია 14 დღე\n\n0 შეთავაზება · კიდევ 14 დღე\n\nმოთხოვნის ავტორი\nსასტუმრო „ლეგენდა“\nნომრის ნახვა\nგაზიარება\nბმულის კოპირება\nWhatsApp\n\nშეთავაზების ტექსტს მხოლოდ შენ ხედავ.\n\nრედაქტირება\nვადის გაგრძელება (+7 დღე)\nდახურვა\nწაშლა\nდალაგება\nახალი შეთავაზებები\nმიწოდების ვადა\nპირობების შედარება\nშეთავაზებები (0)\nჯერ შეთავაზება არ მიგიღია\n\nკომპანიების პასუხები აქ გამოჩნდება. მოთხოვნა 14 დღეა აქტიური.",
+          "network": [],
+          "screenshot": "qa/shots/e2e/client-1.png",
+          "ms": 34433
+        },
+        {
+          "name": "რედაქტირება და ვადის გაგრძელება",
+          "status": "PASS",
+          "expected": "რაოდენობა 3 ხდება; ვადა იზრდება; UI ინახავს ცვლილებას",
+          "ms": 10121
+        },
+        {
+          "name": "დახურვა და ხელახლა გახსნა",
+          "status": "PASS",
+          "expected": "UI იცვლება; status closed შემდეგ open ხდება",
+          "ms": 16832
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
+        }
+      ],
+      "cleanup": [
+        {
+          "phase": "before-delete",
+          "messages": 0,
+          "conversations": 0,
+          "requests": 1,
+          "offers": 0
+        },
+        {
+          "messages": 0,
+          "conversations": 0,
+          "requests": 1,
+          "offers": 0,
+          "contacts": 0,
+          "photos": 1,
+          "remaining": 0
+        }
+      ]
+    },
+    {
       "name": "choose",
+      "run": "1790275301743-choose",
       "label": "კლიენტი — შეთავაზების არჩევა",
-      "status": "PASS",
-      "ms": 41184,
+      "status": "FAIL",
+      "ms": 36154,
       "steps": [
         {
           "name": "კომპანია: შეთავაზების გაგზავნა",
           "status": "PASS",
           "expected": "UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას",
-          "ms": 15194
+          "ms": 12982
         },
         {
           "name": "შეთავაზების არჩევა კომპანიის ნაბიჯების შემდეგ",
-          "status": "PASS",
+          "status": "FAIL",
           "expected": "chosen_offer_id და offers.status შეესაბამება არჩეულ შეთავაზებას",
-          "ms": 17888
+          "actual": "locator.click: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'შეთავაზების არჩევა', exact: true })\n    - waiting for \"http://localhost:3001/requests/view/?id=c8066256-095e-4827-8e7d-20b8ba93b21a\" navigation to finish...\n    - navigated to \"http://localhost:3001/requests/view/?id=c8066256-095e-4827-8e7d-20b8ba93b21a\"\n",
+          "visibleState": "მოთხოვნა იტვირთება…",
+          "network": [
+            {
+              "path": "/requests/view/",
+              "error": "net::ERR_ABORTED"
+            }
+          ],
+          "screenshot": "qa/shots/e2e/choose-1.png",
+          "ms": 15040
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
+        {
+          "phase": "before-delete",
+          "messages": 0,
+          "conversations": 0,
+          "requests": 1,
+          "offers": 1
+        },
         {
           "messages": 0,
           "conversations": 0,
@@ -259,25 +364,35 @@
     },
     {
       "name": "admin",
+      "run": "1790275301743-admin",
       "label": "ადმინი — მომხმარებლები",
       "status": "FAIL",
-      "ms": 45172,
+      "ms": 37121,
       "steps": [
         {
           "name": "მომხმარებლების სია და T4.4 რაოდენობა",
           "status": "FAIL",
           "expected": "UI-ის მთვლელი ემთხვევა admin_list_users-სა და რეალურ პროფილებს",
-          "actual": "T4.4: {\"ui\":28,\"api\":28,\"list\":30,\"total\":30,\"nonadmin\":28,\"active\":20}\n\n28 !== 30\n",
-          "visibleState": "პლატფორმის მართვა\n28\nმომხმარებელი\n17\nკომპანია\n6\nდადასტურებული\n13\nღია მოთხოვნა\n42\nშეთავაზება\n1\nარჩეული შეთავაზება\nმოთხოვნები\nმომხმარებლები\nმოქმედებების ჟურნალი\nკონტაქტები\nძიება\nროლი\nყველა როლი\nკლიენტი\nკომპანია\nადმინისტრატორი\nსტატუსი\nყველა სტატუსი\nაქტიური\nდაბლოკილი\nდადასტურებული კომპანია\n\nნაჩვენებია 30 / 30 ჩატვირთული ჩანაწერი.\n\nძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი.\n\nმომხმარებელი — მოდერაცია\nმომხმარებელი\tროლი\tკონტაქტი\tსტატუსი\tმოქმედება\nმიწოდების ჯგუფი [e2e 1790273772670-registration]\nნინო ბერიძე · თბილისი\n\tკლიენტი\t+995 573 772 670\ne2e+1790273772670-registration-client@meetany.local\n\tდაბლოკილი\t\nგანბლოკვა\n\nმიწოდების ჯგუფი [e2e 1790273772670-registration]\nნინო ბერიძე · თბილისი\n\tკომპანია\nავეჯი და ინვენტარი\n\t+995 573 772 671\ne2e+1790273772670-registration-company@meetany.local\n\tდაბლოკილი\t\nდადასტურება\nგანბლოკვა\n\nმიწოდების ჯგუფი [e2e 1790273123900-registration]\nნინო ბერიძე · თბილისი\n\tკომპანია\nავეჯი და ინვენტარი\n\t+995 573 123 901\ne2e+17902731",
+          "actual": "T4.4: {\"ui\":30,\"api\":30,\"list\":32,\"total\":32,\"nonadmin\":30,\"active\":20}\n\n30 !== 32\n",
+          "visibleState": "პლატფორმის მართვა\n30\nმომხმარებელი\n18\nკომპანია\n6\nდადასტურებული\n14\nღია მოთხოვნა\n42\nშეთავაზება\n1\nარჩეული შეთავაზება\nმოთხოვნები\nმომხმარებლები\nმოქმედებების ჟურნალი\nკონტაქტები\nძიება\nროლი\nყველა როლი\nკლიენტი\nკომპანია\nადმინისტრატორი\nსტატუსი\nყველა სტატუსი\nაქტიური\nდაბლოკილი\nდადასტურებული კომპანია\n\nამ გვერდზე 25 ჩანაწერია · ფილტრებით სულ 32.\n\nმომხმარებელი — მოდერაცია\nმომხმარებელი\tროლი\tკონტაქტი\tსტატუსი\tმოქმედება\nმიწოდების ჯგუფი [e2e:1790275301743-registration]\nნინო ბერიძე · თბილისი\n\tკომპანია\nავეჯი და ინვენტარი\n\t+995 575 301 744\ne2e+1790275301743-registration-company@meetany.local\n\tდაბლოკილი\t\nდადასტურება\nგანბლოკვა\n\nმიწოდების ჯგუფი [e2e:1790275301743-registration]\nნინო ბერიძე · თბილისი\n\tკლიენტი\t+995 575 301 743\ne2e+1790275301743-registration-client@meetany.local\n\tდაბლოკილი\t\nგანბლოკვა\n\nმიწოდების ჯგუფი [e2e 1790273772670-registration]\nნინო ბერიძე · თბილისი\n\tკლიენტი\t+995 573 772 670\ne2e+1790273772670-registration-client@meetany.local\n\tდაბლოკილი\t\nგანბლოკვა\n\nმიწოდების ჯგუფი [e2e 1790273772670-registration",
           "network": [],
           "screenshot": "qa/shots/e2e/admin-1.png",
-          "ms": 7870
+          "ms": 7090
         },
         {
           "name": "ვერიფიკაცია/ბლოკი და დაბრუნება",
           "status": "PASS",
           "expected": "UI ქმედებები იცვლება; RPC და საჯარო GET სტატუსს ადასტურებს",
-          "ms": 30781
+          "ms": 25152
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
@@ -302,34 +417,55 @@
         }
       ],
       "counts": {
-        "ui": 28,
-        "api": 28,
-        "list": 30,
-        "total": 30,
-        "nonadmin": 28,
+        "ui": 30,
+        "api": 30,
+        "list": 32,
+        "total": 32,
+        "nonadmin": 30,
         "active": 20
       }
     },
     {
       "name": "moderation",
+      "run": "1790275301743-moderation",
       "label": "ადმინი — მოთხოვნები / კონტაქტები",
       "status": "PASS",
-      "ms": 31511,
+      "ms": 27424,
       "steps": [
         {
           "name": "მოთხოვნის დამალვა და დაბრუნება",
           "status": "PASS",
           "expected": "საჯარო GET-ში ქრება და ჩნდება; UI სტატუსი იცვლება",
-          "ms": 20313
+          "ms": 17040
         },
         {
           "name": "ადმინის კონტაქტების აღრიცხვა",
           "status": "PASS",
           "expected": "ახალი contact_event-ის ID და მოქმედება UI ცხრილში ჩანს",
-          "ms": 3751
+          "ms": 2126
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
         }
       ],
       "cleanup": [
+        {
+          "phase": "before-delete",
+          "messages": 0,
+          "conversations": 0,
+          "requests": 1,
+          "offers": 0
+        },
+        {
+          "phase": "before-delete-contacts",
+          "contacts": 1
+        },
         {
           "messages": 0,
           "conversations": 0,
@@ -343,70 +479,174 @@
     },
     {
       "name": "permissions",
-      "status": "NOT RUN",
-      "steps": [],
-      "cleanup": []
+      "run": "1790275301743-permissions",
+      "label": "უფლებები",
+      "status": "PASS",
+      "ms": 20132,
+      "steps": [
+        {
+          "name": "უფლებები UI-ზე",
+          "status": "PASS",
+          "expected": "სხვის მოთხოვნაზე რედაქტირება/გაგრძელება/არჩევა არ ჩანს",
+          "ms": 5613
+        },
+        {
+          "name": "სხვისი update",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 400,
+            "code": "MA107"
+          },
+          "ms": 558
+        },
+        {
+          "name": "სხვისი extend",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 400,
+            "code": "MA107"
+          },
+          "ms": 510
+        },
+        {
+          "name": "სხვისი choose",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 400,
+            "code": "MA206"
+          },
+          "ms": 654
+        },
+        {
+          "name": "კომპანიის choose",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 400,
+            "code": "MA107"
+          },
+          "ms": 578
+        },
+        {
+          "name": "სხვისი საუბარი",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 400,
+            "code": "MA501"
+          },
+          "ms": 505
+        },
+        {
+          "name": "არაადმინის RPC",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 400,
+            "code": "MA003"
+          },
+          "ms": 522
+        },
+        {
+          "name": "სტუმრის admin RPC",
+          "status": "PASS",
+          "expected": "401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია",
+          "evidence": {
+            "status": 401,
+            "code": "42501"
+          },
+          "ms": 1231
+        },
+        {
+          "name": "მდგომარეობა შეტევების შემდეგ",
+          "status": "PASS",
+          "expected": "GET requests/offers უცვლელია",
+          "ms": 1044
+        },
+        {
+          "name": "CSP დარღვევები",
+          "status": "PASS",
+          "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
+          "evidence": {
+            "violations": 0
+          },
+          "ms": 0
+        }
+      ],
+      "cleanup": [
+        {
+          "phase": "before-delete",
+          "messages": 0,
+          "conversations": 1,
+          "requests": 1,
+          "offers": 1
+        },
+        {
+          "messages": 0,
+          "conversations": 1,
+          "requests": 1,
+          "offers": 1,
+          "contacts": 0,
+          "photos": 0,
+          "remaining": 0
+        }
+      ]
     }
   ],
-  "cleanup": {
-    "requests": "0",
-    "offers": "0",
-    "messages": "0",
-    "active_accounts": "0"
+  "suiteCleanup": {
+    "code": 0,
+    "output": "{\n  \"branch\": \"auth-probe\",\n  \"results\": [\n    {\n      \"run\": \"1790275301743-admin\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-choose\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-client\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-company\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-guest\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-messaging\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-moderation\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-permissions\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790275301743-registration\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    }\n  ]\n}\n",
+    "killed": false
   },
-  "demoRowsUnchanged": false,
+  "demoRowsUnchanged": true,
   "seedVerify": {
     "status": "PASS",
-    "checkedAt": "2026-09-24T18:35:13.438Z",
-    "command": "DEMO_API_ORIGIN=http://localhost:3001 node scripts/seed-demo-v2.cjs --verify",
-    "exitCode": 0,
-    "result": {
-      "accounts": 19,
-      "companies": 12,
-      "requests": 14,
-      "open": 13,
-      "chosen": 1,
-      "offers": 42,
-      "fresh": 4,
-      "checks": "passed"
-    }
+    "code": 0,
+    "output": "{\"accounts\":19,\"companies\":12,\"requests\":14,\"open\":13,\"chosen\":1,\"fresh\":4,\"owners\":{\"hotel\":3,\"cafe\":3,\"shop\":2,\"winery\":2,\"dental\":2,\"garage\":2},\"photos\":[\"linen\",\"cleaning\",\"produce\"],\"offers\":42,\"offerCounts\":{\"0\":2,\"1\":2,\"2\":2,\"3\":2,\"4\":2,\"5\":2,\"6\":2},\"expiryDays\":[2,3,5,6,8,11,14,17,19,21,26,27,30],\"verified\":[\"wood\",\"linen\",\"web\",\"food\",\"port\",\"ads\"],\"industries\":{\"food\":1,\"marketing\":1,\"logistics\":1,\"technology\":2,\"textiles\":2,\"furniture\":3,\"cleaning\":1,\"construction\":1},\"sent\":{\"wood\":6,\"linen\":4,\"supply\":7,\"cleaning\":5,\"build\":6,\"web\":1,\"food\":0,\"port\":2,\"oak\":5,\"code\":1,\"ads\":3,\"stay\":2},\"joinedDays\":{\"wood\":92,\"linen\":78,\"supply\":64,\"build\":51,\"cleaning\":37,\"oak\":30,\"stay\":26,\"web\":23,\"port\":19,\"code\":11,\"ads\":8,\"food\":4},\"checks\":\"passed\"}\n",
+    "killed": false
   },
-  "changedAppFiles": [
-    "app/lib/db-handler.js",
-    "app/lib/db.js",
-    "app/lib/public-snapshot.js"
+  "contractFindings": [
+    "წინასწარ API-ზე delete_request საუბარს request_id=NULL-ით ტოვებდა. ახალი მიგრაციის შედეგი მოწმდება messaging ქვეკეისში; ცალკე SQL cleanup ორივე მდგომარეობას ამუშავებს.",
+    "contact_events GET არ არის გამოქვეყნებული; შემოწმება იყენებს admin_contact_events RPC-სა და ადმინის UI-ს."
   ],
-  "notes": [
-    "სრული ხელახალი გაშვება API-ის სტაბილიზაციამდე არ შესრულებულა.",
-    "გამშვებში შესწორებულია ძიების Escape და 204/ცარიელი RPC პასუხის დამუშავება.",
-    "ქვეკეისები იყენებს [e2e:<runId>] მარკერს და დისკზე ID ჟურნალს; ხელით cleanup ხელმისაწვდომია qa/e2e/cleanup.mjs-ში.",
-    "კოორდინატების UI ველები წინასწარ ვერსიაში არ არის; API p_lat/p_lng-ს იღებს."
-  ],
-  "baselineRowsUnchanged": true,
-  "concurrentAdditions": [
+  "status": "FAIL",
+  "environment": {
+    "api": "stable commits 09283fe, bb0fff2, 86a7cec, 3262bdd",
+    "concurrentUiChanges": [
+      "web/app/components/market/AccountPageContent.tsx",
+      "web/app/components/market/ChatPopup.tsx",
+      "web/app/components/market/CompaniesPageContent.tsx",
+      "web/app/components/market/CompanyAvatar.tsx",
+      "web/app/components/market/CompanyListingCard.tsx",
+      "web/app/components/market/CompanyProfilePageContent.tsx",
+      "web/app/components/market/Inbox.tsx",
+      "web/app/components/market/OfferCard.tsx",
+      "web/app/components/market/PhotoField.tsx",
+      "web/app/components/market/RequestViewPageContent.tsx",
+      "web/app/styles/marketplace.css"
+    ],
+    "limitation": "სრული გაშვებისას სხვა ნაკადი UI-ს ცვლიდა; არჩევის გვერდის skeleton/ERR_ABORTED მიზეზი დაუდგენელია."
+  },
+  "runnerFindings": [
     {
-      "kind": "offers",
-      "id": "819b7c73-6c38-4a64-9c4a-34f1dfa30bf5"
-    },
-    {
-      "kind": "requests",
-      "id": "76a18310-8e49-475f-9a55-2d5c0627c64e",
-      "title": "AUDIT test request"
-    },
-    {
-      "kind": "requests",
-      "id": "ea41fbdf-0a26-41ee-aabd-17b01ce7aaea",
-      "title": "AUDIT test request"
+      "scenario": "client",
+      "cause": "ტესტი სათაურს heading-ად ეძებდა, UI-ზე ის ტექსტია.",
+      "fix": "main getByText(title, exact:true)",
+      "retested": false
     }
   ],
-  "runnerValidation": {
+  "csp": {
+    "violations": 0,
+    "scenariosChecked": 9
+  },
+  "validation": {
     "syntax": "PASS",
     "unitTests": {
       "passed": 5,
       "failed": 0
-    },
-    "cleanupDryRun": "PASS",
-    "cleanupEmptyRun": "PASS",
-    "cleanupReplay": "PASS"
+    }
   }
 }
