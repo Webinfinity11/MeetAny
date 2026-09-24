@@ -13,7 +13,6 @@ import { toast } from "../Toasts";
 import { RequestFormSheet } from "./RequestFormSheet";
 import { useRouter } from "next/navigation";
 import { PageBand } from "./PageBand";
-import { SectionHead } from "./SectionHead";
 import { OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
@@ -240,7 +239,10 @@ export function RequestViewPageContent() {
           </div> : null}
           <div className="ma-cluster"><label>დალაგება <select className="ma-select" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">მიწოდების ვადა</option></select></label><button className="ma-btn ma-btn--secondary" onClick={() => setCompare(!compare)}>{compare ? "სიის ნახვა" : "პირობების შედარება"}</button></div>
           {compare ? <div className="ma-table-wrap"><table className="ma-table"><caption>შეთავაზებების შედარება</caption><thead><tr><th>კომპანია</th><th>მიწოდება</th><th>პირობები</th></tr></thead><tbody>{orderedOffers.map(o => <tr key={o.id}><td data-label="კომპანია">{o.companyName}</td><td data-label="მიწოდება">{o.deliveryDays != null ? `${o.deliveryDays} დღე` : "დასაზუსტებელია"}</td><td data-label="პირობები">{o.body}</td></tr>)}</tbody></table></div> : null}
-          <SectionHead eyebrow="მიღებული პასუხები" title="შეადარე პირობები" />
+          <h2 className="request-offers__title">
+            შეთავაზებები ({offers.length})
+            {offers.some((o) => o.isNew) ? <span className="request-offers__new">{offers.filter((o) => o.isNew).length} ახალი</span> : null}
+          </h2>
           {offers.length === 0 ? (
             <div className="ma-empty">
               <span className="ma-empty__icon">

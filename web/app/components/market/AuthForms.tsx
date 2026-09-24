@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
+import { PageBand } from "./PageBand";
 
 type Mode = "login" | "register" | "reset";
 
@@ -34,7 +35,6 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
 
   return (
     <form className="ma-form" onSubmit={submit}>
-      <button type="button" className="ma-btn ma-btn--ghost" onClick={onReset}>პაროლი დაგავიწყდა?</button>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="login-email">
           ელფოსტა
@@ -46,6 +46,7 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
           პაროლი
         </label>
         <input className="ma-input" id="login-password" autoComplete="current-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button type="button" className="auth-link auth-link--end" onClick={onReset}>პაროლი დაგავიწყდა?</button>
       </div>
       {error ? (
         <p className="ma-field__error" role="alert">
@@ -55,9 +56,9 @@ function LoginForm({ onSwitch, onReset }: { onSwitch: () => void; onReset: () =>
       <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
         {pending ? "შესვლა…" : "შესვლა"}
       </button>
-      <button type="button" className="ma-link" onClick={onSwitch}>
-        არ გაქვს ანგარიში? დაარეგისტრირდი
-      </button>
+      <p className="auth-switch">
+        არ გაქვს ანგარიში? <button type="button" className="auth-link" onClick={onSwitch}>დარეგისტრირდი</button>
+      </p>
     </form>
   );
 }
@@ -119,7 +120,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-company">
-            კომპანია / ობიექტი{role === "client" ? " · არასავალდებულო" : " *"}
+            კომპანია / ობიექტი{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
           </label>
           <input className="ma-input" id="reg-company" required={role === "company"} maxLength={100} value={company} onChange={(e) => setCompany(e.target.value)} />
         </div>
@@ -201,21 +202,25 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
     window.addEventListener("meetany:auth", update);
     return () => window.removeEventListener("meetany:auth", update);
   }, []);
-  if (store?.pendingEmail()) return <RecoveryForm verification onDone={() => refresh(n => n + 1)} />;
-  if (store?.needsProfile()) return <section className="ma-panel"><h2>პროფილის დასრულება</h2><RegisterForm initialRole={initialRole}/></section>;
-  return (
-    <section className="ma-panel">
-      <nav className="ma-tabs" aria-label="შესვლა ან რეგისტრაცია">
-        <button type="button" className="ma-tab" aria-current={mode === "login" ? "page" : undefined} onClick={() => setMode("login")}>
-          შესვლა
-        </button>
-        <button type="button" className="ma-tab" aria-current={mode === "register" ? "page" : undefined} onClick={() => setMode("register")}>
-          რეგისტრაცია
-        </button>
-      </nav>
-      {mode === "reset" ? <RecoveryForm onDone={() => setMode("login")} /> : mode === "login" ? <LoginForm onSwitch={() => setMode("register")} onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
-    </section>
+  const page = (title: string, body: React.ReactNode) => (
+    <div className="ma-page auth-page">
+      <PageBand title={title} />
+      <section className="auth-form">{body}</section>
+    </div>
   );
+  if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />);
+  if (store?.needsProfile()) return page("პროფილის დასრულება", <RegisterForm initialRole={initialRole}/>);
+  return page(mode === "register" ? "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : "შესვლა", <>
+    <nav className="ma-tabs" aria-label="შესვლა ან რეგისტრაცია">
+      <button type="button" className="ma-tab" aria-current={mode === "login" ? "page" : undefined} onClick={() => setMode("login")}>
+        შესვლა
+      </button>
+      <button type="button" className="ma-tab" aria-current={mode === "register" ? "page" : undefined} onClick={() => setMode("register")}>
+        რეგისტრაცია
+      </button>
+    </nav>
+    {mode === "reset" ? <RecoveryForm onDone={() => setMode("login")} /> : mode === "login" ? <LoginForm onSwitch={() => setMode("register")} onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
+  </>);
 }
 
 function RecoveryForm({ verification = false, onDone }: {verification?: boolean; onDone: () => void}) {
@@ -238,20 +243,19 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
     finally {setPending(false);}
   }
   return <form className="ma-form" onSubmit={submit}>
-    <h2>{verification ? "ელფოსტის დადასტურება" : "პაროლის აღდგენა"}</h2>
-    {!sent ? <label className="ma-field">ელფოსტა<input className="ma-input" type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label> : <>
-      <p>შეამოწმე ელფოსტა და შეიყვანე მიღებული კოდი.</p>
-      <label className="ma-field">კოდი<input className="ma-input" required autoComplete="one-time-code" value={code} onChange={e => setCode(e.target.value)}/></label>
-      {!verification ? <label className="ma-field">ახალი პაროლი<input className="ma-input" type="password" minLength={8} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)}/></label> : null}
-      <button type="button" className="ma-btn ma-btn--ghost" disabled={pending} onClick={async () => {
+    {!sent ? <label className="ma-field"><span className="ma-field__label">ელფოსტა</span><input className="ma-input" type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label> : <>
+      <p className="auth-hint">შეამოწმე ელფოსტა და შეიყვანე მიღებული კოდი.</p>
+      <label className="ma-field"><span className="ma-field__label">კოდი</span><input className="ma-input" required autoComplete="one-time-code" value={code} onChange={e => setCode(e.target.value)}/></label>
+      {!verification ? <label className="ma-field"><span className="ma-field__label">ახალი პაროლი</span><input className="ma-input" type="password" minLength={8} autoComplete="new-password" required value={password} onChange={e => setPassword(e.target.value)}/></label> : null}
+      <button type="button" className="auth-link" disabled={pending} onClick={async () => {
         setPending(true); setError("");
         try {if (verification) await store?.resendCode(); else await store?.requestPasswordReset(email); setNotice("კოდი ხელახლა გაიგზავნა.");}
         catch(err) {setError((err as {userMessage?: string}).userMessage || "ვერ გაიგზავნა.");}
         finally {setPending(false);}
       }}>კოდის ხელახლა გაგზავნა</button>
     </>}
-    {notice ? <p role="status">{notice}</p> : null}{error ? <p className="ma-field__error" role="alert">{error}</p> : null}
-    <button className="ma-btn ma-btn--primary" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</button>
-    {!verification ? <button type="button" className="ma-btn ma-btn--ghost" onClick={onDone}>შესვლაზე დაბრუნება</button> : null}
+    {notice ? <p className="auth-hint" role="status">{notice}</p> : null}{error ? <p className="ma-field__error" role="alert">{error}</p> : null}
+    <button className="ma-btn ma-btn--primary ma-btn--block" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</button>
+    {!verification ? <button type="button" className="auth-link" onClick={onDone}>შესვლაზე დაბრუნება</button> : null}
   </form>;
 }

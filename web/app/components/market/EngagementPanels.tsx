@@ -80,17 +80,17 @@ export function EngagementPanel({ kind }: { kind: "saved" | "notifications" }) {
   finally {setPending(false);}
  }
  return <section className={styles.stack}>
-  <h1 className="ma-h2">{kind === "saved" ? "შენახული კომპანიები" : "შეტყობინებები"}</h1>
+  <h2 className="account-section__title">{kind === "saved" ? "შენახული კომპანიები" : "შეტყობინებები"}</h2>
   {state?.status !== "ready" ? <div role="status"><p>სერვისი დროებით მიუწვდომელია.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => store?.refreshEngagement()}>ხელახლა ცდა</button></div> : <>
    {kind === "notifications" && state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery}/> : null}
    {kind === "notifications" ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending || !state.emailDelivery} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე{!state.emailDelivery ? <span className={styles.meta}> — მალე დაემატება</span> : null}</label> : null}
    {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</button></div> : <>
     {!current.page?.items.length ? <p>{kind === "saved" ? "კომპანია ჯერ არ შეგინახავს. კატალოგში შენახვის ნიშნით მონიშნე საინტერესო მომწოდებლები." : "შეტყობინებები ჯერ არ გაქვს."}</p> : kind === "notifications" ? <NoticeRows items={current.page.items}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
-     <div><h3 className="ma-h3"><Link href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p>{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
+     <div><h3 className="account-row__title"><Link href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p className="account-row__meta">{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
     </article>)}
     <div className={styles.head}>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(null)}>პირველი გვერდი</button> : null}{current.page?.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(current.page!.nextCursor)}>შემდეგი გვერდი</button> : null}</div>
    </>}
-   {kind === "saved" ? <Link href="/companies/" className="ma-btn ma-btn--secondary">კომპანიების მოძებნა <Icon name="arrow-right"/></Link> : null}
+   {kind === "saved" ? <Link href="/companies/" className="account-link">კომპანიების მოძებნა</Link> : null}
   </>}
  </section>;
 }

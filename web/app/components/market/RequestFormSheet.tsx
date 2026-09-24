@@ -104,21 +104,18 @@ export function RequestFormSheet({
     if (!dirty.current || window.confirm("შეყვანილი ტექსტი არ შეინახება. დავხურო?")) ref.current?.close();
   }
   return (
-    <dialog className="ma-sheet ma-sheet--wide ma-sheet--full" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
+    <dialog className="ma-sheet ma-sheet--wide ma-sheet--full request-form" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
       <header className="ma-sheet__header">
-        <div>
-          <span className="ma-eyebrow ma-eyebrow--brand">ახალი მოთხოვნა</span>
-          <h2 id="request-title" className="ma-sheet__title">
-            რა გჭირდება?
-          </h2>
-        </div>
+        <h2 id="request-title" className="ma-sheet__title">
+          {existing ? "მოთხოვნის რედაქტირება" : "ახალი მოთხოვნა"}
+        </h2>
         <button className="ma-sheet__close" aria-label="ფორმის დახურვა" onClick={close}>
           <Icon name="x" />
         </button>
       </header>
       <div className="ma-sheet__body">
         {store?.isReady() && !store.currentUser() ? <p className="ma-note">გამოქვეყნებისთვის <Link className="ma-link" href="/account/">შედი ანგარიშში</Link> ან დარეგისტრირდი.</p> : null}
-        <p className="ma-lead">მოკლედ აღწერე საჭიროება. შეთავაზებებს მხოლოდ შენ ნახავ.</p>
+        <p className="request-form__hint">მოკლედ აღწერე საჭიროება. შეთავაზებებს მხოლოდ შენ ნახავ.</p>
         <form className="ma-form" id="new-request-form" onSubmit={submit} onChange={() => {dirty.current = true;}}>
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="title">
@@ -164,25 +161,41 @@ export function RequestFormSheet({
               </select>
             </div>
           </div>
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="addressNote">
-              რაიონი / ორიენტირი <span className="ma-field__opt">არასავალდებულო</span>
-            </label>
-            <input
-              className="ma-input"
-              id="addressNote"
-              maxLength={120}
-              placeholder="მაგ. საბურთალო, ვაჟა-ფშაველას გამზ."
-              value={addressNote}
-              onChange={(e) => setAddressNote(e.target.value)}
-            />
+          <div className="ma-form__row ma-form__row--2">
+            <div className="ma-field">
+              <label className="ma-field__label" htmlFor="neededBy">
+                საჭიროა თარიღამდე <span className="ma-field__opt">არასავალდებულო</span>
+              </label>
+              <input
+                className="ma-input"
+                id="neededBy"
+                type="date"
+                min={today}
+                max={max}
+                value={neededBy}
+                onChange={(e) => setNeededBy(e.target.value)}
+              />
+            </div>
+            <div className="ma-field">
+              <label className="ma-field__label" htmlFor="addressNote">
+                რაიონი / ორიენტირი <span className="ma-field__opt">არასავალდებულო</span>
+              </label>
+              <input
+                className="ma-input"
+                id="addressNote"
+                maxLength={120}
+                placeholder="მაგ. საბურთალო, ვაჟა-ფშაველას გამზ."
+                value={addressNote}
+                onChange={(e) => setAddressNote(e.target.value)}
+              />
+            </div>
           </div>
           <div className="ma-form__row ma-form__row--2">
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="quantity">
                 რაოდენობა <span className="ma-field__opt">არასავალდებულო</span>
               </label>
-              <div className="ma-form__row ma-form__row--2">
+              <div className="request-form__qty" role="group" aria-label="რაოდენობა და ერთეული">
                 <input
                   id="quantity"
                   className="ma-input"
@@ -198,20 +211,6 @@ export function RequestFormSheet({
                   ))}
                 </select>
               </div>
-            </div>
-            <div className="ma-field">
-              <label className="ma-field__label" htmlFor="neededBy">
-                საჭიროა თარიღამდე <span className="ma-field__opt">არასავალდებულო</span>
-              </label>
-              <input
-                className="ma-input"
-                id="neededBy"
-                type="date"
-                min={today}
-                max={max}
-                value={neededBy}
-                onChange={(e) => setNeededBy(e.target.value)}
-              />
             </div>
           </div>
           <div className="ma-field">
@@ -229,8 +228,7 @@ export function RequestFormSheet({
             />
           </div>
           {!existing ? <PhotoField file={photo} onChange={setPhoto} /> : existing.photo ? <p className="ma-note">არსებული ფოტო შენარჩუნდება.</p> : null}
-          <p className="ma-note">
-            <Icon name="clock" />
+          <p className="request-form__hint">
             მოთხოვნა 14 დღე იქნება აქტიური. ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.
           </p>
           {error ? (
@@ -241,11 +239,11 @@ export function RequestFormSheet({
         </form>
       </div>
       <footer className="ma-sheet__footer">
-        <button className="ma-btn ma-btn--secondary" type="button" onClick={close}>
+        <button className="request-form__cancel" type="button" onClick={close}>
           გაუქმება
         </button>
         <button className="ma-btn ma-btn--primary" type="submit" form="new-request-form" disabled={pending || !store?.currentUser()}>
-          {pending ? "იგზავნება…" : existing ? "შენახვა" : "გამოქვეყნება"} <Icon name="arrow-right" />
+          {pending ? "იგზავნება…" : existing ? "შენახვა" : "გამოქვეყნება"}
         </button>
       </footer>
     </dialog>

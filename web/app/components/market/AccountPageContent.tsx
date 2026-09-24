@@ -9,7 +9,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
-import { Icon } from "../Icon";
 import { PageBand } from "./PageBand";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms } from "./AuthForms";
@@ -68,9 +67,9 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
   }
 
   return (
-    <section className="ma-panel">
-      <h2 className="ma-h3">{isCompany ? "კომპანიის პროფილი" : "პროფილი"}</h2>
-      <p className="ma-lead">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
+    <section className="account-section">
+      <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პროფილი"}</h2>
+      <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
       <form className="ma-form" onSubmit={submit}>
         <div className="ma-form__row ma-form__row--2">
           <div className="ma-field">
@@ -162,13 +161,13 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
             </div>
           </div>
         ) : null}
-        <p className="ma-note">ტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>
+        <p className="account-hint">ტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>
         {error ? (
           <p className="ma-field__error" role="alert">
             {error}
           </p>
         ) : null}
-        <div className="ma-cluster">
+        <div>
           <button className="ma-btn ma-btn--primary" type="submit" disabled={pending}>
             {pending ? "ინახება…" : "შენახვა"}
           </button>
@@ -179,12 +178,49 @@ function ProfileForm({ me, onSaved }: { me: AnyUser; onSaved: () => void }) {
   );
 }
 
+type RequestItem = { id: string; title: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
+type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
+type Tab = "overview" | "saved" | "notifications" | "messages" | "profile";
+
+const DAY = 86400000;
+function postedLabel(createdAt: string, now: number) {
+  const days = Math.floor((now - Date.parse(createdAt)) / DAY);
+  return days <= 0 ? "გამოქვეყნდა დღეს" : days === 1 ? "გამოქვეყნდა გუშინ" : `გამოქვეყნდა ${days} დღის წინ`;
+}
+// Last visit per own request, written by RequestViewPageContent when the author opens it.
+function readSeen(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  try {return JSON.parse(localStorage.getItem("meetany.seen") || "{}") || {};} catch {return {};}
+}
+const requestTone = (state: string) => state === "open" ? "open" : state === "chosen" ? "chosen" : "done";
+const offerTone = (status: string) => status === "chosen" ? "open" : status === "declined" ? "done" : "chosen";
+const offerLabel = (status: string) => status === "chosen" ? "არჩეულია" : status === "declined" ? "არ აირჩიეს" : "გაგზავნილია";
+
+// One tab strip for both widths and every account view (registry design system).
+function AccountTabs({ tab, items }: { tab: Tab; items: { key: Tab; href: string; label: string }[] }) {
+  return (
+    <nav className="ma-tabs account-tabs" aria-label="ანგარიშის განყოფილებები">
+      {items.map((t) => (
+        <Link key={t.key} className="ma-tab" href={t.href} aria-current={tab === t.key ? "page" : undefined}>
+          {t.label}
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
+function Status({ tone, children }: { tone: string; children: React.ReactNode }) {
+  return <span className="account-status" data-tone={tone}>{children}</span>;
+}
+
 export function AccountPageContent() {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
-  const tab = ["saved", "notifications", "messages"].includes(rawTab) ? rawTab : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
+  const tab: Tab = rawTab === "saved" || rawTab === "notifications" || rawTab === "messages" ? rawTab : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
+  const [seen] = useState(readSeen);
+  const [now] = useState(() => Date.now());
 
   const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
   useEffect(() => {
@@ -198,55 +234,68 @@ export function AccountPageContent() {
 
   const data = useMemo(() => {
     if (!store || !me) return null;
-    const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true });
+    const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true }) as RequestItem[];
     if (me.role === "company") {
-      const matching = (store.listRequests({ category: me.industry }) as { id: string; ownerId: string }[]).filter((r) => r.ownerId !== me.id);
-      const myOffers = store.myOffers(me);
+      const matching = (store.listRequests({ category: me.industry }) as (RequestItem & { ownerId: string })[]).filter((r) => r.ownerId !== me.id);
+      const myOffers = store.myOffers(me) as OfferItem[];
       return { matching, myOffers, myRequests };
     }
-    return { matching: [] as unknown[], myOffers: [] as unknown[], myRequests };
+    return { matching: [] as RequestItem[], myOffers: [] as OfferItem[], myRequests };
   }, [store, me]);
 
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 
   if (!ready) return <AccountSkeleton />;
 
-  if (!me) {
-    return (
-      <div className="ma-page">
-        <PageBand eyebrow="MeetAny · ანგარიში" title="შენი ანგარიში" description="შედი ან შექმენი ანგარიში." />
-        <AuthForms initialRole={searchParams.get("role") || ""} />
-      </div>
-    );
-  }
-
-  if (tab === "saved" || tab === "notifications" || tab === "messages") return (
-    <div className="ma-page ma-stack">
-      <Link className="ma-back" href="/account/"><Icon name="arrow-left"/>ჩემი ანგარიში</Link>
-      <nav className="ma-tabs" aria-label="ანგარიშის განყოფილებები">
-        <Link className="ma-tab" href="/account/?tab=saved" aria-current={tab === "saved" ? "page" : undefined}>შენახული კომპანიები</Link>
-        <Link className="ma-tab" href="/account/?tab=notifications" aria-current={tab === "notifications" ? "page" : undefined}>შეტყობინებები</Link>
-        <Link className="ma-tab" href="/account/?tab=messages" aria-current={tab === "messages" ? "page" : undefined}>მიმოწერები</Link>
-      </nav>
-      {tab === "messages" ? <ConversationList key={me.id}/> : <EngagementPanel key={tab} kind={tab}/>}
-    </div>
-  );
+  if (!me) return <AuthForms initialRole={searchParams.get("role") || ""} />;
 
   const isCompany = me.role === "company";
   const name = me.company || me.name;
+  const engagement = store?.engagement();
+  const savedCount = engagement?.status === "ready" ? (engagement.savedIds as string[]).length : null;
+  const tabs: { key: Tab; href: string; label: string }[] = [
+    { key: "overview", href: "/account/", label: isCompany ? "მიმოხილვა" : `მოთხოვნები (${data?.myRequests.length ?? 0})` },
+    { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული კომპანიები" : `შენახული კომპანიები (${savedCount})` },
+    { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები" },
+    { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები" },
+    { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
+  ];
+
+  if (tab === "saved" || tab === "notifications" || tab === "messages") return (
+    <div className="ma-page account-page">
+      <PageBand title="ჩემი ანგარიში" />
+      <AccountTabs tab={tab} items={tabs} />
+      <div className="account-wide">
+        {tab === "messages" ? <ConversationList key={me.id}/> : <EngagementPanel key={tab} kind={tab}/>}
+      </div>
+    </div>
+  );
+
+  async function extend(id: string) {
+    try {await store?.extendRequest(id); toast("ვადა გაგრძელდა.");}
+    catch (err) {toast((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
+  }
+
+  const requestHref = (id: string) => `/requests/view/?id=${encodeURIComponent(id)}`;
+  const myRequests = data?.myRequests ?? [];
+  const matching = data?.matching ?? [];
+  const myOffers = data?.myOffers ?? [];
 
   return (
-    <div className="ma-page">
-      <PageBand eyebrow="MeetAny · ანგარიში" title="ჩემი ანგარიში" description="შენი მოთხოვნები, შეთავაზებები და პროფილი." avatar={<CompanyAvatar name={name} size="lg" />} />
-      <div className="ma-proto-account">
-        <aside className="ma-panel">
-          <CompanyAvatar name={name} size="xl" />
-          <h2 className="ma-h3">{name}</h2>
-          <p className="ma-small ma-muted">
-            {me.name} · {isCompany ? "კომპანია" : "კლიენტი"}
-          </p>
+    <div className="ma-page account-page">
+      <PageBand title="ჩემი ანგარიში" />
+      <AccountTabs tab={tab} items={tabs} />
+      <div className="account-layout">
+        <aside className="account-profile" aria-label="პროფილი">
+          <div className="account-profile__id">
+            <CompanyAvatar name={name} size="lg" />
+            <div>
+              <h2 className="account-profile__name">{name}</h2>
+              <p className="account-profile__role">{me.name} · {isCompany ? "კომპანია" : "კლიენტი"}</p>
+            </div>
+          </div>
           {me.blocked ? <span className="ma-badge ma-badge--danger">დაბლოკილია</span> : null}
-          <dl className="ma-kv">
+          <dl className="account-kv">
             <div>
               <dt>ქალაქი</dt>
               <dd>{cities[me.city] || me.city}</dd>
@@ -266,18 +315,14 @@ export function AccountPageContent() {
               </div>
             ) : null}
           </dl>
-          <div className="ma-panel__actions">
-            <Link className="ma-btn ma-btn--primary" href="/requests/new/">
-              მოთხოვნის დამატება
-            </Link>
-            {isCompany ? (
-              <Link className="ma-btn ma-btn--secondary" href={`/companies/view/?id=${me.id}`}>
-                საჯარო პროფილი
-              </Link>
-            ) : null}
+          <Link className="ma-btn ma-btn--primary ma-btn--block" href="/requests/new/">
+            მოთხოვნის დამატება
+          </Link>
+          <div className="account-profile__links">
+            {isCompany ? <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link> : null}
             <button
               type="button"
-              className="ma-btn ma-btn--ghost"
+              className="account-link"
               onClick={async () => {
                 await store?.logout();
                 router.push("/account/");
@@ -287,104 +332,100 @@ export function AccountPageContent() {
               გასვლა
             </button>
           </div>
-          <p className="ma-note">
-            <Icon name="lock" />
-            ტელეფონი საჯაროდ ჩანს. ელფოსტა მეორე მხარეს ეჩვენება შეთავაზების არჩევის შემდეგ.
-          </p>
+          <p className="account-profile__note">ტელეფონი საჯაროა; ელფოსტა — არჩევისას.</p>
         </aside>
-        <div className="ma-stack">
-          <nav className="ma-tabs" aria-label="ანგარიშის განყოფილებები">
-            <Link className="ma-tab" href="/account/?tab=saved">შენახული კომპანიები</Link>
-            <Link className="ma-tab" href="/account/?tab=notifications">შეტყობინებები</Link>
-            <Link className="ma-tab" href="/account/?tab=messages">მიმოწერები</Link>
-            <Link className="ma-tab" href="/account/" aria-current={tab === "overview" ? "page" : undefined}>
-              მიმოხილვა
-            </Link>
-            <Link className="ma-tab" href="/account/?tab=profile" aria-current={tab === "profile" ? "page" : undefined}>
-              პროფილი
-            </Link>
-          </nav>
+        <div className="account-main">
           {tab === "profile" ? (
             <ProfileForm me={me} onSaved={() => undefined} />
           ) : (
-            <div className="ma-stack">
+            <>
               {isCompany ? (
                 <>
-                  <section className="ma-stack">
-                    <div className="ma-section__head">
-                      <h2 className="ma-h3">შენი მიმართულების მოთხოვნები</h2>
-                      <span className="ma-badge ma-badge--neutral">{data?.matching.length ?? 0}</span>
-                    </div>
-                    {(data?.matching as { id: string; title: string; city: string }[] | undefined)?.length ? (
-                      (data!.matching as { id: string; title: string; city: string }[]).slice(0, 5).map((r) => (
-                        <article className="ma-panel" key={r.id}>
-                          <Link className="ma-proto-rowtitle ma-title" href={`/requests/view/?id=${r.id}`}>
-                            {r.title}
-                          </Link>
-                          <p className="ma-small ma-muted">{cities[r.city] || r.city}</p>
-                        </article>
-                      ))
+                  <section className="account-section">
+                    <h2 className="account-section__title">შენი მიმართულების მოთხოვნები ({matching.length})</h2>
+                    {matching.length ? (
+                      <ul className="account-rows">
+                        {matching.slice(0, 5).map((r) => (
+                          <li className="account-row account-row--plain" key={r.id}>
+                            <div className="account-row__main">
+                              <h3 className="account-row__title"><Link href={requestHref(r.id)}>{r.title}</Link></h3>
+                              <p className="account-row__meta">{cities[r.city] || r.city} · {postedLabel(r.createdAt, now)}</p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
                     ) : (
-                      <p className="ma-muted">შენი მიმართულებით მოთხოვნა ჯერ არ არის.</p>
+                      <p className="account-empty">შენი მიმართულებით მოთხოვნა ჯერ არ არის.</p>
                     )}
-                    <Link className="ma-btn ma-btn--secondary" href="/requests/">
-                      ყველა მოთხოვნა
-                    </Link>
+                    <Link className="account-link" href="/requests/">ყველა მოთხოვნა</Link>
                   </section>
-                  <h2 className="ma-h3">ჩემი შეთავაზებები</h2>
-                  {(data?.myOffers as { id: string; requestId: string; status: string }[] | undefined)?.length ? (
-                    (data!.myOffers as { id: string; requestId: string; status: string }[]).map((o) => (
-                      <article className="ma-panel" key={o.id}>
-                        <Link className="ma-proto-rowtitle ma-title" href={`/requests/view/?id=${o.requestId}`}>
-                          მოთხოვნის ნახვა
-                        </Link>
-                        <div>
-                          <span className={`ma-badge ma-badge--${o.status === "chosen" ? "success" : o.status === "declined" ? "neutral" : "info"}`}>
-                            {o.status === "chosen" ? "არჩეულია" : o.status === "declined" ? "არ აირჩიეს" : "გაგზავნილია"}
-                          </span>
-                        </div>
-                      </article>
-                    ))
-                  ) : (
-                    <p className="ma-muted">ჯერ შეთავაზება არ გაგზავნილა.</p>
-                  )}
+                  <section className="account-section">
+                    <h2 className="account-section__title">ჩემი შეთავაზებები ({myOffers.length})</h2>
+                    {myOffers.length ? (
+                      <ul className="account-rows">
+                        {myOffers.map((o) => {
+                          const r = store?.getRequest(o.requestId) as RequestItem | null;
+                          return (
+                            <li className="account-row" key={o.id}>
+                              <div className="account-row__main">
+                                <h3 className="account-row__title"><Link href={requestHref(o.requestId)}>{r?.title || "მოთხოვნა"}</Link></h3>
+                                <p className="account-row__meta">{[r ? cities[r.city] || r.city : "", `გაიგზავნა ${postedLabel(o.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
+                              </div>
+                              <div className="account-row__stats">
+                                <Status tone={offerTone(o.status)}>{offerLabel(o.status)}</Status>
+                              </div>
+                              <div className="account-row__actions">
+                                <Link className="account-link" href={requestHref(o.requestId)}>მოთხოვნის ნახვა</Link>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      <p className="account-empty">ჯერ შეთავაზება არ გაგზავნილა.</p>
+                    )}
+                  </section>
                 </>
               ) : null}
-              <section className="ma-stack">
-                <h2 className="ma-h3">ჩემი მოთხოვნები</h2>
-                {(data?.myRequests as { id: string; title: string; city: string; expiresAt: string; hidden: boolean }[] | undefined)?.length ? (
-                  (data!.myRequests as { id: string; title: string; city: string }[]).map((r) => {
-                    const state = store?.requestState(r);
-                    return (
-                      <article className="ma-card ma-proto-toolbar" key={r.id}>
-                        <div>
-                          <Link className="ma-proto-rowtitle ma-title" href={`/requests/view/?id=${r.id}`}>
-                            {r.title}
-                          </Link>
-                          <p className="ma-small ma-muted">{cities[r.city] || r.city}</p>
-                        </div>
-                        <div className="ma-cluster">
-                          <span className={`ma-badge ma-badge--${state === "open" ? "success" : "neutral"}`}>{store?.stateLabels?.[state] || state}</span>
-                          {(state === "open" || state === "expired" || state === "closed") ? (
-                            <button type="button" className="ma-btn ma-btn--secondary" onClick={async () => {try {await store?.extendRequest(r.id); toast("ვადა გაგრძელდა.");} catch(err) {toast((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}}}>
-                              +{store?.EXTEND_DAYS ?? 7} დღე
-                            </button>
-                          ) : null}
-                        </div>
-                      </article>
-                    );
-                  })
+              <section className="account-section">
+                <h2 className="account-section__title">ჩემი მოთხოვნები</h2>
+                {myRequests.length ? (
+                  <ul className="account-rows">
+                    {myRequests.map((r) => {
+                      const state = store?.requestState(r) as string;
+                      const count = store?.offerCount(r.id) ?? 0;
+                      const seenAt = seen[r.id];
+                      const fresh = (store?.visibleOffers(r.id, me) as OfferItem[] | undefined ?? []).filter((o) => o.status === "sent" && (!seenAt || Date.parse(o.createdAt) > Date.parse(seenAt))).length;
+                      return (
+                        <li className="account-row" key={r.id}>
+                          <div className="account-row__main">
+                            <h3 className="account-row__title"><Link href={requestHref(r.id)}>{r.title}</Link></h3>
+                            <p className="account-row__meta">{cities[r.city] || r.city} · {postedLabel(r.createdAt, now)}</p>
+                          </div>
+                          <div className="account-row__stats">
+                            <span className="account-row__count">
+                              <strong>{count} შეთავაზება</strong>
+                              {fresh ? <span className="account-row__new">{fresh} ახალი</span> : null}
+                            </span>
+                            <Status tone={requestTone(state)}>{store?.stateLabels?.[state] || state}</Status>
+                          </div>
+                          <div className="account-row__actions">
+                            <Link className="account-link" href={requestHref(r.id)}>შეთავაზებების ნახვა</Link>
+                            {state === "open" || state === "expired" || state === "closed" ? (
+                              <button type="button" className="account-link" onClick={() => extend(r.id)}>
+                                {state === "open" ? "ვადის გაგრძელება" : "ხელახლა გახსნა"} +{store?.EXTEND_DAYS ?? 7} დღე
+                              </button>
+                            ) : null}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 ) : (
-                  <div className="ma-empty">
-                    <h2 className="ma-empty__title">ჯერ მოთხოვნა არ გაქვს</h2>
-                    <p className="ma-empty__text">დაამატე პირველი მოთხოვნა — კომპანიები პირობებით გიპასუხებენ.</p>
-                    <Link className="ma-btn ma-btn--primary" href="/requests/new/">
-                      მოთხოვნის დამატება
-                    </Link>
-                  </div>
+                  <p className="account-empty">ჯერ მოთხოვნა არ გაქვს. დაამატე პირველი — კომპანიები პირობებით გიპასუხებენ.</p>
                 )}
               </section>
-            </div>
+            </>
           )}
         </div>
       </div>
