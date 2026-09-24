@@ -17,6 +17,7 @@ import { SectionHead } from "./SectionHead";
 import { OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
+import { MessageButton } from "./ChatPopup";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
@@ -325,6 +326,7 @@ export function RequestViewPageContent() {
               <span className="ma-small ma-muted">მოთხოვნის ავტორი</span>
               <h2 className="ma-h3">{owner.company || owner.name}</h2>
               {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" contactId={r.ownerId} requestId={r.id} source="request-owner" /> : null}
+              {!isOwner && me?.role === "company" ? <MessageButton companyId={me.id} requestId={r.id}/> : null}
             </section>
           ) : null}
           {!isOwner && me?.role !== "admin" && me?.role !== "company" ? responsePanel : null}

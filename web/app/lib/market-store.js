@@ -718,6 +718,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminListAudit=args=>rpc('admin_list_audit',args);
  const adminContactEvents=args=>rpc('admin_contact_events',args);
  const adminContactStats=args=>rpc('admin_contact_stats',args);
+ const adminMessageStats=()=>rpc('admin_message_stats');
  // Contact remains usable during telemetry failures; authentication is shared with db().
  const logContactEvent=(targetKind,targetId,kind,source)=>db('/rpc/log_contact_event',{method:'POST',keepalive:true,body:{
   p_target_kind:targetKind,p_target_id:targetId,p_kind:kind,p_source:source,
@@ -740,6 +741,6 @@ export function createMarketStore({initial=null,background=true}={}){
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,listCompanies,getCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
-  adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }

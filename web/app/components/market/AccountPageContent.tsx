@@ -5,7 +5,7 @@ import { AccountSkeleton } from "./Skeletons";
 import { EngagementPanel } from "./EngagementPanels";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
@@ -13,6 +13,7 @@ import { Icon } from "../Icon";
 import { PageBand } from "./PageBand";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms } from "./AuthForms";
+import { ConversationList } from "./ChatPopup";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 
@@ -174,9 +175,17 @@ export function AccountPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
-  const tab = ["saved", "notifications"].includes(rawTab) ? rawTab : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
+  const tab = ["saved", "notifications", "messages"].includes(rawTab) ? rawTab : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
 
   const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
+  useEffect(() => {
+    if (!me?.id) return;
+    let next = "";
+    try { next = sessionStorage.getItem("meetany.chatReturn") || ""; sessionStorage.removeItem("meetany.chatReturn"); } catch {}
+    if (!next) return;
+    const url = new URL(next, window.location.origin);
+    if (url.origin === window.location.origin && ["/companies/view/", "/requests/view/"].includes(url.pathname)) router.replace(url.pathname + url.search + url.hash);
+  }, [me?.id, router]);
 
   const data = useMemo(() => {
     if (!store || !me) return null;
@@ -202,14 +211,15 @@ export function AccountPageContent() {
     );
   }
 
-  if (tab === "saved" || tab === "notifications") return (
+  if (tab === "saved" || tab === "notifications" || tab === "messages") return (
     <div className="ma-page ma-stack">
       <Link className="ma-back" href="/account/"><Icon name="arrow-left"/>ჩემი ანგარიში</Link>
       <nav className="ma-tabs" aria-label="ანგარიშის განყოფილებები">
         <Link className="ma-tab" href="/account/?tab=saved" aria-current={tab === "saved" ? "page" : undefined}>შენახული კომპანიები</Link>
         <Link className="ma-tab" href="/account/?tab=notifications" aria-current={tab === "notifications" ? "page" : undefined}>შეტყობინებები</Link>
+        <Link className="ma-tab" href="/account/?tab=messages" aria-current={tab === "messages" ? "page" : undefined}>მიმოწერები</Link>
       </nav>
-      <EngagementPanel key={tab} kind={tab}/>
+      {tab === "messages" ? <ConversationList key={me.id}/> : <EngagementPanel key={tab} kind={tab}/>}
     </div>
   );
 
@@ -277,6 +287,7 @@ export function AccountPageContent() {
           <nav className="ma-tabs" aria-label="ანგარიშის განყოფილებები">
             <Link className="ma-tab" href="/account/?tab=saved">შენახული კომპანიები</Link>
             <Link className="ma-tab" href="/account/?tab=notifications">შეტყობინებები</Link>
+            <Link className="ma-tab" href="/account/?tab=messages">მიმოწერები</Link>
             <Link className="ma-tab" href="/account/" aria-current={tab === "overview" ? "page" : undefined}>
               მიმოხილვა
             </Link>

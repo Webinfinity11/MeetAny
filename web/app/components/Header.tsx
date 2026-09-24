@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NotificationBell } from "./market/EngagementPanels";
+import { ChatUnreadLink } from "./market/ChatPopup";
 import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
 import { toast } from "./Toasts";
@@ -25,6 +26,7 @@ export function Header() {
     ...(me.role === "company" ? [["send", "ჩემი შეთავაზებები", "/account/?tab=offers"], ["building-2", "საჯარო პროფილი", `/companies/view/?id=${me.id}`]] : []),
     ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
     ["bell", "შეტყობინებები", "/account/?tab=notifications"],
+    ["message-square", "მიმოწერები", "/account/?tab=messages"],
     ["user-round", "პროფილი", "/account/?tab=profile"],
     ["plus", "მოთხოვნის დამატება", "/requests/new/"],
   ] : [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]];
@@ -52,6 +54,7 @@ export function Header() {
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
         <NotificationBell/>
+        <ChatUnreadLink/>
         {!me ? <Link className="ma-btn ma-btn--ghost ma-header__login" href="/account/">შესვლა</Link> : null}{add}
         {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
           if (e.key === "Escape") {setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}

@@ -12,6 +12,7 @@ import { CompanyAvatar } from "./CompanyAvatar";
 import { PageBand } from "./PageBand";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { CallButton } from "./CallButton";
+import { MessageButton } from "./ChatPopup";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
@@ -67,7 +68,7 @@ export function CompanyProfilePageContent() {
         description={categories[c.industry] || c.industry}
         avatar={<CompanyAvatar name={name} size="xl" />}
         meta={<span className="company-profile-city"><Icon name="map-pin" />{cities[c.city] || c.city}</span>}
-        actions={phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}
+        actions={<>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/></>}
       />
       <div className="company-profile-coverage">
         <Icon name="globe" />

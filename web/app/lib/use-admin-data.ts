@@ -61,7 +61,8 @@ export type ContactStats = {
   companies: ContactTop[]; requests: ContactTop[];
 };
 type ContactTop = Pick<ContactRow, "target_kind" | "target_id" | "target_name" | "target_exists"> & { reveals: number; calls: number };
-type ContactResult = { key: string; filterKey: string; page: AdminPage | null; rows: ContactRow[]; stats: ContactStats | null; error: string | null };
+type MessageStats = { totals: Record<string, { conversations: number; messages: number }> };
+type ContactResult = { key: string; filterKey: string; page: AdminPage | null; rows: ContactRow[]; stats: ContactStats | null; messageStats: MessageStats | null; error: string | null };
 
 export function useAdminContacts({ store, kind, target, period, cursor }: {
   store: Store; kind: string; target: string; period: string; cursor: string;
@@ -80,17 +81,18 @@ export function useAdminContacts({ store, kind, target, period, cursor }: {
         const boundary = period === "day" ? Math.floor((at + 4 * 3600000) / 86400000) * 86400000 - 4 * 3600000
           : at - (period === "week" ? 7 : 30) * 86400000;
         const from = p_cursor?.from || new Date(boundary).toISOString();
-        const [page, stats] = await Promise.all([
+        const [page, stats, messageStats] = await Promise.all([
           store.adminContactEvents({ p_cursor, p_kind: kind || null, p_target_kind: target || null, p_from: from, p_limit: 25 }),
           store.adminContactStats({ p_period: period }),
+          store.adminMessageStats(),
         ]);
         if (page.nextCursor) page.nextCursor = { ...page.nextCursor, from };
         if (!cancelled) setResult(previous => {
           const append = cursor && previous?.filterKey === filterKey && JSON.stringify(previous.page?.nextCursor) === cursor;
-          return { key, filterKey, page, stats, error: null, rows: append ? [...previous.rows, ...page.items] : page.items };
+          return { key, filterKey, page, stats, messageStats, error: null, rows: append ? [...previous.rows, ...page.items] : page.items };
         });
       } catch (err) {
-        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, error: (err as { userMessage?: string }).userMessage || "კონტაქტების ჩატვირთვა ვერ მოხერხდა." });
+        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, messageStats: null, error: (err as { userMessage?: string }).userMessage || "კონტაქტების ჩატვირთვა ვერ მოხერხდა." });
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };

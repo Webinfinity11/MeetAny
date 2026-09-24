@@ -1,6 +1,7 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Toasts } from "./Toasts";
+import { ChatPopup } from "./market/ChatPopup";
 
 // Shared marketplace shell; each route group uses the same aligned container.
 export function SiteShell({
@@ -27,6 +28,7 @@ export function SiteShell({
           <div className="ma-container">{children}</div>
         </main>
         <Footer />
+        <ChatPopup />
         <Toasts />
       </body>
     </html>
