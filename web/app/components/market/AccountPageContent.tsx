@@ -12,6 +12,7 @@ import { toast } from "../Toasts";
 import { PageBand } from "./PageBand";
 import { AuthForms } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
+import { LogoField } from "./PhotoField";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
@@ -22,6 +23,7 @@ type AnyUser = {
   role: string;
   name: string;
   company?: string;
+  logoUrl?: string | null;
   phone: string;
   email: string;
   city: string;
@@ -47,6 +49,10 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
   const [seeks, setSeeks] = useState((me.seeks || []).join("\n"));
   const [serviceCities, setServiceCities] = useState<string[]>(me.serviceCities || []);
   const [address, setAddress] = useState(me.address || "");
+  const [logoUrl, setLogoUrl] = useState(me.logoUrl || "");
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoChanged, setLogoChanged] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -63,11 +69,22 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
     setError(null);
     setSaved(false);
     try {
-      await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address } : {}) });
+      let nextLogo = logoUrl;
+      if (isCompany && logoFile) {
+        setUploading(true);
+        const uploaded = await store.uploadLogo(logoFile);
+        nextLogo = uploaded.url;
+        setUploading(false);
+      }
+      await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address, ...(logoChanged ? { logoUrl: nextLogo } : {}) } : {}) });
+      setLogoUrl(nextLogo);
+      setLogoFile(null);
+      setLogoChanged(false);
       setSaved(true);
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {
+      setUploading(false);
       setPending(false);
     }
   }
@@ -77,6 +94,9 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
       <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პირადი მონაცემები"}</h2>
       <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
       <form className="ma-form" onSubmit={submit} noValidate>
+        {isCompany ? <LogoField name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading}
+          onChange={file => { setLogoFile(file); setLogoChanged(true); setSaved(false); }}
+          onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); setSaved(false); }} /> : null}
         <div className="ma-form__row ma-form__row--3">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="name">

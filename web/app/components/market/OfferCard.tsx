@@ -5,6 +5,7 @@ import { CompanyAvatar } from "./CompanyAvatar";
 export type OfferCardData = {
   id: string;
   companyName: string;
+  logoUrl?: string | null;
   companyHref: string;
   city: string;
   createdAt: string;
@@ -28,7 +29,7 @@ export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoo
   return (
     <article className={`ma-ocard${cls}`}>
       <header className="ma-ocard__head">
-        <CompanyAvatar name={o.companyName} />
+        <CompanyAvatar name={o.companyName} logoUrl={o.logoUrl} />
         <div className="ma-ocard__who">
           <div className="ma-ocard__name-row">
             <Link className="ma-ocard__name" href={o.companyHref}>

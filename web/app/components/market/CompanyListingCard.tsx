@@ -10,6 +10,7 @@ import { shortLabels } from "./FacetList";
 export type CompanyListingData = {
   id: string;
   name: string;
+  logoUrl?: string | null;
   industry: string;
   city: string;
   serviceCities: string[];
@@ -31,7 +32,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
   const placesShort = cityIds.length ? (cities[cityIds[0]] || cityIds[0]) + (cityIds.length > 1 ? ` +${cityIds.length - 1}` : "") : "";
   return (
     <article className="company-listing supplier-row" data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined}>
-      <CompanyAvatar name={c.name} size="lg" />
+      <CompanyAvatar name={c.name} logoUrl={c.logoUrl} size="lg" />
       <div className="listing-identity">
         <h3><Link className="card-main-link" href={href}>{c.name}</Link></h3>
         {/* 390 keeps the meta on one line: the rail's short industry name and "first city +N"; full names are on the profile. */}

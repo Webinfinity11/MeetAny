@@ -20,6 +20,7 @@ type MappedCompany = {
   id: string;
   company?: string;
   name: string;
+  logoUrl?: string | null;
   phone?: string;
   industry: string;
   city: string;
@@ -90,6 +91,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     return [...results].sort((a, b) => sort === "name" ? (a.company || a.name).localeCompare(b.company || b.name, "ka") : Date.parse(b.createdAt) - Date.parse(a.createdAt)).map((c) => ({
       id: c.id,
       name: c.company || c.name,
+      logoUrl: c.logoUrl,
       industry: c.industry,
       city: c.city,
       serviceCities: c.serviceCities || [],

@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
+import { ProductCard, type ProductCardData } from "./ProductCard";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { PageBand } from "./PageBand";
 import { SaveCompanyButton } from "./SaveCompanyButton";
@@ -58,6 +59,10 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
 
   const { c, stats, openRequests } = data;
   const name = c.company || c.name;
+  // Current offers are strings; structured products can be rendered once the public contract supplies them.
+  const products: ProductCardData[] = (c.offers || []).map((offer: string | ProductCardData) => typeof offer === "string" ? { name: offer } : offer);
+  const pictured = products.filter(product => product.photoUrl);
+  const plain = products.filter(product => !product.photoUrl);
   const directions: string | null = store?.directionsUrl(c) ?? null;
 
   const since = sinceMonthLabel(c.createdAt);
@@ -68,7 +73,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       <div className="company-profile-tools"><Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიები</Link></div>
       <PageBand
         title={name}
-        avatar={<CompanyAvatar name={name} size="lg" />}
+        avatar={<CompanyAvatar name={name} logoUrl={c.logoUrl} size="lg" />}
         meta={<span className="detail-meta">{[categories[c.industry] || c.industry, cities[c.city] || c.city, c.address].filter(Boolean).join(" · ")}{directions ? <a className="ma-link company-profile-directions" href={directions} target="_blank" rel="noopener noreferrer"><Icon name="arrow-up-right" />მიმართულება</a> : null}</span>}
         actions={<>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/><SaveCompanyButton id={c.id} icon /></>}
       />
@@ -86,7 +91,9 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         </section>
         <section id="offers" aria-labelledby="company-services">
           <h2 id="company-services" className="ma-h3">პროდუქტები და მომსახურება</h2>
-          {c.offers?.length ? <ul className="company-profile-services">{c.offers.map((offer: string) => <li key={offer}>{offer}</li>)}</ul> : <p className="detail-empty">ჯერ არ არის მითითებული.</p>}
+          {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <ProductCard key={`${product.name}-${index}`} {...product} />)}</div> : null}
+          {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}>{product.name}</li>)}</ul> : null}
+          {!products.length ? <p className="detail-empty">ჯერ არ არის მითითებული.</p> : null}
         </section>
         {openRequests.length ? <section className="company-profile-requests" aria-labelledby="company-requests">
           <h2 id="company-requests" className="ma-h3">ღია მოთხოვნები</h2>

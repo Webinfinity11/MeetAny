@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 // The approved home page keeps its own initials; catalogs and profiles use avatarInitials below.
 export function initials(name: string): string {
   const clean = String(name || "?").replace(/[„""]/g, "");
@@ -27,11 +31,12 @@ export function avatarTone(name: string): number {
   return ((hash >>> 0) % 6) + 1;
 }
 
-export function CompanyAvatar({ name, size = "sm" }: { name: string; size?: "sm" | "lg" | "xl" }) {
+export function CompanyAvatar({ name, logoUrl, size = "sm" }: { name: string; logoUrl?: string | null; size?: "sm" | "lg" | "xl" }) {
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const cls = size === "xl" ? "ma-avatar ma-avatar--xl" : size === "lg" ? "ma-avatar ma-avatar--lg" : "ma-avatar";
   return (
     <span className={cls} data-tone={avatarTone(name)} aria-hidden="true">
-      {avatarInitials(name)}
+      {logoUrl && logoUrl !== failedUrl ? <img key={logoUrl} src={logoUrl} alt="" onError={() => setFailedUrl(logoUrl)} /> : avatarInitials(name)}
     </span>
   );
 }

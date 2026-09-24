@@ -143,6 +143,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
       const isNew = isOwner && seen?.id === id && (!seen.at || Date.parse(o.createdAt) > Date.parse(seen.at)) && o.status === "sent";
       return {
         id: o.id,
+        logoUrl: c?.logoUrl,
         companyName: c?.company || c?.name || "კომპანია",
         companyHref: `/companies/view/?id=${encodeURIComponent(o.companyUserId)}`,
         city: c ? cities[c.city] || c.city : "",

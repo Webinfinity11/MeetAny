@@ -12,7 +12,7 @@ import { CompanyAvatar } from "./CompanyAvatar";
 import { Icon } from "../Icon";
 
 type Me = { id: string; role: string };
-type Profile = { role?: string; industry?: string } | null;
+type Profile = { logoUrl?: string | null; role?: string; industry?: string } | null;
 const WIDE = "(min-width:1024px)";
 const DAY = 86400000;
 
@@ -52,7 +52,7 @@ function describe(store: Store, me: Me, c: Conversation) {
   const request = requestId ? (store.getRequest(requestId) as { title?: string } | null) : null;
   const isCompany = profile?.role === "company" || (!!c.otherCompany && otherId === c.companyId);
   const context = requestId ? request?.title || "მოთხოვნის შესახებ" : isCompany && profile?.industry ? categories[profile.industry] || profile.industry : "პირადი მიმოწერა";
-  return { otherId, name, context, isCompany, requestId, requestFound: !!request };
+  return { otherId, name, logoUrl: profile?.logoUrl, context, isCompany, requestId, requestFound: !!request };
 }
 
 export function Inbox({ store, me }: { store: Store; me: Me }) {
@@ -86,7 +86,7 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
           const unread = c.unreadCount > 0 && c.id !== active?.id;
           return <li key={c.id} data-id={c.id} data-context={d.requestId ? "request" : "general"}>
             <button type="button" className="inbox-row" aria-current={c.id === active?.id ? "true" : undefined} data-unread={unread || undefined} onClick={() => setSelected(c.id)}>
-              <CompanyAvatar name={d.name}/>
+              <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
               <span className="inbox-row__text">
                 <span className="inbox-row__top">
                   <span className="inbox-row__name">{unread ? <span className="inbox-dot" aria-hidden="true"/> : null}{d.name}{unread ? <span className="ma-sr-only">, წაუკითხავი</span> : null}</span>
@@ -133,7 +133,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   const pane = <div className={sheet ? "inbox-thread inbox-thread--sheet" : "inbox-thread"} role={sheet ? "dialog" : undefined} aria-label={sheet ? d.name : undefined}>
     {!wide ? <button ref={back} type="button" className="inbox-back" onClick={onBack}><Icon name="arrow-left"/>მიმოწერები</button> : null}
     <header className="inbox-head">
-      <CompanyAvatar name={d.name}/>
+      <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
       <div className="inbox-head__text">
         <h3 className="inbox-head__name">{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h3>
         <p className="inbox-head__context">{requestHref ? <Link href={requestHref}>{d.context}</Link> : d.context}</p>
