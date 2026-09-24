@@ -12,8 +12,9 @@ import { toast } from "../Toasts";
 import { PageBand } from "./PageBand";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms } from "./AuthForms";
-import { ConversationList } from "./ChatPopup";
+import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
+import { useUnreadMessageCount } from "../../lib/chat-client";
 import { categories, cities } from "../../lib/categories";
 
 type AnyUser = {
@@ -223,6 +224,7 @@ export function AccountPageContent() {
   const [now] = useState(() => Date.now());
 
   const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
+  const unread = useUnreadMessageCount(store, me?.id, !!me && !me.blocked);
   useEffect(() => {
     if (!me?.id) return;
     let next = "";
@@ -257,7 +259,7 @@ export function AccountPageContent() {
     { key: "overview", href: "/account/", label: isCompany ? "მიმოხილვა" : `მოთხოვნები (${data?.myRequests.length ?? 0})` },
     { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული კომპანიები" : `შენახული კომპანიები (${savedCount})` },
     { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები" },
-    { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები" },
+    { key: "messages", href: "/account/?tab=messages", label: unread ? `მიმოწერები (${unread})` : "მიმოწერები" },
     { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
   ];
 
@@ -266,7 +268,7 @@ export function AccountPageContent() {
       <PageBand title="ჩემი ანგარიში" />
       <AccountTabs tab={tab} items={tabs} />
       <div className="account-wide">
-        {tab === "messages" ? <ConversationList key={me.id}/> : <EngagementPanel key={tab} kind={tab}/>}
+        {tab === "messages" ? (store ? <Inbox key={me.id} store={store} me={me}/> : null) : <EngagementPanel key={tab} kind={tab}/>}
       </div>
     </div>
   );

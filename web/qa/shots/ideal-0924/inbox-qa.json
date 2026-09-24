@@ -1,0 +1,78 @@
+{
+ "report": {
+  "sendWorked": true,
+  "inbox-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "rowAvatar": 120,
+   "list": true,
+   "thread": true,
+   "dots": 1,
+   "tel": "tel:+995599412867",
+   "tabLabel": "მიმოწერები (1)",
+   "tones": [
+    "5"
+   ]
+  },
+  "popupStillWorks": true,
+  "inbox-390-list": {
+   "overflow": 0,
+   "h1": 16,
+   "tab": 16,
+   "rowAvatar": 16,
+   "list": true,
+   "thread": false,
+   "dots": 1,
+   "tel": null,
+   "tabLabel": "მიმოწერები (1)",
+   "tones": [
+    "5"
+   ]
+  },
+  "inbox-390-thread": {
+   "overflow": 0,
+   "h1": 16,
+   "tab": 16,
+   "rowAvatar": 0,
+   "list": false,
+   "thread": true,
+   "dots": 1,
+   "tel": null,
+   "tabLabel": "მიმოწერები (1)",
+   "tones": [
+    "5"
+   ]
+  },
+  "inbox-empty-1440": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": 120,
+   "rowAvatar": null,
+   "list": false,
+   "thread": false,
+   "dots": 0,
+   "tel": null,
+   "tabLabel": "მიმოწერები",
+   "tones": []
+  },
+  "companies-1440-avatars": {
+   "overflow": 0,
+   "h1": 120,
+   "tab": null,
+   "rowAvatar": null,
+   "list": false,
+   "thread": false,
+   "dots": 0,
+   "tel": null,
+   "tabLabel": null,
+   "tones": [
+    "3",
+    "4",
+    "5",
+    "6"
+   ]
+  }
+ },
+ "pageerrors": []
+}

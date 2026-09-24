@@ -85,6 +85,15 @@
 .r2-search{width:100%;padding:var(--space-5);background:var(--white);border-radius:var(--radius-lg);color:var(--text)}
 .r2-search .ma-input{width:100%}
 .ma-proto .ma-avatar{background:var(--action);color:var(--white);border-radius:var(--radius-md);flex-shrink:0}
+/* Initials tones (T11.5c): CompanyAvatar picks 1–6 from the name; --avatar-bg/-text stay the fallback.
+   The chat popup head and a declined offer keep their own colours. */
+.ma-avatar[data-tone="1"]{--avatar-bg:var(--avatar-1-bg);--avatar-text:var(--avatar-1-text)}
+.ma-avatar[data-tone="2"]{--avatar-bg:var(--avatar-2-bg);--avatar-text:var(--avatar-2-text)}
+.ma-avatar[data-tone="3"]{--avatar-bg:var(--avatar-3-bg);--avatar-text:var(--avatar-3-text)}
+.ma-avatar[data-tone="4"]{--avatar-bg:var(--avatar-4-bg);--avatar-text:var(--avatar-4-text)}
+.ma-avatar[data-tone="5"]{--avatar-bg:var(--avatar-5-bg);--avatar-text:var(--avatar-5-text)}
+.ma-avatar[data-tone="6"]{--avatar-bg:var(--avatar-6-bg);--avatar-text:var(--avatar-6-text)}
+.ma-proto .ma-avatar[data-tone]:not(.ma-chat__head>.ma-avatar,.ma-ocard--declined .ma-avatar){background:var(--avatar-bg);color:var(--avatar-text)}
 .ma-proto .ma-rcard--row:not(.request-card),.ma-proto .r2-company-row{border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);padding:var(--space-6)}
 .ma-proto .ma-rcard--row .ma-rcard__title{font-size:var(--fs-title);line-height:var(--lh-title)}
 .ma-proto .ma-proto-rowend{border-left:0}
@@ -487,6 +496,67 @@
  .account-row__actions{display:flex;flex-wrap:wrap;gap:0 var(--space-5);justify-items:start;text-align:left}
  .account-row__actions .account-link,.account-row__actions .account-link+.account-link{justify-self:start;margin:0}
 }
+
+/* /account/?tab=messages (P11 T11.5c): inbox — 360px conversation list + open thread on ≥1024, one pane below.
+   A hairline sits under the row text only (not the avatar); bubbles are tinted, never blue; no motion. */
+.inbox{display:grid;grid-template-columns:minmax(0,1fr);min-width:0}
+.inbox-note{display:grid;gap:var(--space-2);justify-items:start;align-content:start;padding-block:var(--space-8)}
+.inbox-list{min-width:0;margin-inline-start:calc(-1 * var(--space-3))}
+.inbox-list ul{margin:0;padding:0;list-style:none}
+.inbox-row{display:grid;grid-template-columns:var(--space-10) minmax(0,1fr);column-gap:var(--space-3);align-items:start;width:100%;padding:0 var(--space-3);border:0;border-radius:0;background:var(--bg);color:var(--text);text-align:left;font:inherit;font-feature-settings:normal;letter-spacing:normal;cursor:pointer;transition:background-color var(--motion-fast) var(--motion-ease)}
+.inbox-row:hover,.inbox-row[aria-current="true"]{background:var(--bg-subtle)}
+.inbox-row:focus-visible{outline:0;box-shadow:var(--focus-ring)}
+.ma-proto :is(.inbox-row,.inbox-head)>.ma-avatar{width:var(--space-10);height:var(--space-10);border-radius:var(--radius-md);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
+.inbox-row>.ma-avatar{margin-top:var(--space-3)}
+.inbox-row__text{display:grid;min-width:0;padding-block:var(--space-3);border-bottom:1px solid var(--border-subtle)}
+.inbox-row__top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3)}
+.inbox-row__name{display:flex;align-items:center;gap:var(--space-2);min-width:0;font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-medium);overflow-wrap:anywhere}
+.inbox-row[data-unread] .inbox-row__name{font-weight:var(--fw-semibold)}
+.inbox-dot{flex:none;width:var(--space-2);height:var(--space-2);border-radius:50%;background:var(--action)}
+.inbox-row time{flex:none;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3);font-variant-numeric:tabular-nums}
+.inbox-row[data-unread] time{color:var(--text)}
+.inbox-row__context{font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3);overflow-wrap:anywhere}
+.inbox-row__preview{margin-top:var(--space-1);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
+.inbox-row[data-unread] .inbox-row__preview{color:var(--text-2)}
+.inbox-thread{display:flex;flex-direction:column;min-width:0}
+.inbox-back{display:inline-flex;align-items:center;gap:var(--space-2);align-self:flex-start;min-height:var(--tap-min);padding:0;border:0;background:transparent;color:var(--text-link);font:inherit;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);cursor:pointer}
+.inbox-back .icon{width:var(--icon-sm);height:var(--icon-sm)}
+.inbox-head{display:flex;align-items:center;gap:var(--space-3);padding-block:var(--space-3);border-bottom:1px solid var(--border-subtle)}
+.inbox-head__text{flex:1;min-width:0}
+.ma-proto .inbox-head .inbox-head__name{margin:0;font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-semibold);font-feature-settings:normal;letter-spacing:normal;color:var(--text);overflow-wrap:anywhere}
+.inbox-head__name a{color:inherit;text-decoration:none}
+.inbox-head__context{max-width:none;margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);overflow-wrap:anywhere}
+.inbox-head__context a{color:var(--text-link);text-decoration:none}
+.inbox-head a:hover{text-decoration:underline;text-underline-offset:var(--space-1)}
+.inbox-call{display:grid;place-items:center;flex:none;width:var(--tap-min);height:var(--tap-min);border:1px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--white);color:var(--action)}
+.inbox-call:hover{background:var(--bg-subtle)}
+.inbox-call .icon{width:var(--icon);height:var(--icon)}
+.inbox-log{display:flex;flex-direction:column;gap:var(--space-2);padding-block:var(--space-4)}
+.inbox-log__note{max-width:none;margin:auto 0;padding-block:var(--space-8);text-align:center;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
+.inbox-day{align-self:center;max-width:none;margin:var(--space-2) 0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
+.inbox-msg{align-self:flex-start;max-width:min(80%,calc(var(--space-24) * 6));padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);background:var(--bg-subtle);overflow-wrap:anywhere}
+.inbox-msg[data-mine]{align-self:flex-end;background:var(--selected-bg)}
+.inbox-msg p{max-width:none;margin:0;white-space:pre-wrap;font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text)}
+.inbox-msg time{display:block;text-align:right;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3);font-variant-numeric:tabular-nums}
+.inbox-retry{display:flex;align-items:center;gap:var(--space-3);font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--danger-700)}
+.inbox-compose{position:sticky;bottom:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-2);align-items:end;padding-block:var(--space-3) max(var(--space-3),env(safe-area-inset-bottom));border-top:1px solid var(--border-subtle);background:var(--bg)}
+.ma-proto .inbox-compose .ma-textarea{min-height:var(--control-h);max-height:calc(var(--space-24) * 2);padding-block:var(--space-2);resize:none;field-sizing:content}
+.ma-proto .inbox-compose .ma-btn{min-height:var(--control-h);font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);font-feature-settings:normal;letter-spacing:normal}
+.inbox-compose .ma-field__error{grid-column:1 / -1;margin:0}
+.inbox[data-view="thread"] .inbox-list{display:none}
+html:has(.inbox-thread--sheet){overflow:hidden}
+.inbox-thread--sheet{position:fixed;inset:var(--header-h) 0 0;z-index:var(--z-sticky);padding-inline:var(--gutter);background:var(--bg)}
+.inbox-thread--sheet .inbox-head{padding-top:0}
+.inbox-thread--sheet .inbox-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+@media(min-width:1024px){
+ .inbox[data-view]{grid-template-columns:calc(var(--space-24) * 3 + var(--space-16) + var(--space-2)) minmax(0,1fr);height:min(calc(var(--space-24) * 7),calc(100dvh - var(--header-h) - var(--space-8)))}
+ .inbox-list{overflow-y:auto;overscroll-behavior:contain}
+ .inbox-thread{min-height:0;padding-inline-start:var(--space-6);border-left:1px solid var(--border-subtle)}
+ .inbox-head{padding-top:0}
+ .inbox-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-inline-end:var(--space-2)}
+ .inbox-compose{position:static;padding-bottom:0}
+}
+@media(prefers-reduced-motion:reduce){:is(.inbox,.inbox-thread) *{transition:none!important;animation:none!important}}
 
 /* Guest /account/: one centred 440px column, no card. */
 .auth-page{width:min(calc(var(--space-24) * 4 + var(--space-10) + var(--space-2) + var(--space-6)),100%);margin-inline:auto}

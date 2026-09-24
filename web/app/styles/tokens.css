@@ -81,6 +81,13 @@
   --catalog-band-bg:var(--blue-900);
   --avatar-bg:var(--blue-100);
   --avatar-text:var(--blue-700);
+  /* Initials tones, picked per name by CompanyAvatar (data-tone 1–6); text/bg contrast 6.5–8.5. */
+  --avatar-1-bg:var(--blue-100); --avatar-1-text:var(--blue-800);
+  --avatar-2-bg:#e2efee; --avatar-2-text:#0b5852;
+  --avatar-3-bg:#e8efe7; --avatar-3-text:#2f5e2c;
+  --avatar-4-bg:#f6eae1; --avatar-4-text:#873e07;
+  --avatar-5-bg:#f0e7f1; --avatar-5-text:#5e2c69;
+  --avatar-6-bg:#f6e7ea; --avatar-6-text:#87273b;
   --scrim:color-mix(in srgb,var(--ink-950) 48%,transparent);
 
   /* ---------- focus: on every interactive element ---------- */
