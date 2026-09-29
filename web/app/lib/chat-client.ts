@@ -25,7 +25,7 @@ type Source = {
 };
 const sources = new Map<string, Source>();
 
-/** One 60 s poll per signed-in user feeds every badge and inbox list: the list when anyone shows it
+/** One 10 s poll per signed-in user feeds every badge and inbox list: the list when anyone shows it
  *  (its unread counts give the total), otherwise the unread count alone. Also runs on tab return
  *  and on chat changes elsewhere. */
 function feed(owner: string): Source {
@@ -49,7 +49,8 @@ function feed(owner: string): Source {
         failed = false;
       } catch (err) {
         const error = chatErrorText(err);
-        if (src.listSubs) src.state = { ...src.state, list: { error } };
+        // Keep the open thread mounted on background failures so its draft survives.
+        if (src.listSubs) src.state = { ...src.state, list: { ...src.state.list, error } };
         if (!failed) toast(error);
         failed = true;
       } finally { busy = false; }
@@ -74,7 +75,7 @@ function useFeed(store: Store | undefined, owner: string | undefined, wantsList:
     if (wantsList) src.listSubs++;
     if (src.listeners.size === 1) {
       const run = () => void src.run();
-      const timer = window.setInterval(run, 60000);
+      const timer = window.setInterval(run, 10000);
       window.addEventListener("meetany:chat-changed", run);
       document.addEventListener("visibilitychange", run);
       src.stop = () => { clearInterval(timer); window.removeEventListener("meetany:chat-changed", run); document.removeEventListener("visibilitychange", run); };

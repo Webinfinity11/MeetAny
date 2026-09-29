@@ -69,7 +69,7 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
   const active = items?.find(c => c.id === selected) || (wide && items?.length ? items[0] : null);
 
   if (!current) return <section className="inbox"><p className="account-empty" role="status">მიმოწერები იტვირთება…</p></section>;
-  if (current.error) return <section className="inbox"><div role="alert" className="inbox-note"><p className="account-empty">{current.error}</p><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div></section>;
+  if (current.error && !items) return <section className="inbox"><div role="alert" className="inbox-note"><p className="account-empty">{current.error}</p><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div></section>;
   if (!items?.length) return <section className="inbox">
     <div className="inbox-note">
       <p className="account-empty">საუბარი ჯერ არ არის.</p>
