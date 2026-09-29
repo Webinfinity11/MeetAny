@@ -3,6 +3,7 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
+import assert from 'node:assert/strict';
 const base = process.env.BASE || 'http://localhost:3003';
 const ledger = JSON.parse(fs.readFileSync(new URL('../../DEMO-ACCOUNTS.local.md', import.meta.url), 'utf8').match(/```json\n([\s\S]*?)\n```/)[1]);
 const account = ledger.accounts.owner_admin;
@@ -10,6 +11,7 @@ const out = path.resolve('qa/shots/admin-2026-09-29');
 fs.mkdirSync(out, { recursive: true });
 const browser = await chromium.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
 const errors = [], results = [];
+let stage = 'login';
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   page.on('pageerror', e => errors.push(e.message.slice(0, 200)));
@@ -26,10 +28,28 @@ try {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: width === 1440 ? 1000 : 844 });
     for (const tab of ['requests', 'users', 'offers', 'audit', 'contacts']) {
+      stage = `${tab} ${width}`;
+      const method = { requests: 'admin_search_requests', users: 'admin_search_users', offers: 'admin_search_offers', audit: 'admin_list_audit_v2', contacts: 'admin_contact_events' }[tab];
+      const responsePromise = page.waitForResponse(r => r.url().endsWith('/rpc/'+method) && r.request().method() === 'POST', { timeout: 90000 });
       await page.goto(`${base}/admin/?tab=${tab}`, { waitUntil: 'networkidle' });
+      const response = await responsePromise;
+      assert.equal(response.status(), 200, `${method} response`);
+      const data = await response.json();
       await settle();
+      assert.equal(await page.locator('nav.ma-tabs a').count(), 5);
+      assert.equal(await page.locator(`nav.ma-tabs a[href="/admin/?tab=${tab}"][aria-current="page"]`).count(), 1);
+      assert(!(await page.locator('main').innerText()).includes('საჭიროა ბაზის განახლება'));
+      if (tab === 'offers' || tab === 'audit') {
+        assert(data.items.length > 0, `${tab} live rows required`);
+        await page.waitForFunction(count => document.querySelectorAll('main tbody tr').length === count, data.items.length);
+        if (tab === 'audit') {
+          const named = data.items.find(row => row.actor_name);
+          assert(named, 'Server audit actor name required');
+          assert((await page.locator('main td[data-label="ადმინისტრატორი"]').allTextContents()).some(text => text.includes(named.actor_name)));
+        }
+      }
       await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' });
-      await page.screenshot({ path: path.join(out, `verified-${tab}-${width}.png`), fullPage: true });
+      await page.screenshot({ path: path.join(out, `v2-${tab}-${width}.png`), fullPage: true });
       results.push({ tab, width,
         current: await page.locator('nav.ma-tabs a[aria-current="page"]').allTextContents(),
         tabs: await page.locator('nav.ma-tabs a').count(),
@@ -38,6 +58,7 @@ try {
         overflow: await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth)) });
     }
   }
+  stage = 'empty and moderation sheet';
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${base}/admin/?tab=requests&q=zzzz-no-match`, { waitUntil: 'networkidle' });
   await settle();
@@ -52,7 +73,7 @@ try {
   console.log(JSON.stringify({ base, results, errors }, null, 1));
   if (errors.length || results.some(r => r.overflow)) process.exitCode = 1;
 } catch (e) {
-  console.error(String(e.message).replaceAll(account.password, '[redacted]').slice(0, 600));
+  console.error(`FAIL ${stage} (${e.name})`);
   console.log(JSON.stringify({ base, results, errors }, null, 1));
   process.exitCode = 1;
 } finally { await browser.close(); }
