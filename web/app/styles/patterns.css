@@ -341,7 +341,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
  .ma-header:has([aria-controls="notification-list"]) .ma-header__brand{gap:var(--space-1)}
  .ma-header__actions .ma-header__cta{flex-shrink:0}
 }
-@keyframes catalog-enter{from{opacity:0;transform:translateY(calc(var(--space-1)*1.5))}to{opacity:1;transform:none}}
+@keyframes catalog-enter{from{opacity:.72;transform:translateY(calc(var(--space-1)*1.5))}to{opacity:1;transform:none}}
 @keyframes catalog-pulse{0%,100%{opacity:1}50%{opacity:.7}}
 :is(.account-page,.auth-page,.request-form) :is(.account-link,.auth-link,.request-form__cancel){display:inline-flex;align-items:center;justify-self:start;min-height:var(--tap-min);padding:0;border:0;background:none;font:inherit;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);color:var(--text-link);text-decoration:none;cursor:pointer;font-feature-settings:var(--catalog-title-case);letter-spacing:normal}
 :is(.account-page,.auth-page,.request-form) :is(.account-link,.auth-link,.request-form__cancel):hover{color:var(--action-hover);text-decoration:underline}

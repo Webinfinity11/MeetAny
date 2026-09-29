@@ -402,8 +402,9 @@
   animation: catalog-enter var(--motion-enter) var(--motion-ease-out) backwards;
   animation-delay: calc(var(--i) * var(--motion-stagger));
 }
+/* Starts at .72, not 0: in a hidden WebView the animation may never run, and content must stay readable. */
 @keyframes catalog-enter {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: .72; transform: translateY(6px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .catalog-page [data-enter] { animation: none; }
