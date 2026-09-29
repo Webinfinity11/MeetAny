@@ -1,7 +1,7 @@
 import { assert, db, rpc, go, until } from '../lib.mjs';
 export default async function(t) {
   const p = await t.page();
-  const admin = await t.page('admin');
+  const admin = await t.page('owner_admin');
   const requests = await db(p, 'requests?select=*');
   const companies = await rpc(p, 'list_companies');
   let requestLink, companyLink;

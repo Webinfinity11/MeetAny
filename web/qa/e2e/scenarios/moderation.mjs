@@ -6,7 +6,7 @@ async function confirm(p, row, action) {
   await p.locator('#moderation').waitFor({ state: 'hidden' });
 }
 export default async function(t) {
-  const p = await t.page('admin'), client = await t.page('hotel'), guest = await t.page();
+  const p = await t.page('owner_admin'), client = await t.page('hotel'), guest = await t.page();
   const request = await t.fixture(client, 'მოდერაცია');
   await t.step('მოთხოვნის დამალვა და დაბრუნება', 'საჯარო GET-ში ქრება და ჩნდება; UI სტატუსი იცვლება', async () => {
     await go(p, '/admin/?tab=requests&q=' + encodeURIComponent(request.id));

@@ -6,7 +6,7 @@ async function confirm(p, row, action) {
   await p.locator('#moderation').waitFor({ state: 'hidden' });
 }
 export default async function(t) {
-  const p = await t.page('admin'), guest = await t.page();
+  const p = await t.page('owner_admin'), guest = await t.page();
   const users = await rpc(p, 'admin_list_users');
   // Use an unverified company so verified_at is restored exactly to NULL.
   const company = users.find(u => u.role === 'company' && !u.verified && !u.blocked && u.email.startsWith('demo-'));
