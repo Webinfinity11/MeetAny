@@ -183,3 +183,6 @@
  .request-starter-bottom{grid-template-columns:minmax(0,1fr);gap:var(--space-4)}
  .request-starter-form .ma-input{font-size:var(--fs-body)}
 }
+
+/* Mtavruli only on the home hero title. */
+.ma #discovery-title{font-feature-settings:var(--theme-caps-hero);letter-spacing:.02em}

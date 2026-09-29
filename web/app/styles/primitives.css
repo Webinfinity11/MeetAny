@@ -10,6 +10,11 @@
 .ma-btn--ghost{--btn-bg:var(--btn-ghost-bg);--btn-fg:var(--btn-ghost-text)}
 .ma-btn--ghost:hover{--btn-bg:var(--bg-muted)}
 .ma-btn--ghost:active{--btn-bg:var(--ink-150)}
+.ma-btn--accent{--btn-bg:var(--btn-accent-bg);--btn-fg:var(--btn-accent-text)}
+.ma-btn--accent:hover{--btn-bg:var(--btn-accent-hover)}
+.ma-btn--tint{--btn-bg:var(--btn-tint-bg);--btn-fg:var(--btn-tint-text)}
+.ma-btn--tint:hover{--btn-bg:var(--btn-tint-hover)}
+.ma-btn--tint:active{--btn-bg:var(--blue-200)}
 .ma-btn--danger{--btn-bg:var(--btn-danger-bg);--btn-fg:var(--btn-danger-text)}
 .ma-btn--danger:hover{--btn-bg:var(--danger-700)}
 .ma-btn--danger:active{--btn-bg:var(--danger-700)}
