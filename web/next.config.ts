@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
+// Vercel serves HTTPS. A local `next start` is plain HTTP, where WebKit applies the upgrade
+// to localhost too and every stylesheet and script fails to load.
+const isVercel = !!process.env.VERCEL;
 
 // One public Auth URL drives both the browser bundle and CSP. Rebuild when changing environments.
 const authBaseUrl = (process.env.NEON_AUTH_BASE_URL || "").trim().replace(/\/+$/, "");
@@ -21,7 +24,7 @@ const csp = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  ...(isVercel ? ["upgrade-insecure-requests"] : []),
 ].join("; ");
 
 const securityHeaders = [
