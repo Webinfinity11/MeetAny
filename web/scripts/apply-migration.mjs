@@ -3,6 +3,12 @@ import { Pool } from '@neondatabase/serverless';
 // Deliberately pinned to the authorized test branch. Never print connection details.
 const migration=process.argv[2]||'contact-events';
 const plans={
+ 'admin-v2': {
+  file: '20260929-admin-v2',
+  tables: ['moderation_audit'],
+  routines: ['admin_search_offers', 'admin_delete_offer',
+    'admin_delete_request_v2', 'admin_list_audit_v2', 'admin_stats'],
+ },
  addresses:{tables:[],routines:['create_request','update_request','update_my_profile','list_companies']},
  'contact-events':{tables:['contact_events'],routines:['log_contact_event','admin_contact_stats','admin_contact_events']},
  messaging:{tables:['conversations','messages'],routines:['start_conversation','send_message','list_my_conversations','list_messages','mark_read','unread_message_count','admin_message_stats','admin_list_conversations','admin_conversation_messages']},
@@ -27,9 +33,9 @@ try {
  (select count(*)::int from information_schema.tables where table_schema='meetany_private' and table_name=any($1::text[])) tables,
  (select count(*)::int from information_schema.routines where routine_schema='public' and routine_name=any($2::text[])) routines`,[plan.tables,plan.routines]);
  if(rows[0].tables!==plan.tables.length||rows[0].routines!==plan.routines.length) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
- if(migration==='admin-api') {
-  const {rows:[v]}=await pool.query(`select position('adminApiVersion' in prosrc)>0 ok from pg_proc where oid='public.admin_stats()'::regprocedure`);
-  if(!v.ok) throw Object.assign(new Error(),{code:'MISSING_API_VERSION'});
+ if(migration==='admin-api'||migration==='admin-v2') {
+  const {rows:[v]}=await pool.query(`select prosrc from pg_proc where oid='public.admin_stats()'::regprocedure`);
+  if(!new RegExp("'adminApiVersion'\\s*,\\s*"+(migration==='admin-v2'?2:1)+"\\s*,").test(v.prosrc)) throw Object.assign(new Error(),{code:'MISSING_API_VERSION'});
  }
  if(migration==='empty-conversations') {
   const {rows:[v]}=await pool.query(`select (select count(*)::int from information_schema.columns where table_schema='meetany_private' and table_name='conversations' and column_name='started_by') started_by,
