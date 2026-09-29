@@ -46,9 +46,6 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
     return (
       <div className="ma-page">
         <div className="ma-empty">
-          <span className="ma-empty__icon">
-            <Icon name="search" />
-          </span>
           <h2 className="ma-empty__title">კომპანია ვერ მოიძებნა</h2>
           <Link className="ma-btn ma-btn--secondary" href="/companies/">
             კომპანიების კატალოგზე დაბრუნება

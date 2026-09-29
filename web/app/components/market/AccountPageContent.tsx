@@ -384,7 +384,18 @@ export function AccountPageContent() {
   const hasMe = !!me;
   useEffect(() => {
     if (!hasMe || tab !== "profile" || !(toAlerts || window.location.hash === "#alerts")) return;
-    document.getElementById("alerts")?.scrollIntoView({ block: "start" });
+    const alerts = document.getElementById("alerts");
+    if (!alerts) return;
+    // Scroll after both settings and notices replace their loading placeholders.
+    const scroll = () => {
+      if (alerts.querySelector('[aria-busy="true"]')) return;
+      alerts.scrollIntoView({ block: "start" });
+      observer.disconnect();
+    };
+    const observer = new MutationObserver(scroll);
+    observer.observe(alerts, { childList: true, subtree: true, attributes: true, attributeFilter: ["aria-busy"] });
+    scroll();
+    return () => observer.disconnect();
   }, [hasMe, tab, toAlerts, searchParams]);
 
   const data = useMemo(() => {

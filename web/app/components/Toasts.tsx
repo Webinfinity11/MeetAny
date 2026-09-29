@@ -16,5 +16,5 @@ export function Toasts() {
     window.addEventListener("meetany:toast", receive);
     return () => {window.removeEventListener("meetany:toast", receive); timers.forEach(clearTimeout);};
   }, []);
-  return <div className="ma-toasts" aria-live="polite">{items.map(t => <div className="ma-toast ma-toast--success" role="status" key={t.id}><Icon name="circle-check"/><span className="ma-toast__text">{t.message}</span><button className="ma-toast__close" aria-label="დახურვა" onClick={() => setItems(items.filter(i => i.id !== t.id))}><Icon name="x"/></button></div>)}</div>;
+  return <div className="ma-toasts" aria-live="polite">{items.map(t => <div className="ma-toast" role="status" key={t.id}><Icon name="info"/><span className="ma-toast__text">{t.message}</span><button className="ma-toast__close" aria-label="დახურვა" onClick={() => setItems(items.filter(i => i.id !== t.id))}><Icon name="x"/></button></div>)}</div>;
 }

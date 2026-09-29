@@ -230,3 +230,5 @@
 
 .company-identity-summary{margin:var(--space-3) 0 0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-2);overflow-wrap:anywhere}
 .ma-proto .company-service-request{display:flex;margin-top:var(--space-2);font-size:var(--fs-sm);line-height:var(--lh-sm)}
+/* Keep the footer below the viewport while detail/loading/empty states swap. */
+body:is([data-market-page="request"],[data-market-page="company"]) .ma-main{min-height:calc(100svh - var(--header-h))}

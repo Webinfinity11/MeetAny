@@ -200,3 +200,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .account-page .account-section__title{font-size:var(--fs-title);line-height:var(--lh-title)}
  .account-row{padding-block:var(--space-4);gap:var(--space-2)}
 }
+
+/* Reserve the account viewport while authentication and its form load. */
+body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-h))}

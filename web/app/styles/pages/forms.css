@@ -1,6 +1,6 @@
 /* pages/forms: shared tokens; original selector specificity is preserved. */
 .ma-sheet.request-form{border-radius:var(--radius-lg);box-shadow:var(--shadow-4)}
-@media(min-width:768px){.ma-proto .ma-sheet.request-form{height:fit-content;max-height:90vh}}
+@media(min-width:768px){.ma-proto .ma-sheet.request-form{height:90vh;max-height:90vh}}
 .request-form__skeleton{display:grid;gap:var(--space-4);padding-block:var(--space-2)}
 .request-form__skeleton .ma-skel:nth-child(2){width:70%}
 .request-form__skeleton .ma-skel:nth-child(3){width:45%}

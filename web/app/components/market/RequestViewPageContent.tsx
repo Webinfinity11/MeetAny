@@ -1,5 +1,6 @@
 "use client";
 
+import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { CustomSelect } from "../ui/CustomSelect";
 import { DetailSkeleton } from "./Skeletons";
 
@@ -34,6 +35,7 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const v = useFieldErrors();
   const [draftLoaded, setDraftLoaded] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,6 +54,11 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!store || pending) return;
+    const errors: FieldErrors = {};
+    if (body.trim().length < 10) errors["of-body"] = body.trim() ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე შენი შეთავაზება";
+    const days = Number(deliveryDays);
+    if (deliveryDays.trim() && (!Number.isInteger(days) || days < 0 || days > 365)) errors["of-days"] = "მიწოდების ვადა უნდა იყოს 0-დან 365 დღემდე";
+    if (!v.check(errors, ["of-days", "of-body"])) return;
     setPending(true);
     setError(null);
     try {
@@ -67,18 +74,20 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   }
 
   return (
-    <form className="ma-form" onSubmit={submit}>
+    <form className="ma-form" onSubmit={submit} noValidate>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="of-days">
           მიწოდება (დღე) <span className="ma-field__opt">არასავალდებულო</span>
         </label>
-        <input className="ma-input" id="of-days" inputMode="numeric" value={deliveryDays} onChange={(e) => setDeliveryDays(e.target.value)} />
+        <input className="ma-input" inputMode="numeric" value={deliveryDays} onChange={(e) => {setDeliveryDays(e.target.value); v.clear("of-days");}} {...v.control("of-days")} />
+        {v.message("of-days")}
       </div>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="of-body">
           შეთავაზების აღწერა *
         </label>
-        <textarea className="ma-textarea" id="of-body" required minLength={10} maxLength={2000} value={body} onChange={(e) => setBody(e.target.value)} />
+        <textarea className="ma-textarea" required minLength={10} maxLength={2000} value={body} onChange={(e) => {setBody(e.target.value); v.clear("of-body");}} {...v.control("of-body")} />
+        {v.message("of-body")}
       </div>
       {error ? (
         <p className="ma-field__error" role="alert">
@@ -169,9 +178,6 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     return (
       <div className="ma-page">
         <div className="ma-empty">
-          <span className="ma-empty__icon">
-            <Icon name="search" />
-          </span>
           <h2 className="ma-empty__title">მოთხოვნა ვერ მოიძებნა</h2>
           <Link className="ma-btn ma-btn--secondary" href="/requests/">
             მოთხოვნებზე დაბრუნება
@@ -250,9 +256,6 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           {compare && offers.length > 1 ? <div className="ma-table-wrap"><table className="ma-table"><caption>შეთავაზებების შედარება</caption><thead><tr><th>კომპანია</th><th>მიწოდება</th><th>პირობები</th></tr></thead><tbody>{orderedOffers.map(o => <tr key={o.id}><td data-label="კომპანია">{o.companyName}</td><td data-label="მიწოდება">{o.deliveryDays != null ? `${o.deliveryDays} დღე` : "დასაზუსტებელია"}</td><td data-label="პირობები">{o.body}</td></tr>)}</tbody></table></div> : null}
           {offers.length === 0 ? (
             <div className="ma-empty">
-              <span className="ma-empty__icon">
-                <Icon name="search" />
-              </span>
               <h2 className="ma-empty__title">ჯერ შეთავაზება არ მიგიღია</h2>
               <p className="ma-empty__text">კომპანიების პასუხები აქ გამოჩნდება. მეტი გამოხმაურებისთვის გააზიარე მოთხოვნა.</p>
             </div>
