@@ -12,8 +12,9 @@ import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
-import { categories, cities, currentCategory, groupNames } from "../../lib/categories";
-import { categoryOptions } from "./CategoryOptions";
+import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
+import { FacetList, type Facet } from "./FacetList";
+import { CatalogHeader } from "./CatalogHeader";
 import { useFilters } from "../../lib/use-filters";
 import { postedLabel } from "../../lib/format";
 import { RequestFormSheet } from "./RequestFormSheet";
@@ -31,13 +32,13 @@ type MappedRequest = {
 
 function skeleton() {
   return (
-    <div className="ma-stack" aria-busy="true" aria-label="მონაცემები იტვირთება">
-      <p>იტვირთება…</p>
-      {[0, 1, 2].map((i) => (
-        <div className="ma-card ma-stack" key={i}>
-          <span className="ma-skel ma-skel--title" />
-          <span className="ma-skel ma-skel--line" />
-          <span className="ma-skel ma-skel--line ma-skel--w60" />
+    <div className="catalog-skeleton" aria-busy="true" aria-label="მოთხოვნები იტვირთება">
+      {[0, 1, 2, 3].map((i) => (
+        <div className="catalog-skeleton__card" key={i}>
+          <span className="ma-skel catalog-skeleton__meta" />
+          <span className="ma-skel catalog-skeleton__title" />
+          <span className="ma-skel catalog-skeleton__line" />
+          <span className="ma-skel catalog-skeleton__line catalog-skeleton__line--short" />
         </div>
       ))}
     </div>
@@ -61,30 +62,15 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     const timer = window.setInterval(refresh, 60000);
     return () => { window.clearTimeout(first); window.clearInterval(timer); };
   }, []);
-  const requestedTab = filters.get("tab", "all");
-  const tab = ["new", "expiring"].includes(requestedTab) ? requestedTab : "all";
-  const listRef = useRef<HTMLDivElement>(null);
-  const previousTab = useRef(tab);
+  // The old "ახალი" / "მალე იწურება" tabs duplicated the period and urgency filters; old links map onto them.
+  const legacyTab = filters.get("tab");
   useEffect(() => {
-    if (previousTab.current === tab) return;
-    previousTab.current = tab;
-    const list = listRef.current;
-    if (!list) return;
-    list.dataset.tabChanged = "";
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const style = getComputedStyle(list);
-    const animation = list.animate([{opacity: .5}, {opacity: 1}], {
-      duration: parseFloat(style.getPropertyValue("--motion-fast")),
-      easing: style.getPropertyValue("--motion-ease").trim(),
-    });
-    return () => animation.cancel();
-  }, [tab]);
-  const tabs = [{id: "all", label: "ყველა"}, {id: "new", label: "ახალი"}, {id: "expiring", label: "მალე იწურება"}];
-  const tabHref = (id: string) => {
-    const next = new URLSearchParams(searchParams.toString());
-    if (id === "all") next.delete("tab"); else next.set("tab", id);
-    return `/requests/?${next.toString()}`;
-  };
+    if (legacyTab !== "new" && legacyTab !== "expiring") return;
+    const next = new URLSearchParams(window.location.search);
+    next.delete("tab");
+    next.set(legacyTab === "new" ? "period" : "urgent", "1");
+    window.history.replaceState(window.history.state, "", `/requests/?${next.toString()}`);
+  }, [legacyTab]);
   const [formOpen, setFormOpen] = useState(autoOpenNew);
   const formCategory = searchParams.get("category") || "";
   const formTitle = searchParams.get("title") || "";
@@ -109,10 +95,15 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     [store, category, city, query, period, unanswered, withPhoto, urgent],
   );
 
-  const results = useMemo(() => (ready && available ? list({}).filter(r =>
-    tab === "new" ? now - Date.parse(r.createdAt) >= 0 && now - Date.parse(r.createdAt) < 86400000
-      : tab === "expiring" ? store?.daysLeft(r) <= 3 : true
-  ) : []), [ready, available, list, tab, now, store]);
+  const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
+  const categoryFacets: Facet[] = useMemo(
+    () => categoryGroups.map(g => ({
+      id: g.id, label: g.short, count: list({ category: g.id }).length,
+      children: g.items.length > 1 ? g.items.map(([id, label]) => ({ id, label, count: list({ category: id }).length })) : undefined,
+    })),
+    [list],
+  );
+  const allCount = ready && available ? list({ category: "" }).length : 0;
 
   const cityCounts = useMemo(() => Object.fromEntries(Object.keys(cities).map(id => [id, list({ city: id }).length])), [list]);
 
@@ -178,52 +169,59 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
     ...(urgent ? [{key: "urgent", label: "სასწრაფო"}] : []),
   ];
-  // Desktop shows the choices inline; below 768px the same selects live in the filter sheet with visible labels.
-  const choice = (placement: "desktop" | "mobile", kind: "category" | "city") => {
-    const id = `request-${kind}-${placement}`, label = kind === "category" ? "კატეგორია" : "ქალაქი";
-    const select = <CustomSelect className="ma-select" id={id} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
-      <option value="">{kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
-      {kind === "category" ? categoryOptions(true) : Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text} ({cityCounts[value]})</option>)}
-    </CustomSelect>;
-    // Desktop reads like the sort control: "კატეგორია: ყველა".
-    return placement === "desktop" ? <div className="ma-field request-board-choice"><label htmlFor={id}>{label}:</label>{select}</div> : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;
-  };
-
   const clearFilters = () => filters.set({city: "", category: "", period: "", unanswered: "", photo: "", urgent: ""});
 
-  const requestFilters = (placement: "desktop" | "mobile") => <div className="request-filter-fields">
-    {choice(placement, "category")}{choice(placement, "city")}
-    <div className="ma-field"><label className="ma-field__label" htmlFor={`request-period-${placement}`}>გამოქვეყნების დრო</label><CustomSelect className="ma-select" id={`request-period-${placement}`} value={period} onChange={e => filters.set({period:e.target.value})}><option value="">ყველა პერიოდი</option><option value="1">ბოლო 24 საათი</option><option value="7">ბოლო 7 დღე</option></CustomSelect></div>
-    <fieldset className="request-filter-checks"><legend>დამატებით</legend><label className="ma-check"><input type="checkbox" checked={unanswered} onChange={e => filters.set({unanswered:e.target.checked ? "1" : ""})} /><span>ჯერ არ აქვს შეთავაზება</span></label><label className="ma-check"><input type="checkbox" checked={withPhoto} onChange={e => filters.set({photo:e.target.checked ? "1" : ""})} /><span>მხოლოდ ფოტოთი</span></label><label className="ma-check"><input type="checkbox" checked={urgent} onChange={e => filters.set({urgent:e.target.checked ? "1" : ""})} /><span>იწურება 3 დღეში</span></label></fieldset>
-    {activeItems.length ? <button type="button" className="ma-btn ma-btn--secondary catalog-reset" onClick={clearFilters}><Icon name="refresh-cw" />ფილტრების გასუფთავება</button> : null}
+  const requestFilters = (placement: "desktop" | "mobile") => <div className="catalog-filters">
+    <div className="catalog-filter-group">
+      <h2 className="catalog-filter-title">კატეგორია</h2>
+      <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
+    </div>
+    <div className="ma-field catalog-filter-group">
+      <label className="catalog-filter-title" htmlFor={`request-city-${placement}`}>ქალაქი</label>
+      <CustomSelect className="ma-select" id={`request-city-${placement}`} value={city} onChange={e => setCity(e.target.value)}>
+        <option value="">ყველა ქალაქი</option>
+        {Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text} ({cityCounts[value]})</option>)}
+      </CustomSelect>
+    </div>
+    <div className="ma-field catalog-filter-group">
+      <label className="catalog-filter-title" htmlFor={`request-period-${placement}`}>გამოქვეყნდა</label>
+      <CustomSelect className="ma-select" id={`request-period-${placement}`} value={period} onChange={e => filters.set({period: e.target.value})}>
+        <option value="">ნებისმიერ დროს</option><option value="1">ბოლო 24 საათში</option><option value="7">ბოლო 7 დღეში</option>
+      </CustomSelect>
+    </div>
+    <fieldset className="catalog-filter-group catalog-filter-checks">
+      <legend className="catalog-filter-title">დამატებით</legend>
+      <label className="ma-check"><input type="checkbox" checked={unanswered} onChange={e => filters.set({unanswered: e.target.checked ? "1" : ""})} /><span>ჯერ არ აქვს შეთავაზება</span></label>
+      <label className="ma-check"><input type="checkbox" checked={urgent} onChange={e => filters.set({urgent: e.target.checked ? "1" : ""})} /><span>ვადა იწურება 3 დღეში</span></label>
+      <label className="ma-check"><input type="checkbox" checked={withPhoto} onChange={e => filters.set({photo: e.target.checked ? "1" : ""})} /><span>მხოლოდ ფოტოთი</span></label>
+    </fieldset>
   </div>;
 
   const countLabel = !available
     ? ""
     : !ready
-      ? "მოთხოვნები იტვირთება…"
+      ? ""
       : `${rows.length} ღია მოთხოვნა`;
 
   return (
     <div className="ma-page requests-catalog catalog-page request-board">
-        <header className="catalog-header">
-        <div className="catalog-heading"><span className="catalog-overline">ბიზნესები ეძებენ</span><h1 className="ma-h1">ნახე, რას ეძებენ<br />სხვა ბიზნესები.</h1><p className="catalog-description">შეარჩიე მოთხოვნა შენი საქმიანობის მიხედვით და შესთავაზე პირობები.</p></div>
-        <div className="catalog-search-area"><span className="catalog-result-count" role="status">{countLabel}</span>
-        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} /><p className="catalog-search-help">მომწოდებელს ეძებ? <Link href="/requests/new/">დაამატე შენი მოთხოვნა</Link></p></div>
-        </header>
-        {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
-        <div className="request-workspace">
-        <aside className="request-filter-sidebar" aria-label="მოთხოვნების ფილტრები"><h2><Icon name="sliders-horizontal" />ფილტრები{activeItems.length ? <span>{activeItems.length}</span> : null}</h2>{requestFilters("desktop")}</aside>
-        <div className="request-workspace-main">
+      <CatalogHeader
+        overline="ბიზნესები ეძებენ"
+        title="ღია მოთხოვნები"
+        description="ნახე, რა სჭირდებათ სხვა ბიზნესებს, და გაუგზავნე შეთავაზება."
+        search={<CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი, შეფუთვა, გადაზიდვა" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />}
+        help={<>მომწოდებელს ეძებ? <Link href="/requests/new/">დაამატე მოთხოვნა</Link></>}
+      />
+        <div className="catalog-workspace">
+        <aside className="catalog-sidebar" aria-label="მოთხოვნების ფილტრები">{requestFilters("desktop")}</aside>
+        <div className="catalog-main">
         <ResultsBar
+            count={countLabel}
+            utility={ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებები</Link> : null}
             items={activeItems}
             onRemove={key => filters.set({[key]: ""})}
             onClear={clearFilters}
             filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length > 0 ? ` · ${activeItems.length}` : ""}</button>}
-            tabs={<><nav className="request-board-tabs" aria-label="მოთხოვნების ხედები">
-              {tabs.map(item => <Link key={item.id} href={tabHref(item.id)} scroll={false} aria-current={tab === item.id ? "page" : undefined}>{item.label}</Link>)}
-            </nav>
-            </>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
               {value: "expiring", label: "მალე იწურება"},
@@ -231,7 +229,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             ]}}
           />
       <section aria-label="მოთხოვნების სია">
-          <div className="request-card-grid" ref={listRef}>
+          <div className="request-card-grid">
             {!available
               ? (
                   <ServiceUnavailable />
@@ -240,9 +238,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                 ? skeleton()
                 : rows.length === 0
                   ? (
-                      <div className="ma-empty request-board-empty">
-                        <p className="ma-empty__text">{tab === "new" ? "ახალი მოთხოვნა ჯერ არ არის." : "ამ პირობით მოთხოვნა არ არის."}</p>
-                        <button type="button" className="request-board-reset" onClick={() => filters.set({city: "", category: "", q: "", period: "", unanswered: "", photo: "", urgent: "", tab: ""})}>ყველა მოთხოვნის ნახვა</button>
+                      <div className="catalog-empty">
+                        <Icon name="search" />
+                        <h2>ამ პირობით მოთხოვნა ვერ მოიძებნა</h2>
+                        <p>შეცვალე ფილტრები ან ძიება. ახალი მოთხოვნები ყოველდღე ემატება.</p>
+                        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: "", period: "", unanswered: "", photo: "", urgent: ""})}>ყველა მოთხოვნის ნახვა</button>
                       </div>
                     )
                   : <>
@@ -257,7 +257,10 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         triggerRef={filterButtonRef}
-        footer={<button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>{rows.length} მოთხოვნის ჩვენება</button>}
+        footer={<>
+          <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters} disabled={activeItems.length === 0}>გასუფთავება</button>
+          <button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>ნახე {rows.length} მოთხოვნა</button>
+        </>}
       >
         {requestFilters("mobile")}
       </MobileFilterSheet>

@@ -1,0 +1,20 @@
+import type { ReactNode } from "react";
+
+/** Shared catalog page header: overline, title and description on the left, search on the right. */
+export function CatalogHeader({ overline, title, description, search, help }: {
+  overline: string; title: string; description: string; search: ReactNode; help?: ReactNode;
+}) {
+  return (
+    <header className="catalog-header">
+      <div className="catalog-heading">
+        <p className="catalog-overline">{overline}</p>
+        <h1 className="catalog-title">{title}</h1>
+        <p className="catalog-description">{description}</p>
+      </div>
+      <div className="catalog-search-area">
+        {search}
+        {help ? <p className="catalog-search-help">{help}</p> : null}
+      </div>
+    </header>
+  );
+}

@@ -10,6 +10,7 @@ import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
+import { CatalogHeader } from "./CatalogHeader";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
@@ -37,12 +38,13 @@ type MappedCompany = {
 
 function skeleton() {
   return (
-    <div className="ma-stack" aria-busy="true" aria-label="მონაცემები იტვირთება">
-      <p>იტვირთება…</p>
-      {[0, 1, 2].map((i) => (
-        <div className="ma-card ma-stack" key={i}>
-          <span className="ma-skel ma-skel--title" />
-          <span className="ma-skel ma-skel--line" />
+    <div className="catalog-skeleton catalog-skeleton--grid" aria-busy="true" aria-label="კომპანიები იტვირთება">
+      {[0, 1, 2, 3].map((i) => (
+        <div className="catalog-skeleton__card" key={i}>
+          <span className="ma-skel catalog-skeleton__avatar" />
+          <span className="ma-skel catalog-skeleton__title" />
+          <span className="ma-skel catalog-skeleton__line" />
+          <span className="ma-skel catalog-skeleton__line catalog-skeleton__line--short" />
         </div>
       ))}
     </div>
@@ -127,18 +129,16 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: "", coverage: "", sort: ""});
   const filterCount = activeItems.length;
 
-  const countLabel = !available ? "" : !ready ? "კომპანიები იტვირთება…" : `${rows.length} კომპანია`;
+  const countLabel = !available || !ready ? "" : `${rows.length} კომპანია`;
 
   const filtersBody = (placement: "desktop" | "mobile") => (
-    <div className="ma-proto-filters">
-      <div>
-        <h2 className="ma-title">დარგი</h2>
+    <div className="catalog-filters">
+      <div className="catalog-filter-group">
+        <h2 className="catalog-filter-title">დარგი</h2>
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
       </div>
-      <div className="ma-field">
-        <label className="ma-field__label" htmlFor={`company-city-${placement}`}>
-          მომსახურების ქალაქი
-        </label>
+      <div className="ma-field catalog-filter-group">
+        <label className="catalog-filter-title" htmlFor={`company-city-${placement}`}>მომსახურების ქალაქი</label>
         <CustomSelect className="ma-select" id={`company-city-${placement}`} value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="">ყველა ქალაქი</option>
           {cityOptions.map((id) => (
@@ -148,34 +148,32 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
           ))}
         </CustomSelect>
       </div>
-      <div className="ma-field filter-section">
-        <label className="ma-field__label" htmlFor={`company-type-${placement}`}>საქმიანობის მიმართულება</label>
+      <div className="ma-field catalog-filter-group">
+        <label className="catalog-filter-title" htmlFor={`company-type-${placement}`}>საქმიანობის ტიპი</label>
         <CustomSelect className="ma-select" id={`company-type-${placement}`} value={type} onChange={e => filters.set({type: e.target.value})}>
           <option value="">ყველა მიმართულება</option><option value="suppliers">პროდუქციის მომწოდებლები</option><option value="services">მომსახურების კომპანიები</option><option value="distributors">ლოგისტიკა და დისტრიბუცია</option><option value="partners">თანამშრომლობის მსურველები</option>
         </CustomSelect>
       </div>
-      <fieldset className="filter-section filter-options"><legend>მომსახურების არეალი</legend>
+      <fieldset className="catalog-filter-group catalog-filter-checks"><legend className="catalog-filter-title">მომსახურების არეალი</legend>
         <label className="ma-check"><input type="checkbox" checked={coverage} onChange={e => filters.set({coverage: e.target.checked ? "national" : ""})} /><span>ემსახურება მთელ საქართველოს</span></label>
       </fieldset>
-      {/* Desktop only, and only with a filter on; the sheet has its own "გასუფთავება" in the footer. */}
-      {placement === "desktop" && filterCount > 0 ? <button type="button" className="catalog-reset filter-reset" onClick={clearFilters}>
-        ფილტრების გასუფთავება
-      </button> : null}
     </div>
   );
 
   return (
     <div className="ma-page companies-catalog catalog-page">
-      <header className="catalog-header">
-        <div className="catalog-heading"><span className="catalog-overline">მომწოდებლები და მომსახურება</span><h1 className="ma-h1">მომწოდებლები და<br />მომსახურება.</h1><p className="catalog-description">მოძებნე კომპანია საქმიანობისა და ქალაქის მიხედვით. დეტალების დასაზუსტებლად დაუკავშირდი პირდაპირ.</p></div>
-        <div className="catalog-search-area"><span className="catalog-result-count" role="status">{countLabel}</span>
-        <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} /><p className="catalog-search-help">გაქვს კონკრეტული საჭიროება? <Link href="/requests/new/">გამოაქვეყნე მოთხოვნა</Link></p></div>
-      </header>
-      <div className="ma-proto-columns">
-        <aside className="ma-proto-sidebar filter-rail" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
-        <section className="ma-stack" aria-label="კომპანიების სია">
-          <ResultsBar filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
-            utility={ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}
+      <CatalogHeader
+        overline="კომპანიების კატალოგი"
+        title="მომწოდებლები და მომსახურება"
+        description="მოძებნე კომპანია დარგისა და ქალაქის მიხედვით და დაუკავშირდი პირდაპირ."
+        search={<CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="კომპანიის სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} />}
+        help={<>კონკრეტული საჭიროება გაქვს? <Link href="/requests/new/">გამოაქვეყნე მოთხოვნა</Link></>}
+      />
+      <div className="catalog-workspace">
+        <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
+        <section className="catalog-main" aria-label="კომპანიების სია">
+          <ResultsBar count={countLabel} filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
+            utility={ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
           />
           <div className="company-directory-list">
@@ -184,13 +182,15 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
             ) : !ready ? (
               skeleton()
             ) : rows.length === 0 ? (
-              <div className="ma-empty">
-                <p className="ma-empty__text">{query ? `„${query}“-ზე კომპანია ვერ მოიძებნა.` : "ამ პირობით კომპანია არ არის."}</p>
-                <div className="catalog-empty-actions">
-                <Link className="ma-btn ma-btn--primary" href={`/requests/new/?${new URLSearchParams({ title: query, category: industry, city })}`}>გამოაქვეყნე მოთხოვნა</Link>
-                {filterCount > 0
-                  ? <button type="button" className="catalog-reset" onClick={clearFilters}>ფილტრების გასუფთავება</button>
-                  : query ? <button type="button" className="catalog-reset" onClick={() => setQuery("")}>ძიების გასუფთავება</button> : null}
+              <div className="catalog-empty">
+                <Icon name="search" />
+                <h2>{query ? `„${query}“ ვერ მოიძებნა` : "ამ პირობით კომპანია ვერ მოიძებნა"}</h2>
+                <p>გამოაქვეყნე მოთხოვნა და შესაბამისი კომპანიები თავად გამოგიგზავნიან შეთავაზებას.</p>
+                <div className="catalog-empty__actions">
+                  <Link className="ma-btn ma-btn--primary" href={`/requests/new/?${new URLSearchParams({ title: query, category: industry, city })}`}>გამოაქვეყნე მოთხოვნა</Link>
+                  {filterCount > 0
+                    ? <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>ფილტრების გასუფთავება</button>
+                    : query ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setQuery("")}>ძიების გასუფთავება</button> : null}
                 </div>
               </div>
             ) : (
@@ -207,10 +207,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         onOpenChange={setSheetOpen}
         triggerRef={filterButtonRef}
         footer={<>
-          <button type="button" className="catalog-reset" onClick={clearFilters} disabled={filterCount === 0}>გასუფთავება</button>
-          <button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>
-            {rows.length} კომპანიის ჩვენება
-          </button>
+          <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters} disabled={filterCount === 0}>გასუფთავება</button>
+          <button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>ნახე {rows.length} კომპანია</button>
         </>}
       >
         {filtersBody("mobile")}

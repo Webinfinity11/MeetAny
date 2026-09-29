@@ -39,25 +39,32 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
       : r.state === "chosen" ? "მომწოდებელი არჩეულია"
         : r.daysLeft <= 0 ? "დღეს იწურება" : r.daysLeft <= 7 ? `კიდევ ${r.daysLeft} დღე` : null;
   const urgent = r.state === "open" && r.daysLeft <= 7;
+  const hasPhoto = !!r.photo && r.photo !== failedPhoto;
+  const quantity = r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null;
+  const entrance = entranceIndex != null && entranceIndex < 12;
   return (
-    <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
-      <div className="request-card-content">
-        <div className="request-row-context"><span>{categories[r.category] || r.category}</span>{r.isNew ? <span className="request-card-new">ახალი</span> : null}<span>{r.posted}</span></div>
-        <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
-        {r.body ? <p className="request-row-description">{r.body}</p> : null}
-        <p className="request-card-meta">{[r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}</p>
-      {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card-badges">
-        {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
-        {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
-      </div> : null}
+    <article style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entrance ? "" : undefined} className={`request-card${hasPhoto ? " request-card--photo" : ""}${r.isOwn ? " request-card--mine" : closedLike ? " request-card--closed" : ""}`}>
+      <div className="request-card__body">
+        <p className="request-card__context"><span>{categories[r.category] || r.category}</span>{r.isNew ? <span className="catalog-new">ახალი</span> : null}</p>
+        <h2 className="request-card__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
+        {r.body ? <p className="request-card__desc">{r.body}</p> : null}
+        <ul className="request-card__meta" aria-label="დეტალები">
+          {r.cityLabel ? <li><Icon name="map-pin" />{r.cityLabel}</li> : null}
+          {quantity ? <li><Icon name="package" />{quantity}</li> : null}
+          {r.ownerName ? <li><Icon name="building-2" />{r.ownerName}</li> : null}
+        </ul>
+        {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card__badges">
+          {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
+          {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
+        </div> : null}
       </div>
-      {r.photo && r.photo !== failedPhoto ? <div className="request-card-visual" aria-hidden="true">
-        <img src={r.photo} alt="" width={240} height={160} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
+      {hasPhoto ? <div className="request-card__photo" aria-hidden="true">
+        <img src={r.photo!} alt="" width={240} height={240} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
       </div> : null}
-      <div className="request-card-status">
-        <span className="request-row-offers"><Icon name="message-square" /><strong>{r.offerCount}</strong> შეთავაზება</span>
-        {deadline ? <span className={`request-row-deadline${urgent ? " request-card-urgent" : ""}`}><Icon name="clock" />{deadline}</span> : null}
-        <Link className="ma-btn ma-btn--secondary request-row-detail" href={href} tabIndex={-1} aria-label={`${r.title} — დეტალების ნახვა`}>დეტალების ნახვა<Icon name="arrow-right" /></Link>
+      <div className="request-card__footer">
+        <span className="request-card__offers"><Icon name="message-square" /><strong>{r.offerCount}</strong> შეთავაზება</span>
+        {deadline ? <span className={`request-card__deadline${urgent ? " is-urgent" : ""}`}><Icon name="clock" />{deadline}</span> : null}
+        {r.posted ? <span className="request-card__posted">{r.posted}</span> : null}
       </div>
     </article>
   );

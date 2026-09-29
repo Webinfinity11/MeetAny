@@ -13,12 +13,12 @@ export function ActiveFilters({
   onClear: () => void;
 }) {
   return (
-    <div className="ma-cluster" aria-label="აქტიური ფილტრები">
+    <div className="catalog-chips" aria-label="აქტიური ფილტრები">
       {items.map((item) => (
         <button
           key={item.key}
           type="button"
-          className="ma-btn ma-btn--secondary"
+          className="catalog-chip"
           aria-label={`ფილტრის მოხსნა: ${item.label}`}
           onClick={() => onRemove(item.key)}
         >
@@ -26,7 +26,7 @@ export function ActiveFilters({
         </button>
       ))}
       {items.length ? (
-        <button type="button" className="ma-btn ma-btn--ghost" onClick={onClear}>
+        <button type="button" className="catalog-clear" onClick={onClear}>
           გასუფთავება
         </button>
       ) : null}
@@ -35,36 +35,31 @@ export function ActiveFilters({
 }
 
 export function ResultsBar({
+  count,
   items,
   onRemove,
   onClear,
   filterButton,
   utility,
-  tabs,
   sort,
 }: {
+  count?: string;
   items: ActiveFilterItem[];
   onRemove: (key: string) => void;
   onClear: () => void;
   filterButton?: React.ReactNode;
   utility?: React.ReactNode;
-  tabs?: React.ReactNode;
   sort?: { value: string; options: { value: string; label: string }[]; onChange: (v: string) => void };
 }) {
   return (
-    <div className="r2-results-bar">
-      {tabs}
-      <div className="r2-results-summary">
-        <ActiveFilters items={items} onRemove={onRemove} onClear={onClear} />
-      </div>
-      <div className="r2-results-controls">
+    <div className="catalog-results-bar">
+      <p className="catalog-count" role="status">{count}</p>
+      <div className="catalog-results-controls">
         {filterButton}
         {utility}
         {sort ? (
-          <div className="ma-field catalog-sort">
-            <label className="ma-field__label" htmlFor="sort">
-              დალაგება:
-            </label>
+          <div className="catalog-sort">
+            <label htmlFor="sort">დალაგება</label>
             <CustomSelect
               className="ma-select"
               id="sort"
@@ -79,7 +74,8 @@ export function ResultsBar({
             </CustomSelect>
           </div>
         ) : null}
-        </div>
+      </div>
+      {items.length ? <div className="catalog-active-filters"><ActiveFilters items={items} onRemove={onRemove} onClear={onClear} /></div> : null}
     </div>
   );
 }

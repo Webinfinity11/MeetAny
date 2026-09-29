@@ -30,24 +30,24 @@ export function FacetList({
     <button
       key={f.id}
       type="button"
-      className={`ma-proto-filter${!loading && f.id && f.count === 0 ? " ma-proto-filter--empty" : ""}${compact ? " ma-proto-filter--compact" : ""}`}
+      className={`catalog-facet${!loading && f.id && f.count === 0 ? " catalog-facet--empty" : ""}${compact ? " catalog-facet--child" : ""}`}
       title={f.label}
       aria-label={f.label}
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
-      <span className="facet-label">{f.label}</span>
-      <span className="facet-count">{!loading && f.count >= 0 ? f.count : ""}</span>
+      <span className="catalog-facet__label">{f.label}</span>
+      <span className="catalog-facet__count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>
   );
   return (
-    <div>
+    <div className="catalog-facets">
       {entries.map(f => {
         const open = f.children && (activeId === f.id || f.children.some(c => c.id === activeId));
         return <div key={f.id}>{button(f)}{open ? f.children!.filter(c => c.count > 0 || c.id === activeId).map(c => button(c, true)) : null}</div>;
       })}
       {grouped ? <>
-        <p className="facet-group-title">სხვა დარგები</p>
+        <p className="catalog-facet__group">სხვა დარგები</p>
         {empty.map(f => button(f, true))}
       </> : null}
     </div>
