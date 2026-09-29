@@ -53,12 +53,6 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.detail-card {
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
-  background: var(--white);
-  box-shadow: var(--card-shadow);
-}
 .detail-hero__meta,
 .company-hero__meta {
   display: flex;

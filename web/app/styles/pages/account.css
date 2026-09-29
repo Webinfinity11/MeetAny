@@ -406,7 +406,6 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
   text-decoration: none;
   color: var(--action);
 }
-.account-page .ma-form.account-card,
 .account-main--profile > form,
 .account-main--profile > section {
   padding: var(--space-8);

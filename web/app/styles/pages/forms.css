@@ -28,7 +28,6 @@
 .request-form .ma-sheet__close:hover{background:var(--bg-subtle);color:var(--text)}
 .request-form .ma-sheet__body{padding-top:var(--space-5);gap:var(--space-5)}
 .request-form .ma-form{gap:var(--space-4)}
-.request-form__hint{margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
 .request-form .ma-note{font-size:var(--fs-sm);line-height:var(--lh-sm)}
 .request-form input[type="date"]{-webkit-appearance:none;appearance:none;display:block;height:var(--control-h);min-height:var(--control-h);text-align:left;border:1px solid var(--border-input);border-radius:var(--radius-sm);background:var(--white)}
 .request-form .ma-field{align-content:start}

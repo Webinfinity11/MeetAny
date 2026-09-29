@@ -21,7 +21,6 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 .ma-skip:focus{top:12px}
 .ma-h1{font-size:var(--fs-h1);line-height:var(--lh-h1);font-weight:var(--fw-bold);letter-spacing:-.005em}
 .ma-h3{font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-semibold)}
-.ma-title{font-size:var(--fs-title);line-height:var(--lh-title);font-weight:var(--fw-semibold)}
 .ma-eyebrow{display:block;font-size:var(--fs-eyebrow);line-height:var(--lh-eyebrow);font-weight:var(--fw-semibold);letter-spacing:var(--ls-eyebrow);color:var(--text-3);font-feature-settings:var(--ff-eyebrow)!important}
 .ma-prose{max-width:var(--measure);font-size:var(--fs-body-lg);line-height:var(--lh-body-lg);color:var(--ink-800);white-space:pre-line;overflow-wrap:break-word}
 .ma-lead{max-width:var(--measure);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text-2)}
