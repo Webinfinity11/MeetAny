@@ -29,7 +29,9 @@ export function CompaniesMap({ companies }: { companies: MapCompany[] }) {
       await import("leaflet.markercluster");
       if (cancelled || !host.current || map.current) return;
       leaflet.current = L;
-      const m = L.map(host.current, { zoomControl: false, scrollWheelZoom: false, attributionControl: true }).setView(GEORGIA, 7);
+      // fadeAnimation off: tile fade-in waits on requestAnimationFrame, which never runs in a hidden
+      // WebView (DevApp panel, background tabs), leaving tiles at opacity 0.
+      const m = L.map(host.current, { zoomControl: false, scrollWheelZoom: false, attributionControl: true, fadeAnimation: false }).setView(GEORGIA, 7);
       L.control.zoom({ position: "bottomright" }).addTo(m);
       // OpenStreetMap's own tiles: keyless, fine for this traffic under its usage policy (attribution
       // required). Switch the URL to a keyed provider (MapTiler/Stadia) if traffic grows.
