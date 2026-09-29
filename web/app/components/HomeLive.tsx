@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomSelect } from "./ui/CustomSelect";
-import { useRef, useState, type CSSProperties } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMarketStore } from "../lib/market-client";
@@ -36,27 +36,19 @@ export function HomeStats() {
 }
 
 export function HomeCategories() {
-  return <div className="home-role-list">{needs.map((c, index) => <Link key={c.id} href={`/companies/?type=${c.id}`}>
-    <span className="home-3d home-3d--role" aria-hidden="true" style={{backgroundPosition: `${(index % 2) * 100}% ${Math.floor(index / 2) * 100}%`} as CSSProperties} />
+  return <div className="home-role-list">{needs.map(c => <Link key={c.id} href={`/companies/?type=${c.id}`}>
+    <span className="home-role-icon" aria-hidden="true"><Icon name={c.icon} /></span>
     <span><strong>{c.title}</strong><small>{c.sub}</small></span>
     <Icon name="arrow-right" />
   </Link>)}</div>;
 }
 
-// 3D objects exist for eight groups (industry-objects.png, 4×2); the rest stay one click away in the catalog.
-const industryObjects: [group: string, col: number, row: number][] = [
-  ["interior", 0, 0], ["marketing", 1, 0], ["logistics", 2, 0], ["food", 3, 0],
-  ["production", 0, 1], ["tourism", 1, 1], ["business", 2, 1], ["it", 3, 1],
-];
-
 export function HomeIndustries() {
   const {store, ready, available} = useMarketStore();
-  return <ul className="home-industry-grid" aria-label="საქმიანობის მიმართულებები">{industryObjects.map(([id, col, row]) => {
-    const group = categoryGroups.find(g => g.id === id);
-    if (!group) return null;
+  return <ul className="home-industry-grid" aria-label="საქმიანობის მიმართულებები">{categoryGroups.map(group => {
     const count = ready && available ? store?.listCompanies({industry: group.id}).length : null;
     return <li key={group.id}><Link href={`/companies/?industry=${group.id}`}>
-      <span className="home-3d home-3d--industry" aria-hidden="true" style={{backgroundPosition: `${col * 100 / 3}% ${row * 100}%`} as CSSProperties} />
+      <span className="home-industry-icon" aria-hidden="true"><Icon name={group.icon} /></span>
       <span className="home-industry-text"><strong>{group.short}</strong><small>{count == null ? "\u00a0" : count ? `${count} კომპანია` : "მალე"}</small></span>
     </Link></li>;
   })}</ul>;

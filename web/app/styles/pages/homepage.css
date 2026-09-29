@@ -590,57 +590,6 @@
   --btn-bg: var(--blue-50);
 }
 
-/* ---------- 3D objects (sprites) ---------- */
-
-.home-3d {
-  display: block;
-  flex: none;
-  background-repeat: no-repeat;
-  transition: transform var(--motion-base) var(--motion-ease);
-}
-.home-3d--role {
-  width: 64px;
-  height: 64px;
-  background-image: url(/assets/category-business-3d.png);
-  background-size: 200% 200%;
-}
-.home-3d--industry {
-  width: 96px;
-  height: 96px;
-  background-image: url(/assets/industry-objects.png);
-  background-size: 400% 200%;
-}
-.home-3d--step {
-  width: 132px;
-  height: 132px;
-  margin: calc(-1 * var(--space-2)) 0 var(--space-1) calc(-1 * var(--space-3));
-  background-image: url(/assets/process-business-3d.png);
-  background-size: 300% 100%;
-}
-.home-role-list > a:hover .home-3d,
-.home-industry-grid a:hover .home-3d {
-  transform: translateY(-3px) scale(1.04);
-}
-
-/* Industries: vertical cards with the object on a soft tile */
-.home-industry-grid a {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
-  min-height: 0;
-  padding: var(--space-5);
-}
-.home-industry-grid a {
-  align-items: center;
-  text-align: center;
-}
-.home-industry-grid .home-industry-text {
-  justify-items: center;
-}
-.home-industry-text strong {
-  font-size: var(--fs-body);
-}
-
 /* Mtavruli only on the home hero title. */
 .ma #discovery-title {
   font-feature-settings: var(--theme-caps-hero);
