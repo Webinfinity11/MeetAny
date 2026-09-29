@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// პაროლები მხოლოდ OWNER_USER_PASSWORD / OWNER_ADMIN_PASSWORD env-ით; --verify კითხულობს ledger-ს.
+// პაროლები მხოლოდ OWNER_USER_PASSWORD / OWNER_ADMIN_PASSWORD / OWNER_COMPANY_PASSWORD env-ით; --verify კითხულობს ledger-ს.
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
@@ -21,6 +21,7 @@ for (const origin of [BASE, UPLOAD]) assert(['localhost', '127.0.0.1'].includes(
 const accounts = [
   {key:'owner_user', email:'user@gmail.com', role:'client', name:'სატესტო მომხმარებელი', label:'მფლობელის სატესტო კლიენტი', env:'OWNER_USER_PASSWORD'},
   {key:'owner_admin', email:'admin@gmail.com', role:'admin', name:'სატესტო ადმინი', label:'მფლობელის სატესტო ადმინი', env:'OWNER_ADMIN_PASSWORD'},
+  {key:'owner_company', email:'company@gmail.com', role:'company', name:'სატესტო კომპანია', company:'სატესტო კომპანია', industry:'logistics', city:'tbilisi', about:'ვუზრუნველყოფთ ტვირთის გადაზიდვასა და დისტრიბუციას საქართველოს მასშტაბით.', label:'მფლობელის სატესტო კომპანია', env:'OWNER_COMPANY_PASSWORD'},
 ];
 let state, changes = 0;
 async function json(url, options={}) {
@@ -73,7 +74,7 @@ async function main() {
       assert(password && !/[|\r\n]/.test(password), 'Missing or invalid password env/ledger');
     }
     const sql = require('@neondatabase/serverless').neon(process.env.DATABASE_URL);
-    const snapshot = () => sql`select id,role from public.profiles where email not in ('user@gmail.com','admin@gmail.com') order by id`;
+    const snapshot = () => sql`select id,role from public.profiles where email not in ('user@gmail.com','admin@gmail.com','company@gmail.com') order by id`;
     const before = await snapshot();
     const countAdmins = async () => Number((await sql`select count(*) n from public.profiles where role='admin'`)[0].n);
     const adminBefore = await countAdmins();
@@ -88,7 +89,7 @@ async function main() {
         assert(free, 'No free demo phone');
         const phone = free.digits.slice(0,12)+' '+free.digits.slice(12);
         assert.equal((await sql`select id from public.profiles where phone=${phone}`).length,0,'Phone occupied');
-        p = await rpc(a,'complete_profile',{p_role:'client',p_name:a.name,p_company:a.name,p_phone:phone,p_city:'tbilisi',p_industry:null});
+        p = await rpc(a,'complete_profile',{p_role:a.role==='company'?'company':'client',p_name:a.name,p_company:a.company||a.name,p_phone:phone,p_city:a.city||'tbilisi',p_industry:a.industry||null});
         changes++;
       }
       assert.equal(p.id,a.id,'Profile id mismatch');
@@ -100,6 +101,25 @@ async function main() {
       }
       p = (await rpc(a,'my_profile'))[0];
       assert.equal(p.role,a.role,'Unexpected role');
+      if (a.role==='company') {
+        assert(p.phone, 'Company phone missing; complete_profile cannot update an existing phone');
+        assert.equal(p.blocked,false,'Company is blocked');
+        const expected = {company:a.company,industry:a.industry,city:a.city,about:a.about};
+        if (Object.entries(expected).some(([key,value])=>p[key]!==value)) {
+          assert(!VERIFY,'Company profile needs updating');
+          const before = p;
+          await rpc(a,'update_my_profile',{
+            p_name:p.name,p_company:a.company,p_city:a.city,p_industry:a.industry,p_about:a.about,
+            p_offers:p.offers,p_seeks:p.seeks,p_service_cities:p.service_cities,
+            p_address:p.address,p_lat:p.lat,p_lng:p.lng,p_logo_url:p.logo_url,
+          });
+          p = (await rpc(a,'my_profile'))[0];
+          const unchanged = row => Object.fromEntries(Object.entries(row).filter(([key])=>!Object.hasOwn(expected,key)));
+          assert.deepEqual(unchanged(p),unchanged(before),'Unrelated company profile fields changed');
+          changes++;
+        }
+        for (const [key,value] of Object.entries(expected)) assert.equal(p[key],value,'Company '+key+' mismatch');
+      }
       if (!VERIFY) {
         state.accounts[a.key] = {password:state.accounts[a.key].password,id:a.id,email:a.email,label:a.label,role:a.role};
         const row = `| ${a.label} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`;

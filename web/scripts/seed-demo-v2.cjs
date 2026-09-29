@@ -2,8 +2,8 @@
 // Realistic demo content (qa/DEMO-CONTENT-GE.md §ბ, §ე, §ვ, §ზ) on Neon branch auth-probe only.
 // Run: DEMO_API_ORIGIN=http://localhost:3001 node site/web/scripts/seed-demo-v2.cjs [--dry-run | --verify]
 // Same guards and ledger as seed-demo.cjs (which stays for the first-generation data).
-// Marketplace writes go through authenticated RPCs; the only SQL writes are the documented admin
-// promotion and one narrow transaction for what the API cannot set: requests.created_at/expires_at,
+// Marketplace writes go through authenticated RPCs with the existing owner admin; SQL uses
+// one narrow transaction for what the API cannot set: requests.created_at/expires_at,
 // offers.created_at, profiles.phone/created_at of demo accounts and the QA suffix of three chat messages.
 // Nothing is printed from the ledger.
 const fs = require('node:fs');
@@ -59,7 +59,7 @@ const accounts = [
     about:'მარკეტინგის სააგენტო მცირე და საშუალო ბიზნესისთვის: ბრენდის იდენტობა, შეფუთვის დიზაინი, სოციალური ქსელები და ვებგვერდის შინაარსი. ვმუშაობთ თვიური გეგმით და გაზომვადი მიზნებით.', offers:['ლოგო და ბრენდის იდენტობა','შეფუთვისა და ეტიკეტის დიზაინი','სოციალური ქსელების მართვა','მაღაზიის ინტერიერის ბრენდირება'], seeks:['ბეჭდვის სახელოსნოები','ფოტოგრაფები'], cities:['tbilisi','batumi','kutaisi','rustavi']},
   {key:'stay', role:'company', name:'თეონა ცინცაძე', company:'ზღვის სტუმარი', city:'batumi', industry:'textiles', phone:'+995 598 146 723', address:'შოთა რუსთაველის ქ. 26', lat:41.6508, lng:41.6363,
     about:'ბათუმის სასტუმროებსა და საოჯახო სასტუმროებს ვემსახურებით: ნომრების მოვლა საკუთარი დიასახლისების გუნდით, სტუმრების ტრანსფერი და ონლაინ ჯავშნების მართვა.', offers:['ნომრების მოვლა და დასუფთავება','სტუმრების ტრანსფერი აეროპორტიდან','ჯავშნების მართვა Booking-სა და Airbnb-ზე'], seeks:['სასტუმროები და საოჯახო სასტუმროები','თეთრეულის მომწოდებლები'], cities:['batumi','kutaisi']},
-  {key:'admin', role:'admin', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi', phone:'+995 568 452 390'},
+  {key:'admin', role:'client', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi', phone:'+995 568 452 390'},
 ].map(a=>({...a,email:`demo-${a.key}@meetany.ge`}));
 const NEW_KEYS = ['cleaning','build','web','winery','dental','garage','food','port','oak','code','ads','stay'];
 const VERIFIED = ['wood','linen','web','food','port','ads'];
@@ -152,7 +152,7 @@ let state, SUFFIX = '';
 const stale=r=>!state.v2?.requests?.[r.key] || state.v2.sig?.[r.key]!==sig(r);
 function save() {
   if (DRY || VERIFY) return;
-  const rows = accounts.filter(a=>state.accounts[a.key]).map(a=>`| ${a.company}${SUFFIX} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`).concat(Object.entries(state.accounts).filter(([key, a])=>a.email && !accounts.some(known=>known.key===key)).map(([, a])=>`| ${a.label} | ${a.email} | ${a.password} | ${a.role} |`)).join('\n');
+  const rows = accounts.filter(a=>state.accounts[a.key]).map(a=>`| ${state.accounts[a.key].label || a.company+SUFFIX} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`).concat(Object.entries(state.accounts).filter(([key, a])=>a.email && !accounts.some(known=>known.key===key)).map(([, a])=>`| ${a.label} | ${a.email} | ${a.password} | ${a.role} |`)).join('\n');
   const text = '# MeetAny — სატესტო ანგარიშები\n\nმხოლოდ ადგილობრივი გამოყენებისთვის; არ ატვირთოთ git-ში და არ გააზიაროთ საჯაროდ.\nპროექტი: fancy-surf-61327851; branch: auth-probe.\nყველა ბიზნესი, სახელი და ნომერი სადემონსტრაციოა.\n\n| ბიზნესი | ელფოსტა | პაროლი | როლი |\n|---|---|---|---|\n'+rows+'\n\nგაშვება: `node scripts/seed-demo-v2.cjs`; შემოწმება: `node scripts/seed-demo-v2.cjs --verify` (პირველი თაობა: `seed-demo.cjs`).\nქვემოთ მოცემული ჩანაწერი საჭიროა განმეორებითი გაშვებისა და შეწყვეტილი სამუშაოს აღსადგენად.\n\n```json\n'+JSON.stringify(state,null,2)+'\n```\n';
   fs.writeFileSync(FILE, text, {mode:0o600});
   fs.chmodSync(FILE,0o600);
@@ -197,6 +197,15 @@ async function api(a, route, body) {
 }
 const rpc=(a,name,args={})=>api(a,'rpc/'+name,args);
 const byKey=key=>accounts.find(a=>a.key===key);
+async function ownerAdmin() {
+  const record=state.accounts.owner_admin;
+  assert(record?.id && record?.password && record.email==='admin@gmail.com','Run add-owner-accounts.cjs first');
+  const admin={key:'owner_admin',email:record.email};
+  await login(admin);
+  assert.equal((await rpc(admin,'my_profile'))[0]?.role,'admin','Owner admin role missing');
+  return admin;
+}
+
 const sqlClient=()=>require('@neondatabase/serverless').neon(process.env.DATABASE_URL);
 const demoIds=()=>accounts.map(a=>a.id).filter(Boolean);
 async function oldData(admin) {
@@ -211,11 +220,11 @@ function profileArgs(a) {
 async function plan() {
   // Read-only: what a real run would change.
   for(const a of accounts) if(state.accounts[a.key]) await login(a);
-  const admin=byKey('admin'), old=await oldData(admin);
+  const admin=await ownerAdmin(), old=await oldData(admin);
   const recreate=requests.filter(stale);
   console.log(JSON.stringify({
     newAccounts:accounts.filter(a=>!state.accounts[a.key]).map(a=>a.key),
-    profilesUpdated:accounts.filter(a=>a.role!=='admin').length,
+    profilesUpdated:accounts.filter(a=>a.key!=='admin').length,
     oldQaRequestsToDelete:old.reqs.length, oldCompaniesToBlock:old.users.filter(u=>!u.blocked).length,
     demoRequestsToDelete:recreate.filter(r=>state.v2?.requests?.[r.key]||state.requests[r.key]?.id).length, requestsToCreate:recreate.map(r=>r.key),
     photos:requests.filter(r=>r.photo).map(r=>r.key), photosToUpload:requests.filter(r=>r.photo&&!state.requests[r.key]?.photo).length,
@@ -230,16 +239,12 @@ async function seed() {
   for(const a of accounts) {
     state.accounts[a.key]||={password:crypto.randomBytes(24).toString('base64url')+'!a9'};save();
     await login(a);
-    const p=await rpc(a,'complete_profile',{p_role:a.role==='admin'?'client':a.role,p_name:a.name,p_company:a.company,p_phone:a.phone,p_city:a.city,p_industry:a.industry||null});
+    const p=await rpc(a,'complete_profile',{p_role:a.role,p_name:a.name,p_company:a.company,p_phone:a.phone,p_city:a.city,p_industry:a.industry||null});
     assert.equal(p.id,a.id);
-    if(a.role!=='admin') await rpc(a,'update_my_profile',profileArgs(a));
+    if(a.key!=='admin') await rpc(a,'update_my_profile',profileArgs(a));
     console.log('პროფილი მზადაა:',a.key);
   }
-  const admin=byKey('admin');
-  if((await rpc(admin,'my_profile'))[0].role!=='admin') {
-    const rows=await sqlClient()`update public.profiles set role='admin' where id=${admin.id}::uuid and email=${admin.email} and role='client' returning id`;
-    assert.equal(rows.length,1,'Admin promotion failed');
-  }
+  const admin=await ownerAdmin();
   const old=await oldData(admin);
   for(const r of old.reqs) await rpc(admin,'admin_delete_request',{p_request_id:r.id});
   for(const u of old.users.filter(u=>!u.blocked)) await rpc(admin,'admin_set_blocked',{p_user_id:u.id,p_blocked:true,p_reason:'ძველი QA ჩანაწერი, ჩანაცვლდა სადემო მონაცემებით'});
@@ -341,7 +346,7 @@ async function verify() {
   const chosen=own.filter(r=>r.chosen_offer_id);assert.equal(chosen.length,1);assert.equal(chosen[0].id,state.v2.requests[CHOSEN.request]);
   const left=new Set(open.map(r=>Math.round((new Date(r.expires_at)-now)/day)));
   assert(left.size>=12,'Expiry days are not varied');
-  for(const a of accounts.filter(a=>a.role==='client')) {
+  for(const a of accounts.filter(a=>a.role==='client' && requests.some(r=>r.owner===a.key))) {
     assert(open.filter(r=>r.owner_id===a.id).length<=5);
     const n=own.filter(r=>r.owner_id===a.id).length;assert(n>=2&&n<=3,'Requests per client: '+a.key);
   }
@@ -378,7 +383,7 @@ async function verify() {
   assert(companies.filter(a=>!sent[a.key]).length>=1,'Some company should have sent no offer');
   assert(Object.values(counts).every(n=>n<=2),'Offer counts repeat on three requests');
   assert.equal((await sqlClient()`select count(*)::int n from meetany_private.messages where body like ${QA_CHAT} or body like '%ტესტ%'`)[0].n,0,'QA chat text left');
-  assert.equal((await oldData(byKey('admin'))).reqs.length,0,'Old QA request still present');
+  assert.equal((await oldData(await ownerAdmin())).reqs.length,0,'Old QA request still present');
   const phones=accounts.map(a=>a.phone);assert.equal(new Set(phones).size,phones.length);
   for(const key of ['hotel',CHOSEN.company]) assert.equal((await rpc(byKey(key),'contact_for_request',{p_request_id:state.v2.requests[CHOSEN.request]})).length,1);
   console.log(JSON.stringify({accounts:accounts.length,companies:accounts.filter(a=>a.role==='company').length,requests:own.length,open:open.length,chosen:1,fresh,owners:Object.fromEntries(accounts.filter(a=>a.role==='client').map(a=>[a.key,own.filter(r=>r.owner_id===a.id).length])),photos:requests.filter(r=>own.find(x=>x.id===state.v2.requests[r.key]).photo_url).map(r=>r.key),offers:offers.length,offerCounts:counts,expiryDays:[...left].sort((a,b)=>a-b),verified:VERIFIED,industries,sent:Object.fromEntries(companies.map(a=>[a.key,sent[a.key]||0])),joinedDays:JOINED,checks:'passed'}));

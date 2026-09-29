@@ -26,7 +26,7 @@ async function shot(p,name) {
   await p.screenshot({path:path.join(out,name),fullPage:true});
 }
 try {
-  for (const key of ['owner_user','owner_admin']) {
+  for (const key of ['owner_user','owner_admin','owner_company']) {
     const account=state.accounts[key];
     assert(account?.id && account?.password,'Missing ledger account');
     const ctx=await browser.newContext({viewport:{width:1440,height:1000}});
@@ -44,7 +44,13 @@ try {
       await p.locator('form button[type="submit"]').click();
       await p.locator('#login-email').waitFor({state:'detached',timeout:60000});
       await loaded(p);
-      check(key+' account',new URL(p.url()).pathname==='/account/' && await p.locator('.account-main').count()>0);
+      if (key==='owner_admin') {
+        await p.waitForURL('**/admin/');
+        await loaded(p);
+        check(key+' admin redirect',new URL(p.url()).pathname==='/admin/' && await p.locator('#login-email').count()===0);
+      } else {
+        check(key+' account',new URL(p.url()).pathname==='/account/' && await p.locator('.account-main').count()>0);
+      }
       assert(jwt,'Authenticated API token not observed');
       const result=report.accounts[key]={id:account.id,role:account.role,rpc:{}};
       if (key==='owner_user') await shot(p,'user-account-1440.png');
@@ -68,7 +74,7 @@ try {
         const message='ეს გვერდი ხელმისაწვდომია მხოლოდ ადმინისტრატორისთვის.';
         result.admin={url:p.url(),message:await p.locator('main .ma-empty__text').innerText(),tableCount:await p.locator('main .ma-table').count()};
         check(key+' admin denied',result.admin.message===message && result.admin.tableCount===0);
-        await shot(p,'user-admin-denied-1440.png');
+        await shot(p,key+'-admin-denied-1440.png');
       }
     } finally {await ctx.close();}
   }
@@ -78,7 +84,7 @@ try {
   process.exitCode=1;
 } finally {
   await browser.close();
-  report.pass=report.checks.length===8 && report.checks.every(c=>c.pass);
+  report.pass=report.checks.length===12 && report.checks.every(c=>c.pass);
   fs.writeFileSync(path.join(root,'qa/owner-accounts-report.json'),JSON.stringify(report,null,2)+'\n');
   if (!report.pass) process.exitCode=1;
 }

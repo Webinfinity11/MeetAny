@@ -3,8 +3,7 @@
 // Requires the local API (3000), web/.env.local, and Blob credentials in the API process.
 // DEMO_UPLOAD_ORIGIN may point to another running copy of api/blob-upload (e.g. :4032).
 // Keep DEMO-ACCOUNTS.local.md: it is the private credential/recovery ledger, never commit it.
-// All marketplace writes use authenticated HTTP RPCs; the sole SQL write is the documented
-// first-admin promotion. No schema changes, JWT fabrication, or RLS bypass for seed data.
+// All marketplace writes use authenticated HTTP RPCs with the existing owner admin. No schema changes, JWT fabrication, or RLS bypass for seed data.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -30,7 +29,7 @@ const accounts = [
   {key:'wood', address:'აკაკი წერეთლის გამზირი 116', lat:41.7438, lng:44.7793, role:'company', name:'დავით სახელოსნო', company:'ხის ხაზი', city:'tbilisi', industry:'furniture', about:'ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებისა და მაღაზიებისთვის. ვეხმარებით ზომების შერჩევაში, ვამზადებთ ესკიზს და ვგეგმავთ მონტაჟს.', offers:['მაგიდებისა და სკამების დამზადება','სავაჭრო თაროები','ავეჯის მიტანა და მონტაჟი'], seeks:['ხის მასალის მომწოდებლები','ავეჯის ფურნიტურა'], cities:['tbilisi','kutaisi','batumi']},
   {key:'linen', address:'ფარნავაზ მეფის ქუჩა 82', lat:41.6447, lng:41.634, role:'company', name:'თამარ ქსოვილი', company:'რბილი სივრცე', city:'batumi', industry:'textiles', about:'ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და სუფრებს. შეკვეთამდე ვამზადებთ ქსოვილის ნიმუშებს; ზომები და შეფუთვა დამკვეთის საჭიროებას ერგება.', offers:['სასტუმროს თეთრეული','ფარდების შეკერვა','კაფის სუფრები და ხელსახოცები'], seeks:['ბამბის ქსოვილის მომწოდებლები','სასტუმროებთან თანამშრომლობა'], cities:['batumi','kutaisi','tbilisi']},
   {key:'supply', address:'ილია ჭავჭავაძის გამზირი 32', lat:42.2543, lng:42.676, role:'company', name:'ლევან მომარაგება', company:'რეგიონის მომარაგება', city:'kutaisi', industry:'logistics', about:'ვგეგმავთ რეგიონულ გადაზიდვებს და ვაწვდით ბიზნესებს მუყაოს შეფუთვას. წინასწარ ვათანხმებთ აღების დროს, მარშრუტს და ტვირთის მოცულობას.', offers:['ტვირთის რეგიონული გადაზიდვა','მუყაოს ყუთები','შეკვეთების განაწილება'], seeks:['ადგილობრივი მწარმოებლები','შეფუთვის მომწოდებლები'], cities:['kutaisi','tbilisi','batumi','zugdidi']},
-  {key:'admin', role:'admin', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi'},
+  {key:'admin', role:'client', name:'ალექსანდრე მაისურაძე', company:'MeetAny', city:'tbilisi'},
 ].map((a,i)=>({...a,email:`demo-${a.key}@meetany.ge`,phone:`+995 555 900 ${101+i}`}));
 // Three clients, at most four open requests each. First request is chosen after offers are sent.
 const requests = [
@@ -57,7 +56,7 @@ const offers = [
 ].map(([company,request,price,days,body])=>({company,request,price,days,body}));
 let state;
 function save() {
-  const rows = accounts.map(a=>`| ${a.company} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`).concat(Object.entries(state.accounts).filter(([key, a])=>a.email && !accounts.some(known=>known.key===key)).map(([, a])=>`| ${a.label} | ${a.email} | ${a.password} | ${a.role} |`)).join('\n');
+  const rows = accounts.map(a=>`| ${state.accounts[a.key].label || a.company} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`).concat(Object.entries(state.accounts).filter(([key, a])=>a.email && !accounts.some(known=>known.key===key)).map(([, a])=>`| ${a.label} | ${a.email} | ${a.password} | ${a.role} |`)).join('\n');
   const text = '# MeetAny — სატესტო ანგარიშები\n\nმხოლოდ ადგილობრივი გამოყენებისთვის; არ ატვირთოთ git-ში და არ გააზიაროთ საჯაროდ.\nპროექტი: fancy-surf-61327851; branch: auth-probe.\nყველა ბიზნესი, სახელი და ნომერი სადემონსტრაციოა.\n\n| ბიზნესი | ელფოსტა | პაროლი | როლი |\n|---|---|---|---|\n'+rows+'\n\nგაშვება: `node scripts/seed-demo.cjs`; შემოწმება: `node scripts/seed-demo.cjs --verify`.\nქვემოთ მოცემული ჩანაწერი საჭიროა განმეორებითი გაშვებისა და შეწყვეტილი სამუშაოს აღსადგენად.\n\n```json\n'+JSON.stringify(state,null,2)+'\n```\n';
   fs.writeFileSync(FILE, text, {mode:0o600});
   fs.chmodSync(FILE,0o600);
@@ -96,21 +95,24 @@ async function api(a, route, body) {
 }
 const rpc=(a,name,args={})=>api(a,'rpc/'+name,args);
 const byKey=key=>accounts.find(a=>a.key===key);
+async function ownerAdmin() {
+  const record=state.accounts.owner_admin;
+  assert(record?.id && record?.password && record.email==='admin@gmail.com','Run add-owner-accounts.cjs first');
+  const admin={key:'owner_admin',email:record.email};
+  await login(admin);
+  assert.equal((await rpc(admin,'my_profile'))[0]?.role,'admin','Owner admin role missing');
+  return admin;
+}
+
 async function seed() {
   for(const a of accounts) {
     await login(a);
-    const p=await rpc(a,'complete_profile',{p_role:a.role==='admin'?'client':a.role,p_name:a.name,p_company:a.company,p_phone:a.phone,p_city:a.city,p_industry:a.industry||null});
+    const p=await rpc(a,'complete_profile',{p_role:a.role,p_name:a.name,p_company:a.company,p_phone:a.phone,p_city:a.city,p_industry:a.industry||null});
     assert.equal(p.id,a.id);
     if(a.role==='company') await rpc(a,'update_my_profile',{p_name:a.name,p_company:a.company,p_city:a.city,p_industry:a.industry,p_about:a.about,p_offers:a.offers,p_seeks:a.seeks,p_service_cities:a.cities,p_address:a.address,p_lat:a.lat,p_lng:a.lng});
     console.log('ანგარიში მზადაა:',a.email);
   }
-  const admin=byKey('admin');
-  if((await rpc(admin,'my_profile'))[0].role!=='admin') {
-    const {neon}=require('@neondatabase/serverless');
-    const sql=neon(process.env.DATABASE_URL);
-    const rows=await sql`update public.profiles set role='admin' where id=${admin.id}::uuid and email=${admin.email} and role='client' returning id`;
-    assert.equal(rows.length,1,'Admin promotion failed');
-  }
+  const admin=await ownerAdmin();
   for(const key of ['wood','linen']) await rpc(admin,'admin_set_verified',{p_user_id:byKey(key).id,p_verified:true});
   const {upload}=require('@vercel/blob/client');
   for(const r of requests) {
@@ -150,7 +152,7 @@ async function verify() {
   const open=own.filter(r=>!r.hidden&&!r.chosen_offer_id&&r.status==='open'&&new Date(r.expires_at)>new Date());
   assert.equal(open.length,10,'Expected ten open demo requests');
   assert.equal(own.filter(r=>r.chosen_offer_id).length,1);
-  for(const a of accounts.filter(a=>a.role==='client')) {
+  for(const a of accounts.filter(a=>a.role==='client' && requests.some(r=>r.owner===a.key))) {
     assert(open.filter(r=>r.owner_id===a.id).length<=4);
     const visible=await api(a,'offers?select=*');
     assert(visible.length>0);assert(visible.every(o=>own.some(r=>r.id===o.request_id&&r.owner_id===a.id)));
@@ -161,7 +163,7 @@ async function verify() {
   }
   const profiles=await api(null,'profiles?select=id,role,verified');
   assert.equal(profiles.filter(p=>['wood','linen'].some(k=>byKey(k).id===p.id)&&p.verified).length,2);
-  const stats=await rpc(byKey('admin'),'admin_stats');assert(stats.offers>=offers.length);
+  const stats=await rpc(await ownerAdmin(),'admin_stats');assert(stats.offers>=offers.length);
   for(const r of own.filter(r=>r.photo_url)) {
     assert(new URL(r.photo_url).pathname.startsWith('/'+r.owner_id+'/'));
     const res=await fetch(r.photo_url,{method:'HEAD',signal:AbortSignal.timeout(20000)});
