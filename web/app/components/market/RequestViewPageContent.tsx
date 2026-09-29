@@ -162,7 +162,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
   if ((ready && !available) || detail.error) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready || detail.loading) return <DetailSkeleton />;
+  if (!ready || (detail.loading && !data)) return <DetailSkeleton />;
   if (!data) {
     return (
       <div className="ma-page">
@@ -181,7 +181,11 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
   const { r, me, owner, offers, offerCount, state, isOwner, myOffer, contact } = data;
   const closed = state !== "open";
-  const orderedOffers = [...offers].sort((a,b) => offerSort === "delivery" ? (a.deliveryDays ?? Infinity) - (b.deliveryDays ?? Infinity) : Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const chosenCompanyId = store?.visibleOffers(r.id).find((o: { id: string; companyUserId: string }) => o.id === r.chosenOfferId)?.companyUserId;
+  const orderedOffers = [...offers].sort((a,b) => {
+    if (a.status === "chosen" || b.status === "chosen") return Number(b.status === "chosen") - Number(a.status === "chosen");
+    return offerSort === "delivery" ? (a.deliveryDays ?? Infinity) - (b.deliveryDays ?? Infinity) : Date.parse(b.createdAt) - Date.parse(a.createdAt);
+  });
   const daysLeft: number = state === "open" ? store?.daysLeft(r) ?? 0 : 0;
   const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
   // The deadline lives in the facts and the aside; the meta says what, where and when it was posted.
@@ -235,7 +239,8 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
                 {contact.name} · {contact.company}
               </p>
               <p>{contact.email}</p>
-              {contact.phone ? <CallButton phone={contact.phone} requestId={r.id} contactId={store?.visibleOffers(r.id).find((o: { id: string; companyUserId: string }) => o.id === r.chosenOfferId)?.companyUserId} source="chosen-offer" /> : null}
+              {contact.phone ? <CallButton phone={contact.phone} requestId={r.id} contactId={chosenCompanyId} source="chosen-offer" /> : null}
+              {isOwner && chosenCompanyId ? <MessageButton companyId={chosenCompanyId} requestId={r.id}/> : null}
             </section>
           ) : null}
           {isOwner ? <div className="ma-panel__actions">
@@ -244,8 +249,8 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             {state === "open" ? <button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => action("close")}>დახურვა</button> : null}
             <button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => action("delete")}>წაშლა</button>
           </div> : null}
-          <div className="ma-cluster"><label>დალაგება <select className="ma-select" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">მიწოდების ვადა</option></select></label><button className="ma-btn ma-btn--secondary" onClick={() => setCompare(!compare)}>{compare ? "სიის ნახვა" : "პირობების შედარება"}</button></div>
-          {compare ? <div className="ma-table-wrap"><table className="ma-table"><caption>შეთავაზებების შედარება</caption><thead><tr><th>კომპანია</th><th>მიწოდება</th><th>პირობები</th></tr></thead><tbody>{orderedOffers.map(o => <tr key={o.id}><td data-label="კომპანია">{o.companyName}</td><td data-label="მიწოდება">{o.deliveryDays != null ? `${o.deliveryDays} დღე` : "დასაზუსტებელია"}</td><td data-label="პირობები">{o.body}</td></tr>)}</tbody></table></div> : null}
+          {offers.length > 1 ? <div className="ma-cluster"><label>დალაგება <select className="ma-select" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">მიწოდების ვადა</option></select></label><button className="ma-btn ma-btn--secondary" onClick={() => setCompare(!compare)}>{compare ? "სიის ნახვა" : "პირობების შედარება"}</button></div> : null}
+          {compare && offers.length > 1 ? <div className="ma-table-wrap"><table className="ma-table"><caption>შეთავაზებების შედარება</caption><thead><tr><th>კომპანია</th><th>მიწოდება</th><th>პირობები</th></tr></thead><tbody>{orderedOffers.map(o => <tr key={o.id}><td data-label="კომპანია">{o.companyName}</td><td data-label="მიწოდება">{o.deliveryDays != null ? `${o.deliveryDays} დღე` : "დასაზუსტებელია"}</td><td data-label="პირობები">{o.body}</td></tr>)}</tbody></table></div> : null}
           <h2 className="request-offers__title">
             შეთავაზებები ({offers.length})
             {offers.some((o) => o.isNew) ? <span className="request-offers__new">{offers.filter((o) => o.isNew).length} ახალი</span> : null}

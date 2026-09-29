@@ -12,12 +12,11 @@ const summary = (keys: string[]) => categoryGroups.flatMap(g => {
   return own.length === g.items.length && own.length > 1 ? [g.name] : own.map(k => categories[k]);
 }).join(" · ");
 type Preferences = { enabled: boolean; categories: string[]; cities: string[]; emailMode: string };
-export function RequestAlertSettings({ initial, emailDelivery }: { initial: Preferences; emailDelivery: boolean }) {
+export function RequestAlertSettings({ initial, emailDelivery, profile }: { initial: Preferences; emailDelivery: boolean; profile?: { industry?: string; city?: string; serviceCities?: string[] } }) {
  const { store } = useMarketStore();
- const me = store?.currentUser();
  const [draft, setDraft] = useState<Preferences>(() => ({ ...initial,
-  categories: initial.categories.length ? initial.categories : me?.industry ? groupKeys(me.industry) : [],
-  cities: initial.cities.length ? initial.cities : me?.serviceCities?.length ? me.serviceCities : me?.city ? [me.city] : [],
+  categories: initial.categories.length ? initial.categories : profile?.industry ? groupKeys(profile.industry) : [],
+  cities: initial.cities.length ? initial.cities : profile?.serviceCities?.length ? profile.serviceCities : profile?.city ? [profile.city] : [],
  }));
  const [editing, setEditing] = useState(false);
  const [dirty, setDirty] = useState(false);

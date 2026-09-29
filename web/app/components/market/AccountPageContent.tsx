@@ -389,7 +389,9 @@ export function AccountPageContent() {
     if (!store || !me) return null;
     const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true }) as RequestItem[];
     if (me.role === "company") {
-      const matching = (store.listRequests({ category: groupOf[me.industry || ""] || me.industry }) as (RequestItem & { ownerId: string })[]).filter((r) => r.ownerId !== me.id);
+      const matching = (store.listRequests({ category: groupOf[me.industry || ""] || me.industry }) as (RequestItem & { ownerId: string })[])
+        .filter((r) => r.ownerId !== me.id)
+        .sort((a, b) => Number(b.city === me.city) - Number(a.city === me.city));
       const myOffers = store.myOffers(me) as OfferItem[];
       return { matching, myOffers, myRequests };
     }
@@ -565,8 +567,9 @@ export function AccountPageContent() {
               <section className="account-section">
                 <div className="account-section__head">
                   <h2 className="account-section__title">შენი მიმართულების მოთხოვნები ({matching.length})</h2>
-                  <Link className="account-link" href="/requests/">ყველა მოთხოვნა</Link>
+                  <Link className="account-link" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>ყველა შესაბამისი მოთხოვნა</Link>
                 </div>
+                <p className="account-row__meta">ყველა ქალაქი — ჯერ შენი ქალაქის მოთხოვნები. <Link className="account-link" href="/account/?tab=notifications#alerts">შეტყობინებების პარამეტრები</Link></p>
                 {matching.length ? (
                   <ul className="account-rows">
                     {matching.slice(0, 5).map((r) => (
