@@ -1,0 +1,70 @@
+{
+  "phase": "idle",
+  "started": "2026-09-29T11:10:02.169Z",
+  "checks": [
+    {
+      "name": "სატესტო მონაცემების გაწმენდა",
+      "status": "PASS",
+      "evidence": {
+        "removed": 0,
+        "retained": null,
+        "preferencesRestored": false
+      }
+    }
+  ],
+  "timings": [],
+  "screenshots": [],
+  "requests": [],
+  "conversations": [],
+  "idle": {
+    "durationSeconds": 60,
+    "visibility": {
+      "owner_user": "visible",
+      "owner_company": "visible",
+      "guest": "visible"
+    },
+    "counts": {
+      "owner_user": {
+        "/api/db/rpc/unread_message_count": 6,
+        "/api/db/rpc/engagement_state": 6,
+        "/api/db/requests": 2,
+        "/api/db/rpc/my_profile": 2,
+        "/api/db/rpc/list_companies": 2,
+        "/api/db/offers": 2,
+        "/api/db/rpc/offer_counts": 2,
+        "/api/db/rpc/company_stats": 2,
+        "/api/db/profiles": 2
+      },
+      "owner_company": {
+        "/api/db/rpc/engagement_state": 6,
+        "/api/db/rpc/unread_message_count": 6,
+        "/api/db/requests": 1,
+        "/api/db/rpc/my_profile": 1,
+        "/api/db/rpc/list_companies": 1,
+        "/api/db/offers": 1,
+        "/api/db/rpc/offer_counts": 1,
+        "/api/db/rpc/company_stats": 1,
+        "/api/db/profiles": 1
+      },
+      "guest": {
+        "auth:/neondb/auth/get-session": 1,
+        "/api/db/requests": 1,
+        "/api/db/rpc/list_companies": 1,
+        "/api/db/rpc/company_stats": 1,
+        "/api/db/rpc/offer_counts": 1,
+        "/api/db/profiles": 1
+      }
+    },
+    "totals": {
+      "owner_user": 26,
+      "owner_company": 19,
+      "guest": 6
+    }
+  },
+  "cleanup": {
+    "requests": 0,
+    "offers": 0,
+    "conversations": 0,
+    "messages": 0
+  }
+}

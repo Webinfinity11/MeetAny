@@ -110,7 +110,7 @@ try {
     }
     console.log('უმოქმედო ჩანართების 60-წამიანი გაზომვა დაიწყო');
     await new Promise(resolve=>setTimeout(resolve,60000));
-    report.idle={durationSeconds:60,visibility,counts,totals:Object.fromEntries(Object.entries(counts).map(([key,value])=>[key,Object.values(value).reduce((sum,n)=>sum+n,0)]))};
+    report.idle={durationSeconds:60,visibility,counts:structuredClone(counts),totals:Object.fromEntries(Object.entries(counts).map(([key,value])=>[key,Object.values(value).reduce((sum,n)=>sum+n,0)]))};
     save();
   } else {
   profileIds=await Promise.all([user,company,other].map(async p=>(await rpc(p,'my_profile'))[0].id));

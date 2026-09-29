@@ -1,0 +1,159 @@
+{
+  "phase": "before",
+  "started": "2026-09-29T10:51:29.551Z",
+  "checks": [
+    {
+      "name": "390 ახალი მოთხოვნის ავტომატური გამოჩენა",
+      "status": "FAIL",
+      "reason": "[false,false,true]"
+    },
+    {
+      "name": "390 საჯარო სია ხელახლა ჩატვირთვისას",
+      "status": "PASS"
+    },
+    {
+      "name": "390 მოთხოვნის შეტყობინება",
+      "status": "PASS"
+    },
+    {
+      "name": "390 შესაბამისი მოთხოვნა ანგარიშში",
+      "status": "PASS"
+    },
+    {
+      "name": "390 სხვა მიმართულება არ ხვდება სიაში",
+      "status": "PASS"
+    },
+    {
+      "name": "390 სხვა ქალაქის ხილვადობა და ქალაქების რიგი",
+      "status": "PASS",
+      "evidence": "სია ყველა ქალაქს აჩვენებს; შეტყობინება არჩეულ ქალაქს მიჰყვება"
+    },
+    {
+      "name": "390 სხვა ქალაქზე შეტყობინება არ მოდის",
+      "status": "PASS"
+    },
+    {
+      "name": "390 შეთავაზების ავტომატური გამოჩენა",
+      "status": "FAIL",
+      "reason": "[true,false]"
+    },
+    {
+      "name": "390 მეორე OfferCard ავტომატურად",
+      "status": "FAIL",
+      "reason": "The expression evaluated to a falsy value:\n\n  assert(await elapsed(`${width}: OfferCard`,sent2,async()=>await user.locator('.ma-ocard').count()===2))\n"
+    },
+    {
+      "name": "390 შედარება",
+      "status": "PASS"
+    },
+    {
+      "name": "390 არჩევა",
+      "status": "PASS"
+    },
+    {
+      "name": "390 ორივე კომპანიის სტატუსი",
+      "status": "PASS"
+    },
+    {
+      "name": "390 ჩატი და 25 წამში ბეიჯი",
+      "status": "PASS"
+    },
+    {
+      "name": "სატესტო მონაცემების გაწმენდა",
+      "status": "PASS",
+      "evidence": {
+        "removed": 3,
+        "retained": null,
+        "preferencesRestored": true
+      }
+    }
+  ],
+  "timings": [
+    {
+      "name": "390: ახალი SSR პასუხი",
+      "seconds": 1.451,
+      "containsRequest": true
+    },
+    {
+      "name": "390: კომპანიის ბეიჯი",
+      "seconds": 24.32,
+      "limit": 42
+    },
+    {
+      "name": "390: საჯარო გახსნილი სია",
+      "seconds": null,
+      "limit": 42
+    },
+    {
+      "name": "390: კომპანიის სია",
+      "seconds": null,
+      "limit": 42
+    },
+    {
+      "name": "390: საჯარო reload",
+      "seconds": 0.112
+    },
+    {
+      "name": "390-სხვა-მიმართულება: ახალი SSR პასუხი",
+      "seconds": 1.417,
+      "containsRequest": true
+    },
+    {
+      "name": "390-სხვა-ქალაქი: ახალი SSR პასუხი",
+      "seconds": 0.922,
+      "containsRequest": true
+    },
+    {
+      "name": "390: კლიენტის ბეიჯი",
+      "seconds": 25.66,
+      "limit": 42
+    },
+    {
+      "name": "390: ანგარიშის რაოდენობა",
+      "seconds": null,
+      "limit": 42
+    },
+    {
+      "name": "390: OfferCard",
+      "seconds": null,
+      "limit": 42
+    },
+    {
+      "name": "390: ჩატის ბეიჯი",
+      "seconds": 2.29,
+      "limit": 25
+    }
+  ],
+  "screenshots": [
+    "before-390-request-notification.png",
+    "before-390-matching.png",
+    "before-390-received-account.png",
+    "before-390-compare.png",
+    "before-390-choose.png",
+    "before-390-chosen.png",
+    "before-390-company-chosen.png",
+    "before-390-company-declined.png",
+    "before-390-chat.png"
+  ],
+  "requests": [
+    "4279e9d4-f0d3-4602-b301-f8251efe3110",
+    "3131f431-8197-47bf-83c6-300a231f8185",
+    "6d5f81aa-145d-48e4-99b8-8296a1d82a95"
+  ],
+  "originalAlertPreferences": {
+    "cities": [],
+    "enabled": false,
+    "emailMode": "off",
+    "categories": []
+  },
+  "activeAlertPreferences": {
+    "cities": [
+      "tbilisi"
+    ],
+    "enabled": true,
+    "emailMode": "off",
+    "categories": [
+      "freight"
+    ]
+  }
+}

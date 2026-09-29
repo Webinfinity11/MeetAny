@@ -1,0 +1,319 @@
+{
+  "phase": "after",
+  "started": "2026-09-29T10:55:41.238Z",
+  "checks": [
+    {
+      "name": "1440 ახალი მოთხოვნის ავტომატური გამოჩენა",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 საჯარო სია ხელახლა ჩატვირთვისას",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 მოთხოვნის შეტყობინება",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 შესაბამისი მოთხოვნა ანგარიშში",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 სხვა მიმართულება არ ხვდება სიაში",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 სხვა ქალაქის ხილვადობა და ქალაქების რიგი",
+      "status": "PASS",
+      "evidence": "სია ყველა ქალაქს აჩვენებს; შეტყობინება არჩეულ ქალაქს მიჰყვება"
+    },
+    {
+      "name": "1440 სხვა ქალაქზე შეტყობინება არ მოდის",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 შეთავაზების ავტომატური გამოჩენა",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 შეტყობინებიდან შეთავაზებაზე გადასვლა",
+      "status": "FAIL",
+      "reason": "page.waitForResponse: Timeout 18000ms exceeded while waiting for event \"response\""
+    },
+    {
+      "name": "1440 მეორე OfferCard ავტომატურად",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 შედარება",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 არჩევა",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 ორივე კომპანიის სტატუსი",
+      "status": "PASS"
+    },
+    {
+      "name": "1440 ჩატი და 25 წამში ბეიჯი",
+      "status": "PASS"
+    },
+    {
+      "name": "390 ახალი მოთხოვნის ავტომატური გამოჩენა",
+      "status": "PASS"
+    },
+    {
+      "name": "390 საჯარო სია ხელახლა ჩატვირთვისას",
+      "status": "PASS"
+    },
+    {
+      "name": "390 მოთხოვნის შეტყობინება",
+      "status": "PASS"
+    },
+    {
+      "name": "390 შესაბამისი მოთხოვნა ანგარიშში",
+      "status": "PASS"
+    },
+    {
+      "name": "390 სხვა მიმართულება არ ხვდება სიაში",
+      "status": "PASS"
+    },
+    {
+      "name": "390 სხვა ქალაქის ხილვადობა და ქალაქების რიგი",
+      "status": "PASS",
+      "evidence": "სია ყველა ქალაქს აჩვენებს; შეტყობინება არჩეულ ქალაქს მიჰყვება"
+    },
+    {
+      "name": "390 სხვა ქალაქზე შეტყობინება არ მოდის",
+      "status": "PASS"
+    },
+    {
+      "name": "390 შეთავაზების ავტომატური გამოჩენა",
+      "status": "PASS"
+    },
+    {
+      "name": "390 შეტყობინებიდან შეთავაზებაზე გადასვლა",
+      "status": "FAIL",
+      "reason": "page.waitForResponse: Timeout 18000ms exceeded while waiting for event \"response\""
+    },
+    {
+      "name": "390 მეორე OfferCard ავტომატურად",
+      "status": "PASS"
+    },
+    {
+      "name": "390 შედარება",
+      "status": "PASS"
+    },
+    {
+      "name": "390 არჩევა",
+      "status": "PASS"
+    },
+    {
+      "name": "390 ორივე კომპანიის სტატუსი",
+      "status": "PASS"
+    },
+    {
+      "name": "390 ჩატი და 25 წამში ბეიჯი",
+      "status": "PASS"
+    },
+    {
+      "name": "სატესტო მონაცემების გაწმენდა",
+      "status": "PASS",
+      "evidence": {
+        "removed": 6,
+        "retained": null,
+        "preferencesRestored": true
+      }
+    }
+  ],
+  "timings": [
+    {
+      "name": "1440: ახალი SSR პასუხი",
+      "seconds": 1.37,
+      "containsRequest": true
+    },
+    {
+      "name": "1440: კომპანიის ბეიჯი",
+      "seconds": 2.41,
+      "limit": 42
+    },
+    {
+      "name": "1440: კომპანიის სია",
+      "seconds": 3.7,
+      "limit": 42
+    },
+    {
+      "name": "1440: საჯარო გახსნილი სია",
+      "seconds": 28.9,
+      "limit": 42
+    },
+    {
+      "name": "1440: საჯარო reload",
+      "seconds": 0.086
+    },
+    {
+      "name": "1440-სხვა-მიმართულება: ახალი SSR პასუხი",
+      "seconds": 1.432,
+      "containsRequest": true
+    },
+    {
+      "name": "1440-სხვა-ქალაქი: ახალი SSR პასუხი",
+      "seconds": 0.913,
+      "containsRequest": true
+    },
+    {
+      "name": "1440: კლიენტის ბეიჯი",
+      "seconds": 5.57,
+      "limit": 42
+    },
+    {
+      "name": "1440: ანგარიშის რაოდენობა",
+      "seconds": 6.89,
+      "limit": 42
+    },
+    {
+      "name": "1440: OfferCard",
+      "seconds": 9.93,
+      "limit": 42
+    },
+    {
+      "name": "1440: კომპანიის არჩეული სტატუსი",
+      "seconds": 1.81,
+      "limit": 42
+    },
+    {
+      "name": "1440: კომპანიის არარჩეული სტატუსი",
+      "seconds": 9.65,
+      "limit": 42
+    },
+    {
+      "name": "1440: ჩატის ბეიჯი",
+      "seconds": 2.54,
+      "limit": 25
+    },
+    {
+      "name": "390: ახალი SSR პასუხი",
+      "seconds": 1.565,
+      "containsRequest": true
+    },
+    {
+      "name": "390: კომპანიის ბეიჯი",
+      "seconds": 4.09,
+      "limit": 42
+    },
+    {
+      "name": "390: კომპანიის სია",
+      "seconds": 5.4,
+      "limit": 42
+    },
+    {
+      "name": "390: საჯარო გახსნილი სია",
+      "seconds": 34.05,
+      "limit": 42
+    },
+    {
+      "name": "390: საჯარო reload",
+      "seconds": 0.08
+    },
+    {
+      "name": "390-სხვა-მიმართულება: ახალი SSR პასუხი",
+      "seconds": 1.407,
+      "containsRequest": true
+    },
+    {
+      "name": "390-სხვა-ქალაქი: ახალი SSR პასუხი",
+      "seconds": 0.873,
+      "containsRequest": true
+    },
+    {
+      "name": "390: კლიენტის ბეიჯი",
+      "seconds": 6.56,
+      "limit": 42
+    },
+    {
+      "name": "390: ანგარიშის რაოდენობა",
+      "seconds": 7.63,
+      "limit": 42
+    },
+    {
+      "name": "390: OfferCard",
+      "seconds": 8.67,
+      "limit": 42
+    },
+    {
+      "name": "390: კომპანიის არჩეული სტატუსი",
+      "seconds": 3.32,
+      "limit": 42
+    },
+    {
+      "name": "390: კომპანიის არარჩეული სტატუსი",
+      "seconds": 9.67,
+      "limit": 42
+    },
+    {
+      "name": "390: ჩატის ბეიჯი",
+      "seconds": 2.54,
+      "limit": 25
+    }
+  ],
+  "screenshots": [
+    "after-1440-request-notification.png",
+    "after-1440-matching.png",
+    "after-1440-received-account.png",
+    "after-1440-compare.png",
+    "after-1440-choose.png",
+    "after-1440-chosen.png",
+    "after-1440-company-chosen.png",
+    "after-1440-company-declined.png",
+    "after-1440-chat.png",
+    "after-390-request-notification.png",
+    "after-390-matching.png",
+    "after-390-received-account.png",
+    "after-390-compare.png",
+    "after-390-choose.png",
+    "after-390-chosen.png",
+    "after-390-company-chosen.png",
+    "after-390-company-declined.png",
+    "after-390-chat.png"
+  ],
+  "requests": [
+    "76b74fd7-c01c-4fa2-9559-7b4a7b0f2ee8",
+    "8030fc2d-e328-4522-b593-b328f9c49d9e",
+    "ea93f9bb-a9a3-4f9b-ac0a-0f1c44c8f111",
+    "78197264-7a9b-4224-8cba-78f3621b8908",
+    "179e0a3c-9a21-4a5e-8431-8b060a14d07d",
+    "fccf45de-214a-474a-97c0-db2045627259"
+  ],
+  "conversations": [
+    "2913ab6c-ec48-4c1e-944e-96e801f4435f",
+    "24344761-f990-4500-87ba-64f7e0901ce3"
+  ],
+  "originalAlertPreferences": {
+    "cities": [],
+    "enabled": false,
+    "emailMode": "off",
+    "categories": []
+  },
+  "activeAlertPreferences": {
+    "cities": [
+      "rustavi",
+      "tbilisi"
+    ],
+    "enabled": true,
+    "emailMode": "off",
+    "categories": [
+      "customs",
+      "freight",
+      "warehouse"
+    ]
+  },
+  "cleanup": {
+    "requests": 0,
+    "offers": 0,
+    "conversations": 0,
+    "messages": 0
+  },
+  "profilesUnchanged": true
+}
