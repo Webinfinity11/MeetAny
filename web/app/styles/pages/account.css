@@ -177,13 +177,13 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page .account-tabs{gap:var(--space-7);margin-bottom:var(--space-8)}
 .account-page .account-tabs .ma-tab{min-height:52px;padding-inline:var(--space-2)}
 .account-layout{gap:var(--space-8)}
-.account-profile{padding:var(--space-6);gap:var(--space-5);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-subtle)}
+.account-profile{padding:var(--space-6);gap:var(--space-5);border:1px solid var(--card-border);border-radius:var(--card-radius);background:var(--white);box-shadow:var(--card-shadow)}
 .account-profile__role{margin-top:var(--space-2);line-height:1.7}
 .account-kv>div{grid-template-columns:minmax(0,1fr);gap:var(--space-1);padding-block:var(--space-3)}
 .account-kv dd{text-align:left;line-height:1.7}
 .account-profile__links{display:grid;gap:var(--space-2);margin:0}
 .account-main{gap:var(--space-6)}
-.account-main>.account-section{padding:var(--space-6);gap:var(--space-5);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--white)}
+.account-main>.account-section{padding:var(--space-8);gap:var(--space-5);border:1px solid var(--card-border);border-radius:var(--card-radius);background:var(--white);box-shadow:var(--card-shadow)}
 .account-section__head{gap:var(--space-3) var(--space-5)}
 .account-row{padding:var(--space-5) var(--space-1);gap:var(--space-4)}
 .account-row__main{display:grid;gap:var(--space-2)}
@@ -349,4 +349,171 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
     font-size: 26px;
     line-height: 34px;
   }
+}
+
+/* ---------- Account: pill tabs, card surfaces, hoverable rows ---------- */
+
+.account-page .ma-tabs {
+  gap: var(--space-1);
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: var(--space-8);
+  padding: var(--space-1);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  box-shadow: var(--card-shadow);
+}
+.account-page .ma-tab,
+.account-page .account-tabs .ma-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  color: var(--text-2);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+}
+.account-page .ma-tab:hover {
+  background: var(--canvas);
+  color: var(--text);
+}
+.account-page .ma-tab[aria-current="page"] {
+  background: var(--selected-bg);
+  color: var(--selected-text);
+}
+.account-page .ma-tab::after,
+.account-page .ma-tab[aria-current="page"]::after {
+  display: none;
+}
+.account-rows {
+  border-top: 0;
+}
+.account-row {
+  border-radius: 12px;
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+.account-row + .account-row {
+  border-top: 1px solid var(--border-subtle);
+}
+.account-row:hover {
+  background: var(--canvas);
+}
+.account-row:hover .account-row__link {
+  text-decoration: none;
+  color: var(--action);
+}
+.account-page .ma-form.account-card,
+.account-main--profile > form,
+.account-main--profile > section {
+  padding: var(--space-8);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--white);
+  box-shadow: var(--card-shadow);
+}
+.account-wide > * {
+  min-width: 0;
+}
+@media (max-width: 767px) {
+  .account-page .ma-tabs {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .account-main>.account-section,
+  .account-main--profile > form,
+  .account-main--profile > section {
+    padding: var(--space-5);
+  }
+  .account-row {
+    padding-inline: var(--space-2);
+  }
+}
+
+/* ---------- Inbox: one card, chat bubbles with clear sender contrast ---------- */
+
+.account-wide > .inbox {
+  padding: var(--space-4);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--white);
+  box-shadow: var(--card-shadow);
+  gap: var(--space-4);
+}
+.account-wide .inbox-list {
+  margin: 0;
+  padding-right: var(--space-4);
+  border-right: 1px solid var(--border-subtle);
+}
+.inbox-row {
+  border-radius: 12px;
+}
+.inbox-row:hover {
+  background: var(--canvas);
+}
+.inbox-row[aria-current="true"] {
+  background: var(--selected-bg);
+}
+.inbox-row__text {
+  border-bottom: 0;
+}
+.inbox-msg {
+  padding: var(--space-3) var(--space-4);
+  border-radius: 16px 16px 16px 6px;
+  background: var(--canvas);
+  border: 1px solid var(--card-border);
+}
+.inbox-msg[data-mine] {
+  border-color: transparent;
+  border-radius: 16px 16px 6px 16px;
+  background: var(--action);
+}
+.inbox-msg[data-mine] p {
+  color: var(--white);
+}
+.inbox-msg[data-mine] time {
+  color: color-mix(in srgb, var(--white) 72%, transparent);
+}
+.inbox-day {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--canvas);
+}
+.ma-proto .inbox-compose .ma-textarea {
+  border-radius: 22px;
+  padding-inline: var(--space-4);
+}
+.inbox-call {
+  border-radius: var(--radius-pill) !important;
+}
+@media (max-width: 767px) {
+  .account-wide > .inbox {
+    padding: var(--space-3);
+  }
+  .account-wide .inbox-list {
+    padding-right: 0;
+    border-right: 0;
+  }
+}
+
+.account-page .account-form-group {
+  margin: 0;
+  padding: var(--space-6) 0 0;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.account-page .account-form-group > legend {
+  float: left;
+  width: 100%;
+  margin-bottom: var(--space-4);
+}
+.account-page .account-form-group > legend + * {
+  clear: both;
 }

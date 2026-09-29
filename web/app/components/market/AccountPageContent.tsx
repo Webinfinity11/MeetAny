@@ -326,7 +326,7 @@ function PasswordForm() {
 
 type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
 type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
-type Tab = "overview" | "requests" | "offers" | "saved" | "messages" | "profile";
+type Tab = "overview" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile";
 
 const DAY = 86400000;
 function postedLabel(createdAt: string, now: number) {
@@ -339,7 +339,7 @@ function readSeen(): Record<string, string> {
   if (typeof window === "undefined") return {};
   try {return JSON.parse(localStorage.getItem("meetany.seen") || "{}") || {};} catch {return {};}
 }
-const offerTone = (status: string) => status === "chosen" ? "chosen" : "done";
+const offerTone = (status: string) => status === "chosen" ? "chosen" : status === "sent" ? "open" : "done";
 const offerLabel = (status: string) => status === "chosen" ? "არჩეულია" : status === "declined" ? "არ აირჩიეს" : "გაგზავნილია";
 
 // One tab strip for both widths and every account view (registry design system).
@@ -364,9 +364,8 @@ export function AccountPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
-  // Old links: ?tab=notifications / ?tab=alerts / ?tab=settings open the profile tab (alerts section).
-  const toAlerts = rawTab === "notifications" || rawTab === "alerts";
-  const tab: Tab = rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" ? rawTab : ["profile", "settings"].includes(rawTab) || toAlerts ? "profile" : "overview";
+  // ?tab=alerts (old links) opens the notifications tab; ?tab=settings the profile.
+  const tab: Tab = rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" || rawTab === "notifications" ? rawTab : rawTab === "alerts" ? "notifications" : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
 
@@ -381,22 +380,6 @@ export function AccountPageContent() {
     const url = new URL(next, window.location.origin);
     if (url.origin === window.location.origin && ["/companies/view/", "/requests/view/"].includes(url.pathname)) router.replace(url.pathname + url.search + url.hash);
   }, [me?.id, router]);
-  const hasMe = !!me;
-  useEffect(() => {
-    if (!hasMe || tab !== "profile" || !(toAlerts || window.location.hash === "#alerts")) return;
-    const alerts = document.getElementById("alerts");
-    if (!alerts) return;
-    // Scroll after both settings and notices replace their loading placeholders.
-    const scroll = () => {
-      if (alerts.querySelector('[aria-busy="true"]')) return;
-      alerts.scrollIntoView({ block: "start" });
-      observer.disconnect();
-    };
-    const observer = new MutationObserver(scroll);
-    observer.observe(alerts, { childList: true, subtree: true, attributes: true, attributeFilter: ["aria-busy"] });
-    scroll();
-    return () => observer.disconnect();
-  }, [hasMe, tab, toAlerts, searchParams]);
 
   const data = useMemo(() => {
     if (!store || !me) return null;
@@ -433,8 +416,19 @@ export function AccountPageContent() {
     { key: "requests", href: "/account/?tab=requests", label: `მოთხოვნები (${myRequests.length})` },
     { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული" : `შენახული (${savedCount})` },
     { key: "messages", href: "/account/?tab=messages", label: unread ? `მიმოწერები (${unread})` : "მიმოწერები" },
+    { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები" },
     { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
   ];
+
+  if (tab === "notifications") return (
+    <div className="ma-page account-page">
+      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
+      <AccountTabs tab={activeTab} items={tabs} />
+      <div id="alerts" className="account-main account-main--profile account-alerts">
+        <EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"} />
+      </div>
+    </div>
+  );
 
   if (tab === "saved" || tab === "messages") return (
     <div className="ma-page account-page">
@@ -454,15 +448,12 @@ export function AccountPageContent() {
         {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
         <ProfileForm me={me} />
         <PasswordForm key={me.id} />
-        <div id="alerts" className="account-alerts">
-          <EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"} />
-        </div>
       </div>
     </div>
   );
 
   async function extend(id: string) {
-    try {await store?.extendRequest(id); toast("ვადა გაგრძელდა.");}
+    try {await store?.extendRequest(id); toast("ვადა გაგრძელდა 7 დღით.");}
     catch (err) {toast((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
   }
 
@@ -570,7 +561,7 @@ export function AccountPageContent() {
                             <p className="account-row__meta">{[r ? categories[r.category] || r.category : "", r ? cities[r.city] || r.city : "", `გაიგზავნა ${postedLabel(o.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
                           </div>
                           <div className="account-row__stats">
-                            {o.status !== "sent" ? <Status tone={offerTone(o.status)}>{offerLabel(o.status)}</Status> : null}
+                            <Status tone={offerTone(o.status)}>{offerLabel(o.status)}</Status>
                           </div>
                           <div className="account-row__actions" />
                         </li>
@@ -586,7 +577,7 @@ export function AccountPageContent() {
                   <h2 className="account-section__title">შენი მიმართულების მოთხოვნები ({matching.length})</h2>
                   <Link className="account-link" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>ყველა შესაბამისი მოთხოვნა</Link>
                 </div>
-                <p className="account-row__meta">ყველა ქალაქი — ჯერ შენი ქალაქის მოთხოვნები. <Link className="account-link" href="/account/?tab=notifications#alerts">შეტყობინებების პარამეტრები</Link></p>
+                <p className="account-row__meta">ყველა ქალაქი — ჯერ შენი ქალაქის მოთხოვნები. <Link className="account-link" href="/account/?tab=notifications">შეტყობინებების პარამეტრები</Link></p>
                 {matching.length ? (
                   <ul className="account-rows">
                     {matching.slice(0, 5).map((r) => (

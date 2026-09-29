@@ -326,9 +326,9 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 }
 .ma-proto .ma-stat__label{overflow-wrap:anywhere}
 .ma-proto :is(h3,h4,.ma-title){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
-.ma-proto .r2-band{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4) var(--space-5);background:var(--bg);color:var(--text);padding-block:var(--space-6);border-bottom:1px solid var(--border-subtle);margin-bottom:var(--space-6)}
+.ma-proto .r2-band{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4) var(--space-5);background:transparent;color:var(--text);padding-block:var(--space-6);border-bottom:0;margin-bottom:var(--space-4)}
 .ma-proto .r2-band>.ma-avatar{width:calc(var(--space-12) + var(--space-2));height:calc(var(--space-12) + var(--space-2));background:var(--avatar-bg);color:var(--avatar-text);border-radius:var(--radius-md);font-size:var(--fs-title);font-weight:var(--fw-semibold)}
-.ma-proto .r2-band h1{margin:0;font-size:var(--fs-h1);line-height:var(--lh-h1);color:var(--text);overflow-wrap:anywhere}
+.ma-proto .r2-band h1{margin:0;font-size:32px;line-height:40px;font-weight:var(--fw-bold);letter-spacing:-.01em;color:var(--text);overflow-wrap:anywhere}
 .ma-proto .r2-band .ma-lead{margin:0;font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text-3)}
 .r2-band .ma-page-head__text{flex:1;min-width:0;max-width:none}
 .r2-band .ma-page-head__meta{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);overflow-wrap:anywhere}

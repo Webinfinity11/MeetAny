@@ -436,6 +436,20 @@
 .detail-page .ma-ocard__name:hover {
   color: var(--action);
 }
+.detail-page .ma-ocard--new .ma-ocard__name-row::after {
+  display: none;
+}
+.detail-page .ma-ocard .ma-link {
+  justify-self: start;
+  color: var(--text-link);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+}
+.detail-page .ma-ocard .ma-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .detail-page .ma-ocard--chosen {
   border: 1px solid var(--blue-300);
   padding: var(--space-6);

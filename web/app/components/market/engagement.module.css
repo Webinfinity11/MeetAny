@@ -9,8 +9,10 @@
 .head h2 { margin: 0; }
 .row { padding: var(--space-4) 0; border-bottom: 1px solid var(--border); display: grid; gap: var(--space-2); overflow-wrap: anywhere; }
 .row p { margin: 0; color: var(--text-2); font-size: var(--fs-sm); }
-.row a { color: var(--text); }
-.row[data-unread="true"] a { color: var(--blue-600); font-weight: var(--fw-semibold); }
+.row a { color: var(--text); font-weight: var(--fw-medium); text-decoration: none; }
+.row a:hover { color: var(--action); }
+.row[data-unread="true"] a { color: var(--text); font-weight: var(--fw-bold); }
+.row[data-unread="true"] { box-shadow: inset 3px 0 0 var(--action); padding-left: var(--space-4); }
 .meta { color: var(--text-3); font-size: var(--fs-xs); }
 .savedRow { display: flex; justify-content: space-between; align-items: start; gap: var(--space-4); padding: var(--space-4) 0; border-bottom: 1px solid var(--border-subtle); }
 .savedRow h3 { margin: 0 0 var(--space-1); }
