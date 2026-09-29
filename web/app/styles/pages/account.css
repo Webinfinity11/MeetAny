@@ -203,3 +203,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 
 /* Reserve the account viewport while authentication and its form load. */
 body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-h))}
+
+/* Keep the notification anchor at the top without pulling the footer into view. */
+.account-alerts{min-height:calc(100svh - var(--header-h))}
