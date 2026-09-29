@@ -28,7 +28,7 @@ secrets.push(env.DATABASE_URL, env.BLOB_READ_WRITE_TOKEN);
 export const safe = value => secrets.filter(Boolean).reduce((s, secret) => s.replaceAll(secret, '[redacted]'), String(value)).replace(/\x1b\[[0-9;]*m/g, '').replace(/Bearer\s+[^\s"']+/g, 'Bearer [redacted]');
 export const sql = neon(env.DATABASE_URL, { fetchOptions: { signal: undefined } });
 export const query = (text, values = []) => { guard(); return sql.query(text, values, { fetchOptions: { signal: AbortSignal.timeout(8000) } }); };
-export const credentials = key => ({ email: `demo-${key}@meetany.ge`, password: ledger.accounts[key].password });
+export const credentials = key => ({ email: ledger.accounts[key].email || `demo-${key}@meetany.ge`, password: ledger.accounts[key].password });
 export const randomPassword = () => { const p = crypto.randomBytes(24).toString('base64url'); secrets.push(p); return p; };
 export function validateRunId(run) { assert.match(run || '', /^[0-9]{13}(?:-[a-z][a-z0-9-]{0,40})?$/, 'არასწორი run-id'); return run; }
 export const markerFor = run => `[e2e:${validateRunId(run)}]`;
@@ -255,7 +255,7 @@ export class Scenario {
       const context = await request.newContext();
       const admin = { request: context };
       try {
-      await login(admin, 'admin');
+      await login(admin, 'owner_admin');
       const users = await query('select id from public.profiles where email=any($1::text[])', [emails]);
       for (const u of users) this.accounts.add(u.id);
       for (const u of users) await rpc(admin, 'admin_set_blocked', { p_user_id: u.id, p_blocked: true, p_reason: 'ავტომატური შემოწმება დასრულდა' });
