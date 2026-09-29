@@ -18,6 +18,13 @@ import { categories, cities } from "../../lib/categories";
 import { sinceMonthLabel } from "../../lib/format";
 import { usePublicPhone } from "../../lib/phones";
 import { useCompanyDetail } from "../../lib/use-company-detail";
+import dynamic from "next/dynamic";
+
+// Leaflet loads only for companies that have coordinates.
+const CompaniesMap = dynamic(() => import("./CompaniesMap").then(m => m.CompaniesMap), {
+  ssr: false,
+  loading: () => <div className="companies-map companies-map--compact"><div className="companies-map__loading" role="status">რუკა იტვირთება…</div></div>,
+});
 
 export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, available } = useMarketStore(initial);
@@ -98,6 +105,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         <p>{ownProfile ? "ეს შენი კომპანიის საჯარო გვერდია. ინფორმაცია შეგიძლია ანგარიშიდან განაახლო." : "დაუკავშირდი კომპანიას პირობების დასაზუსტებლად."}</p>
         <div className="company-contact-actions">{ownProfile ? <Link className="ma-btn ma-btn--primary" href="/account/?tab=profile">პროფილის რედაქტირება</Link> : <>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/></>}</div>
         {c.serviceCities?.length ? <div className="company-profile-coverage"><span>მომსახურების არეალი</span><p>{c.serviceCities.map((id: string) => cities[id] || id).join(" · ")}</p></div> : null}
+        {Number.isFinite(c.lat) && Number.isFinite(c.lng) ? <CompaniesMap compact companies={[{ id: c.id, name, industry: c.industry, city: c.city, lat: c.lat, lng: c.lng }]} /> : null}
         {c.address || directions ? <div className="company-contact-address"><span>მისამართი</span>{c.address ? <p>{c.address}</p> : null}{directions ? <a href={directions} target="_blank" rel="noopener noreferrer"><Icon name="map-pin" />რუკაზე ნახვა</a> : null}</div> : null}
       </aside>
       <div className="company-profile-main">

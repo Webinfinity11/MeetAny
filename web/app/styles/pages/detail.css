@@ -1,4 +1,5 @@
 @import "./forms.css";
+@import "../map.css";
 
 /* Detail pages: request (/requests/view/) and company profile (/companies/view/).
    Hero on the canvas → main column of elevated cards + sticky aside card. */

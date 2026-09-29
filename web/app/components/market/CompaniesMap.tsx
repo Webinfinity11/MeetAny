@@ -14,13 +14,19 @@ const GEORGIA: [number, number] = [42.2, 43.5];
 
 /** Company markers on an OpenStreetMap basemap. Leaflet loads only when this view opens. Popup content is
  *  built with DOM nodes (textContent), never HTML strings — company names come from users. */
-export function CompaniesMap({ companies }: { companies: MapCompany[] }) {
+/** `compact`: one company on its profile — street-level zoom, no popup, no clustering needed. */
+export function CompaniesMap({ companies, compact = false }: { companies: MapCompany[]; compact?: boolean }) {
   const host = useRef<HTMLDivElement>(null);
   const map = useRef<LeafletMap | null>(null);
   const layer = useRef<MarkerClusterGroup | null>(null);
   const leaflet = useRef<typeof import("leaflet") | null>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  // Re-place markers only when the set of companies or their positions change — callers may pass a
+  // fresh array on every render, and re-fitting then would snap the map back while someone pans.
+  const key = companies.map(c => `${c.id}:${c.lat},${c.lng}`).join("|");
+  const latest = useRef(companies);
+  useEffect(() => { latest.current = companies; });
 
   useEffect(() => {
     let cancelled = false;
@@ -32,7 +38,8 @@ export function CompaniesMap({ companies }: { companies: MapCompany[] }) {
       // fadeAnimation off: tile fade-in waits on requestAnimationFrame, which never runs in a hidden
       // WebView (DevApp panel, background tabs), leaving tiles at opacity 0.
       const m = L.map(host.current, { zoomControl: false, scrollWheelZoom: false, attributionControl: true, fadeAnimation: false }).setView(GEORGIA, 7);
-      L.control.zoom({ position: "bottomright" }).addTo(m);
+      // The compact profile map is too small for 44px zoom buttons; pinch/double-click still zoom.
+      if (!compact) L.control.zoom({ position: "bottomright" }).addTo(m);
       // OpenStreetMap's own tiles: keyless, fine for this traffic under its usage policy (attribution
       // required). Switch the URL to a keyed provider (MapTiler/Stadia) if traffic grows.
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -63,14 +70,14 @@ export function CompaniesMap({ companies }: { companies: MapCompany[] }) {
       map.current = null;
       layer.current = null;
     };
-  }, []);
+  }, [compact]);
 
   useEffect(() => {
     const L = leaflet.current, m = map.current, group = layer.current;
     if (!ready || !L || !m || !group) return;
     group.clearLayers();
     const points: [number, number][] = [];
-    for (const c of companies) {
+    for (const c of latest.current) {
       const at: [number, number] = [c.lat, c.lng];
       const icon = L.divIcon({
         className: "map-pin",
@@ -85,18 +92,18 @@ export function CompaniesMap({ companies }: { companies: MapCompany[] }) {
       initials.className = "map-pin__initials";
       initials.textContent = avatarInitials(c.name);
       marker.on("add", () => marker.getElement()?.querySelector(".map-pin__dot")?.appendChild(initials));
-      marker.bindPopup(() => popup(c), { closeButton: true, className: "map-popup", maxWidth: 280, minWidth: 220 });
+      if (!compact) marker.bindPopup(() => popup(c), { closeButton: true, className: "map-popup", maxWidth: 280, minWidth: 220 });
       marker.addTo(group);
       points.push(at);
     }
-    if (points.length === 1) m.setView(points[0], 13);
+    if (points.length === 1) m.setView(points[0], compact ? 15 : 13);
     else if (points.length > 1) m.fitBounds(L.latLngBounds(points), { padding: [48, 48], maxZoom: 13 });
     else m.setView(GEORGIA, 7);
-  }, [companies, ready]);
+  }, [key, ready, compact]);
 
   return (
-    <div className="companies-map">
-      <div ref={host} className="companies-map__canvas" role="region" aria-label="კომპანიები რუკაზე" />
+    <div className={`companies-map${compact ? " companies-map--compact" : ""}`}>
+      <div ref={host} className="companies-map__canvas" role="region" aria-label={compact ? "კომპანიის მდებარეობა რუკაზე" : "კომპანიები რუკაზე"} />
       {!ready && !failed ? <div className="companies-map__loading" role="status">რუკა იტვირთება…</div> : null}
       {failed ? <div className="companies-map__loading" role="alert">რუკა ვერ ჩაიტვირთა. სცადე გვერდის განახლება.</div> : null}
     </div>

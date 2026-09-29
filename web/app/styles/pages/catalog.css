@@ -1,5 +1,6 @@
 @import "./forms.css";
 @import "../cards.css";
+@import "../map.css";
 
 /* Catalogs: requests (/requests/) and companies (/companies/).
    One structure for both: CatalogHeader → sidebar filters + results bar → cards.
@@ -526,160 +527,6 @@
   height: var(--icon-sm);
 }
 
-.companies-map-view {
-  display: grid;
-  gap: var(--space-3);
-}
-.companies-map {
-  position: relative;
-  isolation: isolate;
-  height: min(640px, calc(100vh - var(--header-h) - 160px));
-  min-height: 420px;
-  overflow: hidden;
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
-  background: var(--canvas);
-  box-shadow: var(--card-shadow);
-}
-.companies-map__canvas {
-  position: absolute;
-  inset: 0;
-  font-family: var(--font-sans);
-}
-.companies-map__loading {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: var(--text-3);
-  font-size: var(--fs-sm);
-}
-.companies-map__unmapped {
-  margin: 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-sm);
-  color: var(--text-3);
-}
-.companies-map__unmapped a {
-  color: var(--text-link);
-  font-weight: var(--fw-medium);
-  text-decoration: none;
-}
-.companies-map__unmapped a:hover {
-  text-decoration: underline;
-}
-
-/* Pin: brand-blue teardrop with the company initials */
-.map-pin {
-  background: none;
-  border: 0;
-}
-.map-pin__dot {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 2px solid var(--white);
-  border-radius: 50% 50% 50% 4px;
-  transform: rotate(-45deg);
-  background: var(--action);
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--ink-950) 28%, transparent);
-  transition: background-color var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
-}
-.map-pin__initials {
-  transform: rotate(45deg);
-  color: var(--white);
-  font: var(--fw-bold) 12px/1 var(--font-sans);
-}
-.map-pin:hover .map-pin__dot,
-.leaflet-marker-icon:focus-visible .map-pin__dot {
-  background: var(--action-hover);
-  transform: rotate(-45deg) scale(1.08);
-}
-.leaflet-marker-icon:focus-visible {
-  outline: none;
-}
-
-/* Cluster: white disc with the brand ring and the count */
-.map-cluster {
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--action) 18%, transparent);
-}
-.map-cluster > span {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 2px solid var(--white);
-  border-radius: 50%;
-  background: var(--action);
-  color: var(--white);
-  font: var(--fw-bold) 13px/1 var(--font-sans);
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--ink-950) 25%, transparent);
-}
-
-/* Popup restyled to the card language */
-.map-popup .leaflet-popup-content-wrapper {
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
-  box-shadow: var(--card-hover-shadow);
-}
-.map-popup .leaflet-popup-content {
-  margin: var(--space-4);
-}
-.map-popup__body {
-  display: grid;
-  gap: var(--space-1);
-}
-.map-popup__name {
-  font-size: var(--fs-body);
-  line-height: var(--lh-sm);
-  font-weight: var(--fw-bold);
-  color: var(--text) !important;
-  text-decoration: none;
-}
-.map-popup__meta {
-  margin: 0 !important;
-  font-size: var(--fs-meta);
-  line-height: var(--lh-xs);
-  color: var(--text-3);
-}
-.map-popup__link {
-  margin-top: var(--space-2);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  color: var(--text-link) !important;
-  text-decoration: none;
-}
-.map-popup .leaflet-popup-close-button {
-  top: 6px !important;
-  right: 6px !important;
-  color: var(--text-3) !important;
-}
-.companies-map .leaflet-control-zoom {
-  overflow: hidden;
-  border: 1px solid var(--card-border) !important;
-  border-radius: 12px !important;
-  box-shadow: var(--card-shadow) !important;
-}
-.companies-map .leaflet-bar.leaflet-control-zoom a {
-  width: var(--tap-min);
-  height: var(--tap-min);
-  line-height: var(--tap-min);
-  font-size: 20px;
-  color: var(--text);
-}
-.companies-map .leaflet-control-attribution {
-  font-size: 10px;
-}
-/* Tone the colourful OSM basemap down to the product's restrained palette. */
-.companies-map .leaflet-tile-pane {
-  filter: saturate(.45) contrast(.96) brightness(1.04);
-}
-
 @media (max-width: 767px) {
   .view-switch button {
     min-height: 38px;
@@ -697,16 +544,11 @@
     width: 18px;
     height: 18px;
   }
-  .companies-map {
-    height: 70vh;
-    min-height: 360px;
-  }
   .catalog-sort .ma-select {
     min-width: 0;
     width: 132px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .map-pin__dot,
   .view-switch button { transition: none; }
 }
