@@ -21,7 +21,7 @@ for (const origin of [BASE, UPLOAD]) assert(['localhost', '127.0.0.1'].includes(
 const accounts = [
   {key:'owner_user', email:'user@gmail.com', role:'client', name:'სატესტო მომხმარებელი', label:'მფლობელის სატესტო კლიენტი', env:'OWNER_USER_PASSWORD'},
   {key:'owner_admin', email:'admin@gmail.com', role:'admin', name:'სატესტო ადმინი', label:'მფლობელის სატესტო ადმინი', env:'OWNER_ADMIN_PASSWORD'},
-  {key:'owner_company', email:'company@gmail.com', role:'company', name:'სატესტო კომპანია', company:'სატესტო კომპანია', industry:'logistics', city:'tbilisi', about:'ვუზრუნველყოფთ ტვირთის გადაზიდვასა და დისტრიბუციას საქართველოს მასშტაბით.', label:'მფლობელის სატესტო კომპანია', env:'OWNER_COMPANY_PASSWORD'},
+  {key:'owner_company', email:'company@gmail.com', role:'company', name:'სატესტო კომპანია', company:'სატესტო კომპანია', industry:'freight', city:'tbilisi', about:'ვუზრუნველყოფთ ტვირთის გადაზიდვასა და დისტრიბუციას საქართველოს მასშტაბით.', label:'მფლობელის სატესტო კომპანია', env:'OWNER_COMPANY_PASSWORD'},
 ];
 let state, changes = 0;
 async function json(url, options={}) {

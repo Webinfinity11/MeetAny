@@ -6,7 +6,8 @@ import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { PhotoField } from "./PhotoField";
 import { useMarketStore } from "../../lib/market-client";
-import { categories, cities, units } from "../../lib/categories";
+import { categories, cities, currentCategory, units } from "../../lib/categories";
+import { categoryOptions } from "./CategoryOptions";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 
 // Needed-by dates: typed "დდ.თთ.წწწწ" in the field, ISO "YYYY-MM-DD" in state and on submit.
@@ -63,7 +64,7 @@ export function RequestFormSheet({
   const ref = useRef<HTMLDialogElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState(existing?.title || "");
-  const [category, setCategory] = useState(existing?.category || initialCategory);
+  const [category, setCategory] = useState(existing?.category || (Object.hasOwn(categories, currentCategory(initialCategory)) ? currentCategory(initialCategory) : ""));
   // "" = not chosen yet: the author's profile city is the default (fallback Tbilisi).
   const [cityChoice, setCity] = useState(existing?.city || "");
   const [addressNote, setAddressNote] = useState(existing?.addressNote || "");
@@ -226,11 +227,7 @@ export function RequestFormSheet({
                   <option value="" disabled>
                     აირჩიე კატეგორია
                   </option>
-                  {Object.entries(categories).map(([id, label]) => (
-                    <option key={id} value={id}>
-                      {label}
-                    </option>
-                  ))}
+                  {categoryOptions()}
                 </select>
                 {v.message("category")}
               </div>

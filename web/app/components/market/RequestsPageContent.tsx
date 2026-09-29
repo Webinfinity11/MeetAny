@@ -12,7 +12,8 @@ import { MobileFilterSheet } from "./MobileFilterSheet";
 import { requestDemoTier } from "../../lib/tier-demo";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
-import { categories, cities } from "../../lib/categories";
+import { categories, cities, currentCategory, groupNames } from "../../lib/categories";
+import { categoryOptions } from "./CategoryOptions";
 import { useFilters } from "../../lib/use-filters";
 import { postedLabel } from "../../lib/format";
 import { RequestFormSheet } from "./RequestFormSheet";
@@ -46,7 +47,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
-  const city = filters.get("city"), category = filters.get("category"), query = filters.get("q"), sort = filters.get("sort", "newest");
+  const city = filters.get("city"), category = currentCategory(filters.get("category")), query = filters.get("q"), sort = filters.get("sort", "newest");
   const period = filters.get("period"), unanswered = filters.get("unanswered") === "1", withPhoto = filters.get("photo") === "1", urgent = filters.get("urgent") === "1";
   const setCity = (city: string) => filters.set({city});
   const setCategory = (category: string) => filters.set({category});
@@ -169,7 +170,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const [sheetOpen, setSheetOpen] = useState(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const activeItems = [
-    ...(category ? [{key: "category", label: categories[category] || category}] : []),
+    ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: cities[city] || city}] : []),
     ...(period ? [{key: "period", label: "პერიოდი"}] : []),
     ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
@@ -181,7 +182,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     const id = `request-${kind}-${placement}`, label = kind === "category" ? "კატეგორია" : "ქალაქი";
     const select = <select className="ma-select" id={id} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
       <option value="">{placement === "desktop" ? "ყველა" : kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
-      {Object.entries(kind === "category" ? categories : cities).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
+      {kind === "category" ? categoryOptions(true) : Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
     </select>;
     // Desktop reads like the sort control: "კატეგორია: ყველა".
     return placement === "desktop" ? <div className="ma-field request-board-choice"><label htmlFor={id}>{label}:</label>{select}</div> : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;

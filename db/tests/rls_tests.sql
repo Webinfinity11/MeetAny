@@ -167,7 +167,7 @@ select t.signup('giorgi', 'giorgi@example.ge', '{"name":"გიორგი მ�
 select t.signup('tamar', 'tamar@example.ge', '{"role":"client","name":"თამარ ლომიძე","phone":"599440118","city":"batumi"}');
 select t.signup('wood', 'wood@example.ge', '{"role":"company","name":"ლევან ხ","company":"ხის ოსტატი","phone":"995555781900","city":"tbilisi","industry":"furniture"}');
 select t.signup('office', 'office@example.ge', '{"role":"company","name":"ანა გ","company":"Office Line","phone":"+995 568 220 017","city":"rustavi","industry":"furniture"}');
-select t.signup('axis', 'axis@example.ge', '{"role":"company","name":"დავით ჩ","company":"Axis Build","phone":"+995 599 100 245","city":"tbilisi","industry":"construction"}');
+select t.signup('axis', 'axis@example.ge', '{"role":"company","name":"დავით ჩ","company":"Axis Build","phone":"+995 599 100 245","city":"tbilisi","industry":"renovation"}');
 select t.signup('sneaky', 'sneaky@example.ge', '{"role":"admin","name":"Sneaky User","phone":"+995 555 999 111","city":"tbilisi"}');
 select t.signup('admin', 'admin@example.ge', '{"name":"MeetAny ადმინი","company":"MeetAny","phone":"+995 555 000 000","city":"tbilisi"}');
 select t.signup('bad', 'bad@example.ge', '{"name":"Spammer","phone":"+995 555 666 777","city":"gori"}');
@@ -200,7 +200,7 @@ end $$;
 grant execute on function t.try_complete(text, jsonb, boolean) to public;
 select t.throws($$select t.try_complete('x1@example.ge', '{"name":"A","phone":"+995 555 111 001","city":"tbilisi"}')$$, 'MA401', 'complete_profile: short name -> MA401');
 select t.throws($$select t.try_complete('x1b@example.ge', '{"name":"   A   ","phone":"+995 555 111 001","city":"tbilisi"}')$$, 'MA401', 'complete_profile: name trimmed before length check -> MA401');
-select t.throws($$select t.try_complete('x2@example.ge', '{"role":"company","name":"Anna","phone":"+995 555 111 002","city":"tbilisi","industry":"food"}')$$, 'MA402', 'complete_profile: company without company name -> MA402');
+select t.throws($$select t.try_complete('x2@example.ge', '{"role":"company","name":"Anna","phone":"+995 555 111 002","city":"tbilisi","industry":"food_fresh"}')$$, 'MA402', 'complete_profile: company without company name -> MA402');
 select t.throws($$select t.try_complete('not-an-email', '{"name":"Anna","phone":"+995 555 111 003","city":"tbilisi"}')$$, 'MA403', 'complete_profile: bad Neon Auth email -> MA403');
 select t.throws($$select t.try_complete('x4@example.ge', '{"name":"Anna","phone":"+995 455 111 004","city":"tbilisi"}')$$, 'MA404', 'complete_profile: non-mobile phone -> MA404');
 select t.throws($$select t.try_complete('x5@example.ge', '{"name":"Anna","city":"tbilisi"}')$$, 'MA404', 'complete_profile: missing phone -> MA404');
@@ -228,7 +228,7 @@ select t.ok((select email from public.my_profile()) = 'x11@example.ge', 'complet
 do $$
 declare p public.profiles;
 begin
-  p := t.complete('{"role":"company","name":"Changed Name","company":"Changed","phone":"+995 555 120 450","city":"batumi","industry":"food"}');
+  p := t.complete('{"role":"company","name":"Changed Name","company":"Changed","phone":"+995 555 120 450","city":"batumi","industry":"food_fresh"}');
   perform t.ok(p.id = t.get('x11') and p.name = 'Anna Late' and p.role = 'client' and p.phone = '+995 555 111 011' and p.city = 'tbilisi',
                'complete_profile again: existing profile returned unchanged (no MA405 oracle, no role change)');
   p := t.complete('{"name":"","city":"nowhere"}');
@@ -273,7 +273,7 @@ delete from neon_auth."user" where id = t.get('x13');
 select t.put('gone', t.auth_user('gone@example.ge'));
 select t.as_id(t.get('gone'));
 select t.lives($$select t.complete('{"name":"Gone User","phone":"+995 555 111 014","city":"tbilisi"}')$$, 'short-lived user completes profile');
-select t.lives($$select public.create_request('დროებითი განცხადება', 'ეს განცხადება წაიშლება მომხმარებელთან ერთად', 'food', 'tbilisi')$$, 'short-lived user creates a request');
+select t.lives($$select public.create_request('დროებითი განცხადება', 'ეს განცხადება წაიშლება მომხმარებელთან ერთად', 'food_fresh', 'tbilisi')$$, 'short-lived user creates a request');
 select t.as_super();
 delete from neon_auth."user" where id = t.get('gone');
 select t.ok(not exists (select 1 from public.profiles where id = t.get('gone')) and not exists (select 1 from public.requests where owner_id = t.get('gone')),
@@ -306,7 +306,7 @@ select t.as_super();
 -- ============================================================= 4. create_request
 select t.as_anon();
 select t.throws($$select public.create_request('სკამები 1000 ცალი', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi')$$, 'MA001', 'anon create_request -> MA001');
-select t.throws($$insert into public.requests (owner_id, title, body, category, city) values (gen_random_uuid(), 'hello world', 'hello world body', 'food', 'tbilisi')$$, '42501', 'anon direct insert into requests denied');
+select t.throws($$insert into public.requests (owner_id, title, body, category, city) values (gen_random_uuid(), 'hello world', 'hello world body', 'food_fresh', 'tbilisi')$$, '42501', 'anon direct insert into requests denied');
 
 select t.as_user('nino');
 select t.throws($$select public.create_request('abc', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi')$$, 'MA101', 'short title -> MA101');
@@ -319,7 +319,7 @@ select t.throws(format($$select public.create_request('სკამები 100
 select t.throws($$select public.create_request('სკამები 1000 ცალი', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi', 'javascript:alert(1)')$$, 'MA109', 'javascript: photo url -> MA109');
 select t.throws($$select public.create_request('სკამები 1000 ცალი', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi', 'https://evil.example/x.jpg')$$, 'MA109', 'foreign photo url -> MA109');
 select t.throws(format($$select public.create_request('სკამები 1000 ცალი', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi', %L)$$, t.photo('nino', 'photo.svg')), 'MA109', 'non-raster photo extension -> MA109');
-select t.throws($$insert into public.requests (owner_id, title, body, category, city) values (auth.uid(), 'hello world', 'hello world body', 'food', 'tbilisi')$$, '42501', 'authenticated direct insert into requests denied');
+select t.throws($$insert into public.requests (owner_id, title, body, category, city) values (auth.uid(), 'hello world', 'hello world body', 'food_fresh', 'tbilisi')$$, '42501', 'authenticated direct insert into requests denied');
 
 do $$
 declare r public.requests;
@@ -339,9 +339,9 @@ begin
   perform t.ok(r.photo_url = t.photo('nino', 'linen_2-Ab3dEf9GhJkLmN0pQrStUvWxYz12.PNG'), 'create_request: Blob name with random suffix accepted, ext case-insensitive');
   perform t.as_user('nino');
   perform t.put('linen', r.id);
-  r := public.create_request('ვებსაიტი სასტუმროსთვის', 'სამენოვანი ვებსაიტი ონლაინ ჯავშნით', 'technology', 'batumi');
+  r := public.create_request('ვებსაიტი სასტუმროსთვის', 'სამენოვანი ვებსაიტი ონლაინ ჯავშნით', 'software_web', 'batumi');
   perform t.put('website', r.id);
-  r := public.create_request('ბეტონი M300 50 მ³', 'ფუნდამენტისთვის 50 მ³ ბეტონი ტუმბოთი', 'construction', 'batumi');
+  r := public.create_request('ბეტონი M300 50 მ³', 'ფუნდამენტისთვის 50 მ³ ბეტონი ტუმბოთი', 'renovation', 'batumi');
   perform t.put('concrete', r.id);
 end $$;
 
@@ -349,13 +349,13 @@ end $$;
 select t.as_super();
 select t.ok(meetany_private.open_count(t.uid('nino')) = 5, 'nino has 5 open requests');
 select t.as_user('nino');
-select t.throws($$select public.create_request('მეექვსე განცხადება', 'მეექვსე განცხადების აღწერა', 'food', 'tbilisi')$$, 'MA105', '6th open request -> MA105');
+select t.throws($$select public.create_request('მეექვსე განცხადება', 'მეექვსე განცხადების აღწერა', 'food_fresh', 'tbilisi')$$, 'MA105', '6th open request -> MA105');
 select t.lives(format('select public.close_request(%L)', t.get('long')), 'owner closes a request');
-select t.lives($$select t.put('sixth', (public.create_request('მეექვსე განცხადება', 'მეექვსე განცხადების აღწერა', 'food', 'tbilisi')).id)$$, 'closing frees a slot for a new request');
+select t.lives($$select t.put('sixth', (public.create_request('მეექვსე განცხადება', 'მეექვსე განცხადების აღწერა', 'food_fresh', 'tbilisi')).id)$$, 'closing frees a slot for a new request');
 select t.as_super();
 update public.requests set expires_at = now() - interval '1 minute' where id = t.get('sixth');
 select t.as_user('nino');
-select t.lives($$select t.put('seventh', (public.create_request('მეშვიდე განცხადება', 'მეშვიდე განცხადების აღწერა', 'food', 'tbilisi')).id)$$, 'expired requests do not count toward the limit');
+select t.lives($$select t.put('seventh', (public.create_request('მეშვიდე განცხადება', 'მეშვიდე განცხადების აღწერა', 'food_fresh', 'tbilisi')).id)$$, 'expired requests do not count toward the limit');
 select t.throws(format('select public.extend_request(%L)', t.get('long')), 'MA105', 'reopening a closed request when 5 are open -> MA105');
 select t.lives(format('select public.close_request(%L)', t.get('seventh')), 'owner closes 7th');
 select t.as_super();
@@ -617,7 +617,7 @@ select t.as_user('wood');
 select t.ok((select count(phone) from public.profiles where id in (t.uid('bad'), t.uid('badco'))) = 0, 'authenticated cannot read blocked phones');
 select t.as_user('bad');
 select t.ok((select count(phone) from public.profiles where id = auth.uid()) = 0, 'blocked caller cannot read own phone through public table');
-select t.throws($$select public.create_request('დაბლოკილის განცხადება', 'დაბლოკილი ვერ უნდა დადოს', 'food', 'gori')$$, 'MA002', 'blocked user create_request -> MA002');
+select t.throws($$select public.create_request('დაბლოკილის განცხადება', 'დაბლოკილი ვერ უნდა დადოს', 'food_fresh', 'gori')$$, 'MA002', 'blocked user create_request -> MA002');
 select t.ok((select blocked from public.my_profile()), 'blocked user sees own blocked flag via my_profile');
 select t.as_user('badco');
 select t.throws(format($$select public.send_offer(%L, 'დაბლოკილი კომპანიის შეთავაზება', 5)$$, t.get('cleaning')), 'MA002', 'blocked company send_offer -> MA002');
@@ -654,7 +654,7 @@ select t.ok((select count(*) from public.requests where id = t.get('linen')) = 0
 --  <photo_origin>/<caller id>/ with a raster-image file name)
 create function t.try_photo(url text) returns void language plpgsql as $$
 begin
-  perform public.close_request((public.create_request('ფოტოს ტესტი', 'ფოტოს მისამართის შემოწმება', 'food', 'tbilisi', url)).id);
+  perform public.close_request((public.create_request('ფოტოს ტესტი', 'ფოტოს მისამართის შემოწმება', 'food_fresh', 'tbilisi', url)).id);
 end $$;
 grant execute on function t.try_photo(text) to public;
 select t.as_user('nino');
@@ -690,7 +690,7 @@ select t.throws(format('select t.try_photo(%L)', t.photo('bad', 'spam.jpg')), 'M
 select t.as_anon();
 select t.throws(format('select t.try_photo(%L)', t.photo('nino', 'anon.jpg')), 'MA001', 'photo: anonymous -> MA001');
 select t.as_super();
-select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, photo_url) values (%L, 'direct photo', 'direct photo body', 'food', 'tbilisi', %L)$$,
+select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, photo_url) values (%L, 'direct photo', 'direct photo body', 'food_fresh', 'tbilisi', %L)$$,
   t.uid('nino'), t.photo('wood')), '23514', 'photo: table CHECK ties the folder to the owner');
 
 -- ============================================================= 14. signed in, email verified, no profile yet: read-only
@@ -704,7 +704,7 @@ select t.lives($$select id, role, company, industry, verified, city from public.
 select t.ok((select count(*) from public.offer_counts(array[t.get('chairs')])) = 1, 'no-profile: offer_counts works');
 select t.ok((select count(*) from public.offers) = 0, 'no-profile: sees no offers');
 select t.ok((select count(*) from public.contact_for_request(t.get('chairs'))) = 0, 'no-profile: gets no contact');
-select t.throws($$select public.create_request('პროფილის გარეშე', 'პროფილის გარეშე განცხადება', 'food', 'tbilisi')$$, 'MA001', 'no-profile: create_request -> MA001');
+select t.throws($$select public.create_request('პროფილის გარეშე', 'პროფილის გარეშე განცხადება', 'food_fresh', 'tbilisi')$$, 'MA001', 'no-profile: create_request -> MA001');
 select t.throws(format($$select public.send_offer(%L, 'პროფილის გარეშე შეთავაზება', 5)$$, t.get('np_req')), 'MA001', 'no-profile: send_offer -> MA001');
 select t.throws(format('select public.close_request(%L)', t.get('np_req')), 'MA001', 'no-profile: close_request -> MA001');
 select t.throws(format('select public.extend_request(%L)', t.get('np_req')), 'MA001', 'no-profile: extend_request -> MA001');

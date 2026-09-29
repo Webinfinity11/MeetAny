@@ -1,12 +1,13 @@
 /* Shared browser data/auth layer. Called once by market-client.ts after mount.
    Every mutation refreshes cache and notifies React subscribers. See db/CONTRACT.md. */
 import { toast } from '../components/Toasts';
+import { categories, categoryKind, expandCategories } from './categories-data.js';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
 export function createMarketStore({initial=null,background=true}={}){
  const DAY=86400000,EXTEND_DAYS=7;
  const PENDING_KEY='meetany.pendingProfile';
 
- const categories={furniture:'ავეჯი და ინვენტარი',construction:'მშენებლობა და რემონტი',textiles:'ტექსტილი და სასტუმროები',food:'საკვები და სასმელი',packaging:'შეფუთვა და წარმოება',logistics:'ლოგისტიკა და დისტრიბუცია',cleaning:'დასუფთავება და მოვლა',technology:'IT და ტექნოლოგიები',marketing:'მარკეტინგი და დიზაინი',finance:'ბუღალტერია და ფინანსები',legal:'იურიდიული მომსახურება',tourism:'ტურიზმი',other:'სხვა'};
+ // categories: app/lib/categories-data.js (keys shared with meetany_private.categories()).
  const cities={tbilisi:'თბილისი',batumi:'ბათუმი',kutaisi:'ქუთაისი',rustavi:'რუსთავი',zugdidi:'ზუგდიდი',telavi:'თელავი',gori:'გორი',georgia:'მთელი საქართველო'};
  // Request quantity units and offer price types (keys stored in the DB, labels shown in the UI).
  const units={pcs:'ცალი',m2:'მ²',kg:'კგ',hour:'საათი',service:'სერვისი'};
@@ -511,7 +512,7 @@ export function createMarketStore({initial=null,background=true}={}){
    if(ownerId&&r.ownerId!==ownerId)return false;
    if(state==='open'&&s!=='open')return false;
    if(state==='done'&&!['chosen','closed','expired'].includes(s))return false;
-   if(category&&!category.split(',').includes(r.category))return false;
+   if(category&&!expandCategories(category).includes(r.category))return false;
    if(city&&!city.split(',').includes(r.city)&&r.city!=='georgia')return false;
    const text=(r.title+' '+r.body+' '+categories[r.category]+' '+cities[r.city]).toLocaleLowerCase();
    return terms.every(t=>text.includes(t));
@@ -753,11 +754,11 @@ export function createMarketStore({initial=null,background=true}={}){
  function listCompanies({q='',industry='',city='',verified=false,type=''}={}){
   const terms=clean(q,200).toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return cache.companies.filter(c=>{
-   if(industry&&!industry.split(',').includes(c.industry))return false;
-   const supplier=['furniture','textiles','food','packaging','construction'].includes(c.industry);
+   if(industry&&!expandCategories(industry).includes(c.industry))return false;
+   const supplier=categoryKind[c.industry]==='product';
    if(type==='suppliers'&&!supplier)return false;
    if(type==='services'&&supplier)return false;
-   if(type==='distributors'&&c.industry!=='logistics')return false;
+   if(type==='distributors'&&c.industry!=='wholesale')return false;
    if(type==='partners'&&!c.seeks.length)return false;
    if(city&&!city.split(',').some(x=>servesCity(c,x)))return false;
    if(verified&&!c.verified)return false;

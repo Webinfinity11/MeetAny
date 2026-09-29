@@ -60,13 +60,13 @@ select t.throws($$select public.create_request('Anon request', 'Anonymous with q
 
 -- table CHECK holds even for SQL-editor writes
 select t.as_super();
-select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, quantity) values (%L, 'direct qty', 'direct quantity body', 'food', 'tbilisi', 5)$$, t.uid('fl_c')),
+select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, quantity) values (%L, 'direct qty', 'direct quantity body', 'food_fresh', 'tbilisi', 5)$$, t.uid('fl_c')),
   '23514', 'F1 table CHECK: quantity needs unit');
-select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, unit) values (%L, 'direct unit', 'direct unit only body', 'food', 'tbilisi', 'pcs')$$, t.uid('fl_c')),
+select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, unit) values (%L, 'direct unit', 'direct unit only body', 'food_fresh', 'tbilisi', 'pcs')$$, t.uid('fl_c')),
   '23514', 'F1 table CHECK: unit needs quantity');
-select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, quantity, unit) values (%L, 'direct unit', 'direct bad unit body', 'food', 'tbilisi', 5, 'ton')$$, t.uid('fl_c')),
+select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, quantity, unit) values (%L, 'direct unit', 'direct bad unit body', 'food_fresh', 'tbilisi', 5, 'ton')$$, t.uid('fl_c')),
   '23514', 'F1 table CHECK: unknown unit');
-select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, quantity, unit) values (%L, 'direct unit', 'direct zero qty body', 'food', 'tbilisi', 0, 'pcs')$$, t.uid('fl_c')),
+select t.throws(format($$insert into public.requests (owner_id, title, body, category, city, quantity, unit) values (%L, 'direct unit', 'direct zero qty body', 'food_fresh', 'tbilisi', 0, 'pcs')$$, t.uid('fl_c')),
   '23514', 'F1 table CHECK: quantity > 0');
 select t.as_user('fl_c');
 select t.throws(format($$update public.requests set quantity = 1 where id = %L$$, t.get('fl_req')), '42501', 'F1 no direct UPDATE of quantity');

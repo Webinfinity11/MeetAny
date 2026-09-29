@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
-import { categories, cities } from "../../lib/categories";
+import { cities } from "../../lib/categories";
+import { categoryOptions } from "./CategoryOptions";
 import { PageBand } from "./PageBand";
 import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 
@@ -214,11 +215,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
               <option value="" disabled>
                 აირჩიე
               </option>
-              {Object.entries(categories).map(([id, label]) => (
-                <option key={id} value={id}>
-                  {label}
-                </option>
-              ))}
+              {categoryOptions()}
             </select>
             <div className="auth-field-message">{v.message("reg-industry")}</div>
           </div>

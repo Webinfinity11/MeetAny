@@ -59,8 +59,18 @@ $$;
 
 create or replace function meetany_private.categories() returns text[]
 language sql immutable set search_path = '' as $$
-  select array['furniture','construction','textiles','food','packaging','logistics','cleaning',
-               'technology','marketing','finance','legal','tourism','other']::text[]
+  select array['food_fresh','food_processed','beverages','catering',
+               'building_materials','renovation','engineering',
+               'furniture','equipment','textiles',
+               'packaging','printing',
+               'freight','warehouse','customs',
+               'wholesale','office_household',
+               'cleaning','laundry','technical_service','security',
+               'software_web','it_support',
+               'branding_design','advertising','photo_video','events',
+               'accounting','legal','consulting','hr_training',
+               'hotel_services','tours',
+               'other']::text[]
 $$;
 
 create or replace function meetany_private.cities() returns text[]
@@ -1619,7 +1629,7 @@ declare me public.profiles:=meetany_private.require_user(); cats text[]; towns t
 begin
  if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
  if p_enabled is null or p_email_mode is null or p_email_mode not in ('off','instant','daily')
- or p_categories is null or p_cities is null or cardinality(p_categories)>13 or cardinality(p_cities)>8
+ or p_categories is null or p_cities is null or cardinality(p_categories)>34 or cardinality(p_cities)>8
  or array_position(p_categories,null) is not null or array_position(p_cities,null) is not null
  or not p_categories <@ meetany_private.categories() or not p_cities <@ meetany_private.cities() then
   raise exception using errcode='22023',message='invalid request alert preferences';

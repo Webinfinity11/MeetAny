@@ -1,14 +1,8 @@
 "use client";
 
 
-export const shortLabels: Record<string, string> = {
-  furniture: "ავეჯი და ინვენტარი", construction: "მშენებლობა", textiles: "ტექსტილი",
-  food: "საკვები და სასმელი", packaging: "შეფუთვა და წარმოება", logistics: "ლოგისტიკა",
-  cleaning: "დასუფთავება", technology: "IT და ტექნოლოგიები", marketing: "მარკეტინგი",
-  finance: "ბუღალტერია", legal: "იურიდიული", tourism: "ტურიზმი", other: "სხვა",
-};
-
-export type Facet = { id: string; label: string; count: number };
+// A group facet may carry its categories; they open under it while the group or one of them is selected.
+export type Facet = { id: string; label: string; count: number; children?: Facet[] };
 
 export function FacetList({
   all,
@@ -42,13 +36,16 @@ export function FacetList({
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
-      <span className="facet-label">{shortLabels[f.id] || f.label}</span>
+      <span className="facet-label">{f.label}</span>
       <span className="facet-count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>
   );
   return (
     <div>
-      {entries.map(f => button(f))}
+      {entries.map(f => {
+        const open = f.children && (activeId === f.id || f.children.some(c => c.id === activeId));
+        return <div key={f.id}>{button(f)}{open ? f.children!.filter(c => c.count > 0 || c.id === activeId).map(c => button(c, true)) : null}</div>;
+      })}
       {grouped ? <>
         <p className="facet-group-title">სხვა დარგები</p>
         {empty.map(f => button(f, true))}

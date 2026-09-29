@@ -17,7 +17,7 @@ select public.set_request_alert_preferences(true,'{furniture}','{tbilisi}','inst
 select t.as_user('alert_owner');
 select t.put('alert_match',(public.create_request('Matching furniture request','Detailed matching furniture request','furniture','tbilisi')).id);
 select t.put('alert_city',(public.create_request('Different city request','Detailed different city furniture request','furniture','batumi')).id);
-select t.put('alert_cat',(public.create_request('Different category request','Detailed different category request','food','tbilisi')).id);
+select t.put('alert_cat',(public.create_request('Different category request','Detailed different category request','food_fresh','tbilisi')).id);
 select t.put('alert_national',(public.create_request('National furniture request','Detailed national furniture request','furniture','georgia')).id);
 select t.as_user('alert_company');
 select t.ok((public.engagement_state()->>'unread')::int=2,'A category and city matching includes national');

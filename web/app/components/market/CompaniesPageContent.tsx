@@ -12,7 +12,7 @@ import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
-import { categories, cities } from "../../lib/categories";
+import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
 import { fetchPhones } from "../../lib/phones";
 
@@ -51,7 +51,7 @@ function skeleton() {
 export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, available } = useMarketStore(initial);
   const filters = useFilters("/companies/");
-  const industry = filters.get("industry"), city = filters.get("city"), query = filters.get("q");
+  const industry = currentCategory(filters.get("industry")), city = filters.get("city"), query = filters.get("q");
   const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "newest");
   const setIndustry = (industry: string) => filters.set({industry});
   const setCity = (city: string) => filters.set({city});
@@ -68,7 +68,10 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
 
   const industryFacets: Facet[] = useMemo(
-    () => Object.entries(categories).map(([id, label]) => ({ id, label, count: list({ industry: id }).length })),
+    () => categoryGroups.map(g => ({
+      id: g.id, label: g.short, count: list({ industry: g.id }).length,
+      children: g.items.length > 1 ? g.items.map(([id, label]) => ({ id, label, count: list({ industry: id }).length })) : undefined,
+    })),
     [list],
   );
   const allCount = ready && available ? list({ industry: "" }).length : 0;
@@ -110,7 +113,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const activeItems = [
     ...(coverage ? [{key: "coverage", label: "მთელი საქართველო"}] : []),
     ...(type ? [{key: "type", label: ({suppliers: "მომწოდებლები", services: "მომსახურება", distributors: "დისტრიბუტორები", partners: "ბიზნესპარტნიორები"} as Record<string, string>)[type] || type}] : []),
-    ...(industry ? [{ key: "industry", label: categories[industry] }] : []),
+    ...(industry ? [{ key: "industry", label: categories[industry] || groupNames[industry] || industry }] : []),
     ...(city ? [{ key: "city", label: cities[city] }] : []),
   ];
   const removeFilter = (key: string) => {

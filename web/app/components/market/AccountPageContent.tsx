@@ -16,7 +16,8 @@ import { LogoField } from "./PhotoField";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
-import { categories, cities } from "../../lib/categories";
+import { categories, cities, groupOf } from "../../lib/categories";
+import { categoryOptions } from "./CategoryOptions";
 
 type AnyUser = {
   id: string;
@@ -166,11 +167,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
                 მიმართულება *
               </label>
               <select className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
-                {Object.entries(categories).map(([id, label]) => (
-                  <option key={id} value={id}>
-                    {label}
-                  </option>
-                ))}
+                {categoryOptions()}
               </select>
             </div>
           ) : null}
@@ -392,7 +389,7 @@ export function AccountPageContent() {
     if (!store || !me) return null;
     const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true }) as RequestItem[];
     if (me.role === "company") {
-      const matching = (store.listRequests({ category: me.industry }) as (RequestItem & { ownerId: string })[]).filter((r) => r.ownerId !== me.id);
+      const matching = (store.listRequests({ category: groupOf[me.industry || ""] || me.industry }) as (RequestItem & { ownerId: string })[]).filter((r) => r.ownerId !== me.id);
       const myOffers = store.myOffers(me) as OfferItem[];
       return { matching, myOffers, myRequests };
     }

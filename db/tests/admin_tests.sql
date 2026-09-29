@@ -27,7 +27,7 @@ select t.ok((public.admin_search_requests(p_q=>'AdminPage')->>'filteredTotal')::
 select t.ok((public.admin_search_users(p_q=>'AdminPage',p_role=>'company',p_blocked=>false,p_verified=>false)->>'filteredTotal')::int=1105,'A user combined filters');
 select t.ok((public.admin_search_users(p_q=>'AdminPage',p_role=>'client')->>'filteredTotal')::int=0,'A user role filter');
 select t.ok((public.admin_search_requests(p_q=>'AdminPage',p_state=>'open',p_category=>'furniture')->>'filteredTotal')::int=1105,'A request combined filters');
-select t.ok((public.admin_search_requests(p_q=>'AdminPage',p_category=>'food')->>'filteredTotal')::int=0,'A request category filter');
+select t.ok((public.admin_search_requests(p_q=>'AdminPage',p_category=>'food_fresh')->>'filteredTotal')::int=0,'A request category filter');
 select t.ok((public.admin_search_requests(p_q=>'%')->>'filteredTotal')::int=0,'A q treats wildcard as literal');
 select t.ok(public.admin_search_requests(p_q=>'AdminPage')->'items'->0 ?& array['state','owner_name','owner_company','offer_count'],'A request supporting metadata');
 do $$

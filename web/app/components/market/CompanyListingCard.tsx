@@ -5,7 +5,6 @@ import type { CSSProperties } from "react";
 import { CallButton } from "./CallButton";
 import { Icon } from "../Icon";
 import { categories, cities } from "../../lib/categories";
-import { shortLabels } from "./FacetList";
 
 export type CompanyListingData = {
   id: string;
@@ -36,7 +35,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       <div className="listing-identity">
         <h3><Link className="card-main-link" href={href}>{c.name}</Link></h3>
         {/* 390 keeps the meta on one line: the rail's short industry name and "first city +N"; full names are on the profile. */}
-        <p className="listing-location"><span className="listing-wide">{[categories[c.industry] || c.industry, places].filter(Boolean).join(" · ")}</span><span className="listing-narrow">{[shortLabels[c.industry] || categories[c.industry] || c.industry, placesShort].filter(Boolean).join(" · ")}</span></p>
+        <p className="listing-location"><span className="listing-wide">{[categories[c.industry] || c.industry, places].filter(Boolean).join(" · ")}</span><span className="listing-narrow">{[categories[c.industry] || c.industry, placesShort].filter(Boolean).join(" · ")}</span></p>
       </div>
       {c.offers.length ? <p className="listing-products">{c.offers.join(" · ")}</p>
         : c.about ? <p className="listing-about">{c.about}</p> : null}

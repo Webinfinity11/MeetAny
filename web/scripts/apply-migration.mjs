@@ -2,7 +2,9 @@ import fs from 'node:fs';
 import { Pool } from '@neondatabase/serverless';
 // Deliberately pinned to the authorized test branch. Never print connection details.
 const migration=process.argv[2]||'contact-events';
+const dryRun=process.argv.includes('--dry-run');
 const plans={
+ categories:{file:'20260929-categories',tables:[],routines:['set_request_alert_preferences']},
  'admin-v2': {
   file: '20260929-admin-v2',
   tables: ['moderation_audit'],
@@ -28,11 +30,26 @@ try {
  if(!/^ep-withered-glade-b54ts1g5(?:-pooler)?\./.test(new URL(process.env.DATABASE_URL).hostname))
   throw Object.assign(new Error(),{code:'WRONG_BRANCH'});
  pool=new Pool({connectionString:process.env.DATABASE_URL,max:1});
- await pool.query(fs.readFileSync(new URL(`../../db/migrations/${plan.file||`20260923-${migration}`}.sql`,import.meta.url),'utf8'));
+ const sql=fs.readFileSync(new URL(`../../db/migrations/${plan.file||`20260923-${migration}`}.sql`,import.meta.url),'utf8');
+ if(dryRun) {
+  // Run the whole migration and roll it back: constraint or mapping errors surface, nothing is kept.
+  if(!/\ncommit;\s*$/.test(sql)) throw Object.assign(new Error(),{code:'NO_FINAL_COMMIT'});
+  await pool.query(sql.replace(/\ncommit;\s*$/,'\nrollback;\n'));
+ } else await pool.query(sql);
+ if(dryRun) {console.log(`auth-probe: ${migration} dry-run ok, rolled back`);throw Object.assign(new Error(),{dry:true});}
  const {rows}=await pool.query(`select
  (select count(*)::int from information_schema.tables where table_schema='meetany_private' and table_name=any($1::text[])) tables,
  (select count(*)::int from information_schema.routines where routine_schema='public' and routine_name=any($2::text[])) routines`,[plan.tables,plan.routines]);
  if(rows[0].tables!==plan.tables.length||rows[0].routines!==plan.routines.length) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
+ if(migration==='categories') {
+  const {rows:[v]}=await pool.query(`select cardinality(meetany_private.categories()) keys,
+   (select count(*)::int from public.profiles where industry is not null and not meetany_private.is_category(industry)) bad_profiles,
+   (select count(*)::int from public.requests where not meetany_private.is_category(category)) bad_requests`);
+  if(v.keys!==34||v.bad_profiles!==0||v.bad_requests!==0) throw Object.assign(new Error(),{code:'BAD_CATEGORIES'});
+  const {rows}=await pool.query(`select 'industry' as field, industry as key, count(*)::int from public.profiles where industry is not null group by 2
+   union all select 'category', category, count(*)::int from public.requests group by 2 order by 1,2`);
+  console.log(rows);
+ }
  if(migration==='admin-api'||migration==='admin-v2') {
   const {rows:[v]}=await pool.query(`select prosrc from pg_proc where oid='public.admin_stats()'::regprocedure`);
   if(!new RegExp("'adminApiVersion'\\s*,\\s*"+(migration==='admin-v2'?2:1)+"\\s*,").test(v.prosrc)) throw Object.assign(new Error(),{code:'MISSING_API_VERSION'});
@@ -60,5 +77,5 @@ try {
   console.log(columns);
  }
  console.log(`auth-probe: ${migration}, ${rows[0].tables} tables and ${rows[0].routines} RPCs verified`);
-} catch(err) {console.error(err.code||'MIGRATION_FAILED');process.exitCode=1;}
+} catch(err) {if(!err.dry) {console.error(err.code||'MIGRATION_FAILED');process.exitCode=1;}}
 finally {if(pool) await pool.end();}
