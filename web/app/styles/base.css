@@ -1,7 +1,7 @@
 /* base: shared tokens; original selector specificity is preserved. */
 .ma,.ma *,.ma *::before,.ma *::after,.ma-header,.ma-header *,.ma-footer,.ma-footer *,.ma-mnav,.ma-mnav *,.ma-sheet,.ma-sheet *{box-sizing:border-box}
 html:has(body.ma){-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + 16px)}
-body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-regular);color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-regular);color:var(--text);background:var(--canvas);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
 .ma,.ma-header,.ma-footer,.ma-mnav,.ma-sheet,#form-dialog{font-feature-settings:normal}
 .ma :is(h1,h2),.ma :is(.ma-display,.ma-h1,.ma-h2,.ma-section__title,.ma-sheet__title),.ma-sheet :is(h1,h2,.ma-sheet__title),#form-dialog h2{font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
 .ma .ma-btn,.ma-header .ma-btn,.ma-mnav .ma-btn,.ma-sheet .ma-btn{font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}

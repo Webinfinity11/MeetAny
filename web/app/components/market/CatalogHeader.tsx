@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 
 /** Shared catalog page header: overline, title and description on the left, search on the right. */
-export function CatalogHeader({ overline, title, description, search, help }: {
+/** tone: requests use the dark brand hero, companies the light one (owner wants the two searches distinct). */
+export function CatalogHeader({ overline, title, description, search, help, tone = "dark" }: {
+  tone?: "dark" | "light";
   overline: string; title: string; description: string; search: ReactNode; help?: ReactNode;
 }) {
   return (
-    <header className="catalog-header">
+    <header className={`catalog-header catalog-header--${tone}`}>
       <div className="catalog-heading">
         <p className="catalog-overline">{overline}</p>
         <h1 className="catalog-title">{title}</h1>

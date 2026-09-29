@@ -163,6 +163,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   return (
     <div className="ma-page companies-catalog catalog-page">
       <CatalogHeader
+        tone="light"
         overline="კომპანიების კატალოგი"
         title="მომწოდებლები და მომსახურება"
         description="მოძებნე კომპანია დარგისა და ქალაქის მიხედვით და დაუკავშირდი პირდაპირ."

@@ -18,7 +18,7 @@
   --theme-ink:#172D44;
   --theme-surface:#FFFFFF;
   --theme-font:FiraGO;
-  --theme-radius:10px;
+  --theme-radius:12px;
   --theme-caps-headings:normal;
   --theme-caps-buttons:normal;
   --theme-caps-tracking:0;
@@ -98,7 +98,7 @@
   --ff-heading:var(--theme-caps-headings);
   --ff-button:var(--theme-caps-buttons);
   --ff-eyebrow:normal;
-  --ls-heading:var(--theme-caps-tracking);
+  --ls-heading:-.01em;
   --ls-button:var(--theme-caps-tracking);
   --fs-button:15px;
   --lh-button:20px;
@@ -271,7 +271,7 @@
   --btn-h:var(--control-h);
   --btn-px:var(--space-control-x);
   --btn-py:var(--space-control-y);
-  --btn-radius:var(--radius-control);
+  --btn-radius:var(--radius-pill);
   --btn-fs:var(--fs-button);
   --btn-weight:var(--fw-semibold);
   --btn-primary-bg:var(--action);
@@ -283,10 +283,18 @@
   --btn-tint-bg:var(--blue-50);
   --btn-tint-hover:var(--blue-100);
   --btn-tint-text:var(--blue-700);
-  --card-radius:var(--radius-lg);
-  --card-border:var(--border);
-  --card-hover-border:var(--blue-200);
-  --card-hover-shadow:0 6px 20px color-mix(in srgb,var(--theme-ink) 8%,transparent);
+  /* Modern surface layer (design refresh 2026-09-29): tinted canvas, elevated cards, brand glow. */
+  --canvas:color-mix(in srgb,var(--theme-primary) 3%,#F6F7F9);
+  --card-radius:16px;
+  --card-border:color-mix(in srgb,var(--theme-ink) 7%,transparent);
+  --card-shadow:0 1px 2px color-mix(in srgb,var(--theme-ink) 5%,transparent),0 4px 14px color-mix(in srgb,var(--theme-ink) 4%,transparent);
+  --card-hover-border:color-mix(in srgb,var(--theme-primary) 28%,transparent);
+  --card-hover-shadow:0 2px 4px color-mix(in srgb,var(--theme-ink) 5%,transparent),0 16px 36px color-mix(in srgb,var(--theme-primary) 13%,transparent);
+  --hero-bg:radial-gradient(900px 420px at 85% -20%,color-mix(in srgb,var(--blue-400) 38%,transparent),transparent 65%),radial-gradient(700px 380px at 0% 120%,color-mix(in srgb,var(--blue-600) 30%,transparent),transparent 60%),linear-gradient(160deg,var(--blue-900) 0%,var(--ink-950) 70%);
+  --hero-text:var(--white);
+  --hero-text-2:color-mix(in srgb,var(--white) 76%,transparent);
+  --glass:color-mix(in srgb,var(--white) 12%,transparent);
+  --glass-border:color-mix(in srgb,var(--white) 22%,transparent);
   --btn-secondary-text:var(--text);
   --btn-ghost-bg:transparent;
   --btn-ghost-text:var(--text);

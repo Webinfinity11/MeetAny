@@ -45,7 +45,7 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
   return (
     <article style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entrance ? "" : undefined} className={`request-card${hasPhoto ? " request-card--photo" : ""}${r.isOwn ? " request-card--mine" : closedLike ? " request-card--closed" : ""}`}>
       <div className="request-card__body">
-        <p className="request-card__context"><span>{categories[r.category] || r.category}</span>{r.isNew ? <span className="catalog-new">ახალი</span> : null}</p>
+        <p className="request-card__context"><span className="request-card__category">{categories[r.category] || r.category}</span>{r.isNew ? <span className="catalog-new">ახალი</span> : null}</p>
         <h2 className="request-card__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         {r.body ? <p className="request-card__desc">{r.body}</p> : null}
         <ul className="request-card__meta" aria-label="დეტალები">

@@ -28,3 +28,4 @@ export const priceTypes: Record<string, string> = {
   total: "ჯამური ფასი",
   negotiable: "შეთანხმებით",
 };
+
