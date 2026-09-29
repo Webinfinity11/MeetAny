@@ -152,7 +152,7 @@ let state, SUFFIX = '';
 const stale=r=>!state.v2?.requests?.[r.key] || state.v2.sig?.[r.key]!==sig(r);
 function save() {
   if (DRY || VERIFY) return;
-  const rows = accounts.filter(a=>state.accounts[a.key]).map(a=>`| ${a.company}${SUFFIX} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`).join('\n');
+  const rows = accounts.filter(a=>state.accounts[a.key]).map(a=>`| ${a.company}${SUFFIX} | ${a.email} | ${state.accounts[a.key].password} | ${a.role} |`).concat(Object.entries(state.accounts).filter(([key, a])=>a.email && !accounts.some(known=>known.key===key)).map(([, a])=>`| ${a.label} | ${a.email} | ${a.password} | ${a.role} |`)).join('\n');
   const text = '# MeetAny — სატესტო ანგარიშები\n\nმხოლოდ ადგილობრივი გამოყენებისთვის; არ ატვირთოთ git-ში და არ გააზიაროთ საჯაროდ.\nპროექტი: fancy-surf-61327851; branch: auth-probe.\nყველა ბიზნესი, სახელი და ნომერი სადემონსტრაციოა.\n\n| ბიზნესი | ელფოსტა | პაროლი | როლი |\n|---|---|---|---|\n'+rows+'\n\nგაშვება: `node scripts/seed-demo-v2.cjs`; შემოწმება: `node scripts/seed-demo-v2.cjs --verify` (პირველი თაობა: `seed-demo.cjs`).\nქვემოთ მოცემული ჩანაწერი საჭიროა განმეორებითი გაშვებისა და შეწყვეტილი სამუშაოს აღსადგენად.\n\n```json\n'+JSON.stringify(state,null,2)+'\n```\n';
   fs.writeFileSync(FILE, text, {mode:0o600});
   fs.chmodSync(FILE,0o600);
