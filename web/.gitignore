@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local QA captures and generated reports
+/qa/shots/*
+!/qa/shots/visual-baseline/
+/qa/*-report.json
