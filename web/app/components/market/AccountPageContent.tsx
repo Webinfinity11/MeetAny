@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
 import { PageBand } from "./PageBand";
-import { AuthForms } from "./AuthForms";
+import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { LogoField } from "./PhotoField";
 import { Inbox } from "./Inbox";
@@ -46,7 +46,7 @@ function parseCoord(value: string) {
   return /^[-−]?\d+(\.\d+)?$/.test(text) ? Number(text.replace("−", "-")) : NaN;
 }
 
-function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
+function ProfileForm({ me }: { me: AnyUser }) {
   const { store } = useMarketStore();
   const isCompany = me.role === "company";
   const [name, setName] = useState(me.name);
@@ -260,9 +260,66 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
           </button>
           {saved ? <p className="account-hint" role="status">ცვლილებები შენახულია.</p> : null}
         </div>
-        <div className="account-form-links">
-          {isCompany ? <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link> : null}
-          <button type="button" className="account-link" onClick={onLogout}>გასვლა</button>
+        {isCompany ? <div className="account-form-links">
+          <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link>
+        </div> : null}
+      </form>
+    </section>
+  );
+}
+
+function PasswordForm() {
+  const { store } = useMarketStore();
+  const [current, setCurrent] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeat, setRepeat] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const v = useFieldErrors();
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!store || pending) return;
+    setError(null);
+    const errors: FieldErrors = {};
+    if (!current) errors["password-current"] = "მიუთითე მიმდინარე პაროლი";
+    if (password.length < 8) errors["password-new"] = "მინიმუმ 8 სიმბოლო";
+    if (password.length > 128) errors["password-new"] = "მაქსიმუმ 128 სიმბოლო";
+    if (!repeat) errors["password-repeat"] = "გაიმეორე ახალი პაროლი";
+    else if (repeat !== password) errors["password-repeat"] = "პაროლები არ ემთხვევა";
+    if (!v.check(errors, ["password-current", "password-new", "password-repeat"])) return;
+    setPending(true);
+    try {
+      await store.changePassword(current, password);
+      setCurrent(""); setPassword(""); setRepeat("");
+      toast("პაროლი შეიცვალა.");
+    } catch (err) {
+      setError((err as { userMessage?: string }).userMessage || "პაროლი ვერ შეიცვალა.");
+    } finally { setPending(false); }
+  }
+  return (
+    <section className="account-section" aria-labelledby="password-title">
+      <h2 className="account-section__title" id="password-title">პაროლი</h2>
+      <form className="ma-form" id="account-password" onSubmit={submit} noValidate>
+        <fieldset className="account-form-group" disabled={pending} aria-labelledby="password-title">
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="password-current">მიმდინარე პაროლი</label>
+            <PasswordInput autoComplete="current-password" disabled={pending} value={current} onChange={value => {setCurrent(value); v.clear("password-current");}} field={v.control("password-current")} />
+            <div className="auth-field-message">{v.message("password-current")}</div>
+          </div>
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="password-new">ახალი პაროლი <span className="ma-field__opt">მინიმუმ 8 სიმბოლო</span></label>
+            <PasswordInput autoComplete="new-password" disabled={pending} value={password} onChange={value => {setPassword(value); v.clear("password-new"); v.clear("password-repeat");}} field={{...v.control("password-new"), maxLength: 128}} />
+            <div className="auth-field-message">{v.message("password-new")}</div>
+          </div>
+          <div className="ma-field">
+            <label className="ma-field__label" htmlFor="password-repeat">გაიმეორე ახალი პაროლი</label>
+            <PasswordInput autoComplete="new-password" disabled={pending} value={repeat} onChange={value => {setRepeat(value); v.clear("password-repeat");}} field={{...v.control("password-repeat"), maxLength: 128}} />
+            <div className="auth-field-message">{v.message("password-repeat")}</div>
+          </div>
+        </fieldset>
+        <div className="auth-field-message"><p className="ma-field__error" role="alert">{error || ""}</p></div>
+        <div className="account-form-actions">
+          <button className="ma-btn ma-btn--primary" type="submit" disabled={pending}>{pending ? "ინახება…" : "პაროლის შეცვლა"}</button>
         </div>
       </form>
     </section>
@@ -363,12 +420,6 @@ export function AccountPageContent() {
     { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
   ];
 
-  async function logout() {
-    await store?.logout();
-    router.push("/account/");
-    router.refresh();
-  }
-
   if (tab === "saved" || tab === "messages") return (
     <div className="ma-page account-page">
       <PageBand title="ჩემი ანგარიში" />
@@ -385,7 +436,8 @@ export function AccountPageContent() {
       <AccountTabs tab={tab} items={tabs} />
       <div className="account-main account-main--profile">
         {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
-        <ProfileForm me={me} onLogout={logout} />
+        <ProfileForm me={me} />
+        <PasswordForm key={me.id} />
         <div id="alerts" className="account-alerts">
           <EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"} />
         </div>

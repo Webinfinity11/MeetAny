@@ -464,6 +464,22 @@ export function createMarketStore({initial=null,background=true}={}){
   const email=resetEmail;setResetEmail(null);
   return login(email,password);
  }
+ async function changePassword(currentPassword,newPassword){
+  client();
+  const current=String(currentPassword||''),password=String(newPassword||'');
+  if(!current)fail('მიუთითე მიმდინარე პაროლი.');
+  if(password.length<PASSWORD_MIN)fail(PASSWORD_SHORT);
+  if(password.length>128)fail('პაროლი მაქსიმუმ 128 სიმბოლოა.');
+  try{await authFetch('/change-password',{currentPassword:current,newPassword:password,revokeOtherSessions:true});}
+  catch(err){
+   if(err.userMessage)throw err;
+   const code=String(err.code||'');
+   if(code==='PASSWORD_TOO_SHORT')fail(PASSWORD_SHORT);
+   if(code==='PASSWORD_TOO_LONG')fail('პაროლი მაქსიმუმ 128 სიმბოლოა.');
+   if(code==='INVALID_PASSWORD')fail('მიმდინარე პაროლი არასწორია.',code);
+   throw toError(err);
+  }
+ }
  function pendingResetEmail(){return resetEmail;}
 
  async function logout(){
@@ -793,7 +809,7 @@ export function createMarketStore({initial=null,background=true}={}){
   // A signed-in session exists even when its profile has not loaded yet (e.g. a failed first refresh).
   hasSession:()=>!!authUser,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
-  requestPasswordReset,resetPassword,pendingResetEmail,
+  requestPasswordReset,resetPassword,changePassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,uploadLogo,listCompanies,getCompany,companyStats,directionsUrl,

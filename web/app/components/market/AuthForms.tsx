@@ -17,7 +17,7 @@ function safeNext(value: string | null): string | null {
 const WRONG_LOGIN = "ელფოსტა ან პაროლი არასწორია.";
 
 // Password field with a text "show" toggle inside the control (44px hit area).
-function PasswordInput({ value, onChange, autoComplete, disabled, field }: { value: string; onChange: (value: string) => void; autoComplete: string; disabled?: boolean; field: Record<string, unknown> }) {
+export function PasswordInput({ value, onChange, autoComplete, disabled, field }: { value: string; onChange: (value: string) => void; autoComplete: string; disabled?: boolean; field: Record<string, unknown> }) {
   const [shown, setShown] = useState(false);
   return (
     <div className="auth-password">

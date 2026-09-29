@@ -102,7 +102,9 @@ export async function login(p, account = 'hotel') {
 }
 export async function logout(p) {
   await go(p, '/account/?tab=profile');
-  await p.getByRole('button', { name: 'გასვლა', exact: true }).click();
+  await p.setViewportSize({ width: 1440, height: 1000 });
+  await p.locator('header [aria-controls="ma-account-menu"]').click();
+  await p.getByRole('menuitem', { name: 'გასვლა', exact: true }).click();
   await p.locator('#login-email').waitFor();
   tokens.delete(p);
   assert.equal((await rpc(p, 'my_profile')).length, 0, 'გასვლის შემდეგ სესია დარჩა');
