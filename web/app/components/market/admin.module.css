@@ -2,7 +2,7 @@
 .filters { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3); padding-top: var(--space-2); }
 .filters > div { display: grid; gap: var(--space-2); flex: 1; min-width: 0; font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
 .filters .search { flex: 2; }
-.filters input, .filters select { width: 100%; min-width: 0; }
+.filters input, .filters :global(.ma-custom-select) { width: 100%; min-width: 0; }
 .count { margin: 0; font-size: var(--fs-sm); color: var(--text-2); }
 .note { margin: 0; color: var(--text-3); font-size: var(--fs-xs); }
 .reason { display: grid; gap: var(--space-2); margin-top: var(--space-4); font-size: var(--fs-sm); }
@@ -34,4 +34,45 @@
 @media (max-width: 767px) {
   .workspace :global(.ma-proto-kpis) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .workspace .tabs { gap: var(--space-2); }
+}
+
+/* Persistent section navigation keeps moderation tools within reach. */
+.workspace { grid-template-columns: 232px minmax(0, 1fr); gap: var(--space-8); align-items: start; }
+.sidebar { position: sticky; top: calc(var(--header-h) + var(--space-6)); display: grid; gap: var(--space-5); padding: var(--space-5) var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-subtle); min-width: 0; }
+.sidebarHeading { display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-2) var(--space-5); border-bottom: 1px solid var(--border); }
+.sidebarHeading>div { display: grid; gap: var(--space-1); }
+.sidebarHeading strong { font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.sidebarHeading div>span { font-size: var(--fs-xs); color: var(--text-3); }
+.sidebarIcon { display: grid; place-items: center; width: var(--space-10); height: var(--space-10); border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--white); color: var(--action); flex: none; }
+.navigation { display: grid; gap: var(--space-2); }
+.navigation a { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; padding: var(--space-3); border-radius: var(--radius-control); text-decoration: none; color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-medium); }
+.navigation a>svg { flex: none; width: var(--space-5); height: var(--space-5); }
+.navigation a>span { flex: 1; }
+.navigation a .navArrow { width: var(--space-4); height: var(--space-4); visibility: hidden; }
+.navigation a:hover { background: var(--white); color: var(--text); }
+.navigation a[aria-current="page"] { background: var(--selected-bg); color: var(--selected-text); box-shadow: inset 3px 0 var(--action); }
+.navigation a[aria-current="page"] .navArrow { visibility: visible; }
+.backToSite { display: flex; align-items: center; gap: var(--space-3); min-height: var(--tap-min); padding: var(--space-3); border-top: 1px solid var(--border); color: var(--text-3); text-decoration: none; font-size: var(--fs-xs); }
+.backToSite:hover { color: var(--action); }
+.content { display: grid; gap: var(--space-5); min-width: 0; }
+.content :global(.r2-band) { margin: 0; padding-top: 0; }
+.content :global(.ma-lead) { font-size: var(--fs-sm); margin-top: var(--space-2); }
+.content :global(.ma-proto-kpis) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.content :global(.ma-stat) { padding: var(--space-4); border-radius: var(--radius-control); }
+.content :global(.ma-table-wrap) { border-radius: var(--radius-md); }
+.content :global(.ma-table) { font-size: var(--fs-xs); }
+.content :global(.ma-table) :is(th,td) { padding: var(--space-3); }
+.content :global(.ma-table) :global(.ma-btn) { min-height: 36px; padding: var(--space-2) var(--space-3); font-size: var(--fs-xs); }
+@media(max-width:1023px) {
+ .workspace { grid-template-columns: minmax(0,1fr); gap: var(--space-6); }
+ .sidebar { position: static; padding: var(--space-3); gap: var(--space-3); }
+ .sidebarHeading { padding: var(--space-1) var(--space-2) var(--space-3); }
+ .navigation { display: flex; overflow-x: auto; gap: var(--space-2); padding-bottom: var(--space-1); }
+ .navigation a { flex: none; white-space: nowrap; min-height: var(--tap-min); }
+ .navigation a .navArrow,.backToSite { display: none; }
+ .navigation a[aria-current="page"] { box-shadow: inset 0 -2px var(--action); }
+}
+@media(max-width:767px) {
+ .content :global(.ma-proto-kpis) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .content :global(.ma-table) :global(.ma-btn) { min-height: var(--tap-min); }
 }

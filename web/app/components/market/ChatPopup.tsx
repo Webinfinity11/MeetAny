@@ -26,13 +26,12 @@ export function MessageButton({ companyId, requestId }: { companyId: string; req
   return <button type="button" className="ma-btn ma-btn--secondary" disabled={!ready || !!me?.blocked} onClick={() => {
     if (!me) {
       const next = window.location.pathname + window.location.search + window.location.hash;
-      try { sessionStorage.setItem("meetany.chatReturn", next); } catch {}
       toast("მიწერისთვის შედი ანგარიშში.");
       router.push(`/account/?next=${encodeURIComponent(next)}`);
       return;
     }
     openChat({ companyId, requestId });
-  }}><Icon name="message-square"/>მიწერა</button>;
+  }}><Icon name={me ? "message-square" : "user-round"}/>{me ? "მიწერა" : "შედი ანგარიშში და მიწერე"}</button>;
 }
 
 export function ChatUnreadLink() {

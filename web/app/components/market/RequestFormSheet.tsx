@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { toast } from "../Toasts";
@@ -51,22 +52,26 @@ export function RequestFormSheet({
   open,
   existing,
   initialCategory = "",
+  initialTitle = "",
+  initialCity = "",
   onClose,
   triggerRef,
 }: {
   open: boolean;
   existing?: {id: string; title: string; category: string; city: string; quantity: number | null; unit: string | null; neededBy: string | null; body: string; photo: string | null; addressNote?: string | null};
   initialCategory?: string;
+  initialTitle?: string;
+  initialCity?: string;
   onClose: () => void;
   triggerRef?: React.RefObject<HTMLElement | null>;
 }) {
   const { store } = useMarketStore();
   const ref = useRef<HTMLDialogElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState(existing?.title || "");
+  const [title, setTitle] = useState(existing?.title || initialTitle.slice(0,120));
   const [category, setCategory] = useState(existing?.category || (Object.hasOwn(categories, currentCategory(initialCategory)) ? currentCategory(initialCategory) : ""));
   // "" = not chosen yet: the author's profile city is the default (fallback Tbilisi).
-  const [cityChoice, setCity] = useState(existing?.city || "");
+  const [cityChoice, setCity] = useState(existing?.city || (Object.hasOwn(cities, initialCity) ? initialCity : ""));
   const [addressNote, setAddressNote] = useState(existing?.addressNote || "");
   const [quantity, setQuantity] = useState(existing?.quantity != null ? String(existing.quantity) : "");
   const [unit, setUnit] = useState(existing?.unit || "pcs");
@@ -181,7 +186,7 @@ export function RequestFormSheet({
     if (!dirty.current || window.confirm("შეყვანილი ტექსტი არ შეინახება. დავხურო?")) ref.current?.close();
   }
   const signedIn = checked && !!store?.currentUser();
-  const next = encodeURIComponent("/requests/new/");
+  const next = encodeURIComponent(`/requests/new/?${new URLSearchParams({title, category, city})}`);
   return (
     <dialog className="ma-sheet ma-sheet--wide ma-sheet--full request-form" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
       <header className="ma-sheet__header">
@@ -223,25 +228,25 @@ export function RequestFormSheet({
                 <label className="ma-field__label" htmlFor="category">
                   კატეგორია *
                 </label>
-                <select className="ma-select" value={category} onChange={(e) => {setCategory(e.target.value); v.clear("category");}} {...v.control("category")}>
+                <CustomSelect className="ma-select" value={category} onChange={(e) => {setCategory(e.target.value); v.clear("category");}} {...v.control("category")}>
                   <option value="" disabled>
                     აირჩიე კატეგორია
                   </option>
                   {categoryOptions()}
-                </select>
+                </CustomSelect>
                 {v.message("category")}
               </div>
               <div className="ma-field">
                 <label className="ma-field__label" htmlFor="city">
                   ქალაქი *
                 </label>
-                <select className="ma-select" value={city} onChange={(e) => {setCity(e.target.value); v.clear("city");}} {...v.control("city")}>
+                <CustomSelect className="ma-select" value={city} onChange={(e) => {setCity(e.target.value); v.clear("city");}} {...v.control("city")}>
                   {Object.entries(cities).map(([id, label]) => (
                     <option key={id} value={id}>
                       {label}
                     </option>
                   ))}
-                </select>
+                </CustomSelect>
                 {v.message("city")}
               </div>
               <div className="ma-field request-form__wide">
@@ -276,13 +281,13 @@ export function RequestFormSheet({
                     value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
                   />
-                  <select className="ma-select" aria-label="რაოდენობის ერთეული" value={unit} onChange={(e) => setUnit(e.target.value)}>
+                  <CustomSelect className="ma-select" aria-label="რაოდენობის ერთეული" value={unit} onChange={(e) => setUnit(e.target.value)}>
                     {Object.entries(units).map(([id, label]) => (
                       <option key={id} value={id}>
                         {label}
                       </option>
                     ))}
-                  </select>
+                  </CustomSelect>
                 </div>
               </div>
               <div className="ma-field">

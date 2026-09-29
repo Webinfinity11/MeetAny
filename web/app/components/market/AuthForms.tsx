@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
@@ -105,6 +106,7 @@ function LoginForm({ onReset }: { onReset: () => void }) {
 function RegisterForm({ initialRole }: { initialRole: string }) {
   const { store } = useMarketStore();
   const router = useRouter();
+  const next = safeNext(useSearchParams().get("next"));
   const profileRequired = !!store?.needsProfile();
   const profile = store?.pendingProfile();
   const [role, setRole] = useState(profile?.role || (initialRole === "company" ? "company" : "client"));
@@ -137,7 +139,8 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     setPending(true);
     try {
       await store.register({ role, name, company, phone, email: email.trim(), city, industry, password, acceptTerms });
-      router.refresh();
+      if (next && store.currentUser()) router.push(next);
+      else router.refresh();
       window.dispatchEvent(new Event("meetany:auth"));
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "რეგისტრაცია ვერ შესრულდა.");
@@ -198,25 +201,25 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-city">
             ქალაქი *
           </label>
-          <select className="ma-select" id="reg-city" value={city} onChange={(e) => setCity(e.target.value)}>
+          <CustomSelect className="ma-select" id="reg-city" value={city} onChange={(e) => setCity(e.target.value)}>
             {Object.entries(cities).map(([id, label]) => (
               <option key={id} value={id}>
                 {label}
               </option>
             ))}
-          </select>
+          </CustomSelect>
         </div>
         {role === "company" ? (
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="reg-industry">
               მიმართულება *
             </label>
-            <select className="ma-select" value={industry} onChange={edit("reg-industry", setIndustry)} {...v.control("reg-industry")}>
+            <CustomSelect className="ma-select" value={industry} onChange={edit("reg-industry", setIndustry)} {...v.control("reg-industry")}>
               <option value="" disabled>
                 აირჩიე
               </option>
               {categoryOptions()}
-            </select>
+            </CustomSelect>
             <div className="auth-field-message">{v.message("reg-industry")}</div>
           </div>
         ) : null}

@@ -153,7 +153,21 @@ export function AdminPageContent() {
 
   return (
     <div className={`ma-page ${styles.workspace}`}>
-      <PageBand title="პლატფორმის მართვა" />
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeading}><span className={styles.sidebarIcon}><Icon name="shield-check" /></span><div><strong>ადმინისტრირება</strong><span>პლატფორმის მართვა</span></div></div>
+        <nav className={styles.navigation} aria-label="ადმინისტრირების განყოფილებები">
+          {[
+            { key: "requests", label: "მოთხოვნები", icon: "clipboard-list" },
+            { key: "users", label: "მომხმარებლები", icon: "users" },
+            ...(v2 || tab === "offers" ? [{ key: "offers", label: "შეთავაზებები", icon: "inbox" }] : []),
+            { key: "audit", label: "მოქმედებების ჟურნალი", icon: "clock" },
+            { key: "contacts", label: "კონტაქტები", icon: "phone" },
+          ].map(item => <Link key={item.key} href={`/admin/?tab=${item.key}`} aria-current={tab === item.key ? "page" : undefined}><Icon name={item.icon} /><span>{item.label}</span><Icon name="chevron-right" className={styles.navArrow} /></Link>)}
+        </nav>
+        <Link className={styles.backToSite} href="/"><Icon name="arrow-left" />საიტზე დაბრუნება</Link>
+      </aside>
+      <div className={styles.content}>
+      <PageBand title={{ requests: "მოთხოვნები", users: "მომხმარებლები", offers: "შეთავაზებები", audit: "მოქმედებების ჟურნალი", contacts: "კონტაქტები" }[tab]} description={{ requests: "მოთხოვნების სტატუსი და მოდერაცია", users: "ანგარიშები, როლები და წვდომის მართვა", offers: "კომპანიების შეთავაზებების მართვა", audit: "პლატფორმაზე შესრულებული მოქმედებების ისტორია", contacts: "საკონტაქტო აქტივობა და სტატისტიკა" }[tab]} />
       <div className="ma-proto-kpis">
         {[
           ["users", "მომხმარებლები (ადმინების გარეშე)", stats.users],
@@ -169,17 +183,7 @@ export function AdminPageContent() {
           </div>
         ))}
       </div>
-      <nav className={`ma-tabs ${styles.tabs}`} aria-label="ადმინისტრირების განყოფილებები">
-        <Link className="ma-tab" href="/admin/?tab=requests" aria-current={tab === "requests" ? "page" : undefined}>
-          მოთხოვნები
-        </Link>
-        <Link className="ma-tab" href="/admin/?tab=users" aria-current={tab === "users" ? "page" : undefined}>
-          მომხმარებლები
-        </Link>
-        {v2 || tab === "offers" ? <Link className="ma-tab" href="/admin/?tab=offers" aria-current={tab === "offers" ? "page" : undefined}>შეთავაზებები</Link> : null}
-        <Link className="ma-tab" href="/admin/?tab=audit" aria-current={tab === "audit" ? "page" : undefined}>მოქმედებების ჟურნალი</Link>
-        <Link className="ma-tab" href="/admin/?tab=contacts" aria-current={tab === "contacts" ? "page" : undefined}>კონტაქტები</Link>
-      </nav>
+
 
       {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
       {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
@@ -353,6 +357,7 @@ export function AdminPageContent() {
       </nav> : null}
 
       </>}
+      </div>
       <ModerationSheet
         open={!!pendingAction}
         title={

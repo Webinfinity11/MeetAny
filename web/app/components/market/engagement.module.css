@@ -1,4 +1,4 @@
-.save { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: var(--space-10); height: var(--space-10); border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--bg); color: var(--text-2); cursor: pointer; }
+.save { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: var(--tap-min); height: var(--tap-min); border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--bg); color: var(--text-2); cursor: pointer; }
 .save:hover, .save[aria-pressed="true"] { color: var(--blue-600); background: var(--blue-50); }
 .save:disabled { opacity: .5; cursor: wait; }
 .bell { position: relative; }
@@ -18,7 +18,7 @@
 @media(max-width:767px) { .popover { position: fixed; top: var(--space-20); right: var(--space-4); } }
 
 .saveIcon { width: var(--tap-min); height: var(--tap-min); border-color: var(--border-strong); border-radius: var(--radius-sm); background: var(--white); color: var(--text-2); }
-.saveLabel { width: auto; min-height: var(--space-10); gap: var(--space-2); padding-inline: var(--space-3); border-color: transparent; background: transparent; font-size: var(--fs-sm); }
+.saveLabel { width: auto; min-height: var(--tap-min); gap: var(--space-2); padding-inline: var(--space-3); border-color: transparent; background: transparent; font-size: var(--fs-sm); }
 
 .savedRow { flex-wrap: wrap; }
 .savedRow > div { flex: 1 1 240px; }
@@ -32,7 +32,7 @@
 .alertChoice { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; font-size: var(--fs-sm); line-height: var(--lh-control-ratio); cursor: pointer; }
 .alertChoice input { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--blue-600); }
 .alertEmail { display: grid; gap: var(--space-2); font-size: var(--fs-sm); }
-.alertEmail select { width: 100%; max-width: 360px; min-height: 44px; padding: var(--space-2); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); }
+.alertEmail :global(.ma-custom-select) { width: 100%; max-width: 360px; min-height: 44px; padding: var(--space-2); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); }
 .alertActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 .alertActions p { font-size: var(--fs-sm); }
 @media(max-width: 600px) { .alertChoices { grid-template-columns: 1fr; } .alertSettings { padding: var(--space-4); } }

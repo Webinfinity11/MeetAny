@@ -1,4 +1,5 @@
 "use client";
+import { CustomSelect } from "../ui/CustomSelect";
 import { useState } from "react";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, categoryGroups, cities, groupOf } from "../../lib/categories";
@@ -52,7 +53,7 @@ export function RequestAlertSettings({ initial, emailDelivery, profile }: { init
     {g.items.map(([key,label]) => <label className={styles.alertChoice} key={key}><input type="checkbox" checked={draft.categories.includes(key)} onChange={() => toggle("categories",key)}/>{label}</label>)}
   </div>; })}</div></fieldset>
    <fieldset className={styles.alertFieldset} disabled={pending}><legend>სად შეგიძლია მომსახურება?</legend><div className={styles.alertChoices}>{Object.entries(cities).map(([key,label]) => <label className={styles.alertChoice} key={key}><input type="checkbox" checked={draft.cities.includes(key)} onChange={() => toggle("cities",key)}/>{label}</label>)}</div><p className={styles.meta}>მთელ საქართველოზე გამოქვეყნებული მოთხოვნებიც გამოჩნდება.</p></fieldset>
-   <label className={styles.alertEmail}>ელფოსტით შეტყობინება<select value={draft.emailMode} disabled={pending || !emailDelivery} onChange={e => change({emailMode:e.target.value})}><option value="off">მხოლოდ საიტზე</option><option value="instant">ყოველი ახალი მოთხოვნისას</option><option value="daily">დღეში ერთხელ — 20:00 საათზე</option></select></label>
+   <label className={styles.alertEmail}>ელფოსტით შეტყობინება<CustomSelect value={draft.emailMode} disabled={pending || !emailDelivery} onChange={e => change({emailMode:e.target.value})}><option value="off">მხოლოდ საიტზე</option><option value="instant">ყოველი ახალი მოთხოვნისას</option><option value="daily">დღეში ერთხელ — 20:00 საათზე</option></CustomSelect></label>
    {!emailDelivery ? <p className={styles.meta}>ელფოსტით გაგზავნა ჯერ არ არის ჩართული. საიტზე შეტყობინებებს მიიღებ.</p> : draft.emailMode === "daily" ? <p className={styles.meta}>შეჯამება თბილისის დროით მოვა, მხოლოდ ახალი მოთხოვნების არსებობისას.</p> : null}
    {(!draft.categories.length || !draft.cities.length) ? <p className={styles.meta}>აირჩიე მინიმუმ ერთი კატეგორია და ერთი ქალაქი.</p> : null}
   </> : null}

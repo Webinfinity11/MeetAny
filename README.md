@@ -21,13 +21,14 @@ npm run dev
 
 საიტი: `http://localhost:3000`.
 
-`web/.env.local` (gitignored) მოიცავს `DATABASE_URL`, `NEON_AUTH_BASE_URL`, `REQUIRE_EMAIL_VERIFICATION=off` და ფოტოს ატვირთვისთვის `BLOB_READ_WRITE_TOKEN`-ს. საიდუმლო მნიშვნელობები არ დაბეჭდოთ და არ დააკომიტოთ. საჯარო Neon Auth მისამართი მითითებულია `web/app/lib/market-store.js`-ში; ის უნდა შეესაბამებოდეს სერვერის იმავე გარემოს. კლიენტი იყენებს Neon Auth-ს პირდაპირ, მონაცემებისთვის — `/api/db`, ფოტოებისთვის — `/api/blob-upload`. RLS და ვალიდაცია ბაზაში რჩება.
+`web/.env.local` (gitignored) მოიცავს `DATABASE_URL`, `NEON_AUTH_BASE_URL`, `REQUIRE_EMAIL_VERIFICATION=off` და ფოტოს ატვირთვისთვის `BLOB_READ_WRITE_TOKEN`-ს. საიდუმლო მნიშვნელობები არ დაბეჭდოთ და არ დააკომიტოთ. ბრაუზერის საჯარო Neon Auth მისამართი და CSP ავტომატურად მიიღება `NEON_AUTH_BASE_URL`-იდან ბილდისას; სხვა გარემოზე გადასვლისას ბილდი ხელახლა გაუშვით. სადემო მისამართზე ავტომატური გადართვა არ ხდება. კლიენტი იყენებს Neon Auth-ს პირდაპირ, მონაცემებისთვის — `/api/db`, ფოტოებისთვის — `/api/blob-upload`. RLS და ვალიდაცია ბაზაში რჩება.
 
 ## შემოწმება
 
 ```sh
 cd web
 npm run lint
+npm test
 npm run build
 npx playwright install chromium
 node qa/browser.mjs
@@ -46,4 +47,4 @@ bash db/tests/run.sh
 
 ## გამოქვეყნება
 
-2026-09-23: მიმდინარე ვერსიის Preview გამოქვეყნებულია: https://meet-bnc6jgspq-infinity-solutions.vercel.app (Vercel-ის ავტორიზაციით). პროექტის Root Directory არის `web`, framework — Next.js. Preview იყენებს შემოწმებულ `auth-probe` ბაზას. Production მისამართი ჯერ ძველ ვერსიაზეა; მის ცარიელ ბაზასა და მიმდინარე სადემო ბაზას შორის არჩევანი მფლობელთან დასაზუსტებელია. Production სქემა/მონაცემები არ შეცვლილა. `.vercelignore` გამორიცხავს საიდუმლო და QA ფაილებს.
+2026-09-29: საჯარო საპრეზენტაციო ვერსია განთავსებულია https://meet-any.vercel.app-ზე (Vercel: `infinity-solutions/meet-any`, Root Directory `web`, Next.js). მფლობელის მოთხოვნით Production გარემო უკავშირდება არსებულ სადემო `auth-probe` ბაზასა და იმავე Neon Auth-ს; `DATABASE_URL`, `NEON_AUTH_BASE_URL` და `REQUIRE_EMAIL_VERIFICATION=off` შეთანხმებულია ლოკალურ სადემო გარემოსთან. ამ მისამართზე და ლოკალურად შესრულებული მოქმედებები ერთსა და იმავე სადემო ჩანაწერებს ცვლის. ცალკე ძველი production ბაზა არ შეცვლილა. Blob საცავი უცვლელია; ფოტოები არსებული მისამართებიდან იტვირთება. `.vercelignore` გამორიცხავს ყველა `DEMO-ACCOUNTS*` ფაილს, გარემოს საიდუმლოებებსა და QA მასალებს.

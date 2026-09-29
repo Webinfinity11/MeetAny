@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomSelect } from "../ui/CustomSelect";
 import { AccountSkeleton } from "./Skeletons";
 
 import { EngagementPanel } from "./EngagementPanels";
@@ -138,13 +139,13 @@ function ProfileForm({ me }: { me: AnyUser }) {
             <label className="ma-field__label" htmlFor="profile-city">
               ქალაქი *
             </label>
-            <select className="ma-select" id="profile-city" value={city} onChange={(e) => setCity(e.target.value)}>
+            <CustomSelect className="ma-select" id="profile-city" value={city} onChange={(e) => setCity(e.target.value)}>
               {Object.entries(cities).map(([id, label]) => (
                 <option key={id} value={id}>
                   {label}
                 </option>
               ))}
-            </select>
+            </CustomSelect>
           </div>
         </div>
         <div className="ma-form__row ma-form__row--3 account-contact">
@@ -166,9 +167,9 @@ function ProfileForm({ me }: { me: AnyUser }) {
               <label className="ma-field__label" htmlFor="industry">
                 მიმართულება *
               </label>
-              <select className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
+              <CustomSelect className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
                 {categoryOptions()}
-              </select>
+              </CustomSelect>
             </div>
           ) : null}
         </div>
@@ -325,7 +326,7 @@ function PasswordForm() {
 
 type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
 type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
-type Tab = "overview" | "saved" | "messages" | "profile";
+type Tab = "overview" | "requests" | "offers" | "saved" | "messages" | "profile";
 
 const DAY = 86400000;
 function postedLabel(createdAt: string, now: number) {
@@ -365,12 +366,13 @@ export function AccountPageContent() {
   const rawTab = searchParams.get("tab") || "";
   // Old links: ?tab=notifications / ?tab=alerts / ?tab=settings open the profile tab (alerts section).
   const toAlerts = rawTab === "notifications" || rawTab === "alerts";
-  const tab: Tab = rawTab === "saved" || rawTab === "messages" ? rawTab : ["profile", "settings"].includes(rawTab) || toAlerts ? "profile" : "overview";
+  const tab: Tab = rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" ? rawTab : ["profile", "settings"].includes(rawTab) || toAlerts ? "profile" : "overview";
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
 
   const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
-  const unread = useUnreadMessageCount(store, me?.id, !!me && !me.blocked);
+  const unread = useUnreadMessageCount(store, me?.id, !!me && !me.blocked && me.role !== "admin");
+  useEffect(() => { if (me?.role === "admin") router.replace("/admin/"); }, [me?.role, router]);
   useEffect(() => {
     if (!me?.id) return;
     let next = "";
@@ -402,6 +404,8 @@ export function AccountPageContent() {
 
   if (!ready) return <AccountSkeleton />;
 
+  if (me?.role === "admin") return <AccountSkeleton admin label="ადმინ-პანელი იტვირთება…" />;
+
   if (!me) return <AuthForms initialRole={searchParams.get("role") || ""} />;
 
   const isCompany = me.role === "company";
@@ -412,8 +416,10 @@ export function AccountPageContent() {
   const myRequests = data?.myRequests ?? [];
   const matching = data?.matching ?? [];
   const myOffers = data?.myOffers ?? [];
+  const activeTab: Tab = tab === "overview" ? isCompany ? "offers" : "requests" : tab;
   const tabs: { key: Tab; href: string; label: string }[] = [
-    { key: "overview", href: "/account/", label: isCompany ? `შეთავაზებები (${myOffers.length})` : `მოთხოვნები (${myRequests.length})` },
+    ...(isCompany ? [{ key: "offers" as Tab, href: "/account/?tab=offers", label: `შეთავაზებები (${myOffers.length})` }] : []),
+    { key: "requests", href: "/account/?tab=requests", label: `მოთხოვნები (${myRequests.length})` },
     { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული" : `შენახული (${savedCount})` },
     { key: "messages", href: "/account/?tab=messages", label: unread ? `მიმოწერები (${unread})` : "მიმოწერები" },
     { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
@@ -421,8 +427,8 @@ export function AccountPageContent() {
 
   if (tab === "saved" || tab === "messages") return (
     <div className="ma-page account-page">
-      <PageBand title="ჩემი ანგარიში" />
-      <AccountTabs tab={tab} items={tabs} />
+      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
+      <AccountTabs tab={activeTab} items={tabs} />
       <div className="account-wide">
         {tab === "messages" ? (store ? <Inbox key={me.id} store={store} me={me}/> : null) : <EngagementPanel key={tab} kind={tab}/>}
       </div>
@@ -431,8 +437,8 @@ export function AccountPageContent() {
 
   if (tab === "profile") return (
     <div className="ma-page account-page">
-      <PageBand title="ჩემი ანგარიში" />
-      <AccountTabs tab={tab} items={tabs} />
+      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
+      <AccountTabs tab={activeTab} items={tabs} />
       <div className="account-main account-main--profile">
         {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
         <ProfileForm me={me} />
@@ -502,8 +508,8 @@ export function AccountPageContent() {
 
   return (
     <div className="ma-page account-page">
-      <PageBand title="ჩემი ანგარიში" />
-      <AccountTabs tab={tab} items={tabs} />
+      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
+      <AccountTabs tab={activeTab} items={tabs} />
       <p className="account-idline">{name} · {roleLabel}</p>
       <div className="account-layout">
         <aside className="account-profile" aria-label="პროფილი">
@@ -538,7 +544,7 @@ export function AccountPageContent() {
           </div>
         </aside>
         <div className="account-main">
-          {isCompany ? (
+          {isCompany && rawTab !== "requests" ? (
             <>
               <section className="account-section">
                 <h2 className="account-section__title">ჩემი შეთავაზებები ({myOffers.length})</h2>
@@ -587,7 +593,7 @@ export function AccountPageContent() {
               </section>
             </>
           ) : null}
-          {requestsSection}
+          {!isCompany || tab === "requests" ? requestsSection : null}
         </div>
       </div>
     </div>
