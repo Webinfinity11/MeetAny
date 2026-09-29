@@ -1,18 +1,25 @@
-/* 404 / error page body. Tokens only; mtavruli through the role tokens so it also works
-   on body.design-two (home), where market.css's .ma scoping does not reach. */
+/* 404 / error page body: a centred card on the canvas. Tokens only. */
 .page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
-  max-width: var(--measure);
-  min-height: 52vh;
-  padding-block: var(--space-16) var(--space-20);
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 560px;
+  margin: var(--space-16) auto var(--space-20);
+  padding: var(--space-12) var(--space-8);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  background: var(--white);
+  box-shadow: var(--card-shadow);
+  text-align: center;
   font-family: var(--font-sans);
   color: var(--text);
 }
 
 .eyebrow {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--canvas);
   font-size: var(--fs-eyebrow);
   line-height: var(--lh-eyebrow);
   font-weight: var(--fw-semibold);
@@ -42,6 +49,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: var(--space-3) var(--space-6);
   margin-top: var(--space-4);
 }
@@ -53,7 +61,7 @@
   min-height: var(--control-h);
   padding: var(--space-control-y) var(--space-control-x);
   border: 0;
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-pill);
   background: var(--action);
   color: var(--white);
   font-family: var(--font-sans);
@@ -97,15 +105,16 @@
   background: var(--bg);
 }
 
+.bare {
+  background: var(--canvas);
+}
 .bare .page {
-  margin-inline: auto;
-  padding-inline: var(--gutter);
-  min-height: 100vh;
-  justify-content: center;
+  margin-block: 20vh;
 }
 
 @media (max-width: 640px) {
   .page {
-    padding-block: var(--space-10) var(--space-16);
+    margin-block: var(--space-8) var(--space-12);
+    padding: var(--space-10) var(--space-5);
   }
 }
