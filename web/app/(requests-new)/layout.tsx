@@ -9,7 +9,7 @@ import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
   title: "მოთხოვნის დამატება — MeetAny",
-  description: "დაწერე, რა გჭირდება — კომპანიები თავად შემოგთავაზებენ ფასს და პირობებს.",
+  description: "დაწერე, რა გჭირდება — კომპანიები თავად გამოგიგზავნიან შეთავაზებებს.",
   icons: siteIcons,
 };
 

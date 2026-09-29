@@ -6,8 +6,6 @@
 .home-page .home-overline{display:block;color:var(--text-3);font-size:var(--fs-xs);font-weight:var(--fw-medium);margin-bottom:var(--space-4)}
 .home-button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:var(--space-3) var(--space-6);border:1px solid var(--action);border-radius:var(--radius-control);background:var(--action);color:var(--white);font-size:var(--fs-sm);font-weight:var(--fw-semibold);text-decoration:none;text-align:center}
 .home-button:hover{background:var(--action-hover);border-color:var(--action-hover)}
-.home-button-light{border-color:var(--white);background:var(--white);color:var(--ink-900)}
-.home-button-light:hover{background:var(--blue-50);border-color:var(--blue-50)}
 .home-text-link{display:inline-flex;align-items:center;min-height:var(--tap-min);padding:0;border:0;background:none;color:var(--action);font-size:var(--fs-sm);font-weight:var(--fw-semibold);text-decoration:underline;cursor:pointer}
 .home-text-link:hover{color:var(--action-hover)}
 .home-hero{background:var(--blue-800);color:var(--white)}
