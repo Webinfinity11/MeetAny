@@ -151,8 +151,8 @@
 .ma-avatar{font-feature-settings:normal}
 .ma-proto .ma-avatar[data-tone]:not(.ma-chat__head>.ma-avatar,.ma-ocard--declined .ma-avatar){background:var(--avatar-bg);color:var(--avatar-text)}
 .ma-proto .ma-sheet[open],.ma-proto .ma-sheet::backdrop{animation:none}
-:is(.account-page,.auth-page,.request-form) :is(.ma-input,.ma-select){min-height:var(--control-h);padding-block:var(--space-2);border-radius:var(--radius-sm);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body)}
-:is(.account-page,.auth-page,.request-form) .ma-textarea{border-radius:var(--radius-sm);font-size:var(--fs-body);line-height:var(--lh-body)}
+:is(.account-page,.auth-page,.request-form) :is(.ma-input,.ma-select){min-height:var(--control-h);padding-block:var(--space-2);border-radius:var(--field-radius);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body)}
+:is(.account-page,.auth-page,.request-form) .ma-textarea{border-radius:var(--field-radius);font-size:var(--fs-body);line-height:var(--lh-body)}
 :is(.account-page,.auth-page,.request-form) :is(.ma-field__label,legend.ma-field__label){font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);color:var(--text);font-feature-settings:var(--catalog-title-case);letter-spacing:normal}
 :is(.account-page,.auth-page,.request-form) .ma-field__opt{margin-left:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3)}
 :is(.account-page,.auth-page,.request-form) .ma-check{font-size:var(--fs-sm);line-height:var(--lh-sm)}

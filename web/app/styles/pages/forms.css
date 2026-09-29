@@ -4,7 +4,7 @@
 .request-form__skeleton{display:grid;gap:var(--space-4);padding-block:var(--space-2)}
 .request-form__skeleton .ma-skel:nth-child(2){width:70%}
 .request-form__skeleton .ma-skel:nth-child(3){width:45%}
-.request-form__guest{max-width:none;margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-2)}
+
 .request-form__group{display:grid;gap:var(--space-3);min-width:0}
 .request-form__group+.request-form__group{padding-top:var(--space-5);border-top:1px solid var(--border-subtle)}
 .ma-proto .request-form .request-form__group-title{display:flex;align-items:baseline;gap:var(--space-2);margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);color:var(--text);font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
@@ -50,4 +50,58 @@
  .request-form__cancel{justify-content:center;width:100%}
  .request-form__note{order:1;flex:none;width:100%;margin:0 0 var(--space-2)}
  .request-form__note-more{display:none}
+}
+
+/* Guest notice and deadline shortcuts in the request form. */
+.request-form__guest {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--blue-100);
+  border-radius: 12px;
+  background: var(--blue-50);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+  color: var(--text);
+}
+.request-form__guest > .icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  color: var(--action);
+}
+.request-form__guest p {
+  margin: 0;
+}
+.request-form__guest a {
+  color: var(--text-link);
+  font-weight: var(--fw-semibold);
+  text-underline-offset: 3px;
+}
+.request-form .ma-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.request-form__chip {
+  min-height: 34px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  background: var(--canvas);
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semibold);
+  transition: border-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+}
+.request-form__chip:hover:not(:disabled) {
+  border-color: var(--blue-200);
+  color: var(--action);
+}
+.request-form__chip:disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }

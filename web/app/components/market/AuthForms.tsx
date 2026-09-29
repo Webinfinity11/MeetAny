@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "../Icon";
 
 import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useState } from "react";
@@ -6,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
 import { cities } from "../../lib/categories";
 import { categoryOptions } from "./CategoryOptions";
-import { PageBand } from "./PageBand";
 import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 
 type Mode = "login" | "register" | "reset";
@@ -234,7 +234,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       <div className="ma-field">
         <label className="ma-check">
           <input type="checkbox" checked={acceptTerms} onChange={(e) => {setAcceptTerms(e.target.checked); v.clear("reg-terms");}} {...v.control("reg-terms")} />
-          <span>ვეთანხმები წესებსა და პერსონალური მონაცემების დამუშავებას</span>
+          <span>ვეთანხმები <a href="/terms/" target="_blank" rel="noopener noreferrer">წესებსა და პერსონალური მონაცემების დამუშავებას</a></span>
         </label>
         <div className="auth-field-message">{v.message("reg-terms")}</div>
       </div>
@@ -258,24 +258,41 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
     window.addEventListener("meetany:auth", update);
     return () => window.removeEventListener("meetany:auth", update);
   }, []);
-  const page = (title: string, body: React.ReactNode) => (
+  const switchMode = (next: Mode) => {
+    setMode(next);
+    const url = new URL(window.location.href);
+    if (next === "register") url.searchParams.set("tab", "register"); else url.searchParams.delete("tab");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search);
+  };
+  const subtitle = mode === "register" ? "შექმენი ანგარიში და დაიწყე ბიზნესკავშირები." : mode === "reset" ? "მიიღე კოდი ელფოსტაზე და დააყენე ახალი პაროლი." : "კეთილი იყოს შენი დაბრუნება.";
+  const page = (title: string, body: React.ReactNode, lead = subtitle) => (
     <div className="ma-page auth-page">
-      <PageBand title={title} />
-      <section className="auth-form">{body}</section>
+      <div className="auth-shell">
+        <section className="auth-card" aria-labelledby="auth-title">
+          <h1 id="auth-title" className="auth-title">{title}</h1>
+          <p className="auth-lead">{lead}</p>
+          <div className="auth-form">{body}</div>
+        </section>
+        <aside className="auth-aside" aria-label="რატომ MeetAny">
+          <p className="auth-aside__eyebrow">MeetAny</p>
+          <h2>ბიზნესები აქ პოულობენ ერთმანეთს</h2>
+          <ul>
+            <li><Icon name="file-text" /><span><strong>გამოაქვეყნე მოთხოვნა</strong>აღწერე, რა გჭირდება — კომპანიები თავად შემოგთავაზებენ.</span></li>
+            <li><Icon name="inbox" /><span><strong>მიიღე შეთავაზებები</strong>შეადარე პირობები ერთ ადგილას.</span></li>
+            <li><Icon name="handshake" /><span><strong>დაუკავშირდი პირდაპირ</strong>შუამავლისა და საკომისიოს გარეშე.</span></li>
+          </ul>
+        </aside>
+      </div>
     </div>
   );
-  if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />);
-  if (store?.needsProfile()) return page("პროფილის დასრულება", <RegisterForm initialRole={initialRole}/>);
+  if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანე ელფოსტაზე მიღებული კოდი.");
+  if (store?.needsProfile()) return page("პროფილის დასრულება", <RegisterForm initialRole={initialRole}/>, "დარჩა რამდენიმე დეტალი.");
   return page(mode === "register" ? "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : "შესვლა", <>
-    <nav className="ma-tabs" aria-label="შესვლა ან რეგისტრაცია">
-      <button type="button" className="ma-tab" aria-current={mode === "login" ? "page" : undefined} onClick={() => setMode("login")}>
-        შესვლა
-      </button>
-      <button type="button" className="ma-tab" aria-current={mode === "register" ? "page" : undefined} onClick={() => setMode("register")}>
-        რეგისტრაცია
-      </button>
-    </nav>
-    {mode === "reset" ? <RecoveryForm onDone={() => setMode("login")} /> : mode === "login" ? <LoginForm onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
+    {mode !== "reset" ? <nav className="auth-switch" aria-label="შესვლა ან რეგისტრაცია">
+      <button type="button" aria-current={mode === "login" ? "page" : undefined} onClick={() => switchMode("login")}>შესვლა</button>
+      <button type="button" aria-current={mode === "register" ? "page" : undefined} onClick={() => switchMode("register")}>რეგისტრაცია</button>
+    </nav> : null}
+    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
   </>);
 }
 

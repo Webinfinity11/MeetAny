@@ -306,7 +306,7 @@
   --row-hover-bg:var(--bg-subtle);
   --field-h:var(--control-h);
   --field-border:var(--border-input);
-  --field-radius:var(--radius-md);
+  --field-radius:10px;
   --field-fs:var(--fs-body);
   --field-error:var(--danger-600);
   --badge-radius:var(--radius-pill);

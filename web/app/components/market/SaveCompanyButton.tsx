@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
 import { toast } from "../Toasts";
@@ -13,11 +13,20 @@ export function SaveCompanyButton({ id, icon = false }: { id: string; icon?: boo
  const me = store?.currentUser();
  const state = store?.engagement();
  const saved = !!state?.savedIds?.includes(id);
+ // A guest who pressed "save" is sent to log in and back here; finish the save once they return.
+ useEffect(() => {
+  if (!store || !me || me.blocked || state?.status !== "ready" || saved) return;
+  let intent: { id?: string; at?: number } | null = null;
+  try { intent = JSON.parse(sessionStorage.getItem("meetany.saveIntent") || "null"); } catch {}
+  if (intent?.id !== id || Date.now() - (intent.at || 0) > 30 * 60000) return;
+  try { sessionStorage.removeItem("meetany.saveIntent"); } catch {}
+  store.setSavedCompany(id, true).then(() => toast("კომპანია შენახულია."), () => undefined);
+ }, [store, me, state?.status, saved, id]);
  async function toggle() {
   if (!store || pending) return;
   if (!me) {
    try { sessionStorage.setItem("meetany.saveIntent", JSON.stringify({ id, at: Date.now() })); } catch { toast("შენახვისთვის შედი ანგარიშში."); }
-   router.push("/account/?tab=saved");return;
+   router.push(`/account/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);return;
   }
   if (state?.status !== "ready") { toast("შენახვა დროებით მიუწვდომელია. სცადე მოგვიანებით.");return; }
   setPending(true);

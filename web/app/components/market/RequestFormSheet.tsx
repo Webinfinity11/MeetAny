@@ -221,7 +221,7 @@ export function RequestFormSheet({
             <span className="ma-skel ma-skel--line" />
           </div>
         ) : <>
-        {!signedIn ? <p className="request-form__guest">გამოქვეყნებისთვის <Link className="ma-link" href={`/account/?next=${next}`}>შედი ანგარიშში</Link> ან <Link className="ma-link" href={`/account/?tab=register&next=${next}`}>დარეგისტრირდი</Link>.</p> : null}
+        {!signedIn ? <div className="request-form__guest"><Icon name="info" /><p>გამოსაქვეყნებლად <Link href={`/account/?next=${next}`}>შედი ანგარიშში</Link> ან <Link href={`/account/?tab=register&next=${next}`}>დარეგისტრირდი</Link>.</p></div> : null}
         <form className="ma-form" id="new-request-form" onSubmit={submit} noValidate onChange={() => {dirty.current = true;}}>
           <section className="request-form__group" aria-labelledby="request-group-main">
             <h3 className="request-form__group-title" id="request-group-main">რა გჭირდება</h3>
@@ -314,9 +314,9 @@ export function RequestFormSheet({
                 </label>
                 <DateField id="neededBy" text={neededByText} onText={(text) => {setNeededByText(text); v.clear("neededBy");}} min={tomorrow} max={max} field={v.control("neededBy")} />
                 <div className="ma-chips" role="group" aria-label="ვადის სწრაფი არჩევანი">
-                  <button type="button" className="ma-btn ma-btn--ghost ma-btn--sm" disabled={!today} onClick={() => chooseDeadline(7)}>ერთ კვირაში</button>
-                  <button type="button" className="ma-btn ma-btn--ghost ma-btn--sm" disabled={!today} onClick={() => chooseDeadline(14)}>ორ კვირაში</button>
-                  <button type="button" className="ma-btn ma-btn--ghost ma-btn--sm" disabled={!today} onClick={() => chooseDeadline("month")}>ერთ თვეში</button>
+                  <button type="button" className="request-form__chip" disabled={!today} onClick={() => chooseDeadline(7)}>ერთ კვირაში</button>
+                  <button type="button" className="request-form__chip" disabled={!today} onClick={() => chooseDeadline(14)}>ორ კვირაში</button>
+                  <button type="button" className="request-form__chip" disabled={!today} onClick={() => chooseDeadline("month")}>ერთ თვეში</button>
                 </div>
                 {v.message("neededBy")}
               </div>
