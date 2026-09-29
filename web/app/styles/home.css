@@ -4,16 +4,8 @@
    font now reads a token, so the theme knobs in tokens.css restyle the home page too.
    Loaded by the home layout and the company catalog. This file is the source: edit it
    directly, tokens only. Mtavruli only through the rules below (h1/h2 and buttons), like every page. */
-body.design-two{font-feature-settings:normal}
-body.design-two :is(h1,h2,h3,h4),body.design-two .ma-sheet :is(h1,h2){font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
-body.design-two :is(.button,.ma-btn,.m-btn){font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
 /* Step headings follow the shared heading typography. */
-body.design-two .discovery-steps h2{font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
-body.design-two .editorial-process-label{font-feature-settings:var(--ff-heading)!important;letter-spacing:var(--ls-heading)}
 /* Banner action: white label on the primary fill (was dark text on blue). */
-body.design-two .partnership-banner .banner-action{color:var(--white)}
-body.design-two .partnership-banner .banner-action:hover{background:var(--action-hover)}
-body.design-two .icon{fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:round;stroke-linejoin:round}
 /* ---- from /style.css ---- */
 :root { --blue: var(--blue-600); --cyan: var(--cyan-400); --pink: var(--violet-500); --orange: var(--orange-400); --ink: var(--ink-950); --muted: var(--ink-500); --line: var(--ink-150); --wash: var(--ink-50); font-family:var(--font-sans); color: var(--ink); background: var(--white); font-synthesis: none; }
 * { box-sizing: border-box; }
@@ -506,7 +498,7 @@ h1, h2, h3, .tt, button, input[type="button"], input[type="submit"], input[type=
 #form-dialog, #form-dialog:has(#intro-form) { width: calc(100% - 24px); padding: 24px 20px; }
 }
 @media (max-width: 720px){
-.home-discovery .discovery-query input, .design-two .home-discovery .discovery-query input, .catalog-search input { font-size: 16px; }
+.home-discovery .discovery-query input, .catalog-search input { font-size: 16px; }
 }
 @keyframes drawer-enter { 
   0% { transform: translateX(100%); }
@@ -514,40 +506,11 @@ h1, h2, h3, .tt, button, input[type="button"], input[type="submit"], input[type=
 }
 /* ---- from /design.css ---- */
 :root { --ink: var(--ink-900); --blue: var(--blue-600); --muted: var(--ink-500); --line: var(--ink-150); --wash: var(--blue-50); }
-body.design-two { background: var(--white); color: var(--ink); }
-.design-two .button { border-radius: var(--radius-control); background: var(--blue-600); }
-.design-two .button:hover { background: var(--blue-700); }
-.design-two .home-discovery { position: relative; isolation: isolate; background: var(--blue-900); border-radius: 0; max-width: none; margin: 0px; padding: 48px max(36px, -592px + 50vw) 52px; color: white; }
-.design-two .home-discovery::before { content: ""; position: absolute; inset: 0px; z-index: -1; background: url("/assets/photos/logistics-warehouse.jpg") center 48% / cover; opacity: 0.13; }
-.design-two .discovery-intro { text-align: center; }
-.design-two .discovery-kicker { font-size: 12px; color: var(--blue-200); }
-.design-two .home-discovery h1 { color: white; font-size: clamp(30px, 3.3vw, 44px); line-height: 1.45; margin: 13px auto 27px; max-width: 850px; }
-.design-two .home-discovery h1 span { color: white; }
-.design-two .home-discovery .discovery-search { display: flex; flex-wrap: wrap; gap: 8px; max-width: 950px; margin: auto; padding: 12px; border: 0px; border-radius: var(--radius-lg); background: var(--white); box-shadow: color-mix(in srgb,var(--ink-950) 14.5%,transparent) 0px 8px 22px; }
 .market-search-types { min-width: 0; flex-basis: 100%; display: flex; gap: 24px; border-width: 0px 0px 1px; border-style: none none solid; border-color: currentcolor currentcolor var(--ink-150); border-image: none; margin: 0px 8px 4px; padding: 0px; color: var(--ink-500); }
 .market-search-types label { position: relative; padding: 8px 0px 14px; font-size: 13px; cursor: pointer; font-feature-settings: normal; }
 .market-search-types label:has(input:checked) { color: var(--blue-600); box-shadow: var(--blue-600) 0px -2px inset; font-weight: 600; }
 .market-search-types input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .market-search-types label:has(input:focus-visible) { outline: var(--blue-600) solid 2px; outline-offset: 3px; }
-.design-two .home-discovery .discovery-query input { font-size: 17px; padding: 14px 0px; }
-.design-two .home-discovery .discovery-search > .button { background: var(--blue-600); min-height: 52px; padding-inline: 30px; }
-.design-two .discovery-suggestions { border: 1px solid var(--ink-150); box-shadow: color-mix(in srgb,var(--ink-900) 13.3%,transparent) 0px 10px 24px; text-align: left; }
-.design-two .category-section { padding-block: 32px 20px; }
-.design-two .category-section .section-heading { display: none; }
-.design-two .category-grid { gap: 16px; }
-.design-two .category-card { background: var(--ink-50); border: 0px; border-radius: var(--radius-md); padding: 20px; align-items: center; }
-.design-two .category-card:hover { background: var(--blue-50); }
-.design-two .category-icon { width: 36px; height: 36px; background: transparent; }
-.design-two .category-icon img { display: none; }
-.design-two .category-icon > .icon { display: block; width: 30px; height: 30px; color: var(--blue-600); }
-.design-two .category-card h3 { font-size: 15px; }
-.design-two .category-card p { font-size: 11px; }
-.design-two .industry-section { padding-top: 16px; padding-bottom: 30px; }
-.design-two .industry-list { background: white; border: 1px solid var(--ink-150); border-radius: var(--radius-md); padding: 14px 4px; }
-.design-two .industry-list a { min-height: 100px; padding: 10px 4px; }
-.design-two .industry-title { font-size: 11px; }
-.design-two .industry-count { font-size: 10px; }
-.design-two .section-heading h2 { font-size: 26px; }
 .market-sectors { max-width: 1328px; padding: 22px 36px 30px; margin: auto; }
 .market-sector-grid { display: grid; grid-template-columns: repeat(4, minmax(0px, 1fr)); gap: 20px; }
 .market-sector-grid a { overflow: hidden; border: 1px solid var(--ink-150); border-radius: var(--radius-lg); background: white; }
@@ -555,113 +518,21 @@ body.design-two { background: var(--white); color: var(--ink); }
 .market-sector-grid span { display: flex; justify-content: space-between; gap: 8px; padding: 17px 14px; font-size: 13px; font-weight: 600; font-feature-settings: normal; }
 .market-sector-grid b { color: var(--blue-600); }
 .market-sector-grid a:hover { border-color: var(--blue-600); }
-.design-two .featured-section { padding-block: 28px 40px; }
-.design-two .company-grid { display: grid; grid-template-columns: repeat(3, minmax(0px, 1fr)); gap: 22px; }
-.design-two .company-listing { display: flex; flex-direction: column; gap: 0px; border: 1px solid var(--ink-150); border-radius: var(--radius-lg); overflow: hidden; padding: 0px; background: white; }
-.design-two .listing-media { width: 100%; height: 164px; border-radius: 0; aspect-ratio: auto; }
-.design-two .listing-content { display: flex; flex-direction: column; flex: 1 1 0%; padding: 18px; }
-.design-two .listing-heading { gap: 10px; }
-.design-two .listing-heading .company-logo { width: 38px; height: 38px; border-radius: var(--radius-sm); }
-.design-two .listing-heading h3 { font-size: 21px; }
-.design-two .listing-industry { font-size: 10px; }
-.design-two .listing-city { display: none; }
-.design-two .listing-description { font-size: 13px; line-height: 1.8; margin: 12px 0px; }
-.design-two .listing-facts { display: block; font-size: 11px; margin-bottom: 16px; }
-.design-two .listing-facts > div { margin-bottom: 5px; }
-.design-two .listing-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--ink-150); gap: 8px; }
-.design-two .listing-action { padding: 8px 10px; font-size: 11px; background: var(--blue-50); color: var(--blue-600); }
-.design-two .listing-action:hover { color: white; background: var(--blue-600); }
-.design-two .listing-offers { font-size: 11px; }
-.design-two .partnership-banner { border-radius: var(--radius-lg); background: var(--blue-50); color: var(--ink-900); }
-.design-two .partnership-banner h2 { color: var(--ink-900); font-size: 30px; }
-.design-two .banner-eyebrow { color: var(--ink-500); }
-.design-two .banner-action { background: var(--blue-600); }
-.design-two .editorial-process { max-width: 1256px; margin: 44px auto; background: var(--ink-50); border-radius: var(--radius-lg); padding: 28px 32px; }
 .editorial-process-label { color: var(--ink-900); font-size: 20px; font-weight: 700; font-feature-settings: normal; }
-.design-two .discovery-steps { margin-top: 20px; gap: 28px; }
-.design-two .discovery-steps li { display: grid; grid-template-columns: 1fr 90px; gap: 0px 14px; }
-.design-two .discovery-step-heading { grid-column: 1; }
-.design-two .discovery-step-number { color: var(--blue-600); font-size: 14px; }
-.design-two .discovery-step-line { display: none; }
-.design-two .discovery-steps h2 { color: var(--ink-900); font-size: 15px; grid-column: 1; }
-.design-two .discovery-steps p { color: var(--ink-500); font-size: 12px; grid-column: 1; }
-.design-two dialog { border-radius: var(--radius-lg); }
-.design-two footer { background: var(--ink-50); border-top: 1px solid var(--ink-150); }
-@media (max-width: 1100px){
-.design-two .editorial-process { margin-inline: 30px; }
-.design-two .category-card { padding: 15px; }
-}
 @media (max-width: 900px){
-.design-two .company-grid { grid-template-columns: repeat(2, minmax(0px, 1fr)); }
-.design-two .company-grid .company-listing:last-child { grid-column: 1 / -1; }
 .market-sector-grid { grid-template-columns: repeat(2, minmax(0px, 1fr)); }
-.design-two .discovery-steps { gap: 16px; }
-.design-two .discovery-steps li { display: block; }
 }
 @media (max-width: 720px){
-.design-two .home-discovery { padding: 32px 24px; }
-.design-two .home-discovery h1 { font-size: 29px; }
-.design-two .company-grid { grid-template-columns: 1fr; }
-.design-two .company-grid .company-listing:last-child { grid-column: auto; }
-.design-two .discovery-steps li { display: grid; }
-.design-two .listing-content { display: flex; }
-.design-two .listing-media { height: 190px; }
-.design-two .editorial-process { padding: 22px; margin-inline: 24px; }
 .market-search-types { gap: 16px; margin-inline: 0px; }
 .market-search-types label { font-size: 11px; }
-.design-two .home-discovery .discovery-query input { font-size: 15px; }
-.design-two .home-discovery .discovery-query { flex-basis: 100%; }
-.design-two .home-discovery .discovery-search > .button { width: 100%; }
 .market-sectors { padding-inline: 24px; }
 .market-sector-grid { gap: 14px; }
 .market-sector-grid img { height: 120px; }
 .market-sector-grid span { font-size: 11px; padding: 12px; }
 }
-.design-two .section-description { max-width: 650px; font-size: 14px; line-height: 1.8; }
-.design-two .listing-description { min-height: 47px; }
-.design-two .listing-facts .icon { width: 15px; height: 15px; }
-.design-two .listing-footer .icon { width: 16px; height: 16px; }
-.design-two .listing-action { min-height: 38px; white-space: nowrap; }
-.design-two .listing-heading h3 { line-height: 1.3; }
-.design-two .listing-heading .company-logo img { width: 100%; height: 100%; object-fit: cover; }
-.design-two .company-listing:hover { border-color: var(--blue-200); }
-@media (min-width: 721px) and (max-width: 900px){
-.design-two .company-grid .company-listing:last-child { grid-column: auto; }
-}
 @media (max-width: 380px){
 .market-search-types { gap: 11px; }
 .market-search-types label { font-size: 10px; }
-.design-two .listing-footer { flex-wrap: wrap; }
-.design-two .listing-description { min-height: 0px; }
-}
-.design-two .home-discovery { z-index: 2; overflow: visible; }
-.design-two .discovery-suggestions { z-index: 4; max-height: min(380px, 60dvh); overflow-y: auto; overscroll-behavior: contain; }
-.design-two .icon { fill: currentcolor; stroke: none; stroke-width: 0; }
-.design-two .category-icon { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border-radius: var(--radius-lg); background: var(--blue-50); overflow: visible; }
-.design-two .category-icon > .icon { width: 28px; height: 28px; color: var(--blue-700); }
-.design-two .industry-icon { display: grid; place-items: center; width: 40px; height: 40px; margin: 0px auto 8px; color: var(--ink-500); }
-.design-two .category-card:hover .category-icon { background: var(--blue-100); }
-.design-two .process-symbol { grid-area: 1 / 2 / 4; display: grid; place-items: center; width: 64px; height: 64px; place-self: center; border-radius: var(--radius-lg); color: var(--blue-700); background: var(--blue-100); }
-.design-two .process-symbol .icon { width: 34px; height: 34px; }
-@media (min-width: 721px) and (max-width: 900px){
-.design-two .process-symbol { margin: 10px 0px; }
-}
-@media (max-width: 420px){
-.design-two .category-icon { flex-basis: 36px; width: 36px; height: 36px; border-radius: var(--radius-md); }
-.design-two .category-icon > .icon { width: 24px; height: 24px; }
-}
-.design-two .category-card .category-icon { display: block; position: relative; width: 66px; height: 66px; flex: 0 0 66px; overflow: hidden; background: transparent; border-radius: 0; }
-.design-two .category-card .category-icon .category-3d-sheet { display: block; position: absolute; left: var(--category-x); top: var(--category-y); width: 200%; height: 200%; max-width: none; }
-.design-two .category-card .category-icon > .icon { display: none; }
-.design-two .category-card:hover .category-icon { background: transparent; }
-@media (max-width: 520px){
-.design-two .category-card .category-icon { width: 52px; height: 52px; flex-basis: 52px; }
-}
-.design-two footer, .design-two footer .brand { color: var(--ink-900); }
-.design-two footer p, .design-two .footer-nav a, .design-two .footer-nav button, .design-two .footer-language, .design-two .footer-bottom { color: var(--ink-600); }
-@media (max-width: 720px){
-.design-two .home-discovery .discovery-query input, .design-two .catalog-search input { font-size: 16px; }
-.design-two .listing-action { min-height: 44px; }
 }
 /* ---- from /industry-objects.css ---- */
 .home-page .industry-list .industry-object { display: block; position: relative; width: 58px; height: 58px; overflow: hidden; margin: 0px auto 5px; }
@@ -682,18 +553,6 @@ body.design-two { background: var(--white); color: var(--ink); }
 .home-page > .market-sectors { order: 4; }
 .home-page > .partnership-banner { order: 5; width: calc(100% - 40px); }
 .home-page > .editorial-process { order: 6; width: calc(100% - 48px); }
-.design-two .category-section { padding-top: 22px; padding-bottom: 20px; }
-.design-two .category-grid { gap: 12px; }
-.design-two .category-card { padding: 14px 12px; gap: 8px; }
-.design-two .category-card .category-icon { width: 46px; height: 46px; flex-basis: 46px; }
-.design-two .category-card h3 { font-size: 12px; }
-.design-two .category-card p { font-size: 10px; line-height: 1.6; }
-.design-two .featured-section { padding-top: 12px; }
-.design-two .company-listing .listing-media { height: 140px; min-height: 140px; }
-.design-two .company-listing .listing-content { padding: 15px; }
-.design-two .listing-description { min-height: 0px; }
-.design-two .listing-facts { margin-bottom: 12px; }
-.design-two .listing-footer { padding-top: 10px; }
 .home-page .industry-section { padding-top: 24px; }
 .home-page .industry-list a { min-height: 96px; }
 }
@@ -711,9 +570,6 @@ body.design-two { background: var(--white); color: var(--ink); }
 .company-listing .listing-action:hover { background: var(--blue-600); }
 }
 @media (max-width: 720px){
-.design-two .category-card h3 { font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
-.design-two .category-card p { font-size: 12px; line-height: 1.6; }
-.design-two .category-card { padding: 16px 12px; }
 .company-listing .listing-heading { align-items: center; }
 .company-listing .listing-description { font-size: 16px; }
 .company-listing .listing-facts { gap: 8px; }
@@ -732,70 +588,22 @@ html { scroll-behavior: auto; }
    comes last so it wins over the cascaded source rules above.
    ====================================================================== */
 /* Links with an icon read as one phrase (no flex gaps inside the label). */
-body.design-two :is(.text-link,.textlink) > span{display:inline}
 /* Cards lift a little under the pointer; press gives a short feedback. */
-body.design-two :is(.category-card,.market-sector-grid a,.industry-list a){transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur-fast) var(--ease),background-color var(--dur-fast) var(--ease)}
-@media (hover:hover){
-  body.design-two :is(.category-card,.market-sector-grid a):hover{transform:translateY(-2px);box-shadow:var(--shadow-2)}
-  body.design-two .market-sector-grid a img{transition:transform var(--dur-slow) var(--ease)}
-  body.design-two .market-sector-grid a:hover img{transform:scale(1.035)}
-  body.design-two .industry-list a:hover .industry-icon{transform:translateY(-2px)}
-  body.design-two :is(.text-link,.textlink):hover .icon{transform:translateX(3px)}
-}
-body.design-two .industry-icon,body.design-two :is(.text-link,.textlink) .icon{transition:transform var(--dur) var(--ease)}
-body.design-two :is(.category-card,.market-sector-grid a,.industry-list a,.button):active{transform:scale(.985)}
 
 @media (max-width:599px){
   /* mtavruli is wider than mkhedruli: display sizes step down on phones */
-  body.design-two .home-discovery h1{font-size:clamp(24px,7.2vw,30px);line-height:1.3;margin-bottom:20px}
-  body.design-two :is(.section-heading h2,.featured-section h2){font-size:clamp(18px,5.2vw,21px);line-height:1.35}
-  body.design-two .partnership-banner h2{font-size:clamp(20px,5.8vw,24px);line-height:1.35}
   /* section heads: title first, the link under it (never pushed off screen) */
-  body.design-two .section-heading{flex-direction:column;align-items:flex-start;gap:8px}
-  body.design-two .section-heading > .text-link{max-width:none;text-align:left;white-space:nowrap;font-size:13px}
-  body.design-two .industry-heading-row{flex-direction:column;align-items:flex-start;gap:6px;padding-right:0}
   /* search type tabs stay on one line */
-  body.design-two .market-search-types{flex-wrap:nowrap;overflow-x:auto;gap:18px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  body.design-two .market-search-types::-webkit-scrollbar{display:none}
-  body.design-two .market-search-types label{white-space:nowrap;flex:none}
   /* role cards: whole words only */
-  body.design-two .category-card h3{font-size:13px;overflow-wrap:normal;word-break:normal}
   /* categories: a compact 4-up grid instead of a tall list */
-  body.design-two .industry-list{display:grid;grid-auto-flow:row;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-columns:auto;overflow:visible;gap:2px;padding:8px}
-  body.design-two .industry-list a{min-height:0;padding:10px 2px;gap:4px}
-  body.design-two .industry-list .industry-icon{width:34px;height:34px}
-  body.design-two .industry-title{min-width:0;max-width:100%;font-size:11px;line-height:1.35;overflow-wrap:anywhere;word-break:normal}
-  body.design-two .industry-count{font-size:10px;line-height:1.3}
-  body.design-two .market-sectors{padding-inline:20px}
-  body.design-two .market-sector-grid{gap:10px}
-  body.design-two .market-sector-grid img{height:110px}
 }
 @media (max-width:359px){
   /* one role per row, icon beside the text, so the list stays short */
-  body.design-two .category-grid{grid-template-columns:minmax(0,1fr);gap:8px}
-  body.design-two .category-card{display:flex;align-items:center;gap:14px;padding:12px 14px;text-align:left}
-  body.design-two .category-card .category-icon{flex:none;width:44px;height:44px;margin:0}
-  body.design-two .industry-title{font-size:10.5px}
 }
 /* Phones: text links get a taller touch area without moving the layout. */
-@media (max-width:1023px){
-  body.design-two :is(.text-link,.textlink){display:inline-flex;align-items:center;min-width:var(--tap-min);min-height:var(--tap-min);padding-block:var(--space-3);margin-block:calc(-1 * var(--space-3))}
-  body.design-two .listing-heading h3 a{position:relative}
-  body.design-two .listing-heading h3 a::before{content:"";position:absolute;inset:calc(-1 * var(--space-3)) 0;min-height:var(--tap-min)}
-  body.design-two .market-search-types label{min-height:var(--tap-min);display:inline-flex;align-items:center}
-}
 
 /* Same real-data combobox as the catalogs; hero layout remains unchanged. */
-.design-two .discovery-search>.catalog-search{flex:1;min-width:0;margin:0;align-self:center}
-.design-two .discovery-search .catalog-search .ma-input{height:var(--control-h-lg);border-color:transparent;background:transparent}
-.design-two .discovery-search .catalog-search .ma-input:focus{border-color:var(--action)}
-.design-two .home-discovery{overflow:visible}
-.design-two .discovery-search{position:relative;z-index:var(--z-sticky)}
-@media(max-width:767.98px){.design-two .discovery-search>.catalog-search{width:100%}.search-suggestion{padding-inline:var(--space-2);gap:var(--space-2)}}
-@media(max-width:479.98px){
- body.design-two .market-search-types{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1fr) minmax(0,1.15fr);gap:var(--space-2);overflow:visible}
- body.design-two .market-search-types label{white-space:normal;font-size:var(--fs-xs);line-height:var(--lh-xs);justify-content:center;text-align:center;padding-bottom:var(--space-3)}
-}
+@media(max-width:767.98px){.search-suggestion{padding-inline:var(--space-2);gap:var(--space-2)}}
 
 .search-type-short{display:none}
 @media(max-width:479.98px){
@@ -804,74 +612,3 @@ body.design-two :is(.category-card,.market-sector-grid a,.industry-list a,.butto
 }
 
 /* Marketplace discovery: retain the blue photographic identity and 3D assets. */
-body.design-two .home-page{display:flex;flex-direction:column}
-body.design-two .home-page>section{order:0;width:100%;box-sizing:border-box}
-body.design-two .home-discovery{padding-block:var(--space-16);padding-inline:max(var(--space-6),calc((100vw - 1200px)/2))}
-body.design-two .home-discovery h1{margin-bottom:var(--space-4)}
-body.design-two .discovery-description{max-width:680px;margin:0 auto var(--space-8);text-align:center;color:var(--blue-100);font-size:var(--fs-body);line-height:var(--lh-body)}
-body.design-two .home-discovery .discovery-search{max-width:850px;padding:var(--space-3);border-radius:var(--radius-lg)}
-body.design-two .discovery-alternative{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:var(--space-2) var(--space-4);margin-top:var(--space-5);font-size:var(--fs-sm);color:var(--blue-100)}
-body.design-two .discovery-alternative a{display:inline-flex;align-items:center;gap:var(--space-2);min-height:var(--tap-min);padding:var(--space-2) var(--space-4);border:1px solid var(--blue-200);border-radius:var(--radius-control);color:var(--white);text-decoration:none;font-weight:var(--fw-semibold)}
-body.design-two .discovery-alternative a:hover{background:var(--blue-700)}
-body.design-two .home-page>:is(.category-section,.industry-section,.market-sectors,.featured-section,.home-requests){max-width:1272px;margin:0 auto;padding:var(--space-10) var(--space-8)}
-body.design-two .category-section{border:0}
-body.design-two .category-section .section-heading{display:flex}
-body.design-two .section-heading{gap:var(--space-6);margin-bottom:var(--space-6);align-items:center}
-body.design-two .section-heading h2{font-size:var(--fs-h2);line-height:var(--lh-h2)}
-body.design-two .section-kicker::before{display:none}
-body.design-two .section-kicker{display:block;margin-bottom:var(--space-2);font-size:var(--fs-xs)}
-body.design-two .category-card{box-shadow:none;min-height:136px;padding:var(--space-5);border:1px solid var(--border-subtle);background:var(--bg-subtle);border-radius:var(--radius-lg)}
-body.design-two .home-page>.industry-section{padding-top:var(--space-2)}
-body.design-two .industry-list{border:0;background:var(--bg-subtle);border-radius:var(--radius-lg);padding:var(--space-4)}
-body.design-two .industry-list a{border-radius:var(--radius-md);min-height:110px}
-body.design-two .industry-title{font-size:var(--fs-sm)}
-body.design-two .industry-count{font-size:var(--fs-xs)}
-body.design-two .market-sector-grid img{height:auto;aspect-ratio:3/2}
-body.design-two .home-company-grid,body.design-two .home-request-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-5)}
-body.design-two :is(.home-company-card,.home-request-card){display:flex;flex-direction:column;gap:var(--space-4);min-width:0;padding:var(--space-6);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--white)}
-body.design-two .home-company-identity{display:flex;gap:var(--space-3);align-items:center;min-width:0}
-body.design-two .home-company-identity>div{min-width:0}
-body.design-two :is(.home-company-card,.home-request-card) h3{margin:0;font-size:var(--fs-title);line-height:var(--lh-title);overflow-wrap:anywhere}
-body.design-two :is(.home-company-card,.home-request-card) h3 a{color:var(--text);text-decoration:none}
-body.design-two :is(.home-company-card,.home-request-card) h3 a:hover{text-decoration:underline}
-body.design-two .home-company-identity p{margin:var(--space-1) 0 0;font-size:var(--fs-xs);color:var(--text-3)}
-body.design-two .home-company-description{margin:0;color:var(--text-2);font-size:var(--fs-sm);line-height:var(--lh-sm);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
-body.design-two .home-service-tags{display:flex;flex-wrap:wrap;gap:var(--space-2);font-size:var(--fs-xs)}
-body.design-two .home-service-tags span{max-width:100%;padding:var(--space-1) var(--space-2);background:var(--bg-subtle);border-radius:var(--radius-sm);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-body.design-two .home-card-link{display:flex;justify-content:space-between;align-items:center;gap:var(--space-2);margin-top:auto;padding-top:var(--space-3);min-height:var(--tap-min);border-top:1px solid var(--border-subtle);color:var(--action);font-size:var(--fs-sm);font-weight:var(--fw-semibold);text-decoration:none}
-body.design-two .home-card-link:hover{text-decoration:underline}
-body.design-two .home-request-category{margin:0;color:var(--action);font-size:var(--fs-xs)}
-body.design-two .home-request-location{display:flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--text-3);margin:0}
-body.design-two .home-page>.editorial-process{width:calc(100% - var(--space-12));max-width:1200px;margin:var(--space-10) auto var(--space-16);padding:var(--space-8)}
-body.design-two .home-page>.partnership-banner{width:calc(100% - var(--space-12));max-width:1200px;margin:var(--space-8) auto}
-body.design-two .discovery-steps h2{font-size:var(--fs-title)}
-body.design-two .discovery-steps p{font-size:var(--fs-sm);line-height:var(--lh-sm)}
-@media(max-width:900px){
- body.design-two .home-company-grid,body.design-two .home-request-grid{grid-template-columns:1fr}
- body.design-two .home-page>:is(.category-section,.industry-section,.market-sectors,.featured-section,.home-requests){padding:var(--space-8) var(--space-6)}
-}
-@media(max-width:599px){
- body.design-two .home-discovery{padding:var(--space-10) var(--space-5)}
- body.design-two .discovery-description{font-size:var(--fs-sm);margin-bottom:var(--space-6)}
- body.design-two .discovery-alternative{gap:var(--space-1);text-align:center;font-size:var(--fs-xs)}
- body.design-two .discovery-alternative a{width:100%;justify-content:center;margin-top:var(--space-2)}
- body.design-two .home-page>:is(.category-section,.industry-section,.market-sectors,.featured-section,.home-requests){padding:var(--space-8) var(--space-5)}
- body.design-two .section-heading{align-items:flex-start;gap:var(--space-3)}
- body.design-two .section-heading h2{font-size:var(--fs-h3);line-height:var(--lh-h3)}
- body.design-two .category-card{min-height:120px;padding:var(--space-4)}
- body.design-two .industry-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2);padding:var(--space-2)}
- body.design-two .industry-list a{min-height:110px}
- body.design-two .industry-list .industry-icon{width:44px;height:44px}
- body.design-two .industry-title{font-size:var(--fs-sm)}
- body.design-two .industry-count{font-size:var(--fs-xs)}
- body.design-two :is(.home-company-card,.home-request-card){padding:var(--space-5)}
- body.design-two .home-page>:is(.editorial-process,.partnership-banner){width:calc(100% - var(--space-10));margin-block:var(--space-6)}
-}
-body.design-two .partnership-banner{display:grid;grid-template-columns:1fr 1fr;min-height:0}
-body.design-two .partnership-banner>img{position:static;grid-area:1 / 2;width:100%;height:100%;min-height:320px;z-index:auto;object-fit:cover}
-body.design-two .partnership-banner-content{grid-area:1 / 1;align-self:center;max-width:none;padding:var(--space-10)}
-@media(max-width:767px){
- body.design-two .partnership-banner{grid-template-columns:1fr}
- body.design-two .partnership-banner>img{grid-area:1 / 1;min-height:0;height:220px}
- body.design-two .partnership-banner-content{grid-area:2 / 1;padding:var(--space-6)}
-}
