@@ -3,10 +3,11 @@ import { DiscoverySearch } from "../components/DiscoverySearch";
 import { Icon } from "../components/Icon";
 import { HomeCategories, HomeIndustries, HomeFeatured, HomeRequestStarter, HomeJoin, HomeStats } from "../components/HomeLive";
 
+// Frames of process-business-3d.png (3 across): 0 search laptop, 1 company documents, 2 checklist.
 const steps = [
-  { icon: "file-text", title: "გამოაქვეყნე მოთხოვნა", text: "მიუთითე პროდუქტი ან მომსახურება, რაოდენობა, ქალაქი და სასურველი ვადა." },
-  { icon: "inbox", title: "მიიღე შეთავაზებები", text: "შესაბამისი კომპანიები თავად გამოგიგზავნიან პირობებს. შეადარე და გაეცანი პროფილებს." },
-  { icon: "handshake", title: "დაუკავშირდი პირდაპირ", text: "აირჩიე საუკეთესო შეთავაზება, მიწერე ან დაურეკე და დაიწყე თანამშრომლობა." },
+  { frame: 2, title: "გამოაქვეყნე მოთხოვნა", text: "მიუთითე პროდუქტი ან მომსახურება, რაოდენობა, ქალაქი და სასურველი ვადა." },
+  { frame: 1, title: "მიიღე შეთავაზებები", text: "შესაბამისი კომპანიები თავად გამოგიგზავნიან პირობებს. შეადარე და გაეცანი პროფილებს." },
+  { frame: 0, title: "დაუკავშირდი პირდაპირ", text: "აირჩიე საუკეთესო შეთავაზება, მიწერე ან დაურეკე და დაიწყე თანამშრომლობა." },
 ];
 
 export default function HomePage() {
@@ -54,7 +55,7 @@ export default function HomePage() {
       </div>
       <ol className="home-steps">
         {steps.map((step, index) => <li key={step.title}>
-          <span className="home-steps__icon" aria-hidden="true"><Icon name={step.icon} /></span>
+          <span className="home-3d home-3d--step" aria-hidden="true" style={{ backgroundPosition: `${step.frame * 50}% 0` }} />
           <span className="home-steps__number">0{index + 1}</span>
           <h3>{step.title}</h3>
           <p>{step.text}</p>
