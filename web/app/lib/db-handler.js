@@ -19,6 +19,7 @@ const RPCS = new Set([
   'engagement_state', 'list_notifications', 'mark_notification_read', 'set_notification_email',
   'list_saved_companies', 'set_saved_company', 'request_alert_preferences', 'set_request_alert_preferences',
   'admin_stats', 'admin_list_users', 'admin_search_users', 'admin_search_requests', 'admin_list_audit',
+  'admin_search_offers', 'admin_delete_offer', 'admin_delete_request_v2', 'admin_list_audit_v2',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
   'admin_contact_events', 'admin_contact_stats', 'admin_message_stats', 'admin_list_conversations', 'admin_conversation_messages',
 ]);
@@ -26,6 +27,7 @@ const RPCS = new Set([
 // personal state (saved, notifications, alerts, messages) and reads never do.
 const PUBLIC_WRITES = new Set([
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
+  'admin_delete_offer', 'admin_delete_request_v2',
   'send_offer', 'withdraw_offer', 'choose_offer', 'update_my_profile', 'complete_profile',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
 ]);

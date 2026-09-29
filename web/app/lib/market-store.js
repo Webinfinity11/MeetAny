@@ -768,7 +768,8 @@ export function createMarketStore({initial=null,background=true}={}){
  /* ---------- admin ---------- */
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
- const adminListAudit=args=>rpc('admin_list_audit',args);
+ const adminSearchOffers=args=>rpc('admin_search_offers',args);
+ const adminListAudit=args=>rpc(Number(stats()?.adminApiVersion)>=2?'admin_list_audit_v2':'admin_list_audit',args);
  const adminContactEvents=args=>rpc('admin_contact_events',args);
  const adminContactStats=args=>rpc('admin_contact_stats',args);
  const adminMessageStats=()=>rpc('admin_message_stats');
@@ -778,7 +779,8 @@ export function createMarketStore({initial=null,background=true}={}){
  }}).catch(()=>null);
 
  const adminSetHidden=(requestId,hidden,reason)=>mutate('admin_set_hidden',{p_request_id:requestId,p_hidden:!!hidden,p_reason:hidden&&reason?String(reason).trim():null},mapRequest);
- const adminDeleteRequest=requestId=>mutate('admin_delete_request',{p_request_id:requestId});
+ const adminDeleteOffer=(offerId,reason)=>mutate('admin_delete_offer',{p_offer_id:offerId,p_reason:String(reason||'').trim()});
+ const adminDeleteRequest=(requestId,reason)=>reason!==undefined?mutate('admin_delete_request_v2',{p_request_id:requestId,p_reason:String(reason||'').trim()}):mutate('admin_delete_request',{p_request_id:requestId});
  const adminSetBlocked=(userId,blocked,reason)=>mutate('admin_set_blocked',{p_user_id:userId,p_blocked:!!blocked,p_reason:blocked&&reason?String(reason).trim():null});
  const adminSetVerified=(userId,verified)=>mutate('admin_set_verified',{p_user_id:userId,p_verified:!!verified});
 
@@ -796,6 +798,6 @@ export function createMarketStore({initial=null,background=true}={}){
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,uploadLogo,listCompanies,getCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
-  adminSearchRequests,adminSearchUsers,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }
