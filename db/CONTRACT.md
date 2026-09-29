@@ -581,3 +581,15 @@ Migration `migrations/20260924-company-logo.sql` (rerunnable; apply after `20260
 | `MA115` | ლოგო უნდა იყოს JPG, PNG, WEBP ან GIF სურათი, მაქსიმუმ 2 მბ. |
 
 Verification (2026-09-24): local suite `db/tests/logo_tests.sql` — 23 assertions (1178 in total). Live check against localhost:3001 on auth-probe with a demo company (`web/scripts/verify-company-logo.mjs`, 17 checks): upload -> `update_my_profile` -> `list_companies` / anonymous `profiles` select -> foreign domain, another user's folder and a non-`logo-` file return 400 `MA115` -> DELETE of another user's file 403 -> replace deletes the old file -> `''` sets NULL; test files deleted and the other profile fields unchanged. As with the address migration, a running API process that cached the old `update_my_profile` signature must reload before it accepts `p_logo_url`.
+
+## მოთხოვნების შეტყობინებები ნაგულისხმევად ჩართულია — 2026-09-29
+
+`20260929-request-alerts-default-on.sql` ცვლის მხოლოდ request alerts ქცევას; საჯარო RPC-ების სიგნატურები უცვლელია. auth-probe production-ის ბაზაცაა.
+
+- შენახული რიგის გარეშე კომპანია იღებს პროფილიდან გამოთვლილ პარამეტრებს: `categories=[industry]` (ბაზაში ჯგუფების რუქა არ არის), `cities=service_cities`, ცარიელი მასივისას — `[city]`; `georgia` სხვა ქალაქებს ანაცვლებს. მიმართულების ან ქალაქის გარეშე ნაგულისხმევი გამორთულია.
+- `request_alert_preferences()` და ახალი მოთხოვნის ტრიგერი ერთსა და იმავე კერძო `default_request_alert_preferences(profiles)` ფუნქციას იყენებს. ახალი საჯარო RPC არ დამატებულა; helper-ზე API როლებს უფლება არ აქვთ.
+- შენახული პარამეტრები ყოველთვის უპირატესია. `set_request_alert_preferences(false,'{}','{}','off')` დასაშვებია, ქმნის გამორთულ რიგს და მომავალ შეტყობინებებს აჩერებს. მომხმარებელს შეუძლია ანგარიშიდან ხელახლა ჩართვა და კატეგორიების/ქალაქების არჩევა.
+- ძველი გამორთული არაცარიელი რიგები ერთჯერადად ირთვება; ცარიელი რიგები იშლება და პროფილის ნაგულისხმევზე გადადის. `settings.request_alerts_default_on=on` იმავე ტრანზაქციაში ინახება: განმეორებითი მიგრაცია შემდგომ გამორთვას არ აუქმებს.
+- რიგის გარეშე `emailMode='off'` და ელფოსტის job არ იქმნება. შენახული რიგების ელფოსტის რეჟიმი უცვლელია; გაგზავნა არ ჩართულა. ძველი მოთხოვნები არ ბრუნდება შეტყობინებებად; მოქმედებს მხოლოდ ახალი INSERT-ები, არსებული ბლოკირების/ავტორის/ქალაქის/კატეგორიის ფილტრებით.
+
+შემოწმება: `bash db/tests/run.sh` მთლიანად PASS; request alerts — 45 შემოწმება. მიგრაცია auth-probe-ზე ორჯერ შესრულდა; ცოცხალი API და გასუფთავება აღწერილია `web/qa/ALERTS-2026-09-29.md`-ში.
