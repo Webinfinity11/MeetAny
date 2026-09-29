@@ -1,8 +1,8 @@
 export const categories = [
   { id: "suppliers", title: "მომწოდებელი", sub: "პროდუქტი და წარმოება", icon: "package" },
-  { id: "services", title: "მომსახურება", sub: "ექსპერტიზა შენი ბიზნესისთვის", icon: "briefcase-business" },
-  { id: "distributors", title: "დისტრიბუტორი", sub: "ახალი ბაზარი და გაყიდვები", icon: "truck" },
-  { id: "partners", title: "ბიზნესპარტნიორი", sub: "ერთობლივი შესაძლებლობები", icon: "handshake" },
+  { id: "services", title: "მომსახურება", sub: "მომსახურების კომპანიები", icon: "briefcase-business" },
+  { id: "distributors", title: "დისტრიბუტორი", sub: "მიწოდება და დისტრიბუცია", icon: "truck" },
+  { id: "partners", title: "ბიზნესპარტნიორი", sub: "საქმიანი თანამშრომლობა", icon: "handshake" },
 ] as const;
 
 export const industries = [

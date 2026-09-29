@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "../styles/tokens.css";
-import "../styles/home.css";
 import "../styles/base.css";
 import "../styles/primitives.css";
 import "../styles/patterns.css";
+import "../styles/pages/homepage.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toasts } from "../components/Toasts";
@@ -29,13 +29,13 @@ export const viewport: Viewport = {
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ka">
-      <body className="design-two">
-        <a className="skip-link" href="#main">
+      <body className="ma ma-homepage">
+        <a className="ma-skip" href="#main">
           ძირითად შინაარსზე გადასვლა
         </a>
         <div className="site-shell">
           <Header />
-          <main id="main" className="home-page">
+          <main id="main" className="home-page" tabIndex={-1}>
             {children}
           </main>
           <Footer />

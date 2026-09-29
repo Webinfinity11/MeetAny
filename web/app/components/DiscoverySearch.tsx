@@ -2,24 +2,24 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Icon } from "./Icon";
 import { SearchCombobox } from "./SearchCombobox";
 import { useSearchSuggestions } from "../lib/search-suggestions";
 
 export function DiscoverySearch() {
   const [query, setQuery] = useState("");
-  const [type, setType] = useState("");
-  const suggestions = useSearchSuggestions("companies", query, type);
+  const [mode, setMode] = useState<"companies" | "requests">("companies");
+  const suggestions = useSearchSuggestions(mode, query);
   const router = useRouter();
-  return <form className="discovery-search" action="/companies/">
+  return <form className="discovery-search" action={`/${mode}/`}>
     <fieldset className="market-search-types">
-      <legend className="sr-only">რას ეძებ?</legend>
-      <label><input type="radio" name="type" value="" checked={type === ""} onChange={() => setType("")} /><span className="search-type-full">ყველა კომპანია</span><span className="search-type-short" aria-hidden="true">ყველა</span></label>
-      <label><input type="radio" name="type" value="suppliers" checked={type === "suppliers"} onChange={() => setType("suppliers")} /><span className="search-type-full">მომწოდებლები</span><span className="search-type-short" aria-hidden="true">პროდუქცია</span></label>
-      <label><input type="radio" name="type" value="services" checked={type === "services"} onChange={() => setType("services")} />მომსახურება</label>
+      <legend className="ma-sr-only">რის პოვნა გსურს?</legend>
+      <label><input type="radio" checked={mode === "companies"} onChange={() => setMode("companies")} name="search-intent" value="companies" /><span>ვეძებ მომწოდებელს</span></label>
+      <label><input type="radio" checked={mode === "requests"} onChange={() => setMode("requests")} name="search-intent" value="requests" /><span>ვეძებ შეკვეთას</span></label>
     </fieldset>
-    <SearchCombobox id="home-search" name="q" label="რა სჭირდება შენს ბიზნესს?" hideLabel placeholder="აღწერე, რა გჭირდება" value={query} onChange={setQuery}
-      suggestions={suggestions} onSelect={item => router.push(item.href)} />
-    <button className="button" type="submit">მოძებნე <Icon name="arrow-right" /></button>
+    <div className="home-search-entry">
+      <SearchCombobox key={mode} id="home-search" name="q" label={mode === "companies" ? "პროდუქტის, მომსახურების ან კომპანიის ძიება" : "ღია მოთხოვნის ძიება"} hideLabel placeholder={mode === "companies" ? "პროდუქტი, მომსახურება ან კომპანია" : "რა პროდუქტს ან მომსახურებას სთავაზობ?"} value={query} onChange={setQuery}
+        suggestions={suggestions} onSelect={item => router.push(item.href)} />
+      <button className="home-search-submit" type="submit">მოძებნე</button>
+    </div>
   </form>;
 }
