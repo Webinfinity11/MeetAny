@@ -1,17 +1,8 @@
 "use client";
 
-import { trapDialogFocus } from "../ui/dialog-focus";
+import { ConfirmSheet } from "../ui/ConfirmSheet";
 
-import { useEffect, useRef } from "react";
-
-export function ChooseOfferSheet({
-  open,
-  companyName,
-  pending,
-  error,
-  onConfirm,
-  onCancel,
-}: {
+export function ChooseOfferSheet({ open, companyName, pending, error, onConfirm, onCancel }: {
   open: boolean;
   companyName: string;
   pending: boolean;
@@ -19,54 +10,13 @@ export function ChooseOfferSheet({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  const opener = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const d = ref.current;
-    if (!d) return;
-    if (open && !d.open) {opener.current = document.activeElement as HTMLElement; d.showModal();}
-    if (!open && d.open) d.close();
-  }, [open]);
-
-  useEffect(() => {
-    const d = ref.current;
-    if (!d) return;
-    const onClose = () => {onCancel(); if (opener.current?.isConnected) opener.current.focus();};
-    d.addEventListener("close", onClose);
-    return () => d.removeEventListener("close", onClose);
-  }, [onCancel]);
-
   return (
-    <dialog onKeyDown={trapDialogFocus} id="choose" className="ma-sheet" ref={ref} aria-labelledby="choose-title">
-      <header className="ma-sheet__header">
-        <h2 id="choose-title" className="ma-sheet__title">
-          შეთავაზების არჩევა
-        </h2>
-        <button className="ma-sheet__close" aria-label="დახურვა" onClick={() => ref.current?.close()}>
-          ✕
-        </button>
-      </header>
-      <div className="ma-sheet__body">
-        <p>
-          არჩევის შემდეგ <b>{companyName}</b>-ს გაეზიარება შენი საკონტაქტო ინფორმაცია.
-          მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს, დანარჩენ შეთავაზებებს მიენიჭება სტატუსი „არ აირჩიეს“.
-          საბოლოო პირობებს კომპანიასთან შეათანხმებ.
-        </p>
-        {error ? (
-          <p className="ma-field__error" role="alert">
-            {error}
-          </p>
-        ) : null}
-      </div>
-      <footer className="ma-sheet__footer">
-        <button className="ma-btn ma-btn--primary" type="button" disabled={pending} onClick={onConfirm}>
-          {pending ? "ირჩევა…" : "შეთავაზების არჩევა"}
-        </button>
-        <button className="ma-btn ma-btn--secondary" type="button" onClick={() => ref.current?.close()}>
-          გაუქმება
-        </button>
-      </footer>
-    </dialog>
+    <ConfirmSheet id="choose" open={open} title="შეთავაზების არჩევა" confirmLabel="შეთავაზების არჩევა" pendingLabel="ირჩევა…" pending={pending} error={error} onConfirm={onConfirm} onCancel={onCancel}>
+      <p>
+        არჩევის შემდეგ <b>{companyName}</b>-ს გაეზიარება შენი საკონტაქტო ინფორმაცია.
+        მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს, დანარჩენ შეთავაზებებს მიენიჭება სტატუსი „არ აირჩიეს“.
+        საბოლოო პირობებს კომპანიასთან შეათანხმებ.
+      </p>
+    </ConfirmSheet>
   );
 }

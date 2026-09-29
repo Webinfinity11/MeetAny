@@ -15,7 +15,7 @@ import { toast } from "../Toasts";
 import { RequestFormSheet } from "./RequestFormSheet";
 import { useRouter } from "next/navigation";
 import { CompanyAvatar } from "./CompanyAvatar";
-import { PageBand } from "./PageBand";
+import { ConfirmSheet } from "../ui/ConfirmSheet";
 import { OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
@@ -23,7 +23,7 @@ import { MessageButton } from "./ChatPopup";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
-import { addressLabel, postedLabel } from "../../lib/format";
+import { addressLabel, dateLabel, postedLabel } from "../../lib/format";
 
 // No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number). Omitting
 // price/priceType makes market-store.js's sendOffer() default to price:null,
@@ -116,6 +116,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const [chooseId, setChooseId] = useState<string | null>(null);
   const [choosePending, setChoosePending] = useState(false);
   const [chooseError, setChooseError] = useState<string | null>(null);
+  const [confirmKind, setConfirmKind] = useState<"close" | "delete" | "withdraw" | null>(null);
   const [now, setNow] = useState(0);
   useEffect(() => { const timer = window.setTimeout(() => setNow(Date.now()), 0); return () => window.clearTimeout(timer); }, []);
   // Mark offers received since this author last visited the request.
@@ -198,24 +199,18 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
   // The deadline lives in the facts and the aside; the meta says what, where and when it was posted.
   const posted = postedLabel(r.createdAt, now);
-  const placeLine = [r.addressNote ? addressLabel(r.addressNote) : null, posted ? `გამოქვეყნდა ${posted}` : null].filter(Boolean).join(" · ");
-  const headMeta = (
-    <span className="detail-meta">
-      <span className="detail-meta__line">{[categories[r.category] || r.category, cities[r.city] || r.city].filter(Boolean).join(" · ")}</span>
-      {placeLine ? <><span className="detail-meta__sep" aria-hidden="true"> · </span><span className="detail-meta__line">{placeLine}</span></> : null}
-    </span>
-  );
+  const stateTone = state === "open" ? (daysLeft <= 3 ? "urgent" : "open") : state === "chosen" ? "chosen" : "closed";
   const shareUrl = typeof window === "undefined" ? "" : `${window.location.origin}/requests/view/?id=${encodeURIComponent(r.id)}`;
   async function action(kind: "extend" | "close" | "delete" | "withdraw") {
     if (!store || actionPending) return;
-    if (kind === "delete" && !window.confirm("წავშალო მოთხოვნა და მისი შეთავაზებები?")) return;
     setActionPending(true); setActionError("");
     try {
       if (kind === "extend") await store.extendRequest(r.id);
       else if (kind === "close") await store.closeRequest(r.id);
       else if (kind === "delete") {await store.deleteRequest(r.id); router.push("/account/");}
       else if (myOffer) await store.withdrawOffer(myOffer.id);
-      toast("ცვლილება შენახულია.");
+      toast({extend: closed ? "მოთხოვნა ხელახლა გაიხსნა 7 დღით." : "ვადა გაგრძელდა 7 დღით.", close: "მოთხოვნა დაიხურა.", delete: "მოთხოვნა წაიშალა.", withdraw: "შეთავაზება გაუქმდა."}[kind]);
+      setConfirmKind(null);
     } catch(err) {setActionError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
     finally {setActionPending(false);}
   }
@@ -227,6 +222,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     try {
       await store.chooseOffer(chooseId);
       setChooseId(null);
+      toast("შეთავაზება არჩეულია. კომპანიის კონტაქტი ქვემოთ ჩანს.");
     } catch (err) {
       setChooseError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {
@@ -274,7 +270,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               <h2 className="ma-h3">შენი შეთავაზება</h2>
               <OfferCard o={myOffer} canChoose={false} />
               {state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
-                <div className="ma-cluster"><button className="ma-btn ma-btn--secondary" onClick={() => setEditOffer(!editOffer)}>შეთავაზების რედაქტირება</button><button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => action("withdraw")}>შეთავაზების გაუქმება</button></div>
+                <div className="ma-cluster"><button className="ma-btn ma-btn--secondary" onClick={() => setEditOffer(!editOffer)}>შეთავაზების რედაქტირება</button><button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => setConfirmKind("withdraw")}>შეთავაზების გაუქმება</button></div>
                 {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)}/> : null}
               </div> : null}
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
@@ -283,11 +279,18 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           ) : (
             <>
-              <h2 className="ma-h3">შეთავაზების გაგზავნა</h2>
+              <h2 className="ma-h3" id="send-offer">შეთავაზების გაგზავნა</h2>
               <p className="ma-note">შენს შეთავაზებას მხოლოდ მოთხოვნის ავტორი ნახავს.</p>
               <SendOfferForm requestId={r.id} onDone={() => undefined} />
             </>
           )}
+        </section>
+      ) : me ? (
+        <section className="detail-aside__block" aria-label="შეთავაზებები">
+          <p className="detail-aside__text">შეთავაზებებს კომპანიები აგზავნიან. შენც გჭირდება მსგავსი რამ? დაამატე მოთხოვნა და კომპანიები თავად დაგიკავშირდებიან.</p>
+          <Link className="ma-btn ma-btn--secondary detail-aside__primary" href={`/requests/new/?${new URLSearchParams({ category: r.category, city: r.city })}`}>
+            მოთხოვნის დამატება
+          </Link>
         </section>
       ) : (
         <section className="detail-aside__block" aria-label="შეთავაზების გაგზავნა">
@@ -307,15 +310,26 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <Icon name="arrow-left" />
         მოთხოვნები
       </Link>
-      <PageBand title={r.title} meta={headMeta} actions={state !== "open" ? <span className="ma-badge ma-badge--neutral">{statusText}</span> : undefined} />
+      <header className="detail-hero">
+        <div className="detail-hero__tags">
+          <span className="detail-status" data-tone={stateTone}>{state === "open" ? `შეთავაზებები მიიღება · ${statusText}` : statusText}</span>
+          <span className="detail-hero__category">{categories[r.category] || r.category}</span>
+        </div>
+        <h1 className="detail-hero__title">{r.title}</h1>
+        <ul className="detail-hero__meta" aria-label="მოთხოვნის დეტალები">
+          <li><Icon name="map-pin" />{[cities[r.city] || r.city, r.addressNote ? addressLabel(r.addressNote) : null].filter(Boolean).join(" · ")}</li>
+          {posted ? <li><Icon name="clock" />გამოქვეყნდა {posted}</li> : null}
+          <li><Icon name="message-square" />{offerCount} შეთავაზება</li>
+        </ul>
+      </header>
       <div className="request-detail-grid">
         <div className="request-detail-main">
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
-            <h2 className="ma-h3">რა გვჭირდება</h2>
+            <h2 className="detail-section-title">რა გვჭირდება</h2>
             <p className="ma-prose">{r.body}</p>
             <dl className="ma-kv request-detail-facts">
               {r.quantity != null ? <div><dt>რაოდენობა</dt><dd>{r.quantity} {units[r.unit] || r.unit}</dd></div> : null}
-              {r.neededBy ? <div><dt>საჭიროა თარიღამდე</dt><dd>{r.neededBy}</dd></div> : null}
+              {r.neededBy ? <div><dt>საჭიროა თარიღამდე</dt><dd>{dateLabel(r.neededBy)}</dd></div> : null}
               <div><dt>შეთავაზებების მიღება</dt><dd className={state === "open" && daysLeft <= 7 ? "detail-meta__urgent" : undefined}>{statusText}</dd></div>
               <div><dt>ადგილმდებარეობა</dt><dd>{cities[r.city] || r.city}</dd></div>
             </dl>
@@ -338,10 +352,10 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           {isOwner ? <div className="request-owner-actions">
             {offerCount === 0 && ["open", "closed", "expired"].includes(state) ? <button className="ma-btn ma-btn--secondary" onClick={() => setEditRequest(true)}>რედაქტირება</button> : null}
             {["open", "closed", "expired"].includes(state) ? <button className="ma-btn ma-btn--secondary" disabled={actionPending} onClick={() => action("extend")}>{closed ? "ხელახლა გახსნა" : "ვადის გაგრძელება"} (+7 დღე)</button> : null}
-            {state === "open" ? <button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => action("close")}>დახურვა</button> : null}
-            <button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => action("delete")}>წაშლა</button>
+            {state === "open" ? <button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => setConfirmKind("close")}>დახურვა</button> : null}
+            <button className="ma-btn ma-btn--danger-quiet" disabled={actionPending} onClick={() => setConfirmKind("delete")}>წაშლა</button>
+            {offerCount > 0 && state === "open" ? <p className="request-owner-note">რედაქტირება შეუძლებელია, რადგან მოთხოვნას უკვე აქვს შეთავაზება.</p> : null}
           </div> : null}
-          <p className="request-detail-summary"><strong>{offerCount}</strong> მიღებული შეთავაზება</p>
           <div className="detail-share" role="group" aria-labelledby="detail-share-label">
             <span className="detail-label" id="detail-share-label">გაზიარება</span>
             <div className="detail-share__links">
@@ -353,6 +367,24 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
       </div>
       {isOwner || me?.role === "admin" ? <section className="request-responses" aria-labelledby="request-offers-title">{responsePanel}</section> : null}
 
+      {!isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <div className="detail-actionbar">
+        {me ? <a className="ma-btn ma-btn--primary" href="#send-offer">შეთავაზების გაგზავნა</a>
+          : <Link className="ma-btn ma-btn--primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}>შედი და გაგზავნე შეთავაზება</Link>}
+      </div> : null}
+      <ConfirmSheet
+        id="request-confirm"
+        open={!!confirmKind}
+        title={confirmKind === "delete" ? "მოთხოვნის წაშლა" : confirmKind === "close" ? "მოთხოვნის დახურვა" : "შეთავაზების გაუქმება"}
+        confirmLabel={confirmKind === "delete" ? "წაშლა" : confirmKind === "close" ? "დახურვა" : "გაუქმება"}
+        pendingLabel="სრულდება…"
+        danger
+        pending={actionPending}
+        error={actionError || null}
+        onConfirm={() => confirmKind && action(confirmKind)}
+        onCancel={() => { setConfirmKind(null); setActionError(""); }}
+      >
+        <p>{confirmKind === "delete" ? "მოთხოვნა და მისი ყველა შეთავაზება სამუდამოდ წაიშლება." : confirmKind === "close" ? "მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს. მოგვიანებით შეგიძლია ხელახლა გახსნა." : "კომპანია შენს შეთავაზებას ვეღარ ნახავს. ხელახლა გაგზავნა შესაძლებელია, სანამ მოთხოვნა ღიაა."}</p>
+      </ConfirmSheet>
       {editRequest ? <RequestFormSheet key={r.id} open existing={r} onClose={() => setEditRequest(false)} /> : null}
       <ChooseOfferSheet
         open={!!chooseId}

@@ -72,37 +72,48 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   const requestLink = (title: string) => !ownProfile ? <Link className="ma-link company-service-request" href={requestHref(title)}>გამოაქვეყნე მოთხოვნა ამ მიმართულებით</Link> : null;
 
   const since = sinceMonthLabel(c.createdAt);
-  const activity = [since && `საიტზე ${since}`, stats.sent > 0 && `${stats.sent} გაგზავნილი შეთავაზება`, stats.chosen > 0 && `${stats.chosen} არჩეული შეთავაზება`].filter(Boolean).join(" · ");
+  const hasDetails = !!(c.about || c.seeks?.length || products.length || openRequests.length);
 
   return (
     <div className="ma-page company-profile detail-page">
-      <div className="company-profile-tools"><Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>{!ownProfile ? <SaveCompanyButton id={c.id} /> : null}</div>
-      <header className="company-identity-hero">
-        <div className="company-identity-content"><CompanyAvatar name={name} logoUrl={c.logoUrl} size="xl" /><div><p className="company-identity-industry">{categories[c.industry] || c.industry}</p><h1>{name}</h1><p className="company-identity-city"><Icon name="map-pin" />{cities[c.city] || c.city}</p>{introduction ? <p className="company-identity-summary">{introduction}</p> : null}</div></div>
+      <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>
+      <header className="company-hero">
+        <CompanyAvatar name={name} logoUrl={c.logoUrl} size="xl" />
+        <div className="company-hero__text">
+          <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
+          <h1 className="company-hero__name">{name}</h1>
+          {introduction ? <p className="company-hero__summary">{introduction}</p> : null}
+          <ul className="company-hero__meta" aria-label="კომპანიის დეტალები">
+            {c.city ? <li><Icon name="map-pin" />{cities[c.city] || c.city}</li> : null}
+            {since ? <li><Icon name="calendar" />საიტზე {since}</li> : null}
+            {stats.sent > 0 ? <li><Icon name="send" />{stats.sent} შეთავაზება</li> : null}
+          </ul>
+        </div>
+        {!ownProfile ? <div className="company-hero__save"><SaveCompanyButton id={c.id} icon /></div> : null}
       </header>
-      <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები"><a href="#company-about">კომპანიის შესახებ</a><a href="#offers">შეთავაზებები {products.length}</a>{openRequests.length ? <a href="#company-requests">ღია მოთხოვნები {openRequests.length}</a> : null}</nav>
+      <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები">{c.about || c.seeks?.length ? <a href="#company-about">კომპანიის შესახებ</a> : null}{products.length ? <a href="#offers">პროდუქტები და მომსახურება <span>{products.length}</span></a> : null}{openRequests.length ? <a href="#company-requests">ღია მოთხოვნები <span>{openRequests.length}</span></a> : null}</nav>
       <div className="company-profile-layout">
       <aside className="company-contact-card" aria-labelledby="company-contact-heading">
-        <h2 id="company-contact-heading" className="ma-h3">კონტაქტი</h2>
+        <h2 id="company-contact-heading" className="detail-section-title">კონტაქტი</h2>
         <p>{ownProfile ? "ეს შენი კომპანიის საჯარო გვერდია. ინფორმაცია შეგიძლია ანგარიშიდან განაახლო." : "დაუკავშირდი კომპანიას პირობების დასაზუსტებლად."}</p>
         <div className="company-contact-actions">{ownProfile ? <Link className="ma-btn ma-btn--primary" href="/account/?tab=profile">პროფილის რედაქტირება</Link> : <>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/></>}</div>
-        <div className="company-profile-coverage"><span>მომსახურების არეალი</span><p>{(c.serviceCities || []).map((id: string) => cities[id] || id).join(" · ") || "არ არის მითითებული"}</p></div>
+        {c.serviceCities?.length ? <div className="company-profile-coverage"><span>მომსახურების არეალი</span><p>{c.serviceCities.map((id: string) => cities[id] || id).join(" · ")}</p></div> : null}
         {c.address || directions ? <div className="company-contact-address"><span>მისამართი</span>{c.address ? <p>{c.address}</p> : null}{directions ? <a href={directions} target="_blank" rel="noopener noreferrer"><Icon name="map-pin" />რუკაზე ნახვა</a> : null}</div> : null}
       </aside>
       <div className="company-profile-main">
-        <section aria-labelledby="company-about">
-          <h2 id="company-about" className="ma-h3">კომპანიის შესახებ</h2>
-          <p className="company-profile-description">{c.about || "კომპანიას აღწერა ჯერ არ დაუმატებია."}</p>
+        {!hasDetails ? <section className="company-profile-brief"><p>{ownProfile ? "დაამატე აღწერა, მომსახურება და პროდუქტები, რომ მომხმარებლებმა უკეთ გაიგონ, რას აკეთებ." : "პირობებისა და მომსახურების დეტალებისთვის დაუკავშირდი კომპანიას პირდაპირ."}</p></section> : null}
+        {c.about || c.seeks?.length ? <section aria-labelledby="company-about">
+          <h2 id="company-about" className="detail-section-title">კომპანიის შესახებ</h2>
+          {c.about ? <p className="company-profile-description">{c.about}</p> : null}
           {c.seeks?.length ? <div className="company-profile-seeks"><h3>რას ეძებს კომპანია</h3><p>{c.seeks.join(", ")}</p></div> : null}
-        </section>
-        <section id="offers" aria-labelledby="company-services">
-          <h2 id="company-services" className="ma-h3">პროდუქტები და მომსახურება</h2>
+        </section> : null}
+        {products.length ? <section id="offers" aria-labelledby="company-services">
+          <h2 id="company-services" className="detail-section-title">პროდუქტები და მომსახურება</h2>
           {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <div key={`${product.name}-${index}`}><ProductCard {...product} />{requestLink(product.name)}</div>)}</div> : null}
           {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}><span>{product.name}</span>{requestLink(product.name)}</li>)}</ul> : null}
-          {!products.length ? <p className="detail-empty">ჯერ არ არის მითითებული.</p> : null}
-        </section>
+        </section> : null}
         {openRequests.length ? <section className="company-profile-requests" aria-labelledby="company-requests">
-          <h2 id="company-requests" className="ma-h3">ღია მოთხოვნები</h2>
+          <h2 id="company-requests" className="detail-section-title">ღია მოთხოვნები</h2>
           <div className="company-profile-request-list">
             {openRequests.map((r) => <article key={r.id}>
               <h3><Link href={`/requests/view/?id=${encodeURIComponent(r.id)}`}>{r.title}</Link></h3>
@@ -114,7 +125,6 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
 
       </div>
 
-      {activity ? <p className="company-profile-activity">{activity}</p> : null}
     </div>
   );
 }
