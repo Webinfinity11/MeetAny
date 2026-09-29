@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 import { Pool } from '@neondatabase/serverless';
-// Deliberately pinned to the authorized test branch. Never print connection details.
+// Deliberately pinned to auth-probe, which also serves production. Never print connection details.
 const migration=process.argv[2]||'contact-events';
 const dryRun=process.argv.includes('--dry-run');
 const plans={
+ 'request-alerts-default-on':{file:'20260929-request-alerts-default-on',tables:['request_alert_preferences'],routines:['request_alert_preferences']},
  categories:{file:'20260929-categories',tables:[],routines:['set_request_alert_preferences']},
  'admin-v2': {
   file: '20260929-admin-v2',
@@ -41,6 +42,13 @@ try {
  (select count(*)::int from information_schema.tables where table_schema='meetany_private' and table_name=any($1::text[])) tables,
  (select count(*)::int from information_schema.routines where routine_schema='public' and routine_name=any($2::text[])) routines`,[plan.tables,plan.routines]);
  if(rows[0].tables!==plan.tables.length||rows[0].routines!==plan.routines.length) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
+ if(migration==='request-alerts-default-on') {
+  const {rows:[v]}=await pool.query(`select
+   to_regprocedure('meetany_private.default_request_alert_preferences(public.profiles)') is not null helper,
+   to_regprocedure('meetany_private.notify_matching_request()') is not null trigger_function,
+   exists(select 1 from meetany_private.settings where key='request_alerts_default_on' and value='on') marker`);
+  if(!v.helper||!v.trigger_function||!v.marker) throw Object.assign(new Error(),{code:'MISSING_DEFAULT_ALERTS'});
+ }
  if(migration==='categories') {
   const {rows:[v]}=await pool.query(`select cardinality(meetany_private.categories()) keys,
    (select count(*)::int from public.profiles where industry is not null and not meetany_private.is_category(industry)) bad_profiles,
