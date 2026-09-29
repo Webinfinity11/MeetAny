@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { DiscoverySearch } from "../components/DiscoverySearch";
-import { HomeCategories, HomeIndustries, HomeFeatured, HomeRequestStarter, HomeJoin } from "../components/HomeLive";
+import { Icon } from "../components/Icon";
+import { HomeCategories, HomeIndustries, HomeFeatured, HomeRequestStarter, HomeJoin, HomeStats } from "../components/HomeLive";
+
+const steps = [
+  { icon: "file-text", title: "გამოაქვეყნე მოთხოვნა", text: "მიუთითე პროდუქტი ან მომსახურება, რაოდენობა, ქალაქი და სასურველი ვადა." },
+  { icon: "inbox", title: "მიიღე შეთავაზებები", text: "შესაბამისი კომპანიები თავად გამოგიგზავნიან პირობებს. შეადარე და გაეცანი პროფილებს." },
+  { icon: "handshake", title: "დაუკავშირდი პირდაპირ", text: "აირჩიე საუკეთესო შეთავაზება, მიწერე ან დაურეკე და დაიწყე თანამშრომლობა." },
+];
 
 export default function HomePage() {
   return <>
@@ -9,43 +16,55 @@ export default function HomePage() {
         <div className="hero-copy">
           <p className="hero-context">ბიზნესკავშირები საქართველოში</p>
           <h1 id="discovery-title">იპოვე მომწოდებელი<br /><span>შენი ბიზნესისთვის.</span></h1>
-          <p className="hero-description">მოძებნე მომწოდებელი, გამოაქვეყნე მოთხოვნა ან იპოვე ახალი შეკვეთა შენი კომპანიისთვის.</p>
+          <p className="hero-description">მოძებნე კომპანია, გამოაქვეყნე მოთხოვნა ან იპოვე ახალი შეკვეთა — ერთ სივრცეში.</p>
           <DiscoverySearch />
-          <div className="hero-request"><span>უკვე იცი, რა გჭირდება?</span><Link href="/requests/new/">გამოაქვეყნე მოთხოვნა</Link></div>
+          <HomeStats />
         </div>
         <figure className="hero-photo">
           <img src="/assets/photos/warehouse-team.jpg" alt="საწყობის თანამშრომლები ამზადებენ პროდუქციის მიწოდებას" width={1200} height={800} fetchPriority="high" />
-          <figcaption><span>პროდუქცია და მომსახურება</span><p>მოძებნე კომპანია.<br />დაუკავშირდი პირდაპირ.</p></figcaption>
+          <figcaption>
+            <span className="hero-photo__badge"><Icon name="circle-check" />პირდაპირი კონტაქტი</span>
+            <p>შუამავლის გარეშე — დაუკავშირდი კომპანიას პირდაპირ.</p>
+          </figcaption>
         </figure>
       </div>
     </section>
 
-    <section className="home-needs" aria-label="აირჩიე ბიზნესპარტნიორის ტიპი"><div className="home-wrap"><HomeCategories /></div></section>
+    <section className="home-needs home-wrap" aria-label="აირჩიე ბიზნესპარტნიორის ტიპი"><HomeCategories /></section>
 
-    <section className="home-request-start home-wrap" aria-labelledby="request-start-heading">
-      <div><span className="home-overline">თუ მომწოდებელს ეძებ</span><h2 id="request-start-heading">აღწერე,<br />რა გჭირდება.</h2><p>გამოაქვეყნე მოთხოვნა, რომ კომპანიებმა თავიანთი პროდუქტი ან მომსახურება შემოგთავაზონ.</p></div>
-      <HomeRequestStarter />
-    </section>
-
-    <section className="home-partners home-wrap" aria-labelledby="featured-heading">
-      <div className="home-section-head"><div><span className="home-overline">კომპანიების კატალოგი</span><h2 id="featured-heading">მომწოდებლები და<br />მომსახურების კომპანიები.</h2></div><div><p>ნახე, რას სთავაზობს კომპანია და რომელ ქალაქებში მუშაობს. დეტალების დასაზუსტებლად დაუკავშირდი პირდაპირ.</p><Link className="home-text-link" href="/companies/">ყველა კომპანია</Link></div></div>
+    <section className="home-section home-wrap" aria-labelledby="featured-heading">
+      <div className="home-section-head">
+        <div><p className="home-overline">კომპანიების კატალოგი</p><h2 id="featured-heading">მომწოდებლები და მომსახურება</h2></div>
+        <Link className="home-text-link" href="/companies/">ყველა კომპანია<Icon name="arrow-right" /></Link>
+      </div>
       <HomeFeatured />
     </section>
 
-    <section className="home-industries" id="industries" aria-labelledby="industry-heading"><div className="home-wrap industries-layout">
-      <div className="industries-intro"><span className="home-overline">მიმართულებები</span><h2 id="industry-heading">აირჩიე<br />საქმიანობის სფერო.</h2><p>მოძებნე პარტნიორი საქმიანობის სფეროს მიხედვით.</p><Link className="home-text-link" href="/companies/">სრული კატალოგი</Link></div>
-      <HomeIndustries />
-    </div></section>
-
-    <section className="home-process home-wrap" id="how" aria-labelledby="process-heading">
-      <div className="process-photo"><img src="/assets/photos/business-collaboration.jpg" alt="ბიზნესგუნდი სამუშაო შეხვედრაზე განიხილავს გეგმებს" width={1200} height={800} loading="lazy" /></div>
-      <div className="process-content"><span className="home-overline">თუ მომწოდებელს ეძებ</span><h2 id="process-heading">როგორ მიიღო<br />შეთავაზებები.</h2>
-        <div className="process-steps">
-          <details open><summary><span>01</span><h3>გამოაქვეყნე მოთხოვნა</h3></summary><div><p>მიუთითე პროდუქტი ან მომსახურება, რაოდენობა, ქალაქი და სასურველი ვადა.</p><Link href="/requests/new/">მოთხოვნის გამოქვეყნება</Link></div></details>
-          <details><summary><span>02</span><h3>გაეცანი შეთავაზებებს</h3></summary><div><p>შენს მოთხოვნაზე მიღებული შეთავაზებები ანგარიშში გამოჩნდება. შეადარე პირობები და გაეცანი კომპანიების პროფილებს.</p></div></details>
-          <details><summary><span>03</span><h3>დაუკავშირდი კომპანიას</h3></summary><div><p>მიწერე ან დაურეკე კომპანიას, დააზუსტე დეტალები და დაიწყე თანამშრომლობა.</p></div></details>
-        </div>
+    <section className="home-section home-wrap" id="industries" aria-labelledby="industry-heading">
+      <div className="home-section-head">
+        <div><p className="home-overline">მიმართულებები</p><h2 id="industry-heading">აირჩიე საქმიანობის სფერო</h2></div>
+        <Link className="home-text-link" href="/companies/">სრული კატალოგი<Icon name="arrow-right" /></Link>
       </div>
+      <HomeIndustries />
+    </section>
+
+    <section className="home-section home-wrap" id="how" aria-labelledby="process-heading">
+      <div className="home-section-head home-section-head--center">
+        <div><p className="home-overline">როგორ მუშაობს</p><h2 id="process-heading">სამი ნაბიჯი შეთავაზებამდე</h2></div>
+      </div>
+      <ol className="home-steps">
+        {steps.map((step, index) => <li key={step.title}>
+          <span className="home-steps__icon" aria-hidden="true"><Icon name={step.icon} /></span>
+          <span className="home-steps__number">0{index + 1}</span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </li>)}
+      </ol>
+    </section>
+
+    <section className="home-request-start home-wrap" aria-labelledby="request-start-heading">
+      <div><p className="home-overline">თუ მომწოდებელს ეძებ</p><h2 id="request-start-heading">აღწერე, რა გჭირდება</h2><p>გამოაქვეყნე მოთხოვნა და კომპანიები თავად შემოგთავაზებენ თავიანთ პროდუქტს ან მომსახურებას.</p></div>
+      <HomeRequestStarter />
     </section>
 
     <HomeJoin />
