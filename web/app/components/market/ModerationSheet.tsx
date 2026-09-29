@@ -56,7 +56,16 @@ export function ModerationSheet({
   }, [onCancel]);
 
   return (
-    <dialog className="ma-sheet" id="moderation" ref={ref} aria-labelledby="moderation-title" onCancel={event => { if (pending) event.preventDefault(); }}>
+    <dialog className="ma-sheet" id="moderation" ref={ref} aria-labelledby="moderation-title" tabIndex={-1} onKeyDown={event => {
+      if (event.key !== "Tab") return;
+      const dialog = event.currentTarget;
+      const controls = Array.from(dialog.querySelectorAll<HTMLElement>('a[href],button,input,select,textarea,[tabindex]'))
+        .filter(element => element.tabIndex >= 0 && !element.matches(':disabled,[hidden],[inert]') && !element.closest('[inert]') && element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden");
+      const first = controls[0], last = controls[controls.length - 1];
+      if (!first) { event.preventDefault(); dialog.focus(); }
+      else if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog)) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialog)) { event.preventDefault(); first.focus(); }
+    }} onCancel={event => { if (pending) event.preventDefault(); }}>
       <form className={styles.moderationForm} ref={form} onSubmit={event => {
         event.preventDefault();
         if (pending) return;
@@ -79,7 +88,7 @@ export function ModerationSheet({
         </p>
         <p className={styles.consequence}>{consequences[action]}</p>
         {needsReason ? <div className={styles.reason}><label htmlFor="moderation-reason">მიზეზი</label>
-          <textarea id="moderation-reason" className="ma-input" name="reason" required minLength={3} maxLength={500} disabled={pending} onInput={event => event.currentTarget.setCustomValidity("")} aria-describedby="moderation-reason-note" />
+          <textarea id="moderation-reason" className="ma-input" name="reason" required minLength={3} maxLength={500} disabled={pending} onInvalid={event => event.currentTarget.setCustomValidity("მიზეზი უნდა შეიცავდეს 3–500 სიმბოლოს.")} onInput={event => event.currentTarget.setCustomValidity("")} aria-describedby="moderation-reason-note" />
           <span id="moderation-reason-note">3–500 სიმბოლო. მიუთითე კონკრეტული მიზეზი, პირადი მონაცემების გარეშე.</span>
         </div> : null}
         {error ? (

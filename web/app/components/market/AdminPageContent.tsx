@@ -4,7 +4,7 @@ import { AccountSkeleton, ListSkeleton } from "./Skeletons";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
@@ -40,6 +40,16 @@ export function AdminPageContent() {
   const selectedTab = searchParams.get("tab");
   const tab = selectedTab === "offers" || selectedTab === "users" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "requests";
   const cursor = searchParams.get("cursor") || "";
+  const navigation = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = navigation.current;
+    const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!nav || !active || nav.scrollWidth <= nav.clientWidth) return;
+    const bounds = nav.getBoundingClientRect();
+    const item = active.getBoundingClientRect();
+    if (item.left < bounds.left) nav.scrollLeft -= bounds.left - item.left;
+    else if (item.right > bounds.right) nav.scrollLeft += item.right - bounds.right;
+  }, [tab, ready, available]);
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -154,8 +164,8 @@ export function AdminPageContent() {
   return (
     <div className={`ma-page ${styles.workspace}`}>
       <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeading}><span className={styles.sidebarIcon}><Icon name="shield-check" /></span><div><strong>ადმინისტრირება</strong><span>პლატფორმის მართვა</span></div></div>
-        <nav className={styles.navigation} aria-label="ადმინისტრირების განყოფილებები">
+        <div className={styles.sidebarHeading}><div><strong>ადმინისტრირება</strong><span>პლატფორმის მართვა</span></div></div>
+        <nav ref={navigation} className={styles.navigation} aria-label="ადმინისტრირების განყოფილებები">
           {[
             { key: "requests", label: "მოთხოვნები", icon: "clipboard-list" },
             { key: "users", label: "მომხმარებლები", icon: "users" },

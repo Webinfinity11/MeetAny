@@ -43,7 +43,6 @@
 .sidebarHeading>div { display: grid; gap: var(--space-1); }
 .sidebarHeading strong { font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
 .sidebarHeading div>span { font-size: var(--fs-xs); color: var(--text-3); }
-.sidebarIcon { display: grid; place-items: center; width: var(--space-10); height: var(--space-10); border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--white); color: var(--action); flex: none; }
 .navigation { display: grid; gap: var(--space-2); }
 .navigation a { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; padding: var(--space-3); border-radius: var(--radius-control); text-decoration: none; color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-medium); }
 .navigation a>svg { flex: none; width: var(--space-5); height: var(--space-5); }
@@ -69,7 +68,7 @@
  .sidebarHeading { padding: var(--space-1) var(--space-2) var(--space-3); }
  .navigation { display: flex; overflow-x: auto; gap: var(--space-2); padding-bottom: var(--space-1); }
  .navigation a { flex: none; white-space: nowrap; min-height: var(--tap-min); }
- .navigation a .navArrow,.backToSite { display: none; }
+ .navigation a .navArrow { display: none; }
  .navigation a[aria-current="page"] { box-shadow: inset 0 -2px var(--action); }
 }
 @media(max-width:767px) {

@@ -1,7 +1,6 @@
 export default function TermsPage() {
   return (
     <div className="ma-container ma-page ma-terms">
-      <span className="ma-eyebrow ma-eyebrow--brand">MeetAny</span>
       <h1>წესები და კონფიდენციალურობა</h1>
       <p className="ma-alert ma-alert--info" style={{ display: "block" }}>
         მონაცემები უსაფრთხოდ ინახება სერვერზე. ტელეფონი საჯაროა; ელფოსტა საჯაროდ არ ქვეყნდება.
