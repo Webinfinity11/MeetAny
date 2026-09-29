@@ -1,20 +1,3 @@
-// "5 ოქტომბრამდე" — the "-მდე" (until) declension of each Georgian month name, used for a
-// request's neededBy date. Kept separate from any nominative month list.
-const UNTIL_MONTHS = [
-  "იანვრამდე",
-  "თებერვლამდე",
-  "მარტამდე",
-  "აპრილამდე",
-  "მაისამდე",
-  "ივნისამდე",
-  "ივლისამდე",
-  "აგვისტომდე",
-  "სექტემბრამდე",
-  "ოქტომბრამდე",
-  "ნოემბრამდე",
-  "დეკემბრამდე",
-];
-
 const MONTHS = [
   "იანვარი",
   "თებერვალი",
@@ -29,11 +12,6 @@ const MONTHS = [
   "ნოემბერი",
   "დეკემბერი",
 ];
-
-export function neededByLabel(value: string): string {
-  const [, m, d] = value.split("-").map(Number);
-  return `${d} ${UNTIL_MONTHS[m - 1]}`;
-}
 
 export function dateLabel(value: string): string {
   // Accepts a plain "YYYY-MM-DD" or a full ISO timestamp (e.g. profiles' created_at/verified_at).

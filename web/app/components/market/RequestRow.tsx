@@ -3,7 +3,6 @@
 import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { Icon } from "../Icon";
-import type { RequestTier } from "../../lib/tier-demo";
 import { categories, units } from "../../lib/categories";
 
 export type RequestRowData = {
@@ -29,7 +28,7 @@ export type RequestRowData = {
   posted?: string | null;
 };
 
-export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: RequestRowData; priority?: boolean; tier?: RequestTier; entranceIndex?: number }) {
+export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestRowData; priority?: boolean; entranceIndex?: number }) {
   const [failedPhoto, setFailedPhoto] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const closedLike = r.state === "closed" || r.state === "expired" || r.state === "chosen";
@@ -41,9 +40,8 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
         : r.daysLeft <= 0 ? "დღეს იწურება" : r.daysLeft <= 7 ? `კიდევ ${r.daysLeft} დღე` : null;
   const urgent = r.state === "open" && r.daysLeft <= 7;
   return (
-    <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
+    <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       <div className="request-card-content">
-        {tier === "vip" ? <span className="request-tier-badge request-tier-badge--vip">VIP</span> : null}
         <div className="request-row-context"><span>{categories[r.category] || r.category}</span>{r.isNew ? <span className="request-card-new">ახალი</span> : null}<span>{r.posted}</span></div>
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         {r.body ? <p className="request-row-description">{r.body}</p> : null}
