@@ -67,6 +67,13 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   const plain = products.filter(product => !product.photoUrl);
   const directions: string | null = store?.directionsUrl(c) ?? null;
 
+  const firstSentence = (c.about || "").trim().split(/(?<=[.!?])\s/)[0];
+  const introduction = firstSentence.length > 140
+    ? `${firstSentence.slice(0, 140).replace(/\s+\S*$/, "")}…`
+    : firstSentence;
+  const requestHref = (title: string) => `/requests/new/?${new URLSearchParams({ title, category: c.industry, city: c.city })}`;
+  const requestLink = (title: string) => !ownProfile ? <Link className="ma-link company-service-request" href={requestHref(title)}>გამოაქვეყნე მოთხოვნა ამ მიმართულებით</Link> : null;
+
   const since = sinceMonthLabel(c.createdAt);
   const activity = [since && `საიტზე ${since}`, stats.sent > 0 && `${stats.sent} გაგზავნილი შეთავაზება`, stats.chosen > 0 && `${stats.chosen} არჩეული შეთავაზება`].filter(Boolean).join(" · ");
 
@@ -74,9 +81,9 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
     <div className="ma-page company-profile detail-page">
       <div className="company-profile-tools"><Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>{!ownProfile ? <SaveCompanyButton id={c.id} /> : null}</div>
       <header className="company-identity-hero">
-        <div className="company-identity-content"><CompanyAvatar name={name} logoUrl={c.logoUrl} size="xl" /><div><p className="company-identity-industry">{categories[c.industry] || c.industry}</p><h1>{name}</h1><p className="company-identity-city"><Icon name="map-pin" />{cities[c.city] || c.city}</p></div></div>
+        <div className="company-identity-content"><CompanyAvatar name={name} logoUrl={c.logoUrl} size="xl" /><div><p className="company-identity-industry">{categories[c.industry] || c.industry}</p><h1>{name}</h1><p className="company-identity-city"><Icon name="map-pin" />{cities[c.city] || c.city}</p>{introduction ? <p className="company-identity-summary">{introduction}</p> : null}</div></div>
       </header>
-      <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები"><a href="#company-about">კომპანიის შესახებ</a><a href="#offers">პროდუქტები და მომსახურება</a>{openRequests.length ? <a href="#company-requests">მოთხოვნები</a> : null}</nav>
+      <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები"><a href="#company-about">კომპანიის შესახებ</a><a href="#offers">შეთავაზებები {products.length}</a>{openRequests.length ? <a href="#company-requests">ღია მოთხოვნები {openRequests.length}</a> : null}</nav>
       <div className="company-profile-layout">
       <aside className="company-contact-card" aria-labelledby="company-contact-heading">
         <h2 id="company-contact-heading" className="ma-h3">კონტაქტი</h2>
@@ -93,8 +100,8 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         </section>
         <section id="offers" aria-labelledby="company-services">
           <h2 id="company-services" className="ma-h3">პროდუქტები და მომსახურება</h2>
-          {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <ProductCard key={`${product.name}-${index}`} {...product} />)}</div> : null}
-          {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}>{product.name}</li>)}</ul> : null}
+          {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <div key={`${product.name}-${index}`}><ProductCard {...product} />{requestLink(product.name)}</div>)}</div> : null}
+          {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}><span>{product.name}</span>{requestLink(product.name)}</li>)}</ul> : null}
           {!products.length ? <p className="detail-empty">ჯერ არ არის მითითებული.</p> : null}
         </section>
         {openRequests.length ? <section className="company-profile-requests" aria-labelledby="company-requests">

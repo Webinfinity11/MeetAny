@@ -114,6 +114,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
       : tab === "expiring" ? store?.daysLeft(r) <= 3 : true
   ) : []), [ready, available, list, tab, now, store]);
 
+  const cityCounts = useMemo(() => Object.fromEntries(Object.keys(cities).map(id => [id, list({ city: id }).length])), [list]);
+
   const sorted = useMemo(() => {
     const arr = [...results];
     if (["expiring", "ending"].includes(sort) && store) arr.sort((a, b) => (store.daysLeft as (r: unknown) => number)(a) - (store.daysLeft as (r: unknown) => number)(b));
@@ -181,7 +183,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     const id = `request-${kind}-${placement}`, label = kind === "category" ? "კატეგორია" : "ქალაქი";
     const select = <CustomSelect className="ma-select" id={id} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
       <option value="">{kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
-      {kind === "category" ? categoryOptions(true) : Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
+      {kind === "category" ? categoryOptions(true) : Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text} ({cityCounts[value]})</option>)}
     </CustomSelect>;
     // Desktop reads like the sort control: "კატეგორია: ყველა".
     return placement === "desktop" ? <div className="ma-field request-board-choice"><label htmlFor={id}>{label}:</label>{select}</div> : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;

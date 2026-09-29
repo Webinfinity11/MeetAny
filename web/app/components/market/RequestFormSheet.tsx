@@ -23,9 +23,9 @@ function textToIso(text: string): string | null {
   if (date.getUTCFullYear() !== y || date.getUTCMonth() !== mo - 1 || date.getUTCDate() !== d) return null;
   return `${y}-${pad(mo)}-${pad(d)}`;
 }
-function addDay(iso: string) {
+function addDay(iso: string, days = 1) {
   const [y, m, d] = iso.split("-").map(Number);
-  const next = new Date(Date.UTC(y, m - 1, d + 1));
+  const next = new Date(Date.UTC(y, m - 1, d + days));
   return `${next.getUTCFullYear()}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}`;
 }
 
@@ -133,6 +133,20 @@ export function RequestFormSheet({
   const max = store?.maxNeededBy ? (store.maxNeededBy as () => string)() : undefined;
   const tomorrow = today ? addDay(today) : undefined;
 
+  function chooseDeadline(days: number | "month") {
+    if (!today) return;
+    let date: string;
+    if (days === "month") {
+      const [year, month, day] = today.split("-").map(Number);
+      const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+      const next = new Date(Date.UTC(year, month, Math.min(day, lastDay)));
+      date = `${next.getUTCFullYear()}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}`;
+    } else date = addDay(today, days);
+    setNeededByText(isoToText(max && date > max ? max : date));
+    v.clear("neededBy");
+    dirty.current = true;
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (pending || !store) return;
@@ -217,6 +231,7 @@ export function RequestFormSheet({
                 <input
                   ref={titleRef}
                   className="ma-input"
+                  placeholder="მაგ. 100 კომპლექტი თეთრეული სასტუმროსთვის"
                   maxLength={120}
                   value={title}
                   onChange={(e) => {setTitle(e.target.value); v.clear("title");}}
@@ -255,6 +270,7 @@ export function RequestFormSheet({
                 </label>
                 <textarea
                   className="ma-textarea"
+                  placeholder="რა გჭირდება, რამდენი, როდისთვის და სად"
                   maxLength={2000}
                   value={body}
                   onChange={(e) => {setBody(e.target.value); v.clear("body");}}
@@ -295,6 +311,11 @@ export function RequestFormSheet({
                   საჭიროა თარიღამდე
                 </label>
                 <DateField id="neededBy" text={neededByText} onText={(text) => {setNeededByText(text); v.clear("neededBy");}} min={tomorrow} max={max} field={v.control("neededBy")} />
+                <div className="ma-chips" role="group" aria-label="ვადის სწრაფი არჩევანი">
+                  <button type="button" className="ma-btn ma-btn--ghost ma-btn--sm" disabled={!today} onClick={() => chooseDeadline(7)}>ერთ კვირაში</button>
+                  <button type="button" className="ma-btn ma-btn--ghost ma-btn--sm" disabled={!today} onClick={() => chooseDeadline(14)}>ორ კვირაში</button>
+                  <button type="button" className="ma-btn ma-btn--ghost ma-btn--sm" disabled={!today} onClick={() => chooseDeadline("month")}>ერთ თვეში</button>
+                </div>
                 {v.message("neededBy")}
               </div>
               <div className="ma-field">

@@ -77,6 +77,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   );
   const allCount = ready && available ? list({ industry: "" }).length : 0;
   const cityOptions = Object.keys(cities);
+  const cityCounts = useMemo(() => Object.fromEntries(Object.keys(cities).map(id => [id, list({ city: id }).length])), [list]);
 
   const resultIds = useMemo(() => results.filter(c => c.phone === undefined).map((c) => c.id).join(","), [results]);
   const [phones, setPhones] = useState<Record<string, string>>({});
@@ -142,7 +143,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
           <option value="">ყველა ქალაქი</option>
           {cityOptions.map((id) => (
             <option key={id} value={id}>
-              {cities[id]}
+              {cities[id]} ({cityCounts[id]})
             </option>
           ))}
         </CustomSelect>
@@ -185,9 +186,12 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
             ) : rows.length === 0 ? (
               <div className="ma-empty">
                 <p className="ma-empty__text">{query ? `„${query}“-ზე კომპანია ვერ მოიძებნა.` : "ამ პირობით კომპანია არ არის."}</p>
+                <div className="catalog-empty-actions">
+                <Link className="ma-btn ma-btn--primary" href={`/requests/new/?${new URLSearchParams({ title: query, category: industry, city })}`}>გამოაქვეყნე მოთხოვნა</Link>
                 {filterCount > 0
                   ? <button type="button" className="catalog-reset" onClick={clearFilters}>ფილტრების გასუფთავება</button>
                   : query ? <button type="button" className="catalog-reset" onClick={() => setQuery("")}>ძიების გასუფთავება</button> : null}
+                </div>
               </div>
             ) : (
               rows.map((c, index) => <CompanyListingCard key={c.id} c={c} entranceIndex={index} />)
