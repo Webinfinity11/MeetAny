@@ -2,11 +2,9 @@
 import { CustomSelect } from "../ui/CustomSelect";
 import { useState } from "react";
 import { useMarketStore } from "../../lib/market-client";
-import { categories, categoryGroups, cities, groupOf } from "../../lib/categories";
+import { categories, categoryGroups, cities } from "../../lib/categories";
 import styles from "./engagement.module.css";
 
-// A company hears about its whole group by default (33 narrow categories would miss most of the neighbours).
-const groupKeys = (key: string) => categoryGroups.find(g => g.id === groupOf[key])?.items.map(([k]) => k) || [key];
 // Whole groups read as the group name in the summary.
 const summary = (keys: string[]) => categoryGroups.flatMap(g => {
   const own = g.items.map(([k]) => k).filter(k => keys.includes(k));
@@ -16,7 +14,7 @@ type Preferences = { enabled: boolean; categories: string[]; cities: string[]; e
 export function RequestAlertSettings({ initial, emailDelivery, profile }: { initial: Preferences; emailDelivery: boolean; profile?: { industry?: string; city?: string; serviceCities?: string[] } }) {
  const { store } = useMarketStore();
  const [draft, setDraft] = useState<Preferences>(() => ({ ...initial,
-  categories: initial.categories.length ? initial.categories : profile?.industry ? groupKeys(profile.industry) : [],
+  categories: initial.categories.length ? initial.categories : profile?.industry ? [profile.industry] : [],
   cities: initial.cities.length ? initial.cities : profile?.serviceCities?.length ? profile.serviceCities : profile?.city ? [profile.city] : [],
  }));
  const [editing, setEditing] = useState(false);
@@ -44,7 +42,7 @@ export function RequestAlertSettings({ initial, emailDelivery, profile }: { init
   finally {setPending(false);}
  }
  return <form className={styles.alertSettings} onSubmit={save} aria-label="ახალი მოთხოვნების შეტყობინებები">
-  <div><h2 className="ma-h3">შენთვის საინტერესო მოთხოვნები</h2><p className={styles.meta}>აირჩიე კატეგორიები და ქალაქები. შესაბამისი ახალი მოთხოვნა ზარის ნიშნით გამოჩნდება.</p></div>
+  <div><h2 className="ma-h3">შენთვის საინტერესო მოთხოვნები</h2><p className={styles.meta}>შეტყობინებები ნაგულისხმევად ჩართულია. გამორთვა აქვე შეგიძლია. აირჩიე კატეგორიები და ქალაქები. შესაბამისი ახალი მოთხოვნა ზარის ნიშნით გამოჩნდება.</p></div>
   <label className={styles.alertChoice}><input type="checkbox" checked={draft.enabled} disabled={pending} onChange={e => {change({enabled:e.target.checked});setEditing(e.target.checked);}}/> ახალ მოთხოვნებზე შემატყობინე</label>
   {draft.enabled && !editing ? <div className={styles.alertSummary}><p>{summary(draft.categories)}<br/>{draft.cities.map(key => cities[key]).join(" · ")}</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setEditing(true)}>პარამეტრების შეცვლა</button></div> : null}
   {draft.enabled && editing ? <>
