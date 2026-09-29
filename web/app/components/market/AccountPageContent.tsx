@@ -113,6 +113,8 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
       <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პირადი მონაცემები"}</h2>
       <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
       <form className="ma-form" onSubmit={submit} noValidate>
+        <fieldset className="account-form-group">
+          {isCompany ? <legend>ძირითადი</legend> : null}
         {isCompany ? <LogoField name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading}
           onChange={file => { setLogoFile(file); setLogoChanged(true); setSaved(false); }}
           onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); setSaved(false); }} /> : null}
@@ -150,7 +152,7 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
               ტელეფონი
             </label>
             <input className="ma-input ma-input--num" id="profile-phone" readOnly value={me.phone} aria-describedby="profile-phone-help" />
-            <p className="ma-field__help" id="profile-phone-help">ტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.</p>
+            <p className="ma-field__help" id="profile-phone-help">ტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება. მათ შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>
           </div>
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="profile-email">
@@ -173,13 +175,17 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
             </div>
           ) : null}
         </div>
+        </fieldset>
         {isCompany ? (
-          <div className="ma-stack">
+          <>
+          <fieldset className="account-form-group">
+            <legend>მომსახურება</legend>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="about">
                 კომპანიის შესახებ · მაქს. 1000 სიმბოლო
               </label>
-              <textarea className="ma-textarea" id="about" maxLength={1000} value={about} onChange={(e) => setAbout(e.target.value)} />
+              <textarea className="ma-textarea" id="about" maxLength={1000} aria-describedby="about-count" value={about} onChange={(e) => setAbout(e.target.value)} />
+              <p className="ma-field__help account-counter" id="about-count">{about.length}/1000</p>
             </div>
             <div className="ma-form__row ma-form__row--2">
               <div className="ma-field">
@@ -212,6 +218,9 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
                 ))}
               </div>
             </fieldset>
+          </fieldset>
+          <fieldset className="account-form-group">
+            <legend>მისამართი</legend>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="address">
                 მისამართი <span className="ma-field__opt">არასავალდებულო</span>
@@ -237,9 +246,9 @@ function ProfileForm({ me, onLogout }: { me: AnyUser; onLogout: () => void }) {
               </div>
               <p className="account-coords__help" id="coords-help">Google Maps-იდან: მარჯვენა ღილაკი → კოორდინატები. თუ მითითებულია, „მიმართულება“ ზუსტ წერტილზე მიგიყვანს.</p>
             </fieldset>
-          </div>
+          </fieldset>
+          </>
         ) : null}
-        <p className="account-hint">ტელეფონისა და ელფოსტის შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>
         {error ? (
           <p className="ma-field__error" role="alert">
             {error}

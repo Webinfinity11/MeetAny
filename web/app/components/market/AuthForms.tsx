@@ -60,7 +60,8 @@ function LoginForm({ onReset }: { onReset: () => void }) {
     try {
       await store.login(email.trim(), password);
       window.dispatchEvent(new Event("meetany:auth"));
-      if (next && store.currentUser()) router.push(next);
+      if (store.currentUser()?.role === "admin") router.replace("/admin/");
+      else if (next && store.currentUser()) router.push(next);
       else router.refresh();
     } catch (err) {
       const message = (err as { userMessage?: string })?.userMessage;
@@ -125,11 +126,11 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     setError(null);
     const errors: FieldErrors = {};
     if (name.trim().length < 2) errors["reg-name"] = "მიუთითე სახელი და გვარი";
-    if (role === "company" && company.trim().length < 2) errors["reg-company"] = "მიუთითე კომპანიის დასახელება";
+    if (role === "company" && company.trim().length < 2) errors["reg-company"] = "მიუთითე დასახელება";
     if (phone.replace(/\D/g, "").length < 9) errors["reg-phone"] = "ჩაწერე მობილურის ნომერი";
     if (!profileRequired && !isEmail(email)) errors["reg-email"] = "ჩაწერე სწორი ელფოსტა";
     if (role === "company" && !industry) errors["reg-industry"] = "აირჩიე მიმართულება";
-    if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "პაროლი მინიმუმ 8 სიმბოლოა" : "მიუთითე პაროლი";
+    if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "მინიმუმ 8 სიმბოლო" : "მიუთითე პაროლი";
     if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმე წესებს";
     if (!v.check(errors, ["reg-name", "reg-company", "reg-phone", "reg-email", "reg-industry", "reg-password", "reg-terms"])) return;
     setPending(true);
@@ -145,17 +146,17 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   }
 
   return (
-    <form className="ma-form" onSubmit={submit} noValidate>
+    <form className="ma-form auth-register" onSubmit={submit} noValidate>
       <fieldset className="ma-field">
         <legend className="ma-field__label">ვინ ხარ?</legend>
-        <div className="ma-cluster">
-          <label className="ma-check">
-            <input type="radio" name="role" checked={role === "client"} onChange={() => setRole("client")} />
-            <span>მჭირდება მომსახურება ან პროდუქცია</span>
+        <div className="auth-roles">
+          <label className="auth-role">
+            <input type="radio" name="role" aria-label="მჭირდება მომსახურება ან პროდუქცია" aria-describedby="role-client-title" checked={role === "client"} onChange={() => setRole("client")} />
+            <span><strong id="role-client-title">კლიენტი</strong><span>მჭირდება მომსახურება ან პროდუქცია</span></span>
           </label>
-          <label className="ma-check">
-            <input type="radio" name="role" checked={role === "company"} onChange={() => setRole("company")} />
-            <span>ვთავაზობ მომსახურებას ან პროდუქციას</span>
+          <label className="auth-role">
+            <input type="radio" name="role" aria-label="ვთავაზობ მომსახურებას ან პროდუქციას" aria-describedby="role-company-title" checked={role === "company"} onChange={() => setRole("company")} />
+            <span><strong id="role-company-title">კომპანია</strong><span>ვთავაზობ მომსახურებას ან პროდუქციას</span></span>
           </label>
         </div>
       </fieldset>
@@ -165,14 +166,14 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
             სახელი და გვარი *
           </label>
           <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={edit("reg-name", setName)} {...v.control("reg-name")} />
-          {v.message("reg-name")}
+          <div className="auth-field-message">{v.message("reg-name")}</div>
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-company">
             კომპანია{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
           </label>
           <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
-          {v.message("reg-company")}
+          <div className="auth-field-message">{v.message("reg-company")}</div>
         </div>
       </div>
       <div className="ma-form__row ma-form__row--2">
@@ -180,16 +181,15 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-phone">
             მობილური ტელეფონი *
           </label>
-          <input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={edit("reg-phone", setPhone)} {...v.control("reg-phone", "reg-phone-help")} />
-          {v.message("reg-phone")}
-          <p className="ma-field__help" id="reg-phone-help">ნომერი საჯაროდ გამოჩნდება</p>
+          <input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={edit("reg-phone", setPhone)} {...v.control("reg-phone", v.errors["reg-phone"] ? undefined : "reg-phone-help")} />
+          <div className="auth-field-message">{v.message("reg-phone") || <p className="ma-field__help" id="reg-phone-help">ნომერი საჯაროდ გამოჩნდება</p>}</div>
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-email">
             ელფოსტა *
           </label>
           <input className="ma-input" type="email" inputMode="email" autoComplete="email" disabled={profileRequired} maxLength={200} value={email} onChange={edit("reg-email", setEmail)} {...v.control("reg-email")} />
-          {v.message("reg-email")}
+          <div className="auth-field-message">{v.message("reg-email")}</div>
         </div>
       </div>
       <div className="ma-form__row ma-form__row--2">
@@ -212,7 +212,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
             </label>
             <select className="ma-select" value={industry} onChange={edit("reg-industry", setIndustry)} {...v.control("reg-industry")}>
               <option value="" disabled>
-                აირჩიე მიმართულება
+                აირჩიე
               </option>
               {Object.entries(categories).map(([id, label]) => (
                 <option key={id} value={id}>
@@ -220,7 +220,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
                 </option>
               ))}
             </select>
-            {v.message("reg-industry")}
+            <div className="auth-field-message">{v.message("reg-industry")}</div>
           </div>
         ) : null}
       </div>
@@ -229,14 +229,14 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           პაროლი * <span className="ma-field__opt">მინიმუმ 8 სიმბოლო</span>
         </label>
         <PasswordInput autoComplete="new-password" disabled={profileRequired} value={password} onChange={(value) => {setPassword(value); v.clear("reg-password");}} field={v.control("reg-password")} />
-        {v.message("reg-password")}
+        <div className="auth-field-message">{v.message("reg-password")}</div>
       </div>
       <div className="ma-field">
         <label className="ma-check">
           <input type="checkbox" checked={acceptTerms} onChange={(e) => {setAcceptTerms(e.target.checked); v.clear("reg-terms");}} {...v.control("reg-terms")} />
           <span>ვეთანხმები წესებსა და პერსონალური მონაცემების დამუშავებას</span>
         </label>
-        {v.message("reg-terms")}
+        <div className="auth-field-message">{v.message("reg-terms")}</div>
       </div>
       <div className="auth-submit">
         <FormAlert error={error} />
