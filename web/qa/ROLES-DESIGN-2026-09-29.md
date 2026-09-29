@@ -1,6 +1,6 @@
 # როლების ეკრანების დიზაინ-აუდიტი — 2026-09-29
 
-კოდი არ შეცვლილა. dev `http://localhost:3001` (working tree-ის მდგომარეობა, AuthForms.tsx-ის უკომიტებელი ცვლილებით). კადრები `qa/shots/roles-0929/` (1440 და 390; სკრიპტი `qa/roles-design-shots.mjs`, submit არ ხდება, ანგარიშები არ იქმნება; შესვლა ledger-ის hotel/supply/admin-ით). Mobbin: `qa/MOBBIN-REFS-GE.md` §14–17, ფაილები `qa/ref-mobbin/{auth,onboard,settings,admin}-*.png` (768×523 preview-ები). overflow ყველა კადრზე 0. `/requests/new/` გაზომილია გეომეტრიით, კადრი `request-new-{1440,390}.png`.
+კოდი არ შეცვლილა. dev `http://localhost:3001` (working tree-ის მდგომარეობა, AuthForms.tsx-ის უკომიტებელი ცვლილებით). კადრები `qa/shots/roles-0929/` (1440 და 390; სკრიპტი `qa/archive/scripts/roles-design-shots.mjs`, submit არ ხდება, ანგარიშები არ იქმნება; შესვლა ledger-ის hotel/supply/admin-ით). Mobbin: `qa/MOBBIN-REFS-GE.md` §14–17, ფაილები `qa/ref-mobbin/{auth,onboard,settings,admin}-*.png` (768×523 preview-ები). overflow ყველა კადრზე 0. `/requests/new/` გაზომილია გეომეტრიით, კადრი `request-new-{1440,390}.png`.
 
 ## პროცესი როგორაა დალაგებული
 
@@ -45,7 +45,7 @@
 ## გასასწორებელი (execute-ისთვის)
 
 **მაღალი**
-3. კომპანიის პროფილის ფორმა (`AccountPageContent.tsx`): 3 დასახელებული ჯგუფი, აღწერაზე `n/1000`, ლოგოს „წაშლა“. შემოწმება: `roles-design-shots.mjs` company-profile, ჯგუფის სათაური 3, overflow 0.
+3. კომპანიის პროფილის ფორმა (`AccountPageContent.tsx`): 3 დასახელებული ჯგუფი, აღწერაზე `n/1000`, ლოგოს „წაშლა“. შემოწმება: `archive/scripts/roles-design-shots.mjs` company-profile, ჯგუფის სათაური 3, overflow 0.
 4. `AuthForms.tsx` (RegisterForm): როლის არჩევა 2 ბარათად. შემოწმება: არჩეული ბარათი აქტიური, radio ხელმისაწვდომია კლავიატურით, ველების ბადე უცვლელი (44px, ერთ y-ზე).
 
 **საშუალო**

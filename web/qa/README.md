@@ -1,3 +1,13 @@
+# QA — მიმდინარე შემოწმებები და ისტორიული არქივი
+
+მიმდინარე სკრიპტები ინახება `qa/`-ში, E2E სცენარები — `e2e/`-ში, ვიზუალური სისტემა — `visual/`-ში. ერთჯერადი სკრიპტები და ძველი ანგარიშები გადატანილია [არქივში](archive/README.md); ისინი პირდაპირ გასაშვებ ინსტრუქციებად აღარ ითვლება.
+
+`shots/`-ის კადრები ადგილობრივად რჩება და Git-ში აღარ ემატება; გამონაკლისია მომავალი `shots/visual-baseline/`. ანგარიშების კადრებზე ბმულები იმავე ადგილობრივ გზებზე მუშაობს. `ref-mobbin/` რჩება ვერსიების კონტროლში. `qa/*-report.json` გენერირებადი ადგილობრივი შედეგებია; `e2e/`-ის შედეგები შენარჩუნებულია.
+
+ადმინისტრატორის მოქმედი ledger გასაღებია `owner_admin`. ბაზასთან დაკავშირებული შემოწმებები მხოლოდ შესაბამისი დავალების ფარგლებში გაუშვით: ლოკალური სერვერიც production-ის auth-probe ბაზას იყენებს. დღევანდელი `*-2026-09-29.md` ანგარიშები აქ რჩება; მათი თარიღი და შეზღუდვები გაითვალისწინეთ.
+
+## ისტორიული შემოწმებების ჩანაწერები
+
 # საბოლოო ლოკალური შემოწმება — 2026-09-22
 
 - `npm run build`: წარმატებული (ცხრავე გვერდი და API Route Handlers).
@@ -9,7 +19,7 @@
 - მობილური კომპანიის ბარათი დამატებით შემოწმდა: ტელეფონი და მომსახურების ჩიპები ორივე grid სვეტს იკავებს (390px ეკრანზე 358px კონტენტი).
 - მთავარი hero შედარდა ძველ localhost:4031 ვერსიას: 1440 × 435.09px ორივეგან; პიქსელის არხის საშუალო სხვაობა 0.156/255. მთავარი დიზაინი შენარჩუნებულია.
 
-სურათები: `shots/`. `browser.mjs` და `accounts.mjs` იყენებს Playwright Chromium-ს; ჩვეულებრივი Chrome გაიხსნა infinity11 (`Profile 8 — INFINITY`) პროფილში. ძველი დაუთრექავი შემოწმების მასალები შენარჩუნებულია `archive/prototype-local` და `archive/qa-local`-ში.
+სურათები: `shots/`. `browser.mjs` და `archive/scripts/accounts.mjs` იყენებს Playwright Chromium-ს; ჩვეულებრივი Chrome გაიხსნა infinity11 (`Profile 8 — INFINITY`) პროფილში. ძველი დაუთრექავი შემოწმების მასალები შენარჩუნებულია `archive/prototype-local` და `archive/qa-local`-ში.
 
 ტესტებმა შეცვალა მხოლოდ auth-probe branch-ის საკუთარი დროებითი QA მოთხოვნები; საბოლოოდ ისინი წაიშალა. Production deploy არ შესრულებულა. პაროლის აღდგენის/OTP ფორმები კოდში გადატანილია; რეალური კოდის წერილი არ გაგზავნილა. რეალური რეგისტრაცია და ადმინისტრატორის ბლოკირების/დადასტურების ცვლილებები UI-ით არ გამეორებულა; მათი სერვერული წესები DB ტესტებით მოწმდება.
 
@@ -17,7 +27,7 @@
 
 კატეგორიების სია, კომპანიის ბარათი და მოთხოვნის დეტალი გადაიწყო. `shots/refined-*` აჩვენებს 1440/1024/390 ხედებს და შესული კლიენტის/კომპანიის მოთხოვნის ხედებს. შემოწმდა სურათები, ქართული ტექსტი და ჰორიზონტალური საზღვრები; სრულმა browser smoke-მა ხელახლა გაიარა 19 შემოწმება, 0 console error-ით. Build წარმატებულია, lint: 0 შეცდომა / 17 არსებული გაფრთხილება. ამ ვიზუალური ცვლილებისთვის DB workflow ტესტები არ გამეორებულა; შესული ანგარიშების დათვალიერება მხოლოდ წაკითხვას მოიცავდა.
 
-მოთხოვნისა და კომპანიის კატალოგების შემდგომი განსხვავების კვლევა: [DESIGN-DIRECTION.md](DESIGN-DIRECTION.md). მფლობელის თანხმობის შემდეგ განსხვავებული შესავალი ბლოკებიც განხორციელდა.
+მოთხოვნისა და კომპანიის კატალოგების შემდგომი განსხვავების კვლევა: [archive/reports/DESIGN-DIRECTION.md](archive/reports/DESIGN-DIRECTION.md). მფლობელის თანხმობის შემდეგ განსხვავებული შესავალი ბლოკებიც განხორციელდა.
 
 კატალოგების განსხვავება: `shots/catalog-*-desktop.png`, `catalog-*-mobile.png` და `catalog-*-filters-mobile.png`. შემოწმდა 1440/1024/390, ძიება/ცარიელი შედეგი, URL/reload/back, მობილური ფილტრი და Escape. Build წარმატებულია; შეცვლილ კომპონენტებზე lint: 0 შეცდომა, 1 არსებული img გაფრთხილება.
 
@@ -50,7 +60,7 @@
 - მოთხოვნები: პერიოდი, უპასუხო მოთხოვნები, 3 დღემდე ვადა, ფოტოს არსებობა. კომპანიები: არსებული საქმიანობის ტიპები, ქვეყნის მასშტაბით მომსახურება და სახელით/უახლესით დალაგება. მდგომარეობა URL-შია; შემოწმდა reload/history და მობილური კონტროლების სინქრონიზაცია.
 - `resilience.mjs`: პროფილებს შორის გადასვლისას დაყოვნებული პასუხი ძველ ნომერს აღარ აჩვენებს; არარსებულ პროფილზე საკონტაქტო ბმული არ რჩება. ხელოვნური 503-ის შემდეგ „ხელახლა ცდა“ მონაცემებს აღადგენს. ეს მხოლოდ ბრაუზერის ქსელურ გადაფარვას იყენებს.
 - `bash db/tests/run.sh`: 621/621 წარმატებული, დროებით ლოკალურ ბაზაზე.
-- `accounts.mjs`: კლიენტი/კომპანია/ადმინი წარმატებული.
+- `archive/scripts/accounts.mjs`: კლიენტი/კომპანია/ადმინი წარმატებული.
 - `QA_DEMO=1 QA_DEMO_ONLY=1 browser.mjs`: მოთხოვნის სრული ციკლი ფოტოთი და შეთავაზების გაგზავნა/რედაქტირება/გაუქმება/ხელახლა გაგზავნა/არჩევა; 0 console errors; საკუთარი დროებითი QA ჩანაწერები auth-probe-ში წაიშალა. პირველ გაშვებაში აღმოჩენილი null-კონტაქტის პრობლემა გასწორდა და სრული სცენარი ხელახლა გაიარა.
 - Build წარმატებულია; lint 0 შეცდომა / 16 არსებული გაფრთხილება. სურათები `discovery-*`-შია.
 
@@ -64,8 +74,8 @@
 
 ## Administration API v1 and detail routes — 2026-09-23
 
-- `QA_BROWSER_PATH=… node web/qa/admin-v1.mjs` from `site`: demo-admin sign-in with local ignored ledger, mocked v1 RPCs (no data mutations). Checks server-only rows, next/first page, query cursor reset, role/verification filters, audit, error/retry and 320px overflow.
-- `QA_BROWSER_PATH=… node web/qa/admin-legacy.mjs`: existing-schema admin filters, URL reload, six metrics, required moderation reason and pending Escape/cancel protection; mutation is intercepted. Intended for the pre-v1 test database.
+- `QA_BROWSER_PATH=… node web/qa/archive/scripts/admin-v1.mjs` from `site`: demo-admin sign-in with local ignored ledger, mocked v1 RPCs (no data mutations). Checks server-only rows, next/first page, query cursor reset, role/verification filters, audit, error/retry and 320px overflow.
+- `QA_BROWSER_PATH=… node web/qa/archive/scripts/admin-legacy.mjs`: existing-schema admin filters, URL reload, six metrics, required moderation reason and pending Escape/cancel protection; mutation is intercepted. Intended for the pre-v1 test database.
 - `QA_BROWSER_PATH=… node web/qa/request-detail.mjs`: omits a real request from initial catalog response, verifies ID-based detail load; failure/retry and invalid-ID state. Read-only.
 - `bash db/tests/run.sh`: 701 assertions, including 1,105 records per entity and equal-timestamp cursor traversal. Uses throwaway local databases, not remote data.
 

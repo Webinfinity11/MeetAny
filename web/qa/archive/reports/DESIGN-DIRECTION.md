@@ -1,3 +1,5 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # MeetAny: requests and company discovery
 
 Research reviewed 2026-09-22. The owner approved this direction in conversation; the catalog introductions are now implemented. This is not a claim of usability testing with representative users.

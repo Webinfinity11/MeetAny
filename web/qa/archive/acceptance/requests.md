@@ -1,6 +1,8 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # მიღება „ცივი თვალით“: /requests/ და /requests/view/ — 2026-09-24
 
-კადრები: `qa/shots/accept-0924/` (`requests-1440|390`, `request-view-1440|390`, `requests-new-tab-1440`, `requests-empty-1440`, `requests-filter-1440`, `requests-reduced-1440`; სკრიპტი `qa/accept-shots.mjs`, dev :3001, სტუმარი). რეფერენსები ნანახია გვერდიგვერდ (Read): dribbble-jobboard, contra-job. side-by-side PNG არ აწყობილა (ImageMagick არაა). კოდი არ შეცვლილა. dev-ის „N“ ღილაკი კადრებში Next-ის overlay-ა, პროდუქტს არ ეკუთვნის.
+კადრები: `qa/shots/accept-0924/` (`requests-1440|390`, `request-view-1440|390`, `requests-new-tab-1440`, `requests-empty-1440`, `requests-filter-1440`, `requests-reduced-1440`; სკრიპტი `qa/archive/scripts/accept-shots.mjs`, dev :3001, სტუმარი). რეფერენსები ნანახია გვერდიგვერდ (Read): dribbble-jobboard, contra-job. side-by-side PNG არ აწყობილა (ImageMagick არაა). კოდი არ შეცვლილა. dev-ის „N“ ღილაკი კადრებში Next-ის overlay-ა, პროდუქტს არ ეკუთვნის.
 
 ## „ეს ჰგავს AI-ით გაკეთებულს?“
 

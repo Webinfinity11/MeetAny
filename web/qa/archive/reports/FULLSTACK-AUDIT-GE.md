@@ -1,3 +1,5 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # MeetAny — full-stack აუდიტი (P12), 2026-09-24
 
 გარემო: dev `http://localhost:3001`, ბაზა Neon `auth-probe`, დემო-ანგარიშები (client `hotel`/`cafe`, company `wood`/`linen`, admin). კოდი და ბაზა არ შეცვლილა; სკრიპტის ტესტ-ჩანაწერები (1 მოთხოვნა + 1 შეთავაზება) ადმინის `admin_delete_request`-ით წაიშალა, შემთხვევით შექმნილი ცალი საუბარი (`a6ffbb61…`, ცარიელი) ხელით წავშალე auth-probe-დან. შემოწმება: 109 უფლების-შემოწმება (`qa/audit-perms.mjs`), 1100+965 SQL-ტესტი, ბრაუზერული გავლა 4 როლით, `tsc` სუფთაა, lint 0 error / 25 warning.
@@ -123,4 +125,4 @@
 | `npm run lint` | 0 error, 25 warning |
 | `qa/browser.mjs`, `discovery.mjs`, `contact.mjs` | ❌ მოძველებული სელექტორები (#21) |
 | `qa/resilience.mjs`, `request-detail.mjs` | ❌ `:3000` ჩაწერილი (#21) |
-| `qa/engagement.mjs`, `address.mjs`, `accounts.mjs`, `saved-live.mjs`, `request-alerts-live.mjs`, `admin-*.mjs` | არ გამიშვია (წერენ ბაზაში/პროფილებში); `qa/e2e/*` — სხვა ნაკადის |
+| `qa/engagement.mjs`, `address.mjs`, `archive/scripts/accounts.mjs`, `saved-live.mjs`, `request-alerts-live.mjs`, `admin-*.mjs` | არ გამიშვია (წერენ ბაზაში/პროფილებში); `qa/e2e/*` — სხვა ნაკადის |

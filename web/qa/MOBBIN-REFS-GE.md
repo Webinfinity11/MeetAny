@@ -1,6 +1,6 @@
 # MeetAny — Mobbin რეფერენსები შიდა გვერდებისთვის
 
-2026-09-24 · წყარო: Mobbin MCP (web + iOS, რეალური პროდუქტები) · სქრინშოტები: `qa/ref-mobbin/<თემა>-<აპი>.png` (1920×1320 web, 1179×2676 iOS) · კოდი არ შეცვლილა. შედარება ემყარება [DESIGN-SYSTEM-GE.md](DESIGN-SYSTEM-GE.md)-ს (შემდეგ — DS) და [COMPETITOR-DESIGN-GE.md](COMPETITOR-DESIGN-GE.md)-ს.
+2026-09-24 · წყარო: Mobbin MCP (web + iOS, რეალური პროდუქტები) · სქრინშოტები: `qa/ref-mobbin/<თემა>-<აპი>.png` (1920×1320 web, 1179×2676 iOS) · კოდი არ შეცვლილა. შედარება ემყარება [DESIGN-SYSTEM-GE.md](DESIGN-SYSTEM-GE.md)-ს (შემდეგ — DS) და [archive/reports/COMPETITOR-DESIGN-GE.md](archive/reports/COMPETITOR-DESIGN-GE.md)-ს.
 
 მონიშვნები: ✅ ემთხვევა DS-ს · ⚠️ ეწინააღმდეგება DS-ს (გადაწყვეტილება ორკესტრატორის/მფლობელის) · ➕ DS-ში არ არის, ემატება.
 

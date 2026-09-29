@@ -1,6 +1,8 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # საბოლოო სქრინშოტ-მიმოხილვა — 2026-09-24 (T5.2)
 
-ცივი თვალით, ყველა როლით, dev `http://localhost:3001`. სკრიპტი: `qa/final-shots.mjs` (`QA_ORIGIN=http://localhost:3001 node qa/final-shots.mjs`), დემო ანგარიშები `DEMO-ACCOUNTS.local.md`-დან (hotel=client, supply=company, admin). კადრები: `qa/shots/final-0924/<role>-<page>-<viewport>.png`, fullPage. ბაზა არ შეცვლილა (ფორმები ღია დარჩა, submit არ მომხდარა). ყოველ გვერდზე გაზომილია `document.scrollWidth - innerWidth` (320-ზეც) — **ყველგან overflow = 0**. მთავარი გვერდი (`/`) მხოლოდ დაფიქსირდა, არ ფასდება (უკვე დამტკიცებული).
+ცივი თვალით, ყველა როლით, dev `http://localhost:3001`. სკრიპტი: `qa/archive/scripts/final-shots.mjs` (`QA_ORIGIN=http://localhost:3001 node qa/archive/scripts/final-shots.mjs`), დემო ანგარიშები `DEMO-ACCOUNTS.local.md`-დან (hotel=client, supply=company, admin). კადრები: `qa/shots/final-0924/<role>-<page>-<viewport>.png`, fullPage. ბაზა არ შეცვლილა (ფორმები ღია დარჩა, submit არ მომხდარა). ყოველ გვერდზე გაზომილია `document.scrollWidth - innerWidth` (320-ზეც) — **ყველგან overflow = 0**. მთავარი გვერდი (`/`) მხოლოდ დაფიქსირდა, არ ფასდება (უკვე დამტკიცებული).
 
 ## ცხრილი: გვერდი × როლი × ვიუპორტი
 

@@ -15,7 +15,7 @@
 
 ## ძველი ხარვეზები მოძველებულია
 
-`qa/FULLSTACK-AUDIT-GE.md` და `qa/FINAL-REVIEW-GE.md` წერდნენ, რომ Admin API v1 auth-probe-ზე არ არის და ჟურნალში UUID ჩანს. ორივე გასწორებულია ამ სამუშაომდე: მიგრაცია `db/migrations/20260923-admin-api.sql` გამოყენებულია (`adminApiVersion: 1`), სახელები — commit `e17824a`. იგივეს ადასტურებს `qa/ROLES-AUDIT-2026-09-29.md`, რომელშიც ადმინზე ხარვეზი არ არის.
+`qa/archive/reports/FULLSTACK-AUDIT-GE.md` და `qa/archive/reports/FINAL-REVIEW-GE.md` წერდნენ, რომ Admin API v1 auth-probe-ზე არ არის და ჟურნალში UUID ჩანს. ორივე გასწორებულია ამ სამუშაომდე: მიგრაცია `db/migrations/20260923-admin-api.sql` გამოყენებულია (`adminApiVersion: 1`), სახელები — commit `e17824a`. იგივეს ადასტურებს `qa/ROLES-AUDIT-2026-09-29.md`, რომელშიც ადმინზე ხარვეზი არ არის.
 
 ## რა გაკეთდა
 

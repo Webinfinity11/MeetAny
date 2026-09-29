@@ -1,0 +1,103 @@
+// Read-only UI verification; no requests, offers or moderation changes are submitted.
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const origin = process.env.QA_ORIGIN || 'http://localhost:3001';
+assert(['localhost', '127.0.0.1'].includes(new URL(origin).hostname));
+const out = 'qa/shots/ux-controls-0929';
+fs.mkdirSync(out, { recursive: true });
+const browser = await chromium.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
+const errors = [];
+const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+page.on('pageerror', error => errors.push(error.message));
+page.setDefaultTimeout(30000);
+const loaded = async () => {
+  await page.waitForFunction(() => !document.querySelector('main [aria-busy="true"]') && (document.querySelector('main')?.innerText.length || 0) > 30, null, { timeout: 60000 });
+  await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' });
+};
+const shot = async name => {
+  await page.screenshot({ path: `${out}/${name}.png`, fullPage: true });
+  assert.equal(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth)), 0, name + ' overflow');
+};
+try {
+  if (!process.env.QA_ADMIN_ONLY) {
+  await page.goto(origin + '/requests/'); await loaded();
+  await page.locator('.request-card').first().waitFor();
+  const category = page.locator('#request-category-desktop');
+  assert.equal(await category.getAttribute('role'), 'combobox');
+  await category.click();
+  await page.locator('.ma-select-menu:popover-open').waitFor();
+  await shot('request-category-desktop');
+  const selected = await page.locator('.ma-select-menu:popover-open [role="option"]').nth(1).textContent();
+  await page.locator('.ma-select-menu:popover-open [role="option"]').nth(1).click();
+  await page.waitForURL(/category=/);
+  assert((await category.innerText()).includes(selected.trim()));
+  await category.click(); await category.press('End'); await category.press('Enter');
+  await page.waitForURL(/category=other/);
+  await category.click(); await category.press('Escape');
+  assert.equal(await category.getAttribute('aria-expanded'), 'false');
+  assert.equal(await category.evaluate(el => el === document.activeElement), true);
+  await page.goto(origin + '/requests/?q=მაგიდა&city=tbilisi'); await loaded();
+  await page.locator('.request-filter-sidebar .catalog-reset').click();
+  await page.waitForURL(url => !url.searchParams.has('city') && url.searchParams.get('q') === 'მაგიდა');
+  await page.goto(origin + '/requests/'); await loaded();
+  const card = page.locator('.request-card').first();
+  const href = await card.locator('.card-main-link').getAttribute('href');
+  await shot('requests-desktop');
+  await card.click({ position: { x: 15, y: 100 } });
+  await page.waitForURL(origin + href); await loaded();
+  await page.locator('.request-description').waitFor();
+  await shot('request-detail-desktop');
+  await page.setViewportSize({ width: 390, height: 844 }); await shot('request-detail-mobile');
+  await page.goto(origin + '/requests/'); await loaded();
+  await shot('requests-mobile');
+  await page.locator('.catalog-filter-toggle').click();
+  const city = page.locator('#request-city-mobile');
+  await city.click(); await page.locator('.ma-select-menu:popover-open').waitFor();
+  await shot('filter-menu-mobile');
+  const rect = await page.locator('.ma-select-menu:popover-open').boundingBox();
+  assert(rect.x >= 0 && rect.x + rect.width <= 390 && rect.y >= 0 && rect.y + rect.height <= 845);
+  await city.press('Escape');
+  assert.equal(await page.locator('#filters').evaluate(el => el.open), true);
+  await city.click();
+  await page.locator('.ma-select-menu:popover-open [role="option"]').nth(1).click();
+  await page.waitForURL(/city=/);
+  await page.locator('#filters .ma-sheet__footer button').click();
+  await page.goto(origin + '/account/?tab=register&role=company'); await loaded();
+  await page.locator('#reg-industry').click();
+  await page.locator('.ma-select-menu:popover-open [role="option"]:not([aria-disabled])').first().click();
+  assert.notEqual(await page.locator('select').last().inputValue(), '');
+  await shot('register-mobile');
+  console.log('PASS public controls, filters, keyboard, full-card link, mobile dialog and registration');
+  }
+  const ledger = JSON.parse(fs.readFileSync('../DEMO-ACCOUNTS.local.md', 'utf8').match(/```json\n([\s\S]*?)\n```/)[1]);
+  const account = ledger.accounts.owner_admin || { ...ledger.accounts.admin, email: 'demo-admin@meetany.ge' };
+  await page.goto(origin + '/account/'); await loaded();
+  await page.locator('#login-email').fill(account.email);
+  await page.locator('#login-password').fill(account.password);
+  await page.locator('form button[type="submit"]').click();
+  await page.locator('#login-email').waitFor({ state: 'hidden', timeout: 25000 });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(origin + '/admin/?tab=users'); await loaded();
+  await page.locator('[aria-label="ადმინისტრირების განყოფილებები"]').waitFor();
+  await shot('admin-users-desktop');
+  const nav = page.locator('[aria-label="ადმინისტრირების განყოფილებები"]');
+  const navRect = await nav.boundingBox(), contentRect = await page.locator('main h1').boundingBox();
+  assert(navRect.x + navRect.width < contentRect.x);
+  await page.locator('#admin-role').click();
+  await page.locator('.ma-select-menu:popover-open [role="option"]').nth(1).click();
+  await page.waitForURL(/role=client/); await loaded();
+  await nav.getByRole('link', { name: 'მოთხოვნები', exact: true }).click();
+  await page.waitForURL(/tab=requests/); await loaded();
+  const requestLink = page.locator('main tbody a[href*="/requests/view/"]').first();
+  if (await requestLink.count()) {
+    await requestLink.click(); await loaded(); await page.locator('.request-description').waitFor();
+    await shot('request-detail-admin-desktop');
+  }
+  await page.goto(origin + '/admin/?tab=users'); await loaded();
+  await page.setViewportSize({ width: 390, height: 844 }); await shot('admin-users-mobile');
+  await page.setViewportSize({ width: 320, height: 800 }); await shot('admin-users-small');
+  console.log('PASS admin sidebar, active links, filters and responsive layout');
+  assert.deepEqual(errors, []);
+  console.log('PASS zero page errors');
+} finally { await browser.close(); }

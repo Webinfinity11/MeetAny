@@ -1,3 +1,5 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # MeetAny — production build და smoke :3002 (P12 T12.5, 2026-09-24)
 
 **შედეგი: build ✅ · smoke 21/21 PASS · console/pageerror/failed request/CSP დარღვევა — 0 ყველა გვერდზე.** HEAD `6c814d2` (P12 T12.3f-ის შემდეგ). სკრიპტი `qa/prod-smoke.mjs`, ნედლი შედეგი `qa/shots/prod-0924/report.json`, კადრები `qa/shots/prod-0924/<role>-<page>-1440.png` (16).
@@ -40,7 +42,7 @@ Next 16 `next dev` წერს `.next/dev`-ში, `next build` — `.next`-შ
 | ადმინი | მოთხოვნები 15 / მომხმარებლები 25 / ჟურნალი 17 / კონტაქტები 35 რიგი | PASS ×4 | 6.4 / 6.2 / 5.5 / 6.4 წმ |
 
 ## ნელი მოთხოვნები
-ფორმალურად **ყველა 21 გვერდი >3 წმ-ია**, მაგრამ სერვერი სწრაფია: TTFB `/` 10 მწ, `/requests/` 16 მწ; DOMContentLoaded 45–120 მწ, `load` 0.2–0.6 წმ. `networkidle`-ს აგვიანებს კლიენტის store-ის **მიმდევრობითი** ჯაჭვი ყოველ გვერდზე (სტატიკურ `/`-ზეც): Neon Auth `token/anonymous` ×2 (0.85/1.0 წმ) → `/api/db/requests` → `rpc/list_companies` → `rpc/company_stats` → `rpc/offer_counts` → `profiles?select=…` — თითო 0.5–1.2 წმ, ჯამი 4–5 წმ. ეს იგივეა, რაც `qa/FULLSTACK-AUDIT-GE.md` #8 (დუბლირებული/სერიული refresh, pool `max:5`); ავტორიზებულ გვერდებს +1–2 წმ ემატება (unread, me). გამოსწორება ამ დავალების ფარგლებს გარეთაა: პარალელური `Promise.all`, anonymous token-ის ერთჯერადი მიღება და `/` გვერდზე store-ის დაყოვნება.
+ფორმალურად **ყველა 21 გვერდი >3 წმ-ია**, მაგრამ სერვერი სწრაფია: TTFB `/` 10 მწ, `/requests/` 16 მწ; DOMContentLoaded 45–120 მწ, `load` 0.2–0.6 წმ. `networkidle`-ს აგვიანებს კლიენტის store-ის **მიმდევრობითი** ჯაჭვი ყოველ გვერდზე (სტატიკურ `/`-ზეც): Neon Auth `token/anonymous` ×2 (0.85/1.0 წმ) → `/api/db/requests` → `rpc/list_companies` → `rpc/company_stats` → `rpc/offer_counts` → `profiles?select=…` — თითო 0.5–1.2 წმ, ჯამი 4–5 წმ. ეს იგივეა, რაც `qa/archive/reports/FULLSTACK-AUDIT-GE.md` #8 (დუბლირებული/სერიული refresh, pool `max:5`); ავტორიზებულ გვერდებს +1–2 წმ ემატება (unread, me). გამოსწორება ამ დავალების ფარგლებს გარეთაა: პარალელური `Promise.all`, anonymous token-ის ერთჯერადი მიღება და `/` გვერდზე store-ის დაყოვნება.
 
 ## ნაპოვნი
 - `/requests/` სიაში (კადრი `client-request-new-1440.png`) ჩანს **„AUDIT test request“** — ადრინდელი `qa/audit-perms.mjs` გაშვების ნარჩენი, რომელიც cleanup-მა არ წაშალა. ბაზა არ შემიცვლია; წასაშლელია ადმინით ან `scripts/e2e-cleanup.mjs`-ით.

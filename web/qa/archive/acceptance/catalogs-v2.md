@@ -1,6 +1,8 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # მეორე „ცივი“ მიღება: /requests/, /requests/view/, /companies/, /companies/view/ — 2026-09-24
 
-კადრები: `qa/shots/accept-0924/v2/` (`requests|request-view|companies|company-view-1440|390`, `requests-new-tab-1440|390`, `requests-empty-1440|390`, `companies-empty-1440|390`, `companies-filter-1440`, `companies-sheet-390`, `companies-phone-open-1440`); სკრიპტი `qa/accept-catalogs-v2.mjs` (+ `info.json` გეომეტრია), dev :3001, სტუმარი, 1440×1000 და 390×844. ნომერი DOM-ში `•`-ით დაფარულია კადრამდე. რეფერენსები გვერდიგვერდ (Read): `list-dribbble-jobboard`, `detail-contra-job`, `flow-angi-pro-detail`, `ref-biznesebi-company-card`. side-by-side PNG არ აწყობილა. კოდი არ შეცვლილა. „N“/„1 Issue“ ღილაკი — Next dev overlay; `/requests/`-ზე „1 Issue“ წითელია (დეველოპერისთვის: კონსოლის შეცდომა ღირს შემოწმება, §14-ს არ ეხება). დამოუკიდებელი შეფასება §14.1/14.2-ით; წინა ფაილები წაკითხულია ბოლოს.
+კადრები: `qa/shots/accept-0924/v2/` (`requests|request-view|companies|company-view-1440|390`, `requests-new-tab-1440|390`, `requests-empty-1440|390`, `companies-empty-1440|390`, `companies-filter-1440`, `companies-sheet-390`, `companies-phone-open-1440`); სკრიპტი `qa/archive/scripts/accept-catalogs-v2.mjs` (+ `info.json` გეომეტრია), dev :3001, სტუმარი, 1440×1000 და 390×844. ნომერი DOM-ში `•`-ით დაფარულია კადრამდე. რეფერენსები გვერდიგვერდ (Read): `list-dribbble-jobboard`, `detail-contra-job`, `flow-angi-pro-detail`, `ref-biznesebi-company-card`. side-by-side PNG არ აწყობილა. კოდი არ შეცვლილა. „N“/„1 Issue“ ღილაკი — Next dev overlay; `/requests/`-ზე „1 Issue“ წითელია (დეველოპერისთვის: კონსოლის შეცდომა ღირს შემოწმება, §14-ს არ ეხება). დამოუკიდებელი შეფასება §14.1/14.2-ით; წინა ფაილები წაკითხულია ბოლოს.
 
 ## „ეს ჰგავს AI-ით გაკეთებულს?“
 

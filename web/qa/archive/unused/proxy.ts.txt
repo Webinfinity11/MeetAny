@@ -1,0 +1,26 @@
+import { NextResponse, type NextRequest } from "next/server";
+
+// Old shared links may still carry the retired navigation parameter.
+export function proxy(request: NextRequest) {
+  if (!["GET", "HEAD"].includes(request.method) || !request.nextUrl.searchParams.has("from")) {
+    return NextResponse.next();
+  }
+
+  const url = request.nextUrl.clone();
+  url.searchParams.delete("from");
+  return NextResponse.redirect(url);
+}
+
+export const config = {
+  matcher: [
+    "/",
+    "/requests/:path*",
+    "/companies/:path*",
+    "/account/:path*",
+    "/admin/:path*",
+    "/terms/:path*",
+    "/categories/:path*",
+    "/v1/:path*",
+    "/v2/:path*",
+  ],
+};

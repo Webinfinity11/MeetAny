@@ -1,6 +1,8 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # მიღება „ცივი თვალით“: /account/ (სტუმარი, კლიენტი) და მოთხოვნის დამატების ფორმა — 2026-09-24
 
-კადრები: `qa/shots/accept-0924/` (`login-1440|390`, `login-empty-1440`, `login-error-1440`, `login-wrong-1440`, `account-1440|390`, `account-profile-1440|390`, `request-new-1440|390`, `request-new-errors-1440`; სკრიპტი `qa/accept-account-shots.mjs`, dev :3001, დემო კლიენტი „სასტუმრო ლეგენდა“, პაროლი ledger-იდან, output-ში redacted). რეფერენსები ნანახია გვერდიგვერდ (Read): airtasker-post-task-home, bonsai-proposals (userinterviews/linkedin/upwork ცალკე არ გადამიხედავს — bonsai იძლევა იმავე დასკვნას: ერთი H1, ჩანართები, ცხრილი-რიგი, ერთი CTA). „მიმოწერები“ ჩანართი არ შეფასებულა. კოდი არ შეცვლილა. შენიშვნა: სხვა thread-ი seed-ს ცვლის — ჩანართის მთვლელი და რიგები კადრებში 2/3/6 მოთხოვნას აჩვენებს; ეს მონაცემია და არა ხარვეზი.
+კადრები: `qa/shots/accept-0924/` (`login-1440|390`, `login-empty-1440`, `login-error-1440`, `login-wrong-1440`, `account-1440|390`, `account-profile-1440|390`, `request-new-1440|390`, `request-new-errors-1440`; სკრიპტი `qa/archive/scripts/accept-account-shots.mjs`, dev :3001, დემო კლიენტი „სასტუმრო ლეგენდა“, პაროლი ledger-იდან, output-ში redacted). რეფერენსები ნანახია გვერდიგვერდ (Read): airtasker-post-task-home, bonsai-proposals (userinterviews/linkedin/upwork ცალკე არ გადამიხედავს — bonsai იძლევა იმავე დასკვნას: ერთი H1, ჩანართები, ცხრილი-რიგი, ერთი CTA). „მიმოწერები“ ჩანართი არ შეფასებულა. კოდი არ შეცვლილა. შენიშვნა: სხვა thread-ი seed-ს ცვლის — ჩანართის მთვლელი და რიგები კადრებში 2/3/6 მოთხოვნას აჩვენებს; ეს მონაცემია და არა ხარვეზი.
 
 ## „ეს ჰგავს AI-ით გაკეთებულს?“
 

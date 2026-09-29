@@ -1,6 +1,8 @@
+> ისტორიული ჩანაწერი: გადატანილია QA არქივში 2026-09-29. ქვემოთ აღწერილი მდგომარეობა და ბრძანებები მიმდინარე საიტის შემოწმების ინსტრუქცია არ არის.
+
 # მიღება „ცივი თვალით“: /companies/ და /companies/view/ — 2026-09-24
 
-კადრები: `qa/shots/accept-0924/` (`companies-1440|390`, `companies-phone-open-1440`, `companies-filter-1440` (?industry=construction), `companies-empty-1440` (ძიება „ქსქსქს“), `companies-sheet-390`, `company-view-1440|390`; სკრიპტი `qa/accept-companies-shots.mjs`, გეომეტრია `companies-info.json`, dev :3001, სტუმარი). რეფერენსები ნანახია გვერდიგვერდ (Read): ref-biznesebi-company-card, dribbble-jobboard, braintrust-jobs, angi-pro-detail, yelp-business-header, fiverr-ios (linkedin-jobs-list არ გამომიყენებია — Dribbble/Braintrust საკმარისია). side-by-side PNG არ აწყობილა. ნომერი კადრებში და ლოგში დაფარულია (`•`, DOM-ში კადრამდე). კოდი არ შეცვლილა. „N“ ღილაკი კადრებში Next-ის dev overlay-ა. Overflow: 0 (scrollWidth 1440/390).
+კადრები: `qa/shots/accept-0924/` (`companies-1440|390`, `companies-phone-open-1440`, `companies-filter-1440` (?industry=construction), `companies-empty-1440` (ძიება „ქსქსქს“), `companies-sheet-390`, `company-view-1440|390`; სკრიპტი `qa/archive/scripts/accept-companies-shots.mjs`, გეომეტრია `companies-info.json`, dev :3001, სტუმარი). რეფერენსები ნანახია გვერდიგვერდ (Read): ref-biznesebi-company-card, dribbble-jobboard, braintrust-jobs, angi-pro-detail, yelp-business-header, fiverr-ios (linkedin-jobs-list არ გამომიყენებია — Dribbble/Braintrust საკმარისია). side-by-side PNG არ აწყობილა. ნომერი კადრებში და ლოგში დაფარულია (`•`, DOM-ში კადრამდე). კოდი არ შეცვლილა. „N“ ღილაკი კადრებში Next-ის dev overlay-ა. Overflow: 0 (scrollWidth 1440/390).
 
 ## „ეს ჰგავს AI-ით გაკეთებულს?“
 
