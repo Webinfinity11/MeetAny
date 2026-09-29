@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { chromium } from 'playwright';
+import { adminSession, token } from './admin-session.mjs';
 const base = process.env.BASE || 'http://localhost:3003';
 assert(['localhost', '127.0.0.1'].includes(new URL(base).hostname));
 for (const line of fs.readFileSync(new URL('../.env.local', import.meta.url), 'utf8').split(/\r?\n/)) {
@@ -39,25 +40,10 @@ function check(name, ok, details = '') {
   console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${details ? ' '+details : ''}`);
 }
 async function login(a) {
-  const jar = new Map();
-  async function auth(route, body) {
-    const res = await fetch(authBase + route, {
-      method: body ? 'POST' : 'GET', signal: AbortSignal.timeout(45000),
-      headers: { 'Content-Type': 'application/json', Origin: base, Cookie: [...jar].map(([k,v]) => `${k}=${v}`).join('; ') },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    const data = await res.json();
-    if (!res.ok) throw Object.assign(new Error('Auth failed'), { status: res.status });
-    for (const cookie of res.headers.getSetCookie()) {
-      const pair = cookie.split(';')[0], i = pair.indexOf('='); jar.set(pair.slice(0,i), pair.slice(i+1));
-    }
-    return data;
-  }
-  await auth('/sign-in/email', { email: a.email, password: a.password });
-  const data = await auth('/token');
-  assert(data?.token);
-  assert.equal(JSON.parse(Buffer.from(data.token.split('.')[1], 'base64url')).sub, a.id);
-  return { ...a, jwt: data.token };
+  const session = await adminSession(browser, a.key);
+  const jwt = await token(session.page);
+  assert.equal(JSON.parse(Buffer.from(jwt.split('.')[1], 'base64url')).sub, a.id);
+  return { ...a, jwt, ...session };
 }
 async function rpc(a, name, body = args[name] || {}) {
   const res = await fetch(`${base}/api/db/rpc/${name}`, {
@@ -72,6 +58,7 @@ function envelope(data) {
     typeof data.filteredTotal === 'number' && typeof data.asOf === 'string';
 }
 try {
+  browser = await chromium.launch({ headless: true, executablePath: process.env.QA_BROWSER_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
   stage = 'owner_user login'; const user = await login(account('owner_user'));
   stage = 'owner_company login'; let company;
   try { company = await login(account('owner_company')); }
@@ -101,17 +88,11 @@ try {
     stage = `owner_admin ${name} missing UUID`; result = await rpc(admin, name);
     check(stage, result.status === 400 && result.data?.hint === hint, `HTTP ${result.status} ${result.data?.hint || result.data?.code || ''}`);
   }
-  browser = await chromium.launch({ headless: true, executablePath: process.env.QA_BROWSER_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
+
   for (const a of [user, company]) {
     stage = `${a.key} browser denial`;
-    const context = await browser.newContext();
+    const { context, page } = a;
     try {
-      const page = await context.newPage();
-      await page.goto(base+'/account/');
-      await page.locator('#login-email').fill(a.email);
-      await page.locator('#login-password').fill(a.password);
-      await page.locator('form button[type="submit"]').click();
-      await page.locator('#login-email').waitFor({ state: 'hidden', timeout: 90000 });
       await page.goto(base+'/admin/', { waitUntil: 'networkidle' });
       await page.getByText('ეს გვერდი ხელმისაწვდომია მხოლოდ ადმინისტრატორისთვის.', { exact: true }).waitFor({ timeout: 60000 });
       check(stage, await page.locator('main table').count() === 0);

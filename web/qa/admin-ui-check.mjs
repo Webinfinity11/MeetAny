@@ -4,23 +4,17 @@ import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { adminSession } from './admin-session.mjs';
 const base = process.env.BASE || 'http://localhost:3003';
-const ledger = JSON.parse(fs.readFileSync(new URL('../../DEMO-ACCOUNTS.local.md', import.meta.url), 'utf8').match(/```json\n([\s\S]*?)\n```/)[1]);
-const account = ledger.accounts.owner_admin;
-const out = path.resolve('qa/shots/admin-2026-09-29');
+const out = path.resolve('qa/shots/final-2026-09-29/admin');
 fs.mkdirSync(out, { recursive: true });
 const browser = await chromium.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
 const errors = [], results = [];
 let stage = 'login';
 try {
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const { page } = await adminSession(browser, 'owner_admin');
   page.on('pageerror', e => errors.push(e.message.slice(0, 200)));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text().slice(0, 200)); });
-  await page.goto(`${base}/account/`);
-  await page.locator('#login-email').fill(account.email);
-  await page.locator('#login-password').fill(account.password);
-  await page.locator('form button[type="submit"]').click();
-  await page.locator('#login-email').waitFor({ state: 'hidden', timeout: 90000 });
   const settle = async () => {
     await page.locator('main .ma-stat').first().waitFor({ timeout: 90000 });
     await page.waitForFunction(() => !document.querySelector('main')?.innerText.includes('იტვირთება…'), null, { timeout: 60000 });
@@ -36,8 +30,8 @@ try {
       assert.equal(response.status(), 200, `${method} response`);
       const data = await response.json();
       await settle();
-      assert.equal(await page.locator('nav.ma-tabs a').count(), 5);
-      assert.equal(await page.locator(`nav.ma-tabs a[href="/admin/?tab=${tab}"][aria-current="page"]`).count(), 1);
+      assert.equal(await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a').count(), 5);
+      assert.equal(await page.locator(`nav[aria-label="ადმინისტრირების განყოფილებები"] a[href="/admin/?tab=${tab}"][aria-current="page"]`).count(), 1);
       assert(!(await page.locator('main').innerText()).includes('საჭიროა ბაზის განახლება'));
       if (tab === 'offers' || tab === 'audit') {
         assert(data.items.length > 0, `${tab} live rows required`);
@@ -51,8 +45,8 @@ try {
       await page.addStyleTag({ content: 'nextjs-portal{display:none!important}' });
       await page.screenshot({ path: path.join(out, `v2-${tab}-${width}.png`), fullPage: true });
       results.push({ tab, width,
-        current: await page.locator('nav.ma-tabs a[aria-current="page"]').allTextContents(),
-        tabs: await page.locator('nav.ma-tabs a').count(),
+        current: await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a[aria-current="page"]').allTextContents(),
+        tabs: await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a').count(),
         kpis: await page.locator('main .ma-stat').count(),
         rows: await page.locator('main tbody tr').count(),
         overflow: await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth)) });
