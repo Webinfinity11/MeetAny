@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 import { categories } from '../app/lib/categories-data.js';
 process.env.QA_ORIGIN = process.env.BASE || 'http://localhost:3003';
 const { assert, guard, root, origin, safe, credentials, rpc, db, go, query, requestPath } = await import('./e2e/lib.mjs');
-guard(); assert.equal(new URL(origin).port, '3003');
+guard(); assert(['3001', '3002', '3003', '3004'].includes(new URL(origin).port), 'მხოლოდ ლოკალური პორტები 3001–3004');
 const phase = process.argv[2] || 'before';
 assert(['before', 'after', 'idle'].includes(phase));
 const keepSample = process.argv.includes('--sample');
