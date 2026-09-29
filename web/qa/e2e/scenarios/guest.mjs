@@ -80,7 +80,7 @@ export default async function(t) {
       assert(item.recorded && item.id, 'ახალი contact_event არ დამატებულა (შესაძლოა წუთობრივი dedupe)');
       assert(events.items.some(e => e.id === item.id && e.target_id === id));
     }
-    const map = p.getByRole('link', { name: /მიმართულება/ });
+    const map = p.getByRole('link', { name: /მიმართულება|რუკაზე ნახვა/ });
     const href = await map.getAttribute('href'); assert(/https:\/\/(www\.)?google\.com\/maps/.test(href));
     return { contactEvents: [reveal.id, event.id], maps: href };
   }, p);
