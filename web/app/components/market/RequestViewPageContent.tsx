@@ -118,7 +118,9 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const [chooseError, setChooseError] = useState<string | null>(null);
   const [confirmKind, setConfirmKind] = useState<"close" | "delete" | "withdraw" | null>(null);
   const [now, setNow] = useState(0);
-  useEffect(() => { const timer = window.setTimeout(() => setNow(Date.now()), 0); return () => window.clearTimeout(timer); }, []);
+  // Share links need the page origin, which only exists in the browser; set after hydration.
+  const [origin, setOrigin] = useState("");
+  useEffect(() => { const timer = window.setTimeout(() => { setNow(Date.now()); setOrigin(window.location.origin); }, 0); return () => window.clearTimeout(timer); }, []);
   // Mark offers received since this author last visited the request.
   const [seen, setSeen] = useState<{id: string; at: string | null} | null>(null);
   const meId = store?.currentUser()?.id;
@@ -200,7 +202,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   // The deadline lives in the facts and the aside; the meta says what, where and when it was posted.
   const posted = postedLabel(r.createdAt, now);
   const stateTone = state === "open" ? (daysLeft <= 3 ? "urgent" : "open") : state === "chosen" ? "chosen" : "closed";
-  const shareUrl = typeof window === "undefined" ? "" : `${window.location.origin}/requests/view/?id=${encodeURIComponent(r.id)}`;
+  const shareUrl = origin ? `${origin}/requests/view/?id=${encodeURIComponent(r.id)}` : "";
   async function action(kind: "extend" | "close" | "delete" | "withdraw") {
     if (!store || actionPending) return;
     setActionPending(true); setActionError("");
