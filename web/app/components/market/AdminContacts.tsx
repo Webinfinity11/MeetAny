@@ -1,5 +1,4 @@
 "use client";
-import { CustomSelect } from "../ui/CustomSelect";
 import { AdminState } from "./AdminState";
 import { ListSkeleton } from "./Skeletons";
 
@@ -21,9 +20,9 @@ export function AdminContacts({ store, kind, target, period, cursor, onChange, o
   return <section className={styles.contacts} aria-label="კონტაქტების აღრიცხვა">
     <p className={styles.note}>ნახვა — ნომრის გამოჩენა; დარეკვა — ტელეფონის ბმულზე დაჭერა და არა დასრულებული საუბარი. განმეორებითი მოქმედებები წუთის განმავლობაში არ ითვლება; ანონიმური ვიზიტორები საერთო ჯგუფად აღირიცხება.</p>
     <div className={styles.filters} role="search" aria-label="კონტაქტების ფილტრები">
-      <div><label htmlFor="contact-kind">მოქმედება</label><CustomSelect id="contact-kind" className="ma-select" value={kind} onChange={e => onChange("kind", e.target.value)}><option value="">ყველა მოქმედება</option><option value="reveal">ნომრის ნახვა</option><option value="call">დარეკვა</option></CustomSelect></div>
-      <div><label htmlFor="contact-target">სამიზნე</label><CustomSelect id="contact-target" className="ma-select" value={target} onChange={e => onChange("target", e.target.value)}><option value="">ყველა სამიზნე</option><option value="company">კომპანია</option><option value="request">მოთხოვნა</option></CustomSelect></div>
-      <div><label htmlFor="contact-period">პერიოდი</label><CustomSelect id="contact-period" className="ma-select" value={period} onChange={e => onChange("period", e.target.value)}><option value="day">დღეს</option><option value="week">7 დღე</option><option value="month">30 დღე</option></CustomSelect></div>
+      <div><label htmlFor="contact-kind">მოქმედება</label><select id="contact-kind" className="ma-select" value={kind} onChange={e => onChange("kind", e.target.value)}><option value="">ყველა მოქმედება</option><option value="reveal">ნომრის ნახვა</option><option value="call">დარეკვა</option></select></div>
+      <div><label htmlFor="contact-target">სამიზნე</label><select id="contact-target" className="ma-select" value={target} onChange={e => onChange("target", e.target.value)}><option value="">ყველა სამიზნე</option><option value="company">კომპანია</option><option value="request">მოთხოვნა</option></select></div>
+      <div><label htmlFor="contact-period">პერიოდი</label><select id="contact-period" className="ma-select" value={period} onChange={e => onChange("period", e.target.value)}><option value="day">დღეს</option><option value="week">7 დღე</option><option value="month">30 დღე</option></select></div>
     </div>
     {hasFilters ? <button type="button" className={`ma-btn ma-btn--secondary ${styles.clear}`} onClick={onClear}>ფილტრების გასუფთავება</button> : null}
     {data.loading ? <ListSkeleton compact kind="records" label="კონტაქტები იტვირთება…" /> : data.error ? <AdminState error title="კონტაქტები ვერ ჩაიტვირთა" text={data.error} onRetry={data.reload} onFirst={cursor ? () => onChange("cursor", "") : undefined} /> : data.stats ? <>
