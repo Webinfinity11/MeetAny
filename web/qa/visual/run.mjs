@@ -52,7 +52,7 @@ const appBaselineHead = execFileSync('git', ['log', '-1', '--format=%H', '--', '
 const manifest = { ...previous, head, appBaselineHead, chrome: browser.version(), origin, viewports, masks, routes, captures: only ? { ...previous?.captures } : {} };
 async function login(p, role) {
   await go(p, origin, '/account/');
-  await p.locator('#login-email').fill(`demo-${role}@meetany.ge`);
+  await p.locator('#login-email').fill(ledger.accounts[role].email || `demo-${role}@meetany.ge`);
   await p.locator('#login-password').fill(ledger.accounts[role].password);
   await p.locator('form button[type="submit"]').click();
   await p.locator('#login-email').waitFor({ state: 'detached', timeout: 60000 });
@@ -105,7 +105,7 @@ try {
       routes.chatRequest = `/requests/view/?id=${state.chat.request_id}`;
     }
     for (const def of selected.filter(def => def.role === role)) {
-      if (role === 'admin' && !routes[def.id]) {
+      if (role === 'owner_admin' && !routes[def.id]) {
         await p.setViewportSize(viewports[1]);
         await go(p, origin, def.route);
         // Use real cursor pagination, never alter row data or shrink/crop the screenshot.

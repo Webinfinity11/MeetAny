@@ -33,5 +33,5 @@ export const pages = [
   page('company-profile', 'supply', '/account/?tab=profile', null, '#profile-phone'),
   page('company-offer', 'supply', 'offerRequest', 'offer', '.request-detail-facts'),
   page('company-chat', 'supply', 'chatRequest', 'chat', '.request-detail-facts'),
-  ...['requests', 'users', 'audit', 'contacts'].map(tab => page(`admin-${tab}`, 'admin', `/admin/?tab=${tab}${tab === 'requests' ? '&q=' + encodeURIComponent('სასტუმრო') : tab === 'users' ? '&role=client&q=demo-hotel%40meetany.ge' : tab === 'contacts' ? '&period=day&kind=call' : ''}`, null, '.ma-table')),
+  ...['requests', 'users', 'audit', 'contacts'].map(tab => page(`admin-${tab}`, 'owner_admin', `/admin/?tab=${tab}${tab === 'requests' ? '&q=' + encodeURIComponent('სასტუმრო') : tab === 'users' ? '&role=client&q=demo-hotel%40meetany.ge' : tab === 'contacts' ? '&period=day&kind=call' : ''}`, null, '.ma-table')),
 ];
