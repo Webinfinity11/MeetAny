@@ -126,20 +126,16 @@ try {
   profilesBefore=await query('select * from public.profiles where id=any($1::uuid[]) order by id',[profileIds]);
   const profile=(await rpc(company,'my_profile'))[0];categoryId=profile.industry;assert(categories[categoryId],'პროფილის კატეგორია აპში არ არსებობს');assert.equal(profile.city,'tbilisi');
   prefs=await rpc(company,'request_alert_preferences');report.originalAlertPreferences=prefs;
-  // Exercise existing opt-in in the UI; restore in finally. No profile changes.
+  // The existing/default preferences must already be enabled; never activate them here.
   await go(company,'/account/?tab=notifications');
   const settings=company.getByRole('form',{name:'ახალი მოთხოვნების შეტყობინებები'});
-  if(!prefs.enabled) {
-    await settings.getByLabel('ახალ მოთხოვნებზე შემატყობინე',{exact:true}).check();
-    if(phase==='after') {
-      assert(await settings.getByLabel(categories[categoryId],{exact:true}).isChecked(),'პროფილის მიმართულება წინასწარ არ შეივსო');
-      assert(await settings.getByLabel('თბილისი',{exact:true}).isChecked(),'პროფილის ქალაქი წინასწარ არ შეივსო');
-    }
-    await settings.getByLabel(categories[categoryId],{exact:true}).check();
-    await settings.getByLabel('თბილისი',{exact:true}).check();
-    await settings.getByRole('button',{name:'პარამეტრების შენახვა',exact:true}).click();
-    await settings.getByText('შენახულია — ახალ შესაბამის მოთხოვნებზე შეგატყობინებთ.',{exact:true}).waitFor();
-  }
+  await check('შეტყობინებები უკვე ჩართულია — ჩართვის გარეშე',async()=>{
+    assert.equal(prefs.enabled,true);
+    assert.deepEqual(prefs.categories,[categoryId]);
+    assert.deepEqual([...prefs.cities].sort(),['rustavi','tbilisi']);
+    assert.equal(prefs.emailMode,'off');
+    assert(await settings.getByLabel('ახალ მოთხოვნებზე შემატყობინე',{exact:true}).isChecked());
+  });
   report.activeAlertPreferences=await rpc(company,'request_alert_preferences');
   for(const width of mobileOnly ? [390] : [1440,390]) {
     console.log(`გავლა ${width}`);
