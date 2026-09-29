@@ -7,7 +7,7 @@ select t.signup('alert_company','alert-company@example.test','{"role":"company",
 select t.as_user('alert_owner');
 select t.throws($$select public.request_alert_preferences()$$,'MA201','A only companies subscribe');
 select t.as_user('alert_company');
-select t.ok(not (public.request_alert_preferences()->>'enabled')::boolean,'A defaults off');
+select t.ok(public.request_alert_preferences()='{"enabled":true,"categories":["furniture"],"cities":["tbilisi"],"emailMode":"off"}'::jsonb,'A profile defaults on');
 select t.throws($$select public.set_request_alert_preferences(true,'{}','{tbilisi}')$$,'22023','A category required');
 select t.throws($$select public.set_request_alert_preferences(true,'{bad}','{tbilisi}')$$,'22023','A unknown category denied');
 select t.throws($$select public.set_request_alert_preferences(true,'{furniture}','{NULL}')$$,'22023','A null city denied');
@@ -68,7 +68,7 @@ select t.ok((select count(*)=1 from meetany_private.request_alert_emails where s
 select t.ok(not meetany_private.finish_request_alert_email((select (j->>'id')::uuid from t.alert_jobs),(select (j->>'lease')::uuid from t.alert_jobs),true),'A optout invalidates old lease');
 update public.profiles set blocked=true where id=t.uid('alert_company');
 insert into public.requests(owner_id,title,body,category,city) values(t.uid('alert_owner'),'Blocked company request','Detailed blocked company request','furniture','tbilisi');
-select t.ok(not exists(select 1 from meetany_private.notifications n join public.requests r on r.id=n.request_id where r.title='Blocked company request'),'A blocked company excluded');
+select t.ok(not exists(select 1 from meetany_private.notifications n join public.requests r on r.id=n.request_id where r.title='Blocked company request' and n.user_id=t.uid('alert_company')),'A blocked company excluded');
 select t.ok(meetany_private.claim_request_alert_email('test@example.test','https://example.test') is null,'A blocked company receives no email');
 update public.profiles set blocked=false where id=t.uid('alert_company');
 insert into public.requests(owner_id,title,body,category,city,hidden) values(t.uid('alert_owner'),'Hidden request fixture','Detailed hidden request fixture','furniture','tbilisi',true);
@@ -89,6 +89,40 @@ select t.throws($$select public.set_request_alert_preferences(true,'{furniture}'
 select t.as_super();
 delete from public.requests where id=t.get('alert_national');
 select t.ok(not exists(select 1 from meetany_private.notifications where request_id=t.get('alert_national')),'A deletion cascades');
+-- Profile-derived defaults without a saved preference row.
+select t.signup('default_company','default-company@example.test','{"role":"company","name":"Default Supplier","company":"Default Company","industry":"freight","phone":"+995 591 971 003","city":"tbilisi"}');
+select t.as_super();
+insert into public.requests(owner_id,title,body,category,city) values
+(t.uid('alert_owner'),'Default match','Detailed default matching request','freight','tbilisi'),
+(t.uid('alert_owner'),'Default other city','Detailed default different city','freight','batumi'),
+(t.uid('alert_owner'),'Default other category','Detailed default other category','food_fresh','tbilisi'),
+(t.uid('default_company'),'Default self','Detailed default own request','freight','tbilisi');
+select t.ok((select count(*)=1 from meetany_private.notifications where user_id=t.uid('default_company')),'A missing row matches only category and city, excludes self');
+select t.ok(not exists(select 1 from meetany_private.request_alert_emails where user_id=t.uid('default_company')),'A missing row creates zero email jobs');
+update public.profiles set blocked=true where id=t.uid('default_company');
+insert into public.requests(owner_id,title,body,category,city) values(t.uid('alert_owner'),'Default blocked','Detailed default blocked request','freight','tbilisi');
+select t.ok((select count(*)=1 from meetany_private.notifications where user_id=t.uid('default_company')),'A missing row blocked company excluded');
+update public.profiles set blocked=false,service_cities='{georgia,tbilisi}' where id=t.uid('default_company');
+select t.as_user('default_company');
+select t.ok(public.request_alert_preferences()->'cities'='["georgia"]'::jsonb,'A default georgia normalized');
+select public.set_request_alert_preferences(false,'{}','{}');
+select t.ok(not (public.request_alert_preferences()->>'enabled')::boolean,'A empty explicit optout accepted');
+select t.as_super();
+insert into public.requests(owner_id,title,body,category,city) values(t.uid('alert_owner'),'Default opted out','Detailed default opted out request','freight','tbilisi');
+select t.ok((select count(*)=1 from meetany_private.notifications where user_id=t.uid('default_company')),'A saved optout respected');
+-- Simulate the pre-migration marker and both legacy preference shapes locally.
+delete from meetany_private.settings where key='request_alerts_default_on';
+update meetany_private.request_alert_preferences set enabled=false where user_id=t.uid('alert_company');
+\ir ../migrations/20260929-request-alerts-default-on.sql
+select t.ok((select enabled and email_mode='daily' from meetany_private.request_alert_preferences where user_id=t.uid('alert_company')),'A legacy nonempty row enabled and email mode preserved');
+select t.ok(not exists(select 1 from meetany_private.request_alert_preferences where user_id=t.uid('default_company')),'A legacy empty row removed');
+select t.as_user('default_company');
+select public.set_request_alert_preferences(false,'{}','{}');
+select t.as_super();
+\ir ../migrations/20260929-request-alerts-default-on.sql
+select t.ok((select not enabled from meetany_private.request_alert_preferences where user_id=t.uid('default_company')),'A migration rerun preserves new optout');
+select t.ok((select not enabled from meetany_private.default_request_alert_preferences((select p from public.profiles p where id=t.uid('alert_owner')))),'A client defaults disabled');
+select t.ok((select not enabled from meetany_private.default_request_alert_preferences(jsonb_populate_record(null::public.profiles,'{"role":"company","city":"tbilisi"}'::jsonb))),'A missing industry disables defaults');
 \o
 \pset tuples_only on
 \pset format unaligned
