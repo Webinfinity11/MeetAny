@@ -1,4 +1,5 @@
 "use client";
+import { CustomSelect } from "./CustomSelect";
 import { createContext, useContext, useId, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes, type ReactNode } from "react";
 const FieldContext = createContext<{ id: string; describedBy?: string; invalid: boolean; required?: boolean } | null>(null);
 export type FieldProps = { id?: string; label: ReactNode; hint?: ReactNode; error?: ReactNode; required?: boolean; children: ReactNode; className?: string };
@@ -15,7 +16,7 @@ function useControl(props: { id?: string; required?: boolean; "aria-invalid"?: I
 }
 /** Native input; inherits Field's required, invalid and description state. */
 export function Input({ className = "", ...props }: InputHTMLAttributes<HTMLInputElement>) { const aria = useControl(props); return <input {...props} {...aria} className={`ma-input ${className}`.trim()} />; }
-/** Native select; inherits Field's required, invalid and description state. */
-export function Select({ className = "", ...props }: SelectHTMLAttributes<HTMLSelectElement>) { const aria = useControl(props); return <select {...props} {...aria} className={`ma-select ${className}`.trim()} />; }
+/** Custom select; inherits Field's required, invalid and description state. */
+export function Select({ className = "", ...props }: SelectHTMLAttributes<HTMLSelectElement>) { const aria = useControl(props); return <CustomSelect {...props} {...aria} className={`ma-select ${className}`.trim()} />; }
 /** Native multiline control; inherits Field's required, invalid and description state. */
 export function Textarea({ className = "", ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) { const aria = useControl(props); return <textarea {...props} {...aria} className={`ma-textarea ${className}`.trim()} />; }

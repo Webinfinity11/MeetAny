@@ -35,7 +35,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
       <div role="listbox" id={`${id}-suggestions`} aria-label="ძიების შეთავაზებები">
         {suggestions.map((s, index) => <button type="button" role="option" aria-selected={active === index} id={`${id}-option-${index}`} key={s.id} tabIndex={-1}
           className="search-suggestion" onMouseDown={e => e.preventDefault()} onPointerMove={() => setActive(index)} onClick={() => pick(index)}>
-          <CategoryIcon id={s.category} /><span><strong>{s.label}</strong><small>{s.detail}</small></span><Icon name="arrow-right" />
+          <CategoryIcon id={s.category} /><span><strong>{s.label}</strong><small>{s.detail}</small></span>
         </button>)}
       </div>
     </div>

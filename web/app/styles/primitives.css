@@ -249,3 +249,20 @@
 .ma-avatar--40{width:var(--avatar-size-sm);height:var(--avatar-size-sm)}
 .ma-avatar--48{width:var(--avatar-size-md);height:var(--avatar-size-md)}
 .ma-avatar--56{width:var(--avatar-size-lg);height:var(--avatar-size-lg);font-size:var(--fs-section-fixed)}
+
+/* Shared custom selects: the menu enters the top layer, including inside dialogs. */
+.ma-custom-select{text-align:left;font-weight:var(--fw-regular);letter-spacing:normal;font-feature-settings:normal}
+.ma-custom-select__value{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none}
+.ma-custom-select[aria-expanded="true"]{border-color:var(--action);box-shadow:var(--focus-ring)}
+.ma-custom-select__native{position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;margin:-1px!important;border:0!important;clip-path:inset(50%)!important;overflow:hidden!important;white-space:nowrap!important;pointer-events:none!important}
+.ma-select-menu{position:fixed;inset:auto;margin:0;padding:var(--space-1);box-sizing:border-box;max-width:calc(100vw - 24px);overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--white);color:var(--text);box-shadow:var(--shadow-3);font-family:var(--font-sans);font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-regular);text-align:left;letter-spacing:normal;font-feature-settings:normal;z-index:var(--z-menu);scroll-padding:var(--space-1)}
+.ma-select-menu:popover-open{display:grid;gap:var(--space-1)}
+.ma-select-menu__option{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);min-height:var(--tap-min);padding:var(--space-2) var(--space-3);border-radius:var(--radius-control);cursor:pointer;overflow-wrap:anywhere;flex-shrink:0}
+.ma-select-menu__option>span{min-width:0}
+.ma-select-menu__option>svg{width:var(--icon-sm);height:var(--icon-sm);flex:none;visibility:hidden}
+.ma-select-menu__option[data-active]{background:var(--bg-subtle)}
+.ma-select-menu__option[aria-selected="true"]{color:var(--selected-text);background:var(--selected-bg);font-weight:var(--fw-medium)}
+.ma-select-menu__option[aria-selected="true"]>svg{visibility:visible}
+.ma-select-menu__option[aria-selected="true"][data-active]{background:var(--blue-100)}
+.ma-select-menu__option[aria-disabled="true"]{color:var(--text-disabled);cursor:not-allowed}
+@media(forced-colors:active){.ma-select-menu__option[data-active]{outline:1px solid Highlight}.ma-select-menu__option[aria-selected="true"]{color:Highlight}}
