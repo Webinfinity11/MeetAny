@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NotificationBell } from "./market/EngagementPanels";
@@ -20,16 +20,31 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [pending, setPending] = useState(false);
-  const links = me ? [
-    ...(me.role === "admin" ? [["shield-check", "ადმინი", "/admin/"]] : []),
-    ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
-    ...(me.role === "company" ? [["send", "ჩემი შეთავაზებები", "/account/?tab=offers"], ["building-2", "საჯარო პროფილი", `/companies/view/?id=${me.id}`]] : []),
-    ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-    ["bell", "შეტყობინებები", "/account/?tab=notifications"],
-    ["message-square", "მიმოწერები", "/account/?tab=messages"],
-    ["user-round", "პროფილი", "/account/?tab=profile"],
-    ["plus", "მოთხოვნის დამატება", "/requests/new/"],
-  ] : [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]];
+  const isAdmin = me?.role === "admin";
+  const accountLabel = isAdmin ? "ადმინი" : me?.role === "company" ? "ჩემი კომპანია" : "ჩემი ანგარიში";
+  const focusEdge = useRef<"first" | "last" | null>(null);
+  const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]]
+    : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
+    : me.role === "company" ? [
+      ["send", "ჩემი შეთავაზებები", "/account/?tab=offers"],
+      ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
+      ["message-square", "მიმოწერები", "/account/?tab=messages"],
+      ["bell", "შეტყობინებები", "/account/?tab=notifications"],
+      ["building-2", "კომპანიის პროფილი", "/account/?tab=profile"],
+      ["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`],
+    ] : [
+      ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
+      ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
+      ["message-square", "მიმოწერები", "/account/?tab=messages"],
+      ["bell", "შეტყობინებები", "/account/?tab=notifications"],
+      ["user-round", "პროფილი", "/account/?tab=profile"],
+    ];
+  useLayoutEffect(() => {
+    if (!accountOpen || !focusEdge.current) return;
+    const items = dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+    if (items?.length) items[focusEdge.current === "last" ? items.length - 1 : 0].focus();
+    focusEdge.current = null;
+  }, [accountOpen]);
   useEffect(() => {
     const close = (e: PointerEvent) => { if (!dropdown.current?.contains(e.target as Node)) setAccountOpen(false); };
     document.addEventListener("pointerdown", close);
@@ -46,27 +61,30 @@ export function Header() {
     finally { setPending(false); }
   }
   const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><img className="ma-header__symbol" src="/assets/meetany-symbol-transparent.png" alt="" width={1496} height={1051}/><img className="ma-header__wordmark" src="/assets/meetany-wordmark.png" alt="MeetAny" width={683} height={171}/></Link>;
-  const nav = (cls: string) => [["requests", "მოთხოვნები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/#how"]].map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(`/${id}/`) ? "page" : undefined}>{title}</Link>);
+  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["companies", "კომპანიები", "/companies/"], ["requests", "მოთხოვნები", "/requests/"], ["how", "როგორ მუშაობს", "/#how"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(`/${id}/`) ? "page" : undefined}>{title}</Link>);
   const add = <Link className="ma-btn ma-btn--primary ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Link>;
   return <>
     <NavigationProgress />
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
-        <NotificationBell/>
-        <ChatUnreadLink/>
-        {!me ? <Link className="ma-btn ma-btn--ghost ma-header__login" href="/account/">შესვლა</Link> : null}{add}
+        {me && !isAdmin ? <div className="ma-header__updates"><NotificationBell/><ChatUnreadLink/></div> : null}
+        {!ready ? <span className="ma-header__session-placeholder" aria-hidden="true" /> : !me ? <Link className="ma-btn ma-btn--ghost ma-header__login" href="/account/">შესვლა</Link> : null}{ready && !isAdmin ? add : null}
         {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
-          if (e.key === "Escape") {setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
+          if (e.key === "Escape") {e.preventDefault(); e.stopPropagation(); setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
-            e.preventDefault(); setAccountOpen(true);
-            requestAnimationFrame(() => {const items = Array.from(dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') || []); const index = items.indexOf(document.activeElement as HTMLElement); const next = e.key === "Home" ? 0 : e.key === "End" ? items.length - 1 : (index + (e.key === "ArrowUp" ? -1 : 1) + items.length) % items.length; items[next]?.focus();});
+            e.preventDefault();
+            if (!accountOpen) { focusEdge.current = e.key === "ArrowUp" || e.key === "End" ? "last" : "first"; setAccountOpen(true); return; }
+            const items = Array.from(dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') || []);
+            const index = items.indexOf(document.activeElement as HTMLElement);
+            const next = e.key === "Home" ? 0 : e.key === "End" ? items.length - 1 : (index + (e.key === "ArrowUp" ? -1 : 1) + items.length) % items.length;
+            items[next]?.focus();
           }
         }}>
-          <button className="ma-menu__trigger" aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}><Icon name="user-round"/><span>ჩემი ანგარიში</span><Icon name="chevron-down"/></button>
+          <button className="ma-menu__trigger" aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}><Icon name={isAdmin ? "shield-check" : me.role === "company" ? "building-2" : "user-round"}/><span>{accountLabel}</span><Icon name="chevron-down"/></button>
           <div className="ma-menu__list" id="ma-account-menu" role="menu" hidden={!accountOpen}>
             {links.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
-            <button className="ma-menu__item ma-menu__item--danger" role="menuitem" disabled={pending} onClick={logout}>გასვლა</button>
+            <button className="ma-menu__item ma-menu__item--danger" role="menuitem" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button>
           </div>
         </div> : null}
       </div>
@@ -75,8 +93,8 @@ export function Header() {
     <dialog ref={mobile} id="ma-mnav" className="ma-mnav" aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
       <div className="ma-mnav__head">{brand}<button className="ma-mnav__close" aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
       <div className="ma-mnav__body"><nav className="ma-mnav__group" aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
-        <div className="ma-mnav__group"><span className="ma-eyebrow">{me ? "ჩემი ანგარიში" : "ანგარიში"}</span>{links.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}{me ? <button className="ma-mnav__link" disabled={pending} onClick={logout}>გასვლა</button> : null}</div>
-      </div><div className="ma-mnav__foot">{add}</div>
+        <div className="ma-mnav__group"><span className="ma-eyebrow">{me ? accountLabel : "ანგარიში"}</span>{links.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}{me ? <button className="ma-mnav__link" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button> : null}</div>
+      </div>{!isAdmin ? <div className="ma-mnav__foot">{add}</div> : null}
     </dialog>
   </>;
 }
