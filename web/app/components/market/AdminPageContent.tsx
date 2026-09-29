@@ -9,8 +9,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
-import { useAdminData } from "../../lib/use-admin-data";
+import { adminErrorMessage, useAdminData } from "../../lib/use-admin-data";
 import { AdminAuditTable, type AdminAuditEvent } from "./AdminAuditTable";
+import { AdminState } from "./AdminState";
+import { AdminOffersTable, type AdminOffer } from "./AdminOffersTable";
 import { AdminContacts } from "./AdminContacts";
 import { PageBand } from "./PageBand";
 import { AdminFilters } from "./AdminFilters";
@@ -20,7 +22,7 @@ import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
 
-type PendingAction = { kind: "requests" | "users"; action: string; id: string; label: string } | null;
+type PendingAction = { kind: "requests" | "users" | "offers"; action: string; id: string; label: string } | null;
 
 export function AdminPageContent() {
   const { store, ready, available } = useMarketStore();
@@ -36,7 +38,7 @@ export function AdminPageContent() {
     router.replace(`/admin/?${next}`, { scroll: false });
   }
   const selectedTab = searchParams.get("tab");
-  const tab = selectedTab === "users" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "requests";
+  const tab = selectedTab === "offers" || selectedTab === "users" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "requests";
   const cursor = searchParams.get("cursor") || "";
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [busy, setBusy] = useState(false);
@@ -56,6 +58,7 @@ export function AdminPageContent() {
       createdAt: string;
       ownerId: string;
       hidden: boolean;
+      hiddenReason?: string;
       state?: string;
       ownerName?: string;
       ownerCompany?: string;
@@ -72,6 +75,7 @@ export function AdminPageContent() {
       email: string;
       verified: boolean;
       blocked: boolean;
+      blockedReason?: string;
     }[];
     return { stats, requests, users };
   }, [store, me]);
@@ -88,7 +92,7 @@ export function AdminPageContent() {
           <h2 className="ma-empty__title">ადმინ-პანელი</h2>
           <p className="ma-empty__text">ეს გვერდი ხელმისაწვდომია მხოლოდ ადმინისტრატორისთვის.</p>
           {!me ? (
-            <Link className="ma-btn ma-btn--primary" href="/account/">
+            <Link className="ma-btn ma-btn--primary" href="/account/?next=%2Fadmin%2F">
               შესვლა
             </Link>
           ) : null}
@@ -98,6 +102,10 @@ export function AdminPageContent() {
   }
 
   const { stats, requests, users } = data!;
+  // v2 needs both the migrated database and the store methods that call it.
+  const v2 = Number(stats.adminApiVersion) >= 2 && typeof store?.adminSearchOffers === "function";
+  const hasFilters = tab !== "audit" && !!(query || status || role);
+  const clearFilters = () => router.replace(`/admin/?tab=${tab}`, { scroll: false });
 
   const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   const matches = (value: string) => terms.every(term => value.toLocaleLowerCase().includes(term));
@@ -124,7 +132,9 @@ export function AdminPageContent() {
       if (pendingAction.kind === "requests") {
         if (pendingAction.action === "hide") await store.adminSetHidden(pendingAction.id, true, reason);
         else if (pendingAction.action === "unhide") await store.adminSetHidden(pendingAction.id, false);
-        else if (pendingAction.action === "delete") await store.adminDeleteRequest(pendingAction.id);
+        else if (pendingAction.action === "delete") await (v2 ? store.adminDeleteRequest(pendingAction.id, reason) : store.adminDeleteRequest(pendingAction.id));
+      } else if (pendingAction.kind === "offers") {
+        await store.adminDeleteOffer(pendingAction.id, reason);
       } else {
         if (pendingAction.action === "verify") await store.adminSetVerified(pendingAction.id, true);
         else if (pendingAction.action === "unverify") await store.adminSetVerified(pendingAction.id, false);
@@ -135,7 +145,7 @@ export function AdminPageContent() {
       admin.reload();
       toast("ცვლილება შენახულია.");
     } catch (err) {
-      setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
+      setError(adminErrorMessage(err, "მოქმედება ვერ შესრულდა. სცადე ხელახლა."));
     } finally {
       setBusy(false);
     }
@@ -143,7 +153,7 @@ export function AdminPageContent() {
 
   return (
     <div className={`ma-page ${styles.workspace}`}>
-      <PageBand eyebrow="MeetAny · ადმინისტრირება" title="პლატფორმის მართვა" />
+      <PageBand title="პლატფორმის მართვა" />
       <div className="ma-proto-kpis">
         {[
           ["users", "მომხმარებლები (ადმინების გარეშე)", stats.users],
@@ -159,28 +169,36 @@ export function AdminPageContent() {
           </div>
         ))}
       </div>
-      <nav className="ma-tabs" aria-label="ადმინისტრირების განყოფილებები">
+      <nav className={`ma-tabs ${styles.tabs}`} aria-label="ადმინისტრირების განყოფილებები">
         <Link className="ma-tab" href="/admin/?tab=requests" aria-current={tab === "requests" ? "page" : undefined}>
           მოთხოვნები
         </Link>
         <Link className="ma-tab" href="/admin/?tab=users" aria-current={tab === "users" ? "page" : undefined}>
           მომხმარებლები
         </Link>
+        {v2 || tab === "offers" ? <Link className="ma-tab" href="/admin/?tab=offers" aria-current={tab === "offers" ? "page" : undefined}>შეთავაზებები</Link> : null}
         <Link className="ma-tab" href="/admin/?tab=audit" aria-current={tab === "audit" ? "page" : undefined}>მოქმედებების ჟურნალი</Link>
         <Link className="ma-tab" href="/admin/?tab=contacts" aria-current={tab === "contacts" ? "page" : undefined}>კონტაქტები</Link>
       </nav>
 
-      {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} /> : <>
-      {tab !== "audit" ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
-      {admin.mode === "legacy" && tab !== "audit" ? <>
+      {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
+      {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
+      {hasFilters && (tab !== "offers" || v2) ? <button type="button" className={`ma-btn ma-btn--secondary ${styles.clear}`} onClick={clearFilters}>ფილტრების გასუფთავება</button> : null}
+      {admin.mode === "legacy" && (tab === "requests" || tab === "users") ? <>
         <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი{adminNote}.</p>
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
       </> : null}
       {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">ამ გვერდზე {admin.page.items.length} ჩანაწერია · ფილტრებით სულ {admin.page.filteredTotal}{adminNote}.</p> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
-      {admin.mode === "error" ? <div role="alert"><p>{admin.error || "ჩანაწერების ჩატვირთვა ვერ მოხერხდა."}</p><button type="button" className="ma-btn ma-btn--secondary" onClick={admin.reload}>ხელახლა ცდა</button>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</button> : null}</div> : null}
-      {tab === "audit" ? admin.mode === "legacy" ? <p className={styles.note}>მოქმედებების ჟურნალისთვის საჭიროა მონაცემთა ბაზის განახლება. წარსული მოქმედებების ისტორია ამ ვერსიაში არ ინახება.</p> : admin.mode === "ready" ? <AdminAuditTable events={(admin.page?.items || []) as unknown as AdminAuditEvent[]} /> : null : null}
-      {canShowRecords && tab === "requests" ? (
+      {admin.mode === "error" ? <AdminState error title="ჩანაწერები ვერ ჩაიტვირთა" text={admin.error || undefined} onRetry={admin.reload} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
+      {((tab === "offers" && !v2) || (tab === "audit" && admin.mode === "legacy")) ? <AdminState title="საჭიროა ბაზის განახლება" text={tab === "offers" ? "შეთავაზებების მოდერაცია ხელმისაწვდომი გახდება ადმინისტრირების API v2-ის ამოქმედების შემდეგ." : "მოქმედებების ჟურნალი ამ ვერსიაში ხელმისაწვდომი არ არის."} /> : null}
+      {canShowRecords && !(tab === "offers" && !v2) && !(tab === "audit" && admin.mode === "legacy") && (admin.mode === "ready" ? !admin.page?.items.length : tab === "requests" ? !filteredRequests.length : !filteredUsers.length) ? <AdminState
+        title={hasFilters ? "ამ ფილტრებით ჩანაწერები ვერ მოიძებნა" : cursor ? "ამ გვერდზე ჩანაწერები აღარ არის" : "ჩანაწერები ჯერ არ არის"}
+        text={hasFilters ? "შეცვალე ძიება ან გაასუფთავე ფილტრები." : "ახალი ჩანაწერები აქ გამოჩნდება."}
+        onClear={hasFilters ? clearFilters : undefined} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
+      {tab === "audit" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminAuditTable events={admin.page.items as unknown as AdminAuditEvent[]} /> : null}
+      {tab === "offers" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminOffersTable offers={admin.page.items as unknown as AdminOffer[]} onDelete={offer => setPendingAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "კომპანია"} · ${offer.request_title || offer.body.slice(0, 80)}` })} /> : null}
+      {canShowRecords && tab === "requests" && filteredRequests.length > 0 ? (
         <div className="ma-table-wrap">
           <table className="ma-table">
             <caption className="ma-sr-only">მოთხოვნა — მოდერაცია</caption>
@@ -194,7 +212,6 @@ export function AdminPageContent() {
               </tr>
             </thead>
             <tbody>
-              {filteredRequests.length === 0 ? <tr><td colSpan={5}>ამ ფილტრებით მოთხოვნა ვერ მოიძებნა.</td></tr> : null}
               {filteredRequests.map((r) => {
                 const owner = store?.userById(r.ownerId);
                 const state = admin.mode === "ready" ? r.state : store?.requestState(r);
@@ -219,6 +236,7 @@ export function AdminPageContent() {
                       >
                         {r.hidden ? "დამალული" : state === "open" ? "ღია" : state === "chosen" ? "არჩეული" : state === "expired" ? "ვადაგასული" : "დახურული"}
                       </span>
+                      {r.hidden && r.hiddenReason ? <small>მიზეზი: {r.hiddenReason}</small> : null}
                     </td>
                     <td data-label="შეთავაზებები">{count}</td>
                     <td data-label="მოქმედება">
@@ -247,7 +265,7 @@ export function AdminPageContent() {
             </tbody>
           </table>
         </div>
-      ) : canShowRecords && tab === "users" ? (
+      ) : canShowRecords && tab === "users" && filteredUsers.length > 0 ? (
         <div className="ma-table-wrap">
           <table className="ma-table">
             <caption className="ma-sr-only">მომხმარებელი — მოდერაცია</caption>
@@ -261,7 +279,6 @@ export function AdminPageContent() {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.length === 0 ? <tr><td colSpan={5}>ამ ფილტრებით მომხმარებელი ვერ მოიძებნა.</td></tr> : null}
               {filteredUsers.map((u) => (
                 <tr key={u.id}>
                   <td data-label="მომხმარებელი">
@@ -286,6 +303,7 @@ export function AdminPageContent() {
                     ) : (
                       <span className="ma-badge ma-badge--info">აქტიური</span>
                     )}
+                    {u.blocked && u.blockedReason ? <small>მიზეზი: {u.blockedReason}</small> : null}
                   </td>
                   <td data-label="მოქმედება">
                     <div className="ma-proto-tableactions">
@@ -339,12 +357,13 @@ export function AdminPageContent() {
         open={!!pendingAction}
         title={
           pendingAction
-            ? { hide: "მოთხოვნის დამალვა", unhide: "მოთხოვნის გამოჩენა", delete: "მოთხოვნის წაშლა", verify: "დადასტურება", unverify: "დადასტურების მოხსნა", block: "დაბლოკვა", unblock: "განბლოკვა" }[pendingAction.action] || ""
+            ? { hide: "მოთხოვნის დამალვა", unhide: "მოთხოვნის გამოჩენა", delete: "მოთხოვნის წაშლა", deleteOffer: "შეთავაზების წაშლა", verify: "დადასტურება", unverify: "დადასტურების მოხსნა", block: "დაბლოკვა", unblock: "განბლოკვა" }[pendingAction.action] || ""
             : ""
         }
         subject={pendingAction?.label || ""}
         action={pendingAction?.action || ""}
         pending={busy}
+        requireDeleteReason={v2}
         error={error}
         onConfirm={confirm}
         onCancel={() => {

@@ -11,6 +11,15 @@ export type AdminPage = {
   asOf: string;
 };
 
+export function adminErrorMessage(err: unknown, fallback = "ჩანაწერები ვერ ჩაიტვირთა. სცადე ხელახლა.") {
+  const error = err as { code?: string; userMessage?: string };
+  if (error?.code === "MA002") return "ანგარიში დაბლოკილია. ადმინისტრირების მოქმედებები მიუწვდომელია.";
+  if (error?.code === "MA003") return "ადმინისტრატორის უფლება აღარ გაქვს. გადაამოწმე, რომ სწორი ანგარიშით ხარ შესული.";
+  if (error?.code === "MA207") return "არჩეული შეთავაზება არ იშლება. გამოიყენე მოთხოვნის დამალვა ან წაშლა, ან კომპანიის დაბლოკვა.";
+  if (error?.code === "MA304") return "მიუთითე წაშლის მიზეზი — 3–500 სიმბოლო.";
+  return error?.userMessage || fallback;
+}
+
 type Result = { key: string; page: AdminPage | null; error: string | null };
 
 // admin_list_audit returns ids only: name them from the store cache, then by id through the
@@ -37,13 +46,15 @@ async function auditLabels(store: Store, items: Record<string, unknown>[]) {
   return labels;
 }
 export function useAdminData({ store, enabled, tab, query, status, role, cursor }: {
-  store: Store | undefined; enabled: boolean; tab: "requests" | "users" | "audit";
+  store: Store | undefined; enabled: boolean; tab: "requests" | "users" | "offers" | "audit";
   query: string; status: string; role: string; cursor: string;
 }) {
   const [revision, setRevision] = useState(0);
   const [result, setResult] = useState<Result | null>(null);
-  const supported = enabled && Number(store?.stats()?.adminApiVersion) >= 1;
-  const key = JSON.stringify([tab, query, status, role, cursor, revision, store?.dataRevision(), store?.currentUser()?.id]);
+  const version = Number(store?.stats()?.adminApiVersion) || 0;
+  // Offers need the v2 database and the store method that calls it.
+  const supported = enabled && (tab === "offers" ? version >= 2 && typeof store?.adminSearchOffers === "function" : version >= 1);
+  const key = JSON.stringify([tab, query, status, role, cursor, version, revision, store?.dataRevision(), store?.currentUser()?.id]);
   const reload = useCallback(() => setRevision(value => value + 1), []);
   useEffect(() => {
     if (!supported || !store) return;
@@ -56,11 +67,14 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
           : tab === "users" ? store.adminSearchUsers({ ...pagination, p_q: query || null, p_role: role || null,
             p_blocked: status === "blocked" ? true : ["active", "verified"].includes(status) ? false : null,
             p_verified: status === "verified" ? true : null })
+          : tab === "offers" ? store.adminSearchOffers({ ...pagination, p_q: query || null, p_status: status || null })
           : store.adminListAudit(pagination));
-        const labels = tab === "audit" ? await auditLabels(store, raw.items) : null;
+        // v2 audit rows carry names from the server; v1 rows are named here.
+        const named = raw.items.some((r: Record<string, unknown>) => "actor_name" in r);
+        const labels = tab === "audit" && !named ? await auditLabels(store, raw.items) : null;
         const page: AdminPage = { ...raw, items: raw.items.map((r: Record<string, unknown>) => labels ? {
           ...r, actor_name: labels.get(String(r.actor_id)) || null, target_name: labels.get(String(r.target_id)) || null,
-        } : tab === "users" ? {
+        } : tab === "audit" || tab === "offers" ? r : tab === "users" ? {
           ...r, createdAt: r.created_at, blockedReason: r.blocked_reason, verifiedAt: r.verified_at, serviceCities: r.service_cities,
         } : {
           ...r, createdAt: r.created_at, ownerId: r.owner_id, ownerName: r.owner_name, ownerCompany: r.owner_company,
@@ -68,7 +82,7 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
         }) };
         if (!cancelled) setResult({ key, page, error: null });
       } catch (err) {
-        if (!cancelled) setResult({ key, page: null, error: (err as { userMessage?: string }).userMessage || "ჩანაწერები ვერ ჩაიტვირთა. სცადე ხელახლა." });
+        if (!cancelled) setResult({ key, page: null, error: adminErrorMessage(err) });
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
@@ -119,7 +133,7 @@ export function useAdminContacts({ store, kind, target, period, cursor }: {
           return { key, filterKey, page, stats, messageStats, error: null, rows: append ? [...previous.rows, ...page.items] : page.items };
         });
       } catch (err) {
-        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, messageStats: null, error: (err as { userMessage?: string }).userMessage || "კონტაქტების ჩატვირთვა ვერ მოხერხდა." });
+        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, messageStats: null, error: adminErrorMessage(err, "კონტაქტების ჩატვირთვა ვერ მოხერხდა.") });
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };

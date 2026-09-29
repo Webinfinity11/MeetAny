@@ -9,6 +9,7 @@ export function ModerationSheet({
   subject,
   action,
   pending,
+  requireDeleteReason = false,
   error,
   onConfirm,
   onCancel,
@@ -18,18 +19,20 @@ export function ModerationSheet({
   subject: string;
   action: string;
   pending: boolean;
+  requireDeleteReason?: boolean;
   error?: string | null;
   onConfirm: (reason: string) => void;
   onCancel: () => void;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const form = useRef<HTMLFormElement>(null);
-  const needsReason = action === "hide" || action === "block";
-  const destructive = ["hide", "block", "delete", "unverify"].includes(action);
+  const needsReason = action === "hide" || action === "block" || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
+  const destructive = ["hide", "block", "delete", "deleteOffer", "unverify"].includes(action);
   const consequences: Record<string, string> = {
     hide: "მოთხოვნა საჯარო სიიდან დაიმალება. მისი გამოჩენა მოგვიანებით შესაძლებელია.",
     unhide: "მოთხოვნა კვლავ გამოჩნდება საჯაროდ, მისი მიმდინარე სტატუსის შესაბამისად.",
     delete: "მოთხოვნა და მასზე მიღებული ყველა შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. დროებით მოსაშორებლად გამოიყენე დამალვა.",
+    deleteOffer: "შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. მიზეზი მოქმედებების ჟურნალში შეინახება.",
     block: "მომხმარებელი ვეღარ შეასრულებს მოქმედებებს პლატფორმაზე. განბლოკვა მოგვიანებით შესაძლებელია.",
     unblock: "მომხმარებელს პლატფორმაზე მოქმედებების შესრულება კვლავ შეეძლება.",
     verify: "კომპანიის ადმინისტრაციული დადასტურების სტატუსი ჩაირთვება.",
@@ -87,7 +90,7 @@ export function ModerationSheet({
       </div>
       <footer className="ma-sheet__footer">
         <button className={`ma-btn ma-btn--${destructive ? "danger" : "primary"}`} type="submit" disabled={pending}>
-          {pending ? "ინახება…" : action === "delete" ? "სამუდამოდ წაშლა" : "დადასტურება"}
+          {pending ? "ინახება…" : ["delete", "deleteOffer"].includes(action) ? "სამუდამოდ წაშლა" : "დადასტურება"}
         </button>
         <button className="ma-btn ma-btn--secondary" type="button" disabled={pending} onClick={() => ref.current?.close()}>
           გაუქმება
