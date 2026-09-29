@@ -1,3 +1,4 @@
+import { CustomSelect } from "../ui/CustomSelect";
 import { Icon } from "../Icon";
 
 export type ActiveFilterItem = { key: string; label: string };
@@ -64,7 +65,7 @@ export function ResultsBar({
             <label className="ma-field__label" htmlFor="sort">
               დალაგება:
             </label>
-            <select
+            <CustomSelect
               className="ma-select"
               id="sort"
               value={sort.value}
@@ -75,7 +76,7 @@ export function ResultsBar({
                   {o.label}
                 </option>
               ))}
-            </select>
+            </CustomSelect>
           </div>
         ) : null}
         </div>

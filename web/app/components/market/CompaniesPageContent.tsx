@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomSelect } from "../ui/CustomSelect";
 import Link from "next/link";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
@@ -137,20 +138,20 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <label className="ma-field__label" htmlFor={`company-city-${placement}`}>
           მომსახურების ქალაქი
         </label>
-        <select className="ma-select" id={`company-city-${placement}`} value={city} onChange={(e) => setCity(e.target.value)}>
+        <CustomSelect className="ma-select" id={`company-city-${placement}`} value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="">ყველა ქალაქი</option>
           {cityOptions.map((id) => (
             <option key={id} value={id}>
               {cities[id]}
             </option>
           ))}
-        </select>
+        </CustomSelect>
       </div>
       <div className="ma-field filter-section">
         <label className="ma-field__label" htmlFor={`company-type-${placement}`}>საქმიანობის მიმართულება</label>
-        <select className="ma-select" id={`company-type-${placement}`} value={type} onChange={e => filters.set({type: e.target.value})}>
+        <CustomSelect className="ma-select" id={`company-type-${placement}`} value={type} onChange={e => filters.set({type: e.target.value})}>
           <option value="">ყველა მიმართულება</option><option value="suppliers">პროდუქციის მომწოდებლები</option><option value="services">მომსახურების კომპანიები</option><option value="distributors">ლოგისტიკა და დისტრიბუცია</option><option value="partners">თანამშრომლობის მსურველები</option>
-        </select>
+        </CustomSelect>
       </div>
       <fieldset className="filter-section filter-options"><legend>მომსახურების არეალი</legend>
         <label className="ma-check"><input type="checkbox" checked={coverage} onChange={e => filters.set({coverage: e.target.checked ? "national" : ""})} /><span>ემსახურება მთელ საქართველოს</span></label>
@@ -165,8 +166,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   return (
     <div className="ma-page companies-catalog catalog-page">
       <header className="catalog-header">
-        <div className="catalog-heading"><h1 className="ma-h1">კომპანიები</h1><p role="status">{countLabel}</p></div>
-        <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} />
+        <div className="catalog-heading"><span className="catalog-overline">მომწოდებლები და მომსახურება</span><h1 className="ma-h1">მომწოდებლები და<br />მომსახურება.</h1><p className="catalog-description">მოძებნე კომპანია საქმიანობისა და ქალაქის მიხედვით. დეტალების დასაზუსტებლად დაუკავშირდი პირდაპირ.</p></div>
+        <div className="catalog-search-area"><span className="catalog-result-count" role="status">{countLabel}</span>
+        <CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} /><p className="catalog-search-help">გაქვს კონკრეტული საჭიროება? <Link href="/requests/new/">გამოაქვეყნე მოთხოვნა</Link></p></div>
       </header>
       <div className="ma-proto-columns">
         <aside className="ma-proto-sidebar filter-rail" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>

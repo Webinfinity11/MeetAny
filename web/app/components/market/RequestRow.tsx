@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { Icon } from "../Icon";
 import type { RequestTier } from "../../lib/tier-demo";
 import { categories, units } from "../../lib/categories";
 
@@ -9,6 +10,7 @@ export type RequestRowData = {
   isNew?: boolean;
   id: string;
   title: string;
+  body?: string;
   category: string;
   city: string;
   cityLabel: string;
@@ -42,15 +44,10 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
     <article style={entranceIndex != null && entranceIndex < 12 ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entranceIndex != null && entranceIndex < 12 ? "" : undefined} className={`ma-rcard ma-rcard--row request-card${tier ? ` request-card--${tier}` : ""}${r.photo && r.photo !== failedPhoto ? " request-card--photo" : ""}${r.isOwn ? " ma-rcard--mine" : closedLike ? " ma-rcard--closed" : ""}`}>
       <div className="request-card-content">
         {tier === "vip" ? <span className="request-tier-badge request-tier-badge--vip">VIP</span> : null}
+        <div className="request-row-context"><span>{categories[r.category] || r.category}</span>{r.isNew ? <span className="request-card-new">ახალი</span> : null}<span>{r.posted}</span></div>
         <h2 className="ma-rcard__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
-        <p className="request-card-meta">
-          {/* "Top" is plain meta text, first in the line — no label above the title. */}
-          {[tier === "top" ? "ტოპ" : null, categories[r.category] || r.category, r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}
-          {/* Below 768px the offers column folds into the meta line; zero offers says nothing. */}
-          <span className="request-card-meta-status">{r.offerCount > 0 ? <> · <span>{r.offerCount} შეთავაზება</span></> : null}{deadline ? <> · <span className={urgent ? "request-card-meta-urgent" : undefined}>{deadline}</span></> : null}</span>
-          {r.posted ? <> · <span className="request-card-posted">{r.posted}</span></> : null}
-          {r.isNew ? <span className="request-card-new">ახალი</span> : null}
-        </p>
+        {r.body ? <p className="request-row-description">{r.body}</p> : null}
+        <p className="request-card-meta">{[r.cityLabel, r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null, r.ownerName].filter(Boolean).join(" · ")}</p>
       {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card-badges">
         {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
         {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
@@ -60,9 +57,9 @@ export function RequestRow({ r, priority = false, tier, entranceIndex }: { r: Re
         <img src={r.photo} alt="" width={240} height={160} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
       </div> : null}
       <div className="request-card-status">
-        {/* No offers yet leaves the column empty; "new" is said once, in the meta line. */}
-        {r.offerCount > 0 ? <span className="request-card-offers"><strong>{r.offerCount}</strong> <span>შეთავაზება</span></span> : null}
-        {deadline ? <span className={urgent ? "request-card-urgent" : undefined}>{deadline}</span> : null}
+        <span className="request-row-offers"><Icon name="message-square" /><strong>{r.offerCount}</strong> შეთავაზება</span>
+        {deadline ? <span className={`request-row-deadline${urgent ? " request-card-urgent" : ""}`}><Icon name="clock" />{deadline}</span> : null}
+        <Link className="ma-btn ma-btn--secondary request-row-detail" href={href} tabIndex={-1} aria-label={`${r.title} — დეტალების ნახვა`}>დეტალების ნახვა<Icon name="arrow-right" /></Link>
       </div>
     </article>
   );

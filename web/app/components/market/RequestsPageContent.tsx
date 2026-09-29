@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomSelect } from "../ui/CustomSelect";
 import Link from "next/link";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
@@ -9,7 +10,6 @@ import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
-import { requestDemoTier } from "../../lib/tier-demo";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities, currentCategory, groupNames } from "../../lib/categories";
@@ -21,6 +21,7 @@ import { RequestFormSheet } from "./RequestFormSheet";
 type MappedRequest = {
   id: string;
   title: string;
+  body?: string;
   category: string;
   city: string;
   ownerId: string;
@@ -86,6 +87,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   };
   const [formOpen, setFormOpen] = useState(autoOpenNew);
   const formCategory = searchParams.get("category") || "";
+  const formTitle = searchParams.get("title") || "";
+  const formCity = searchParams.get("city") || "";
 
   useEffect(() => {
     if (!autoOpenNew) return;
@@ -143,6 +146,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         isNew: now - Date.parse(r.createdAt) >= 0 && now - Date.parse(r.createdAt) < 86400000,
         id: r.id,
         title: r.title,
+        body: r.body,
         category: r.category,
         city: r.city,
         cityLabel: cities[r.city] || r.city,
@@ -162,17 +166,12 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     });
   }, [sorted, store, now]);
 
-  // Rank only already-filtered rows, retaining the selected sort within each tier.
-  const vipRows = rows.filter(r => requestDemoTier(r.title) === "vip");
-  const topRows = rows.filter(r => requestDemoTier(r.title) === "top");
-  const compactRows = [...vipRows, ...topRows, ...rows.filter(r => !requestDemoTier(r.title))];
-
   const [sheetOpen, setSheetOpen] = useState(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const activeItems = [
     ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: cities[city] || city}] : []),
-    ...(period ? [{key: "period", label: "პერიოდი"}] : []),
+    ...(period ? [{key: "period", label: period === "1" ? "ბოლო 24 საათი" : "ბოლო 7 დღე"}] : []),
     ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
     ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
     ...(urgent ? [{key: "urgent", label: "სასწრაფო"}] : []),
@@ -180,15 +179,22 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   // Desktop shows the choices inline; below 768px the same selects live in the filter sheet with visible labels.
   const choice = (placement: "desktop" | "mobile", kind: "category" | "city") => {
     const id = `request-${kind}-${placement}`, label = kind === "category" ? "კატეგორია" : "ქალაქი";
-    const select = <select className="ma-select" id={id} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
-      <option value="">{placement === "desktop" ? "ყველა" : kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
+    const select = <CustomSelect className="ma-select" id={id} value={kind === "category" ? category : city} onChange={e => (kind === "category" ? setCategory : setCity)(e.target.value)}>
+      <option value="">{kind === "category" ? "ყველა კატეგორია" : "ყველა ქალაქი"}</option>
       {kind === "category" ? categoryOptions(true) : Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
-    </select>;
+    </CustomSelect>;
     // Desktop reads like the sort control: "კატეგორია: ყველა".
     return placement === "desktop" ? <div className="ma-field request-board-choice"><label htmlFor={id}>{label}:</label>{select}</div> : <div className="ma-field"><label className="ma-field__label" htmlFor={id}>{label}</label>{select}</div>;
   };
 
-  const clearFilters = () => filters.set({city: "", category: "", q: "", sort: "", period: "", unanswered: "", photo: "", urgent: "", tab: ""});
+  const clearFilters = () => filters.set({city: "", category: "", period: "", unanswered: "", photo: "", urgent: ""});
+
+  const requestFilters = (placement: "desktop" | "mobile") => <div className="request-filter-fields">
+    {choice(placement, "category")}{choice(placement, "city")}
+    <div className="ma-field"><label className="ma-field__label" htmlFor={`request-period-${placement}`}>გამოქვეყნების დრო</label><CustomSelect className="ma-select" id={`request-period-${placement}`} value={period} onChange={e => filters.set({period:e.target.value})}><option value="">ყველა პერიოდი</option><option value="1">ბოლო 24 საათი</option><option value="7">ბოლო 7 დღე</option></CustomSelect></div>
+    <fieldset className="request-filter-checks"><legend>დამატებით</legend><label className="ma-check"><input type="checkbox" checked={unanswered} onChange={e => filters.set({unanswered:e.target.checked ? "1" : ""})} /><span>ჯერ არ აქვს შეთავაზება</span></label><label className="ma-check"><input type="checkbox" checked={withPhoto} onChange={e => filters.set({photo:e.target.checked ? "1" : ""})} /><span>მხოლოდ ფოტოთი</span></label><label className="ma-check"><input type="checkbox" checked={urgent} onChange={e => filters.set({urgent:e.target.checked ? "1" : ""})} /><span>იწურება 3 დღეში</span></label></fieldset>
+    {activeItems.length ? <button type="button" className="ma-btn ma-btn--secondary catalog-reset" onClick={clearFilters}><Icon name="refresh-cw" />ფილტრების გასუფთავება</button> : null}
+  </div>;
 
   const countLabel = !available
     ? ""
@@ -199,10 +205,14 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   return (
     <div className="ma-page requests-catalog catalog-page request-board">
         <header className="catalog-header">
-        <div className="catalog-heading"><h1 className="ma-h1">მოთხოვნები</h1><p role="status">{countLabel}</p></div>
-        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />
+        <div className="catalog-heading"><span className="catalog-overline">ბიზნესები ეძებენ</span><h1 className="ma-h1">ნახე, რას ეძებენ<br />სხვა ბიზნესები.</h1><p className="catalog-description">შეარჩიე მოთხოვნა შენი საქმიანობის მიხედვით და შესთავაზე პირობები.</p></div>
+        <div className="catalog-search-area"><span className="catalog-result-count" role="status">{countLabel}</span>
+        <CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მოძებნე მოთხოვნა…" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} /><p className="catalog-search-help">მომწოდებელს ეძებ? <Link href="/requests/new/">დაამატე შენი მოთხოვნა</Link></p></div>
         </header>
         {ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost catalog-utility" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებების მართვა</Link> : null}
+        <div className="request-workspace">
+        <aside className="request-filter-sidebar" aria-label="მოთხოვნების ფილტრები"><h2><Icon name="sliders-horizontal" />ფილტრები{activeItems.length ? <span>{activeItems.length}</span> : null}</h2>{requestFilters("desktop")}</aside>
+        <div className="request-workspace-main">
         <ResultsBar
             items={activeItems}
             onRemove={key => filters.set({[key]: ""})}
@@ -211,7 +221,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             tabs={<><nav className="request-board-tabs" aria-label="მოთხოვნების ხედები">
               {tabs.map(item => <Link key={item.id} href={tabHref(item.id)} scroll={false} aria-current={tab === item.id ? "page" : undefined}>{item.label}</Link>)}
             </nav>
-            <div className="request-board-choices">{choice("desktop", "category")}{choice("desktop", "city")}</div>
             </>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
@@ -231,14 +240,15 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                   ? (
                       <div className="ma-empty request-board-empty">
                         <p className="ma-empty__text">{tab === "new" ? "ახალი მოთხოვნა ჯერ არ არის." : "ამ პირობით მოთხოვნა არ არის."}</p>
-                        <button type="button" className="request-board-reset" onClick={clearFilters}>ფილტრების გასუფთავება</button>
+                        <button type="button" className="request-board-reset" onClick={() => filters.set({city: "", category: "", q: "", period: "", unanswered: "", photo: "", urgent: "", tab: ""})}>ყველა მოთხოვნის ნახვა</button>
                       </div>
                     )
                   : <>
-                      {compactRows.map((r, index) => <RequestRow entranceIndex={index} key={r.id} r={r} tier={requestDemoTier(r.title)} priority={index < 4} />)}
+                      {rows.map((r, index) => <RequestRow entranceIndex={index} key={r.id} r={r} priority={index < 4} />)}
                     </>}
           </div>
         </section>
+      </div></div>
       <MobileFilterSheet
         id="filters"
         title="ფილტრები"
@@ -247,9 +257,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         triggerRef={filterButtonRef}
         footer={<button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>{rows.length} მოთხოვნის ჩვენება</button>}
       >
-        <div className="ma-proto-filters">{choice("mobile", "category")}{choice("mobile", "city")}</div>
+        {requestFilters("mobile")}
       </MobileFilterSheet>
-      <RequestFormSheet open={formOpen} initialCategory={formCategory} onClose={() => setFormOpen(false)} />
+      <RequestFormSheet open={formOpen} initialTitle={formTitle} initialCity={formCity} initialCategory={formCategory} onClose={() => setFormOpen(false)} />
     </div>
   );
 }
