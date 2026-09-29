@@ -8,6 +8,7 @@ import { ServiceUnavailable } from "./ServiceUnavailable";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
+import { DuoIcon } from "../ui/DuoIcon";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { CatalogHeader } from "./CatalogHeader";
@@ -199,9 +200,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
               skeleton()
             ) : rows.length === 0 ? (
               <div className="catalog-empty">
-                <Icon name="search" />
-                <h2>{query ? `„${query}“ ვერ მოიძებნა` : "ამ პირობით კომპანია ვერ მოიძებნა"}</h2>
-                <p>გამოაქვეყნე მოთხოვნა და შესაბამისი კომპანიები თავად გამოგიგზავნიან შეთავაზებას.</p>
+                <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
+                <h2>{query ? `„${query}“ — ჯერ ვერავინ ვიპოვეთ` : "ამ პირობით კომპანია ჯერ არ გვყავს"}</h2>
+                <p>აღწერე, რა გჭირდება — მოთხოვნას შესაბამისი კომპანიები ნახავენ და თავად დაგიკავშირდებიან.</p>
                 <div className="catalog-empty__actions">
                   <Link className="ma-btn ma-btn--primary" href={`/requests/new/?${new URLSearchParams({ title: query, category: industry, city })}`}>გამოაქვეყნე მოთხოვნა</Link>
                   {filterCount > 0

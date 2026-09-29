@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogSearch } from "./CatalogSearch";
 import { Icon } from "../Icon";
+import { DuoIcon } from "../ui/DuoIcon";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
@@ -239,9 +240,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                 : rows.length === 0
                   ? (
                       <div className="catalog-empty">
-                        <Icon name="search" />
-                        <h2>ამ პირობით მოთხოვნა ვერ მოიძებნა</h2>
-                        <p>შეცვალე ფილტრები ან ძიება. ახალი მოთხოვნები ყოველდღე ემატება.</p>
+                        <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
+                        <h2>ასეთი მოთხოვნა ჯერ არ გამოქვეყნებულა</h2>
+                        <p>სცადე სხვა კატეგორია ან ქალაქი. ახალი მოთხოვნები ყოველდღე ემატება — შეტყობინებებს ანგარიშში მიიღებ.</p>
                         <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: "", period: "", unanswered: "", photo: "", urgent: ""})}>ყველა მოთხოვნის ნახვა</button>
                       </div>
                     )

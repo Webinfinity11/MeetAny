@@ -26,3 +26,14 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 .ma-lead{max-width:var(--measure);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text-2)}
 .ma-link{padding:0;border:0;background:none;font:inherit;color:var(--text-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer;border-radius:var(--radius-xs)}
 .ma-link:hover{color:var(--action-hover);text-decoration-thickness:2px}
+
+/* Phosphor duotone icons (components/ui/DuoIcon): ink line, faint brand-blue fill instead of
+   Phosphor's grey 20% layer. Used only where the icon carries meaning. */
+.duo-icon {
+  flex: none;
+  color: var(--text);
+}
+.duo-icon [opacity] {
+  fill: var(--action);
+  opacity: .22;
+}

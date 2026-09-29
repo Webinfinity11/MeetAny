@@ -367,13 +367,15 @@
   background: var(--white);
   text-align: center;
 }
-.catalog-empty > .icon {
-  width: 40px;
-  height: 40px;
-  padding: var(--space-2);
-  border-radius: var(--radius-pill);
-  background: var(--bg-muted);
-  color: var(--text-3);
+.catalog-empty__icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--space-1);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  background: var(--canvas);
 }
 .catalog-empty h2 {
   margin: 0;

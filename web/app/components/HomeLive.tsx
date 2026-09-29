@@ -9,6 +9,7 @@ import { categories as needs } from "../lib/home-data";
 import { categoryGroups, cities } from "../lib/categories";
 import { CompanyListingCard, type CompanyListingData } from "./market/CompanyListingCard";
 import { Icon } from "./Icon";
+import { DuoIcon } from "./ui/DuoIcon";
 
 type Company = {id: string; company: string; city: string; industry: string; logoUrl?: string | null; about: string; offers: string[]; serviceCities?: string[]};
 
@@ -37,7 +38,7 @@ export function HomeStats() {
 
 export function HomeCategories() {
   return <div className="home-role-list">{needs.map(c => <Link key={c.id} href={`/companies/?type=${c.id}`}>
-    <span className="home-role-icon" aria-hidden="true"><Icon name={c.icon} /></span>
+    <span className="home-role-icon" aria-hidden="true"><DuoIcon name={c.icon} size={26} /></span>
     <span><strong>{c.title}</strong><small>{c.sub}</small></span>
     <Icon name="arrow-right" />
   </Link>)}</div>;
@@ -48,7 +49,7 @@ export function HomeIndustries() {
   return <ul className="home-industry-grid" aria-label="საქმიანობის მიმართულებები">{categoryGroups.map(group => {
     const count = ready && available ? store?.listCompanies({industry: group.id}).length : null;
     return <li key={group.id}><Link href={`/companies/?industry=${group.id}`}>
-      <span className="home-industry-icon" aria-hidden="true"><Icon name={group.icon} /></span>
+      <span className="home-industry-icon" aria-hidden="true"><DuoIcon name={group.icon} size={26} /></span>
       <span className="home-industry-text"><strong>{group.short}</strong><small>{count == null ? "\u00a0" : count ? `${count} კომპანია` : "მალე"}</small></span>
     </Link></li>;
   })}</ul>;

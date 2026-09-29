@@ -341,7 +341,7 @@
   height: 44px;
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  background: var(--canvas);
+  background: var(--white);
   color: var(--text);
 }
 .home-role-icon .icon,

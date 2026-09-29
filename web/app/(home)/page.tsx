@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DiscoverySearch } from "../components/DiscoverySearch";
 import { Icon } from "../components/Icon";
+import { DuoIcon } from "../components/ui/DuoIcon";
 import { HomeCategories, HomeIndustries, HomeFeatured, HomeRequestStarter, HomeJoin, HomeStats } from "../components/HomeLive";
 
 const steps = [
@@ -54,7 +55,7 @@ export default function HomePage() {
       </div>
       <ol className="home-steps">
         {steps.map((step, index) => <li key={step.title}>
-          <span className="home-steps__icon" aria-hidden="true"><Icon name={step.icon} /></span>
+          <span className="home-steps__icon" aria-hidden="true"><DuoIcon name={step.icon} size={26} /></span>
           <span className="home-steps__number">0{index + 1}</span>
           <h3>{step.title}</h3>
           <p>{step.text}</p>
