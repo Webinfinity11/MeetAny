@@ -1,5 +1,7 @@
 "use client";
 
+import { trapDialogFocus } from "../ui/dialog-focus";
+
 import { useEffect, useRef } from "react";
 import { Icon } from "../Icon";
 
@@ -41,7 +43,7 @@ export function MobileFilterSheet({
   }, [onOpenChange, triggerRef]);
 
   return (
-    <dialog className="ma-sheet ma-sheet--full" id={id} ref={ref} aria-labelledby={`${id}-title`}>
+    <dialog onKeyDown={trapDialogFocus} className="ma-sheet ma-sheet--full" id={id} ref={ref} aria-labelledby={`${id}-title`}>
       <header className="ma-sheet__header">
         <h2 className="ma-sheet__title" id={`${id}-title`}>
           {title}

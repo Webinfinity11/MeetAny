@@ -1,5 +1,7 @@
 "use client";
 
+import { trapDialogFocus } from "../ui/dialog-focus";
+
 import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -202,7 +204,7 @@ export function RequestFormSheet({
   const signedIn = checked && !!store?.currentUser();
   const next = encodeURIComponent(`/requests/new/?${new URLSearchParams({title, category, city})}`);
   return (
-    <dialog className="ma-sheet ma-sheet--wide ma-sheet--full request-form" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
+    <dialog onKeyDown={trapDialogFocus} className="ma-sheet ma-sheet--wide ma-sheet--full request-form" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
       <header className="ma-sheet__header">
         <h2 id="request-title" className="ma-sheet__title">
           {existing ? "მოთხოვნის რედაქტირება" : "ახალი მოთხოვნა"}

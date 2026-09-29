@@ -1,5 +1,7 @@
 "use client";
 
+import { trapDialogFocus } from "./ui/dialog-focus";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -11,7 +13,16 @@ import { toast } from "./Toasts";
 import { NavigationProgress } from "./ProgressBar";
 
 export function Header() {
-  const { store, ready } = useMarketStore();
+  const { store, ready: dataReady } = useMarketStore();
+  const [sessionReady, setSessionReady] = useState(false);
+  const hasStore = !!store;
+  useEffect(() => {
+    if (!hasStore) return;
+    let active = true;
+    store?.ready().then(() => { if (active) setSessionReady(true); });
+    return () => { active = false; };
+  }, [hasStore, store?.ready]);
+  const ready = dataReady && sessionReady;
   const me = ready ? store?.currentUser() : null;
   const pathname = usePathname();
   const mobile = useRef<HTMLDialogElement>(null);
@@ -90,7 +101,7 @@ export function Header() {
       </div>
       <button ref={opener} className="ma-header__menu-btn" aria-label="მენიუ" aria-haspopup="dialog" aria-controls="ma-mnav" aria-expanded={menuOpen} onClick={() => {mobile.current?.showModal(); setMenuOpen(true);}}><Icon name="menu"/></button>
     </div></header>
-    <dialog ref={mobile} id="ma-mnav" className="ma-mnav" aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
+    <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className="ma-mnav" aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
       <div className="ma-mnav__head">{brand}<button className="ma-mnav__close" aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
       <div className="ma-mnav__body"><nav className="ma-mnav__group" aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
         <div className="ma-mnav__group"><span className="ma-eyebrow">{me ? accountLabel : "ანგარიში"}</span>{links.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}{me ? <button className="ma-mnav__link" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button> : null}</div>

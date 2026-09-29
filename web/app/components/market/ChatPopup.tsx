@@ -1,5 +1,7 @@
 "use client";
 
+import { trapDialogFocus } from "../ui/dialog-focus";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -90,7 +92,7 @@ function ChatWindow({ store, owner, target, onClose }: { store: Store; owner: st
   async function send() {
     if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); input.current?.focus(); }
   }
-  return <dialog ref={dialog} className="ma-chat" aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
+  return <dialog ref={dialog} className="ma-chat" aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
     <header className="ma-chat__head"><CompanyAvatar name={name} logoUrl={logoUrl}/><div><h2 id="ma-chat-title">{name}</h2><span>{conversation?.requestId || target.requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span></div><button type="button" className="ma-chat__close" aria-label="მიმოწერის დახურვა" onClick={onClose}><Icon name="x"/></button></header>
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><Icon name="message-square"/><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : messages.map(m => <div key={m.id} className={`ma-chat__message${m.senderId === owner ? " ma-chat__message--mine" : ""}`}><span className="ma-sr-only">{m.senderId === owner ? "შენ" : name}: </span><p>{m.body}</p><time dateTime={m.createdAt}>{chatDate(m.createdAt)}</time></div>)}

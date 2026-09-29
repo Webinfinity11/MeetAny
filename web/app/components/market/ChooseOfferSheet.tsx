@@ -1,5 +1,7 @@
 "use client";
 
+import { trapDialogFocus } from "../ui/dialog-focus";
+
 import { useEffect, useRef } from "react";
 
 export function ChooseOfferSheet({
@@ -36,7 +38,7 @@ export function ChooseOfferSheet({
   }, [onCancel]);
 
   return (
-    <dialog id="choose" className="ma-sheet" ref={ref} aria-labelledby="choose-title">
+    <dialog onKeyDown={trapDialogFocus} id="choose" className="ma-sheet" ref={ref} aria-labelledby="choose-title">
       <header className="ma-sheet__header">
         <h2 id="choose-title" className="ma-sheet__title">
           შეთავაზების არჩევა
