@@ -1,6 +1,7 @@
 // BASE=http://localhost:3003 node qa/flows-walk.mjs [before|after|idle] [--sample]
 // Only auth-probe; credentials/session files are never printed or committed.
 import fs from 'node:fs';
+import { reuseAnonymousToken } from './site-walk-a-auth.mjs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { categories } from '../app/lib/categories-data.js';
@@ -26,10 +27,14 @@ async function check(name, fn) {
   save(); console.log(`${name}: ${report.checks.at(-1).status}`);
 }
 async function page(key) {
+  console.log('სესია: '+key);
+  report.currentRole=key;
   const session = `/tmp/meetany-flows-${key}.json`;
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...(key !== 'guest' && fs.existsSync(session) ? {storageState:session} : {}) });
+  await reuseAnonymousToken(context);
   const p = await context.newPage(); p.setDefaultTimeout(18000);
   p.qaNotices=[];
+  p.on('response',r=>{if(r.status()>=400){(report.httpIssues ||= []).push({role:key,path:new URL(r.url()).pathname,status:r.status()});save();}});
   p.on('response', r => {
     if(r.url().endsWith('/rpc/engagement_state') && r.ok()) void r.json().then(state=>{p.qaNotices=state.notifications?.items||[];}).catch(()=>{});
     if (!r.url().endsWith('/rpc/log_contact_event') || !r.ok()) return;
@@ -37,7 +42,11 @@ async function page(key) {
     pendingContacts.add(work);work.finally(() => pendingContacts.delete(work));
   });
   if (key !== 'guest') {
-    await go(p, '/account/');
+    try { await go(p, '/account/'); } catch(e) {
+      if(!(await p.locator('main').innerText()).includes('სერვისი დროებით მიუწვდომელია')) throw e;
+      await p.getByRole('button',{name:'ხელახლა ცდა',exact:true}).click();
+      await p.locator('#login-email, .account-tabs').first().waitFor({timeout:30000});
+    }
     if (await p.locator('#login-email').isVisible()) {
       const c = credentials(key);
       await p.locator('#login-email').fill(c.email); await p.locator('#login-password').fill(c.password);
@@ -72,7 +81,7 @@ async function elapsed(name, since, predicate, seconds=42) {
 async function create(p,width,category=categoryId,city='tbilisi',suffix='') {
   const title = suffix==='-sample' ? 'საწყობიდან 24 ყუთის ტრანსპორტირება თბილისში' : `საწყობიდან 24 ყუთის ტრანსპორტირება ${width}${suffix} ${Date.now()}`;
   await p.goto(origin+'/requests/new/',{waitUntil:'domcontentloaded'});
-  await p.locator('#title').fill(title); await p.locator('#category').selectOption(category); await p.locator('#city').selectOption(city);
+  await p.locator('#title').fill(title); await p.locator('#category + select').selectOption(category); await p.locator('#city + select').selectOption(city);
   await p.locator('#body').fill('გვჭირდება 24 შეფუთული ყუთის გადაზიდვა დიდ დიღომში მდებარე საწყობიდან ვაკის ოფისამდე. საერთო წონა 180 კგ. საჭიროა დახურული ფურგონი და დატვირთვა-გადმოტვირთვა. გთხოვთ მიუთითოთ სრული ღირებულება და შესრულების დრო.');
   await p.locator('#quantity').fill('24');
   const response=p.waitForResponse(r=>r.url().endsWith('/rpc/create_request') && r.ok());
@@ -95,7 +104,7 @@ async function offer(p,r,days,body) {
 }
 const section = p=>p.locator('.account-section').filter({has:p.getByRole('heading',{name:/შენი მიმართულების მოთხოვნები/})});
 const row = (p,id)=>p.locator('.account-row').filter({has:p.locator(`a[href="${requestPath(id)}"]`)});
-const bell = p=>p.getByRole('button',{name:/^შეტყობინებები(?:,|$)/});
+const bell = p=>p.locator('button[aria-controls=notification-list]');
 try {
   user=await page('owner_user');company=await page('owner_company'); const other=phase==='idle'?null:await page('port');const guest=await page('guest');
   if(phase==='idle') {
@@ -181,9 +190,12 @@ try {
     });
     await user.reload();await row(user,r.id).getByText('1 ახალი',{exact:true}).waitFor();await shot(user,`${width}-received-account`);
     if(phase==='after') await check(`${width} შეტყობინებიდან შეთავაზებაზე გადასვლა`,async()=>{
-      await bell(user).click();
+      if(width===390) {
+        await user.getByRole('button',{name:'მენიუ',exact:true}).click();
+        await user.locator('#ma-mnav').getByRole('link',{name:'შეტყობინებები',exact:true}).click();
+      } else await bell(user).click();
       const marked=user.waitForResponse(response=>response.url().endsWith('/rpc/mark_notification_read'));
-      await user.locator('#notification-list').locator(`a[href="${requestPath(r.id)}"]`).click();
+      await user.locator(width===390?'#alerts':'#notification-list').locator(`a[href="${requestPath(r.id)}"]`).click();
       assert((await marked).ok(),'შეტყობინება წაკითხულად ვერ მოინიშნა');
       await user.locator('.ma-ocard').waitFor();
     });
@@ -191,11 +203,14 @@ try {
     await user.locator('.ma-ocard').waitFor();
     const sent2=await offer(other,r,2,'გთავაზობთ ტრანსპორტირებას 200 ლარად ორი დღის განმავლობაში. ფასში შედის ორი დამტვირთველი, ყუთების დაცვა და ორივე მისამართზე მიტანა.');
     await check(`${width} მეორე OfferCard ავტომატურად`,async()=>assert(await elapsed(`${width}: OfferCard`,sent2,async()=>await user.locator('.ma-ocard').count()===2)));
-    await user.reload();await user.getByRole('heading',{name:/შეთავაზებები \(2\)/}).waitFor();
-    await check(`${width} შედარება`,async()=>{await user.getByRole('button',{name:'პირობების შედარება',exact:true}).click();await user.getByRole('table').waitFor();assert.equal(await user.locator('tbody tr').count(),2);await shot(user,`${width}-compare`);});
+    await user.reload();await user.locator('#request-offers-title .request-offers-count').filter({hasText:/^2$/}).waitFor();
+    await check(`${width} შედარება`,async()=>{await user.getByRole('button',{name:'შედარება',exact:true}).click();await user.getByRole('table').waitFor();assert.equal(await user.locator('tbody tr').count(),2);await shot(user,`${width}-compare`);await user.getByRole('button',{name:'სიის ნახვა',exact:true}).click();});
     await check(`${width} არჩევა`,async()=>{
       await user.locator('.ma-ocard').filter({hasText:profile.company}).getByRole('button',{name:'შეთავაზების არჩევა',exact:true}).click();
-      await shot(user,`${width}-choose`);await user.locator('#choose').getByRole('button',{name:'შეთავაზების არჩევა',exact:true}).click();
+      await shot(user,`${width}-choose`);
+      await user.locator('#choose').getByRole('button',{name:'გაუქმება',exact:true}).focus();await user.keyboard.press('Tab');
+      assert(await user.locator('#choose').evaluate(d=>d.contains(document.activeElement)),'არჩევის ფოკუსი დიალოგში რჩება');
+      await user.locator('#choose').getByRole('button',{name:'შეთავაზების არჩევა',exact:true}).click();
       await user.locator('#choose').waitFor({state:'hidden'});await user.getByText('მომწოდებელი არჩეულია',{exact:true}).first().waitFor();
       await shot(user,`${width}-chosen`);
       if(phase==='after') {
@@ -220,9 +235,11 @@ try {
     await check(`${width} ჩატი და 25 წამში ბეიჯი`,async()=>{
       // Company initiates from the request's existing MessageButton; customer replies in Inbox.
       await company.getByRole('button',{name:'მიწერა',exact:true}).click();
-      const input=company.locator('.ma-chat textarea');await input.fill('ხვალ 10 საათზე მოვალთ. გთხოვთ დაადასტუროთ.');
+      const input=company.locator('.ma-chat textarea');
+      if(width===390) { await input.focus();await company.keyboard.press('Tab');assert(await company.locator('.ma-chat').evaluate(d=>d.contains(document.activeElement))); }
+      await input.fill('ხვალ 10 საათზე მოვალთ. გთხოვთ დაადასტუროთ.');
       await company.locator('.ma-chat').getByRole('button',{name:'გაგზავნა',exact:true}).click();
-      const t=Date.now();assert(await elapsed(`${width}: ჩატის ბეიჯი`,t,()=>user.locator('.ma-chat-badge').first().isVisible(),25));
+      const t=Date.now();assert(await elapsed(`${width}: ჩატის ბეიჯი`,t,async()=>width===390 ? /წაუკითხავი/.test(await user.locator('.ma-chat-unread').getAttribute('aria-label')) : user.locator('.ma-chat-badge').first().isVisible(),25));
       const conversation=(await rpc(user,'list_my_conversations')).find(c=>c.request_id===r.id);
       assert(conversation,'მოთხოვნის საუბარი');report.conversations.push(conversation.id);save();
       await go(user,`/account/?tab=messages&c=${conversation.id}`);
@@ -241,7 +258,7 @@ try {
     retained=r.id;report.sampleId=r.id;
     for(const width of [1440,390]) {
       await user.setViewportSize({width,height:width===390?844:1000});await go(user,requestPath(r.id));await user.reload();
-      await user.getByRole('heading',{name:/შეთავაზებები \(2\)/}).waitFor();await shot(user,`${width}-sample`);
+      await user.locator('#request-offers-title .request-offers-count').filter({hasText:/^2$/}).waitFor();await shot(user,`${width}-sample`);
     }
   }
   }

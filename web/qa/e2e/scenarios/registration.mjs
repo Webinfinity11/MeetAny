@@ -12,7 +12,7 @@ export default async function(t) {
       await p.locator('#reg-company').fill(`მიწოდების ჯგუფი ${t.marker}`);
       await p.locator('#reg-phone').fill('+995 5' + (Number(t.run.replace(/\D/g, '').slice(-8)) + index).toString().padStart(8, '0').slice(-8));
       await p.locator('#reg-email').fill(account.email);
-      if (role === 'company') await p.locator('#reg-industry').selectOption('furniture');
+      if (role === 'company') await p.locator('#reg-industry + select').selectOption('furniture');
       await p.locator('#reg-password').fill(account.password);
       await p.locator('#reg-terms').check();
       await p.locator('main form button[type="submit"]').click();
