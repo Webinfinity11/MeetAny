@@ -81,7 +81,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
 
   const industryFacets: Facet[] = useMemo(
     () => categoryGroups.map(g => ({
-      id: g.id, label: g.short, count: list({ industry: g.id }).length,
+      id: g.id, label: g.short, icon: g.icon, count: list({ industry: g.id }).length,
       children: g.items.length > 1 ? g.items.map(([id, label]) => ({ id, label, count: list({ industry: id }).length })) : undefined,
     })),
     [list],

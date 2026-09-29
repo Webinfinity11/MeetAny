@@ -209,7 +209,7 @@
 }
 .catalog-facet {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
@@ -233,6 +233,16 @@
   color: var(--selected-text);
   font-weight: var(--fw-semibold);
 }
+.catalog-facet__icon {
+  color: var(--text-2);
+}
+.catalog-facet[aria-pressed="true"] .catalog-facet__icon,
+.catalog-facet:hover .catalog-facet__icon {
+  color: var(--selected-text);
+}
+.catalog-facet--empty:not([aria-pressed="true"]) .catalog-facet__icon {
+  opacity: .45;
+}
 .catalog-facet__label {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -248,8 +258,9 @@
   color: var(--selected-text);
 }
 .catalog-facet--child {
+  grid-template-columns: minmax(0, 1fr) auto;
   min-height: 34px;
-  padding-left: var(--space-6);
+  padding-left: 44px;
   font-size: var(--fs-meta);
 }
 .catalog-facet--empty:not([aria-pressed="true"]),

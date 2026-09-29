@@ -99,7 +99,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
   const categoryFacets: Facet[] = useMemo(
     () => categoryGroups.map(g => ({
-      id: g.id, label: g.short, count: list({ category: g.id }).length,
+      id: g.id, label: g.short, icon: g.icon, count: list({ category: g.id }).length,
       children: g.items.length > 1 ? g.items.map(([id, label]) => ({ id, label, count: list({ category: id }).length })) : undefined,
     })),
     [list],

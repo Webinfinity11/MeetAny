@@ -1,8 +1,9 @@
 "use client";
+import { DuoIcon } from "../ui/DuoIcon";
 
 
 // A group facet may carry its categories; they open under it while the group or one of them is selected.
-export type Facet = { id: string; label: string; count: number; children?: Facet[] };
+export type Facet = { id: string; label: string; count: number; icon?: string; children?: Facet[] };
 
 export function FacetList({
   all,
@@ -36,6 +37,7 @@ export function FacetList({
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
+      {compact ? null : <DuoIcon name={f.icon || (f.id ? "shapes" : "layout-grid")} size={20} className="catalog-facet__icon" />}
       <span className="catalog-facet__label">{f.label}</span>
       <span className="catalog-facet__count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>
