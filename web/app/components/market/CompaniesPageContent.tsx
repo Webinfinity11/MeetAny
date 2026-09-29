@@ -13,6 +13,14 @@ import { ResultsBar } from "./ResultsBar";
 import { CatalogHeader } from "./CatalogHeader";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
+import dynamic from "next/dynamic";
+import type { MapCompany } from "./CompaniesMap";
+
+// Leaflet and its CSS load only when someone opens the map view.
+const CompaniesMap = dynamic(() => import("./CompaniesMap").then(m => m.CompaniesMap), {
+  ssr: false,
+  loading: () => <div className="companies-map"><div className="companies-map__loading" role="status">რუკა იტვირთება…</div></div>,
+});
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
@@ -128,6 +136,13 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   };
   const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: "", coverage: "", sort: ""});
   const filterCount = activeItems.length;
+  const mapView = filters.get("view") === "map";
+  const mapped: MapCompany[] = useMemo(() => rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat as number, lng: c.lng as number })), [rows]);
+  const unmapped = rows.filter(c => c.lat == null || c.lng == null);
+  const viewSwitch = <div className="view-switch" role="group" aria-label="ხედი">
+    <button type="button" aria-pressed={!mapView} onClick={() => filters.set({ view: "" })}><Icon name="layout-grid" />სია</button>
+    <button type="button" aria-pressed={mapView} onClick={() => filters.set({ view: "map" })}><Icon name="map-pin" />რუკა</button>
+  </div>;
 
   const countLabel = !available || !ready ? "" : `${rows.length} კომპანია`;
 
@@ -174,7 +189,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
         <section className="catalog-main" aria-label="კომპანიების სია">
           <ResultsBar count={countLabel} filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
-            utility={ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}
+            utility={<>{viewSwitch}{ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}</>}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
           />
           <div className="company-directory-list">
@@ -193,6 +208,11 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
                     ? <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>ფილტრების გასუფთავება</button>
                     : query ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setQuery("")}>ძიების გასუფთავება</button> : null}
                 </div>
+              </div>
+            ) : mapView ? (
+              <div className="companies-map-view">
+                <CompaniesMap companies={mapped} />
+                {unmapped.length ? <p className="companies-map__unmapped">რუკაზე არ ჩანს ({unmapped.length}), მისამართი არ აქვს მითითებული: {unmapped.map((c, i) => <span key={c.id}>{i ? ", " : ""}<Link href={`/companies/view/?id=${encodeURIComponent(c.id)}`}>{c.name}</Link></span>)}</p> : null}
               </div>
             ) : (
               rows.map((c, index) => <CompanyListingCard key={c.id} c={c} entranceIndex={index} />)

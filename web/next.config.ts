@@ -11,12 +11,12 @@ const authOrigins = authBaseUrl ? [new URL(authBaseUrl).origin] : [];
 
 // No nonces (pages stay static-capable): App Router's inline bootstrap scripts need 'unsafe-inline';
 // 'unsafe-eval' and the HMR websocket are dev-only. Photos come from Vercel Blob; client uploads
-// go to vercel.com/api/blob and then to the store host.
+// go to vercel.com/api/blob and then to the store host. Map tiles (companies map) come from OpenStreetMap.
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com",
+  "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://tile.openstreetmap.org",
   "font-src 'self'",
   `connect-src 'self' ${authOrigins.join(" ")} https://vercel.com/api/blob/ https://*.blob.vercel-storage.com${isDev ? " ws: wss:" : ""}`,
   "object-src 'none'",
