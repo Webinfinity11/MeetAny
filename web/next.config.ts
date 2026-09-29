@@ -2,17 +2,9 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
 
-// The browser talks to Neon Auth directly (market-store.js config.authUrl); the env value wins,
-// the auth-probe host is the fallback so a missing env var never blocks sign-in.
-const AUTH_FALLBACK = "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech";
-function origin(url: string | undefined) {
-  try {
-    return url ? new URL(url).origin : "";
-  } catch {
-    return "";
-  }
-}
-const authOrigins = [...new Set([origin(process.env.NEON_AUTH_BASE_URL), AUTH_FALLBACK].filter(Boolean))];
+// One public Auth URL drives both the browser bundle and CSP. Rebuild when changing environments.
+const authBaseUrl = (process.env.NEON_AUTH_BASE_URL || "").trim().replace(/\/+$/, "");
+const authOrigins = authBaseUrl ? [new URL(authBaseUrl).origin] : [];
 
 // No nonces (pages stay static-capable): App Router's inline bootstrap scripts need 'unsafe-inline';
 // 'unsafe-eval' and the HMR websocket are dev-only. Photos come from Vercel Blob; client uploads
@@ -41,6 +33,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  env: { NEXT_PUBLIC_NEON_AUTH_BASE_URL: authBaseUrl },
   poweredByHeader: false,
   // Several root layouts (one per route group), so unmatched URLs need app/global-not-found.tsx.
   experimental: {

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "node --test qa/unit/*.test.mjs",
     "e2e": "node qa/e2e/run.mjs",
     "visual:baseline": "node qa/visual/run.mjs --update",
     "visual:diff": "node qa/visual/run.mjs"

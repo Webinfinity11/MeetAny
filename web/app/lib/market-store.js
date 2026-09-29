@@ -1,6 +1,7 @@
 /* Shared browser data/auth layer. Called once by market-client.ts after mount.
    Every mutation refreshes cache and notifies React subscribers. See db/CONTRACT.md. */
 import { toast } from '../components/Toasts';
+import { readAllRows } from './read-all-rows.js';
 import { categories, categoryKind, expandCategories } from './categories-data.js';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
 export function createMarketStore({initial=null,background=true}={}){
@@ -65,7 +66,7 @@ export function createMarketStore({initial=null,background=true}={}){
  }
 
  /* ---------- config ---------- */
- const config={authUrl:'https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth',dataApiUrl:'/api/db',uploadUrl:'/api/blob-upload'};
+ const config={authUrl:process.env.NEXT_PUBLIC_NEON_AUTH_BASE_URL,dataApiUrl:'/api/db',uploadUrl:'/api/blob-upload'};
  const placeholder=v=>typeof v!=='string'||!v.trim()||/YOUR_|<|placeholder/i.test(v);
  // Absolute http(s) URL, or a same-origin path such as "/api/auth"; anything else -> null.
  function baseUrl(v){
@@ -149,6 +150,7 @@ export function createMarketStore({initial=null,background=true}={}){
  let isReady=false,loadFailed=!configured;
  let dataRevision=0;
  const requestLoads=new Map();
+ const companyLoads=new Map();
  let engagement={owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
  let engagementTask=null,engagementRevision=0,engagementCapabilities=null;
  // A failed refresh keeps the previous data on screen; the flags say so, and mutations toast it.
@@ -226,6 +228,7 @@ export function createMarketStore({initial=null,background=true}={}){
   priceType:Object.hasOwn(priceTypes,o.price_type)?o.price_type:(o.price==null?'negotiable':'total'),vatIncluded:!!o.vat_included,
   deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
+ const compareCompanies=(a,b)=>Number(b.verified)-Number(a.verified)||Date.parse(b.createdAt)-Date.parse(a.createdAt)||a.id.localeCompare(b.id);
  const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url';
 
 
@@ -252,11 +255,11 @@ export function createMarketStore({initial=null,background=true}={}){
   }
   const uid=authUser?.id||null;
   const post=(fn,body={})=>db('/rpc/'+fn,{method:'POST',body});
-  const reqP=db('/requests?select=*&order=created_at.desc&limit=1000').then(rows).then(r=>r.map(mapRequest));
+  const reqP=readAllRows(db,'/requests?select=*').then(r=>r.map(mapRequest));
   const meP=uid?post('my_profile').then(one).then(mapUser):Promise.resolve(null);
-  const companiesP=post('list_companies').then(rows).then(r=>r.map(c=>mapUser({...c,role:'company'})));
+  const companiesP=readAllRows(db,'/profiles?select='+PUBLIC_PROFILE+'&role=eq.company').then(r=>r.map(mapUser).sort(compareCompanies));
   // Offers are read for any session and kept only when the profile exists (RLS scopes them).
-  const offersP=uid?db('/offers?select=*&order=created_at.asc').then(rows).then(r=>r.map(mapOffer)):Promise.resolve([]);
+  const offersP=uid?readAllRows(db,'/offers?select=*').then(r=>r.map(mapOffer)):Promise.resolve([]);
   const statsP=companiesP.then(cs=>Promise.all(chunks(cs.map(c=>c.id),500).map(part=>post('company_stats',{ids:part}).then(rows)))).then(parts=>parts.flat());
   const countsP=reqP.then(rs=>Promise.all(chunks(rs.map(r=>r.id),500).map(part=>post('offer_counts',{ids:part}).then(rows)))).then(parts=>parts.flat());
   const isAdminP=meP.then(me=>!!(me&&me.role==='admin'&&!me.blocked));
@@ -548,7 +551,7 @@ export function createMarketStore({initial=null,background=true}={}){
    if(!row){if(actor===(currentUser()?.id||null)&&revision===dataRevision){cache.requests=cache.requests.filter(r=>r.id!==id);emit();}return null;}
    const request=mapRequest(row);
    const [offerRows,countRows]=await Promise.all([
-    actor?db('/offers?select=*&request_id=eq.'+encodeURIComponent(id)+'&order=created_at.asc').then(rows):[],
+    actor?readAllRows(db,'/offers?select=*&request_id=eq.'+encodeURIComponent(id)):[],
     rpc('offer_counts',{ids:[id]}).then(rows)
    ]);
    const offers=offerRows.map(mapOffer);
@@ -767,6 +770,27 @@ export function createMarketStore({initial=null,background=true}={}){
   });
  }
  function getCompany(id){return cache.companies.find(c=>c.id===id)||null;}
+ // Direct profile links must work before the full catalog has finished loading.
+ async function ensureCompany(id){
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id||'')))return null;
+  const revision=dataRevision,key=[id,revision].join(':');
+  if(companyLoads.has(key))return companyLoads.get(key);
+  const work=(async()=>{
+   const row=one(await db('/profiles?select='+PUBLIC_PROFILE+'&role=eq.company&id=eq.'+encodeURIComponent(id)+'&limit=1'));
+   const statRows=row?rows(await rpc('company_stats',{ids:[id]})):[];
+   if(revision!==dataRevision)return null;
+   const company=mapUser(row);
+   cache.companies=cache.companies.filter(c=>c.id!==id);
+   if(company){
+    cache.companies.push(company);cache.companies.sort(compareCompanies);
+    if(id!==cache.me?.id)cache.profiles[id]=company;
+    const stats=statRows[0];cache.companyStats[id]={sent:Number(stats?.offers_sent)||0,chosen:Number(stats?.offers_chosen)||0};
+   }else{if(id!==cache.me?.id)delete cache.profiles[id];delete cache.companyStats[id];}
+   emit();return company;
+  })();
+  companyLoads.set(key,work);
+  try{return await work;}finally{companyLoads.delete(key);}
+ }
  function companyStats(id){return cache.companyStats[id]||{sent:0,chosen:0};}
 
  /* ---------- messaging (caller-owned polling; no catalog cache or refresh) ---------- */
@@ -813,7 +837,7 @@ export function createMarketStore({initial=null,background=true}={}){
   requestPasswordReset,resetPassword,changePassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
-  updateProfile,uploadLogo,listCompanies,getCompany,companyStats,directionsUrl,
+  updateProfile,uploadLogo,listCompanies,getCompany,ensureCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
   adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
