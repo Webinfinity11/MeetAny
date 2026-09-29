@@ -41,7 +41,7 @@ Before applying remotely: review the schema diff and backup/restore procedure, i
 
 ## API v2 — `migrations/20260929-admin-v2.sql`
 
-**Status 2026-09-29: auth-probe-ზე ჯერ არ არის გამოყენებული.** Phase 1 is local only: the additive migration, its tests, and this document. Shared schema/runner/client/deployment files are intentionally not synchronized in this phase. No remote database connection is needed for validation.
+**Status 2026-09-29: applied to auth-probe.** `node web/scripts/apply-migration.mjs admin-v2` succeeded twice: 1 table and 5 RPCs verified, with exact source version 2. Schema, runner, handler and store are synchronized. Production has not been migrated. Local synchronized runner passed 1,182 existing assertions and 94 v2 assertions. Do not replay v1 after this migration.
 
 The migration runs in one transaction with `lock_timeout='5s'` and can be run twice. Named audit checks are dropped/re-added to admit target `offer` and action `offer.delete`; existing rows and the append-only trigger are preserved. All four new functions are `SECURITY DEFINER SET search_path = ''`, require an unblocked admin, revoke PUBLIC/anonymous execution, and grant execution to authenticated. No role-changing RPC, RLS change, or marketplace column change is included.
 

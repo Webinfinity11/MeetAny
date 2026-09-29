@@ -184,7 +184,12 @@ profile blocked -> `MA002`.
 | `admin_set_blocked` | `p_user_id uuid, p_blocked boolean, p_reason text default null` | void | no | require_user; `MA003`; reason not 3–500 chars -> `MA304`; own id -> `MA301`; unknown -> `MA302`. Stores / clears `blocked_reason` like `admin_set_hidden` |
 | `admin_set_verified` | `p_user_id uuid, p_verified boolean` | void | no | require_user; `MA003`; unknown or not a company -> `MA303`. `verified_at` = now() when newly verified, unchanged when already verified, null when verification is removed |
 | `admin_list_users` | – | `setof profiles` (all columns, newest first) | no | require_user; `MA003` |
-| `admin_stats` | – | `jsonb {users, companies, verified, open, requests, offers, chosen}` (integers) | no | require_user; `MA003`. Same definitions as beta `stats()`: users = non-admins, requests/chosen exclude hidden, open = state open |
+| `admin_stats` | – | `jsonb {adminApiVersion:2, hidden, blocked, users, companies, verified, open, requests, offers, chosen}` (integers) | no | require_user; `MA003`. hidden = all hidden requests; blocked = blocked non-admin profiles. Same definitions as beta `stats()`: users = non-admins, requests/chosen exclude hidden, open = state open |
+
+| `admin_search_offers` | `p_q text default null, p_status text default null, p_cursor jsonb default null, p_limit integer default 25` | paginated complete offer rows + company_name, request_title, request_hidden | no | require_admin; `MA003`; literal search over ID/body/company/name/request title; status sent/chosen/declined; invalid filters/cursor/limit -> `22023` |
+| `admin_delete_offer` | `p_offer_id uuid, p_reason text` | void | no | require_admin; `MA003`; reason required, trimmed 3–500 -> `MA304`; missing -> `MA206`; chosen -> `MA207`; atomic offer.delete audit |
+| `admin_delete_request_v2` | `p_request_id uuid, p_reason text` | void | no | require_admin; `MA003`; reason required, trimmed 3–500 -> `MA304`; missing -> `MA106`; atomic request.delete audit and conversation/message cleanup |
+| `admin_list_audit_v2` | `p_cursor jsonb default null, p_limit integer default 25, p_action text default null, p_target_type text default null` | paginated audit rows with actor_name, actor_email, target_name, target_exists, target_context, target_context_id | no | require_admin; `MA003`; eight actions and request/user/offer targets; invalid filters/cursor/limit -> `22023` |
 
 `yes*` = anonymous may execute but always gets `MA001`. "no" = anonymous has no EXECUTE privilege
 (the Data API answers with code `42501`); authenticated non-admins get `MA003` (a user without a
@@ -193,6 +198,8 @@ profile gets `MA001` first).
 Admin = `profiles.role = 'admin' and not blocked`. Admins can close/extend/delete any request and
 see all requests and offers; they cannot choose offers (author only) and do not get contacts via
 `contact_for_request` (they use `admin_list_users`).
+
+Admin v2 readers return `{items,nextCursor,hasMore,filteredTotal,asOf}`; default 25 rows, capped at 100, descending `(created_at,id)`. Audit actor/target names and actor email join current records at read time; deleted targets have null name and false existence. Offer context retains the request ID and joins its current title. Offer moderation requires a reason and stores identifiers/status only, never offer body, price or contact data. Legacy request deletion remains idempotent and reason-optional.
 
 There is **no** `phone_available` any more: a taken number is reported by `complete_profile`
 (`MA405`). The old per-IP throttle cannot work on the Data API (client-supplied headers), and a
@@ -405,6 +412,8 @@ editor inserts.
 | `updateProfile(input)` / `listCompanies / getCompany / companyStats` | `update_my_profile` / cached `list_companies()` + `company_stats(ids)` |
 | `withdrawOffer / chooseOffer` | `withdraw_offer / choose_offer` (chooseOffer passes the cached offer's `updated_at` as `p_expected_updated_at`; on error it refreshes the cache) |
 | `adminSetHidden(id, hidden, reason?) / adminDeleteRequest / adminSetBlocked(id, blocked, reason?) / adminSetVerified` | `admin_set_hidden / admin_delete_request / admin_set_blocked / admin_set_verified` (request objects gain `hiddenReason`, admin user objects `blockedReason`) |
+| `adminSearchOffers(args) / adminDeleteOffer(id, reason)` | `admin_search_offers / admin_delete_offer` (trimmed reason required) |
+| `adminDeleteRequest(id, reason?) / adminListAudit(args)` | With a supplied reason use `admin_delete_request_v2`, otherwise legacy deletion; audit selects `admin_list_audit_v2` when cached stats `adminApiVersion>=2`, otherwise v1 |
 | `allUsers()` | `admin_list_users()` (admin); others: public profiles only |
 | `stats()` | admin: `admin_stats()`; others: compute from the cache (e.g. `open` = requests in state open) |
 
@@ -490,7 +499,7 @@ No new MA codes: existing `MA001` (missing profile), `MA002` (blocked actor), `M
 
 `migrations/20260923-messaging.sql` is additive and rerunnable; the same SQL is appended to `schema.sql`. Apply only to **auth-probe** with `node web/scripts/apply-migration.mjs messaging` (pinned endpoint, DATABASE_URL from environment, error codes only). No UI, realtime service, emails, or catalog refresh is part of this stage.
 
-Private tables have RLS enabled, no app-role table privileges/policies, and are accessible only through `SECURITY DEFINER` RPCs with empty `search_path`. `conversations` references both profiles with `ON DELETE CASCADE`; `messages` references conversation and sender with cascade. Deleting either participant removes the entire conversation and its messages. Request deletion (any path: `delete_request`, `admin_delete_request`, owner SQL, author-profile cascade) deletes that request's conversations and their messages via the `requests_delete_conversations` trigger (since 2026-09-24; previously `request_id` was set to null and the history kept). A request conversation has no other link — its `context_key` is the request UUID — so nothing else is lost; `general` conversations are never touched. A trigger prevents changing participants or context; `(client_id,company_id,context_key)` is unique. Context is the original request UUID text or `general`. General and deleted-request conversations never merge.
+Private tables have RLS enabled, no app-role table privileges/policies, and are accessible only through `SECURITY DEFINER` RPCs with empty `search_path`. `conversations` references both profiles with `ON DELETE CASCADE`; `messages` references conversation and sender with cascade. Deleting either participant removes the entire conversation and its messages. Request deletion (any path: `delete_request`, `admin_delete_request`, `admin_delete_request_v2`, owner SQL, author-profile cascade) deletes that request's conversations and their messages via the `requests_delete_conversations` trigger (since 2026-09-24; previously `request_id` was set to null and the history kept). A request conversation has no other link — its `context_key` is the request UUID — so nothing else is lost; `general` conversations are never touched. A trigger prevents changing participants or context; `(client_id,company_id,context_key)` is unique. Context is the original request UUID text or `general`. General and deleted-request conversations never merge.
 
 `client_id` means the customer side of the conversation, not necessarily a profile whose role is `client`. A company may initiate with a request author: call `start_conversation(own_company_id, request_id)`, which sets `client_id` to that request's author. The request author can call the same RPC with the target company ID and gets the same conversation. A third party cannot attach another user's request. Without a request, the caller is `client_id`. `company_id` must identify a nonblocked company; participants must differ. Hidden/missing requests and blocked request authors cannot start new conversations. Existing history remains accessible independently of the request's current state. All participant RPCs use `require_user`, so blocked callers receive MA002 (including reads); admin reads use `require_admin`.
 
