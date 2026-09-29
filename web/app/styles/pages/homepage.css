@@ -429,10 +429,9 @@
   box-shadow: var(--card-hover-shadow);
   transform: translateY(-2px);
 }
-.home-industry-grid a:hover .home-industry-icon {
-  border-color: var(--blue-200);
-  background: var(--blue-50);
-  color: var(--action);
+.home-industry-grid a:hover .home-industry-icon .duo-icon,
+.home-role-list > a:hover .home-role-icon .duo-icon {
+  color: var(--text);
 }
 .home-industry-text {
   display: grid;
@@ -483,9 +482,6 @@
 }
 .home-steps__icon {
   margin-bottom: var(--space-2);
-  border-color: var(--blue-100);
-  background: var(--blue-50);
-  color: var(--action);
 }
 .home-steps h3 {
   margin: 0;

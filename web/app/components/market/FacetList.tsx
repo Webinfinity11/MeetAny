@@ -1,8 +1,11 @@
 "use client";
+import { useState } from "react";
 import { DuoIcon } from "../ui/DuoIcon";
+import { Icon } from "../Icon";
 
 
-// A group facet may carry its categories; they open under it while the group or one of them is selected.
+// A group facet may carry its categories. They open under it while the group or one of them is
+// selected, or when the person expands the group with its chevron (without filtering).
 export type Facet = { id: string; label: string; count: number; icon?: string; children?: Facet[] };
 
 export function FacetList({
@@ -20,6 +23,7 @@ export function FacetList({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const sorted = [...all].sort((a, b) => b.count - a.count);
   // Industries with no companies sit at the end in compact 32px rows (no toggle). The "სხვა დარგები"
   // title only appears when the list is mixed; when every industry is 0 (an empty search) they stay ordinary rows.
@@ -45,8 +49,16 @@ export function FacetList({
   return (
     <div className="catalog-facets">
       {entries.map(f => {
-        const open = f.children && (activeId === f.id || f.children.some(c => c.id === activeId));
-        return <div key={f.id}>{button(f)}{open ? f.children!.filter(c => c.count > 0 || c.id === activeId).map(c => button(c, true)) : null}</div>;
+        const selectedInside = !!f.children && (activeId === f.id || f.children.some(c => c.id === activeId));
+        const open = !!f.children && (expanded[f.id] ?? selectedInside);
+        const listId = `facet-children-${f.id}`;
+        return <div key={f.id} className={f.children ? "catalog-facet-group" : undefined}>
+          {button(f)}
+          {f.children ? <button type="button" className="catalog-facet__toggle" aria-expanded={open} aria-controls={listId}
+            aria-label={`${f.label} — ${open ? "ქვეკატეგორიების დამალვა" : "ქვეკატეგორიების ჩვენება"}`}
+            onClick={() => setExpanded(e => ({ ...e, [f.id]: !open }))}><Icon name="chevron-down" /></button> : null}
+          {open ? <div id={listId} className="catalog-facet__children">{f.children!.map(c => button(c, true))}</div> : null}
+        </div>;
       })}
       {grouped ? <>
         <p className="catalog-facet__group">სხვა დარგები</p>
