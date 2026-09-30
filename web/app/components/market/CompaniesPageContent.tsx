@@ -6,7 +6,9 @@ import Link from "next/link";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CatalogSearch } from "./CatalogSearch";
+import { SegmentedSearch } from "../SegmentedSearch";
+import { useSearchSuggestions } from "../../lib/search-suggestions";
+import { useRouter } from "next/navigation";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
 import { FacetList, type Facet } from "./FacetList";
@@ -78,6 +80,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
+  const suggestions = useSearchSuggestions("companies", query, "", results.map(result => result.id));
+  const router = useRouter();
 
   const industryFacets: Facet[] = useMemo(
     () => categoryGroups.map(g => ({
@@ -180,15 +184,21 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     <div className="ma-page companies-catalog catalog-page">
       <CatalogHeader
         tone="light"
+        center
         overline="კომპანიების კატალოგი"
         title="მომწოდებლები და მომსახურება"
         description="მოძებნე კომპანია დარგისა და ქალაქის მიხედვით და დაუკავშირდი პირდაპირ."
-        search={<CatalogSearch id="company-query" label="კომპანიის ძიება" placeholder="კომპანიის სახელი ან მომსახურება" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="companies" onCategory={industry => filters.set({industry, q: ""})} />}
+        search={<form onSubmit={e => { e.preventDefault(); document.getElementById("company-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
+          <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="კომპანიის სახელი ან მომსახურება"
+            query={query} onQuery={setQuery} suggestions={suggestions}
+            onSelect={item => item.kind === "category" ? filters.set({ industry: item.category, q: "" }) : router.push(item.href)}
+            city={city} onCity={setCity} />
+        </form>}
         help={<>კონკრეტული საჭიროება გაქვს? <Link href="/requests/new/">გამოაქვეყნე მოთხოვნა</Link></>}
       />
       <div className="catalog-workspace">
         <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
-        <section className="catalog-main" aria-label="კომპანიების სია">
+        <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
           <ResultsBar count={countLabel} filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
             utility={<>{viewSwitch}{ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}</>}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}

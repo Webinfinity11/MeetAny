@@ -1,0 +1,137 @@
+/* Segmented search pill (Airbnb): "what | city | search". Shared by the home hero and the catalog
+   headers (components/SegmentedSearch.tsx). */
+
+/* Segmented search pill: what | city | search */
+.home-search-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px auto;
+  align-items: center;
+  padding: var(--space-2);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--text);
+  box-shadow: var(--shadow-float);
+}
+.home-search-seg {
+  position: relative;
+  display: grid;
+  gap: 0;
+  min-width: 0;
+  padding: var(--space-2) var(--space-6);
+  border-radius: 999px;
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+.home-search-seg:hover,
+.home-search-seg:focus-within {
+  background: var(--bg-subtle);
+}
+.home-search-seg + .home-search-seg::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 25%;
+  bottom: 25%;
+  width: 1px;
+  background: var(--border);
+}
+.home-search-seg__label {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+.home-search-seg .catalog-search {
+  margin: 0;
+}
+.home-search-seg .catalog-search__input > .icon {
+  display: none;
+}
+.home-search-seg .ma-input,
+.home-search-seg select {
+  width: 100%;
+  height: 26px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+.home-search-seg .ma-input:focus,
+.home-search-seg select:focus {
+  outline: none;
+  box-shadow: none;
+}
+.home-search-seg select {
+  appearance: none;
+  cursor: pointer;
+}
+.home-search-seg .catalog-search__clear {
+  height: 26px;
+}
+.home-search-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 52px;
+  padding: 0 var(--space-6);
+  border: 0;
+  border-radius: 999px;
+  background: var(--theme-accent);
+  color: var(--ink-950);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  font-feature-settings: var(--ff-button);
+  letter-spacing: var(--ls-button);
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+.home-search-submit:hover {
+  background: var(--orange-500);
+}
+.home-search-submit .icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.4;
+}
+.home-search-entry .search-suggestions {
+  min-width: min(440px, calc(100vw - 48px));
+  color: var(--text);
+  text-align: left;
+}
+
+
+.home-search-entry--framed {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-search);
+}
+
+@media (max-width: 767px) {
+  .home-search-entry {
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-radius: 20px;
+  }
+  .home-search-seg--city {
+    display: none;
+  }
+  .home-search-seg {
+    padding-inline: var(--space-4);
+  }
+  .home-search-submit {
+    width: 52px;
+    padding: 0;
+    justify-content: center;
+  }
+  .home-search-submit span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .home-search-entry .search-suggestions {
+    min-width: 0;
+    width: calc(100vw - 2 * var(--gutter));
+  }
+}

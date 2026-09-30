@@ -204,118 +204,139 @@
   color: var(--text-2);
 }
 
-/* ---------- Company card ---------- */
+/* ---------- Company card: photo-first, frameless (home language) ---------- */
 
 .company-directory-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8) var(--space-6);
 }
 .company-directory-list > :not(.company-card, .catalog-skeleton__card) {
   grid-column: 1 / -1;
 }
-.company-card {
+.company-directory-list .company-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-5);
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
-.company-card__head {
+.company-directory-list .company-card:hover {
+  border: 0;
+  box-shadow: none;
+}
+.company-card__media {
+  display: block;
+  flex: none;
+  aspect-ratio: 4 / 3;
+  color: inherit;
+  text-decoration: none;
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  background: var(--bg-muted);
+}
+.company-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter var(--motion-base) var(--motion-ease);
+}
+.company-card:hover .company-card__media img {
+  filter: brightness(.94);
+}
+.company-card__initials {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-3);
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--blue-50);
+  color: var(--blue-700);
+  font-size: 34px;
+  font-weight: var(--fw-bold);
 }
-.company-card__head .ma-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  box-shadow: 0 0 0 3px var(--white), 0 0 0 4px var(--card-border);
+.company-card__save {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
 }
-.company-card__identity {
+.company-card__save > button {
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+}
+.company-card__body {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  flex: 1;
   min-width: 0;
 }
 .company-card__name {
   margin: 0;
-  font-size: 19px;
-  line-height: 27px;
-  font-weight: var(--fw-bold);
+  font-size: var(--fs-body);
+  line-height: var(--lh-sm);
+  font-weight: var(--fw-semibold);
   color: var(--text);
   overflow-wrap: anywhere;
 }
-.company-card__industry {
-  margin: var(--space-half) 0 0;
+.company-card__industry,
+.company-card__places {
+  margin: 0;
   font-size: var(--fs-sm);
   line-height: var(--lh-sm);
   color: var(--text-3);
 }
-.company-card__about {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  margin: 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-sm);
-  color: var(--text-2);
-  overflow-wrap: anywhere;
+.company-card__places {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.company-card__places .icon {
+  width: 14px;
+  height: 14px;
 }
 .company-card__services {
   display: flex;
-  max-height: 60px;
+  flex-wrap: nowrap;
+  gap: var(--space-1);
   overflow: hidden;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0;
+  margin: var(--space-2) 0 0;
   padding: 0;
   list-style: none;
 }
 .company-card__services li {
   max-width: 100%;
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--card-border);
+  padding: 2px var(--space-2);
   border-radius: 6px;
   background: var(--bg-subtle);
-  font-size: var(--fs-meta);
+  font-size: var(--fs-xs);
   line-height: var(--lh-xs);
   color: var(--text-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.company-card__services li:not(.company-card__more) {
+  flex: 0 1 auto;
+  min-width: 0;
+}
 .company-card__services .company-card__more {
+  flex: none;
   background: transparent;
   color: var(--text-3);
 }
+/* Pinned to the bottom so call buttons line up across a row whatever the text length. */
 .company-card__footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
   margin-top: auto;
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--border-subtle);
-}
-.company-card__places {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-sm);
-  color: var(--text-2);
-}
-.company-card__places .icon {
-  width: var(--icon-sm);
-  height: var(--icon-sm);
-  color: var(--text-3);
-}
-.company-card__save > button {
-  border-color: var(--card-border);
-  border-radius: 6px;
-  background: var(--bg-subtle);
+  padding-top: var(--space-3);
 }
 .company-card__footer .ma-call {
   min-height: var(--control-h-sm);
@@ -376,14 +397,22 @@
   }
   .company-directory-list,
   .catalog-skeleton--grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-3);
-  }
-  .company-card {
-    padding: var(--space-4);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-3);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .request-card,
   .company-card { transition: none; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .company-directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .company-card__footer .ma-call { width: 100%; padding-inline: var(--space-2); }
+  .company-card__services { display: none; }
+}
+@media (max-width: 359px) {
+  .company-directory-list, .catalog-skeleton--grid { grid-template-columns: minmax(0, 1fr); }
 }

@@ -1,6 +1,6 @@
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
-import { CompanyAvatar } from "./CompanyAvatar";
+import { avatarInitials, companyImage } from "./CompanyAvatar";
 import type { CSSProperties } from "react";
 import { CallButton } from "./CallButton";
 import { categories, cities } from "../../lib/categories";
@@ -24,27 +24,27 @@ export type CompanyListingData = {
   stats: { sent: number; chosen: number };
 };
 
+/** Photo-first company card (same language as the home page): picture on top with the save button,
+ *  then name, industry and cities, a few services and the call button. The whole card links to the profile. */
 export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData; entranceIndex?: number }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const cityIds = [...new Set((c.serviceCities.filter(Boolean).length ? c.serviceCities : [c.city]).filter(Boolean))];
-  const places = cityIds.slice(0, 3).map(id => cities[id] || id).join(", ") + (cityIds.length > 3 ? ` +${cityIds.length - 3}` : "");
+  const places = cityIds.slice(0, 2).map(id => cities[id] || id).join(", ") + (cityIds.length > 2 ? ` +${cityIds.length - 2}` : "");
+  const image = companyImage(c.name, c.logoUrl);
   const entrance = entranceIndex != null && entranceIndex < 12;
   return (
     <article className="company-card" data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>
-      <div className="company-card__head">
-        <CompanyAvatar name={c.name} logoUrl={c.logoUrl} size="lg" />
-        <div className="company-card__identity">
-          <h3 className="company-card__name"><Link className="card-main-link" href={href}>{c.name}</Link></h3>
-          <p className="company-card__industry">{categories[c.industry] || c.industry}</p>
-        </div>
-        <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>
+      <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">
+        {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="company-card__initials">{avatarInitials(c.name)}</span>}
+      </Link>
+      <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>
+      <div className="company-card__body">
+        <h3 className="company-card__name"><Link className="card-main-link" href={href}>{c.name}</Link></h3>
+        <p className="company-card__industry">{categories[c.industry] || c.industry}</p>
+        {places ? <p className="company-card__places"><Icon name="map-pin" />{places}</p> : null}
+        {c.offers.length ? <ul className="company-card__services" aria-label="მომსახურება">{c.offers.slice(0, 1).map((offer, index) => <li key={`${offer}-${index}`}>{offer}</li>)}{c.offers.length > 1 ? <li className="company-card__more">+{c.offers.length - 1}</li> : null}</ul> : null}
       </div>
-      {c.about ? <p className="company-card__about">{c.about}</p> : null}
-      {c.offers.length ? <ul className="company-card__services" aria-label="მომსახურება">{c.offers.slice(0, 3).map((offer, index) => <li key={`${offer}-${index}`}>{offer}</li>)}{c.offers.length > 3 ? <li className="company-card__more">+{c.offers.length - 3}</li> : null}</ul> : null}
-      <div className="company-card__footer">
-        {places ? <span className="company-card__places"><Icon name="map-pin" />{places}</span> : <span />}
-        {c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}
-      </div>
+      {c.phone ? <div className="company-card__footer"><CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /></div> : null}
     </article>
   );
 }

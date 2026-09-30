@@ -1,5 +1,6 @@
 @import "./forms.css";
 @import "../cards.css";
+@import "../search.css";
 @import "../map.css";
 
 /* Catalogs: requests (/requests/) and companies (/companies/).
@@ -116,6 +117,49 @@
 .catalog-header--light .catalog-search-area .ma-input:focus {
   border-color: var(--action);
   box-shadow: var(--focus-ring), 0 10px 28px color-mix(in srgb, var(--theme-primary) 10%, transparent);
+}
+
+/* Centred, home-style header (companies): title over the segmented search, soft blue band. */
+.catalog-header--center {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-12) var(--space-10);
+  text-align: center;
+}
+.catalog-header--center.catalog-header--light::before {
+  background: var(--blue-50);
+  border-bottom: 0;
+}
+.catalog-header--center .catalog-heading {
+  display: grid;
+  justify-items: center;
+}
+.catalog-header--center .catalog-overline {
+  margin-bottom: var(--space-2);
+}
+.catalog-header--center .catalog-description {
+  margin-inline: auto;
+}
+.catalog-header--center .catalog-search-area {
+  width: 100%;
+  max-width: 880px;
+  text-align: left;
+}
+/* The segmented pill brings its own frame; drop the generic catalog input box inside it. */
+.catalog-header--center .home-search-seg .ma-input {
+  height: 26px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.catalog-header--center .home-search-seg .ma-input:focus {
+  box-shadow: none;
+}
+.catalog-header--center .catalog-search-help {
+  padding-left: 0;
+  text-align: center;
 }
 
 /* ---------- Workspace: sidebar + results ---------- */
@@ -489,6 +533,10 @@
   .catalog-title {
     font-size: 30px;
     line-height: 38px;
+  }
+  .catalog-header--center {
+    padding-block: var(--space-8);
+    gap: var(--space-5);
   }
   .catalog-description {
     margin-top: var(--space-2);

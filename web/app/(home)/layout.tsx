@@ -4,6 +4,7 @@ import "../styles/base.css";
 import "../styles/primitives.css";
 import "../styles/patterns.css";
 import "../styles/cards.css";
+import "../styles/search.css";
 import "../styles/pages/homepage.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
