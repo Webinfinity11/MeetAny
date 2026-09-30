@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
 import { DuoIcon } from "../ui/DuoIcon";
-import { Icon } from "../Icon";
 
-
-// A group facet may carry its categories. They open under it while the group or one of them is
-// selected, or when the person expands the group with its chevron (without filtering).
+// One tap = one result: a row filters, and a group's categories open under it while the group or
+// one of them is selected (no separate chevron). Rows with no results are hidden — they would only
+// lead to an empty list — except the selected one. Long lists show the busiest groups first.
 export type Facet = { id: string; label: string; count: number; icon?: string; children?: Facet[] };
+
+const VISIBLE = 8;
 
 export function FacetList({
   all,
@@ -23,47 +24,43 @@ export function FacetList({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-  const sorted = [...all].sort((a, b) => b.count - a.count);
-  // Industries with no companies sit at the end in compact 32px rows (no toggle). The "სხვა დარგები"
-  // title only appears when the list is mixed; when every industry is 0 (an empty search) they stay ordinary rows.
-  const empty = loading ? [] : sorted.filter(f => f.count === 0);
-  const filled = loading ? sorted : sorted.filter(f => f.count !== 0);
-  const grouped = empty.length > 0 && filled.length > 0;
-  const entries: Facet[] = [{ id: "", label: allLabel, count: allCount }, ...filled, ...(grouped ? [] : empty)];
-  const button = (f: Facet, compact = false) => (
+  const [more, setMore] = useState(false);
+  const isActive = (f: Facet) => f.id === activeId || !!f.children?.some(c => c.id === activeId);
+  const rows = [...all].sort((a, b) => b.count - a.count).filter(f => loading || f.count > 0 || isActive(f));
+  // The selected group always stays visible, even when it falls outside the first rows.
+  const shown = more || rows.length <= VISIBLE + 1 ? rows : rows.filter((f, i) => i < VISIBLE || isActive(f));
+  const hidden = rows.length - shown.length;
+
+  const row = (f: Facet, child = false) => (
     <button
       key={f.id}
       type="button"
-      className={`catalog-facet${!loading && f.id && f.count === 0 ? " catalog-facet--empty" : ""}${compact ? " catalog-facet--child" : ""}`}
-      title={f.label}
-      aria-label={f.label}
+      className={`catalog-facet${child ? " catalog-facet--child" : ""}`}
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
-      {compact ? null : <DuoIcon name={f.icon || (f.id ? "shapes" : "layout-grid")} size={20} className="catalog-facet__icon" />}
+      {child ? null : <DuoIcon name={f.icon || (f.id ? "shapes" : "layout-grid")} size={18} className="catalog-facet__icon" />}
       <span className="catalog-facet__label">{f.label}</span>
       <span className="catalog-facet__count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>
   );
+
   return (
     <div className="catalog-facets">
-      {entries.map(f => {
-        const selectedInside = !!f.children && (activeId === f.id || f.children.some(c => c.id === activeId));
-        const open = !!f.children && (expanded[f.id] ?? selectedInside);
-        const listId = `facet-children-${f.id}`;
-        return <div key={f.id} className={f.children ? "catalog-facet-group" : undefined}>
-          {button(f)}
-          {f.children ? <button type="button" className="catalog-facet__toggle" aria-expanded={open} aria-controls={listId}
-            aria-label={`${f.label} — ${open ? "ქვეკატეგორიების დამალვა" : "ქვეკატეგორიების ჩვენება"}`}
-            onClick={() => setExpanded(e => ({ ...e, [f.id]: !open }))}><Icon name="chevron-down" /></button> : null}
-          {open ? <div id={listId} className="catalog-facet__children">{f.children!.map(c => button(c, true))}</div> : null}
+      {row({ id: "", label: allLabel, count: allCount })}
+      {shown.map(f => {
+        const children = (f.children || []).filter(c => loading || c.count > 0 || c.id === activeId);
+        const open = isActive(f) && (children.length > 1 || children.some(c => c.id === activeId));
+        return <div key={f.id} className="catalog-facet-group">
+          {row(f)}
+          {open ? <div className="catalog-facet__children" role="group" aria-label={f.label}>{children.map(c => row(c, true))}</div> : null}
         </div>;
       })}
-      {grouped ? <>
-        <p className="catalog-facet__group">სხვა დარგები</p>
-        {empty.map(f => button(f, true))}
-      </> : null}
+      {hidden > 0 || (more && rows.length > VISIBLE + 1) ? (
+        <button type="button" className="catalog-facet-more" aria-expanded={more} onClick={() => setMore(m => !m)}>
+          {more ? "ნაკლების ჩვენება" : `კიდევ ${hidden}`}
+        </button>
+      ) : null}
     </div>
   );
 }
