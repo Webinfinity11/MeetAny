@@ -193,24 +193,16 @@
   flex-direction: column;
   gap: 0;
   padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
 }
-.company-directory-list .company-card:hover {
-  border: 0;
-  box-shadow: none;
-}
+/* Framed card (owner 2026-09-30): the photo fills the top edge, text and the call button sit inside. */
 .company-card__media {
   display: block;
   flex: none;
   aspect-ratio: 4 / 3;
   color: inherit;
   text-decoration: none;
-  margin-bottom: var(--space-3);
   overflow: hidden;
-  border-radius: var(--card-radius);
+  border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
   background: var(--bg-muted);
 }
 .company-card__media img {
@@ -221,7 +213,7 @@
   transition: filter var(--motion-base) var(--motion-ease);
 }
 .company-card:hover .company-card__media img {
-  filter: brightness(.94);
+  filter: brightness(.96);
 }
 .company-card__initials {
   display: grid;
@@ -245,12 +237,16 @@
   background: color-mix(in srgb, var(--white) 92%, transparent);
   box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
 }
+.company-card:not(:has(.company-card__footer)) .company-card__body {
+  padding-bottom: var(--space-4);
+}
 .company-card__body {
   display: grid;
   align-content: start;
   gap: 2px;
   flex: 1;
   min-width: 0;
+  padding: var(--space-4) var(--space-4) 0;
 }
 .company-card__name {
   margin: 0;
@@ -309,9 +305,10 @@
 /* Pinned to the bottom so call buttons line up across a row whatever the text length. */
 .company-card__footer {
   margin-top: auto;
-  padding-top: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-4);
 }
 .company-card__footer .ma-call {
+  width: 100%;
   min-height: var(--control-h-sm);
   padding-block: var(--space-1);
   font-size: var(--fs-sm);
@@ -365,7 +362,7 @@
   .company-directory-list,
   .catalog-skeleton--grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-6) var(--space-3);
+    gap: var(--space-3);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -377,7 +374,9 @@
   .company-directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
-  .company-card__footer .ma-call { width: 100%; padding-inline: var(--space-2); }
+  .company-card__body { padding: var(--space-3) var(--space-3) 0; }
+  .company-card__footer { padding: var(--space-3); }
+  .company-card__footer .ma-call { padding-inline: var(--space-2); }
   .company-card__services { display: none; }
 }
 @media (max-width: 359px) {

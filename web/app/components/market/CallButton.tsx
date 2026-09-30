@@ -33,7 +33,7 @@ export function CallButton({ phone, variant = "primary", contactId, requestId, s
   if (!visible) return <button type="button" className={className} data-contact-action="reveal" onClick={() => {
     setRevealed(identity);
     report("reveal");
-  }}><Icon name="phone" /><span>ნომრის ნახვა</span></button>;
+  }}><Icon name="phone" /><span>დარეკვა</span></button>;
 
   // Revealed: just the number — the phone icon already says "call", and the old label did not fit card footers.
   return <a ref={link} className={className} data-contact-action="call" href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} onClick={() => report("call")}>

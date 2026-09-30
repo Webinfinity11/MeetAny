@@ -340,7 +340,7 @@
   margin-bottom: var(--space-5);
 }
 
-/* Photo-first cards shared by partner types and companies */
+/* Photo-first cards: partner types frameless, companies framed like the catalog cards */
 .home-types,
 .home-company-grid {
   display: grid;
@@ -435,6 +435,20 @@
 .home-company__line--short {
   width: 45%;
 }
+.home-company {
+  padding-bottom: var(--space-4);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--white);
+  transition: box-shadow var(--motion-base) var(--motion-ease);
+}
+.home-company:hover { box-shadow: var(--card-hover-shadow); }
+.home-company > :not(.home-company__media, .home-company__save) { margin-inline: var(--space-4); }
+.home-company .home-company__media {
+  margin-bottom: var(--space-3);
+  border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
+}
+.home-company-grid { gap: var(--space-6) var(--space-5); }
 
 /* Latest requests: framed text cards — a different rhythm from the photo grid below */
 .home-requests {
