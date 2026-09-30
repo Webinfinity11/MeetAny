@@ -10,7 +10,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
-import { PageBand } from "./PageBand";
+import { Icon } from "../Icon";
+import { DuoIcon } from "../ui/DuoIcon";
+import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { LogoField } from "./PhotoField";
@@ -343,15 +345,30 @@ const offerTone = (status: string) => status === "chosen" ? "chosen" : status ==
 const offerLabel = (status: string) => status === "chosen" ? "არჩეულია" : status === "declined" ? "არ აირჩიეს" : "გაგზავნილია";
 
 // One tab strip for both widths and every account view (registry design system).
-function AccountTabs({ tab, items }: { tab: Tab; items: { key: Tab; href: string; label: string }[] }) {
+type NavItem = { key: Tab; href: string; label: string; icon: string; count?: number | null; alert?: boolean };
+
+/** Account sidebar (Airbnb-style account hub): who you are on top, sections with icons and counts. */
+function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab; items: NavItem[]; me: AnyUser; name: string; roleLabel: string; isCompany: boolean }) {
   return (
-    <nav className="ma-tabs account-tabs" aria-label="ანგარიშის განყოფილებები">
-      {items.map((t) => (
-        <Link key={t.key} className="ma-tab" href={t.href} aria-current={tab === t.key ? "page" : undefined}>
-          {t.label}
-        </Link>
-      ))}
-    </nav>
+    <aside className="account-nav" aria-label="ანგარიში">
+      <div className="account-nav__who">
+        <CompanyAvatar name={name} logoUrl={(me as { logoUrl?: string | null }).logoUrl} size="lg" />
+        <div>
+          <p className="account-nav__name">{name}</p>
+          <p className="account-nav__role">{roleLabel}{me.blocked ? " · დაბლოკილია" : ""}</p>
+        </div>
+      </div>
+      {isCompany ? <Link className="account-nav__public" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="external-link" />საჯარო გვერდის ნახვა</Link> : null}
+      <nav className="account-nav__list" aria-label="ანგარიშის განყოფილებები">
+        {items.map((t) => (
+          <Link key={t.key} href={t.href} aria-current={tab === t.key ? "page" : undefined}>
+            <Icon name={t.icon} />
+            <span>{t.label}</span>
+            {t.count ? <span className={t.alert ? "account-nav__count is-alert" : "account-nav__count"}>{t.count}</span> : null}
+          </Link>
+        ))}
+      </nav>
+    </aside>
   );
 }
 
@@ -411,19 +428,19 @@ export function AccountPageContent() {
   const matching = data?.matching ?? [];
   const myOffers = data?.myOffers ?? [];
   const activeTab: Tab = tab === "overview" ? isCompany ? "offers" : "requests" : tab;
-  const tabs: { key: Tab; href: string; label: string }[] = [
-    ...(isCompany ? [{ key: "offers" as Tab, href: "/account/?tab=offers", label: `შეთავაზებები (${myOffers.length})` }] : []),
-    { key: "requests", href: "/account/?tab=requests", label: `მოთხოვნები (${myRequests.length})` },
-    { key: "saved", href: "/account/?tab=saved", label: savedCount == null ? "შენახული" : `შენახული (${savedCount})` },
-    { key: "messages", href: "/account/?tab=messages", label: unread ? `მიმოწერები (${unread})` : "მიმოწერები" },
-    { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები" },
-    { key: "profile", href: "/account/?tab=profile", label: "პროფილი" },
+  const tabs: NavItem[] = [
+    ...(isCompany ? [{ key: "offers" as Tab, href: "/account/?tab=offers", label: "შეთავაზებები", icon: "send", count: myOffers.length }] : []),
+    { key: "requests", href: "/account/?tab=requests", label: "მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
+    { key: "saved", href: "/account/?tab=saved", label: "შენახული", icon: "bookmark", count: savedCount },
+    { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები", icon: "message-square", count: unread, alert: true },
+    { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები", icon: "bell" },
+    { key: "profile", href: "/account/?tab=profile", label: "პროფილი", icon: "user-round" },
   ];
+  const nav = <AccountTabs tab={activeTab} items={tabs} me={me} name={name} roleLabel={roleLabel} isCompany={isCompany} />;
 
   if (tab === "notifications") return (
     <div className="ma-page account-page">
-      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
-      <AccountTabs tab={activeTab} items={tabs} />
+      {nav}
       <div id="alerts" className="account-main account-main--profile account-alerts">
         <EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"} />
       </div>
@@ -432,8 +449,7 @@ export function AccountPageContent() {
 
   if (tab === "saved" || tab === "messages") return (
     <div className="ma-page account-page">
-      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
-      <AccountTabs tab={activeTab} items={tabs} />
+      {nav}
       <div className="account-wide">
         {tab === "messages" ? (store ? <Inbox key={me.id} store={store} me={me}/> : null) : <EngagementPanel key={tab} kind={tab}/>}
       </div>
@@ -442,8 +458,7 @@ export function AccountPageContent() {
 
   if (tab === "profile") return (
     <div className="ma-page account-page">
-      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
-      <AccountTabs tab={activeTab} items={tabs} />
+      {nav}
       <div className="account-main account-main--profile">
         {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
         <ProfileForm me={me} />
@@ -501,9 +516,11 @@ export function AccountPageContent() {
           })}
         </ul>
       ) : (
-        <div className="account-empty-block">
-          <p className="account-empty">მოთხოვნა ჯერ არ გაქვს — კომპანიები შეთავაზებას პირობებით გამოგიგზავნიან.</p>
-          {addRequest}
+        <div className="account-empty-state">
+          <DuoIcon name="file-text" size={26} tile />
+          <p className="account-empty-state__title">მოთხოვნა ჯერ არ გაქვს</p>
+          <p className="account-empty">აღწერე, რა გჭირდება — კომპანიები შეთავაზებებს თავად გამოგიგზავნიან.</p>
+          <Link className="ma-btn ma-btn--primary" href="/requests/new/">მოთხოვნის დამატება</Link>
         </div>
       )}
     </section>
@@ -511,9 +528,7 @@ export function AccountPageContent() {
 
   return (
     <div className="ma-page account-page">
-      <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
-      <p className="account-idline">{name} · {roleLabel}{isCompany ? <> · <Link href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link></> : null}{me.blocked ? <> · <span className="ma-badge ma-badge--danger">დაბლოკილია</span></> : null}</p>
-      <AccountTabs tab={activeTab} items={tabs} />
+      {nav}
       <div className="account-layout account-layout--single">
         <div className="account-main">
           {isCompany && rawTab !== "requests" ? (
