@@ -159,11 +159,8 @@
 .request-description {
   display: grid;
   gap: var(--space-5);
-  padding: var(--space-8);
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
-  background: var(--white);
-  box-shadow: var(--card-shadow);
+  padding: 0 0 var(--space-8);
+  border-bottom: 1px solid var(--border-subtle);
 }
 .request-description .ma-prose {
   max-width: 68ch;
@@ -897,9 +894,11 @@ body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
   .detail-hero__meta {
     gap: var(--space-2) var(--space-4);
   }
-  .request-description,
   .request-detail-main > .detail-aside__block {
     padding: var(--space-5);
+  }
+  .request-description {
+    padding: 0 0 var(--space-6);
   }
   .company-profile-main > section {
     padding: 0 0 var(--space-6);
