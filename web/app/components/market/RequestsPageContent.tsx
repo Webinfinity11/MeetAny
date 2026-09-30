@@ -1,12 +1,13 @@
 "use client";
 
-import { CustomSelect } from "../ui/CustomSelect";
 import Link from "next/link";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { CatalogSearch } from "./CatalogSearch";
+import { SegmentedSearch } from "../SegmentedSearch";
+import { useSearchSuggestions } from "../../lib/search-suggestions";
+import { useRouter } from "next/navigation";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
 import { ResultsBar } from "./ResultsBar";
@@ -97,6 +98,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
+  const suggestions = useSearchSuggestions("requests", query, "", results.map(result => result.id));
+  const router = useRouter();
   const categoryFacets: Facet[] = useMemo(
     () => categoryGroups.map(g => ({
       id: g.id, label: g.short, icon: g.icon, count: list({ category: g.id }).length,
@@ -106,7 +109,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   );
   const allCount = ready && available ? list({ category: "" }).length : 0;
 
-  const cityCounts = useMemo(() => Object.fromEntries(Object.keys(cities).map(id => [id, list({ city: id }).length])), [list]);
 
   const sorted = useMemo(() => {
     const arr = [...results];
@@ -172,30 +174,34 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   ];
   const clearFilters = () => filters.set({city: "", category: "", period: "", unanswered: "", photo: "", urgent: ""});
 
+  const filterCount = activeItems.length;
+  const periodOptions: [string, string][] = [["", "ნებისმიერ დროს"], ["1", "24 საათში"], ["7", "7 დღეში"]];
+  const toggle = (label: string, hint: string, checked: boolean, key: string) => <label className="filter-switch">
+    <span><strong>{label}</strong><small>{hint}</small></span>
+    <input type="checkbox" role="switch" checked={checked} onChange={e => filters.set({ [key]: e.target.checked ? "1" : "" })} />
+    <span className="filter-switch__track" aria-hidden="true" />
+  </label>;
+  // Same panel as the companies catalog; the city lives in the search pill.
   const requestFilters = (placement: "desktop" | "mobile") => <div className="catalog-filters">
+    {placement === "desktop" ? <div className="catalog-filters__head">
+      <h2>ფილტრები{filterCount > 0 ? <span className="catalog-filters__count">{filterCount}</span> : null}</h2>
+      {filterCount > 0 ? <button type="button" className="catalog-clear" onClick={clearFilters}>გასუფთავება</button> : null}
+    </div> : null}
     <div className="catalog-filter-group">
-      <h2 className="catalog-filter-title">კატეგორია</h2>
+      <h3 className="catalog-filter-title">კატეგორია</h3>
       <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
     </div>
-    <div className="ma-field catalog-filter-group">
-      <label className="catalog-filter-title" htmlFor={`request-city-${placement}`}>ქალაქი</label>
-      <CustomSelect className="ma-select" id={`request-city-${placement}`} value={city} onChange={e => setCity(e.target.value)}>
-        <option value="">ყველა ქალაქი</option>
-        {Object.entries(cities).map(([value, text]) => <option key={value} value={value}>{text} ({cityCounts[value]})</option>)}
-      </CustomSelect>
-    </div>
-    <div className="ma-field catalog-filter-group">
-      <label className="catalog-filter-title" htmlFor={`request-period-${placement}`}>გამოქვეყნდა</label>
-      <CustomSelect className="ma-select" id={`request-period-${placement}`} value={period} onChange={e => filters.set({period: e.target.value})}>
-        <option value="">ნებისმიერ დროს</option><option value="1">ბოლო 24 საათში</option><option value="7">ბოლო 7 დღეში</option>
-      </CustomSelect>
-    </div>
-    <fieldset className="catalog-filter-group catalog-filter-checks">
-      <legend className="catalog-filter-title">დამატებით</legend>
-      <label className="ma-check"><input type="checkbox" checked={unanswered} onChange={e => filters.set({unanswered: e.target.checked ? "1" : ""})} /><span>ჯერ არ აქვს შეთავაზება</span></label>
-      <label className="ma-check"><input type="checkbox" checked={urgent} onChange={e => filters.set({urgent: e.target.checked ? "1" : ""})} /><span>ვადა იწურება 3 დღეში</span></label>
-      <label className="ma-check"><input type="checkbox" checked={withPhoto} onChange={e => filters.set({photo: e.target.checked ? "1" : ""})} /><span>მხოლოდ ფოტოთი</span></label>
+    <fieldset className="catalog-filter-group">
+      <legend className="catalog-filter-title">გამოქვეყნდა</legend>
+      <div className="filter-chips">
+        {periodOptions.map(([value, label]) => <button key={value || "any"} type="button" className="filter-chip" aria-pressed={period === value} onClick={() => filters.set({ period: value })}>{label}</button>)}
+      </div>
     </fieldset>
+    <div className="catalog-filter-group">
+      {toggle("შეთავაზების გარეშე", "ჯერ არავის უპასუხია — პირველი იყავი", unanswered, "unanswered")}
+      {toggle("მალე იწურება", "ვადა 3 დღეში მთავრდება", urgent, "urgent")}
+      {toggle("ფოტოთი", "მხოლოდ ფოტოიანი მოთხოვნები", withPhoto, "photo")}
+    </div>
   </div>;
 
   const countLabel = !available
@@ -207,15 +213,21 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   return (
     <div className="ma-page requests-catalog catalog-page request-board">
       <CatalogHeader
+        center
         overline="ბიზნესები ეძებენ"
         title="ღია მოთხოვნები"
         description="ნახე, რა სჭირდებათ სხვა ბიზნესებს, და გაუგზავნე შეთავაზება."
-        search={<CatalogSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი, შეფუთვა, გადაზიდვა" value={query} onChange={setQuery} resultIds={results.map(result => result.id)} mode="requests" onCategory={category => filters.set({category, q: ""})} />}
+        search={<form onSubmit={e => { e.preventDefault(); document.getElementById("request-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
+          <SegmentedSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი, შეფუთვა, გადაზიდვა"
+            query={query} onQuery={setQuery} suggestions={suggestions}
+            onSelect={item => item.kind === "category" ? filters.set({ category: item.category, q: "" }) : router.push(item.href)}
+            city={city} onCity={setCity} />
+        </form>}
         help={<>მომწოდებელს ეძებ? <Link href="/requests/new/">დაამატე მოთხოვნა</Link></>}
       />
         <div className="catalog-workspace">
         <aside className="catalog-sidebar" aria-label="მოთხოვნების ფილტრები">{requestFilters("desktop")}</aside>
-        <div className="catalog-main">
+        <div className="catalog-main" id="request-results">
         <ResultsBar
             count={countLabel}
             utility={ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებები</Link> : null}

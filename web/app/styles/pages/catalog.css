@@ -133,6 +133,21 @@
   background: var(--blue-50);
   border-bottom: 0;
 }
+/* Dark variant (requests): solid brand blue like the home hero, white text. */
+.catalog-header--center.catalog-header--dark::before {
+  background: var(--blue-700);
+}
+.catalog-header--center.catalog-header--dark .catalog-title {
+  color: var(--white);
+}
+.catalog-header--center.catalog-header--dark .catalog-overline,
+.catalog-header--center.catalog-header--dark .catalog-description,
+.catalog-header--center.catalog-header--dark .catalog-search-help {
+  color: color-mix(in srgb, var(--white) 80%, transparent);
+}
+.catalog-header--center.catalog-header--dark .catalog-search-help a {
+  color: var(--white);
+}
 .catalog-header--center .catalog-heading {
   display: grid;
   justify-items: center;
