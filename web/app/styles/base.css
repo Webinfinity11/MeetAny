@@ -45,3 +45,10 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 .icon-tile .duo-icon {
   color: var(--action);
 }
+
+/* Mtavruli is for page/section headings and buttons; user-written names and titles on cards stay in
+   regular letters so long text remains readable. */
+.ma :is(.request-card__title, .company-card__name, .home-company__name, .home-request__title, .ma-ocard__name, .account-row__title, .inbox-row__name, .search-suggestion strong) {
+  font-feature-settings: normal;
+  letter-spacing: normal;
+}

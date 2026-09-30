@@ -44,6 +44,11 @@ export default function TermsPage() {
         <li>მონაცემებს ვიყენებთ მხოლოდ პლატფორმის მუშაობისთვის და შეტყობინებების გასაგზავნად. მესამე მხარეს არ გადაეცემა.</li>
         <li>შეგიძლიათ ნებისმიერ დროს მოითხოვოთ ანგარიშისა და მონაცემების წაშლა.</li>
       </ul>
+      <h2>6. გამოყენებული მასალები</h2>
+      <ul>
+        <li>იკონები: <a href="https://github.com/480-Design/Solar-Icon-Set" target="_blank" rel="noopener noreferrer">Solar Icon Set</a> (480 Design, CC BY 4.0) და <a href="https://tabler.io/icons" target="_blank" rel="noopener noreferrer">Tabler Icons</a> (MIT).</li>
+        <li>ფოტოები: <a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer">Unsplash</a>; რუკა: © OpenStreetMap-ის ავტორები.</li>
+      </ul>
     </div>
   );
 }
