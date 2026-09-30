@@ -48,5 +48,5 @@ const icons: Record<string, PhosphorIcon> = {
 /** Thin neutral line icon (see `.duo-icon` in base.css). Decorative: aria-hidden. */
 export function DuoIcon({ name, size = 24, className }: { name: string; size?: number; className?: string }) {
   const Glyph = icons[name] || Shapes;
-  return <Glyph className={className ? `duo-icon ${className}` : "duo-icon"} weight="light" size={size} aria-hidden="true" focusable="false" />;
+  return <Glyph className={className ? `duo-icon ${className}` : "duo-icon"} weight="regular" size={size} aria-hidden="true" focusable="false" />;
 }
