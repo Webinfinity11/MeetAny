@@ -19,9 +19,9 @@
   --theme-surface:#FFFFFF;
   --theme-font:FiraGO;
   --theme-radius:8px;
-  --theme-caps-headings:normal;
-  --theme-caps-buttons:normal;
-  --theme-caps-tracking:0;
+  --theme-caps-headings:"case" 1;
+  --theme-caps-buttons:"case" 1;
+  --theme-caps-tracking:.03em;
   /* Mtavruli is reserved for the home hero title only (design refresh 2026-09-29). */
   --theme-caps-hero:"case" 1;
   --theme-icon-stroke:1.75;
@@ -98,7 +98,7 @@
   --ff-heading:var(--theme-caps-headings);
   --ff-button:var(--theme-caps-buttons);
   --ff-eyebrow:normal;
-  --ls-heading:-.01em;
+  --ls-heading:.02em;
   --ls-button:var(--theme-caps-tracking);
   --fs-button:15px;
   --lh-button:20px;
@@ -287,8 +287,9 @@
      #DDD borders, shadows only on floating elements (search, sticky cards, menus). */
   --shadow-float:0 6px 16px rgba(0,0,0,.12);
   --shadow-search:0 3px 12px rgba(0,0,0,.10);
-  --accent-soft:color-mix(in srgb,var(--theme-accent) 14%,#fff);
+  --accent-soft:#FFF4DA;
   --accent-text:color-mix(in srgb,var(--theme-accent) 55%,#000);
+  --accent-line:#F6DFA4;
   --canvas:#FFFFFF;
   --card-radius:12px;
   --card-border:#DDDDDD;

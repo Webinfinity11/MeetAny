@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { DiscoverySearch } from "../components/DiscoverySearch";
 import { Icon } from "../components/Icon";
-import { HomeCategories, HomeIndustries, HomeFeatured, HomeRequestStarter, HomeJoin, HomeStats } from "../components/HomeLive";
+import { HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin, HomeStats } from "../components/HomeLive";
 
 // Frames of need-process-icons.png (3 across): magnifier + chat, company documents, document + pen.
 const steps = [
@@ -34,12 +34,12 @@ export default function HomePage() {
 
     <div className="home-wrap"><HomeIndustries /></div>
 
-    <section className="home-section home-wrap" aria-labelledby="types-heading">
+    <section className="home-section home-wrap" aria-labelledby="requests-heading">
       <div className="home-section-head">
-        <h2 id="types-heading">რა სჭირდება შენს ბიზნესს?</h2>
-        <Link className="home-text-link" href="/companies/">კატალოგის ნახვა<Icon name="arrow-right" /></Link>
+        <h2 id="requests-heading">ახალი მოთხოვნები</h2>
+        <Link className="home-text-link" href="/requests/">ყველა მოთხოვნა<Icon name="arrow-right" /></Link>
       </div>
-      <HomeCategories />
+      <HomeRequests />
     </section>
 
     <section className="home-section home-wrap" aria-labelledby="featured-heading">

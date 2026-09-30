@@ -77,6 +77,33 @@ export function HomeIndustries() {
   </nav>;
 }
 
+/** Latest open requests for companies: shows the platform is alive and gives them a reason to join. */
+type OpenRequest = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string };
+export function HomeRequests() {
+  const {store, ready, available} = useMarketStore();
+  const [now] = useState(() => Date.now());
+  const rows: OpenRequest[] = ready && available && store
+    ? [...(store.listRequests as (args: unknown) => OpenRequest[])({ state: "open" })].filter(r => !/ტესტ|test|e2e/i.test(r.title)).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 4)
+    : [];
+  return <div className="home-requests" aria-busy={!ready}>
+    {!ready ? [0, 1, 2, 3].map(i => <div className="home-request home-request--skeleton" key={i}><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line home-company__line--short" /></div>)
+      : !rows.length ? <p className="home-empty">ღია მოთხოვნები მალე გამოჩნდება.</p>
+      : rows.map(r => {
+        const days = store?.daysLeft(r, now) ?? 0;
+        const offers = store?.offerCount(r.id) ?? 0;
+        return <article className="home-request" key={r.id}>
+          <p className="home-request__category">{categoryLabels[r.category] || r.category}</p>
+          <h3 className="home-request__title"><Link href={`/requests/view/?id=${encodeURIComponent(r.id)}`}>{r.title}</Link></h3>
+          <p className="home-request__meta"><Icon name="map-pin" />{cities[r.city] || r.city}</p>
+          <p className="home-request__foot">
+            <span><strong>{offers}</strong> შეთავაზება</span>
+            <span className={days <= 3 ? "home-request__due is-soon" : "home-request__due"}>{days <= 0 ? "დღეს იწურება" : `${days} დღე დარჩა`}</span>
+          </p>
+        </article>;
+      })}
+  </div>;
+}
+
 /** Photo-first company card (home): picture or initials tile on top, text below, no frame. */
 function HomeCompanyCard({ c }: { c: Company }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
@@ -96,7 +123,8 @@ function HomeCompanyCard({ c }: { c: Company }) {
 export function HomeFeatured() {
   const {store, ready, available} = useMarketStore();
   const all: Company[] = ready && available ? store?.listCompanies() || [] : [];
-  const rows = all.filter(c => c.about).slice(0, 8);
+  // The home showcase skips internal test accounts (they stay in the catalog for QA).
+  const rows = all.filter(c => c.about && !/სატესტო|test|e2e/i.test(c.company)).slice(0, 8);
   // Fixed-height grid while loading so the page does not shift when companies arrive.
   return <div className="home-company-grid" id="featured-companies" aria-busy={!ready}>
     {!ready ? [0, 1, 2, 3].map(i => <div className="home-company home-company--skeleton" key={i}><span className="ma-skel home-company__media" /><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line home-company__line--short" /></div>)
