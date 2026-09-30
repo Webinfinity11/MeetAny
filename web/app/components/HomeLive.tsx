@@ -70,7 +70,7 @@ export function HomeIndustries() {
   return <nav className="home-catbar" aria-label="კატეგორიები" data-start={edges.start || undefined} data-end={edges.end || undefined}>
     <button type="button" className="home-catbar__arrow home-catbar__arrow--prev" aria-label="წინა კატეგორიები" hidden={edges.start} onClick={() => scroll(-1)}><Icon name="chevron-left" /></button>
     <ul ref={list}>{items.map(item => <li key={item.id}><Link href={`/companies/?industry=${item.id}`}>
-      <DuoIcon name={item.id} size={26} />
+      <DuoIcon name={item.id} size={24} tile />
       <span>{item.label}</span>
     </Link></li>)}</ul>
     <button type="button" className="home-catbar__arrow home-catbar__arrow--next" aria-label="შემდეგი კატეგორიები" hidden={edges.end} onClick={() => scroll(1)}><Icon name="chevron-right" /></button>

@@ -334,7 +334,6 @@
 
 .home-catbar {
   position: relative;
-  border-bottom: 1px solid var(--border-subtle);
 }
 .home-catbar ul {
   display: flex;
@@ -367,15 +366,13 @@
 /* Fixed-width items give an even rhythm whatever the label length; long labels wrap to two lines. */
 .home-catbar a {
   display: grid;
-  grid-template-rows: 28px 34px;
+  grid-template-rows: 48px 34px;
   justify-items: center;
   align-content: start;
   gap: var(--space-2);
   width: 104px;
-  padding: 0 var(--space-1) var(--space-3);
-  border-bottom: 2px solid transparent;
+  padding: 0 var(--space-1) var(--space-2);
   color: var(--text-2);
-  opacity: .78;
   font-size: var(--fs-xs);
   line-height: 17px;
   font-weight: var(--fw-semibold);
@@ -387,16 +384,14 @@
 }
 .home-catbar a:hover {
   color: var(--text);
-  opacity: 1;
-  border-color: var(--border-strong);
 }
-.home-catbar .duo-icon {
-  color: currentColor;
+.home-catbar a:hover .icon-tile {
+  background: var(--blue-100);
 }
 .home-catbar__arrow {
   position: absolute;
   z-index: 1;
-  top: calc(var(--space-5) + 14px);
+  top: calc(var(--space-5) + 8px);
   display: grid;
   place-items: center;
   width: 32px;

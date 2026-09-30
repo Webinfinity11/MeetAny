@@ -27,9 +27,21 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 .ma-link{padding:0;border:0;background:none;font:inherit;color:var(--text-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer;border-radius:var(--radius-xs)}
 .ma-link:hover{color:var(--action-hover);text-decoration-thickness:2px}
 
-/* Phosphor light icons (components/ui/DuoIcon): thin, unfilled, muted ink. Used only where the
-   icon carries meaning (categories, partner types, steps, empty states). */
+/* Meaningful icons (components/ui/DuoIcon, Solar linear sprite). `.icon-tile` = soft blue circle. */
 .duo-icon {
   flex: none;
   color: var(--text-2);
+}
+.icon-tile {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--blue-50);
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+.icon-tile .duo-icon {
+  color: var(--action);
 }
