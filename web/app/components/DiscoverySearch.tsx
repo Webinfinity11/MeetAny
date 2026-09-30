@@ -21,8 +21,9 @@ export function DiscoverySearch() {
     </fieldset>
     <SegmentedSearch key={mode} id="home-search" cityField
       label={mode === "companies" ? "პროდუქტის, მომსახურების ან კომპანიის ძიება" : "ღია მოთხოვნის ძიება"}
-      placeholder={mode === "companies" ? "პროდუქტი, მომსახურება ან კომპანია" : "რა პროდუქტს ან მომსახურებას სთავაზობ?"}
+      placeholder={mode === "companies" ? "პროდუქტი, მომსახურება ან კომპანია" : "რას სთავაზობ?"}
       query={query} onQuery={setQuery} suggestions={suggestions} onSelect={item => router.push(item.href)}
-      city={city} onCity={setCity} />
+      city={city} onCity={setCity}
+      emptyHref={`/requests/new/?${new URLSearchParams({ title: query.trim(), city })}`} />
   </form>;
 }

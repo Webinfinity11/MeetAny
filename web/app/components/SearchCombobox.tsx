@@ -6,9 +6,19 @@ import { DuoIcon } from "./ui/DuoIcon";
 import { avatarInitials } from "./ui/Avatar";
 import type { SearchSuggestion } from "../lib/search-suggestions";
 
-export function SearchCombobox({ id, label, placeholder, value, onChange, suggestions, onSelect, name, hideLabel = false }: {
+/** Bold the part of `text` that matches the query (case-insensitive, first occurrence). */
+function Highlight({ text, query }: { text: string; query: string }) {
+  const q = query.trim();
+  const at = q ? text.toLocaleLowerCase("ka").indexOf(q.toLocaleLowerCase("ka")) : -1;
+  if (at < 0) return <>{text}</>;
+  return <>{text.slice(0, at)}<mark>{text.slice(at, at + q.length)}</mark>{text.slice(at + q.length)}</>;
+}
+
+export function SearchCombobox({ id, label, placeholder, value, onChange, suggestions, onSelect, name, hideLabel = false, emptyHref }: {
   id: string; label: string; placeholder: string; value: string; onChange: (value: string) => void;
   suggestions: SearchSuggestion[]; onSelect: (item: SearchSuggestion) => void; name?: string; hideLabel?: boolean;
+  /** Where "nothing found" points (usually a prefilled new request); omit to hide the panel instead. */
+  emptyHref?: string;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
@@ -30,7 +40,10 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
         }} />
       {value ? <button type="button" className="catalog-search__clear" aria-label="ძიების გასუფთავება" onClick={() => { onChange(""); setActive(-1); setOpen(true); input.current?.focus(); }}><Icon name="x" /></button> : null}
     </div>
-    {/* Nothing to suggest → no panel; the list below already answers. */}
+    {open && value.trim() && !suggestions.length && emptyHref ? <div className="search-suggestions search-suggestions--empty" role="status">
+      <p className="search-suggestions__none"><strong>„{value.trim()}“ ვერ მოიძებნა</strong><span>აღწერე, რა გჭირდება, და კომპანიები თავად დაგიკავშირდებიან.</span></p>
+      <a className="ma-btn ma-btn--primary ma-btn--sm" href={emptyHref} onMouseDown={e => e.preventDefault()}>მოთხოვნის გამოქვეყნება</a>
+    </div> : null}
     <div className="search-suggestions" hidden={!open || !suggestions.length}>
       <div role="listbox" id={`${id}-suggestions`} aria-label="ძიების შეთავაზებები">
         {suggestions.map((s, index) => {
@@ -42,7 +55,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
               ? <DuoIcon name={s.category} size={22} tile />
               : s.image ? <img className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={44} height={44} />
               : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? avatarInitials(s.label) : <DuoIcon name="file-text" size={20} />}</span>}
-            <span><strong>{s.label}</strong><small>{s.detail}</small></span>
+            <span><strong><Highlight text={s.label} query={value} /></strong><small>{s.detail}</small></span>
           </button></Fragment>;
         })}
       </div>

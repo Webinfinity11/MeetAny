@@ -21,9 +21,26 @@
   border-radius: 999px;
   transition: background-color var(--motion-fast) var(--motion-ease);
 }
-.home-search-seg:hover,
-.home-search-seg:focus-within {
+/* Airbnb focus model: while a segment is active the whole pill greys out and the active segment
+   lifts as a white pill; hover on an idle segment is a light grey. */
+.home-search-entry {
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+.home-search-entry:focus-within {
+  background: var(--bg-muted);
+}
+.home-search-seg:hover:not(:focus-within) {
   background: var(--bg-subtle);
+}
+.home-search-entry:focus-within .home-search-seg:hover:not(:focus-within) {
+  background: color-mix(in srgb, var(--ink-900) 8%, transparent);
+}
+.home-search-entry .home-search-seg:focus-within {
+  background: var(--white);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+}
+.home-search-entry:focus-within .home-search-seg + .home-search-seg::before {
+  opacity: 0;
 }
 .home-search-seg + .home-search-seg::before {
   content: "";
@@ -112,9 +129,6 @@
     grid-template-columns: minmax(0, 1fr) auto;
     border-radius: 20px;
   }
-  .home-search-seg--city {
-    display: none;
-  }
   .home-search-seg {
     padding-inline: var(--space-4);
   }
@@ -152,4 +166,71 @@
 }
 .home-search-seg .home-search-city[aria-expanded="true"] {
   box-shadow: none;
+}
+
+/* Matched part of a suggestion */
+.search-suggestion mark {
+  background: none;
+  color: var(--action);
+  font-weight: var(--fw-bold);
+}
+
+/* Nothing found: explain and offer the request form, instead of an empty void */
+.search-suggestions--empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+.search-suggestions__none {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  min-width: 0;
+}
+.search-suggestions__none strong {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  overflow-wrap: anywhere;
+}
+.search-suggestions__none span {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+  color: var(--text-3);
+}
+.search-suggestions--empty .ma-btn {
+  flex: none;
+}
+
+@media (max-width: 767px) {
+  /* Phones: what on top, city below, round button spanning both rows — the city stays reachable. */
+  .home-search-entry {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    column-gap: var(--space-2);
+  }
+  .home-search-seg--what { grid-column: 1; grid-row: 1; }
+  .home-search-seg--city {
+    display: grid;
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .home-search-seg + .home-search-seg::before {
+    left: var(--space-4);
+    right: var(--space-4);
+    top: 0;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+  .home-search-submit {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+  .search-suggestions--empty {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

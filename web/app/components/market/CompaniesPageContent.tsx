@@ -189,7 +189,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         title="მომწოდებლები და მომსახურება"
         description="მოძებნე კომპანია დარგისა და ქალაქის მიხედვით და დაუკავშირდი პირდაპირ."
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("company-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-          <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="კომპანიის სახელი ან მომსახურება"
+          <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება"
+            emptyHref={`/requests/new/?${new URLSearchParams({ title: query.trim(), city })}`}
             query={query} onQuery={setQuery} suggestions={suggestions}
             onSelect={item => item.kind === "category" ? filters.set({ industry: item.category, q: "" }) : router.push(item.href)}
             city={city} onCity={setCity} />
