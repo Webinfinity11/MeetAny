@@ -2,7 +2,7 @@
 
 import { useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { categories, categoryIcon, currentCategory, units } from "../../lib/categories";
+import { categories, currentCategory, units } from "../../lib/categories";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
 
@@ -50,7 +50,7 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
   return (
     <article style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entrance ? "" : undefined} className={`request-card${hasPhoto ? " request-card--photo" : ""}${r.isOwn ? " request-card--mine" : closedLike ? " request-card--closed" : ""}`}>
       <div className="request-card__visual" aria-hidden="true">
-        <DuoIcon name={categoryIcon[category] || "file-text"} size={30} />
+        <DuoIcon name="file-text" size={30} />
         {hasPhoto ? <img src={r.photo!} alt="" width={144} height={144} style={{ opacity: loadedPhoto === r.photo ? 1 : 0 }} loading={priority ? "eager" : "lazy"} onLoad={() => setLoadedPhoto(r.photo)} onError={() => setFailedPhoto(r.photo)} /> : null}
       </div>
       <div className="request-card__body">
@@ -64,7 +64,7 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
             {quantity ? <li><Icon name="package" />{quantity}</li> : null}
             <li className={urgent ? "is-urgent" : "request-card__deadline"}><Icon name="clock" />{deadline}</li>
           </ul>
-          <Link className="request-card__open" href={href} aria-label={`დეტალების ნახვა: ${r.title}`}><Icon name="file-text" />დეტალების ნახვა</Link>
+          <Link className="request-card__open" href={href} aria-label={`დეტალების ნახვა: ${r.title}`}>დეტალების ნახვა<Icon name="arrow-right" /></Link>
         </div>
         {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <p className="request-card__status">
           {r.isOwn ? <span className="is-own">შენი მოთხოვნა</span> : null}

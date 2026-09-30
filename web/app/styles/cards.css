@@ -127,9 +127,11 @@
 .request-card__facts .request-card__deadline { background: #f0f4fc; border-color: #e6ecf7; color: #365681; }
 .request-card__facts .is-urgent { color: var(--accent-text); background: var(--accent-soft); border-color: #ffe2c5; }
 .request-card__facts .is-urgent .icon { color: inherit; }
-.request-card__open { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: 8px; min-height: 36px; padding: 7px 12px; border: 1px solid #ffd8b0; background: #fff6eb; border-radius: 7px; color: var(--text); font-size: 13px; line-height: 20px; font-weight: var(--fw-semibold); text-decoration: none; }
-.request-card__open .icon { width: 17px; height: 17px; stroke-width: 1.5; color: var(--accent-text); }
-.request-card__open:hover { background: var(--accent-soft); border-color: var(--orange-400); }
+.request-card__open { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: 6px; min-height: 36px; padding: 7px 4px 7px 10px; border-radius: 7px; color: var(--action); font-size: 13px; line-height: 20px; font-weight: var(--fw-semibold); text-decoration: none; }
+.request-card__open .icon { width: 16px; height: 16px; stroke-width: 1.75; transition: transform .15s ease; }
+.request-card__open:hover { text-decoration: underline; text-underline-offset: 3px; }
+.request-card__open:hover .icon { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) { .request-card__open .icon { transition: none; } }
 .request-card__open:focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
 .request-card__status { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; font-size: 12px; line-height: 18px; color: var(--action); }
 .request-card--closed .request-card__title { color: var(--text-2); }

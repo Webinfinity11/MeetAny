@@ -4,7 +4,7 @@
 // Kind: "product" (a company supplies goods) or "service"; it drives the catalog type filter.
 export const categoryGroups = [
   { id: "food", short: "საკვები და სასმელი", name: "საკვები და სასმელი", icon: "utensils", photo: "fresh-produce.jpg", items: [
-    ["food_fresh", "ახალი პროდუქტი", "product"],
+    ["food_fresh", "ხილი, ბოსტნეული და ხორცი", "product"],
     ["food_processed", "დაფასოებული საკვები", "product"],
     ["beverages", "სასმელები და ღვინო", "product"],
     ["catering", "კვების ორგანიზება", "service"],
