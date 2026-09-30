@@ -978,3 +978,47 @@ body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---------- Request detail, de-duplicated (2026-09-30) ---------- */
+.detail-hero__context {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+  color: var(--text-3);
+}
+.detail-hero { gap: var(--space-2); }
+/* Facts: a plain two-column list with hairlines, no grey boxes */
+.request-detail .request-detail-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.request-detail .request-detail-facts > div {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  border-radius: 0;
+  background: none;
+}
+.request-detail .request-detail-facts dt {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--text-3);
+}
+.request-detail .request-detail-facts dd {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+}
+.request-description {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.request-description .detail-section-title { margin-top: var(--space-4); }
+.request-author-identity p { color: var(--text-3); }
+@media (max-width: 767px) {
+  .request-detail .request-detail-facts > div { grid-template-columns: 120px minmax(0, 1fr); }
+}

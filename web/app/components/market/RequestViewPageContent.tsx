@@ -201,7 +201,6 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
   // The deadline lives in the facts and the aside; the meta says what, where and when it was posted.
   const posted = postedLabel(r.createdAt, now);
-  const stateTone = state === "open" ? (daysLeft <= 3 ? "urgent" : "open") : state === "chosen" ? "chosen" : "closed";
   const shareUrl = origin ? `${origin}/requests/view/?id=${encodeURIComponent(r.id)}` : "";
   async function action(kind: "extend" | "close" | "delete" | "withdraw") {
     if (!store || actionPending) return;
@@ -289,7 +288,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         </section>
       ) : me ? (
         <section className="detail-aside__block" aria-label="შეთავაზებები">
-          <p className="detail-aside__text">შეთავაზებებს კომპანიები აგზავნიან. შენც გჭირდება მსგავსი რამ? დაამატე მოთხოვნა და კომპანიები თავად დაგიკავშირდებიან.</p>
+          <p className="detail-aside__text">შენც გჭირდება მსგავსი რამ?</p>
           <Link className="ma-btn ma-btn--secondary detail-aside__primary" href={`/requests/new/?${new URLSearchParams({ category: r.category, city: r.city })}`}>
             მოთხოვნის დამატება
           </Link>
@@ -312,29 +311,23 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <Icon name="arrow-left" />
         მოთხოვნები
       </Link>
+      {/* Each fact appears once: context line, title, then a plain fact list next to the text. */}
       <header className="detail-hero">
-        <div className="detail-hero__tags">
-          <span className="detail-status" data-tone={stateTone}>{state === "open" ? `შეთავაზებები მიიღება · ${statusText}` : statusText}</span>
-          <span className="detail-hero__category">{categories[r.category] || r.category}</span>
-        </div>
+        <p className="detail-hero__context">{categories[r.category] || r.category}{posted ? ` · გამოქვეყნდა ${posted}` : ""}</p>
         <h1 className="detail-hero__title">{r.title}</h1>
-        <ul className="detail-hero__meta" aria-label="მოთხოვნის დეტალები">
-          <li><Icon name="map-pin" />{[cities[r.city] || r.city, r.addressNote ? addressLabel(r.addressNote) : null].filter(Boolean).join(" · ")}</li>
-          {posted ? <li><Icon name="clock" />გამოქვეყნდა {posted}</li> : null}
-          <li><Icon name="message-square" />{offerCount} შეთავაზება</li>
-        </ul>
       </header>
       <div className="request-detail-grid">
         <div className="request-detail-main">
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
-            <h2 className="detail-section-title">რა გვჭირდება</h2>
-            <p className="ma-prose">{r.body}</p>
-            <dl className="ma-kv request-detail-facts">
+            <dl className="request-detail-facts">
+              <div><dt>სტატუსი</dt><dd className={state === "open" && daysLeft <= 7 ? "detail-meta__urgent" : undefined}>{state === "open" ? `ღიაა · ${statusText}` : statusText}</dd></div>
+              <div><dt>შეთავაზებები</dt><dd>{offerCount}</dd></div>
+              <div><dt>ადგილი</dt><dd>{[cities[r.city] || r.city, r.addressNote ? addressLabel(r.addressNote) : null].filter(Boolean).join(" · ")}</dd></div>
               {r.quantity != null ? <div><dt>რაოდენობა</dt><dd>{r.quantity} {units[r.unit] || r.unit}</dd></div> : null}
-              {r.neededBy ? <div><dt>საჭიროა თარიღამდე</dt><dd>{dateLabel(r.neededBy)}</dd></div> : null}
-              <div><dt>შეთავაზებების მიღება</dt><dd className={state === "open" && daysLeft <= 7 ? "detail-meta__urgent" : undefined}>{statusText}</dd></div>
-              <div><dt>ადგილმდებარეობა</dt><dd>{cities[r.city] || r.city}</dd></div>
+              {r.neededBy ? <div><dt>საჭიროა</dt><dd>{dateLabel(r.neededBy)}-მდე</dd></div> : null}
             </dl>
+            <h2 className="detail-section-title">აღწერა</h2>
+            <p className="ma-prose">{r.body}</p>
             {r.photo ? <figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure> : null}
           </section>
           {!isOwner && me?.role === "company" ? responsePanel : null}
@@ -344,8 +337,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
           {owner ? (
             <section className="request-author">
-              <span className="detail-label">მოთხოვნის ავტორი</span>
-              <div className="request-author-identity"><CompanyAvatar name={owner.company || owner.name} logoUrl={owner.logoUrl} /><div><h2 className="detail-author__name">{owner.company || owner.name}</h2><p>{cities[owner.city] || owner.city}</p></div></div>
+              <div className="request-author-identity"><CompanyAvatar name={owner.company || owner.name} logoUrl={owner.logoUrl} /><div><h2 className="detail-author__name">{owner.company || owner.name}</h2><p>მოთხოვნის ავტორი</p></div></div>
               {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" contactId={r.ownerId} requestId={r.id} source="request-owner" /> : null}
               {!isOwner && me?.role === "company" ? <MessageButton companyId={me.id} requestId={r.id}/> : null}
             </section>
