@@ -1,5 +1,4 @@
 "use client";
-import { Icon } from "../Icon";
 
 import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useState } from "react";
@@ -276,11 +275,16 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
         <aside className="auth-aside" aria-label="რატომ MeetAny">
           <p className="auth-aside__eyebrow">MeetAny</p>
           <h2>ბიზნესები აქ პოულობენ ერთმანეთს</h2>
-          <ul>
-            <li><Icon name="file-text" /><span><strong>გამოაქვეყნე მოთხოვნა</strong>აღწერე, რა გჭირდება — კომპანიები თავად შემოგთავაზებენ.</span></li>
-            <li><Icon name="inbox" /><span><strong>მიიღე შეთავაზებები</strong>შეადარე პირობები ერთ ადგილას.</span></li>
-            <li><Icon name="handshake" /><span><strong>დაუკავშირდი პირდაპირ</strong>შუამავლისა და საკომისიოს გარეშე.</span></li>
-          </ul>
+          <ol className="auth-steps">
+            {[
+              [0, "მოძებნე ან აღწერე, რა გჭირდება"],
+              [1, "მიიღე და შეადარე შეთავაზებები"],
+              [2, "შეთანხმდი კომპანიასთან პირდაპირ"],
+            ].map(([frame, title]) => <li key={title}>
+              <span className="auth-steps__art" aria-hidden="true" style={{ backgroundPosition: `${Number(frame) * 50}% 50%` }} />
+              <strong>{title}</strong>
+            </li>)}
+          </ol>
         </aside>
       </div>
     </div>

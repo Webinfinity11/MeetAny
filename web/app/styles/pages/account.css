@@ -131,7 +131,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 }
 @media(prefers-reduced-motion:reduce){:is(.inbox,.inbox-thread) *{transition:none!important;animation:none!important}}
 .auth-form{display:grid;min-width:0}
-.auth-page .ma-form{gap:var(--space-5)}
+.auth-page .ma-form{gap:var(--space-4)}
 .auth-page .ma-btn--block{width:100%}
 .auth-label-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);min-height:var(--lh-sm)}
 .auth-label-row .auth-link{margin-block:calc((var(--lh-sm) - var(--tap-min)) / 2)}
@@ -164,7 +164,8 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-role input{flex:none;margin:var(--space-1) 0 0;accent-color:var(--action)}
 .auth-role>span{display:grid;gap:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
 .auth-role strong{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text);font-weight:var(--fw-semibold)}
-.auth-field-message{min-height:var(--lh-sm)}
+.auth-field-message{min-height:0}
+.auth-field-message:empty{display:none}
 :is(.auth-page,.account-page) .auth-field-message .ma-field__error{margin:0;font-size:var(--fs-xs);line-height:var(--lh-sm)}
 .account-form-group{display:grid;gap:var(--space-5);min-width:0;margin:0;padding:0;border:0}
 .account-form-group>legend{padding:0;margin-bottom:var(--space-4);font-size:var(--fs-title);line-height:var(--lh-title);font-weight:var(--fw-semibold)}
@@ -269,61 +270,55 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
   color: var(--text-link);
   text-underline-offset: 3px;
 }
+/* Brand panel: the home hero's solid blue and its three illustrated steps */
 .auth-aside {
-  position: relative;
-  isolation: isolate;
   display: grid;
   align-content: center;
   gap: var(--space-6);
   padding: var(--space-12);
-  background: var(--hero-bg);
-  color: var(--hero-text);
+  background: var(--blue-700);
+  color: var(--white);
 }
 .auth-aside__eyebrow {
   margin: 0;
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
-  color: var(--action);
+  color: color-mix(in srgb, var(--white) 75%, transparent);
 }
 .auth-aside h2 {
   margin: 0;
   font-size: 28px;
   line-height: 36px;
   font-weight: var(--fw-bold);
-  color: var(--text);
+  color: var(--white);
 }
-.auth-aside ul {
+.auth-steps {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.auth-aside li {
+.auth-steps li {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: center;
   gap: var(--space-4);
-  align-items: start;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--white) 14%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--white) 8%, transparent);
 }
-.auth-aside li > .icon {
-  width: 40px;
-  height: 40px;
-  padding: 10px;
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  background: var(--glass);
-  color: var(--text-2);
+.auth-steps__art {
+  width: 72px;
+  height: 62px;
+  background: url(/assets/need-process-icons.png) no-repeat;
+  background-size: 300% auto;
 }
-.auth-aside li span {
-  display: grid;
-  gap: var(--space-1);
-  font-size: var(--fs-sm);
-  line-height: var(--lh-sm);
-  color: var(--hero-text-2);
-}
-.auth-aside strong {
+.auth-steps strong {
   font-size: var(--fs-body);
-  color: var(--text);
+  line-height: var(--lh-sm);
+  color: var(--white);
 }
 
 @media (max-width: 1023px) {
