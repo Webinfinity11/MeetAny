@@ -2,8 +2,6 @@
 
 import { useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { Icon } from "../Icon";
-import { DuoIcon } from "../ui/DuoIcon";
 import { categories, units } from "../../lib/categories";
 
 export type RequestRowData = {
@@ -46,31 +44,26 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
   const hasPhoto = !!r.photo && r.photo !== failedPhoto;
   const quantity = r.quantity != null && r.unit ? `${r.quantity} ${units[r.unit] || r.unit}` : null;
   const entrance = entranceIndex != null && entranceIndex < 12;
+  // Plain, text-first listing (like real job boards): no icon per fact, no slogans.
+  const facts = [r.cityLabel, quantity, r.ownerName].filter(Boolean).join(" · ");
+  const status = [`${r.offerCount} შეთავაზება`, deadline].filter(Boolean);
   return (
     <article style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entrance ? "" : undefined} className={`request-card${hasPhoto ? " request-card--photo" : ""}${r.isOwn ? " request-card--mine" : closedLike ? " request-card--closed" : ""}`}>
       <div className="request-card__body">
-        <p className="request-card__context"><span className="request-card__category"><DuoIcon name={r.category} size={16} />{categories[r.category] || r.category}</span>{r.isNew ? <span className="catalog-new">ახალი</span> : null}{r.posted ? <span className="request-card__posted">{r.posted}</span> : null}</p>
+        <p className="request-card__context">{categories[r.category] || r.category}{r.posted ? ` · ${r.posted}` : ""}{r.isNew ? <span className="request-card__new">ახალი</span> : null}</p>
         <h2 className="request-card__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         {body ? <p className="request-card__desc">{body}</p> : null}
-        <ul className="request-card__meta" aria-label="დეტალები">
-          {r.cityLabel ? <li><Icon name="map-pin" />{r.cityLabel}</li> : null}
-          {quantity ? <li><Icon name="package" />{quantity}</li> : null}
-          {r.ownerName ? <li><Icon name="building-2" />{r.ownerName}</li> : null}
-        </ul>
-        {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <div className="request-card__badges">
-          {r.isOwn ? <span className="ma-badge ma-badge--info">შენი მოთხოვნა</span> : null}
-          {r.showOwnOfferBadge && r.ownOfferStatus ? <span className={`ma-badge ma-badge--${r.ownOfferStatus === "chosen" ? "success" : "info"}`}>შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
-        </div> : null}
+        {facts ? <p className="request-card__facts">{facts}</p> : null}
+        <p className="request-card__status">
+          <span>{status[0]}</span>
+          {status[1] ? <span className={urgent ? "is-urgent" : undefined}>{status[1]}</span> : null}
+          {r.isOwn ? <span className="is-own">შენი მოთხოვნა</span> : null}
+          {r.showOwnOfferBadge && r.ownOfferStatus ? <span className="is-own">შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
+        </p>
       </div>
       {hasPhoto ? <div className="request-card__photo" aria-hidden="true">
-        <img src={r.photo!} alt="" width={240} height={240} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
+        <img src={r.photo!} alt="" width={176} height={176} loading={priority ? "eager" : "lazy"} onError={() => setFailedPhoto(r.photo)} />
       </div> : null}
-      <div className="request-card__footer">
-        {r.offerCount > 0 || closedLike
-          ? <span className="request-card__offers"><Icon name="message-square" /><strong>{r.offerCount}</strong> შეთავაზება</span>
-          : <span className="request-card__offers is-first"><Icon name="send" />ჯერ შეთავაზება არ არის — იყავი პირველი</span>}
-        <span className={`request-card__deadline${urgent ? " is-urgent" : ""}`}><Icon name="clock" />{deadline}</span>
-      </div>
     </article>
   );
 }
