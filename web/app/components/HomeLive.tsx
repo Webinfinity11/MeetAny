@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomSelect } from "./ui/CustomSelect";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMarketStore } from "../lib/market-client";
@@ -51,16 +51,30 @@ export function HomeCategories() {
   </Link>)}</div>;
 }
 
-/** Airbnb-style category strip: thin icon above a short label, scrolls sideways on small screens. */
+/** Airbnb-style category carousel: every category with its own thin icon, scrolls sideways
+ *  (wheel, touch, drag) with round arrow buttons at the edges. */
 export function HomeIndustries() {
-  const {store, ready, available} = useMarketStore();
-  return <nav className="home-catbar" aria-label="საქმიანობის მიმართულებები"><ul>{categoryGroups.filter(g => g.id !== "other").map(group => {
-    const count = ready && available ? store?.listCompanies({industry: group.id}).length : null;
-    return <li key={group.id}><Link href={`/companies/?industry=${group.id}`} title={count ? `${group.short} — ${count} კომპანია` : group.short}>
-      <DuoIcon name={group.icon} size={26} />
-      <span>{group.short}</span>
-    </Link></li>;
-  })}</ul></nav>;
+  const list = useRef<HTMLUListElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: false });
+  const items = categoryGroups.flatMap(g => g.items.map(([id, label]) => ({ id, label: label as string })));
+  useEffect(() => {
+    const el = list.current;
+    if (!el) return;
+    const update = () => setEdges({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 });
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { el.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+  }, []);
+  const scroll = (dir: 1 | -1) => list.current?.scrollBy({ left: dir * list.current.clientWidth * 0.8, behavior: "smooth" });
+  return <nav className="home-catbar" aria-label="კატეგორიები" data-start={edges.start || undefined} data-end={edges.end || undefined}>
+    <button type="button" className="home-catbar__arrow home-catbar__arrow--prev" aria-label="წინა კატეგორიები" hidden={edges.start} onClick={() => scroll(-1)}><Icon name="chevron-left" /></button>
+    <ul ref={list}>{items.map(item => <li key={item.id}><Link href={`/companies/?industry=${item.id}`}>
+      <DuoIcon name={item.id} size={26} />
+      <span>{item.label}</span>
+    </Link></li>)}</ul>
+    <button type="button" className="home-catbar__arrow home-catbar__arrow--next" aria-label="შემდეგი კატეგორიები" hidden={edges.end} onClick={() => scroll(1)}><Icon name="chevron-right" /></button>
+  </nav>;
 }
 
 /** Photo-first company card (home): picture or initials tile on top, text below, no frame. */

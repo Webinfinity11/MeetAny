@@ -328,29 +328,44 @@
   stroke-width: 2.4;
 }
 
-/* ---------- Category strip (Airbnb) ---------- */
+/* ---------- Category carousel (Airbnb) ---------- */
 
 .home-catbar {
+  position: relative;
   border-bottom: 1px solid var(--border-subtle);
 }
 .home-catbar ul {
   display: flex;
-  justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-8);
   margin: 0;
   padding: var(--space-5) 0 0;
   list-style: none;
   overflow-x: auto;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
 }
 .home-catbar ul::-webkit-scrollbar {
   display: none;
+}
+/* Soft fade at whichever edge still has more to scroll */
+.home-catbar:not([data-end]) ul {
+  mask-image: linear-gradient(to right, #000 calc(100% - 72px), transparent);
+}
+.home-catbar:not([data-start]):not([data-end]) ul {
+  mask-image: linear-gradient(to right, transparent, #000 72px, #000 calc(100% - 72px), transparent);
+}
+.home-catbar[data-end]:not([data-start]) ul {
+  mask-image: linear-gradient(to right, transparent, #000 72px);
+}
+.home-catbar li {
+  flex: none;
+  scroll-snap-align: start;
 }
 .home-catbar a {
   display: grid;
   justify-items: center;
   gap: var(--space-2);
-  min-width: 56px;
   padding-bottom: var(--space-3);
   border-bottom: 2px solid transparent;
   color: var(--text-2);
@@ -368,6 +383,38 @@
 }
 .home-catbar .duo-icon {
   color: currentColor;
+}
+.home-catbar__arrow {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--space-5) + 10px);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .10);
+  transition: box-shadow var(--motion-fast) var(--motion-ease);
+}
+.home-catbar__arrow:hover {
+  box-shadow: var(--shadow-float);
+}
+.home-catbar__arrow[hidden] {
+  display: none;
+}
+.home-catbar__arrow .icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.4;
+}
+.home-catbar__arrow--prev { left: -4px; }
+.home-catbar__arrow--next { right: -4px; }
+@media (hover: none) {
+  .home-catbar__arrow { display: none; }
 }
 
 /* ---------- Sections ---------- */
@@ -585,9 +632,6 @@
   .home-request-start {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-6);
-  }
-  .home-catbar ul {
-    justify-content: flex-start;
   }
 }
 

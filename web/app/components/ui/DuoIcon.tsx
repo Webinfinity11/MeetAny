@@ -1,6 +1,9 @@
 import {
   Airplane, Armchair, Bed, Briefcase, Broom, Calculator, ClipboardText, Desktop, Factory, ForkKnife, Handshake,
   HardHat, MagnifyingGlass, Megaphone, Package, Shapes, SquaresFour, Storefront, Tray, Truck,
+  Carrot, Wine, CookingPot, Stack, PaintRoller, Lightning, Couch, TShirt, Tag, Printer, Warehouse, Stamp,
+  Barcode, Paperclip, WashingMachine, Wrench, ShieldCheck, Code, Headset, PenNib, Camera, Confetti, Scales,
+  ChartLineUp, UsersThree,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 
@@ -28,6 +31,18 @@ const icons: Record<string, PhosphorIcon> = {
   inbox: Tray,
   search: MagnifyingGlass,
   "layout-grid": SquaresFour,
+  // One icon per category (the home category strip); keys are category ids.
+  food_fresh: Carrot, food_processed: Package, beverages: Wine, catering: CookingPot,
+  building_materials: Stack, renovation: PaintRoller, engineering: Lightning,
+  furniture: Couch, equipment: Storefront, textiles: TShirt,
+  packaging: Tag, printing: Printer,
+  freight: Truck, warehouse: Warehouse, customs: Stamp,
+  wholesale: Barcode, office_household: Paperclip,
+  cleaning: Broom, laundry: WashingMachine, technical_service: Wrench, security: ShieldCheck,
+  software_web: Code, it_support: Headset,
+  branding_design: PenNib, advertising: Megaphone, photo_video: Camera, events: Confetti,
+  accounting: Calculator, legal: Scales, consulting: ChartLineUp, hr_training: UsersThree,
+  hotel_services: Bed, tours: Airplane,
 };
 
 /** Thin neutral line icon (see `.duo-icon` in base.css). Decorative: aria-hidden. */
