@@ -30,11 +30,14 @@ export default async function(t) {
     await until(async () => Date.parse((await requestRow(p, request.id)).expires_at) > Date.parse(request.expires_at), 'ვადა არ გაზრდილა');
   }, p);
   await t.step('დახურვა და ხელახლა გახსნა', 'UI იცვლება; status closed შემდეგ open ხდება', async () => {
-    await p.locator('main').getByRole('button', { name: 'დახურვა', exact: true }).click();
+    // Closing lives under „სხვა მოქმედებები“ and asks for confirmation; reopening is the +7 days button.
+    await p.locator('.request-manage-more summary').click();
+    await p.getByRole('button', { name: 'მოთხოვნის დახურვა' }).click();
+    await p.getByRole('dialog').getByRole('button', { name: 'დახურვა', exact: true }).and(p.locator(':not(.ma-sheet__close)')).click();
     await p.getByRole('button', { name: /^ხელახლა გახსნა/ }).waitFor();
-    assert.equal((await requestRow(p, request.id)).status, 'closed');
+    await until(async () => (await requestRow(p, request.id)).status === 'closed', 'status closed არ გახდა');
     await p.getByRole('button', { name: /^ხელახლა გახსნა/ }).click();
-    await p.locator('main').getByRole('button', { name: 'დახურვა', exact: true }).waitFor();
-    assert.equal((await requestRow(p, request.id)).status, 'open');
+    await p.getByRole('button', { name: /^ვადის გაგრძელება/ }).waitFor();
+    await until(async () => (await requestRow(p, request.id)).status === 'open', 'status open არ გახდა');
   }, p);
 }
