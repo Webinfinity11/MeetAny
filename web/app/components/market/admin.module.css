@@ -75,3 +75,15 @@
  .content :global(.ma-proto-kpis) { grid-template-columns: repeat(2,minmax(0,1fr)); }
  .content :global(.ma-table) :global(.ma-btn) { min-height: var(--tap-min); }
 }
+
+/* Tables: roomier title column, compact rows and quiet action buttons */
+.workspace :global(.ma-table) { table-layout: auto; }
+.workspace :global(.ma-table) th { font-size: var(--fs-xs); text-transform: none; }
+.workspace :global(.ma-table) :is(th, td) { padding: var(--space-3) var(--space-4); }
+.workspace :global(.ma-table) td:first-child { min-width: 260px; font-weight: var(--fw-semibold); }
+.workspace :global(.ma-table) tbody tr:hover td { background: var(--bg-subtle); }
+.workspace :global(.ma-table .ma-btn) { min-height: 32px; padding: 0 var(--space-3); font-size: var(--fs-xs); font-feature-settings: normal; letter-spacing: normal; }
+.workspace :global(.ma-stat) { padding: var(--space-4); border: 1px solid var(--card-border); border-radius: var(--card-radius); background: var(--white); }
+.workspace :global(.ma-table) th, .workspace :global(.ma-table .ma-badge) { white-space: nowrap; }
+.workspace :global(.ma-table .ma-proto-tableactions) { flex-wrap: nowrap; }
+@media (max-width: 767px) { .workspace :global(.ma-table) td:first-child { min-width: 0; } .workspace :global(.ma-table .ma-proto-tableactions) { flex-wrap: wrap; } }

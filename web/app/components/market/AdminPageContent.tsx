@@ -178,7 +178,8 @@ export function AdminPageContent() {
       </aside>
       <div className={styles.content}>
       <PageBand title={{ requests: "მოთხოვნები", users: "მომხმარებლები", offers: "შეთავაზებები", audit: "მოქმედებების ჟურნალი", contacts: "კონტაქტები" }[tab]} description={{ requests: "მოთხოვნების სტატუსი და მოდერაცია", users: "ანგარიშები, როლები და წვდომის მართვა", offers: "კომპანიების შეთავაზებების მართვა", audit: "პლატფორმაზე შესრულებული მოქმედებების ისტორია", contacts: "საკონტაქტო აქტივობა და სტატისტიკა" }[tab]} />
-      <div className="ma-proto-kpis">
+      {/* Platform totals belong to the overview (requests tab), not to every tool. */}
+      {tab === "requests" ? <div className="ma-proto-kpis">
         {[
           ["users", "მომხმარებლები (ადმინების გარეშე)", stats.users],
           ["companies", "კომპანია", stats.companies],
@@ -192,8 +193,7 @@ export function AdminPageContent() {
             <span className="ma-stat__label">{label as string}</span>
           </div>
         ))}
-      </div>
-
+      </div> : null}
 
       {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
       {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
@@ -202,7 +202,7 @@ export function AdminPageContent() {
         <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი{adminNote}.</p>
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
       </> : null}
-      {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">ამ გვერდზე {admin.page.items.length} ჩანაწერია · ფილტრებით სულ {admin.page.filteredTotal}{adminNote}.</p> : null}
+      {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი{adminNote}</p> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "error" ? <AdminState error title="ჩანაწერები ვერ ჩაიტვირთა" text={admin.error || undefined} onRetry={admin.reload} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
       {((tab === "offers" && !v2) || (tab === "audit" && admin.mode === "legacy")) ? <AdminState title="საჭიროა ბაზის განახლება" text={tab === "offers" ? "შეთავაზებების მოდერაცია ხელმისაწვდომი გახდება ადმინისტრირების API v2-ის ამოქმედების შემდეგ." : "მოქმედებების ჟურნალი ამ ვერსიაში ხელმისაწვდომი არ არის."} /> : null}
