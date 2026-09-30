@@ -79,28 +79,34 @@
   font-weight: var(--fw-semibold);
   text-underline-offset: 3px;
 }
-.request-form .ma-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-2);
+
+/* Rhythm (2026-09-30): 24px between fields' rows, a divider and 24px between groups, titles at body size. */
+.request-form .ma-sheet__body {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-8);
 }
-.request-form__chip {
-  min-height: 34px;
-  padding: 0 var(--space-3);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-pill);
-  background: var(--bg-subtle);
-  color: var(--text-2);
-  font-size: var(--fs-meta);
-  font-weight: var(--fw-semibold);
-  transition: border-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+.request-form .ma-form {
+  gap: var(--space-6);
 }
-.request-form__chip:hover:not(:disabled) {
-  border-color: var(--blue-200);
-  color: var(--action);
+.request-form__group {
+  gap: var(--space-4);
 }
-.request-form__chip:disabled {
-  opacity: .5;
-  cursor: not-allowed;
+.request-form__group + .request-form__group {
+  padding-top: var(--space-6);
+}
+.ma-proto .request-form .request-form__group-title {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-bold);
+}
+.request-form__grid {
+  row-gap: var(--space-5);
+  column-gap: var(--space-4);
+}
+.request-form .ma-textarea {
+  min-height: 120px;
+}
+.request-form__note {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
 }

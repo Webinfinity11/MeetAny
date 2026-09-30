@@ -135,19 +135,6 @@ export function RequestFormSheet({
   const max = store?.maxNeededBy ? (store.maxNeededBy as () => string)() : undefined;
   const tomorrow = today ? addDay(today) : undefined;
 
-  function chooseDeadline(days: number | "month") {
-    if (!today) return;
-    let date: string;
-    if (days === "month") {
-      const [year, month, day] = today.split("-").map(Number);
-      const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-      const next = new Date(Date.UTC(year, month, Math.min(day, lastDay)));
-      date = `${next.getUTCFullYear()}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}`;
-    } else date = addDay(today, days);
-    setNeededByText(isoToText(max && date > max ? max : date));
-    v.clear("neededBy");
-    dirty.current = true;
-  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -313,14 +300,9 @@ export function RequestFormSheet({
                   საჭიროა თარიღამდე
                 </label>
                 <DateField id="neededBy" text={neededByText} onText={(text) => {setNeededByText(text); v.clear("neededBy");}} min={tomorrow} max={max} field={v.control("neededBy")} />
-                <div className="ma-chips" role="group" aria-label="ვადის სწრაფი არჩევანი">
-                  <button type="button" className="request-form__chip" disabled={!today} onClick={() => chooseDeadline(7)}>ერთ კვირაში</button>
-                  <button type="button" className="request-form__chip" disabled={!today} onClick={() => chooseDeadline(14)}>ორ კვირაში</button>
-                  <button type="button" className="request-form__chip" disabled={!today} onClick={() => chooseDeadline("month")}>ერთ თვეში</button>
-                </div>
                 {v.message("neededBy")}
               </div>
-              <div className="ma-field">
+              <div className="ma-field request-form__wide">
                 <label className="ma-field__label" htmlFor="addressNote">
                   რაიონი / ორიენტირი
                 </label>
@@ -333,7 +315,7 @@ export function RequestFormSheet({
                   onChange={(e) => setAddressNote(e.target.value)}
                 />
               </div>
-              {!existing ? <PhotoField file={photo} onChange={setPhoto} /> : existing.photo ? <p className="ma-note">არსებული ფოტო შენარჩუნდება.</p> : null}
+              {!existing ? <div className="request-form__wide"><PhotoField file={photo} onChange={setPhoto} /></div> : existing.photo ? <p className="ma-note">არსებული ფოტო შენარჩუნდება.</p> : null}
             </div>
           </section>
         </form>
@@ -346,7 +328,7 @@ export function RequestFormSheet({
           </p>
         ) : (
           <p className="request-form__note">
-            მოთხოვნა 14 დღე იქნება აქტიური.<span className="request-form__note-more"> ვადის გაგრძელება შეგიძლია მოთხოვნის გვერდიდან.</span>
+            აქტიური იქნება 14 დღე.
           </p>
         )}
         <button className="request-form__cancel" type="button" onClick={close}>

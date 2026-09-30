@@ -52,7 +52,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
   const city = filters.get("city"), category = currentCategory(filters.get("category")), query = filters.get("q"), sort = filters.get("sort", "newest");
-  const period = filters.get("period"), unanswered = filters.get("unanswered") === "1", withPhoto = filters.get("photo") === "1", urgent = filters.get("urgent") === "1";
+  // Filters kept only where they change a decision: category, city (search pill) and "no offers yet".
+  const unanswered = filters.get("unanswered") === "1";
   const setCity = (city: string) => filters.set({city});
   const setCategory = (category: string) => filters.set({category});
   const setQuery = (q: string) => filters.set({q});
@@ -64,13 +65,13 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     const timer = window.setInterval(refresh, 60000);
     return () => { window.clearTimeout(first); window.clearInterval(timer); };
   }, []);
-  // The old "ახალი" / "მალე იწურება" tabs duplicated the period and urgency filters; old links map onto them.
+  // Old "ახალი" / "მალე იწურება" tab links map onto the default order and the expiring sort.
   const legacyTab = filters.get("tab");
   useEffect(() => {
     if (legacyTab !== "new" && legacyTab !== "expiring") return;
     const next = new URLSearchParams(window.location.search);
     next.delete("tab");
-    next.set(legacyTab === "new" ? "period" : "urgent", "1");
+    if (legacyTab === "expiring") next.set("sort", "expiring");
     window.history.replaceState(window.history.state, "", `/requests/?${next.toString()}`);
   }, [legacyTab]);
   const [formOpen, setFormOpen] = useState(autoOpenNew);
@@ -93,8 +94,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         q: query,
         state: "open",
         ...overrides,
-      })?.filter(r => (!unanswered || store?.offerCount(r.id) === 0) && (!withPhoto || !!r.photo) && (!urgent || store?.daysLeft(r) <= 3) && (!period || !["1", "7"].includes(period) || Date.now() - Date.parse(r.createdAt) <= Number(period) * 86400000)) || [],
-    [store, category, city, query, period, unanswered, withPhoto, urgent],
+      })?.filter(r => !unanswered || store?.offerCount(r.id) === 0) || [],
+    [store, category, city, query, unanswered],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -113,7 +114,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const sorted = useMemo(() => {
     const arr = [...results];
     if (["expiring", "ending"].includes(sort) && store) arr.sort((a, b) => (store.daysLeft as (r: unknown) => number)(a) - (store.daysLeft as (r: unknown) => number)(b));
-    if (sort === "few" && store) arr.sort((a,b) => store.offerCount(a.id) - store.offerCount(b.id));
     return arr;
   }, [results, sort, store]);
 
@@ -167,15 +167,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const activeItems = [
     ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: cities[city] || city}] : []),
-    ...(period ? [{key: "period", label: period === "1" ? "ბოლო 24 საათი" : "ბოლო 7 დღე"}] : []),
     ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
-    ...(withPhoto ? [{key: "photo", label: "ფოტოთი"}] : []),
-    ...(urgent ? [{key: "urgent", label: "სასწრაფო"}] : []),
   ];
-  const clearFilters = () => filters.set({city: "", category: "", period: "", unanswered: "", photo: "", urgent: ""});
+  const clearFilters = () => filters.set({city: "", category: "", unanswered: ""});
 
   const filterCount = activeItems.length;
-  const periodOptions: [string, string][] = [["", "ნებისმიერ დროს"], ["1", "24 საათში"], ["7", "7 დღეში"]];
   const toggle = (label: string, hint: string, checked: boolean, key: string) => <label className="filter-switch">
     <span><strong>{label}</strong><small>{hint}</small></span>
     <input type="checkbox" role="switch" checked={checked} onChange={e => filters.set({ [key]: e.target.checked ? "1" : "" })} />
@@ -191,16 +187,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
       <h3 className="catalog-filter-title">კატეგორია</h3>
       <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
     </div>
-    <fieldset className="catalog-filter-group">
-      <legend className="catalog-filter-title">გამოქვეყნდა</legend>
-      <div className="filter-chips">
-        {periodOptions.map(([value, label]) => <button key={value || "any"} type="button" className="filter-chip" aria-pressed={period === value} onClick={() => filters.set({ period: value })}>{label}</button>)}
-      </div>
-    </fieldset>
     <div className="catalog-filter-group">
       {toggle("შეთავაზების გარეშე", "ჯერ არავის უპასუხია — პირველი იყავი", unanswered, "unanswered")}
-      {toggle("მალე იწურება", "ვადა 3 დღეში მთავრდება", urgent, "urgent")}
-      {toggle("ფოტოთი", "მხოლოდ ფოტოიანი მოთხოვნები", withPhoto, "photo")}
     </div>
   </div>;
 
@@ -238,7 +226,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
               {value: "expiring", label: "მალე იწურება"},
-              {value: "few", label: "ნაკლები პასუხი"},
             ]}}
           />
       <section aria-label="მოთხოვნების სია">
@@ -255,7 +242,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                         <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
                         <h2>ასეთი მოთხოვნა ჯერ არ გამოქვეყნებულა</h2>
                         <p>სცადე სხვა კატეგორია ან ქალაქი. ახალი მოთხოვნები ყოველდღე ემატება — შეტყობინებებს ანგარიშში მიიღებ.</p>
-                        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: "", period: "", unanswered: "", photo: "", urgent: ""})}>ყველა მოთხოვნის ნახვა</button>
+                        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: "", unanswered: ""})}>ყველა მოთხოვნის ნახვა</button>
                       </div>
                     )
                   : <>

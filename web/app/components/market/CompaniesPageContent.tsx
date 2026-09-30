@@ -65,7 +65,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const { store, ready, available } = useMarketStore(initial);
   const filters = useFilters("/companies/");
   const industry = currentCategory(filters.get("industry")), city = filters.get("city"), query = filters.get("q");
-  const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "newest");
+  // "type" (suppliers/services/…) duplicated the industry facets and is no longer offered.
+  const type = "", coverage = filters.get("coverage") === "national", sort = filters.get("sort", "newest");
   const setIndustry = (industry: string) => filters.set({industry});
   const setCity = (city: string) => filters.set({city});
   const setQuery = (q: string) => filters.set({q});
@@ -126,13 +127,11 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
 
   const activeItems = [
     ...(coverage ? [{key: "coverage", label: "მთელი საქართველო"}] : []),
-    ...(type ? [{key: "type", label: ({suppliers: "მომწოდებლები", services: "მომსახურება", distributors: "დისტრიბუტორები", partners: "ბიზნესპარტნიორები"} as Record<string, string>)[type] || type}] : []),
     ...(industry ? [{ key: "industry", label: categories[industry] || groupNames[industry] || industry }] : []),
     ...(city ? [{ key: "city", label: cities[city] }] : []),
   ];
   const removeFilter = (key: string) => {
-    if (key === "type") filters.set({type: ""});
-    else if (key === "industry") setIndustry("");
+    if (key === "industry") setIndustry("");
     else if (key === "city") setCity("");
     else filters.set({[key]: ""});
   };
@@ -148,7 +147,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
 
   const countLabel = !available || !ready ? "" : `${rows.length} კომპანია`;
 
-  const typeOptions: [string, string][] = [["", "ყველა"], ["suppliers", "მომწოდებლები"], ["services", "მომსახურება"], ["distributors", "დისტრიბუცია"], ["partners", "პარტნიორები"]];
   // City lives in the search pill above; the sidebar holds what the pill does not.
   const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="catalog-filters">
@@ -160,12 +158,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <h3 className="catalog-filter-title">დარგი</h3>
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
       </div>
-      <fieldset className="catalog-filter-group">
-        <legend className="catalog-filter-title">საქმიანობის ტიპი</legend>
-        <div className="filter-chips">
-          {typeOptions.map(([value, label]) => <button key={value || "all"} type="button" className="filter-chip" aria-pressed={type === value} onClick={() => filters.set({ type: value })}>{label}</button>)}
-        </div>
-      </fieldset>
       <div className="catalog-filter-group">
         <label className="filter-switch">
           <span><strong>მთელი საქართველო</strong><small>კომპანიები, რომლებიც ყველა რეგიონს ემსახურებიან</small></span>
