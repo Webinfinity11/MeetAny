@@ -2,6 +2,7 @@
 
 import { SearchCombobox } from "./SearchCombobox";
 import { Icon } from "./Icon";
+import { CustomSelect } from "./ui/CustomSelect";
 import { cities } from "../lib/categories";
 import type { SearchSuggestion } from "../lib/search-suggestions";
 
@@ -22,13 +23,13 @@ export function SegmentedSearch({ id, label, placeholder, query, onQuery, sugges
       <span className="home-search-seg__label" aria-hidden="true">რას ეძებ</span>
       <SearchCombobox id={id} name="q" label={label} hideLabel placeholder={placeholder} value={query} onChange={onQuery} suggestions={suggestions} onSelect={onSelect} />
     </div>
-    <label className="home-search-seg home-search-seg--city">
+    <div className="home-search-seg home-search-seg--city">
       <span className="home-search-seg__label">ქალაქი</span>
-      <select name={cityField && city ? "city" : undefined} value={city} onChange={e => onCity(e.target.value)}>
+      <CustomSelect className="home-search-city" name={cityField && city ? "city" : undefined} value={city} onChange={e => onCity(e.target.value)} aria-label="ქალაქი">
         <option value="">ყველა ქალაქი</option>
         {Object.entries(cities).map(([value, name]) => <option key={value} value={value}>{name}</option>)}
-      </select>
-    </label>
+      </CustomSelect>
+    </div>
     <button className="home-search-submit" type="submit" aria-label="ძიება"><Icon name="search" /><span>ძიება</span></button>
   </div>;
 }

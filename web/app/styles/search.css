@@ -135,3 +135,21 @@
     width: calc(100vw - 2 * var(--gutter));
   }
 }
+
+/* City segment uses the shared CustomSelect, restyled as borderless text inside the pill. */
+.home-search-seg .home-search-city {
+  width: 100%;
+  height: 26px;
+  min-height: 0;
+  padding: 0 var(--space-5) 0 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-position: right 0 center;
+  box-shadow: none;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+.home-search-seg .home-search-city[aria-expanded="true"] {
+  box-shadow: none;
+}

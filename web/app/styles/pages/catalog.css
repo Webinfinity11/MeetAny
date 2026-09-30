@@ -14,8 +14,10 @@
 
 /* ---------- Header ---------- */
 
+/* Stacks above the results so the search suggestions menu is never covered by cards below. */
 .catalog-header {
   position: relative;
+  z-index: var(--z-menu);
   isolation: isolate;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
