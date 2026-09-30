@@ -30,8 +30,10 @@ export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
 /** Decorative logo/initials next to a company name; failed logos fall back to initials. */
 export function Avatar({ name, logoUrl, size = 40, className = "", ...props }: AvatarProps) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const modifier = typeof size === "number" ? ` ma-avatar--${size}` : size === "sm" ? "" : ` ma-avatar--${size}`;
   return <span aria-hidden="true" {...props} className={`ma-avatar${modifier} ${className}`.trim()} data-tone={avatarTone(name)}>
-    {logoUrl && logoUrl !== failedUrl ? <img key={logoUrl} src={logoUrl} alt="" onError={() => setFailedUrl(logoUrl)} /> : avatarInitials(name)}
+    {logoUrl && loadedUrl === logoUrl && failedUrl !== logoUrl ? null : avatarInitials(name)}
+    {logoUrl && logoUrl !== failedUrl ? <img key={logoUrl} src={logoUrl} alt="" style={{ position: "absolute", inset: 0, opacity: loadedUrl === logoUrl ? 1 : 0 }} onLoad={() => setLoadedUrl(logoUrl)} onError={() => setFailedUrl(logoUrl)} /> : null}
   </span>;
 }

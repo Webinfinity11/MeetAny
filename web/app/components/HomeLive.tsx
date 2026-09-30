@@ -1,5 +1,7 @@
 "use client";
 
+import { useCompanyFeatures, type BusinessFeature } from "../lib/business-client";
+import { BusinessMarks } from "./market/CompanyBusiness";
 import { CustomSelect } from "./ui/CustomSelect";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -20,21 +22,8 @@ export function HomeJoin() {
   const company = me?.role === "company";
   return <section className="home-join home-wrap"><div className="home-join__panel">
     <div><h2>{company ? "ნახე, რას ეძებენ სხვა ბიზნესები" : me ? "იპოვე პარტნიორი შენი ბიზნესისთვის" : "გააცანი შენი კომპანია სხვა ბიზნესებს"}</h2><p>{company ? "ღია მოთხოვნებზე შეთავაზების გაგზავნა უფასოა." : me ? "მოძებნე კომპანია დარგისა და ქალაქის მიხედვით." : "დაარეგისტრირე კომპანია, მიიღე მოთხოვნები შენს დარგში და გაუგზავნე შეთავაზებები."}</p></div>
-    <Link className="ma-btn ma-btn--lg home-join__cta" href={company ? "/requests/" : me ? "/companies/" : "/account/?tab=register&role=company"}>{company ? "ღია მოთხოვნების ნახვა" : me ? "კომპანიების მოძებნა" : "კომპანიის რეგისტრაცია"}<Icon name="arrow-right" /></Link>
+    <Link className="ma-btn ma-btn--lg home-join__cta" href={company ? "/requests/" : me ? "/companies/" : "/account/?tab=register&role=company"}>{company ? "ღია მოთხოვნების ნახვა" : me ? "კომპანიების მოძებნა" : "კომპანიის რეგისტრაცია"}<Icon name={company ? "clipboard-list" : me ? "search" : "building-2"} /></Link>
   </div></section>;
-}
-
-/** Live numbers under the hero search; reserves its line while loading. */
-export function HomeStats() {
-  const {store, ready, available} = useMarketStore();
-  const live = ready && available && store;
-  const companies = live ? store.listCompanies().length : null;
-  const requests = live ? (store.listRequests as (args: unknown) => unknown[])({ state: "open" }).length : null;
-  return <ul className="hero-stats" aria-live="polite">
-    <li><strong>{companies ?? "—"}</strong><span>კომპანია კატალოგში</span></li>
-    <li><strong>{requests ?? "—"}</strong><span>ღია მოთხოვნა</span></li>
-    <li><Link href="/requests/new/">გამოაქვეყნე მოთხოვნა<Icon name="arrow-right" /></Link></li>
-  </ul>;
 }
 
 // Photo-first partner types (from the v1 home): picture on top, title and a short line below.
@@ -108,13 +97,11 @@ export function HomeRequests() {
       : !rows.length ? <p className="home-empty">ღია მოთხოვნები მალე გამოჩნდება.</p>
       : rows.map(r => {
         const days = store?.daysLeft(r, now) ?? 0;
-        const offers = store?.offerCount(r.id) ?? 0;
         return <article className="home-request" key={r.id}>
           <p className="home-request__category">{categoryLabels[r.category] || r.category}</p>
           <h3 className="home-request__title"><Link href={`/requests/view/?id=${encodeURIComponent(r.id)}`}>{r.title}</Link></h3>
           <p className="home-request__meta"><Icon name="map-pin" />{cities[r.city] || r.city}</p>
           <p className="home-request__foot">
-            <span><strong>{offers}</strong> შეთავაზება</span>
             <span className={days <= 3 ? "home-request__due is-soon" : "home-request__due"}>{days <= 0 ? "დღეს იწურება" : `${days} დღე დარჩა`}</span>
           </p>
         </article>;
@@ -123,7 +110,7 @@ export function HomeRequests() {
 }
 
 /** Photo-first company card (home): picture or initials tile on top, text below, no frame. */
-function HomeCompanyCard({ c }: { c: Company }) {
+function HomeCompanyCard({ c, feature }: { c: Company; feature?: BusinessFeature }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const image = companyImage(c.company, c.logoUrl, c.gallery);
   const place = [c.city, ...(c.serviceCities || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 2).map(id => cities[id] || id).join(", ");
@@ -133,6 +120,7 @@ function HomeCompanyCard({ c }: { c: Company }) {
     </Link>
     <div className="home-company__save"><SaveCompanyButton id={c.id} icon /></div>
     <h3 className="home-company__name"><Link href={href}>{c.company}</Link></h3>
+    <BusinessMarks feature={feature}/>
     <p className="home-company__meta">{categoryLabels[c.industry] || c.industry}</p>
     {place ? <p className="home-company__meta">{place}</p> : null}
   </article>;
@@ -140,15 +128,17 @@ function HomeCompanyCard({ c }: { c: Company }) {
 
 export function HomeFeatured() {
   const {store, ready, available} = useMarketStore();
+  const features=useCompanyFeatures(store,ready&&available);
+  const byId=new Map(features.data?.map(f=>[f.id,f]) || []);
   const all: Company[] = ready && available ? store?.listCompanies() || [] : [];
   // The home showcase skips internal test accounts (they stay in the catalog for QA).
-  const rows = all.filter(c => c.about && !/სატესტო|test|e2e/i.test(c.company)).slice(0, 8);
+  const rows = all.filter(c => (c.about || byId.get(c.id)?.plan==='vip') && !/სატესტო|test|e2e/i.test(c.company)).sort((a,b)=>Number(byId.get(b.id)?.plan==='vip')-Number(byId.get(a.id)?.plan==='vip')).slice(0, 8);
   // Fixed-height grid while loading so the page does not shift when companies arrive.
   return <div className="home-company-grid" id="featured-companies" aria-busy={!ready}>
     {!ready ? [0, 1, 2, 3].map(i => <div className="home-company home-company--skeleton" key={i}><span className="ma-skel home-company__media" /><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line home-company__line--short" /></div>)
       : !available ? <p className="home-empty">სერვისი დროებით მიუწვდომელია.</p>
       : !rows.length ? <p className="home-empty">კომპანიები მალე გამოჩნდება.</p>
-      : rows.map(c => <HomeCompanyCard key={c.id} c={c} />)}
+      : rows.map(c => <HomeCompanyCard key={c.id} c={c} feature={byId.get(c.id)} />)}
   </div>;
 }
 

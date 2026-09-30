@@ -93,7 +93,7 @@
   text-underline-offset: 3px;
 }
 
-/* Light variant (companies): airy tinted band with a soft brand glow, dark text, outlined search. */
+/* Light variant: dark text and an outlined search. */
 .catalog-header--light {
   color: var(--text);
 }
@@ -121,7 +121,7 @@
   box-shadow: var(--focus-ring), 0 10px 28px color-mix(in srgb, var(--theme-primary) 10%, transparent);
 }
 
-/* Centred, home-style header (companies): title over the segmented search, soft blue band. */
+/* Centred catalog header: title over the segmented search. */
 .catalog-header--center {
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
@@ -130,20 +130,282 @@
   text-align: center;
 }
 .catalog-header--center.catalog-header--light::before {
-  background: var(--blue-50);
   border-bottom: 0;
-}
-/* Keep the city illustration behind the content and search menus. */
-.companies-catalog .catalog-header--center.catalog-header--light::before {
+  /* Keep each catalog's cover behind the content and search menus. */
   background-color: #f0f4fc;
   background-image:
     linear-gradient(rgb(240 244 252 / 14%), rgb(240 244 252 / 14%)),
-    url("/assets/companies-hero-georgian-city-v1.webp");
+    var(--catalog-cover-image, url("/assets/companies-hero-georgian-city-v1.webp"));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-/* Dark variant (requests): solid brand blue like the home hero, white text. */
+/* Flat band behind the photo collage; this layer never clips the search menus. Taller than the
+   other catalog headers so most photos show whole. */
+.companies-catalog .catalog-header--center.catalog-header--light::before {
+  background: #F6F7FA;
+}
+.companies-catalog .catalog-header--center {
+  padding-block: 72px 64px;
+}
+@media (min-width: 1320px) {
+  .requests-catalog .catalog-header--center { padding-block: 72px 64px; }
+}
+.catalog-collage {
+  --collage-w: 104px;
+  --collage-edge: calc(50% - 440px - 40px - 2 * var(--collage-w) - var(--space-3));
+  position: absolute;
+  inset: 0 calc(-1 * max(var(--gutter), (100vw - var(--container)) / 2));
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  /* Photos fade out at the top and bottom edges of the band. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}
+.catalog-collage__col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--collage-w, 116px);
+  overflow: hidden;
+}
+/* Anchor the inner columns to the search; add a third on each side where it fits. */
+.catalog-collage__col--1 { left: var(--collage-edge); }
+.catalog-collage__col--2 { left: calc(var(--collage-edge) + var(--collage-w, 116px) + var(--space-3)); }
+.catalog-collage__col--3 { right: calc(var(--collage-edge) + var(--collage-w, 116px) + var(--space-3)); }
+.catalog-collage__col--4 { right: var(--collage-edge); }
+.catalog-collage__col--5 {
+  display: none;
+  left: calc(var(--collage-edge) - var(--collage-w) - var(--space-3));
+  margin-top: -80px;
+}
+.catalog-collage__col--6 {
+  display: none;
+  right: calc(var(--collage-edge) - var(--collage-w) - var(--space-3));
+  margin-top: -56px;
+}
+.catalog-collage__track {
+  display: grid;
+  gap: var(--space-3);
+  animation: collage-drift 96s linear infinite;
+}
+.catalog-collage__col--2 .catalog-collage__track,
+.catalog-collage__col--4 .catalog-collage__track,
+.catalog-collage__col--6 .catalog-collage__track {
+  animation-direction: reverse;
+  animation-duration: 112s;
+}
+.catalog-collage__col--2 { margin-top: -48px; }
+.catalog-collage__col--3 { margin-top: -24px; }
+.catalog-collage__col--5 .catalog-collage__track { animation-delay: -18s; }
+.catalog-collage__col--6 .catalog-collage__track { animation-delay: -30s; }
+.catalog-collage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 14px;
+  background: var(--bg-muted);
+}
+.catalog-collage img:nth-child(4n + 2) { aspect-ratio: 1; }
+.catalog-collage img:nth-child(4n + 3) { aspect-ratio: 3 / 4; }
+.catalog-collage img:nth-child(4n) { aspect-ratio: 5 / 4; }
+.catalog-collage__col--even img:nth-child(4n + 1) { aspect-ratio: 1; }
+.catalog-collage__col--even img:nth-child(4n + 2) { aspect-ratio: 4 / 5; }
+/* Phones and tablets: one slow horizontal strip of small photos under the search. */
+.catalog-collage__strip { display: none; }
+@keyframes collage-slide {
+  to { transform: translateX(calc(-50% - var(--space-2) / 2)); }
+}
+/* The track holds the list twice; moving by half (plus half a gap) loops seamlessly. */
+@keyframes collage-drift {
+  to { transform: translateY(calc(-50% - var(--space-3) / 2)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catalog-collage__track, .catalog-collage__strip-track { animation: none; }
+}
+/* Six photo columns on wide screens; progressively reduce them around the 880px search. */
+@media (min-width: 1700px) {
+  .catalog-collage { --collage-w: clamp(116px, calc((100vw - 992px) / 6), 148px); }
+  .catalog-collage__col--5, .catalog-collage__col--6 { display: block; }
+}
+@media (max-width: 1419px) {
+  .catalog-collage__col--2, .catalog-collage__col--3 { display: none; }
+  .catalog-collage {
+    --collage-w: 128px;
+    --collage-edge: calc(50% - 440px - 40px - var(--collage-w));
+  }
+}
+@media (max-width: 1279px) {
+  .catalog-collage { --collage-w: 96px; }
+}
+@media (max-width: 1179px) {
+  .companies-catalog .catalog-header--center { padding-block: var(--space-10) 132px; }
+  .catalog-collage {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .catalog-collage__col { display: none !important; }
+  .catalog-collage__strip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--space-8);
+    display: block;
+    overflow: hidden;
+  }
+  .catalog-collage__strip-track {
+    display: flex;
+    gap: var(--space-2);
+    width: max-content;
+    animation: collage-slide 70s linear infinite;
+  }
+  .catalog-collage__strip img {
+    width: 96px;
+    height: 72px;
+    aspect-ratio: auto;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 767px) {
+  .companies-catalog .catalog-title {
+    font-size: 26px;
+    line-height: 38px;
+  }
+  .companies-catalog .catalog-header--center { padding-block: var(--space-8); }
+  .catalog-collage, .request-cover { display: none; }
+}
+/* Request previews share the catalog rhythm while representing live demand. */
+.requests-catalog .catalog-header--center.catalog-header--light::before {
+  background: #EEF3FB;
+}
+.requests-catalog .catalog-description { max-width: 64ch; }
+.request-cover {
+  --request-cover-width: 196px;
+  --request-cover-inner: calc(50% - 440px - 20px - var(--request-cover-width));
+  position: absolute;
+  inset: 0 calc(-1 * max(var(--gutter), (100vw - var(--container)) / 2));
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+}
+.request-cover__column {
+  position: absolute;
+  inset-block: 0;
+  width: var(--request-cover-width);
+}
+.request-cover__column--1 { left: calc(var(--request-cover-inner) - var(--request-cover-width) - 12px); }
+.request-cover__column--2 { left: var(--request-cover-inner); margin-top: -42px; }
+.request-cover__column--3 { right: var(--request-cover-inner); margin-top: -18px; }
+.request-cover__column--4 { right: calc(var(--request-cover-inner) - var(--request-cover-width) - 12px); margin-top: -65px; }
+.request-cover__track {
+  display: grid;
+  gap: 12px;
+  animation: request-cover-drift 90s linear infinite;
+}
+.request-cover__column--2 .request-cover__track,
+.request-cover__column--4 .request-cover__track {
+  animation-direction: reverse;
+  animation-duration: 110s;
+}
+.request-cover__column--3 .request-cover__track { animation-delay: -16s; }
+.request-cover__card {
+  display: grid;
+  grid-template-rows: 28px minmax(0, 1fr) 20px;
+  gap: 9px;
+  height: 142px;
+  padding: 13px;
+  border: 1px solid #dfe7f2;
+  border-radius: 15px;
+  background: var(--white);
+  box-shadow: 0 3px 10px rgb(29 51 71 / 5%);
+  text-align: left;
+}
+.request-cover__category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-3);
+  font-size: 11px;
+}
+.request-cover__category > span:last-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.request-cover__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--blue-50);
+  color: var(--action);
+}
+.request-cover__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  max-height: 38px;
+  align-self: start;
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  line-height: 19px;
+}
+.request-cover__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--text-3);
+  font-size: 11px;
+}
+.request-cover__meta > span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.request-cover__status {
+  flex-shrink: 0;
+  padding: 1px 7px;
+  border-radius: 5px;
+  background: #fff1e3;
+  color: #945015;
+}
+@keyframes request-cover-drift {
+  to { transform: translateY(calc(-50% - 6px)); }
+}
+.requests-catalog .catalog-header:hover .request-cover__track,
+.requests-catalog .catalog-header:focus-within .request-cover__track {
+  animation-play-state: paused;
+}
+@media (min-width: 1760px) {
+  .request-cover { --request-cover-width: clamp(196px, calc((100vw - 976px) / 4), 212px); }
+}
+@media (max-width: 1759px) {
+  .request-cover__column--1, .request-cover__column--4 { display: none; }
+}
+@media (max-width: 1419px) {
+  .request-cover { --request-cover-width: 176px; }
+}
+@media (max-width: 1319px) {
+  .request-cover { display: none; }
+}
+@media (max-width: 767px) {
+  .requests-catalog .catalog-title { font-size: 26px; line-height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .request-cover__track { animation: none; }
+}
+/* Optional dark catalog tone. */
 .catalog-header--center.catalog-header--dark::before {
   background: var(--blue-700);
 }
@@ -167,11 +429,21 @@
 }
 .catalog-header--center .catalog-description {
   margin-inline: auto;
+  margin-top: var(--space-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
 }
 .catalog-header--center .catalog-search-area {
   width: 100%;
   max-width: 880px;
   text-align: left;
+}
+.catalog-header .home-search-submit {
+  background: var(--blue-700);
+  color: var(--white);
+}
+.catalog-header .home-search-submit:hover {
+  background: var(--blue-900);
 }
 /* The segmented pill brings its own frame; drop the generic catalog input box inside it. */
 .catalog-header--center .home-search-seg .ma-input {
@@ -486,6 +758,16 @@
 }
 .catalog-facet-more:hover { color: var(--action); }
 .catalog-facet-more:focus-visible { outline: none; border-radius: 4px; box-shadow: var(--focus-ring); }
+.catalog-filter-group .catalog-city-select {
+  width: 100%;
+}
+.filter-switch--nested {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  animation: facet-open var(--motion-base) var(--motion-ease);
+}
 @keyframes facet-open {
   from { opacity: .72; transform: translateY(-3px); }
 }
@@ -686,11 +968,8 @@
     padding-block: var(--space-8);
     gap: var(--space-5);
   }
-  .companies-catalog .catalog-header--center.catalog-header--light::before {
-    background-image:
-      linear-gradient(rgb(240 244 252 / 88%), rgb(240 244 252 / 60%)),
-      url("/assets/companies-hero-georgian-city-v1.webp");
-    background-position: center, left center;
+  .catalog-header--center.catalog-header--light::before {
+    background-image: none;
   }
   .catalog-description {
     margin-top: var(--space-2);

@@ -250,7 +250,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
 export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   const searchParams = useSearchParams();
   const {store} = useMarketStore();
-  const [mode, setMode] = useState<Mode>(searchParams.get("tab") === "register" || initialRole ? "register" : "login");
+  const mode: Mode = searchParams.get("tab") === "reset" ? "reset" : searchParams.get("tab") === "register" || initialRole ? "register" : "login";
   const [, refresh] = useState(0);
   useEffect(() => {
     const update = () => refresh(n => n + 1);
@@ -258,10 +258,10 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
     return () => window.removeEventListener("meetany:auth", update);
   }, []);
   const switchMode = (next: Mode) => {
-    setMode(next);
     const url = new URL(window.location.href);
-    if (next === "register") url.searchParams.set("tab", "register"); else url.searchParams.delete("tab");
-    window.history.replaceState(window.history.state, "", url.pathname + url.search);
+    if (next === "login") url.searchParams.delete("tab"); else url.searchParams.set("tab", next);
+    if (next !== "register") url.searchParams.delete("role");
+    window.history.pushState(null, "", url.pathname + url.search);
   };
   const subtitle = mode === "register" ? "შექმენი ანგარიში და დაიწყე ბიზნესკავშირები." : mode === "reset" ? "მიიღე კოდი ელფოსტაზე და დააყენე ახალი პაროლი." : "კეთილი იყოს შენი დაბრუნება.";
   const page = (title: string, body: React.ReactNode, lead = subtitle) => (
@@ -296,7 +296,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
       <button type="button" aria-current={mode === "login" ? "page" : undefined} onClick={() => switchMode("login")}>შესვლა</button>
       <button type="button" aria-current={mode === "register" ? "page" : undefined} onClick={() => switchMode("register")}>რეგისტრაცია</button>
     </nav> : null}
-    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => setMode("reset")} /> : <RegisterForm initialRole={initialRole} />}
+    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm key={initialRole} initialRole={initialRole} />}
   </>);
 }
 

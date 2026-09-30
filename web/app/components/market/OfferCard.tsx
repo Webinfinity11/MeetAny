@@ -46,21 +46,10 @@ export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoo
         </div>
       </header>
       <p className="ma-ocard__body">{o.body}</p>
-      <Link className="ma-link" href={o.companyHref}>
-        კომპანიის პროფილის ნახვა <Icon name="arrow-up-right" />
-      </Link>
-      {o.status === "chosen" || (canChoose && o.status !== "declined") ? <div className="ma-ocard__actions">
-        {o.status === "chosen" ? (
-          <p className="ma-note">
-            <Icon name="check" />
-            შეთავაზება არჩეულია.
-          </p>
-        ) : canChoose && o.status !== "declined" ? (
-          <button type="button" className="ma-btn ma-btn--primary" onClick={onChoose}>
-            შეთავაზების არჩევა
-          </button>
-        ) : null}
-      </div> : null}
+      <footer className="request-offer-actions">
+        <Link className="ma-btn ma-btn--secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Link>
+        {canChoose && o.status === "sent" ? <button type="button" className="ma-btn ma-btn--primary" onClick={onChoose}><Icon name="check"/>შეთავაზების არჩევა</button> : null}
+      </footer>
     </article>
   );
 }

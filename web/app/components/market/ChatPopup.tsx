@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMarketStore, type Store } from "../../lib/market-client";
-import { useChatThread, useUnreadMessageCount, type ChatTarget } from "../../lib/chat-client";
+import { useChatThread, useConversationList, useUnreadMessageCount, type ChatTarget, type Conversation } from "../../lib/chat-client";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { Icon } from "../Icon";
 import { toast } from "../Toasts";
@@ -24,7 +24,7 @@ export function MessageButton({ companyId, requestId }: { companyId: string; req
   const { store, ready } = useMarketStore();
   const router = useRouter();
   const me = ready ? store?.currentUser() : null;
-  if (me?.id === companyId && !requestId) return null;
+  if (me?.role === "admin" || (me?.id === companyId && !requestId)) return null;
   return <button type="button" className="ma-btn ma-btn--secondary" disabled={!ready || !!me?.blocked} onClick={() => {
     if (!me) {
       const next = window.location.pathname + window.location.search + window.location.hash;
@@ -42,58 +42,112 @@ export function ChatUnreadLink() {
   const unread = useUnreadMessageCount(store, me?.id, !!me && !me.blocked);
   if (!me || me.blocked) return null;
   const count = unread ?? 0;
-  return <Link className="ma-chat-unread" href="/account/?tab=messages" aria-label={`მიმოწერები${count ? `, ${count} წაუკითხავი` : ""}`}><Icon name="message-square"/>{count ? <span className="ma-chat-badge" aria-hidden="true">{count > 99 ? "99+" : count}</span> : null}</Link>;
+  return <button type="button" className="ma-chat-unread" onClick={() => window.dispatchEvent(new Event("meetany:chat-list"))} aria-label={`მიმოწერები${count ? `, ${count} წაუკითხავი` : ""}`}><Icon name="message-square"/>{count ? <span className="ma-chat-badge" aria-hidden="true">{count > 99 ? "99+" : count}</span> : null}</button>;
 }
 
 export function ChatPopup() {
   const { store, ready } = useMarketStore();
   const me = ready ? store?.currentUser() : null;
-  const [selection, setSelection] = useState<{ owner: string; target: ChatTarget; key: number } | null>(null);
-  const serial = useRef(0);
-  useEffect(() => {
-    if (!me?.id || me.blocked) return;
-    const open = (event: Event) => {
-      const target = (event as CustomEvent<ChatTarget>).detail;
-      if (target?.companyId) setSelection({ owner: me.id, target, key: ++serial.current });
-    };
-    window.addEventListener("meetany:chat-open", open);
-    return () => window.removeEventListener("meetany:chat-open", open);
-  }, [me?.id, me?.blocked]);
-  if (!store || !me || me.blocked || !selection || selection.owner !== me.id) return null;
-  return <ChatWindow key={selection.key} store={store} owner={me.id} target={selection.target} onClose={() => setSelection(null)}/>;
+  if (!store || !me || me.blocked || me.role === "admin") return null;
+  return <ChatDock key={me.id} store={store} owner={me.id} role={me.role} />;
 }
 
-function ChatWindow({ store, owner, target, onClose }: { store: Store; owner: string; target: ChatTarget; onClose: () => void }) {
+function ChatDock({ store, owner, role }: { store: Store; owner: string; role: string }) {
+  const [selection, setSelection] = useState<{ target: ChatTarget; key: number } | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [view, setView] = useState<"list" | "thread">("list");
+  const unread = useUnreadMessageCount(store, owner) ?? 0;
+  const serial = useRef(0);
+  const choose = (target: ChatTarget) => {
+    setSelection(previous => previous && previous.target.companyId === target.companyId && previous.target.requestId === target.requestId && previous.target.conversation?.id === target.conversation?.id
+      ? previous : { target, key: ++serial.current });
+    setView("thread"); setExpanded(true);
+  };
+  useEffect(() => {
+    const open = (event: Event) => {
+      const target = (event as CustomEvent<ChatTarget>).detail;
+      if (target?.companyId) {
+        setSelection({ target, key: ++serial.current });
+        setView("thread"); setExpanded(true);
+      }
+    };
+    const list = () => { setView("list"); setExpanded(true); };
+    window.addEventListener("meetany:chat-open", open);
+    window.addEventListener("meetany:chat-list", list);
+    return () => { window.removeEventListener("meetany:chat-open", open); window.removeEventListener("meetany:chat-list", list); };
+  }, []);
+  return <>
+    <button type="button" className="ma-chat-launcher" aria-label={`მიმოწერა${unread ? `, ${unread} წაუკითხავი` : ""}`} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><Icon name="message-square" /><span>მიმოწერა</span>{unread ? <span className="ma-chat-badge">{unread > 99 ? "99+" : unread}</span> : null}</button>
+    {expanded && view === "list" ? <ChatList store={store} owner={owner} role={role} onSelect={choose} onClose={() => setExpanded(false)} /> : null}
+    {selection ? <ChatWindow key={selection.key} store={store} owner={owner} target={selection.target} visible={expanded && view === "thread"} onBack={() => setView("list")} onClose={() => setExpanded(false)} /> : null}
+  </>;
+}
+
+/** Nonmodal on desktop; a focused full-screen dialog on phones, including the keyboard viewport. */
+function useChatDialog(visible: boolean) {
   const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    if (!visible || !dialog.current) return;
+    const node = dialog.current;
+    const opener = document.activeElement as HTMLElement | null;
+    const media = matchMedia("(max-width:767px)");
+    const viewport = window.visualViewport;
+    const fit = () => {
+      node.style.setProperty("--chat-viewport-height", `${viewport?.height || innerHeight}px`);
+      node.style.setProperty("--chat-viewport-top", `${viewport?.offsetTop || 0}px`);
+    };
+    const sync = () => { node.close(); if (media.matches) node.showModal(); else node.show(); fit(); };
+    sync();
+    // Do not summon the phone keyboard before the user chooses to type.
+    node.querySelector<HTMLElement>(".ma-chat__close")?.focus({ preventScroll: true });
+    media.addEventListener("change", sync);
+    viewport?.addEventListener("resize", fit); viewport?.addEventListener("scroll", fit);
+    return () => {
+      media.removeEventListener("change", sync); viewport?.removeEventListener("resize", fit); viewport?.removeEventListener("scroll", fit);
+      node.close(); if (opener?.isConnected) opener.focus({ preventScroll: true });
+    };
+  }, [visible]);
+  return dialog;
+}
+
+function ChatList({ store, owner, role, onSelect, onClose }: { store: Store; owner: string; role: string; onSelect: (target: ChatTarget) => void; onClose: () => void }) {
+  const dialog = useChatDialog(true);
+  const { current, retry } = useConversationList(store, owner);
+  return <dialog ref={dialog} className="ma-chat ma-chat--dock" aria-labelledby="ma-chat-list-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
+    <header className="ma-chat__head"><div><h2 id="ma-chat-list-title">მიმოწერები</h2><span>ყველა საუბარი ერთ სივრცეში</span></div><Link className="ma-chat__close" href="/account/?tab=messages" onClick={onClose} aria-label="მიმოწერების სრულად გახსნა"><Icon name="layout-grid" /></Link><button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x" /></button></header>
+    <div className="ma-chat-list" aria-busy={!current}>
+      {!current ? <p className="ma-chat-list__note" role="status">მიმოწერები იტვირთება…</p> : current.error && !current.items ? <div className="ma-chat-list__note" role="alert"><p>მიმოწერები ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={retry}>ხელახლა ცდა</button></div> : !current.items?.length ? <div className="ma-chat-list__note"><p>მიმოწერა ჯერ არ გაქვს.</p><Link className="ma-btn ma-btn--secondary" href={role === "company" ? "/requests/" : "/companies/"}><Icon name={role === "company" ? "clipboard-list" : "building-2"} />{role === "company" ? "მოთხოვნების ნახვა" : "კომპანიების ნახვა"}</Link></div> : <ul>{current.items.map((c: Conversation) => {
+        const other = c.otherId || (c.clientId === owner ? c.companyId : c.clientId);
+        const name = c.otherCompany || c.otherName || "მომხმარებელი";
+        return <li key={c.id}><button type="button" className="ma-chat-list__row" data-unread={c.unreadCount > 0 || undefined} onClick={() => onSelect({ companyId: c.companyId, requestId: c.requestId || undefined, conversation: c })}>
+          <CompanyAvatar name={name} logoUrl={store.userById(other)?.logoUrl} />
+          <span className="ma-chat-list__text"><strong>{name}</strong><small>{c.requestId || c.contextKey && c.contextKey !== "general" ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</small><span>{c.lastMessage ? `${c.lastMessage.senderId === owner ? "შენ: " : ""}${c.lastMessage.body}` : "შეტყობინება ჯერ არ არის"}</span></span>
+          {c.unreadCount > 0 ? <span className="ma-chat-badge" aria-label={`${c.unreadCount} წაუკითხავი`}>{c.unreadCount > 99 ? "99+" : c.unreadCount}</span> : null}
+        </button></li>;
+      })}</ul>}
+    </div>
+    {current?.error && current.items ? <div className="ma-chat__retry" role="alert"><span>განახლება ვერ მოხერხდა.</span><button type="button" className="ma-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
+  </dialog>;
+}
+
+function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store: Store; owner: string; target: ChatTarget; visible: boolean; onBack: () => void; onClose: () => void }) {
+  const dialog = useChatDialog(visible);
   const input = useRef<HTMLTextAreaElement>(null);
   const scroll = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
-  const { conversation, messages, loaded, failed, pending, sendError, send: deliver, retry } = useChatThread(store, target);
+  const { conversation, messages, loaded, failed, pending, sendError, send: deliver, retry } = useChatThread(store, target, visible);
   const [body, setBody] = useState("");
   const otherId = conversation?.otherId || (conversation ? (conversation.clientId === owner ? conversation.companyId : conversation.clientId) : target.companyId);
   const logoUrl = store.userById(otherId)?.logoUrl;
   const name = conversation?.otherCompany || conversation?.otherName || store.userById(target.companyId)?.company || "მიმოწერა";
   useEffect(() => {
-    const node = dialog.current!;
-    const opener = document.activeElement as HTMLElement | null;
-    const media = matchMedia("(max-width:767px)");
-    const sync = () => {
-      node.close();
-      if (media.matches) node.showModal(); else node.show();
-    };
-    sync();
-    input.current?.focus({ preventScroll: true });
-    media.addEventListener("change", sync);
-    return () => { media.removeEventListener("change", sync); node.close(); if (opener?.isConnected) opener.focus({ preventScroll: true }); };
-  }, []);
-  useEffect(() => {
     if (atBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [messages]);
   async function send() {
-    if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); input.current?.focus(); }
+    if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); if (dialog.current?.open) input.current?.focus(); }
   }
-  return <dialog ref={dialog} className="ma-chat" aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
-    <header className="ma-chat__head"><CompanyAvatar name={name} logoUrl={logoUrl}/><div><h2 id="ma-chat-title">{name}</h2><span>{conversation?.requestId || target.requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span></div><button type="button" className="ma-chat__close" aria-label="მიმოწერის დახურვა" onClick={onClose}><Icon name="x"/></button></header>
+  return <dialog ref={dialog} className="ma-chat ma-chat--dock" aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
+    <header className="ma-chat__head"><button type="button" className="ma-chat__close" aria-label="ყველა მიმოწერა" onClick={onBack}><Icon name="message-square" /></button><CompanyAvatar name={name} logoUrl={logoUrl}/><div><h2 id="ma-chat-title">{name}</h2><span>{conversation?.requestId || target.requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span></div><button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button></header>
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><Icon name="message-square"/><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : messages.map(m => <div key={m.id} className={`ma-chat__message${m.senderId === owner ? " ma-chat__message--mine" : ""}`}><span className="ma-sr-only">{m.senderId === owner ? "შენ" : name}: </span><p>{m.body}</p><time dateTime={m.createdAt}>{chatDate(m.createdAt)}</time></div>)}
     </div>

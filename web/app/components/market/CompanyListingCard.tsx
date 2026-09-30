@@ -1,3 +1,5 @@
+import { BusinessMarks } from "./CompanyBusiness";
+import type { BusinessFeature } from "../../lib/business-client";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
 import { avatarInitials, companyImage } from "./CompanyAvatar";
@@ -8,6 +10,7 @@ import { Icon } from "../Icon";
 
 export type CompanyListingData = {
   id: string;
+  feature?: BusinessFeature;
   name: string;
   logoUrl?: string | null;
   gallery?: string[];
@@ -41,6 +44,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>
       <div className="company-card__body">
         <h3 className="company-card__name"><Link className="card-main-link" href={href}>{c.name}</Link></h3>
+        <BusinessMarks feature={c.feature}/>
         <p className="company-card__industry">{categories[c.industry] || c.industry}</p>
         {places ? <p className="company-card__places"><Icon name="map-pin" />{places}</p> : null}
         {c.offers.length ? <ul className="company-card__services" aria-label="მომსახურება">{c.offers.slice(0, 1).map((offer, index) => <li key={`${offer}-${index}`}>{offer}</li>)}{c.offers.length > 1 ? <li className="company-card__more">+{c.offers.length - 1}</li> : null}</ul> : null}

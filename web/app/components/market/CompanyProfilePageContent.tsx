@@ -2,6 +2,8 @@
 
 import { ProfileSkeleton } from "./Skeletons";
 
+import { BusinessMarks, CompanyReviews } from "./CompanyBusiness";
+import { useCompanyFeatures } from "../../lib/business-client";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useMemo } from "react";
@@ -29,6 +31,7 @@ const CompaniesMap = dynamic(() => import("./CompaniesMap").then(m => m.Companie
 
 export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, available } = useMarketStore(initial);
+  const business = useCompanyFeatures(store, ready && available);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const detail = useCompanyDetail(store, ready, available, id);
@@ -39,7 +42,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
     if (!c) return null;
     const stats = store.companyStats(id);
     const openRequests = (store.listRequests({ ownerId: id, state: "open" }) as { id: string; title: string; quantity: number | null; unit: string | null; city: string }[]).map(
-      (r) => ({ id: r.id, title: r.title, city: cities[r.city] || r.city, offerCount: store.offerCount(r.id) }),
+      (r) => ({ id: r.id, title: r.title, city: cities[r.city] || r.city }),
     );
     return { c, stats, openRequests };
   }, [store, ready, available, id]);
@@ -92,6 +95,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         <div className="company-hero__text">
           <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
           <h1 className="company-hero__name">{name}</h1>
+          <BusinessMarks feature={business.data?.find(f=>f.id===c.id)}/>
           <ul className="company-hero__meta" aria-label="კომპანიის დეტალები">
             {c.city ? <li><Icon name="map-pin" />{cities[c.city] || c.city}</li> : null}
             {since ? <li><Icon name="calendar" />საიტზე {since}</li> : null}
@@ -100,7 +104,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         </div>
         {!ownProfile ? <div className="company-hero__save"><SaveCompanyButton id={c.id} /></div> : null}
       </header>
-      <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები">{c.about || c.seeks?.length ? <a href="#company-about">კომპანიის შესახებ</a> : null}{products.length ? <a href="#offers">პროდუქტები და მომსახურება <span>{products.length}</span></a> : null}{openRequests.length ? <a href="#company-requests">ღია მოთხოვნები <span>{openRequests.length}</span></a> : null}</nav>
+      <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები">{c.about || c.seeks?.length ? <a href="#company-about">კომპანიის შესახებ</a> : null}{products.length ? <a href="#offers">პროდუქტები და მომსახურება <span>{products.length}</span></a> : null}{openRequests.length ? <a href="#company-requests">ღია მოთხოვნები <span>{openRequests.length}</span></a> : null}<a href="#company-reviews">შეფასებები</a></nav>
       <div className="company-profile-layout">
       <aside className="company-contact-card" aria-labelledby="company-contact-heading">
         <h2 id="company-contact-heading" className="detail-section-title">კონტაქტი</h2>
@@ -128,10 +132,11 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
           <div className="company-profile-request-list">
             {openRequests.map((r) => <article key={r.id}>
               <h3><Link href={`/requests/view/?id=${encodeURIComponent(r.id)}`}>{r.title}</Link></h3>
-              <p>{r.city} · {r.offerCount} შეთავაზება</p>
+              <p>{r.city}</p>
             </article>)}
           </div>
         </section> : null}
+        <CompanyReviews key={c.id} companyId={c.id}/>
       </div>
 
       </div>

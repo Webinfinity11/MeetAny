@@ -1,0 +1,194 @@
+/* How it works: the home page's language (blue hero, 3D step art, mtavruli headings) on one
+   explanatory page — buyer steps, company steps, trust, FAQ and a closing call to action. */
+
+.how-hero {
+  background: var(--blue-700);
+  color: var(--white);
+  padding-block: 72px 64px;
+  text-align: center;
+}
+.home-page .how-hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 3.2vw, 42px);
+  line-height: 1.3;
+  font-weight: var(--fw-bold);
+  color: var(--white);
+  font-feature-settings: var(--theme-caps-hero);
+  letter-spacing: .02em;
+}
+.how-hero p {
+  max-width: 56ch;
+  margin: var(--space-4) auto 0;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: #e0e8fa;
+}
+.how-hero__paths {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+.how-hero__paths .ma-btn { display: inline-flex; align-items: center; gap: var(--space-2); }
+.how-hero__primary { --btn-bg: var(--theme-accent); --btn-fg: var(--text); }
+.how-hero__primary:hover { --btn-bg: color-mix(in srgb, var(--theme-accent) 88%, #000); }
+.how-hero__secondary { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 1.5px #ffffff80; }
+.how-hero__secondary:hover { --btn-bg: #ffffff14; }
+
+.how-section { margin-top: 80px; scroll-margin-top: calc(var(--header-h, 64px) + 24px); }
+.how-section--tinted { padding-block: 64px; background: var(--bg-subtle); }
+.how-section__head { margin-bottom: var(--space-8); text-align: center; }
+.how-section__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--action);
+}
+.home-page .how-section__head h2 { font-feature-settings: var(--theme-caps-headings); letter-spacing: var(--ls-heading); }
+
+/* Buyer steps: three cards with the 3D art, joined by a thin line. */
+.how-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.how-steps li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--white);
+  text-align: center;
+}
+.how-steps__art {
+  display: block;
+  width: 120px;
+  height: 104px;
+  background: url(/assets/need-process-icons.png) no-repeat;
+  background-size: 300% auto;
+}
+.how-steps__num {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--blue-50);
+  color: var(--blue-700);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+}
+.home-page .how-steps h3,
+.home-page .how-list h3,
+.home-page .how-trust h3 { margin: 0; font-size: var(--fs-body); line-height: var(--lh-sm); font-weight: var(--fw-semibold); color: var(--text); }
+.how-steps p,
+.how-list p,
+.how-trust p { margin: 0; font-size: var(--fs-sm); line-height: 1.65; color: var(--text-2); }
+
+.how-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+.how-actions .ma-btn { display: inline-flex; align-items: center; gap: var(--space-2); }
+
+/* Company steps: a two-column numbered list with icon tiles. */
+.how-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.how-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--white);
+}
+.how-list li > div { display: grid; gap: var(--space-1); }
+.how-list h3 span { color: var(--action); }
+
+/* Trust: three quiet columns. */
+.how-trust {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.how-trust li { display: grid; justify-items: start; align-content: start; gap: var(--space-2); }
+.how-trust li .icon-tile { margin-bottom: var(--space-2); }
+.how-trust .icon-tile .icon { width: 22px; height: 22px; stroke-width: 1.6; }
+
+/* FAQ: native details, one border line per question. */
+.how-faq { max-width: 800px; margin-inline: auto; border-top: 1px solid var(--border); }
+.how-faq details { border-bottom: 1px solid var(--border); }
+.how-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-1);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  list-style: none;
+  cursor: pointer;
+}
+.how-faq summary::-webkit-details-marker { display: none; }
+.how-faq summary .icon { flex: none; width: 18px; height: 18px; color: var(--text-3); transition: transform var(--motion-fast) var(--motion-ease); }
+.how-faq details[open] summary .icon { transform: rotate(180deg); }
+.how-faq summary:hover { color: var(--action); }
+.how-faq summary:focus-visible { outline: none; border-radius: 6px; box-shadow: var(--focus-ring); }
+.how-faq details p { margin: 0; padding: 0 var(--space-1) var(--space-5); max-width: 68ch; font-size: var(--fs-sm); line-height: 1.7; color: var(--text-2); }
+.how-faq__more { max-width: 800px; margin: var(--space-4) auto 0; font-size: var(--fs-sm); color: var(--text-3); }
+.how-faq__more a { color: var(--text-link); }
+
+.how-join { margin-top: 80px; margin-bottom: 64px; }
+.how-join__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); flex: none; }
+.how-join__actions .ma-btn { display: inline-flex; align-items: center; gap: var(--space-2); }
+.how-join__ghost { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 1.5px #ffffff80; }
+.how-join__ghost:hover { --btn-bg: #ffffff14; }
+
+@media (max-width: 1023px) {
+  .how-trust { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+  .how-list { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 767px) {
+  .how-hero { padding-block: 40px 36px; }
+  .how-hero__paths .ma-btn { flex: 1 1 100%; justify-content: center; }
+  .how-section { margin-top: 56px; }
+  .how-section--tinted { padding-block: 48px; }
+  .how-section__head { margin-bottom: var(--space-6); }
+  .how-steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .how-steps li { padding: var(--space-6) var(--space-5) var(--space-5); }
+  .how-steps__art { width: 96px; height: 84px; }
+  .how-list li { padding: var(--space-4); }
+  .how-actions .ma-btn { flex: 1 1 100%; justify-content: center; }
+  .how-join { margin-top: 56px; margin-bottom: 40px; }
+  .how-join .home-join__panel { flex-direction: column; align-items: stretch; padding: var(--space-6); }
+  .how-join__actions .ma-btn { flex: 1 1 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .how-faq summary .icon { transition: none; }
+}

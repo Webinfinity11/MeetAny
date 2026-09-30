@@ -26,9 +26,10 @@ export function ModerationSheet({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const form = useRef<HTMLFormElement>(null);
-  const needsReason = action === "hide" || action === "block" || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
-  const destructive = ["hide", "block", "delete", "deleteOffer", "unverify"].includes(action);
+  const needsReason = action === "hide" || action === "block" || action === "removePhoto" || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
+  const destructive = ["hide", "block", "delete", "deleteOffer", "unverify", "removePhoto"].includes(action);
   const consequences: Record<string, string> = {
+    removePhoto: "ფოტო კომპანიის პროფილიდან და საცავიდან სამუდამოდ წაიშლება. მიზეზი მოქმედებების ჟურნალში შეინახება.",
     hide: "მოთხოვნა საჯარო სიიდან დაიმალება. მისი გამოჩენა მოგვიანებით შესაძლებელია.",
     unhide: "მოთხოვნა კვლავ გამოჩნდება საჯაროდ, მისი მიმდინარე სტატუსის შესაბამისად.",
     delete: "მოთხოვნა და მასზე მიღებული ყველა შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. დროებით მოსაშორებლად გამოიყენე დამალვა.",

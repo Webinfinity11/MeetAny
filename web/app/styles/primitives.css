@@ -148,7 +148,7 @@
 .ma-avatar[data-tone="4"]{--avatar-bg:var(--avatar-4-bg);--avatar-text:var(--avatar-4-text)}
 .ma-avatar[data-tone="5"]{--avatar-bg:var(--avatar-5-bg);--avatar-text:var(--avatar-5-text)}
 .ma-avatar[data-tone="6"]{--avatar-bg:var(--avatar-6-bg);--avatar-text:var(--avatar-6-text)}
-.ma-avatar{font-feature-settings:normal}
+.ma-avatar{position:relative;font-feature-settings:normal}
 .ma-proto .ma-avatar[data-tone]:not(.ma-chat__head>.ma-avatar,.ma-ocard--declined .ma-avatar){background:var(--avatar-bg);color:var(--avatar-text)}
 .ma-proto .ma-sheet[open],.ma-proto .ma-sheet::backdrop{animation:none}
 :is(.account-page,.auth-page,.request-form) :is(.ma-input,.ma-select){min-height:var(--control-h);padding-block:var(--space-2);border-radius:var(--field-radius);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body)}

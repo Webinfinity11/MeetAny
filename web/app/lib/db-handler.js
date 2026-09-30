@@ -13,7 +13,10 @@ import { TABLES, tableQuery } from './table-query.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
-  'my_profile', 'complete_profile', 'update_my_profile', 'list_companies', 'company_stats', 'offer_counts',
+  'company_business_features','company_reviews','my_company_review_targets','save_company_review',
+  'my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request',
+  'admin_business_queue','admin_moderate_review','admin_resolve_plan',
+  'my_profile', 'complete_profile', 'update_my_profile', 'set_my_gallery', 'list_companies', 'company_stats', 'offer_counts',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'send_offer', 'withdraw_offer', 'choose_offer', 'contact_for_request', 'log_contact_event',
   'start_conversation', 'send_message', 'list_my_conversations', 'list_messages', 'mark_read', 'unread_message_count',
@@ -29,7 +32,7 @@ const RPCS = new Set([
 const PUBLIC_WRITES = new Set([
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'admin_delete_offer', 'admin_delete_request_v2',
-  'send_offer', 'withdraw_offer', 'choose_offer', 'update_my_profile', 'complete_profile',
+  'send_offer', 'withdraw_offer', 'choose_offer', 'update_my_profile', 'set_my_gallery', 'complete_profile',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
 ]);
 

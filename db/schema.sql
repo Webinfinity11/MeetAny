@@ -164,6 +164,7 @@ declare
     when 'MA302' then 'user not found'
     when 'MA303' then 'only companies can be verified'
     when 'MA304' then 'moderation reason must be 3 to 500 characters'
+    when 'MA305' then 'photo not found on this profile'
     when 'MA401' then 'name is required'
     when 'MA402' then 'company name is required'
     when 'MA403' then 'invalid email'
@@ -987,7 +988,7 @@ create table if not exists meetany_private.moderation_audit (
   actor_id uuid not null,
   target_type text not null check (target_type in ('request', 'user', 'offer')),
   target_id uuid not null,
-  action text not null check (action in ('request.hide', 'request.show', 'request.delete', 'user.block', 'user.unblock', 'company.verify', 'company.unverify', 'offer.delete')),
+  action text not null check (action in ('request.hide', 'request.show', 'request.delete', 'user.block', 'user.unblock', 'company.verify', 'company.unverify', 'offer.delete', 'user.photo_remove')),
   reason text check (reason is null or char_length(reason) between 3 and 500),
   old_flags jsonb not null,
   new_flags jsonb not null
@@ -997,7 +998,7 @@ alter table meetany_private.moderation_audit add constraint moderation_audit_tar
   check (target_type in ('request','user','offer'));
 alter table meetany_private.moderation_audit drop constraint if exists moderation_audit_action_check;
 alter table meetany_private.moderation_audit add constraint moderation_audit_action_check
-  check (action in ('request.hide','request.show','request.delete','user.block','user.unblock','company.verify','company.unverify','offer.delete'));
+  check (action in ('request.hide','request.show','request.delete','user.block','user.unblock','company.verify','company.unverify','offer.delete','user.photo_remove'));
 
 alter table meetany_private.moderation_audit enable row level security;
 create index if not exists moderation_audit_page_idx on meetany_private.moderation_audit (created_at desc, id desc);
@@ -1319,7 +1320,7 @@ declare
   result jsonb;
 begin
   if v_limit < 1 then raise exception using errcode = '22023', message = 'limit must be positive'; end if;
-  if p_action is not null and p_action not in ('request.hide','request.show','request.delete','user.block','user.unblock','company.verify','company.unverify','offer.delete') then
+  if p_action is not null and p_action not in ('request.hide','request.show','request.delete','user.block','user.unblock','company.verify','company.unverify','offer.delete','user.photo_remove') then
     raise exception using errcode = '22023', message = 'invalid audit action'; end if;
   if p_target_type is not null and p_target_type not in ('request','user','offer') then
     raise exception using errcode = '22023', message = 'invalid audit target type'; end if;
@@ -1350,6 +1351,35 @@ begin
       (select jsonb_build_object('created_at',created_at,'id',id,'asOf',v_asof) from page order by created_at,id limit 1) end,
     'filteredTotal',(select count(*) from filtered),'asOf',v_asof) into result;
   return result;
+end $$;
+
+-- Removes one uploaded company photo (logo or gallery) with a reason; audited as user.photo_remove.
+create or replace function public.admin_remove_company_photo(p_user_id uuid, p_url text, p_reason text)
+returns public.profiles
+language plpgsql security definer set search_path = '' as $$
+declare
+  me public.profiles := meetany_private.require_admin();
+  v_reason text := meetany_private.moderation_reason(p_reason);
+  v_url text := btrim(coalesce(p_url, ''));
+  previous public.profiles;
+  v_field text;
+  p public.profiles;
+begin
+  if v_reason is null then perform meetany_private.fail('MA304'); end if;
+  select * into previous from public.profiles where id = p_user_id for update;
+  if not found then perform meetany_private.fail('MA302'); end if;
+  if v_url <> '' and previous.logo_url = v_url then v_field := 'logo';
+  elsif v_url <> '' and v_url = any (previous.gallery) then v_field := 'gallery';
+  else perform meetany_private.fail('MA305'); end if;
+  update public.profiles
+     set logo_url = case when v_field = 'logo' then null else logo_url end,
+         gallery = case when v_field = 'gallery' then array_remove(gallery, v_url) else gallery end
+   where id = p_user_id
+  returning * into p;
+  insert into meetany_private.moderation_audit (actor_id,target_type,target_id,action,reason,old_flags,new_flags)
+  values (me.id,'user',p_user_id,'user.photo_remove',v_reason,
+    jsonb_build_object('field',v_field,'url',v_url),jsonb_build_object('field',v_field,'removed',true));
+  return p;
 end $$;
 
 create or replace function public.admin_stats() returns jsonb
@@ -1585,6 +1615,7 @@ revoke all on function
   public.admin_list_audit(jsonb, integer),
   public.admin_search_offers(text,text,jsonb,integer), public.admin_delete_offer(uuid,text),
   public.admin_delete_request_v2(uuid,text), public.admin_list_audit_v2(jsonb,integer,text,text),
+  public.admin_remove_company_photo(uuid, text, text),
   public.admin_list_users(), public.admin_stats()
   from public, anonymous, authenticated;
 
@@ -1608,6 +1639,7 @@ grant execute on function
   public.admin_list_audit(jsonb, integer),
   public.admin_search_offers(text,text,jsonb,integer), public.admin_delete_offer(uuid,text),
   public.admin_delete_request_v2(uuid,text), public.admin_list_audit_v2(jsonb,integer,text,text),
+  public.admin_remove_company_photo(uuid, text, text),
   public.admin_list_users(), public.admin_stats()
   to authenticated;
 

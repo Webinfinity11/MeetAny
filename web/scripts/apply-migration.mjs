@@ -4,6 +4,7 @@ import { Pool } from '@neondatabase/serverless';
 const migration=process.argv[2]||'contact-events';
 const dryRun=process.argv.includes('--dry-run');
 const plans={
+ 'business-features':{file:'20260930-business-features',tables:['company_business','company_plans','plan_requests','company_reviews','business_audit'],routines:['company_business_features','company_reviews','my_company_review_targets','save_company_review','my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request','admin_business_queue','admin_moderate_review','admin_resolve_plan']},
  'request-alerts-default-on':{file:'20260929-request-alerts-default-on',tables:['request_alert_preferences'],routines:['request_alert_preferences']},
  categories:{file:'20260929-categories',tables:[],routines:['set_request_alert_preferences']},
  'admin-v2': {
@@ -19,6 +20,7 @@ const plans={
  'empty-conversations':{file:'20260924-empty-conversations',tables:['conversations'],routines:['start_conversation','list_my_conversations']},
  'company-logo':{file:'20260924-company-logo',tables:[],routines:['update_my_profile','list_companies']},
  'company-gallery':{file:'20260930-company-gallery',tables:[],routines:['set_my_gallery','list_companies']},
+ 'admin-photos':{file:'20260930-admin-photos',tables:['moderation_audit'],routines:['admin_remove_company_photo','admin_list_audit_v2']},
 };
 let pool;
 try {

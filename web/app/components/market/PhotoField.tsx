@@ -161,7 +161,7 @@ export function GalleryField({ items, onChange, disabled, uploading }: {
         <img src={item.file ? previews.get(item.key) : item.url} alt={`ფოტო ${index + 1}`} />
         {index === 0 ? <span className="gallery-field__badge">მთავარი</span> : null}
         <div className="gallery-field__tools">
-          {index > 0 ? <button type="button" disabled={disabled} aria-label={`ფოტო ${index + 1} — მთავრად დაყენება`} title="მთავრად დაყენება" onClick={() => move(index, 0)}><Icon name="arrow-left" /></button> : null}
+          {index > 0 ? <button type="button" disabled={disabled} aria-label={`ფოტო ${index + 1} — მთავრად დაყენება`} title="მთავრად დაყენება" onClick={() => move(index, 0)}><Icon name="star" /></button> : null}
           <button type="button" disabled={disabled} aria-label={`ფოტო ${index + 1} — წაშლა`} title="წაშლა" onClick={() => { setError(""); onChange(items.filter(i => i.key !== item.key)); }}><Icon name="x" /></button>
         </div>
       </li>)}
@@ -172,7 +172,7 @@ export function GalleryField({ items, onChange, disabled, uploading }: {
         </button>
       </li> : null}
     </ul>
-    <input ref={input} className="ma-sr-only" type="file" multiple tabIndex={-1} aria-hidden="true" accept="image/jpeg,image/png,image/webp,image/gif" disabled={disabled}
+    <input ref={input} className="ma-sr-only" type="file" multiple tabIndex={-1} aria-hidden="true" aria-label="გალერეის ფოტოების დამატება" accept="image/jpeg,image/png,image/webp,image/gif" disabled={disabled}
       onChange={e => { add([...(e.target.files || [])]); e.target.value = ""; }} />
     <p className="account-hint">ოფისი, საწყობი, პროდუქცია ან შესრულებული სამუშაო · JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ. პირველი ფოტო ჩანს კატალოგის ბარათზე. ცვლილება გამოჩნდება შენახვის შემდეგ.</p>
     {uploading ? <div className="logo-field__progress" role="status"><progress aria-label="ფოტოები იტვირთება" />ფოტოები იტვირთება…</div> : null}

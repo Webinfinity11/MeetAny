@@ -9,6 +9,7 @@ import "../styles/pages/homepage.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toasts } from "../components/Toasts";
+import { ChatPopup } from "../components/market/ChatPopup";
 
 export const metadata: Metadata = {
   title: "MeetAny — იპოვე შენი ბიზნესპარტნიორი",
@@ -42,6 +43,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
         </div>
+        <ChatPopup />
         <Toasts />
       </body>
     </html>

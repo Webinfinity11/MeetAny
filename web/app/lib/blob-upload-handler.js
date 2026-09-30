@@ -1,6 +1,6 @@
 // POST   /api/blob-upload  Vercel Blob client-upload token for a request photo, company logo or gallery photo (handleUpload).
 // DELETE /api/blob-upload  {url}: removes the caller's own photo or logo (a failed create_request, a
-//                          replaced or removed logo).
+//                          replaced or removed logo); an admin may remove any user's file (photo moderation).
 //
 // Rules (db/CONTRACT.md §6.1): Neon Auth JWT verified against the remote JWKS with pinned
 // issuer/audience; caller has a profile and is not blocked (rpc/my_profile with the caller's own
@@ -82,8 +82,15 @@ async function removePhoto(request) {
   try { url = new URL(String(body?.url || '')); } catch { return json(400, { error: 'bad request' }); }
   const file = url.pathname.slice(1);
   const m = /^([0-9a-f-]{36})\/[A-Za-z0-9_-]{1,100}\.(jpg|jpeg|png|webp|gif)$/i.exec(file);
-  if (url.protocol !== 'https:' || !BLOB_HOST.test(url.hostname) || url.search || url.hash || url.username || url.port || !m || m[1] !== claims.sub)
+  if (url.protocol !== 'https:' || !BLOB_HOST.test(url.hostname) || url.search || url.hash || url.username || url.port || !m)
     return json(403, { error: 'forbidden' });
+  // Another user's file: only an active admin (photo moderation, after admin_remove_company_photo).
+  if (m[1] !== claims.sub) {
+    let profile;
+    try { profile = await myProfile(claims); }
+    catch (err) { console.error('blob-upload: profile check failed', err?.message); return json(502, { error: 'profile check failed' }); }
+    if (!profile || profile.id !== claims.sub || profile.blocked || profile.role !== 'admin') return json(403, { error: 'forbidden' });
+  }
   try { await del(url.origin + url.pathname); return json(200, { deleted: true }); }
   catch (err) { console.error('blob-upload: delete failed', err?.message); return json(500, { error: 'delete failed' }); }
 }

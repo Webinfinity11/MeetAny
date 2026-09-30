@@ -16,5 +16,5 @@ export const metadata: Metadata = {
 export const viewport = siteViewport;
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <SiteShell dataMarketPage="admin">{children}</SiteShell>;
+  return <SiteShell dataMarketPage="admin" footer={false}>{children}</SiteShell>;
 }

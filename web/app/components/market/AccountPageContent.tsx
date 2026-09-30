@@ -6,7 +6,7 @@ import { AccountSkeleton } from "./Skeletons";
 import { EngagementPanel } from "./EngagementPanels";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
@@ -16,6 +16,7 @@ import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { LogoField, GalleryField, type GalleryItem } from "./PhotoField";
+import { CompanyBusinessPanel } from "./CompanyBusiness";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
@@ -240,6 +241,8 @@ function ProfileForm({ me }: { me: AnyUser }) {
               <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
               <p className="ma-field__help" id="address-help">ჩანს პროფილზე „მიმართულება“ ბმულით</p>
             </div>
+            <details className="account-location-details">
+              <summary><Icon name="map-pin" />რუკაზე ზუსტი მდებარეობა</summary>
             <fieldset className="ma-field account-coords" aria-describedby="coords-help">
               <legend className="ma-field__label">
                 კოორდინატები <span className="ma-field__opt">არასავალდებულო</span>
@@ -258,6 +261,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
               </div>
               <p className="account-coords__help" id="coords-help">Google Maps-იდან: მარჯვენა ღილაკი → კოორდინატები. თუ მითითებულია, „მიმართულება“ ზუსტ წერტილზე მიგიყვანს.</p>
             </fieldset>
+            </details>
           </fieldset>
           </>
         ) : null}
@@ -340,7 +344,7 @@ function PasswordForm() {
 
 type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
 type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
-type Tab = "overview" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile";
+type Tab = "overview" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
 
 const DAY = 86400000;
 function postedLabel(createdAt: string, now: number) {
@@ -361,6 +365,20 @@ type NavItem = { key: Tab; href: string; label: string; icon: string; count?: nu
 
 /** Account sidebar (Airbnb-style account hub): who you are on top, sections with icons and counts. */
 function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab; items: NavItem[]; me: AnyUser; name: string; roleLabel: string; isCompany: boolean }) {
+  const list = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = list.current;
+    const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!nav || !active) return;
+    const reveal = () => {
+      if (nav.scrollWidth <= nav.clientWidth) return;
+      nav.scrollLeft += active.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - active.offsetWidth) / 2;
+    };
+    reveal();
+    const resize = new ResizeObserver(reveal);
+    resize.observe(nav);
+    return () => resize.disconnect();
+  }, [tab]);
   return (
     <aside className="account-nav" aria-label="ანგარიში">
       <div className="account-nav__who">
@@ -371,7 +389,7 @@ function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab;
         </div>
       </div>
       {isCompany ? <Link className="account-nav__public" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="external-link" />საჯარო გვერდის ნახვა</Link> : null}
-      <nav className="account-nav__list" aria-label="ანგარიშის განყოფილებები">
+      <nav ref={list} className="account-nav__list" aria-label="ანგარიშის განყოფილებები">
         {items.map((t) => (
           <Link key={t.key} href={t.href} aria-current={tab === t.key ? "page" : undefined}>
             <Icon name={t.icon} />
@@ -394,7 +412,7 @@ export function AccountPageContent() {
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
   // ?tab=alerts (old links) opens the notifications tab; ?tab=settings the profile.
-  const tab: Tab = rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" || rawTab === "notifications" ? rawTab : rawTab === "alerts" ? "notifications" : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
+  const tab: Tab = rawTab === "business" || rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" || rawTab === "notifications" ? rawTab : rawTab === "alerts" ? "notifications" : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
 
@@ -439,13 +457,14 @@ export function AccountPageContent() {
   const myRequests = data?.myRequests ?? [];
   const matching = data?.matching ?? [];
   const myOffers = data?.myOffers ?? [];
-  const activeTab: Tab = tab === "overview" ? isCompany ? "offers" : "requests" : tab;
+  const activeTab: Tab = tab === "overview" ? isCompany ? "offers" : "requests" : !isCompany && tab === "offers" ? "requests" : tab;
   const tabs: NavItem[] = [
     ...(isCompany ? [{ key: "offers" as Tab, href: "/account/?tab=offers", label: "შეთავაზებები", icon: "send", count: myOffers.length }] : []),
     { key: "requests", href: "/account/?tab=requests", label: "მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
     { key: "saved", href: "/account/?tab=saved", label: "შენახული", icon: "bookmark", count: savedCount },
     { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები", icon: "message-square", count: unread, alert: true },
     { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები", icon: "bell" },
+    ...(isCompany ? [{ key:"business" as Tab, href:"/account/?tab=business", label:"განვითარება", icon:"sparkles" }] : []),
     { key: "profile", href: "/account/?tab=profile", label: "პროფილი", icon: "user-round" },
   ];
   const nav = <AccountTabs tab={activeTab} items={tabs} me={me} name={name} roleLabel={roleLabel} isCompany={isCompany} />;
@@ -467,6 +486,8 @@ export function AccountPageContent() {
       </div>
     </div>
   );
+
+  if (tab === "business" && isCompany) return <div className="ma-page account-page">{nav}<div className="account-wide"><CompanyBusinessPanel key={me.id} owner={me.id}/></div></div>;
 
   if (tab === "profile") return (
     <div className="ma-page account-page">

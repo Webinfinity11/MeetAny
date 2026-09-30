@@ -237,7 +237,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .sector-icon{display:inline-flex;align-items:center;justify-content:center;width:var(--space-8);height:var(--space-8);flex:none;color:var(--text-2)}
 .sector-icon svg{display:block;width:var(--icon-lg);height:var(--icon-lg);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linejoin:round;stroke-linecap:round}
 .sector-icon .sector-fill{fill:var(--blue-50)}
-/* Search suggestions (Airbnb-style panel): grouped, category icons in soft blue circles, company photos. */
+/* Compact grouped suggestions; the full-results link sits outside the listbox. */
 .search-suggestions {
   position: absolute;
   top: calc(100% + var(--space-3));
@@ -247,13 +247,12 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
   max-height: min(460px, 70vh);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: var(--space-3) var(--space-2);
+  padding: var(--space-2);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--white);
   color: var(--text);
   box-shadow: var(--shadow-float);
-  animation: ma-appear var(--motion-fast) var(--motion-ease) both;
 }
 .search-suggestions[hidden] {
   display: none;
@@ -269,15 +268,16 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .search-suggestions__heading:first-child {
   padding-top: var(--space-1);
 }
+.search-suggestion + .search-suggestions__heading { margin-top: var(--space-2); border-top: 1px solid var(--border-subtle); }
 .search-suggestion {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  min-height: 60px;
+  min-height: 56px;
   padding: var(--space-2) var(--space-3);
   border: 0;
-  border-radius: 12px;
+  border-radius: 8px;
   background: transparent;
   color: var(--text);
   text-align: left;
@@ -292,7 +292,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 }
 .search-suggestion strong {
   overflow: hidden;
-  font-size: var(--fs-body);
+  font-size: var(--fs-sm);
   line-height: var(--lh-sm);
   font-weight: var(--fw-semibold);
   text-overflow: ellipsis;
@@ -300,21 +300,27 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 }
 .search-suggestion small {
   overflow: hidden;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   line-height: var(--lh-sm);
   color: var(--text-3);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.search-suggestion .icon-tile {
-  width: 44px;
-  height: 44px;
+.search-suggestion__category-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-50);
+  color: var(--blue-700);
 }
 .search-suggestion__thumb {
   flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   object-fit: cover;
   background: var(--bg-muted);
 }
@@ -326,7 +332,11 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
   font-size: var(--fs-sm);
   font-weight: var(--fw-bold);
 }
-.search-suggestion:hover,.search-suggestion[aria-selected="true"]{background:var(--bg-subtle)}
+.search-suggestion:hover,.search-suggestion[aria-selected="true"]{background:var(--blue-50)}
+.search-suggestion[aria-selected="true"] { box-shadow: inset 2px 0 var(--blue-700); }
+.search-suggestions__all { position: sticky; bottom: calc(-1 * var(--space-2)); display: flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--tap-min); margin-top: var(--space-2); border-top: 1px solid var(--border-subtle); border-radius: 0 0 8px 8px; background: var(--white); color: var(--blue-700); font-size: var(--fs-sm); font-weight: var(--fw-semibold); text-decoration: none; }
+.search-suggestions__all:hover { background: var(--blue-50); }
+.search-suggestions__all .icon { width: 16px; height: 16px; }
 .ma-chat[open]{display:flex;flex-direction:column;position:fixed;inset:auto var(--space-6) var(--space-6) auto;width:calc(var(--space-24) * 4 + var(--space-8));height:calc(var(--space-24) * 6);max-height:calc(100dvh - var(--space-12));max-width:calc(100vw - var(--space-12));margin:0;padding:0;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg);color:var(--text);box-shadow:var(--shadow-4);z-index:var(--z-menu);animation:ma-chat-enter var(--motion-enter) var(--motion-ease-out)}
 .ma-chat__head{display:flex;align-items:center;gap:var(--space-3);flex:none;padding:var(--space-4);background:var(--action);color:var(--text-on-brand)}
 .ma-chat__head>div{flex:1;min-width:0}
@@ -356,10 +366,35 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-chat-badge{display:inline-flex;align-items:center;justify-content:center;min-width:var(--space-5);min-height:var(--space-5);padding:0 var(--space-1);border-radius:var(--radius-pill);background:var(--action);color:var(--text-on-brand);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums}
 .ma-chat-unread>.ma-chat-badge{position:absolute;top:calc(-1 * var(--space-1));right:calc(-1 * var(--space-1));border:1px solid var(--bg)}
 @keyframes ma-chat-enter{from{opacity:0;transform:translateY(var(--space-6))}to{opacity:1;transform:translateY(0)}}
+.ma-chat-launcher{position:fixed;right:24px;bottom:24px;z-index:var(--z-menu);display:flex;align-items:center;gap:10px;min-height:52px;padding:0 20px;border:1px solid var(--blue-700);border-radius:18px;background:var(--blue-700);color:var(--white);box-shadow:0 6px 24px #172b4d26;font-size:14px;font-weight:var(--fw-semibold);cursor:pointer}
+.ma-chat-launcher:hover{background:var(--blue-900)}
+.ma-chat-launcher .ma-chat-badge{background:var(--white);color:var(--blue-700)}
+.ma-chat--dock[open]{bottom:88px;max-height:calc(100dvh - 112px);animation:none}
+.ma-chat-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px}
+.ma-chat-list ul{margin:0;padding:0;list-style:none}
+.ma-chat-list__row{display:flex;align-items:center;gap:12px;width:100%;min-height:88px;padding:12px;border:0;border-bottom:1px solid var(--border-subtle);border-radius:10px;background:var(--white);color:var(--text);text-align:left;cursor:pointer}
+.ma-chat-list__row:hover{background:var(--blue-50)}
+.ma-chat-list__row>.ma-avatar{flex:none;width:42px;height:42px}
+.ma-chat-list__text{flex:1;min-width:0;display:grid;gap:3px}
+.ma-chat-list__text strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:var(--fw-semibold)}
+.ma-chat-list__text small{font-size:11px;color:var(--text-3)}
+.ma-chat-list__text>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:var(--text-2)}
+.ma-chat-list__row[data-unread] .ma-chat-list__text strong{color:var(--blue-700)}
+.ma-chat-list__row[data-unread] .ma-chat-list__text>span{font-weight:var(--fw-semibold)}
+.ma-chat-list__note{display:grid;justify-items:center;align-content:center;gap:12px;min-height:220px;padding:24px;text-align:center;color:var(--text-2);font-size:14px}
+.ma-chat-list__note p{margin:0}
+.ma-chat__close{text-decoration:none}
+@media(prefers-reduced-motion:reduce){.ma-chat[open]{animation:none}}
 @media(max-width:767px){
   html:has(.ma-chat:modal){overflow:hidden}
   .ma:has(.ma-chat:modal){height:100dvh;overflow:hidden}
   .ma-chat[open]{inset:0;width:100%;height:100dvh;max-height:100dvh;max-width:100%;border:0;border-radius:0;box-shadow:none}
+  .ma-chat--dock[open]{top:var(--chat-viewport-top,0px);bottom:auto;height:var(--chat-viewport-height,100dvh);max-height:var(--chat-viewport-height,100dvh)}
+  .ma-chat-launcher{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:52px;padding:0;justify-content:center;border-radius:18px}
+  .ma-chat-launcher>span:not(.ma-chat-badge){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .ma-chat-launcher>.ma-chat-badge{position:absolute;top:-5px;right:-5px;border:1px solid var(--blue-700)}
+  .ma-chat--dock .ma-chat__head{gap:8px;padding-inline:12px}
+  .ma-chat--dock .ma-chat__head>.ma-avatar{width:36px;height:36px}
   .ma-chat::backdrop{background:var(--bg)}
   .ma-chat__composer{padding-bottom:max(var(--space-4),env(safe-area-inset-bottom))}
   .ma-chat__head{padding-top:max(var(--space-4),env(safe-area-inset-top))}
@@ -497,3 +532,5 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-header__account .ma-menu__item .icon{width:var(--space-5);height:var(--space-5);flex:none}
 .ma-header__account .ma-menu__item--danger{margin-top:var(--space-2);border-top:1px solid var(--border-subtle);border-top-left-radius:0;border-top-right-radius:0}
 .ma-header__slot{display:block;width:var(--tap-min);height:var(--tap-min)}
+/* Keep the add icon visible when signed-in mobile headers hide the CTA text. */
+@media(max-width:767px){.ma-header__actions:has(.ma-header__updates) .ma-header__cta{width:var(--tap-min);padding:0;flex:none}.ma-header__actions:has(.ma-header__updates) .ma-header__cta>.icon{display:block;flex:none}.ma-header__actions:has(.ma-header__updates) .ma-header__cta-short,.ma-header__actions:has(.ma-header__updates) .ma-header__cta-label{display:none}}

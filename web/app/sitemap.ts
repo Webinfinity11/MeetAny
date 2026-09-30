@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { businessIdeas } from "./lib/business-ideas";
 import { siteUrl } from "./lib/site-url";
 
 // Public pages and the two catalogs. Detail pages (/requests/view/?id=, /companies/view/?id=)
@@ -9,6 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/`, changeFrequency: "daily", priority: 1 },
     { url: `${base}/requests/`, changeFrequency: "hourly", priority: 0.9 },
     { url: `${base}/companies/`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}/ideas/`, changeFrequency: "monthly", priority: 0.7 },
+    ...businessIdeas.map(i=>({url:`${base}/ideas/${i.slug}/`, changeFrequency:"monthly" as const,priority:0.6})),
+    { url: `${base}/how-it-works/`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/terms/`, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

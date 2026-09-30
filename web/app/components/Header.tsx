@@ -53,8 +53,10 @@ export function Header() {
     : me.role === "company" ? [
       ["send", "ჩემი შეთავაზებები", "/account/?tab=offers"],
       ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
+      ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
       ["message-square", "მიმოწერები", "/account/?tab=messages"],
       ["bell", "შეტყობინებები", "/account/?tab=notifications"],
+      ["sparkles", "განვითარება", "/account/?tab=business"],
       ["building-2", "კომპანიის პროფილი", "/account/?tab=profile"],
       ["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`],
     ] : [
@@ -64,6 +66,11 @@ export function Header() {
       ["bell", "შეტყობინებები", "/account/?tab=notifications"],
       ["user-round", "პროფილი", "/account/?tab=profile"],
     ];
+  // The account sidebar already exposes the working sections; don't repeat it in this menu.
+  const desktopLinks = me && !isAdmin && pathname.startsWith("/account")
+    ? [["settings", "ანგარიშის პარამეტრები", "/account/?tab=profile"],
+      ...(me.role === "company" ? [["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`]] : [])]
+    : links;
   useLayoutEffect(() => {
     if (!accountOpen || !focusEdge.current) return;
     const items = dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
@@ -86,7 +93,7 @@ export function Header() {
     finally { setPending(false); }
   }
   const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><img className="ma-header__symbol" src="/assets/meetany-symbol-transparent.png" alt="" width={1496} height={1051}/><img className="ma-header__wordmark" src="/assets/meetany-wordmark.png" alt="MeetAny" width={683} height={171}/></Link>;
-  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["companies", "კომპანიები", "/companies/"], ["requests", "მოთხოვნები", "/requests/"], ["how", "როგორ მუშაობს", "/#how"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(`/${id}/`) ? "page" : undefined}>{title}</Link>);
+  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["companies", "კომპანიები", "/companies/"], ["requests", "მოთხოვნები", "/requests/"], ["ideas", "ბიზნესიდეები", "/ideas/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
   const add = <Link className="ma-btn ma-btn--accent ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Link>;
   return <>
     <NavigationProgress />
@@ -108,7 +115,7 @@ export function Header() {
         }}>
           <button className="ma-menu__trigger" aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}><Icon name={isAdmin ? "shield-check" : me.role === "company" ? "building-2" : "user-round"}/><span>{accountLabel}</span><Icon name="chevron-down"/></button>
           <div className="ma-menu__list" id="ma-account-menu" role="menu" hidden={!accountOpen}>
-            {links.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
+            {desktopLinks.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
             <button className="ma-menu__item ma-menu__item--danger" role="menuitem" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button>
           </div>
         </div> : role && role !== "guest" ? <div className="ma-menu ma-header__account">

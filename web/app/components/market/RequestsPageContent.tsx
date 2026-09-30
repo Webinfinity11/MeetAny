@@ -10,6 +10,7 @@ import { useSearchSuggestions } from "../../lib/search-suggestions";
 import { useRouter } from "next/navigation";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
+import { CustomSelect } from "../ui/CustomSelect";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
@@ -17,6 +18,7 @@ import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
 import { FacetList, type Facet } from "./FacetList";
 import { CatalogHeader } from "./CatalogHeader";
+import { RequestCatalogCover } from "./RequestCatalogCover";
 import { useFilters } from "../../lib/use-filters";
 import { postedLabel } from "../../lib/format";
 import { RequestFormSheet } from "./RequestFormSheet";
@@ -52,8 +54,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
   const city = filters.get("city"), category = currentCategory(filters.get("category")), query = filters.get("q"), sort = filters.get("sort", "newest");
-  // Filters kept only where they change a decision: category, city (search pill) and "no offers yet".
-  const unanswered = filters.get("unanswered") === "1";
   const setCity = (city: string) => filters.set({city});
   const setCategory = (category: string) => filters.set({category});
   const setQuery = (q: string) => filters.set({q});
@@ -94,11 +94,14 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         q: query,
         state: "open",
         ...overrides,
-      })?.filter(r => !unanswered || store?.offerCount(r.id) === 0) || [],
-    [store, category, city, query, unanswered],
+      }) || [],
+    [store, category, city, query],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
+  const coverRequests = useMemo(() => ready && available
+    ? ((store?.listRequests as (args: unknown) => MappedRequest[])?.({ state: "open" }) || []).slice(0, 16)
+    : [], [store, ready, available]);
   const suggestions = useSearchSuggestions("requests", query, "", results.map(result => result.id));
   const router = useRouter();
   const categoryFacets: Facet[] = useMemo(
@@ -109,6 +112,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     [list],
   );
   const allCount = ready && available ? list({ category: "" }).length : 0;
+  // Cities where work is needed; a request for all of Georgia counts in every city (store rule).
+  const cityFacets: Facet[] = useMemo(
+    () => Object.entries(cities).filter(([id]) => id !== "georgia").map(([id, label]) => ({ id, label, count: list({ city: id }).length })),
+    [list],
+  );
 
 
   const sorted = useMemo(() => {
@@ -123,7 +131,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     return sorted.map((r) => {
       const owner = (store.userById as (id: string) => { company?: string; name?: string } | null)(r.ownerId);
       const ownerName = owner?.company || owner?.name || "მომხმარებელი";
-      const offerCount = (store.offerCount as (id: string) => number)(r.id);
       const state = (store.requestState as (r: unknown) => RequestRowData["state"])(r);
       const daysLeft = (store.daysLeft as (r: unknown) => number)(r);
       const isOwn = !!me && r.ownerId === me.id;
@@ -151,7 +158,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         unit: full.unit,
         neededBy: full.neededBy,
         ownerName,
-        offerCount,
         state,
         daysLeft,
         isOwn,
@@ -167,17 +173,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const activeItems = [
     ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: cities[city] || city}] : []),
-    ...(unanswered ? [{key: "unanswered", label: "უპასუხო"}] : []),
   ];
-  const clearFilters = () => filters.set({city: "", category: "", unanswered: ""});
+  const clearFilters = () => filters.set({city: "", category: ""});
 
   const filterCount = activeItems.length;
-  const toggle = (label: string, hint: string, checked: boolean, key: string) => <label className="filter-switch">
-    <span><strong>{label}</strong><small>{hint}</small></span>
-    <input type="checkbox" role="switch" checked={checked} onChange={e => filters.set({ [key]: e.target.checked ? "1" : "" })} />
-    <span className="filter-switch__track" aria-hidden="true" />
-  </label>;
-  // Same panel as the companies catalog; the city lives in the search pill.
+  // Same panel as the companies catalog; the city list shares its value with the search pill.
   const requestFilters = (placement: "desktop" | "mobile") => <div className="catalog-filters">
     {placement === "desktop" ? <div className="catalog-filters__head">
       <h2>ფილტრები{filterCount > 0 ? <span className="catalog-filters__count">{filterCount}</span> : null}</h2>
@@ -188,7 +188,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
       <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
     </div>
     <div className="catalog-filter-group">
-      {toggle("შეთავაზების გარეშე", "ჯერ არავის უპასუხია — პირველი იყავი", unanswered, "unanswered")}
+      <label className="catalog-filter-title" htmlFor={`${placement}-city`}>ქალაქი</label>
+      <CustomSelect className="ma-select catalog-city-select" id={`${placement}-city`} value={city} onChange={e => setCity(e.target.value)}>
+        <option value="">ყველა ქალაქი</option>
+        {cityFacets.map(f => <option key={f.id} value={f.id} disabled={!f.count && f.id !== city}>{f.label} · {f.count}</option>)}
+      </CustomSelect>
     </div>
   </div>;
 
@@ -201,24 +205,23 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   return (
     <div className="ma-page requests-catalog catalog-page request-board">
       <CatalogHeader
+        tone="light"
         center
-        overline="ბიზნესები ეძებენ"
-        title="ღია მოთხოვნები"
-        description="ნახე, რა სჭირდებათ სხვა ბიზნესებს, და გაუგზავნე შეთავაზება."
+        title="შენი შემდეგი შეკვეთა"
+        description="ნახე, რა სჭირდებათ ბიზნესებს და გააგზავნე შეთავაზება."
+        artwork={<RequestCatalogCover requests={coverRequests} />}
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("request-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-          <SegmentedSearch id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი, შეფუთვა, გადაზიდვა"
+          <SegmentedSearch framed id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი, შეფუთვა, გადაზიდვა"
             query={query} onQuery={setQuery} suggestions={suggestions}
             onSelect={item => item.kind === "category" ? filters.set({ category: item.category, q: "" }) : router.push(item.href)}
             city={city} onCity={setCity} />
         </form>}
-        help={<>მომწოდებელს ეძებ? <Link href="/requests/new/">დაამატე მოთხოვნა</Link></>}
       />
         <div className="catalog-workspace">
         <aside className="catalog-sidebar" aria-label="მოთხოვნების ფილტრები">{requestFilters("desktop")}</aside>
         <div className="catalog-main" id="request-results">
         <ResultsBar
             count={countLabel}
-            utility={ready && store?.currentUser()?.role === "company" ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=notifications"><Icon name="bell"/>შეტყობინებები</Link> : null}
             items={activeItems}
             onRemove={key => filters.set({[key]: ""})}
             onClear={clearFilters}
@@ -242,7 +245,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                         <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
                         <h2>ასეთი მოთხოვნა ჯერ არ გამოქვეყნებულა</h2>
                         <p>სცადე სხვა კატეგორია ან ქალაქი. ახალი მოთხოვნები ყოველდღე ემატება — შეტყობინებებს ანგარიშში მიიღებ.</p>
-                        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: "", unanswered: ""})}>ყველა მოთხოვნის ნახვა</button>
+                        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: ""})}>ყველა მოთხოვნის ნახვა</button>
                       </div>
                     )
                   : <>

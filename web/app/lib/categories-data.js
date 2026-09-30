@@ -1,4 +1,4 @@
-// The only source of request categories and company directions: 11 groups, 33 categories and "other".
+// Shared request categories and company directions, including financial services.
 // Keys are stored in the database (meetany_private.categories(), db/migrations/20260929-categories.sql);
 // keep the two lists identical. Plain JS so market-store.js and the node tests can import it.
 // Kind: "product" (a company supplies goods) or "service"; it drives the catalog type filter.
@@ -53,6 +53,11 @@ export const categoryGroups = [
     ["legal", "იურიდიული სერვისი", "service"],
     ["consulting", "კონსალტინგი", "service"],
     ["hr_training", "პერსონალი, ტრენინგი", "service"],
+  ] },
+  { id: "finance", short: "ფინანსური სერვისები", name: "ფინანსური სერვისები", icon: "briefcase-business", photo: "meeting.jpg", items: [
+    ["leasing", "ლიზინგი", "service"],
+    ["business_finance", "ბიზნესდაფინანსება", "service"],
+    ["business_insurance", "ბიზნესის დაზღვევა", "service"],
   ] },
   { id: "tourism", short: "ტურიზმი", name: "ტურიზმი და სტუმარმასპინძლობა", icon: "bed-double", photo: "hotel-linen.jpg", items: [
     ["hotel_services", "სასტუმროს სერვისი", "service"],

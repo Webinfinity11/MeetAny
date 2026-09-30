@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Icon } from "./Icon";
 import { DuoIcon } from "./ui/DuoIcon";
 import { avatarInitials } from "./ui/Avatar";
@@ -14,11 +15,13 @@ function Highlight({ text, query }: { text: string; query: string }) {
   return <>{text.slice(0, at)}<mark>{text.slice(at, at + q.length)}</mark>{text.slice(at + q.length)}</>;
 }
 
-export function SearchCombobox({ id, label, placeholder, value, onChange, suggestions, onSelect, name, hideLabel = false, emptyHref }: {
+export function SearchCombobox({ id, label, placeholder, value, onChange, suggestions, onSelect, name, hideLabel = false, emptyHref, allResultsHref }: {
   id: string; label: string; placeholder: string; value: string; onChange: (value: string) => void;
   suggestions: SearchSuggestion[]; onSelect: (item: SearchSuggestion) => void; name?: string; hideLabel?: boolean;
   /** Where "nothing found" points (usually a prefilled new request); omit to hide the panel instead. */
   emptyHref?: string;
+  /** Full catalog destination, retaining the current query and city. */
+  allResultsHref?: string;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
@@ -29,7 +32,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
     <label className={hideLabel ? "ma-sr-only" : "ma-field__label"} htmlFor={id}>{label}</label>
     <div className="catalog-search__input">
       <Icon name="search" />
-      <input ref={input} className="ma-input" id={id} name={name} type="search" role="combobox" autoComplete="off" maxLength={200}
+      <input ref={input} className="ma-input" id={id} name={name} type="search" role="combobox" autoComplete="off" enterKeyHint="search" maxLength={200}
         aria-autocomplete="list" aria-expanded={open && !!suggestions.length} aria-controls={`${id}-suggestions`} aria-activedescendant={open && active >= 0 && suggestions[active] ? `${id}-option-${active}` : undefined}
         placeholder={placeholder} value={value} onFocus={() => { setOpen(true); setActive(-1); }}
         onChange={e => { onChange(e.target.value); setOpen(true); setActive(-1); }}
@@ -52,13 +55,14 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
           return <Fragment key={s.id}>{heading}<button type="button" role="option" aria-selected={active === index} id={`${id}-option-${index}`} tabIndex={-1}
             className={`search-suggestion search-suggestion--${s.kind}`} onMouseDown={e => e.preventDefault()} onPointerMove={() => setActive(index)} onClick={() => pick(index)}>
             {s.kind === "category"
-              ? <DuoIcon name={s.category} size={22} tile />
-              : s.image ? <img className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={44} height={44} />
+              ? <span className="search-suggestion__category-icon"><DuoIcon name={s.category} size={18} /></span>
+              : s.image ? <img className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={36} height={36} />
               : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? avatarInitials(s.label) : <DuoIcon name="file-text" size={20} />}</span>}
             <span><strong><Highlight text={s.label} query={value} /></strong><small>{s.detail}</small></span>
           </button></Fragment>;
         })}
       </div>
+      {allResultsHref ? <Link className="search-suggestions__all" href={allResultsHref} onClick={() => setOpen(false)}><Icon name="search" />ყველა შედეგის ნახვა</Link> : null}
     </div>
   </div>;
 }

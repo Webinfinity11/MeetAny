@@ -20,6 +20,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const CHECK_EMAIL='შეამოწმე ელფოსტა';
  const STALE='მონაცემები ვერ განახლდა. გვერდზე შეიძლება ძველი ინფორმაცია ჩანდეს.';
  const MSG={
+  MA601:'აირჩიე 1–5 ქულა და დაწერე 20–1500 სიმბოლო.',MA602:'შეფასება შეგიძლია შენ მიერ არჩეულ მომწოდებელზე.',MA603:'მიუთითე მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლე სია.',
   MA001:'ამისთვის შედი ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისთვისაა.',
   MA101:'სათაური უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს.',MA102:'აღწერე საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიე კატეგორია.',MA104:'აირჩიე ქალაქი.',
   MA105:'ერთდროულად შეიძლება 5 ღია განცხადება. დახურე ძველი და სცადე თავიდან.',MA106:'განცხადება ვერ მოიძებნა.',MA107:'ეს განცხადება შენ არ გეკუთვნის.',
@@ -27,6 +28,7 @@ export function createMarketStore({initial=null,background=true}={}){
   MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიე რაოდენობის ერთეული.',MA113:'აირჩიე დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
   MA114:'მისამართი ან რაიონი უნდა შეიცავდეს მაქსიმუმ 120 სიმბოლოს.',
   MA115:'ლოგო უნდა იყოს JPG, PNG, WEBP ან GIF სურათი, მაქსიმუმ 2 მბ.',
+  MA305:'ფოტო ამ პროფილზე ვეღარ მოიძებნა — შესაძლოა უკვე წაიშალა.',
   MA116:'გალერეაში შეიძლება 8-მდე ფოტო: JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ.',
   MA412:'მისამართი უნდა შეიცავდეს მაქსიმუმ 200 სიმბოლოს.',
   MA413:'მიუთითე ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
@@ -828,6 +830,19 @@ export function createMarketStore({initial=null,background=true}={}){
  const markRead=id=>rpc('mark_read',{p_conversation_id:id}).then(data=>({marked:Number(data.marked),readAt:data.read_at}));
  const unreadMessageCount=()=>rpc('unread_message_count').then(Number);
 
+ /* ---------- business directory, reviews and company plans ---------- */
+ const companyBusinessFeatures=()=>rpc('company_business_features');
+ const companyReviews=(id,offset=0)=>rpc('company_reviews',{p_company_id:id,p_offset:offset});
+ const myCompanyReviewTargets=id=>rpc('my_company_review_targets',{p_company_id:id});
+ const saveCompanyReview=(id,rating,body)=>rpc('save_company_review',{p_request_id:id,p_rating:rating,p_body:body});
+ const myBusinessSettings=()=>rpc('my_business_settings');
+ const setCompanyDistributor=value=>rpc('set_company_distributor',{p_distributor:value});
+ const requestCompanyPlan=plan=>rpc('request_company_plan',{p_plan:plan});
+ const cancelCompanyPlanRequest=()=>rpc('cancel_company_plan_request');
+ const adminBusinessQueue=(kind,offset=0)=>rpc('admin_business_queue',{p_kind:kind,p_offset:offset});
+ const adminModerateReview=(id,status,reason)=>rpc('admin_moderate_review',{p_id:id,p_status:status,p_reason:reason});
+ const adminResolvePlan=(id,approve,days,note)=>rpc('admin_resolve_plan',{p_id:id,p_approve:approve,p_days:days,p_note:note});
+
  /* ---------- admin ---------- */
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
@@ -846,8 +861,11 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminDeleteRequest=(requestId,reason)=>reason!==undefined?mutate('admin_delete_request_v2',{p_request_id:requestId,p_reason:String(reason||'').trim()}):mutate('admin_delete_request',{p_request_id:requestId});
  const adminSetBlocked=(userId,blocked,reason)=>mutate('admin_set_blocked',{p_user_id:userId,p_blocked:!!blocked,p_reason:blocked&&reason?String(reason).trim():null});
  const adminSetVerified=(userId,verified)=>mutate('admin_set_verified',{p_user_id:userId,p_verified:!!verified});
+ // Photo moderation: clear the reference (audited), then remove the Blob file (best effort).
+ const adminRemovePhoto=(userId,url,reason)=>mutate('admin_remove_company_photo',{p_user_id:userId,p_url:url,p_reason:String(reason||'').trim()},mapUser).then(user=>{removePhoto(url);return user;});
 
  return {categories,cities,units,priceTypes,todayDate,maxNeededBy,stateLabels,EXTEND_DAYS,
+  companyBusinessFeatures,companyReviews,myCompanyReviewTargets,saveCompanyReview,myBusinessSettings,setCompanyDistributor,requestCompanyPlan,cancelCompanyPlanRequest,adminBusinessQueue,adminModerateReview,adminResolvePlan,
   engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}},
   refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
@@ -861,6 +879,6 @@ export function createMarketStore({initial=null,background=true}={}){
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,uploadLogo,setGallery,listCompanies,getCompany,ensureCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
-  adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminRemovePhoto,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }

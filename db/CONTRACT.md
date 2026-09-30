@@ -599,6 +599,20 @@ Migration `migrations/20260930-company-gallery.sql` (rerunnable; apply after `20
 
 Verification (2026-09-30): local suite `db/tests/gallery_tests.sql` — 22 assertions; dry-run against auth-probe ok (rolled back).
 
+## Admin photo moderation — T12.4c (2026-09-30)
+
+Migration `migrations/20260930-admin-photos.sql` (rerunnable; apply **after** `20260930-company-gallery.sql` and `20260929-admin-v2.sql`): `node web/scripts/apply-migration.mjs admin-photos`.
+
+- `admin_remove_company_photo(p_user_id uuid, p_url text, p_reason text) -> profiles` — admin only (MA003), reason 3–500 (MA304), unknown user MA302. Clears `logo_url` when it is that URL, otherwise removes it from `gallery` (order kept); neither -> `MA305`. Audited as `user.photo_remove` (target_type `user`, `old_flags` = `{field, url}`); `admin_list_audit_v2` accepts the action as a filter.
+- `/api/blob-upload` DELETE: another user's file may be removed only by an active admin (profile check); own files as before.
+- Store: `adminRemovePhoto(userId, url, reason)` — RPC, then best-effort Blob removal. Admin UI: tab „ფოტოები“ (uploaded Blob files only).
+
+| Code | Georgian user message |
+|---|---|
+| `MA305` | ფოტო ამ პროფილზე ვეღარ მოიძებნა — შესაძლოა უკვე წაიშალა. |
+
+Verification (2026-09-30): local suite `db/tests/admin_photo_tests.sql` — 13 assertions.
+
 ## მოთხოვნების შეტყობინებები ნაგულისხმევად ჩართულია — 2026-09-29
 
 `20260929-request-alerts-default-on.sql` ცვლის მხოლოდ request alerts ქცევას; საჯარო RPC-ების სიგნატურები უცვლელია. auth-probe production-ის ბაზაცაა.

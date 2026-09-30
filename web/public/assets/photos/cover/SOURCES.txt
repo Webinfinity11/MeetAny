@@ -1,0 +1,14 @@
+Companies catalog header collage. Cropped to 320x400.
+Unsplash (https://unsplash.com/license — free for commercial use, no attribution required):
+welding.jpg      https://unsplash.com/photos/photo-1504328345606-18bbc8c9d7d1
+metalwork.jpg    https://unsplash.com/photos/photo-1504917595217-d4dc5ebe6122
+seedlings.jpg    https://unsplash.com/photos/photo-1523348837708-15d4a09cfac2
+grocery.jpg      https://unsplash.com/photos/photo-1542838132-92c53300491e
+trucks.jpg       https://unsplash.com/photos/photo-1565793298595-6a879b1d9492
+kitchen.jpg      https://unsplash.com/photos/photo-1556910103-1c02745aae4d
+engineering.jpg  https://unsplash.com/photos/photo-1581091226825-a6a2a5aee158
+From photos already in this project (see ../sources.json and ../credits-redesign.md):
+warehouse.jpg <- warehouse-team.jpg, ceramics.jpg <- workshop-banner.jpg, produce.jpg <- fresh-produce.jpg,
+packaging.jpg <- cardboard-packaging.jpg, cleaning.jpg <- commercial-cleaning.jpg,
+crafting.jpg <- workshop-process-banner.jpg, team.jpg <- meeting.jpg
+Illustrative stock photography, not the listed companies.

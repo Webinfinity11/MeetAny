@@ -5,6 +5,7 @@ import { trapDialogFocus } from "../ui/dialog-focus";
 import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { PhotoField } from "./PhotoField";
@@ -12,6 +13,7 @@ import { useMarketStore } from "../../lib/market-client";
 import { categories, cities, currentCategory, units } from "../../lib/categories";
 import { categoryOptions } from "./CategoryOptions";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
+import { clearRequestDraft, readRequestDraft, saveRequestDraft } from "../../lib/request-draft";
 
 // Needed-by dates: typed "დდ.თთ.წწწწ" in the field, ISO "YYYY-MM-DD" in state and on submit.
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -68,20 +70,23 @@ export function RequestFormSheet({
   triggerRef?: React.RefObject<HTMLElement | null>;
 }) {
   const { store } = useMarketStore();
+  const resumeDraft = useSearchParams().get("draft") === "1";
+  // Fields render only after the client session check, so storage can initialize them safely.
+  const [draft] = useState(() => !existing && resumeDraft ? readRequestDraft() : null);
   const ref = useRef<HTMLDialogElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState(existing?.title || initialTitle.slice(0,120));
-  const [category, setCategory] = useState(existing?.category || (Object.hasOwn(categories, currentCategory(initialCategory)) ? currentCategory(initialCategory) : ""));
+  const [title, setTitle] = useState(existing?.title || draft?.title || initialTitle.slice(0,120));
+  const [category, setCategory] = useState(existing?.category || draft?.category || (Object.hasOwn(categories, currentCategory(initialCategory)) ? currentCategory(initialCategory) : ""));
   // "" = not chosen yet: the author's profile city is the default (fallback Tbilisi).
-  const [cityChoice, setCity] = useState(existing?.city || (Object.hasOwn(cities, initialCity) ? initialCity : ""));
-  const [addressNote, setAddressNote] = useState(existing?.addressNote || "");
-  const [quantity, setQuantity] = useState(existing?.quantity != null ? String(existing.quantity) : "");
-  const [unit, setUnit] = useState(existing?.unit || "pcs");
-  const [neededByText, setNeededByText] = useState(isoToText(existing?.neededBy || ""));
-  const [body, setBody] = useState(existing?.body || "");
+  const [cityChoice, setCity] = useState(existing?.city || draft?.city || (Object.hasOwn(cities, initialCity) ? initialCity : ""));
+  const [addressNote, setAddressNote] = useState(existing?.addressNote || draft?.addressNote || "");
+  const [quantity, setQuantity] = useState(existing?.quantity != null ? String(existing.quantity) : draft?.quantity || "");
+  const [unit, setUnit] = useState(existing?.unit || draft?.unit || "pcs");
+  const [neededByText, setNeededByText] = useState(existing ? isoToText(existing.neededBy || "") : draft?.neededByText || "");
+  const [body, setBody] = useState(existing?.body || draft?.body || "");
   const [photo, setPhoto] = useState<File | null>(null);
   const [pending, setPending] = useState(false);
-  const dirty = useRef(false);
+  const dirty = useRef(!!draft);
   const opener = useRef<HTMLElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const v = useFieldErrors();
@@ -167,6 +172,7 @@ export function RequestFormSheet({
       if (existing) await store.updateRequest(existing.id, input);
       else await store.createRequest(input);
       dirty.current = false;
+      if (!existing) clearRequestDraft();
       toast(existing ? "მოთხოვნა განახლდა." : "მოთხოვნა გამოქვეყნდა.");
       setTitle("");
       setCategory("");
@@ -186,10 +192,14 @@ export function RequestFormSheet({
 
   function close() {
     if (pending) return;
-    if (!dirty.current || window.confirm("შეყვანილი ტექსტი არ შეინახება. დავხურო?")) ref.current?.close();
+    if (!dirty.current || window.confirm("შეყვანილი ტექსტი არ შეინახება. დავხურო?")) {
+      if (!existing) clearRequestDraft();
+      ref.current?.close();
+    }
   }
   const signedIn = checked && !!store?.currentUser();
-  const next = encodeURIComponent(`/requests/new/?${new URLSearchParams({title, category, city})}`);
+  const next = encodeURIComponent(`/requests/new/?${new URLSearchParams({title, category, city, draft: "1"})}`);
+  const keepDraft = () => saveRequestDraft({title, category, city, addressNote, quantity, unit, neededByText, body});
   return (
     <dialog onKeyDown={trapDialogFocus} className="ma-sheet ma-sheet--wide ma-sheet--full request-form" id="new-request" ref={ref} aria-labelledby="request-title" onCancel={e => {e.preventDefault(); close();}}>
       <header className="ma-sheet__header">
@@ -208,7 +218,7 @@ export function RequestFormSheet({
             <span className="ma-skel ma-skel--line" />
           </div>
         ) : <>
-        {!signedIn ? <div className="request-form__guest"><Icon name="info" /><p>გამოსაქვეყნებლად <Link href={`/account/?next=${next}`}>შედი ანგარიშში</Link> ან <Link href={`/account/?tab=register&next=${next}`}>დარეგისტრირდი</Link>.</p></div> : null}
+        {!signedIn ? <div className="request-form__guest"><Icon name="info" /><p>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედი ანგარიშში</Link> ან <Link onClick={keepDraft} href={`/account/?tab=register&next=${next}`}>დარეგისტრირდი</Link>. შევსებული ტექსტი შენარჩუნდება.</p></div> : null}
         <form className="ma-form" id="new-request-form" onSubmit={submit} noValidate onChange={() => {dirty.current = true;}}>
           <section className="request-form__group" aria-labelledby="request-group-main">
             <h3 className="request-form__group-title" id="request-group-main">რა გჭირდება</h3>
@@ -315,7 +325,7 @@ export function RequestFormSheet({
                   onChange={(e) => setAddressNote(e.target.value)}
                 />
               </div>
-              {!existing ? <div className="request-form__wide"><PhotoField file={photo} onChange={setPhoto} /></div> : existing.photo ? <p className="ma-note">არსებული ფოტო შენარჩუნდება.</p> : null}
+              {!existing && signedIn ? <div className="request-form__wide"><PhotoField file={photo} onChange={setPhoto} /></div> : existing?.photo ? <p className="ma-note">არსებული ფოტო შენარჩუნდება.</p> : null}
             </div>
           </section>
         </form>
@@ -334,7 +344,7 @@ export function RequestFormSheet({
         <button className="request-form__cancel" type="button" onClick={close}>
           გაუქმება
         </button>
-        {checked && !sessionPending ? (
+        {checked && !sessionPending && !signedIn ? <Link className="ma-btn ma-btn--primary" onClick={keepDraft} href={`/account/?next=${next}`}><Icon name="user-round" />შესვლა და გაგრძელება</Link> : checked && !sessionPending ? (
           <button className="ma-btn ma-btn--primary" type="submit" form="new-request-form" disabled={pending || !signedIn}>
             {pending ? "იგზავნება…" : existing ? "შენახვა" : "გამოქვეყნება"}
           </button>

@@ -12,6 +12,7 @@ export type AdminAuditEvent = {
 export const auditActions: Record<string, string> = {
   "request.hide": "მოთხოვნის დამალვა", "request.show": "მოთხოვნის გამოჩენა", "request.delete": "მოთხოვნის წაშლა",
   "offer.delete": "შეთავაზების წაშლა",
+  "user.photo_remove": "ფოტოს წაშლა",
   "user.block": "მომხმარებლის დაბლოკვა", "user.unblock": "მომხმარებლის განბლოკვა",
   "company.verify": "კომპანიის დადასტურება", "company.unverify": "დადასტურების მოხსნა",
 };

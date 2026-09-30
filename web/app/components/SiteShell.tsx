@@ -8,6 +8,7 @@ export function SiteShell({
   dataMarketPage,
   dataOpen,
   proto = true,
+  footer = true,
   children,
 }: {
   dataMarketPage: string;
@@ -15,6 +16,8 @@ export function SiteShell({
   // marketplace.css's home-visual-language rules (r2-band, r2-section-head, …) are scoped under
   // .ma-proto so they never leak onto the unmodified terms page, which doesn't load marketplace.css.
   proto?: boolean;
+  /** Tools like the admin panel end with their own content, not the marketing footer. */
+  footer?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -27,7 +30,7 @@ export function SiteShell({
         <main id="main" className="ma-main" tabIndex={-1}>
           <div className="ma-container">{children}</div>
         </main>
-        <Footer />
+        {footer ? <Footer /> : null}
         <ChatPopup />
         <Toasts />
       </body>

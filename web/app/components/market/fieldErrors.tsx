@@ -14,7 +14,14 @@ export function useFieldErrors() {
   function check(next: FieldErrors, order: string[]) {
     setErrors(next);
     const first = order.find((id) => next[id]);
-    if (first) document.getElementById(first)?.focus();
+    if (first) {
+      const field = document.getElementById(first);
+      // Optional groups can be collapsed; reveal an invalid field before focusing it.
+      for (let parent = field?.parentElement; parent; parent = parent.parentElement) {
+        if (parent instanceof HTMLDetailsElement) parent.open = true;
+      }
+      field?.focus();
+    }
     return !first;
   }
   function clear(id: string) {

@@ -104,7 +104,7 @@ export function useConversationList(store: Store | undefined, owner: string | un
 }
 
 /** One open conversation: starts it if needed, polls every 5s, marks read while visible, sends. */
-export function useChatThread(store: Store, target: ChatTarget) {
+export function useChatThread(store: Store, target: ChatTarget, enabled = true) {
   const { startConversation, listConversations, listMessages, markRead, currentUser } = store;
   const alive = useRef(true);
   const sending = useRef(false);
@@ -118,6 +118,7 @@ export function useChatThread(store: Store, target: ChatTarget) {
   const merge = (incoming: Message[]) => setMessages(old => [...new Map([...old, ...incoming].map(m => [m.id, m])).values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
   useEffect(() => {
+    if (!enabled) return;
     let active = true, busy = false, hadError = false;
     let id = target.conversation?.id || "";
     let after: string | null = null;
@@ -158,7 +159,7 @@ export function useChatThread(store: Store, target: ChatTarget) {
     const timer = window.setInterval(update, 5000);
     document.addEventListener("visibilitychange", update);
     return () => { active = false; clearInterval(timer); document.removeEventListener("visibilitychange", update); };
-  }, [startConversation, listConversations, listMessages, markRead, currentUser, target, revision]);
+  }, [startConversation, listConversations, listMessages, markRead, currentUser, target, revision, enabled]);
   /** Resolves true when the message was stored; `onStored` runs just before it joins the list. */
   async function send(body: string, onStored?: () => void) {
     if (!conversation || !loaded || sending.current || !body.trim() || body.length > 2000) return false;

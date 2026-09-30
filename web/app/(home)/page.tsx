@@ -1,32 +1,35 @@
 import Link from "next/link";
 import { DiscoverySearch } from "../components/DiscoverySearch";
 import { Icon } from "../components/Icon";
-import { HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin, HomeStats } from "../components/HomeLive";
+import { HomeBusinessScene } from "../components/HomeBusinessScene";
+import { HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin } from "../components/HomeLive";
 
-// Frames of need-process-icons.png (3 across): magnifier + chat, company documents, document + pen.
 const steps = [
-  { frame: 0, title: "მოძებნე ან აღწერე, რა გჭირდება" },
-  { frame: 1, title: "მიიღე და შეადარე შეთავაზებები" },
-  { frame: 2, title: "შეთანხმდი კომპანიასთან პირდაპირ" },
+  { frame: 0, title: "მოძებნე ან აღწერე", text: "რა სჭირდება შენს ბიზნესს" },
+  { frame: 1, title: "შეადარე პირობები", text: "შენთვის სასურველი შეთავაზებები" },
+  { frame: 2, title: "დაიწყე თანამშრომლობა", text: "დაუკავშირდი კომპანიას პირდაპირ" },
 ];
 
-// Home (owner decision 2026-09-30): the v1 composition — solid brand-blue hero with the search and the
-// three illustrated steps, photo-first cards — refined with Airbnb's type, search and card rules.
 export default function HomePage() {
   return <>
     <section className="home-hero" aria-labelledby="discovery-title">
       <div className="home-wrap">
-        <p className="hero-context">MeetAny · ბიზნესკავშირები საქართველოში</p>
-        <h1 id="discovery-title">აღწერე, რა გჭირდება.<br />იპოვე შესაბამისი კომპანია.</h1>
-        <DiscoverySearch />
-        <HomeStats />
+        <div className="hero-layout">
+          <div className="hero-copy">
+            <h1 id="discovery-title">შენი შემდეგი<br /><span>ბიზნესპარტნიორი აქაა.</span></h1>
+            <p className="hero-description">იპოვე მომწოდებელი, მიიღე შეთავაზებები და დაიწყე თანამშრომლობა.</p>
+            <DiscoverySearch />
+          </div>
+          <HomeBusinessScene />
+        </div>
         <ol className="hero-steps" id="how" aria-label="როგორ მუშაობს">
           {steps.map((step, index) => <li key={step.title}>
             <span className="hero-steps__art" aria-hidden="true" style={{ backgroundPosition: `${step.frame * 50}% 50%` }} />
             <span className="hero-steps__text">
               <h2>{step.title}</h2>
+              <span>{step.text}</span>
             </span>
-            {index < steps.length - 1 ? <span className="hero-steps__arrow" aria-hidden="true"><Icon name="arrow-right" /></span> : null}
+            <span className="hero-steps__number" aria-hidden="true">0{index + 1}</span>
           </li>)}
         </ol>
       </div>
@@ -37,7 +40,7 @@ export default function HomePage() {
     <section className="home-section home-wrap" aria-labelledby="requests-heading">
       <div className="home-section-head">
         <h2 id="requests-heading">ახალი მოთხოვნები</h2>
-        <Link className="home-text-link" href="/requests/">ყველა მოთხოვნა<Icon name="arrow-right" /></Link>
+        <Link className="home-text-link" href="/requests/">ყველა მოთხოვნა<Icon name="clipboard-list" /></Link>
       </div>
       <HomeRequests />
     </section>
@@ -45,7 +48,7 @@ export default function HomePage() {
     <section className="home-section home-wrap" aria-labelledby="featured-heading">
       <div className="home-section-head">
         <h2 id="featured-heading">გაიცანი კომპანიები</h2>
-        <Link className="home-text-link" href="/companies/">ყველა კომპანია<Icon name="arrow-right" /></Link>
+        <Link className="home-text-link" href="/companies/">ყველა კომპანია<Icon name="building-2" /></Link>
       </div>
       <HomeFeatured />
     </section>

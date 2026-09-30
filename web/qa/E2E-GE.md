@@ -1,123 +1,118 @@
-# MeetAny — საბოლოო E2E
+# MeetAny — E2E
 
-**8 PASS / 1 FAIL**. `npm run e2e` სრულად ერთხელ dev `http://localhost:3001`-ზე; ჩავარდნილი კომპანიის სცენარი განმეორდა ზუსტად ერთხელ და კვლავ FAIL-ია. პირველი შედეგები: [first-attempt.json](e2e/first-attempt.json); საბოლოო: [report.json](e2e/report.json).
+გაშვება: `npm run e2e`; სურვილისამებრ `QA_ORIGIN=http://localhost:3001`. Chrome: `QA_BROWSER_PATH` ან macOS Google Chrome. მხოლოდ auth-probe; სხვა ჰოსტი უარყოფილია. პაროლები ledger-იდან მხოლოდ მეხსიერებაში იკითხება; trace/video არ იწერება.
 
-ბაზის commit: `abe2d9e`. დაწყება: 2026-09-24T19:05:55.145Z. სრული გაშვება seed-ით: 387.7 წმ; ერთი განმეორება, cleanup და ხელახალი seed: 108.6 წმ; ჯამი **496.3 წმ**. ყველა ქვეკეისი <90 წმ; ჯამი <12 წუთი.
+თარიღი: 2026-09-30T13:43:26.889Z. ხანგრძლივობა: 348.7 წმ. თითო სცენარის სრული ლიმიტი 89 წმ (სამუშაო 75 წმ + cleanup). ჩავარდნა შემდეგ სცენარს არ აჩერებს.
 
-| სცენარი | შედეგი | მიზეზი | დრო |
+| სცენარი | PASS/FAIL | მიზეზი | დრო |
 |---|---|---|---|
-| სტუმარი | PASS | ყველა ნაბიჯი შესრულდა | 13.8 წმ |
-| რეგისტრაცია / აღდგენა | PASS | ყველა ნაბიჯი შესრულდა | 37.5 წმ |
-| კომპანია — პროფილი | FAIL (განმეორებითაც) | პროფილის მისამართი და პროდუქტები: UI: სერვისი დროებით მიუწვდომელია | 12.2 წმ |
-| კომპანია / კლიენტი — ჩატი | PASS | ყველა ნაბიჯი შესრულდა | 48.4 წმ |
-| კლიენტი — მოთხოვნა | PASS | ყველა ნაბიჯი შესრულდა | 54.2 წმ |
-| კლიენტი — შეთავაზების არჩევა | PASS | ყველა ნაბიჯი შესრულდა | 37.2 წმ |
-| ადმინი — მომხმარებლები | PASS | ყველა ნაბიჯი შესრულდა | 36.4 წმ |
-| ადმინი — მოთხოვნები / კონტაქტები | PASS | ყველა ნაბიჯი შესრულდა | 28.3 წმ |
-| უფლებები | PASS | ყველა ნაბიჯი შესრულდა | 19.8 წმ |
+| სტუმარი | FAIL | მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება: locator.selectOption: Timeout 12000ms exceeded.; კომპანიები: ძიება, ფილტრი და დალაგება: locator.selectOption: Timeout 12000ms exceeded.; გამშვები: პროცესი ლიმიტზე შეწყდა; cleanup ვერ დადასტურდა | 44.2 წმ |
+| რეგისტრაცია / აღდგენა | PASS | ყველა ნაბიჯი შესრულდა | 32.6 წმ |
+| კომპანია — პროფილი | FAIL | კოორდინატების რედაქტირების UI: locator.fill: Timeout 12000ms exceeded. | 24.4 წმ |
+| კომპანია / კლიენტი — ჩატი | FAIL | ჩატი მოთხოვნიდან და წაუკითხავი ბეიჯი: locator.click: Timeout 12000ms exceeded. | 47.0 წმ |
+| კლიენტი — მოთხოვნა | FAIL | მოთხოვნის შექმნა ფოტოთი: locator.selectOption: Error: Element is not a <select> element | 6.1 წმ |
+| კლიენტი — შეთავაზების არჩევა | PASS | ყველა ნაბიჯი შესრულდა | 21.9 წმ |
+| ადმინი — მომხმარებლები | FAIL | მომხმარებლების სია და T4.4 რაოდენობა: locator.innerText: Timeout 12000ms exceeded. | 41.3 წმ |
+| ადმინი — მოთხოვნები / კონტაქტები | PASS | ყველა ნაბიჯი შესრულდა | 23.8 წმ |
+| უფლებები | PASS | ყველა ნაბიჯი შესრულდა | 20.1 წმ |
 
-CSP: **0 დარღვევა, 10 შემოწმება** (9 სცენარი და 1 განმეორება). `node --check` PASS; გამშვების 5 ტესტი PASS.
+Seed --verify: **FAIL**. Cleanup CLI: **PASS**. დემო profiles/requests/offers ზუსტი before/after შედარება: **უცვლელია**.
 
-## დარჩენილი ხარვეზი
+```json
+მონაცემების ოპერაცია შეჩერდა: Expected all but the chosen request open
 
-კომპანიის ანგარიშზე `/account/?tab=profile` გადასვლისას `go()` მთავარ კონტენტში ხედავს „სერვისი დროებით მიუწვდომელია“-ს. ამის გამო მისამართისა და პროდუქტების შეცვლის ნაბიჯი რედაქტირებამდე წყდება. ორივე მცდელობის კადრში პროფილი ჩანს; შეტყობინებები skeleton-ითაა. დაფიქსირებული HTTP/requestfailed შეცდომები: 0.
+10 !== 13
+```
 
-შესაძლო მიზეზი კოდის წაკითხვით: `EngagementPanels.tsx:108` ყველა `status !== ready` მდგომარეობაში მიუწვდომლობის ტექსტს აჩვენებს, მათ შორის ჩატვირთვისას. კონკრეტული შეტყობინების წყარო ბრაუზერში არ გაზომილა, ამიტომ ეს დასკვნაა და არა დადასტურებული ქსელური ხარვეზი. კოორდინატების UI-დან შენახვა, API შემოწმება და საწყისი პროფილის აღდგენა ორივეჯერ PASS-ია. app/ არ შეცვლილა.
+## საზღვრები და cleanup
 
-## Cleanup და seed
-
-ყველა სცენარის finally და საბოლოო cleanup CLI — **PASS**, დარჩენილი ჩანაწერები **0**. ამ გაშვების 2 რეგისტრირებული ანგარიში დაბლოკილია; აუდიტის ისტორია რჩება. დემო profiles/requests/offers before/after — **ზუსტად უცვლელია**, მათ შორის განმეორების შემდეგ.
-
-`seed-demo-v2.cjs --verify`: **PASS** ორივეჯერ. საბოლოო: 19 ანგარიში, 12 კომპანია, 14 მოთხოვნა, 42 შეთავაზება, 13 ღია / 1 არჩეული მოთხოვნა.
-
-მხოლოდ auth-probe, ჰოსტის/Auth endpoint-ის guard-ით. cleanup იყენებს `[e2e:<runId>]` მარკერს, შექმნილი ID-ების ლოკალურ ჟურნალს, SELECT count-ს და ზუსტ WHERE-ს. ხელით: `node qa/e2e/cleanup.mjs --run-id <id> --dry-run`, შემდეგ იგივე --dry-run-ის გარეშე. მოთხოვნის წაშლაზე საუბრები და შეტყობინებები იშლება — messaging PASS.
-
-ელფოსტის გარეშე აღდგენაში მოწმდება მხოლოდ ხელმისაწვდომი ეტაპები/ვალიდაცია/უარყოფა; წარმატებული OTP-reset არ შემოწმებულა.
+- რეგისტრაციის ანგარიშები admin RPC-ით იბლოკება; არასრული signup ზუსტი email+ID-ით იშლება. დაბლოკილი ანგარიშები და უცვლელი მოდერაციის audit ისტორია რჩება განზრახ.
+- ხელით აღდგენა: `node qa/e2e/cleanup.mjs --run-id <id>` (ჯერ `--dry-run`). ზუსტი ID-ები და `[e2e:<runId>]` მარკერი ინახება `qa/e2e/runs/`-ში. გამშვები cleanup-ს ბოლოსაც იძახებს.
+- მოთხოვნა/შეთავაზება/ფოტო, ჩატი და ამ ბრაუზერის მიერ დაბრუნებული contact-event ID-ები finally-ში იშლება. ჩატამდე SELECT count; DELETE messages → conversations; დარჩენილი ჩანაწერები მოწმდება. არსებული დემო საუბრები არ იცვლება.
+- გრძელი ნაკადები იყოფა დამოუკიდებელ ქვეკეისებად, საკუთარი fixture-ით და cleanup-ით: კომპანიის პროფილი / ჩატი, კლიენტის მოთხოვნა / არჩევა. არჩევის ქვეკეისში კომპანია ჯერ აგზავნის შეთავაზებას. დახურვა მოწმდება არჩევამდე, რადგან არჩეულ მოთხოვნას UI აღარ ხურავს.
+- წინასწარ API-ზე delete_request საუბარს request_id=NULL-ით ტოვებდა. ახალი მიგრაციის შედეგი მოწმდება messaging ქვეკეისში; ცალკე SQL cleanup ორივე მდგომარეობას ამუშავებს.
+- contact_events GET არ არის გამოქვეყნებული; შემოწმება იყენებს admin_contact_events RPC-სა და ადმინის UI-ს.
+- ელფოსტის გარეშე სწორი OTP და წარმატებული password reset არ მოწმდება; მხოლოდ ხელმისაწვდომი UI ეტაპები და უარყოფა.
 
 ## სტუმარი
 
-- **PASS: მოთხოვნები: სია და დეტალი**. მოსალოდნელი: სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა. შესრულდა.
-- **PASS: მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება**. მოსალოდნელი: URL და ხილული შედეგები შეესაბამება მონაცემებს. შესრულდა.
-- **PASS: კომპანიები: ძიება, ფილტრი და დალაგება**. მოსალოდნელი: URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია. შესრულდა.
-- **PASS: კომპანიის დეტალი, ნომერი, tel:, მიმართულება, contact_events**. მოსალოდნელი: გამოჩენა/დარეკვა აღირიცხება; Maps სწორი ბმულია. {"contactEvents":["970c3ba8-fe25-4224-954b-4843703bdffa","d2f6e775-7de2-406d-9dc5-87fc48fa8d4d"],"maps":"https://www.google.com/maps/dir/?api=1&destination=41.7846,44.7712"}
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — მოთხოვნები: სია და დეტალი**. მოსალოდნელი: სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა. შემოწმება შესრულდა.
+- **FAIL — მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება**. მოსალოდნელი: URL და ხილული შედეგები შეესაბამება მონაცემებს. რეალური: locator.selectOption: Timeout 12000ms exceeded. Call log:   - waiting for locator('#request-city-desktop')  [კადრი](../qa/shots/e2e/guest-1.png)
+- **FAIL — კომპანიები: ძიება, ფილტრი და დალაგება**. მოსალოდნელი: URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია. რეალური: locator.selectOption: Timeout 12000ms exceeded. Call log:   - waiting for locator('#company-city-desktop')  [კადრი](../qa/shots/e2e/guest-2.png)
+- **FAIL — გამშვები**. მოსალოდნელი: სცენარის დასრულება. რეალური: პროცესი ლიმიტზე შეწყდა; cleanup ვერ დადასტურდა
 
-Cleanup: `[{"phase":"before-delete-contacts","contacts":2},{"messages":0,"conversations":0,"requests":0,"offers":0,"contacts":2,"photos":0,"remaining":0}]`
+Cleanup: `[]`
 
 ## რეგისტრაცია / აღდგენა
 
-- **PASS: რეგისტრაცია / შესვლა / გასვლა: client**. მოსალოდნელი: ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია. შესრულდა.
-- **PASS: რეგისტრაცია / შესვლა / გასვლა: company**. მოსალოდნელი: ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია. შესრულდა.
-- **PASS: პაროლის აღდგენა: ვალიდაცია, კოდი, შეცდომა**. მოსალოდნელი: არასწორი ელფოსტა/ცარიელი კოდი ქართულად; არასწორი კოდი უარყოფილია. {"limitation":"რეალური OTP-ის მიღება/წარმატებული reset ელფოსტის გარეშე არ შემოწმებულა"}
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — რეგისტრაცია / შესვლა / გასვლა: company**. მოსალოდნელი: ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია. შემოწმება შესრულდა.
+- **PASS — რეგისტრაცია / შესვლა / გასვლა: client**. მოსალოდნელი: ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია. შემოწმება შესრულდა.
+- **PASS — პაროლის აღდგენა: ვალიდაცია, კოდი, შეცდომა**. მოსალოდნელი: არასწორი ელფოსტა/ცარიელი კოდი ქართულად; არასწორი კოდი უარყოფილია. {"limitation":"რეალური OTP-ის მიღება/წარმატებული reset ელფოსტის გარეშე არ შემოწმებულა"}
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"messages":0,"conversations":0,"requests":0,"offers":0,"contacts":0,"photos":0,"remaining":0},{"accountsBlocked":2,"incompleteAccountsDeleted":0}]`
 
 ## კომპანია — პროფილი
 
-- **FAIL: პროფილის მისამართი და პროდუქტები**. მოსალოდნელი: შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება. რეალური: UI: სერვისი დროებით მიუწვდომელია [კადრი](shots/e2e/company-1.png)
-- **PASS: კოორდინატების რედაქტირების UI**. მოსალოდნელი: პროფილის ფორმაში განედი და გრძედი რედაქტირებადია. შესრულდა.
-- **PASS: კოორდინატების API და პროფილის დაბრუნება**. მოსალოდნელი: API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება. შესრულდა.
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — პროფილის მისამართი და პროდუქტები**. მოსალოდნელი: შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება. შემოწმება შესრულდა.
+- **FAIL — კოორდინატების რედაქტირების UI**. მოსალოდნელი: პროფილის ფორმაში განედი და გრძედი რედაქტირებადია. რეალური: locator.fill: Timeout 12000ms exceeded. Call log:   - waiting for getByLabel('განედი', { exact: true })     - locator resolved to <input id="lat" maxlength="20" value="41.7438" autocomplete="off" inputmode="decimal" placeholder="41.7151" class="ma-input ma-input--num"/>     - fill("41.72")   - attempting fill action     2 × waiting for element to be visible, enabled and editable       - element is not visible     - retrying fill action     - waiting 20ms     2 × waiting for element to be visible, enabled and editable       - element is not visible     - retrying fill action       - waiting 100ms     24 × waiting for element to be visible, enabled and editable        - element is not visible      - retrying fill action        - waiting 500ms  [კადრი](../qa/shots/e2e/company-1.png)
+- **PASS — კოორდინატების API და პროფილის დაბრუნება**. მოსალოდნელი: API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება. შემოწმება შესრულდა.
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"restore":"PASS","fields":["address","lat","lng","offers"],"method":"auth-probe SQL; exact profile ID + email"},{"messages":0,"conversations":0,"requests":0,"offers":0,"contacts":0,"photos":0,"remaining":0}]`
 
-პირველი მცდელობა: **FAIL**, 12.0 წმ. პროფილის მისამართი და პროდუქტები: UI: სერვისი დროებით მიუწვდომელია. [პირველი კადრი](shots/e2e/company-first-1.png).
-
 ## კომპანია / კლიენტი — ჩატი
 
-- **PASS: კომპანია: შეთავაზების გაგზავნა**. მოსალოდნელი: UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას. შესრულდა.
-- **PASS: ჩატი მოთხოვნიდან და წაუკითხავი ბეიჯი**. მოსალოდნელი: შეტყობინება RPC-შია და მიმღების ჰედერში წაუკითხავი იზრდება. შესრულდა.
-- **PASS: კლიენტის პასუხი და კომპანიის ინბოქსი**. მოსალოდნელი: ?tab=messages&c=id აჩვენებს საუბარს; პასუხი ბაზაშია; კომპანიის unread იზრდება. შესრულდა.
-- **PASS: მოთხოვნის წაშლის შემდეგ ჩატის კონტრაქტი**. მოსალოდნელი: წაშლის შემდეგ მოთხოვნა და მასთან დაკავშირებული საუბრები აღარ არსებობს. {"requestDeleted":true,"conversationsRetained":0}
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — კომპანია: შეთავაზების გაგზავნა**. მოსალოდნელი: UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას. შემოწმება შესრულდა.
+- **FAIL — ჩატი მოთხოვნიდან და წაუკითხავი ბეიჯი**. მოსალოდნელი: შეტყობინება RPC-შია და მიმღების ჰედერში წაუკითხავი იზრდება. რეალური: locator.click: Timeout 12000ms exceeded. Call log:   - waiting for getByRole('button', { name: 'მიმოწერის დახურვა' })  [კადრი](../qa/shots/e2e/messaging-1.png)
+- **PASS — კლიენტის პასუხი და კომპანიის ინბოქსი**. მოსალოდნელი: ?tab=messages&c=id აჩვენებს საუბარს; პასუხი ბაზაშია; კომპანიის unread იზრდება. შემოწმება შესრულდა.
+- **PASS — მოთხოვნის წაშლის შემდეგ ჩატის კონტრაქტი**. მოსალოდნელი: წაშლის შემდეგ მოთხოვნა და მასთან დაკავშირებული საუბრები აღარ არსებობს. {"requestDeleted":true,"conversationsRetained":0}
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"phase":"before-delete","messages":0,"conversations":0,"requests":0,"offers":0},{"messages":0,"conversations":0,"requests":0,"offers":0,"contacts":0,"photos":0,"remaining":0}]`
 
 ## კლიენტი — მოთხოვნა
 
-- **PASS: მოთხოვნის შექმნა ფოტოთი**. მოსალოდნელი: ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს. შესრულდა.
-- **PASS: რედაქტირება და ვადის გაგრძელება**. მოსალოდნელი: რაოდენობა 3 ხდება; ვადა იზრდება; UI ინახავს ცვლილებას. შესრულდა.
-- **PASS: დახურვა და ხელახლა გახსნა**. მოსალოდნელი: UI იცვლება; status closed შემდეგ open ხდება. შესრულდა.
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **FAIL — მოთხოვნის შექმნა ფოტოთი**. მოსალოდნელი: ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს. რეალური: locator.selectOption: Error: Element is not a <select> element Call log:   - waiting for locator('#category')     - locator resolved to <button id="category" type="button" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-controls="category-options" class="ma-select ma-custom-select ma-select">…</button>   - attempting select option action     - waiting for element to be visible and enabled  [კადრი](../qa/shots/e2e/client-1.png)
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
-Cleanup: `[{"phase":"before-delete","messages":0,"conversations":0,"requests":1,"offers":0},{"messages":0,"conversations":0,"requests":1,"offers":0,"contacts":0,"photos":1,"remaining":0}]`
+Cleanup: `[{"messages":0,"conversations":0,"requests":0,"offers":0,"contacts":0,"photos":0,"remaining":0}]`
 
 ## კლიენტი — შეთავაზების არჩევა
 
-- **PASS: კომპანია: შეთავაზების გაგზავნა**. მოსალოდნელი: UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას. შესრულდა.
-- **PASS: შეთავაზების არჩევა კომპანიის ნაბიჯების შემდეგ**. მოსალოდნელი: chosen_offer_id და offers.status შეესაბამება არჩეულ შეთავაზებას. შესრულდა.
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — კომპანია: შეთავაზების გაგზავნა**. მოსალოდნელი: UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას. შემოწმება შესრულდა.
+- **PASS — შეთავაზების არჩევა კომპანიის ნაბიჯების შემდეგ**. მოსალოდნელი: chosen_offer_id და offers.status შეესაბამება არჩეულ შეთავაზებას. შემოწმება შესრულდა.
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"phase":"before-delete","messages":0,"conversations":0,"requests":1,"offers":1},{"messages":0,"conversations":0,"requests":1,"offers":1,"contacts":0,"photos":0,"remaining":0}]`
 
 ## ადმინი — მომხმარებლები
 
-- **PASS: მომხმარებლების სია და T4.4 რაოდენობა**. მოსალოდნელი: UI-ისა და admin_stats-ის მთვლელები ემთხვევა SQL-ისა და სიის არაადმინების რაოდენობას. {"ui":32,"api":32,"list":34,"total":34,"nonadmin":32,"active":20}
-- **PASS: ვერიფიკაცია/ბლოკი და დაბრუნება**. მოსალოდნელი: UI ქმედებები იცვლება; RPC და საჯარო GET სტატუსს ადასტურებს. შესრულდა.
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **FAIL — მომხმარებლების სია და T4.4 რაოდენობა**. მოსალოდნელი: UI-ისა და admin_stats-ის მთვლელები ემთხვევა SQL-ისა და სიის არაადმინების რაოდენობას. რეალური: locator.innerText: Timeout 12000ms exceeded. Call log:   - waiting for locator('.ma-stat').filter({ has: getByText('მომხმარებლები (ადმინების გარეშე)', { exact: true }) }).locator('.ma-stat__value')  [კადრი](../qa/shots/e2e/admin-1.png)
+- **PASS — ვერიფიკაცია/ბლოკი და დაბრუნება**. მოსალოდნელი: UI ქმედებები იცვლება; RPC და საჯარო GET სტატუსს ადასტურებს. შემოწმება შესრულდა.
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"restore":"PASS","fields":["blocked","blocked_reason","verified","verified_at"],"method":"auth-probe SQL; exact profile ID + email"},{"messages":0,"conversations":0,"requests":0,"offers":0,"contacts":0,"photos":0,"remaining":0}]`
 
 ## ადმინი — მოთხოვნები / კონტაქტები
 
-- **PASS: მოთხოვნის დამალვა და დაბრუნება**. მოსალოდნელი: საჯარო GET-ში ქრება და ჩნდება; UI სტატუსი იცვლება. შესრულდა.
-- **PASS: ადმინის კონტაქტების აღრიცხვა**. მოსალოდნელი: ახალი contact_event-ის ID და მოქმედება UI ცხრილში ჩანს. შესრულდა.
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — მოთხოვნის დამალვა და დაბრუნება**. მოსალოდნელი: საჯარო GET-ში ქრება და ჩნდება; UI სტატუსი იცვლება. შემოწმება შესრულდა.
+- **PASS — ადმინის კონტაქტების აღრიცხვა**. მოსალოდნელი: ახალი contact_event-ის ID და მოქმედება UI ცხრილში ჩანს. შემოწმება შესრულდა.
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"phase":"before-delete","messages":0,"conversations":0,"requests":1,"offers":0},{"phase":"before-delete-contacts","contacts":1},{"messages":0,"conversations":0,"requests":1,"offers":0,"contacts":1,"photos":0,"remaining":0}]`
 
 ## უფლებები
 
-- **PASS: უფლებები UI-ზე**. მოსალოდნელი: სხვის მოთხოვნაზე რედაქტირება/გაგრძელება/არჩევა არ ჩანს. შესრულდა.
-- **PASS: სხვისი update**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA107"}
-- **PASS: სხვისი extend**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA107"}
-- **PASS: სხვისი choose**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA206"}
-- **PASS: კომპანიის choose**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA107"}
-- **PASS: სხვისი საუბარი**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA501"}
-- **PASS: არაადმინის RPC**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA003"}
-- **PASS: სტუმრის admin RPC**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":401,"code":"42501"}
-- **PASS: მდგომარეობა შეტევების შემდეგ**. მოსალოდნელი: GET requests/offers უცვლელია. შესრულდა.
-- **PASS: CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
+- **PASS — უფლებები UI-ზე**. მოსალოდნელი: სხვის მოთხოვნაზე რედაქტირება/გაგრძელება/არჩევა არ ჩანს. შემოწმება შესრულდა.
+- **PASS — სხვისი update**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA107"}
+- **PASS — სხვისი extend**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA107"}
+- **PASS — სხვისი choose**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA206"}
+- **PASS — კომპანიის choose**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA107"}
+- **PASS — სხვისი საუბარი**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA501"}
+- **PASS — არაადმინის RPC**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":400,"code":"MA003"}
+- **PASS — სტუმრის admin RPC**. მოსალოდნელი: 401/403 ან მოსალოდნელი MA-კოდი; მდგომარეობა უცვლელია. {"status":401,"code":"42501"}
+- **PASS — მდგომარეობა შეტევების შემდეგ**. მოსალოდნელი: GET requests/offers უცვლელია. შემოწმება შესრულდა.
+- **PASS — CSP დარღვევები**. მოსალოდნელი: ბრაუზერში securitypolicyviolation რაოდენობა 0. {"violations":0}
 
 Cleanup: `[{"phase":"before-delete","messages":0,"conversations":1,"requests":1,"offers":1},{"messages":0,"conversations":1,"requests":1,"offers":1,"contacts":0,"photos":0,"remaining":0}]`

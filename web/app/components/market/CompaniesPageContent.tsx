@@ -10,9 +10,11 @@ import { useSearchSuggestions } from "../../lib/search-suggestions";
 import { useRouter } from "next/navigation";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
+import { CustomSelect } from "../ui/CustomSelect";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
 import { CatalogHeader } from "./CatalogHeader";
+import { CompanyCatalogCover } from "./CompanyCatalogCover";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
 import dynamic from "next/dynamic";
@@ -26,6 +28,8 @@ const CompaniesMap = dynamic(() => import("./CompaniesMap").then(m => m.Companie
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
+import { useCompanyFeatures } from "../../lib/business-client";
+import { BusinessError } from "./CompanyBusiness";
 import { fetchPhones } from "../../lib/phones";
 
 type MappedCompany = {
@@ -66,18 +70,25 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const { store, ready, available } = useMarketStore(initial);
   const filters = useFilters("/companies/");
   const industry = currentCategory(filters.get("industry")), city = filters.get("city"), query = filters.get("q");
-  // "type" (suppliers/services/…) duplicated the industry facets and is no longer offered.
-  const type = "", coverage = filters.get("coverage") === "national", sort = filters.get("sort", "newest");
+  const business = useCompanyFeatures(store, ready && available);
+  const featureById = useMemo(() => new Map(business.data?.map(f => [f.id, f]) || []), [business.data]);
+  const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "recommended");
+  // A chosen city means "serves it" (own city, service cities or all Georgia); "office" narrows to
+  // companies based there, for when the buyer needs to visit in person.
+  const office = !!city && city !== "georgia" && filters.get("office") === "1";
+  const setCity = (city: string) => filters.set(city ? { city } : { city, office: "" });
   const setIndustry = (industry: string) => filters.set({industry});
-  const setCity = (city: string) => filters.set({city});
   const setQuery = (q: string) => filters.set({q});
   const [sheetOpen, setSheetOpen] = useState(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
 
   const list = useCallback(
-    (overrides: Partial<{ industry: string; city: string }>) =>
-      (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type, q: query, ...overrides })?.filter(c => !coverage || c.city === "georgia" || c.serviceCities?.includes("georgia")) || [],
-    [store, industry, city, query, type, coverage],
+    (overrides: Partial<{ industry: string; city: string }>) => {
+      const where = overrides.city ?? city;
+      return (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type: type === "distributors" ? "" : type, q: query, ...overrides })
+        ?.filter(c => (type !== "distributors" || featureById.get(c.id)?.distributor) && (!coverage || c.city === "georgia" || c.serviceCities?.includes("georgia")) && (!office || !where || c.city === where)) || [];
+    },
+    [store, industry, city, query, type, coverage, office, featureById],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -92,6 +103,10 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     [list],
   );
   const allCount = ready && available ? list({ industry: "" }).length : 0;
+  const cityFacets: Facet[] = useMemo(
+    () => Object.entries(cities).filter(([id]) => id !== "georgia").map(([id, label]) => ({ id, label, count: list({ city: id }).length })),
+    [list],
+  );
 
   const resultIds = useMemo(() => results.filter(c => c.phone === undefined).map((c) => c.id).join(","), [results]);
   const [phones, setPhones] = useState<Record<string, string>>({});
@@ -107,8 +122,22 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
 
   const rows: CompanyListingData[] = useMemo(() => {
     if (!store) return [];
-    return [...results].sort((a, b) => sort === "name" ? (a.company || a.name).localeCompare(b.company || b.name, "ka") : Date.parse(b.createdAt) - Date.parse(a.createdAt)).map((c) => ({
+    const stats = (c: MappedCompany) => store.companyStats(c.id) as { sent: number; chosen: number };
+    // Recommended: verified first, then a complete profile (description, photos, services) and a
+    // proven record (chosen offers weigh more than sent ones). Newest breaks ties.
+    const score = (c: MappedCompany) => {
+      const s = stats(c);
+      return (c.verified ? 10 : 0) + (c.about ? 2 : 0) + (c.logoUrl || c.gallery?.length ? 2 : 0) + (c.offers?.length ? 1 : 0)
+        + Math.min(s.sent, 10) * 0.5 + s.chosen * 2;
+    };
+    const newest = (a: MappedCompany, b: MappedCompany) => Date.parse(b.createdAt) - Date.parse(a.createdAt);
+    const planRank = (c: MappedCompany) => featureById.get(c.id)?.plan === "vip" ? 2 : featureById.get(c.id)?.plan === "premium" ? 1 : 0;
+    const order = sort === "newest" ? newest
+      : sort === "active" ? (a: MappedCompany, b: MappedCompany) => stats(b).chosen - stats(a).chosen || stats(b).sent - stats(a).sent || newest(a, b)
+      : (a: MappedCompany, b: MappedCompany) => planRank(b) - planRank(a) || score(b) - score(a) || newest(a, b);
+    return [...results].sort(order).map((c) => ({
       id: c.id,
+      feature: featureById.get(c.id),
       name: c.company || c.name,
       logoUrl: c.logoUrl,
       gallery: c.gallery,
@@ -125,19 +154,20 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       phone: c.phone || phones[c.id],
       stats: store.companyStats(c.id),
     }));
-  }, [results, store, phones, sort]);
+  }, [results, store, phones, sort, featureById]);
 
   const activeItems = [
+    ...(type ? [{key:"type",label:({distributors:"დისტრიბუტორები",suppliers:"მომწოდებლები",services:"მომსახურება",partners:"პარტნიორები"} as Record<string,string>)[type] || type}] : []),
     ...(coverage ? [{key: "coverage", label: "მთელი საქართველო"}] : []),
     ...(industry ? [{ key: "industry", label: categories[industry] || groupNames[industry] || industry }] : []),
-    ...(city ? [{ key: "city", label: cities[city] }] : []),
+    ...(city ? [{ key: "city", label: office ? `ოფისი ${cities[city].replace(/ი$/, "")}ში` : cities[city] }] : []),
   ];
   const removeFilter = (key: string) => {
     if (key === "industry") setIndustry("");
     else if (key === "city") setCity("");
     else filters.set({[key]: ""});
   };
-  const clearFilters = () => filters.set({industry: "", city: "", verified: "", q: "", type: "", coverage: "", sort: ""});
+  const clearFilters = () => filters.set({industry: "", city: "", office: "", verified: "", q: "", type: "", coverage: "", sort: ""});
   const filterCount = activeItems.length;
   const mapView = filters.get("view") === "map";
   const mapped: MapCompany[] = useMemo(() => rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat as number, lng: c.lng as number })), [rows]);
@@ -149,16 +179,29 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
 
   const countLabel = !available || !ready ? "" : `${rows.length} კომპანია`;
 
-  // City lives in the search pill above; the sidebar holds what the pill does not.
+  // The city list shares its value with the search pill.
   const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="catalog-filters">
       {placement === "desktop" ? <div className="catalog-filters__head">
         <h2>ფილტრები{filterCount > 0 ? <span className="catalog-filters__count">{filterCount}</span> : null}</h2>
         {filterCount > 0 ? <button type="button" className="catalog-clear" onClick={clearFilters}>გასუფთავება</button> : null}
       </div> : null}
+      <div className="catalog-filter-group"><label className="catalog-filter-title" htmlFor={`${placement}-type`}>კომპანიის ტიპი</label><CustomSelect id={`${placement}-type`} className="ma-select" value={type} onChange={e=>filters.set({type:e.target.value})}><option value="">ყველა კომპანია</option><option value="suppliers">მომწოდებლები</option><option value="services">მომსახურება</option><option value="distributors">დისტრიბუტორები</option><option value="partners">პარტნიორის მაძიებლები</option></CustomSelect></div>
       <div className="catalog-filter-group">
         <h3 className="catalog-filter-title">დარგი</h3>
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
+      </div>
+      <div className="catalog-filter-group">
+        <label className="catalog-filter-title" htmlFor={`${placement}-city`}>ქალაქი</label>
+        <CustomSelect className="ma-select catalog-city-select" id={`${placement}-city`} value={city} onChange={e => setCity(e.target.value)}>
+          <option value="">ყველა ქალაქი</option>
+          {cityFacets.map(f => <option key={f.id} value={f.id} disabled={!f.count && f.id !== city}>{f.label} · {f.count}</option>)}
+        </CustomSelect>
+        {city && city !== "georgia" && Object.hasOwn(cities, city) ? <label className="filter-switch filter-switch--nested">
+          <span><strong>ოფისი {cities[city].replace(/ი$/, "")}ში</strong><small>მხოლოდ ამ ქალაქში მდებარე კომპანიები</small></span>
+          <input type="checkbox" role="switch" checked={office} onChange={e => filters.set({ office: e.target.checked ? "1" : "" })} />
+          <span className="filter-switch__track" aria-hidden="true" />
+        </label> : null}
       </div>
       <div className="catalog-filter-group">
         <label className="filter-switch">
@@ -175,8 +218,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <CatalogHeader
         tone="light"
         center
-        title="იპოვე მომწოდებელი"
-        description="იპოვე სანდო პარტნიორი შენი ბიზნესისთვის."
+        title="იპოვე სანდო მომწოდებელი"
+        description="კომპანიები და მომსახურება მთელი საქართველოდან."
+        artwork={<CompanyCatalogCover />}
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("company-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
           <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება"
             emptyHref={`/requests/new/?${new URLSearchParams({ title: query.trim(), city })}`}
@@ -190,14 +234,15 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
           <ResultsBar count={countLabel} filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
             utility={<>{viewSwitch}{ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}</>}
-            items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "newest", label: "უახლესი"}, {value: "name", label: "სახელით"}]}}
+            items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "recommended", label: "რეკომენდებული"}, {value: "active", label: "ყველაზე აქტიური"}, {value: "newest", label: "უახლესი"}]}}
           />
+          {sort === "recommended" && rows.some(c=>c.feature?.plan) ? <p className="business-fineprint">Premium და VIP — ფასიანი განთავსება რეკომენდებულ შედეგებში.</p> : null}
           <div className="company-directory-list">
             {!available ? (
               <ServiceUnavailable />
             ) : !ready ? (
               skeleton()
-            ) : rows.length === 0 ? (
+            ) : type === "distributors" && business.error ? (<BusinessError error={business.error} retry={business.reload}/>) : type === "distributors" && business.loading ? (skeleton()) : rows.length === 0 ? (
               <div className="catalog-empty">
                 <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
                 <h2>{query ? `„${query}“ — ჯერ ვერავინ ვიპოვეთ` : "ამ პირობით კომპანია ჯერ არ გვყავს"}</h2>
