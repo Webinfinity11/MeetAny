@@ -20,12 +20,24 @@ export function openChat(target: ChatTarget) {
   window.dispatchEvent(new CustomEvent("meetany:chat-open", { detail: target }));
 }
 
+/** True once the stored session has been checked; before that a signed-in user must not be drawn as a guest. */
+export function useSessionReady(store: { ready?: () => Promise<unknown> } | null | undefined) {
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    let active = true;
+    if (store?.ready) store.ready().then(() => { if (active) setDone(true); }, () => { if (active) setDone(true); });
+    return () => { active = false; };
+  }, [store]);
+  return done;
+}
+
 export function MessageButton({ companyId, requestId }: { companyId: string; requestId?: string }) {
   const { store, ready } = useMarketStore();
   const router = useRouter();
-  const me = ready ? store?.currentUser() : null;
+  const sessionReady = useSessionReady(store);
+  const me = ready && sessionReady ? store?.currentUser() : null;
   if (me?.role === "admin" || (me?.id === companyId && !requestId)) return null;
-  return <button type="button" className="ma-btn ma-btn--secondary" disabled={!ready || !!me?.blocked} onClick={() => {
+  return <button type="button" className="ma-btn ma-btn--secondary" disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => {
     if (!me) {
       const next = window.location.pathname + window.location.search + window.location.hash;
       toast("მიწერისთვის შედი ანგარიშში.");
@@ -33,7 +45,7 @@ export function MessageButton({ companyId, requestId }: { companyId: string; req
       return;
     }
     openChat({ companyId, requestId });
-  }}><Icon name={me ? "message-square" : "user-round"}/>{me ? "მიწერა" : "შედი ანგარიშში და მიწერე"}</button>;
+  }}><Icon name={me || !sessionReady ? "message-square" : "user-round"}/>{me || !sessionReady ? "მიწერა" : "შედი ანგარიშში და მიწერე"}</button>;
 }
 
 export function ChatUnreadLink() {
