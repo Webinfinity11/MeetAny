@@ -21,6 +21,7 @@ import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
+import { useCompanyFeatures } from "../../lib/business-client";
 import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
 import { addressLabel, dateLabel, postedLabel } from "../../lib/format";
@@ -106,6 +107,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const detail = useRequestDetail(store, ready, available, id);
+  const business = useCompanyFeatures(store, ready && available);
   const router = useRouter();
   const [editRequest, setEditRequest] = useState(false);
   const [editOffer, setEditOffer] = useState(false);
@@ -158,6 +160,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
       return {
         id: o.id,
         logoUrl: c?.logoUrl,
+        companyId: o.companyUserId,
         companyName: c?.company || c?.name || "კომპანია",
         companyHref: `/companies/view/?id=${encodeURIComponent(o.companyUserId)}`,
         city: c ? cities[c.city] || c.city : "",
@@ -190,7 +193,10 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     );
   }
 
-  const { r, me, owner, offers, offerCount, state, isOwner, myOffer, contact } = data;
+  const { r, me, owner, offers: plainOffers, offerCount, state, isOwner, myOffer: plainMyOffer, contact } = data;
+  const withPlan = (o: OfferCardData): OfferCardData => ({ ...o, feature: business.data?.find(f => f.id === o.companyId) });
+  const offers = plainOffers.map(withPlan);
+  const myOffer = plainMyOffer ? withPlan(plainMyOffer) : null;
   const closed = state !== "open";
   const chosenCompanyId = store?.visibleOffers(r.id).find((o: { id: string; companyUserId: string }) => o.id === r.chosenOfferId)?.companyUserId;
   const orderedOffers = [...offers].sort((a,b) => {

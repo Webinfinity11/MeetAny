@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { CompanyAvatar } from "./CompanyAvatar";
+import { BusinessMarks } from "./CompanyBusiness";
+import type { BusinessFeature } from "../../lib/business-client";
 
 export type OfferCardData = {
   id: string;
@@ -13,6 +15,8 @@ export type OfferCardData = {
   body: string;
   status: string;
   isNew: boolean;
+  companyId?: string;
+  feature?: BusinessFeature;
 };
 
 // No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number, so the offer
@@ -39,6 +43,7 @@ export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoo
             {o.status === "declined" ? <span className="ma-badge ma-badge--neutral">არ აირჩიეს</span> : null}
             {o.isNew && o.status === "sent" ? <span className="ma-badge ma-badge--accent">ახალი</span> : null}
           </div>
+          <BusinessMarks feature={o.feature} />
           <div className="ma-meta">
             <span>{o.city}</span>
             {o.deliveryDays != null ? <span>მიწოდება {o.deliveryDays} დღეში</span> : null}
