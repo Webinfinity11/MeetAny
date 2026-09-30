@@ -1,6 +1,5 @@
 "use client";
 
-import { CustomSelect } from "../ui/CustomSelect";
 import Link from "next/link";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
@@ -91,8 +90,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     [list],
   );
   const allCount = ready && available ? list({ industry: "" }).length : 0;
-  const cityOptions = Object.keys(cities);
-  const cityCounts = useMemo(() => Object.fromEntries(Object.keys(cities).map(id => [id, list({ city: id }).length])), [list]);
 
   const resultIds = useMemo(() => results.filter(c => c.phone === undefined).map((c) => c.id).join(","), [results]);
   const [phones, setPhones] = useState<Record<string, string>>({});
@@ -151,32 +148,31 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
 
   const countLabel = !available || !ready ? "" : `${rows.length} კომპანია`;
 
+  const typeOptions: [string, string][] = [["", "ყველა"], ["suppliers", "მომწოდებლები"], ["services", "მომსახურება"], ["distributors", "დისტრიბუცია"], ["partners", "პარტნიორები"]];
+  // City lives in the search pill above; the sidebar holds what the pill does not.
   const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="catalog-filters">
+      {placement === "desktop" ? <div className="catalog-filters__head">
+        <h2>ფილტრები{filterCount > 0 ? <span className="catalog-filters__count">{filterCount}</span> : null}</h2>
+        {filterCount > 0 ? <button type="button" className="catalog-clear" onClick={clearFilters}>გასუფთავება</button> : null}
+      </div> : null}
       <div className="catalog-filter-group">
-        <h2 className="catalog-filter-title">დარგი</h2>
+        <h3 className="catalog-filter-title">დარგი</h3>
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
       </div>
-      <div className="ma-field catalog-filter-group">
-        <label className="catalog-filter-title" htmlFor={`company-city-${placement}`}>მომსახურების ქალაქი</label>
-        <CustomSelect className="ma-select" id={`company-city-${placement}`} value={city} onChange={(e) => setCity(e.target.value)}>
-          <option value="">ყველა ქალაქი</option>
-          {cityOptions.map((id) => (
-            <option key={id} value={id}>
-              {cities[id]} ({cityCounts[id]})
-            </option>
-          ))}
-        </CustomSelect>
-      </div>
-      <div className="ma-field catalog-filter-group">
-        <label className="catalog-filter-title" htmlFor={`company-type-${placement}`}>საქმიანობის ტიპი</label>
-        <CustomSelect className="ma-select" id={`company-type-${placement}`} value={type} onChange={e => filters.set({type: e.target.value})}>
-          <option value="">ყველა მიმართულება</option><option value="suppliers">პროდუქციის მომწოდებლები</option><option value="services">მომსახურების კომპანიები</option><option value="distributors">ლოგისტიკა და დისტრიბუცია</option><option value="partners">თანამშრომლობის მსურველები</option>
-        </CustomSelect>
-      </div>
-      <fieldset className="catalog-filter-group catalog-filter-checks"><legend className="catalog-filter-title">მომსახურების არეალი</legend>
-        <label className="ma-check"><input type="checkbox" checked={coverage} onChange={e => filters.set({coverage: e.target.checked ? "national" : ""})} /><span>ემსახურება მთელ საქართველოს</span></label>
+      <fieldset className="catalog-filter-group">
+        <legend className="catalog-filter-title">საქმიანობის ტიპი</legend>
+        <div className="filter-chips">
+          {typeOptions.map(([value, label]) => <button key={value || "all"} type="button" className="filter-chip" aria-pressed={type === value} onClick={() => filters.set({ type: value })}>{label}</button>)}
+        </div>
       </fieldset>
+      <div className="catalog-filter-group">
+        <label className="filter-switch">
+          <span><strong>მთელი საქართველო</strong><small>კომპანიები, რომლებიც ყველა რეგიონს ემსახურებიან</small></span>
+          <input type="checkbox" role="switch" checked={coverage} onChange={e => filters.set({ coverage: e.target.checked ? "national" : "" })} />
+          <span className="filter-switch__track" aria-hidden="true" />
+        </label>
+      </div>
     </div>
   );
 
