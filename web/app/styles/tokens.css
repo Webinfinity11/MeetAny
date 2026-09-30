@@ -18,7 +18,7 @@
   --theme-ink:#172D44;
   --theme-surface:#FFFFFF;
   --theme-font:FiraGO;
-  --theme-radius:12px;
+  --theme-radius:8px;
   --theme-caps-headings:normal;
   --theme-caps-buttons:normal;
   --theme-caps-tracking:0;
@@ -271,7 +271,7 @@
   --btn-h:var(--control-h);
   --btn-px:var(--space-control-x);
   --btn-py:var(--space-control-y);
-  --btn-radius:var(--radius-pill);
+  --btn-radius:8px;
   --btn-fs:var(--fs-button);
   --btn-weight:var(--fw-semibold);
   --btn-primary-bg:var(--action);
@@ -283,18 +283,23 @@
   --btn-tint-bg:var(--blue-50);
   --btn-tint-hover:var(--blue-100);
   --btn-tint-text:var(--blue-700);
-  /* Modern surface layer (design refresh 2026-09-29): tinted canvas, elevated cards, brand glow. */
-  --canvas:color-mix(in srgb,var(--theme-primary) 3%,#F6F7F9);
-  --card-radius:16px;
-  --card-border:color-mix(in srgb,var(--theme-ink) 7%,transparent);
-  --card-shadow:0 1px 2px color-mix(in srgb,var(--theme-ink) 5%,transparent),0 4px 14px color-mix(in srgb,var(--theme-ink) 4%,transparent);
-  --card-hover-border:color-mix(in srgb,var(--theme-primary) 28%,transparent);
-  --card-hover-shadow:0 2px 4px color-mix(in srgb,var(--theme-ink) 5%,transparent),0 16px 36px color-mix(in srgb,var(--theme-primary) 13%,transparent);
-  --hero-bg:radial-gradient(900px 420px at 85% -20%,color-mix(in srgb,var(--blue-400) 38%,transparent),transparent 65%),radial-gradient(700px 380px at 0% 120%,color-mix(in srgb,var(--blue-600) 30%,transparent),transparent 60%),linear-gradient(160deg,var(--blue-900) 0%,var(--ink-950) 70%);
-  --hero-text:var(--white);
-  --hero-text-2:color-mix(in srgb,var(--white) 76%,transparent);
-  --glass:color-mix(in srgb,var(--white) 12%,transparent);
-  --glass-border:color-mix(in srgb,var(--white) 22%,transparent);
+  /* Surface layer (2026-09-30): Airbnb-style blended with the MeetAny brand. White page, 12px cards with
+     #DDD borders, shadows only on floating elements (search, sticky cards, menus). */
+  --shadow-float:0 6px 16px rgba(0,0,0,.12);
+  --shadow-search:0 3px 12px rgba(0,0,0,.10);
+  --accent-soft:color-mix(in srgb,var(--theme-accent) 14%,#fff);
+  --accent-text:color-mix(in srgb,var(--theme-accent) 55%,#000);
+  --canvas:#FFFFFF;
+  --card-radius:12px;
+  --card-border:#DDDDDD;
+  --card-shadow:none;
+  --card-hover-border:#DDDDDD;
+  --card-hover-shadow:0 6px 16px rgba(0,0,0,.12);
+  --hero-bg:var(--white);
+  --hero-text:var(--text);
+  --hero-text-2:var(--text-2);
+  --glass:var(--white);
+  --glass-border:var(--border);
   --btn-secondary-text:var(--text);
   --btn-ghost-bg:transparent;
   --btn-ghost-text:var(--text);
@@ -306,7 +311,7 @@
   --row-hover-bg:var(--bg-subtle);
   --field-h:var(--control-h);
   --field-border:var(--border-input);
-  --field-radius:10px;
+  --field-radius:8px;
   --field-fs:var(--fs-body);
   --field-error:var(--danger-600);
   --badge-radius:var(--radius-pill);

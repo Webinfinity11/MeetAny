@@ -24,6 +24,20 @@ export function Header() {
   }, [hasStore, store?.ready]);
   const ready = dataReady && sessionReady;
   const me = ready ? store?.currentUser() : null;
+  // The header must not pop in: the last known role (guest/client/company/admin) is remembered and
+  // drawn before the session check finishes, so buttons keep their place on every load.
+  const [hint, setHint] = useState<string | null>(null);
+  useLayoutEffect(() => {
+    let saved = "guest";
+    try { saved = localStorage.getItem("meetany.headerRole") || "guest"; } catch {}
+    setHint(saved);
+  }, []);
+  const liveRole = ready ? ((me?.role as string | undefined) || "guest") : null;
+  useEffect(() => {
+    if (!liveRole) return;
+    try { localStorage.setItem("meetany.headerRole", liveRole); } catch {}
+  }, [liveRole]);
+  const role = liveRole || hint;
   const pathname = usePathname();
   const mobile = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
@@ -31,8 +45,8 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [pending, setPending] = useState(false);
-  const isAdmin = me?.role === "admin";
-  const accountLabel = isAdmin ? "ადმინი" : me?.role === "company" ? "ჩემი კომპანია" : "ჩემი ანგარიში";
+  const isAdmin = role === "admin";
+  const accountLabel = isAdmin ? "ადმინი" : role === "company" ? "ჩემი კომპანია" : "ჩემი ანგარიში";
   const focusEdge = useRef<"first" | "last" | null>(null);
   const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
@@ -79,8 +93,8 @@ export function Header() {
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
-        {me && !isAdmin ? <div className="ma-header__updates"><NotificationBell/><ChatUnreadLink/></div> : null}
-        {!ready ? <span className="ma-header__session-placeholder" aria-hidden="true" /> : !me ? <Link className="ma-btn ma-btn--ghost ma-header__login" href="/account/">შესვლა</Link> : null}{ready && !isAdmin ? add : null}
+        {role && role !== "guest" && !isAdmin ? <div className="ma-header__updates">{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className="ma-header__slot" aria-hidden="true" /><span className="ma-header__slot" aria-hidden="true" /></>}</div> : null}
+        {role === "guest" ? <Link className="ma-btn ma-btn--ghost ma-header__login" href="/account/">შესვლა</Link> : null}{!isAdmin ? add : null}
         {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
           if (e.key === "Escape") {e.preventDefault(); e.stopPropagation(); setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
@@ -97,6 +111,9 @@ export function Header() {
             {links.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
             <button className="ma-menu__item ma-menu__item--danger" role="menuitem" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button>
           </div>
+        </div> : role && role !== "guest" ? <div className="ma-menu ma-header__account">
+          {/* Same trigger as the live menu, drawn from the remembered role until the session is known. */}
+          <button className="ma-menu__trigger" type="button" aria-label={accountLabel} aria-busy="true" tabIndex={-1}><Icon name={isAdmin ? "shield-check" : role === "company" ? "building-2" : "user-round"}/><span>{accountLabel}</span><Icon name="chevron-down"/></button>
         </div> : null}
       </div>
       <button ref={opener} className="ma-header__menu-btn" aria-label="მენიუ" aria-haspopup="dialog" aria-controls="ma-mnav" aria-expanded={menuOpen} onClick={() => {mobile.current?.showModal(); setMenuOpen(true);}}><Icon name="menu"/></button>

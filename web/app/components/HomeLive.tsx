@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMarketStore } from "../lib/market-client";
 import { categories as needs } from "../lib/home-data";
-import { categoryGroups, cities } from "../lib/categories";
-import { CompanyListingCard, type CompanyListingData } from "./market/CompanyListingCard";
+import { categories as categoryLabels, categoryGroups, cities } from "../lib/categories";
+import { SaveCompanyButton } from "./market/SaveCompanyButton";
+import { avatarInitials, companyImage } from "./market/CompanyAvatar";
 import { Icon } from "./Icon";
 import { DuoIcon } from "./ui/DuoIcon";
 
@@ -18,7 +19,7 @@ export function HomeJoin() {
   const me = ready ? store?.currentUser() : null;
   const company = me?.role === "company";
   return <section className="home-join home-wrap"><div className="home-join__panel">
-    <div><p className="home-overline">{me && !company ? "ბიზნესებისთვის" : "კომპანიებისთვის"}</p><h2>{company ? "ნახე, რას ეძებენ სხვა ბიზნესები" : me ? "იპოვე პარტნიორი შენი ბიზნესისთვის" : "გააცანი შენი კომპანია სხვა ბიზნესებს"}</h2><p>{company ? "ღია მოთხოვნებზე შეთავაზების გაგზავნა უფასოა." : me ? "მოძებნე კომპანია დარგისა და ქალაქის მიხედვით." : "დაარეგისტრირე კომპანია, მიიღე მოთხოვნები შენს დარგში და გაუგზავნე შეთავაზებები."}</p></div>
+    <div><h2>{company ? "ნახე, რას ეძებენ სხვა ბიზნესები" : me ? "იპოვე პარტნიორი შენი ბიზნესისთვის" : "გააცანი შენი კომპანია სხვა ბიზნესებს"}</h2><p>{company ? "ღია მოთხოვნებზე შეთავაზების გაგზავნა უფასოა." : me ? "მოძებნე კომპანია დარგისა და ქალაქის მიხედვით." : "დაარეგისტრირე კომპანია, მიიღე მოთხოვნები შენს დარგში და გაუგზავნე შეთავაზებები."}</p></div>
     <Link className="ma-btn ma-btn--lg home-join__cta" href={company ? "/requests/" : me ? "/companies/" : "/account/?tab=register&role=company"}>{company ? "ღია მოთხოვნების ნახვა" : me ? "კომპანიების მოძებნა" : "კომპანიის რეგისტრაცია"}<Icon name="arrow-right" /></Link>
   </div></section>;
 }
@@ -36,39 +37,58 @@ export function HomeStats() {
   </ul>;
 }
 
+// Photo-first partner types (from the v1 home): picture on top, title and a short line below.
+// Unsplash photos, see public/assets/photos/types/SOURCES.txt.
+const typePhotos: Record<string, string> = {
+  suppliers: "types/suppliers.jpg", services: "types/services.jpg",
+  distributors: "types/distributors.jpg", partners: "types/partners.jpg",
+};
 export function HomeCategories() {
-  return <div className="home-role-list">{needs.map(c => <Link key={c.id} href={`/companies/?type=${c.id}`}>
-    <span className="home-role-icon" aria-hidden="true"><DuoIcon name={c.icon} size={26} /></span>
-    <span><strong>{c.title}</strong><small>{c.sub}</small></span>
-    <Icon name="arrow-right" />
+  return <div className="home-types">{needs.map(c => <Link key={c.id} className="home-type" href={`/companies/?type=${c.id}`}>
+    <span className="home-type__media"><img src={`/assets/photos/${typePhotos[c.id]}`} alt="" loading="lazy" width={480} height={360} /></span>
+    <strong>{c.title}</strong>
+    <small>{c.sub}</small>
   </Link>)}</div>;
 }
 
+/** Airbnb-style category strip: thin icon above a short label, scrolls sideways on small screens. */
 export function HomeIndustries() {
   const {store, ready, available} = useMarketStore();
-  return <ul className="home-industry-grid" aria-label="საქმიანობის მიმართულებები">{categoryGroups.map(group => {
+  return <nav className="home-catbar" aria-label="საქმიანობის მიმართულებები"><ul>{categoryGroups.filter(g => g.id !== "other").map(group => {
     const count = ready && available ? store?.listCompanies({industry: group.id}).length : null;
-    return <li key={group.id}><Link href={`/companies/?industry=${group.id}`}>
-      <span className="home-industry-icon" aria-hidden="true"><DuoIcon name={group.icon} size={26} /></span>
-      <span className="home-industry-text"><strong>{group.short}</strong><small>{count == null ? "\u00a0" : count ? `${count} კომპანია` : "მალე"}</small></span>
+    return <li key={group.id}><Link href={`/companies/?industry=${group.id}`} title={count ? `${group.short} — ${count} კომპანია` : group.short}>
+      <DuoIcon name={group.icon} size={26} />
+      <span>{group.short}</span>
     </Link></li>;
-  })}</ul>;
+  })}</ul></nav>;
+}
+
+/** Photo-first company card (home): picture or initials tile on top, text below, no frame. */
+function HomeCompanyCard({ c }: { c: Company }) {
+  const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
+  const image = companyImage(c.company, c.logoUrl);
+  const place = [c.city, ...(c.serviceCities || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 2).map(id => cities[id] || id).join(", ");
+  return <article className="home-company">
+    <Link className="home-company__media" href={href} tabIndex={-1} aria-hidden="true">
+      {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="home-company__initials">{avatarInitials(c.company)}</span>}
+    </Link>
+    <div className="home-company__save"><SaveCompanyButton id={c.id} icon /></div>
+    <h3 className="home-company__name"><Link href={href}>{c.company}</Link></h3>
+    <p className="home-company__meta">{categoryLabels[c.industry] || c.industry}</p>
+    {place ? <p className="home-company__meta">{place}</p> : null}
+  </article>;
 }
 
 export function HomeFeatured() {
   const {store, ready, available} = useMarketStore();
   const all: Company[] = ready && available ? store?.listCompanies() || [] : [];
-  const rows: CompanyListingData[] = all.filter(c => c.about).slice(0, 3).map(c => ({
-    id: c.id, name: c.company, logoUrl: c.logoUrl, industry: c.industry, city: c.city,
-    serviceCities: c.serviceCities || [], offers: c.offers || [], about: c.about || "", verified: false,
-    stats: store?.companyStats(c.id) || { sent: 0, chosen: 0 },
-  }));
+  const rows = all.filter(c => c.about).slice(0, 8);
   // Fixed-height grid while loading so the page does not shift when companies arrive.
-  return <div className="home-partner-grid company-directory-list" id="featured-companies" aria-busy={!ready}>
-    {!ready ? [0, 1, 2].map(i => <div className="catalog-skeleton__card home-partner-skeleton" key={i}><span className="ma-skel catalog-skeleton__avatar" /><span className="ma-skel catalog-skeleton__title" /><span className="ma-skel catalog-skeleton__line" /><span className="ma-skel catalog-skeleton__line catalog-skeleton__line--short" /></div>)
+  return <div className="home-company-grid" id="featured-companies" aria-busy={!ready}>
+    {!ready ? [0, 1, 2, 3].map(i => <div className="home-company home-company--skeleton" key={i}><span className="ma-skel home-company__media" /><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line home-company__line--short" /></div>)
       : !available ? <p className="home-empty">სერვისი დროებით მიუწვდომელია.</p>
       : !rows.length ? <p className="home-empty">კომპანიები მალე გამოჩნდება.</p>
-      : rows.map(c => <CompanyListingCard key={c.id} c={c} />)}
+      : rows.map(c => <HomeCompanyCard key={c.id} c={c} />)}
   </div>;
 }
 

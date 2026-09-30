@@ -13,6 +13,11 @@ const presentationPhotos: Record<string, string> = {
   "სუფთა სივრცე": "commercial-cleaning.jpg", "რეგიონის მომარაგება": "cardboard-packaging.jpg",
   "ახალი ხედი": "meeting.jpg", "ზღვის სტუმარი": "hotel-linen.jpg",
 };
+/** Large picture for photo-first cards: uploaded logo, else the sample photo, else null (caller shows initials). */
+export function companyImage(name: string, logoUrl?: string | null): string | null {
+  const photo = presentationPhotos[name.trim()];
+  return logoUrl || (photo ? `/assets/photos/${photo}` : null);
+}
 export function CompanyAvatar({ name, logoUrl, size = "sm" }: { name: string; logoUrl?: string | null; size?: "sm" | "lg" | "xl" }) {
   const photo = presentationPhotos[name.trim()];
   return <Avatar name={name} logoUrl={logoUrl || (photo ? `/assets/photos/${photo}` : null)} size={size} />;

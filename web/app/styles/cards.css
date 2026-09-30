@@ -35,7 +35,6 @@
 .company-card:hover {
   border-color: var(--card-hover-border);
   box-shadow: var(--card-hover-shadow);
-  transform: translateY(-2px);
 }
 .request-card:hover .card-main-link,
 .company-card:hover .card-main-link {
@@ -276,7 +275,7 @@
   max-width: 100%;
   padding: var(--space-1) var(--space-3);
   border: 1px solid var(--card-border);
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
   background: var(--canvas);
   font-size: var(--fs-meta);
   line-height: var(--lh-xs);
@@ -315,7 +314,7 @@
 }
 .company-card__save > button {
   border-color: var(--card-border);
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
   background: var(--canvas);
 }
 .company-card__footer .ma-call {
@@ -344,7 +343,7 @@
 .catalog-skeleton__card .ma-skel {
   display: block;
   height: 12px;
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
 }
 .catalog-skeleton__meta { width: 30%; }
 .catalog-skeleton__title { width: 70%; height: 18px !important; }

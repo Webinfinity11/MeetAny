@@ -415,5 +415,4 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-header__account .ma-menu__item{min-height:48px;padding:var(--space-3);gap:var(--space-3);line-height:var(--lh-sm);font-size:var(--fs-sm)}
 .ma-header__account .ma-menu__item .icon{width:var(--space-5);height:var(--space-5);flex:none}
 .ma-header__account .ma-menu__item--danger{margin-top:var(--space-2);border-top:1px solid var(--border-subtle);border-top-left-radius:0;border-top-right-radius:0}
-.ma-header__session-placeholder{display:block;width:164px;height:var(--control-h)}
-@media(max-width:1023px){.ma-header__session-placeholder{width:var(--tap-min)}}
+.ma-header__slot{display:block;width:var(--tap-min);height:var(--tap-min)}
