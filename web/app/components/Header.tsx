@@ -2,7 +2,7 @@
 
 import { trapDialogFocus } from "./ui/dialog-focus";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NotificationBell } from "./market/EngagementPanels";
@@ -11,6 +11,11 @@ import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
 import { toast } from "./Toasts";
 import { NavigationProgress } from "./ProgressBar";
+
+const subscribeNothing = () => () => {};
+function readRoleHint(): string {
+  try { return localStorage.getItem("meetany.headerRole") || "guest"; } catch { return "guest"; }
+}
 
 export function Header() {
   const { store, ready: dataReady } = useMarketStore();
@@ -26,12 +31,7 @@ export function Header() {
   const me = ready ? store?.currentUser() : null;
   // The header must not pop in: the last known role (guest/client/company/admin) is remembered and
   // drawn before the session check finishes, so buttons keep their place on every load.
-  const [hint, setHint] = useState<string | null>(null);
-  useLayoutEffect(() => {
-    let saved = "guest";
-    try { saved = localStorage.getItem("meetany.headerRole") || "guest"; } catch {}
-    setHint(saved);
-  }, []);
+  const hint = useSyncExternalStore(subscribeNothing, readRoleHint, () => null);
   const liveRole = ready ? ((me?.role as string | undefined) || "guest") : null;
   useEffect(() => {
     if (!liveRole) return;

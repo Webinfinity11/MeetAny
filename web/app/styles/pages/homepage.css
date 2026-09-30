@@ -644,3 +644,12 @@
     align-items: flex-start;
   }
 }
+
+@media (max-width: 359px) {
+  .market-search-types {
+    gap: var(--space-4);
+  }
+  .market-search-types label {
+    font-size: var(--fs-sm);
+  }
+}
