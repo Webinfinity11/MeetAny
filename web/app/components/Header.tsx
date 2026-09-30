@@ -48,22 +48,19 @@ export function Header() {
   const isAdmin = role === "admin";
   const accountLabel = isAdmin ? "ადმინი" : role === "company" ? "ჩემი კომპანია" : "ჩემი ანგარიში";
   const focusEdge = useRef<"first" | "last" | null>(null);
+  // Messages and notifications live once, as the badged icons in the header bar (visible at every width).
   const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
     : me.role === "company" ? [
       ["send", "ჩემი შეთავაზებები", "/account/?tab=offers"],
       ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
       ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-      ["message-square", "მიმოწერები", "/account/?tab=messages"],
-      ["bell", "შეტყობინებები", "/account/?tab=notifications"],
       ["sparkles", "განვითარება", "/account/?tab=business"],
       ["building-2", "კომპანიის პროფილი", "/account/?tab=profile"],
       ["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`],
     ] : [
       ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
       ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-      ["message-square", "მიმოწერები", "/account/?tab=messages"],
-      ["bell", "შეტყობინებები", "/account/?tab=notifications"],
       ["user-round", "პროფილი", "/account/?tab=profile"],
     ];
   // The account sidebar already exposes the working sections; don't repeat it in this menu.
