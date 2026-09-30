@@ -335,11 +335,13 @@
 .home-catbar {
   position: relative;
 }
+/* Items are 104px wide with the 48px circle centred, so the list is pulled out by the 28px side
+   inset: the first circle then lines up with the section headings below. */
 .home-catbar ul {
   display: flex;
   gap: var(--space-2);
-  margin: 0;
-  padding: var(--space-5) 0 0;
+  margin: 0 -28px;
+  padding: var(--space-8) 0 0;
   list-style: none;
   overflow-x: auto;
   scroll-snap-type: x proximity;
@@ -366,12 +368,12 @@
 /* Fixed-width items give an even rhythm whatever the label length; long labels wrap to two lines. */
 .home-catbar a {
   display: grid;
-  grid-template-rows: 48px 34px;
+  grid-template-rows: 48px auto;
   justify-items: center;
   align-content: start;
   gap: var(--space-2);
   width: 104px;
-  padding: 0 var(--space-1) var(--space-2);
+  padding: 0 var(--space-1);
   color: var(--text-2);
   font-size: var(--fs-xs);
   line-height: 17px;
@@ -391,7 +393,7 @@
 .home-catbar__arrow {
   position: absolute;
   z-index: 1;
-  top: calc(var(--space-5) + 8px);
+  top: calc(var(--space-8) + 8px);
   display: grid;
   place-items: center;
   width: 32px;
@@ -415,8 +417,8 @@
   height: 14px;
   stroke-width: 2.4;
 }
-.home-catbar__arrow--prev { left: -4px; }
-.home-catbar__arrow--next { right: -4px; }
+.home-catbar__arrow--prev { left: -16px; }
+.home-catbar__arrow--next { right: -16px; }
 @media (hover: none) {
   .home-catbar__arrow { display: none; }
 }
@@ -425,6 +427,9 @@
 
 .home-section {
   margin-top: var(--space-12);
+}
+.home-wrap:has(> .home-catbar) + .home-section {
+  margin-top: var(--space-10);
 }
 .home-section-head {
   display: flex;
@@ -727,6 +732,14 @@
 /* ---------- Mobile ---------- */
 
 @media (max-width: 767px) {
+  /* Full-bleed on phones: 80px items put the first 48px circle exactly on the 16px gutter. */
+  .home-catbar ul {
+    margin: 0 calc(-1 * var(--gutter));
+    padding-top: var(--space-6);
+  }
+  .home-catbar a {
+    width: 80px;
+  }
   .home-page h2 {
     font-size: 22px;
     line-height: 30px;
