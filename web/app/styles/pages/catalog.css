@@ -89,9 +89,6 @@
   font-weight: var(--fw-semibold);
   text-underline-offset: 3px;
 }
-.catalog-page .search-suggestions {
-  box-shadow: var(--shadow-3);
-}
 
 /* Light variant (companies): airy tinted band with a soft brand glow, dark text, outlined search. */
 .catalog-header--light {

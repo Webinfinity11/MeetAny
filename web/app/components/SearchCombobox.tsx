@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Icon } from "./Icon";
-import { CategoryIcon } from "./market/CategoryIcon";
+import { DuoIcon } from "./ui/DuoIcon";
+import { avatarInitials } from "./ui/Avatar";
 import type { SearchSuggestion } from "../lib/search-suggestions";
 
 export function SearchCombobox({ id, label, placeholder, value, onChange, suggestions, onSelect, name, hideLabel = false }: {
@@ -31,12 +32,19 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
     </div>
     {/* Nothing to suggest → no panel; the list below already answers. */}
     <div className="search-suggestions" hidden={!open || !suggestions.length}>
-      <p className="search-suggestions__heading">{value.trim() ? "ძიების შეთავაზებები" : "სწრაფი ძიება"}</p>
       <div role="listbox" id={`${id}-suggestions`} aria-label="ძიების შეთავაზებები">
-        {suggestions.map((s, index) => <button type="button" role="option" aria-selected={active === index} id={`${id}-option-${index}`} key={s.id} tabIndex={-1}
-          className="search-suggestion" onMouseDown={e => e.preventDefault()} onPointerMove={() => setActive(index)} onClick={() => pick(index)}>
-          <CategoryIcon id={s.category} /><span><strong>{s.label}</strong><small>{s.detail}</small></span>
-        </button>)}
+        {suggestions.map((s, index) => {
+          const heading = index === 0 || suggestions[index - 1].kind !== s.kind
+            ? <p className="search-suggestions__heading" aria-hidden="true">{s.kind === "category" ? "კატეგორიები" : s.href.startsWith("/companies/") ? "კომპანიები" : "მოთხოვნები"}</p> : null;
+          return <Fragment key={s.id}>{heading}<button type="button" role="option" aria-selected={active === index} id={`${id}-option-${index}`} tabIndex={-1}
+            className={`search-suggestion search-suggestion--${s.kind}`} onMouseDown={e => e.preventDefault()} onPointerMove={() => setActive(index)} onClick={() => pick(index)}>
+            {s.kind === "category"
+              ? <DuoIcon name={s.category} size={22} tile />
+              : s.image ? <img className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={44} height={44} />
+              : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? avatarInitials(s.label) : <DuoIcon name="file-text" size={20} />}</span>}
+            <span><strong>{s.label}</strong><small>{s.detail}</small></span>
+          </button></Fragment>;
+        })}
       </div>
     </div>
   </div>;
