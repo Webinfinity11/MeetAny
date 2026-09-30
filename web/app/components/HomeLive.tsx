@@ -12,7 +12,7 @@ import { avatarInitials, companyImage } from "./market/CompanyAvatar";
 import { Icon } from "./Icon";
 import { DuoIcon } from "./ui/DuoIcon";
 
-type Company = {id: string; company: string; city: string; industry: string; logoUrl?: string | null; about: string; offers: string[]; serviceCities?: string[]};
+type Company = {id: string; company: string; city: string; industry: string; logoUrl?: string | null; gallery?: string[]; about: string; offers: string[]; serviceCities?: string[]};
 
 export function HomeJoin() {
   const {store, ready} = useMarketStore();
@@ -125,7 +125,7 @@ export function HomeRequests() {
 /** Photo-first company card (home): picture or initials tile on top, text below, no frame. */
 function HomeCompanyCard({ c }: { c: Company }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
-  const image = companyImage(c.company, c.logoUrl);
+  const image = companyImage(c.company, c.logoUrl, c.gallery);
   const place = [c.city, ...(c.serviceCities || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 2).map(id => cities[id] || id).join(", ");
   return <article className="home-company">
     <Link className="home-company__media" href={href} tabIndex={-1} aria-hidden="true">

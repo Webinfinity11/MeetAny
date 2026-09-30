@@ -6,6 +6,7 @@
 #        -> security_tests.sql -> profile_tests.sql -> fields_tests.sql -> admin_tests.sql
 #        -> ... -> messaging, empty-conversations migrations -> conversation_cleanup_tests.sql
 #        -> logo_tests.sql (company-logo migration is applied twice right after addresses)
+#        -> company-gallery migration twice -> gallery_tests.sql
 #        (same database, reuse the rls_tests harness)
 # Exit code is non-zero on any failure. The database is always dropped.
 set -euo pipefail
@@ -64,6 +65,9 @@ echo "== additive engagement migration re-applied"
 "${PSQL[@]}" -f "$HERE/address_tests.sql"
 "${PSQL[@]}" -f "$HERE/conversation_cleanup_tests.sql"
 "${PSQL[@]}" -f "$HERE/logo_tests.sql"
+"${PSQL[@]}" -f "$HERE/../migrations/20260930-company-gallery.sql"
+"${PSQL[@]}" -f "$HERE/../migrations/20260930-company-gallery.sql"
+"${PSQL[@]}" -f "$HERE/gallery_tests.sql"
 "${PSQL[@]}" -f "$HERE/../migrations/20260929-admin-v2.sql"
 "${PSQL[@]}" -f "$HERE/../migrations/20260929-admin-v2.sql"
 "${PSQL[@]}" -f "$HERE/admin_v2_tests.sql"

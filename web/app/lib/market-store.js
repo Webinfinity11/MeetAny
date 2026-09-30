@@ -27,6 +27,7 @@ export function createMarketStore({initial=null,background=true}={}){
   MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიე რაოდენობის ერთეული.',MA113:'აირჩიე დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
   MA114:'მისამართი ან რაიონი უნდა შეიცავდეს მაქსიმუმ 120 სიმბოლოს.',
   MA115:'ლოგო უნდა იყოს JPG, PNG, WEBP ან GIF სურათი, მაქსიმუმ 2 მბ.',
+  MA116:'გალერეაში შეიძლება 8-მდე ფოტო: JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ.',
   MA412:'მისამართი უნდა შეიცავდეს მაქსიმუმ 200 სიმბოლოს.',
   MA413:'მიუთითე ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
   MA110:'განცხადებას ვეღარ შეცვლი: მასზე უკვე მოვიდა შეთავაზება ან მომწოდებელი არჩეულია.',
@@ -221,7 +222,7 @@ export function createMarketStore({initial=null,background=true}={}){
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
  const mapUser=p=>p&&({id:p.id,role:p.role,name:p.name,company:p.company,email:p.email,phone:p.phone,city:p.city,address:p.address||null,lat:p.lat??null,lng:p.lng??null,industry:p.industry||undefined,verified:!!p.verified,verifiedAt:p.verified&&p.verified_at||null,blocked:!!p.blocked,blockedReason:p.blocked&&p.blocked_reason||null,createdAt:p.created_at,
-  about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[],logoUrl:p.logo_url||null});
+  about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[],logoUrl:p.logo_url||null,gallery:Array.isArray(p.gallery)?p.gallery.filter(Boolean):[]});
  const mapRequest=r=>({id:r.id,ownerId:r.owner_id,title:r.title,body:r.body,category:r.category,city:r.city,addressNote:r.address_note||null,photo:r.photo_url||null,
   quantity:r.quantity==null?null:Number(r.quantity),unit:r.quantity!=null&&Object.hasOwn(units,r.unit)?r.unit:null,neededBy:r.needed_by?String(r.needed_by).slice(0,10):null,status:r.status,hidden:!!r.hidden,hiddenReason:r.hidden&&r.hidden_reason||null,chosenOfferId:r.chosen_offer_id||null,createdAt:r.created_at,expiresAt:r.expires_at});
  const mapOffer=o=>({id:o.id,requestId:o.request_id,companyUserId:o.company_id,body:o.body,price:o.price==null?null:Number(o.price),
@@ -229,7 +230,7 @@ export function createMarketStore({initial=null,background=true}={}){
   deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
  const compareCompanies=(a,b)=>Number(b.verified)-Number(a.verified)||Date.parse(b.createdAt)-Date.parse(a.createdAt)||a.id.localeCompare(b.id);
- const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url';
+ const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url,gallery';
 
 
  // A render-local public store never starts auth/network work. The browser singleton
@@ -742,6 +743,27 @@ export function createMarketStore({initial=null,background=true}={}){
    .catch(err=>{if(logoUrl&&logoUrl!==me.logoUrl)removePhoto(logoUrl);throw err;})
    .then(user=>{if(logoUrl!==null&&me.logoUrl&&me.logoUrl!==user?.logoUrl)removePhoto(me.logoUrl);return user;});
  }
+ // Company gallery: the whole ordered list, at most 8 — saved URLs and/or new files (JPG/PNG/WEBP/GIF
+ // <= 5 MB, uploaded here as '<uid>/gallery-<ts>.<ext>'). After success the dropped files are removed;
+ // on any failure the new uploads are removed and the saved gallery stays as it was (best effort).
+ async function setGallery(items){
+  client();const me=requireUser();
+  const list=Array.isArray(items)?items.filter(Boolean):[];
+  const before=me.gallery||[];
+  if(me.role!=='company'||list.length>8)fail(MSG.MA116,'MA116');
+  const uploaded=[];
+  try{
+   const urls=[];
+   for(const item of list){
+    if(typeof item==='string'){urls.push(item.trim());continue;}
+    const {url}=await uploadPhoto(me,item,{prefix:'gallery-',code:'MA116'});
+    uploaded.push(url);urls.push(url);
+   }
+   const user=await mutate('set_my_gallery',{p_urls:[...new Set(urls)]},mapUser);
+   before.filter(u=>!(user?.gallery||[]).includes(u)).forEach(removePhoto);
+   return user;
+  }catch(err){uploaded.forEach(removePhoto);throw err;}
+ }
  function directionsUrl(profile){
   if(!profile)return null;
   const {lat,lng}=profile;
@@ -837,7 +859,7 @@ export function createMarketStore({initial=null,background=true}={}){
   requestPasswordReset,resetPassword,changePassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
-  updateProfile,uploadLogo,listCompanies,getCompany,ensureCompany,companyStats,directionsUrl,
+  updateProfile,uploadLogo,setGallery,listCompanies,getCompany,ensureCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
   adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};

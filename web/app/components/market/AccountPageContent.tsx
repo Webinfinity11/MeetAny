@@ -15,7 +15,7 @@ import { DuoIcon } from "../ui/DuoIcon";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
-import { LogoField } from "./PhotoField";
+import { LogoField, GalleryField, type GalleryItem } from "./PhotoField";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
@@ -28,6 +28,7 @@ type AnyUser = {
   name: string;
   company?: string;
   logoUrl?: string | null;
+  gallery?: string[];
   phone: string;
   email: string;
   city: string;
@@ -67,7 +68,9 @@ function ProfileForm({ me }: { me: AnyUser }) {
   const [logoUrl, setLogoUrl] = useState(me.logoUrl || "");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoChanged, setLogoChanged] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [gallery, setGallery] = useState<GalleryItem[]>(() => (me.gallery || []).map(url => ({ key: url, url })));
+  const [galleryChanged, setGalleryChanged] = useState(false);
+  const [uploading, setUploading] = useState<"logo" | "gallery" | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -94,20 +97,27 @@ function ProfileForm({ me }: { me: AnyUser }) {
     try {
       let nextLogo = logoUrl;
       if (isCompany && logoFile) {
-        setUploading(true);
+        setUploading("logo");
         const uploaded = await store.uploadLogo(logoFile);
         nextLogo = uploaded.url;
-        setUploading(false);
+        setUploading(null);
       }
       await store.updateProfile({ name, company, city, industry, about, offers, seeks, serviceCities, ...(isCompany ? { address, lat: latValue, lng: lngValue, ...(logoChanged ? { logoUrl: nextLogo } : {}) } : {}) });
       setLogoUrl(nextLogo);
       setLogoFile(null);
       setLogoChanged(false);
+      if (isCompany && galleryChanged) {
+        // New files upload only now; the store removes them again if saving fails.
+        setUploading("gallery");
+        const user = await store.setGallery(gallery.map(item => item.file || item.url));
+        setGallery((user?.gallery || []).map((url: string) => ({ key: url, url })));
+        setGalleryChanged(false);
+      }
       setSaved(true);
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {
-      setUploading(false);
+      setUploading(null);
       setPending(false);
     }
   }
@@ -119,9 +129,11 @@ function ProfileForm({ me }: { me: AnyUser }) {
       <form className="ma-form" onSubmit={submit} noValidate>
         <fieldset className="account-form-group">
           {isCompany ? <legend>ძირითადი</legend> : null}
-        {isCompany ? <LogoField name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading}
+        {isCompany ? <LogoField name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading === "logo"}
           onChange={file => { setLogoFile(file); setLogoChanged(true); setSaved(false); }}
           onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); setSaved(false); }} /> : null}
+        {isCompany ? <GalleryField items={gallery} disabled={pending} uploading={uploading === "gallery"}
+          onChange={next => { setGallery(next); setGalleryChanged(true); setSaved(false); }} /> : null}
         <div className="ma-form__row ma-form__row--3">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="name">

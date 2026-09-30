@@ -73,9 +73,12 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   const directions: string | null = store?.directionsUrl(c) ?? null;
 
   const requestHref = (title: string) => `/requests/new/?${new URLSearchParams({ title, category: c.industry, city: c.city })}`;
-  const cover = companyImage(name, c.logoUrl);
-  // Gallery: logo/sample photo first, then any product photos (unique).
-  const photos = [cover, ...pictured.map(p => p.photoUrl)].filter((v, i, a): v is string => !!v && a.indexOf(v) === i);
+  const gallery: string[] = c.gallery || [];
+  // Gallery: the company's own photos, else the logo/sample photo; then any product photos (unique).
+  const photos = [...(gallery.length ? gallery : [companyImage(name, c.logoUrl)]), ...pictured.map(p => p.photoUrl)]
+    .filter((v, i, a): v is string => !!v && a.indexOf(v) === i);
+  // One photo sits beside the name; with a mosaic above, an uploaded logo takes that place instead.
+  const thumb = photos.length < 2 ? photos[0] || "" : gallery.length && c.logoUrl ? c.logoUrl : null;
 
   const since = sinceMonthLabel(c.createdAt);
   const hasDetails = !!(c.about || c.seeks?.length || products.length || openRequests.length);
@@ -85,8 +88,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>
       <CompanyGallery photos={photos} name={name} />
       <header className="company-hero">
-        {/* A single photo (or logo) stays a compact thumbnail next to the name. */}
-        {photos.length < 2 ? <span className="company-hero__thumb">{photos[0] ? <img src={photos[0]} alt="" /> : <span aria-hidden="true">{avatarInitials(name)}</span>}</span> : null}
+        {thumb !== null ? <span className="company-hero__thumb">{thumb ? <img src={thumb} alt="" /> : <span aria-hidden="true">{avatarInitials(name)}</span>}</span> : null}
         <div className="company-hero__text">
           <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
           <h1 className="company-hero__name">{name}</h1>

@@ -1,4 +1,4 @@
-// POST   /api/blob-upload  Vercel Blob client-upload token for a request photo or company logo (handleUpload).
+// POST   /api/blob-upload  Vercel Blob client-upload token for a request photo, company logo or gallery photo (handleUpload).
 // DELETE /api/blob-upload  {url}: removes the caller's own photo or logo (a failed create_request, a
 //                          replaced or removed logo).
 //
@@ -6,7 +6,8 @@
 // issuer/audience; caller has a profile and is not blocked (rpc/my_profile with the caller's own
 // token); pathname is exactly <sub>/<name>.<jpg|png|webp|gif>; only jpeg/png/webp/gif, at most 5 MB,
 // random suffix, no overwrite, token valid 5 minutes. A logo is <sub>/logo-<name>.<ext>, at most 2 MB
-// (update_my_profile accepts only that file name, MA115).
+// (update_my_profile accepts only that file name, MA115). A gallery photo is <sub>/gallery-<name>.<ext>,
+// at most 5 MB (set_my_gallery accepts only that file name, MA116).
 // Env: BLOB_READ_WRITE_TOKEN (secret, set by the Blob integration), NEON_AUTH_BASE_URL,
 // DATABASE_URL (secret) for the profile check through api/_db.js.
 import { handleUpload } from '@vercel/blob/client';

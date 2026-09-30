@@ -18,6 +18,7 @@ const plans={
  'admin-api':{tables:['moderation_audit'],routines:['admin_set_hidden','admin_delete_request','admin_set_blocked','admin_set_verified','admin_list_users','admin_search_requests','admin_search_users','admin_list_audit','admin_stats']},
  'empty-conversations':{file:'20260924-empty-conversations',tables:['conversations'],routines:['start_conversation','list_my_conversations']},
  'company-logo':{file:'20260924-company-logo',tables:[],routines:['update_my_profile','list_companies']},
+ 'company-gallery':{file:'20260930-company-gallery',tables:[],routines:['set_my_gallery','list_companies']},
 };
 let pool;
 try {
@@ -78,6 +79,15 @@ try {
    (select count(*)::int from meetany_private.settings where key='photo_origin') origin`);
   if(v.logo_url!==1||v.logo_check!==1||v.overloads!==1||!v.catalog||!v.public_select) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
   console.log({photoOriginConfigured:v.origin===1});
+ }
+ if(migration==='company-gallery') {
+  const {rows:[v]}=await pool.query(`select
+   (select count(*)::int from information_schema.columns where table_schema='public' and table_name='profiles' and column_name='gallery') gallery,
+   (select count(*)::int from pg_constraint where conname='profiles_gallery_check' and conrelid='public.profiles'::regclass) gallery_check,
+   (select position('gallery' in pg_get_function_result('public.list_companies()'::regprocedure))>0) catalog,
+   has_column_privilege('anonymous','public.profiles','gallery','SELECT') public_select,
+   has_function_privilege('authenticated','public.set_my_gallery(text[])','EXECUTE') rpc`);
+  if(v.gallery!==1||v.gallery_check!==1||!v.catalog||!v.public_select||!v.rpc) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
  }
  if(migration==='addresses') {
   const {rows:columns}=await pool.query(`select table_name,column_name,data_type from information_schema.columns where table_schema='public' and ((table_name='profiles' and column_name in ('address','lat','lng')) or (table_name='requests' and column_name='address_note')) order by table_name,column_name`);

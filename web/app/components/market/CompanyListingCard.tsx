@@ -10,6 +10,7 @@ export type CompanyListingData = {
   id: string;
   name: string;
   logoUrl?: string | null;
+  gallery?: string[];
   industry: string;
   city: string;
   serviceCities: string[];
@@ -30,7 +31,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const cityIds = [...new Set((c.serviceCities.filter(Boolean).length ? c.serviceCities : [c.city]).filter(Boolean))];
   const places = cityIds.slice(0, 2).map(id => cities[id] || id).join(", ") + (cityIds.length > 2 ? ` +${cityIds.length - 2}` : "");
-  const image = companyImage(c.name, c.logoUrl);
+  const image = companyImage(c.name, c.logoUrl, c.gallery);
   const entrance = entranceIndex != null && entranceIndex < 12;
   return (
     <article className="company-card" data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>

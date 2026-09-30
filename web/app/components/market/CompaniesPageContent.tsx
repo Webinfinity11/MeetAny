@@ -33,6 +33,7 @@ type MappedCompany = {
   company?: string;
   name: string;
   logoUrl?: string | null;
+  gallery?: string[];
   phone?: string;
   industry: string;
   city: string;
@@ -110,6 +111,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       id: c.id,
       name: c.company || c.name,
       logoUrl: c.logoUrl,
+      gallery: c.gallery,
       industry: c.industry,
       city: c.city,
       serviceCities: c.serviceCities || [],
@@ -173,9 +175,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <CatalogHeader
         tone="light"
         center
-        overline="კომპანიების კატალოგი"
-        title="მომწოდებლები და მომსახურება"
-        description="მოძებნე კომპანია დარგისა და ქალაქის მიხედვით და დაუკავშირდი პირდაპირ."
+        title="იპოვე მომწოდებელი"
+        description="იპოვე სანდო პარტნიორი შენი ბიზნესისთვის."
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("company-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
           <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება"
             emptyHref={`/requests/new/?${new URLSearchParams({ title: query.trim(), city })}`}
@@ -183,7 +184,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
             onSelect={item => item.kind === "category" ? filters.set({ industry: item.category, q: "" }) : router.push(item.href)}
             city={city} onCity={setCity} />
         </form>}
-        help={<>კონკრეტული საჭიროება გაქვს? <Link href="/requests/new/">გამოაქვეყნე მოთხოვნა</Link></>}
       />
       <div className="catalog-workspace">
         <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>

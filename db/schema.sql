@@ -116,6 +116,13 @@ language sql immutable set search_path = '' as $$
                   || '/[A-Za-z0-9_-][A-Za-z0-9_-]{0,99}\.([jJ][pP][eE]?[gG]|[pP][nN][gG]|[wW][eE][bB][pP]|[gG][iI][fF])$')
 $$;
 
+-- A company gallery: at most 8 photo URLs, each in the owner's own folder.
+create or replace function meetany_private.valid_gallery(p_urls text[], p_owner uuid) returns boolean
+language sql immutable set search_path = '' as $$
+  select p_urls is not null and coalesce(array_length(p_urls, 1), 0) <= 8 and coalesce(array_ndims(p_urls), 1) = 1
+     and not exists (select 1 from unnest(p_urls) u where not meetany_private.valid_photo_url(u, p_owner))
+$$;
+
 -- Raises a business error with a stable code. Codes are documented in CONTRACT.md.
 create or replace function meetany_private.fail(p_code text) returns void
 language plpgsql volatile set search_path = '' as $$
@@ -139,6 +146,7 @@ declare
     when 'MA113' then 'needed-by date must be between today and 2 years ahead'
     when 'MA114' then 'address note is longer than 120 characters'
     when 'MA115' then 'invalid logo url'
+    when 'MA116' then 'gallery allows at most 8 own gallery photos'
     when 'MA201' then 'only company accounts can send offers'
     when 'MA202' then 'cannot send an offer on own request'
     when 'MA203' then 'request no longer accepts offers'
@@ -465,6 +473,13 @@ alter table public.profiles drop constraint if exists profiles_logo_url_check;
 alter table public.profiles add constraint profiles_logo_url_check check
   (logo_url is null or meetany_private.valid_photo_url(logo_url, id));
 
+-- Optional public company gallery; set_my_gallery additionally pins the Blob origin and a
+-- 'gallery-' file name (MA116).
+alter table public.profiles add column if not exists gallery text[] not null default '{}';
+alter table public.profiles drop constraint if exists profiles_gallery_check;
+alter table public.profiles add constraint profiles_gallery_check check
+  (meetany_private.valid_gallery(gallery, id));
+
 -- ============================================================= RLS + grants
 alter table public.profiles enable row level security;
 alter table public.requests enable row level security;
@@ -487,7 +502,7 @@ create policy offers_select_sealed on public.offers
          or meetany_private.is_admin());
 
 revoke all on public.profiles, public.requests, public.offers from public, anonymous, authenticated;
-grant select (id, role, company, phone, industry, verified, verified_at, city, about, offers, seeks, service_cities, created_at, address, lat, lng, logo_url)
+grant select (id, role, company, phone, industry, verified, verified_at, city, about, offers, seeks, service_cities, created_at, address, lat, lng, logo_url, gallery)
   on public.profiles to anonymous, authenticated;
 grant select on public.requests to anonymous, authenticated;
 grant select on public.offers to authenticated;
@@ -906,6 +921,31 @@ begin
 end
 $$;
 
+-- Company gallery: replaces the whole list (order kept, blanks and duplicates dropped); companies
+-- only. Each URL: <Blob store origin>/<caller id>/gallery-<name>.<ext>, at most 8 (MA116).
+create or replace function public.set_my_gallery(p_urls text[])
+returns public.profiles
+language plpgsql security definer set search_path = '' as $$
+declare
+  me public.profiles := meetany_private.require_user();
+  v_origin text := meetany_private.photo_origin();
+  v_urls text[] := array(select u from (select btrim(x) u, min(n) n from unnest(coalesce(p_urls, '{}'::text[])) with ordinality a(x, n)
+                                       where btrim(coalesce(x, '')) <> '' group by 1) d order by n);
+  p public.profiles;
+begin
+  if me.role <> 'company' then perform meetany_private.fail('MA116'); end if;
+  if cardinality(v_urls) > 8 or (cardinality(v_urls) > 0 and v_origin is null) or exists (
+       select 1 from unnest(v_urls) u
+       where not meetany_private.valid_photo_url(u, me.id)
+          or lower(left(u, char_length(v_origin) + 1)) <> v_origin || '/'
+          or substr(u, char_length(v_origin) + 2, 45) <> me.id::text || '/gallery-') then
+    perform meetany_private.fail('MA116');
+  end if;
+  update public.profiles set gallery = v_urls where id = me.id returning * into p;
+  return p;
+end
+$$;
+
 -- Public activity numbers for company profiles: how many offers a company sent and how many
 -- were chosen. Numbers only; offer contents stay sealed.
 create or replace function public.company_stats(ids uuid[])
@@ -923,17 +963,17 @@ $$;
 do $$
 begin
   if to_regprocedure('public.list_companies()') is not null
-     and pg_get_function_result(to_regprocedure('public.list_companies()')) not like '%logo_url%' then
-    drop function public.list_companies();  -- result columns changed (address fields, logo_url added)
+     and pg_get_function_result(to_regprocedure('public.list_companies()')) not like '%gallery%' then
+    drop function public.list_companies();  -- result columns changed (address fields, logo_url, gallery added)
   end if;
 end $$;
 create or replace function public.list_companies()
 returns table (id uuid, company text, industry text, verified boolean, verified_at timestamptz, city text,
                about text, offers text[], seeks text[], service_cities text[], created_at timestamptz,
-               address text, lat double precision, lng double precision, logo_url text)
+               address text, lat double precision, lng double precision, logo_url text, gallery text[])
 language sql stable security definer set search_path = '' as $$
   select p.id, p.company, p.industry, p.verified, p.verified_at, p.city, p.about, p.offers, p.seeks,
-         p.service_cities, p.created_at, p.address, p.lat, p.lng, p.logo_url
+         p.service_cities, p.created_at, p.address, p.lat, p.lng, p.logo_url, p.gallery
   from public.profiles p
   where p.role = 'company' and not p.blocked
   order by p.verified desc, p.created_at desc
@@ -1520,7 +1560,7 @@ revoke all on all tables in schema meetany_private from public, anonymous, authe
 grant execute on function
   meetany_private.categories(), meetany_private.cities(),
   meetany_private.is_category(text), meetany_private.is_city(text),
-  meetany_private.valid_photo_url(text, uuid),
+  meetany_private.valid_photo_url(text, uuid), meetany_private.valid_gallery(text[], uuid),
   meetany_private.valid_items(text[]), meetany_private.valid_cities(text[]),
   meetany_private.units(), meetany_private.is_unit(text),
   meetany_private.is_admin(), meetany_private.is_request_owner(uuid), meetany_private.can_write(),
@@ -1536,6 +1576,7 @@ revoke all on function
   public.contact_for_request(uuid),
   public.update_request(uuid, text, text, text, text, numeric, text, date, text),
   public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision, text),
+  public.set_my_gallery(text[]),
   public.company_stats(uuid[]), public.list_companies(),
   public.admin_set_hidden(uuid, boolean, text), public.admin_delete_request(uuid),
   public.admin_set_blocked(uuid, boolean, text), public.admin_set_verified(uuid, boolean),
@@ -1553,6 +1594,7 @@ grant execute on function
   public.extend_request(uuid), public.delete_request(uuid),
   public.update_request(uuid, text, text, text, text, numeric, text, date, text),
   public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision, text),
+  public.set_my_gallery(text[]),
   public.send_offer(uuid, text, numeric, text, boolean, integer, boolean), public.withdraw_offer(uuid), public.choose_offer(uuid, timestamptz),
   public.contact_for_request(uuid)
   to anonymous, authenticated;

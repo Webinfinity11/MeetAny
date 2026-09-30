@@ -582,6 +582,23 @@ Migration `migrations/20260924-company-logo.sql` (rerunnable; apply after `20260
 
 Verification (2026-09-24): local suite `db/tests/logo_tests.sql` — 23 assertions (1178 in total). Live check against localhost:3001 on auth-probe with a demo company (`web/scripts/verify-company-logo.mjs`, 17 checks): upload -> `update_my_profile` -> `list_companies` / anonymous `profiles` select -> foreign domain, another user's folder and a non-`logo-` file return 400 `MA115` -> DELETE of another user's file 403 -> replace deletes the old file -> `''` sets NULL; test files deleted and the other profile fields unchanged. As with the address migration, a running API process that cached the old `update_my_profile` signature must reload before it accepts `p_logo_url`.
 
+## Company gallery — T12.4b (2026-09-30)
+
+Migration `migrations/20260930-company-gallery.sql` (rerunnable; apply after `20260924-company-logo.sql`); the same definitions are in `schema.sql`. Apply with `node web/scripts/apply-migration.mjs company-gallery` (`--dry-run` first). **Apply before deploying code that selects `gallery`** (`PUBLIC_PROFILE` in the store and the SSR snapshot); the migration itself is safe for older code.
+
+- `profiles.gallery text[] NOT NULL DEFAULT '{}'`, CHECK `profiles_gallery_check`: `meetany_private.valid_gallery(gallery, id)` — at most 8 URLs, each `valid_photo_url` in the owner's own folder.
+- `set_my_gallery(p_urls text[]) -> profiles` — companies only; replaces the whole list (order kept, blanks and duplicates dropped, NULL clears). Each URL must start with `photo_origin()` + `/<caller id>/gallery-` -> else `MA116`. `update_my_profile` is unchanged and keeps the gallery.
+- Publicly readable: column grant for `anonymous`/`authenticated`, `list_companies()` returns `gallery`, `PUBLIC_PROFILE` selects it. `my_profile` and the admin user lists return whole rows.
+- Upload: `/api/blob-upload` signs `<uid>/gallery-<name>.<ext>` with the standard 5 MB limit.
+- Store: `setGallery(items)` — items are saved URLs and/or new `File`s (uploaded as `gallery-` files, JPG/PNG/WEBP/GIF ≤ 5 MB, else `MA116`). After success dropped files are removed; on failure the new uploads are removed (best effort). `mapUser` exposes `gallery` (string[]).
+- UI: account profile form (`GalleryField`), public profile mosaic (`CompanyGallery`: gallery first, then product photos), catalog/home cards use the first gallery photo (`companyImage`).
+
+| Code | Georgian user message |
+|---|---|
+| `MA116` | გალერეაში შეიძლება 8-მდე ფოტო: JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ. |
+
+Verification (2026-09-30): local suite `db/tests/gallery_tests.sql` — 22 assertions; dry-run against auth-probe ok (rolled back).
+
 ## მოთხოვნების შეტყობინებები ნაგულისხმევად ჩართულია — 2026-09-29
 
 `20260929-request-alerts-default-on.sql` ცვლის მხოლოდ request alerts ქცევას; საჯარო RPC-ების სიგნატურები უცვლელია. auth-probe production-ის ბაზაცაა.
