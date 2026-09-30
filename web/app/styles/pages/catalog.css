@@ -133,6 +133,16 @@
   background: var(--blue-50);
   border-bottom: 0;
 }
+/* Keep the city illustration behind the content and search menus. */
+.companies-catalog .catalog-header--center.catalog-header--light::before {
+  background-color: #f0f4fc;
+  background-image:
+    linear-gradient(rgb(240 244 252 / 14%), rgb(240 244 252 / 14%)),
+    url("/assets/companies-hero-georgian-city-v1.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 /* Dark variant (requests): solid brand blue like the home hero, white text. */
 .catalog-header--center.catalog-header--dark::before {
   background: var(--blue-700);
@@ -682,6 +692,12 @@
   .catalog-header--center {
     padding-block: var(--space-8);
     gap: var(--space-5);
+  }
+  .companies-catalog .catalog-header--center.catalog-header--light::before {
+    background-image:
+      linear-gradient(rgb(240 244 252 / 88%), rgb(240 244 252 / 60%)),
+      url("/assets/companies-hero-georgian-city-v1.webp");
+    background-position: center, left center;
   }
   .catalog-description {
     margin-top: var(--space-2);

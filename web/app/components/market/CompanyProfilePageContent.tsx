@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Icon } from "../Icon";
 import { ProductCard, type ProductCardData } from "./ProductCard";
 import { avatarInitials, companyImage } from "./CompanyAvatar";
+import { CompanyGallery } from "./CompanyGallery";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
@@ -73,6 +74,8 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
 
   const requestHref = (title: string) => `/requests/new/?${new URLSearchParams({ title, category: c.industry, city: c.city })}`;
   const cover = companyImage(name, c.logoUrl);
+  // Gallery: logo/sample photo first, then any product photos (unique).
+  const photos = [cover, ...pictured.map(p => p.photoUrl)].filter((v, i, a): v is string => !!v && a.indexOf(v) === i);
 
   const since = sinceMonthLabel(c.createdAt);
   const hasDetails = !!(c.about || c.seeks?.length || products.length || openRequests.length);
@@ -80,11 +83,10 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   return (
     <div className="ma-page company-profile detail-page">
       <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>
-      {/* Airbnb listing: a wide picture first, then the identity with the save action. */}
-      <div className="company-cover">
-        {cover ? <img src={cover} alt="" width={1200} height={480} fetchPriority="high" /> : <span className="company-cover__initials" aria-hidden="true">{avatarInitials(name)}</span>}
-      </div>
+      <CompanyGallery photos={photos} name={name} />
       <header className="company-hero">
+        {/* A single photo (or logo) stays a compact thumbnail next to the name. */}
+        {photos.length < 2 ? <span className="company-hero__thumb">{photos[0] ? <img src={photos[0]} alt="" /> : <span aria-hidden="true">{avatarInitials(name)}</span>}</span> : null}
         <div className="company-hero__text">
           <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
           <h1 className="company-hero__name">{name}</h1>
