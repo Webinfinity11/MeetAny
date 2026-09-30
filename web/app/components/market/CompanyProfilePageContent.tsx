@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { ProductCard, type ProductCardData } from "./ProductCard";
-import { CompanyAvatar } from "./CompanyAvatar";
+import { avatarInitials, companyImage } from "./CompanyAvatar";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
@@ -71,12 +71,8 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   const plain = products.filter(product => !product.photoUrl);
   const directions: string | null = store?.directionsUrl(c) ?? null;
 
-  const firstSentence = (c.about || "").trim().split(/(?<=[.!?])\s/)[0];
-  const introduction = firstSentence.length > 140
-    ? `${firstSentence.slice(0, 140).replace(/\s+\S*$/, "")}…`
-    : firstSentence;
   const requestHref = (title: string) => `/requests/new/?${new URLSearchParams({ title, category: c.industry, city: c.city })}`;
-  const requestLink = (title: string) => !ownProfile ? <Link className="ma-link company-service-request" href={requestHref(title)}>გამოაქვეყნე მოთხოვნა ამ მიმართულებით</Link> : null;
+  const cover = companyImage(name, c.logoUrl);
 
   const since = sinceMonthLabel(c.createdAt);
   const hasDetails = !!(c.about || c.seeks?.length || products.length || openRequests.length);
@@ -84,19 +80,21 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   return (
     <div className="ma-page company-profile detail-page">
       <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>
+      {/* Airbnb listing: a wide picture first, then the identity with the save action. */}
+      <div className="company-cover">
+        {cover ? <img src={cover} alt="" width={1200} height={480} fetchPriority="high" /> : <span className="company-cover__initials" aria-hidden="true">{avatarInitials(name)}</span>}
+      </div>
       <header className="company-hero">
-        <CompanyAvatar name={name} logoUrl={c.logoUrl} size="xl" />
         <div className="company-hero__text">
           <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
           <h1 className="company-hero__name">{name}</h1>
-          {introduction ? <p className="company-hero__summary">{introduction}</p> : null}
           <ul className="company-hero__meta" aria-label="კომპანიის დეტალები">
             {c.city ? <li><Icon name="map-pin" />{cities[c.city] || c.city}</li> : null}
             {since ? <li><Icon name="calendar" />საიტზე {since}</li> : null}
             {stats.sent > 0 ? <li><Icon name="send" />{stats.sent} შეთავაზება</li> : null}
           </ul>
         </div>
-        {!ownProfile ? <div className="company-hero__save"><SaveCompanyButton id={c.id} icon /></div> : null}
+        {!ownProfile ? <div className="company-hero__save"><SaveCompanyButton id={c.id} /></div> : null}
       </header>
       <nav className="company-section-nav" aria-label="კომპანიის პროფილის სექციები">{c.about || c.seeks?.length ? <a href="#company-about">კომპანიის შესახებ</a> : null}{products.length ? <a href="#offers">პროდუქტები და მომსახურება <span>{products.length}</span></a> : null}{openRequests.length ? <a href="#company-requests">ღია მოთხოვნები <span>{openRequests.length}</span></a> : null}</nav>
       <div className="company-profile-layout">
@@ -117,8 +115,9 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         </section> : null}
         {products.length ? <section id="offers" aria-labelledby="company-services">
           <h2 id="company-services" className="detail-section-title">პროდუქტები და მომსახურება</h2>
-          {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <div key={`${product.name}-${index}`}><ProductCard {...product} />{requestLink(product.name)}</div>)}</div> : null}
-          {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}><span>{product.name}</span>{requestLink(product.name)}</li>)}</ul> : null}
+          {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <div key={`${product.name}-${index}`}><ProductCard {...product} /></div>)}</div> : null}
+          {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}><Icon name="check" /><span>{product.name}</span></li>)}</ul> : null}
+          {!ownProfile ? <div className="company-profile-cta"><p>გჭირდება რომელიმე მათგანი?</p><Link className="ma-btn ma-btn--secondary" href={requestHref(products[0]?.name || "")}>მოთხოვნის გამოქვეყნება</Link></div> : null}
         </section> : null}
         {openRequests.length ? <section className="company-profile-requests" aria-labelledby="company-requests">
           <h2 id="company-requests" className="detail-section-title">ღია მოთხოვნები</h2>

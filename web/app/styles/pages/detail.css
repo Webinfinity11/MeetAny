@@ -517,25 +517,34 @@
 
 /* ---------- Company profile ---------- */
 
-.company-hero {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-8);
-  border: 1px solid var(--card-border);
+/* Cover picture, then the identity row (Airbnb listing). */
+.company-cover {
+  height: clamp(220px, 30vw, 400px);
+  overflow: hidden;
   border-radius: var(--card-radius);
-  background: var(--white);
-  box-shadow: var(--card-shadow);
+  background: var(--blue-50);
 }
-.company-hero .ma-avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: var(--card-radius);
-  font-size: var(--fs-h2);
-  box-shadow: 0 0 0 4px var(--white), 0 0 0 5px var(--card-border);
+.company-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.company-cover__initials {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--blue-700);
+  font-size: 64px;
+  font-weight: var(--fw-bold);
+}
+.company-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border-subtle);
 }
 .company-hero__text {
   display: grid;
@@ -551,28 +560,26 @@
 }
 .company-hero__name {
   margin: 0;
-  font-size: 34px;
-  line-height: 42px;
+  font-size: 32px;
+  line-height: 40px;
   font-weight: var(--fw-bold);
-  letter-spacing: -.01em;
   overflow-wrap: anywhere;
 }
-.company-hero__summary {
-  max-width: 64ch;
-  margin: 0;
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  color: var(--text-2);
-}
 .company-hero__meta {
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
 }
 .company-hero__save {
-  align-self: start;
+  flex: none;
 }
 .company-hero__save > button {
-  border-color: var(--card-border);
-  border-radius: 6px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .company-section-nav {
@@ -622,12 +629,12 @@
   display: grid;
   gap: var(--space-4);
   min-width: 0;
-  padding: var(--space-8);
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
-  background: var(--white);
-  box-shadow: var(--card-shadow);
+  padding: 0 0 var(--space-8);
+  border-bottom: 1px solid var(--border-subtle);
   scroll-margin-top: calc(var(--header-h) + var(--space-6));
+}
+.company-profile-main > section:last-child {
+  border-bottom: 0;
 }
 .company-profile-description {
   max-width: 68ch;
@@ -666,13 +673,19 @@
   list-style: none;
 }
 .company-profile-services li {
-  display: grid;
-  gap: var(--space-1);
-  padding-block: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  font-weight: var(--fw-medium);
   overflow-wrap: anywhere;
+}
+.company-profile-services li .icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--action);
 }
 .company-profile-services li:first-child {
   padding-top: 0;
@@ -682,6 +695,21 @@
 }
 .company-profile-services li + li {
   border-top: 1px solid var(--border-subtle);
+}
+.company-profile-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+.company-profile-cta p {
+  margin: 0;
+  font-weight: var(--fw-semibold);
 }
 .company-service-request {
   justify-self: start;
@@ -870,9 +898,11 @@ body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
     gap: var(--space-2) var(--space-4);
   }
   .request-description,
-  .request-detail-main > .detail-aside__block,
-  .company-profile-main > section {
+  .request-detail-main > .detail-aside__block {
     padding: var(--space-5);
+  }
+  .company-profile-main > section {
+    padding: 0 0 var(--space-6);
   }
   .request-detail-aside,
   .company-contact-card {
@@ -928,22 +958,10 @@ body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
     color: var(--text-3);
   }
   .company-hero {
-    grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-4);
-    padding: var(--space-5);
   }
-  .company-hero .ma-avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-  }
-  .company-hero__text {
-    grid-column: 1 / -1;
-  }
-  .company-hero__save {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
+  .company-cover {
+    height: 220px;
   }
   .company-hero__name {
     font-size: 26px;
