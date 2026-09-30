@@ -182,11 +182,14 @@
 }
 .request-detail-facts > div {
   display: grid;
+  align-content: start;
   gap: var(--space-1);
   min-width: 0;
+  margin: 0;
   padding: var(--space-4);
+  border: 0;
   border-radius: 12px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .request-detail-facts dt {
   font-size: var(--fs-meta);
@@ -208,17 +211,25 @@
 .request-detail .detail-photo {
   margin: 0;
 }
+/* Framed and contained: any upload (photo or logo) shows whole, never stretched edge to edge. */
 .request-detail .detail-photo a {
-  display: block;
+  display: grid;
+  place-items: center;
+  height: clamp(220px, 32vw, 380px);
+  padding: var(--space-4);
   overflow: hidden;
+  border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .request-detail .detail-photo img {
   display: block;
-  width: 100%;
-  max-height: 520px;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
   transition: transform var(--motion-slow) var(--motion-ease);
 }
 .request-detail .detail-photo a:hover img {
@@ -486,7 +497,7 @@
   overflow-wrap: anywhere;
 }
 .request-responses .ma-table th {
-  background: var(--canvas);
+  background: var(--bg-subtle);
   color: var(--text-2);
   font-weight: var(--fw-semibold);
 }
@@ -636,7 +647,7 @@
   gap: var(--space-2);
   padding: var(--space-4);
   border-radius: 12px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .company-profile-seeks h3 {
   margin: 0;
@@ -694,7 +705,7 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 12px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .company-product h3 {
   margin: var(--space-2) 0 0;

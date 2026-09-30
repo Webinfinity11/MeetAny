@@ -247,7 +247,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
   margin-bottom: var(--space-6);
   padding: var(--space-1);
   border-radius: 6px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
   border: 1px solid var(--card-border);
 }
 .auth-switch button {
@@ -378,7 +378,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
   transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
 }
 .account-page .ma-tab:hover {
-  background: var(--canvas);
+  background: var(--bg-subtle);
   color: var(--text);
 }
 .account-page .ma-tab[aria-current="page"] {
@@ -400,7 +400,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
   border-top: 1px solid var(--border-subtle);
 }
 .account-row:hover {
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .account-row:hover .account-row__link {
   text-decoration: none;
@@ -452,7 +452,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
   border-radius: 12px;
 }
 .inbox-row:hover {
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .inbox-row[aria-current="true"] {
   background: var(--selected-bg);
@@ -463,7 +463,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
 .inbox-msg {
   padding: var(--space-3) var(--space-4);
   border-radius: 16px 16px 16px 6px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
   border: 1px solid var(--card-border);
 }
 .inbox-msg[data-mine] {
@@ -480,7 +480,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
 .inbox-day {
   padding: var(--space-1) var(--space-3);
   border-radius: 6px;
-  background: var(--canvas);
+  background: var(--bg-subtle);
 }
 .ma-proto .inbox-compose .ma-textarea {
   border-radius: 22px;

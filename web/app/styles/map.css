@@ -13,7 +13,7 @@
   overflow: hidden;
   border: 1px solid var(--card-border);
   border-radius: var(--card-radius);
-  background: var(--canvas);
+  background: var(--bg-subtle);
   box-shadow: var(--card-shadow);
 }
 .companies-map__canvas {
