@@ -194,6 +194,28 @@
   right: var(--space-3);
   z-index: 2;
 }
+/* Paid placement badge sits on the photo's top-left, opposite the save button. */
+.company-card__plan {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--white) 94%, transparent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+  color: var(--blue-700);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--fw-semibold);
+  pointer-events: none;
+}
+.company-card__plan .icon { width: 13px; height: 13px; }
+.company-card__plan[data-plan=vip] { background: var(--tier-vip-bg); color: var(--tier-vip-text); box-shadow: inset 0 0 0 1px var(--tier-vip-border), 0 1px 4px rgba(0, 0, 0, .12); }
+.company-card__plan[data-plan=vip] .icon { color: var(--tier-vip-badge-bg); }
 .company-card__save > button {
   border: 0;
   border-radius: 999px;

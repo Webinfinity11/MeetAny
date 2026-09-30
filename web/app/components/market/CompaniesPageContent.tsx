@@ -73,6 +73,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const business = useCompanyFeatures(store, ready && available);
   const featureById = useMemo(() => new Map(business.data?.map(f => [f.id, f]) || []), [business.data]);
   const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "recommended");
+  const paid = filters.get("plan") === "paid";
   // A chosen city means "serves it" (own city, service cities or all Georgia); "office" narrows to
   // companies based there, for when the buyer needs to visit in person.
   const office = !!city && city !== "georgia" && filters.get("office") === "1";
@@ -86,9 +87,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     (overrides: Partial<{ industry: string; city: string }>) => {
       const where = overrides.city ?? city;
       return (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type: type === "distributors" ? "" : type, q: query, ...overrides })
-        ?.filter(c => (type !== "distributors" || featureById.get(c.id)?.distributor) && (!coverage || c.city === "georgia" || c.serviceCities?.includes("georgia")) && (!office || !where || c.city === where)) || [];
+        ?.filter(c => (type !== "distributors" || featureById.get(c.id)?.distributor) && (!coverage || c.city === "georgia" || c.serviceCities?.includes("georgia")) && (!office || !where || c.city === where) && (!paid || !!featureById.get(c.id)?.plan)) || [];
     },
-    [store, industry, city, query, type, coverage, office, featureById],
+    [store, industry, city, query, type, coverage, office, paid, featureById],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -159,6 +160,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const activeItems = [
     ...(type ? [{key:"type",label:({distributors:"დისტრიბუტორები",suppliers:"მომწოდებლები",services:"მომსახურება",partners:"პარტნიორები"} as Record<string,string>)[type] || type}] : []),
     ...(coverage ? [{key: "coverage", label: "მთელი საქართველო"}] : []),
+    ...(paid ? [{key: "plan", label: "Premium და VIP"}] : []),
     ...(industry ? [{ key: "industry", label: categories[industry] || groupNames[industry] || industry }] : []),
     ...(city ? [{ key: "city", label: office ? `ოფისი ${cities[city].replace(/ი$/, "")}ში` : cities[city] }] : []),
   ];
@@ -167,7 +169,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     else if (key === "city") setCity("");
     else filters.set({[key]: ""});
   };
-  const clearFilters = () => filters.set({industry: "", city: "", office: "", verified: "", q: "", type: "", coverage: "", sort: ""});
+  const clearFilters = () => filters.set({industry: "", city: "", office: "", verified: "", q: "", type: "", coverage: "", plan: "", sort: ""});
   const filterCount = activeItems.length;
   const mapView = filters.get("view") === "map";
   const mapped: MapCompany[] = useMemo(() => rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat as number, lng: c.lng as number })), [rows]);
@@ -207,6 +209,11 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <label className="filter-switch">
           <span><strong>მთელი საქართველო</strong><small>კომპანიები, რომლებიც ყველა რეგიონს ემსახურებიან</small></span>
           <input type="checkbox" role="switch" checked={coverage} onChange={e => filters.set({ coverage: e.target.checked ? "national" : "" })} />
+          <span className="filter-switch__track" aria-hidden="true" />
+        </label>
+        <label className="filter-switch">
+          <span><strong>Premium და VIP</strong><small>კომპანიები ფასიანი განთავსებით</small></span>
+          <input type="checkbox" role="switch" checked={paid} onChange={e => filters.set({ plan: e.target.checked ? "paid" : "" })} />
           <span className="filter-switch__track" aria-hidden="true" />
         </label>
       </div>

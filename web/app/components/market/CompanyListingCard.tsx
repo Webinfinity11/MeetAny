@@ -41,10 +41,11 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">
         {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="company-card__initials">{avatarInitials(c.name)}</span>}
       </Link>
+      {c.feature?.plan ? <span className="company-card__plan" data-plan={c.feature.plan}><Icon name="sparkles" />{c.feature.plan === "vip" ? "VIP" : "Premium"}<span className="ma-sr-only"> — ფასიანი განთავსება</span></span> : null}
       <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>
       <div className="company-card__body">
         <h3 className="company-card__name"><Link className="card-main-link" href={href}>{c.name}</Link></h3>
-        <BusinessMarks feature={c.feature}/>
+        <BusinessMarks feature={c.feature} hidePlan/>
         <p className="company-card__industry">{categories[c.industry] || c.industry}</p>
         {places ? <p className="company-card__places"><Icon name="map-pin" />{places}</p> : null}
         {c.offers.length ? <ul className="company-card__services" aria-label="მომსახურება">{c.offers.slice(0, 1).map((offer, index) => <li key={`${offer}-${index}`}>{offer}</li>)}{c.offers.length > 1 ? <li className="company-card__more">+{c.offers.length - 1}</li> : null}</ul> : null}
