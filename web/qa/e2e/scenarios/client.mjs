@@ -1,13 +1,13 @@
 import path from 'node:path';
-import { assert, root, db, go, until, requestRow, requestPath } from '../lib.mjs';
+import { assert, root, db, go, until, requestRow, requestPath, choose } from '../lib.mjs';
 export default async function(t) {
   const p = await t.page('hotel');
   let request;
   await t.step('მოთხოვნის შექმნა ფოტოთი', 'ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს', async () => {
     await go(p, '/requests/new/');
     const title = 'ხის მაგიდის მიწოდება ' + t.marker;
-    await p.locator('#title').fill(title); await p.locator('#category').selectOption('furniture');
-    await p.locator('#city').selectOption('tbilisi');
+    await p.locator('#title').fill(title); await choose(p, '#category', 'furniture');
+    await choose(p, '#city', 'tbilisi');
     await p.locator('#body').fill('გვჭირდება ხის მაგიდა, ადგილზე მიტანით და აწყობით.');
     await p.locator('#quantity').fill('2');
     await p.locator('input[type="file"]').setInputFiles(path.join(root, 'public/assets/photos/workshop-banner.jpg'));

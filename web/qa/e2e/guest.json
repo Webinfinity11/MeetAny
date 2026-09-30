@@ -1,371 +1,40 @@
 {
   "name": "guest",
-  "run": "1790669890000-guest",
+  "run": "1790777360000-guest",
   "label": "სტუმარი",
-  "status": "FAIL",
-  "ms": 34766,
+  "status": "PASS",
+  "ms": 11543,
   "steps": [
     {
       "name": "მოთხოვნები: სია და დეტალი",
-      "status": "FAIL",
+      "status": "PASS",
       "expected": "სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა",
-      "actual": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('heading', { name: 'ავეჯის მიწოდება [e2e:1790669804177-chat-check] 390', exact: true }) to be visible\n",
-      "visibleState": "მოთხოვნა ვერ მოიძებნა\nმოთხოვნებზე დაბრუნება",
-      "network": [
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        }
-      ],
-      "screenshot": "qa/shots/e2e/guest-1.png",
-      "ms": 12545
+      "ms": 1010
     },
     {
       "name": "მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება",
       "status": "PASS",
       "expected": "URL და ხილული შედეგები შეესაბამება მონაცემებს",
-      "ms": 1092
+      "ms": 415
     },
     {
       "name": "კომპანიები: ძიება, ფილტრი და დალაგება",
       "status": "PASS",
       "expected": "URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია",
-      "ms": 192
+      "ms": 383
     },
     {
       "name": "კომპანიის დეტალი, ნომერი, tel:, მიმართულება, contact_events",
-      "status": "FAIL",
+      "status": "PASS",
       "expected": "გამოჩენა/დარეკვა აღირიცხება; Maps სწორი ბმულია",
-      "actual": "locator.getAttribute: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: /მიმართულება/ })\n",
-      "visibleState": "კომპანიების კატალოგი\nშენახვა\n\nსაკვები და სასმელი\n\nმთის ბაღი\n\nთბილისი\n\nკომპანიის შესახებ\nპროდუქტები და მომსახურება\nკონტაქტი\n\nდაუკავშირდი კომპანიას პირობების დასაზუსტებლად.\n\nდარეკვა\n+995 514 207 639\nშედი ანგარიშში და მიწერე\nმომსახურების არეალი\n\nთბილისი · რუსთავი · გორი\n\nმისამართი\n\nდავით აღმაშენებლის ხეივანი 178\n\nრუკაზე ნახვა\nკომპანიის შესახებ\n\nფერმერთა კოოპერატივი: კახეთისა და ქართლის 14 მეურნეობის ბოსტნეულს, ხილსა და ყველს ვაწვდით კაფეებსა და სასტუმროებს. ვაწვდით კვირაში სამჯერ, ანგარიშფაქტურით.\n\nრას ეძებს კომპანია\n\nკაფეები და რესტორნები, მაცივრიანი ტრანსპორტი\n\nპროდუქტები და მომსახურება\nსეზონური ბოსტნეული და მწვანილი\nხილი და კენკრა\nყველი და რძის ნაწარმი\nკვირის გრაფიკით მიწოდება\n\nსაიტზე 2026 წლის სექტემბრიდან",
-      "network": [
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/view/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/companies/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/new/",
-          "error": "net::ERR_ABORTED"
-        },
-        {
-          "path": "/requests/",
-          "error": "net::ERR_ABORTED"
-        }
-      ],
-      "screenshot": "qa/shots/e2e/guest-2.png",
-      "ms": 15232
+      "evidence": {
+        "contactEvents": [
+          "5e67c403-2e8f-4ec3-8743-65f241c3ace4",
+          "c8d755ac-8c5b-43bc-8773-33cb77ce2e53"
+        ],
+        "maps": "https://www.google.com/maps/dir/?api=1&destination=41.6469,41.6372"
+      },
+      "ms": 3616
     },
     {
       "name": "CSP დარღვევები",
@@ -374,7 +43,7 @@
       "evidence": {
         "violations": 0
       },
-      "ms": 0
+      "ms": 1
     }
   ],
   "cleanup": [

@@ -273,3 +273,10 @@ export class Scenario {
     assert(this.cleaned, 'cleanup: პროფილის აღდგენა ვერ დასრულდა');
   }
 }
+
+/** Picks a value in a native <select> or in CustomSelect (a combobox button whose hidden native select is its next sibling). */
+export async function choose(page, selector, value) {
+  const el = page.locator(selector);
+  const tag = await el.evaluate(e => e.tagName);
+  return (tag === 'SELECT' ? el : page.locator(`${selector} + select`)).selectOption(value);
+}

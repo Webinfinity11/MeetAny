@@ -121,7 +121,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
 
   const sorted = useMemo(() => {
     const arr = [...results];
-    if (["expiring", "ending"].includes(sort) && store) arr.sort((a, b) => (store.daysLeft as (r: unknown) => number)(a) - (store.daysLeft as (r: unknown) => number)(b));
+    // Whole days tie often; the exact deadline breaks the tie so "ending soon" really is in order.
+    const ends = (r: unknown) => Date.parse((r as { expiresAt?: string }).expiresAt ?? "") || Infinity;
+    if (["expiring", "ending"].includes(sort) && store) arr.sort((a, b) => (store.daysLeft as (r: unknown) => number)(a) - (store.daysLeft as (r: unknown) => number)(b) || ends(a) - ends(b));
     return arr;
   }, [results, sort, store]);
 
