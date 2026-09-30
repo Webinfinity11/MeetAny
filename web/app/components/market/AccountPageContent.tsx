@@ -154,7 +154,6 @@ function ProfileForm({ me }: { me: AnyUser }) {
               ტელეფონი
             </label>
             <input className="ma-input ma-input--num" id="profile-phone" readOnly value={me.phone} aria-describedby="profile-phone-help" />
-            <p className="ma-field__help" id="profile-phone-help">ტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება. მათ შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>
           </div>
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="profile-email">
@@ -173,6 +172,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
             </div>
           ) : null}
         </div>
+        <p className="ma-field__help account-contact__help" id="profile-phone-help">ტელეფონი ჩანს სხვებისთვის, ელფოსტა — არა. მათ შესაცვლელად დაუკავშირდი MeetAny-ს გუნდს.</p>
         </fieldset>
         {isCompany ? (
           <>
@@ -298,7 +298,7 @@ function PasswordForm() {
     <section className="account-section" aria-labelledby="password-title">
       <h2 className="account-section__title" id="password-title">პაროლი</h2>
       <form className="ma-form" id="account-password" onSubmit={submit} noValidate>
-        <fieldset className="account-form-group" disabled={pending} aria-labelledby="password-title">
+        <fieldset className="account-form-group account-password" disabled={pending} aria-labelledby="password-title">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="password-current">მიმდინარე პაროლი</label>
             <PasswordInput autoComplete="current-password" disabled={pending} value={current} onChange={value => {setCurrent(value); v.clear("password-current");}} field={v.control("password-current")} />
@@ -489,7 +489,8 @@ export function AccountPageContent() {
                 </div>
                 <div className="account-row__actions">
                   {left != null ? <span className="account-row__due" data-soon={left <= 2 ? "" : undefined}>{left <= 0 ? "ვადა დღეს იწურება" : `კიდევ ${left} დღე`}</span> : null}
-                  {state === "open" || state === "expired" || state === "closed" ? (
+                  {/* Offer the extension only when it matters: a week or less left, or already closed. */}
+                  {(state === "open" && left != null && left <= 7) || state === "expired" || state === "closed" ? (
                     <button type="button" className="account-link" onClick={() => extend(r.id)}>
                       {state === "open" ? "ვადის გაგრძელება" : "ხელახლა გახსნა"} +{store?.EXTEND_DAYS ?? 7} დღე
                     </button>
@@ -511,40 +512,9 @@ export function AccountPageContent() {
   return (
     <div className="ma-page account-page">
       <PageBand title={isCompany ? "ჩემი კომპანია" : "ჩემი ანგარიში"} />
+      <p className="account-idline">{name} · {roleLabel}{isCompany ? <> · <Link href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link></> : null}{me.blocked ? <> · <span className="ma-badge ma-badge--danger">დაბლოკილია</span></> : null}</p>
       <AccountTabs tab={activeTab} items={tabs} />
-      <p className="account-idline">{name} · {roleLabel}</p>
-      <div className="account-layout">
-        <aside className="account-profile" aria-label="პროფილი">
-          <div>
-            <h2 className="account-profile__name">{name}</h2>
-            <p className="account-profile__role">{me.company && me.company !== me.name ? `${me.name} · ` : ""}{roleLabel}</p>
-          </div>
-          {me.blocked ? <span className="ma-badge ma-badge--danger">დაბლოკილია</span> : null}
-          <dl className="account-kv">
-            <div>
-              <dt>ქალაქი</dt>
-              <dd>{cities[me.city] || me.city}</dd>
-            </div>
-            <div>
-              <dt>ტელეფონი</dt>
-              <dd>{me.phone}</dd>
-            </div>
-            <div>
-              <dt>ელფოსტა</dt>
-              <dd>{me.email}</dd>
-            </div>
-            {isCompany ? (
-              <div>
-                <dt>მიმართულება</dt>
-                <dd>{categories[me.industry || ""] || me.industry}</dd>
-              </div>
-            ) : null}
-          </dl>
-          <div className="account-profile__links">
-            <Link className="account-link" href="/account/?tab=profile">პროფილის რედაქტირება</Link>
-            {isCompany ? <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link> : null}
-          </div>
-        </aside>
+      <div className="account-layout account-layout--single">
         <div className="account-main">
           {isCompany && rawTab !== "requests" ? (
             <>
@@ -574,10 +544,9 @@ export function AccountPageContent() {
               </section>
               <section className="account-section">
                 <div className="account-section__head">
-                  <h2 className="account-section__title">შენი მიმართულების მოთხოვნები ({matching.length})</h2>
-                  <Link className="account-link" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>ყველა შესაბამისი მოთხოვნა</Link>
+                  <h2 className="account-section__title">შენი დარგის მოთხოვნები ({matching.length})</h2>
+                  <Link className="account-link" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>ყველა ნახვა</Link>
                 </div>
-                <p className="account-row__meta">ყველა ქალაქი — ჯერ შენი ქალაქის მოთხოვნები. <Link className="account-link" href="/account/?tab=notifications">შეტყობინებების პარამეტრები</Link></p>
                 {matching.length ? (
                   <ul className="account-rows">
                     {matching.slice(0, 5).map((r) => (
@@ -590,7 +559,7 @@ export function AccountPageContent() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="account-empty">შენი მიმართულებით მოთხოვნა ჯერ არ არის.</p>
+                  <p className="account-empty">შენი დარგით ღია მოთხოვნა ჯერ არ არის — ახალზე შეგატყობინებთ.</p>
                 )}
               </section>
             </>

@@ -45,7 +45,8 @@
 .account-row__due+.account-link{margin-top:calc((var(--lh-sm) - var(--tap-min)) / 2)}
 .account-section__head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 var(--space-4)}
 .account-empty-block{display:grid;justify-items:start}
-.account-idline{display:none}
+.account-idline{margin:calc(-1 * var(--space-3)) 0 var(--space-5);font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);overflow-wrap:anywhere}
+.account-idline a{color:var(--text-link);font-weight:var(--fw-semibold)}
 .account-main--profile{max-width:calc(var(--space-24) * 9 + var(--space-8) + var(--space-1))}
 .account-page .ma-form__row>.ma-field{align-content:start}
 .account-form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2) var(--space-4)}
@@ -62,7 +63,7 @@
 }
 @media(max-width:1023.98px){
  .account-profile{display:none}
- .account-idline{display:block;max-width:none;margin:calc(-1 * var(--space-2)) 0 var(--space-4);font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);overflow-wrap:anywhere}
+
 }
 @media(max-width:767.98px){
  :is(.account-page,.auth-page) .ma-tabs{margin-bottom:var(--space-6)}
@@ -440,8 +441,7 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
 }
 .account-wide .inbox-list {
   margin: 0;
-  padding-right: var(--space-4);
-  border-right: 1px solid var(--border-subtle);
+  padding-right: var(--space-2);
 }
 .inbox-row {
   border-radius: 12px;
@@ -510,4 +510,33 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
 }
 .account-page .account-form-group > legend + * {
   clear: both;
+}
+
+/* Overview without the duplicate profile card: one column, capped width */
+.account-layout--single {
+  grid-template-columns: minmax(0, 1fr) !important;
+  max-width: 960px;
+}
+/* Rows: plain dividers, no rounded boxes */
+.account-page .account-row {
+  border-radius: 0;
+  border: 0;
+  padding-inline: 0;
+}
+.account-page .account-row + .account-row {
+  border-top: 1px solid var(--border-subtle);
+}
+.account-page .account-row:hover {
+  background: transparent;
+}
+.account-contact__help {
+  margin: calc(-1 * var(--space-2)) 0 0;
+}
+/* Password: three fields side by side on desktop instead of full-width bars */
+@media (min-width: 900px) {
+  .account-password {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
 }
