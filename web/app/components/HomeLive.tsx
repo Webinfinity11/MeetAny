@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomSelect } from "./ui/CustomSelect";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMarketStore } from "../lib/market-client";
@@ -56,7 +56,18 @@ export function HomeCategories() {
 export function HomeIndustries() {
   const list = useRef<HTMLUListElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
-  const items = categoryGroups.flatMap(g => g.items.map(([id, label]) => ({ id, label: label as string })));
+  const {store, ready, available} = useMarketStore();
+  // Ordered by demand: open requests first, then companies offering it; empty categories go last
+  // (catalogue order breaks ties, and is the order until data arrives).
+  const items = useMemo(() => {
+    const base = categoryGroups.flatMap(g => g.items.map(([id, label]) => ({ id, label: label as string })));
+    if (!ready || !available || !store) return base;
+    const requests = (store.listRequests as (args: unknown) => { category: string }[])({ state: "open" });
+    const companies = store.listCompanies() as { industry: string }[];
+    const score = (id: string) => requests.filter(r => r.category === id).length * 10 + companies.filter(c => c.industry === id).length;
+    return base.map((item, index) => ({ ...item, index, score: score(item.id) }))
+      .sort((a, b) => b.score - a.score || a.index - b.index);
+  }, [ready, available, store]);
   useEffect(() => {
     const el = list.current;
     if (!el) return;
@@ -66,6 +77,13 @@ export function HomeIndustries() {
     window.addEventListener("resize", update);
     return () => { el.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
   }, []);
+  // Re-sorting when data arrives must not leave the strip half-scrolled.
+  useEffect(() => {
+    const el = list.current;
+    if (!el) return;
+    el.scrollLeft = 0;
+    setEdges({ start: true, end: el.scrollWidth <= el.clientWidth + 2 });
+  }, [items]);
   const scroll = (dir: 1 | -1) => list.current?.scrollBy({ left: dir * list.current.clientWidth * 0.8, behavior: "smooth" });
   return <nav className="home-catbar" aria-label="კატეგორიები" data-start={edges.start || undefined} data-end={edges.end || undefined}>
     <button type="button" className="home-catbar__arrow home-catbar__arrow--prev" aria-label="წინა კატეგორიები" hidden={edges.start} onClick={() => scroll(-1)}><Icon name="chevron-left" /></button>
