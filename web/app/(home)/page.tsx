@@ -22,10 +22,11 @@ export default function HomePage() {
         <HomeStats />
         <ol className="hero-steps" id="how" aria-label="როგორ მუშაობს">
           {steps.map((step, index) => <li key={step.title}>
-            <span className="hero-steps__number">0{index + 1}</span>
             <span className="hero-steps__art" aria-hidden="true" style={{ backgroundPosition: `${step.frame * 50}% 50%` }} />
-            <h2>{step.title}</h2>
-            {index < steps.length - 1 ? <span className="hero-steps__arrow" aria-hidden="true" /> : null}
+            <span className="hero-steps__text">
+              <h2>{step.title}</h2>
+            </span>
+            {index < steps.length - 1 ? <span className="hero-steps__arrow" aria-hidden="true"><Icon name="arrow-right" /></span> : null}
           </li>)}
         </ol>
       </div>
