@@ -5,9 +5,9 @@ import { HomeCategories, HomeIndustries, HomeFeatured, HomeRequestStarter, HomeJ
 
 // Frames of need-process-icons.png (3 across): magnifier + chat, company documents, document + pen.
 const steps = [
-  { frame: 0, title: "მოძებნე ან აღწერე", text: "იპოვე კომპანია დარგითა და ქალაქით, ან გამოაქვეყნე, რა გჭირდება." },
-  { frame: 1, title: "გაეცანი შეთავაზებებს", text: "ნახე კომპანიების პროფილები, პირობები და მიწოდების ვადები." },
-  { frame: 2, title: "შეთანხმდი პირდაპირ", text: "აირჩიე საუკეთესო შეთავაზება, მიწერე ან დაურეკე კომპანიას." },
+  { frame: 0, title: "მოძებნე ან აღწერე, რა გჭირდება" },
+  { frame: 1, title: "მიიღე და შეადარე შეთავაზებები" },
+  { frame: 2, title: "შეთანხმდი კომპანიასთან პირდაპირ" },
 ];
 
 // Home (owner decision 2026-09-30): the v1 composition — solid brand-blue hero with the search and the
@@ -25,7 +25,7 @@ export default function HomePage() {
             <span className="hero-steps__number">0{index + 1}</span>
             <span className="hero-steps__art" aria-hidden="true" style={{ backgroundPosition: `${step.frame * 50}% 50%` }} />
             <h2>{step.title}</h2>
-            <p>{step.text}</p>
+            {index < steps.length - 1 ? <span className="hero-steps__arrow" aria-hidden="true" /> : null}
           </li>)}
         </ol>
       </div>

@@ -259,7 +259,7 @@
   height: var(--icon-sm);
 }
 
-/* The three illustrated steps (v1) */
+/* The three illustrated steps (v1), joined by dashed arrows so they read as one process. */
 .hero-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -270,14 +270,22 @@
   list-style: none;
 }
 .hero-steps li {
+  position: relative;
   display: grid;
   align-content: start;
+  justify-items: start;
   gap: var(--space-2);
 }
 .hero-steps__number {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--blue-700);
   font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  color: color-mix(in srgb, var(--white) 70%, transparent);
+  font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
 }
 .hero-steps__art {
@@ -289,17 +297,31 @@
   background-size: 300% auto;
 }
 .home-page .hero-steps h2 {
+  max-width: 22ch;
   font-size: var(--fs-title);
   line-height: var(--lh-title);
   font-weight: var(--fw-semibold);
   color: var(--white);
 }
-.hero-steps p {
-  max-width: 34ch;
-  margin: 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-sm);
-  color: color-mix(in srgb, var(--white) 80%, transparent);
+/* Dashed connector with an arrow head, from beside this step's number to the next step */
+.hero-steps__arrow {
+  position: absolute;
+  top: 13px;
+  left: 44px;
+  right: calc(-1 * var(--space-8) + 12px);
+  height: 2px;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--white) 55%, transparent) 0 8px, transparent 8px 14px);
+}
+.hero-steps__arrow::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid color-mix(in srgb, var(--white) 75%, transparent);
+  border-right: 2px solid color-mix(in srgb, var(--white) 75%, transparent);
+  transform: rotate(45deg);
 }
 
 /* ---------- Category strip (Airbnb) ---------- */
@@ -607,23 +629,38 @@
   }
   .hero-steps {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-5);
+    gap: var(--space-6);
     margin-top: var(--space-8);
     padding-top: var(--space-6);
   }
   .hero-steps li {
-    grid-template-columns: 88px minmax(0, 1fr);
-    column-gap: var(--space-4);
+    grid-template-columns: 28px 76px minmax(0, 1fr);
+    column-gap: var(--space-3);
     align-items: center;
   }
   .hero-steps__art {
-    grid-row: 1 / 4;
-    width: 88px;
-    height: 78px;
+    width: 76px;
+    height: 66px;
     margin: 0;
   }
-  .hero-steps__number {
-    grid-column: 2;
+  .home-page .hero-steps h2 {
+    max-width: none;
+    font-size: var(--fs-body);
+  }
+  .hero-steps__arrow {
+    top: 36px;
+    bottom: calc(-1 * var(--space-6) + 6px);
+    left: 13px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--white) 55%, transparent) 0 6px, transparent 6px 11px);
+  }
+  .hero-steps__arrow::after {
+    top: auto;
+    bottom: -2px;
+    right: -4px;
+    transform: rotate(135deg);
   }
   .home-section {
     margin-top: var(--space-10);
