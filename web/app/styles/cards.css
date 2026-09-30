@@ -141,6 +141,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-8) var(--space-6);
 }
+.company-similar {
+  margin-top: var(--space-12);
+}
+.company-similar .detail-section-title { margin-bottom: var(--space-5); }
 .company-directory-list > :not(.company-card, .catalog-skeleton__card) {
   grid-column: 1 / -1;
 }

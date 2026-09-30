@@ -3,6 +3,7 @@ import "../styles/tokens.css";
 import "../styles/base.css";
 import "../styles/primitives.css";
 import "../styles/patterns.css";
+import "../styles/cards.css";
 import "../styles/pages/detail.css";
 import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";

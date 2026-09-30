@@ -13,6 +13,7 @@ import { Icon } from "../Icon";
 import { ProductCard, type ProductCardData } from "./ProductCard";
 import { avatarInitials, companyImage } from "./CompanyAvatar";
 import { CompanyGallery } from "./CompanyGallery";
+import { SimilarCompanies } from "./SimilarCompanies";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
@@ -140,7 +141,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       </div>
 
       </div>
-
+      <SimilarCompanies store={store as never} current={c} features={business.data} />
     </div>
   );
 }
