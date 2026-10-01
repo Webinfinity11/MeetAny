@@ -21,6 +21,7 @@ async function login(page,key){for(let attempt=0;attempt<8;attempt++){const resp
 async function layouts(page,role,route){
  for(const width of [1440,1024,768,390,320]){
   await page.setViewportSize({width,height:1000});await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(300);
+  if(route.includes("section=products"))assert(await page.locator(".company-product--preview img").evaluateAll(images=>images.every(image=>image.getBoundingClientRect().width<=161&&image.getBoundingClientRect().height<=121)),"compact product previews");
   const measurements=await page.evaluate(()=>{
    const page=document.querySelector('main .ma-page, main .home-wrap'),r=page?.getBoundingClientRect();
    const panels=[...document.querySelectorAll('.account-main>.account-section,.account-main--profile>section,.offer-comparison__card,.auth-card')].filter(el=>el.checkVisibility());
