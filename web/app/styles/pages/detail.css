@@ -1207,6 +1207,3 @@ body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
 .offer-comparison__card summary { cursor: pointer; min-height: var(--tap-min); display: flex; align-items: center; color: var(--text-link); font-size: var(--fs-sm); }
 .offer-comparison__card details p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .offer-comparison__card footer { display: grid; gap: var(--space-2); }
-
-.company-product--preview img { width: var(--size-160); height: var(--size-120); max-width: 100%; object-fit: cover; border-radius: var(--radius-control); }
-.ma-proto .account-page .company-product--preview img { width: var(--size-160); height: var(--size-120); max-width: 100%; object-fit: cover; }

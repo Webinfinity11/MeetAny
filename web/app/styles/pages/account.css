@@ -720,3 +720,5 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
 .company-profile-sections a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .account-row--plain > .ma-btn { justify-self: start; }
 @media(min-width:768px) { .company-profile-sections { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+
+.ma-proto .account-page .company-product--preview img { width: var(--size-160); height: var(--size-120); max-width: 100%; object-fit: cover; border-radius: var(--radius-control); }
