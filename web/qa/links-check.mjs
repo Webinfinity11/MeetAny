@@ -17,7 +17,7 @@ try {
    if(route==='/account/'&&key)assert.equal(await p.locator('#login-email').count(),0,`${role} session`);
   }
   for(const href of [...unique].sort()) {const response=await p.request.get(origin+href,{timeout:20000});assert(response.status()<400,`${role}: ${href} HTTP ${response.status()}`);}
-  if(role!=='admin'){await go(p,'/admin/');assert(!(await p.locator('main').innerText()).includes('მიწოდება და მოთხოვნა'));}
+  if(role!=='admin'){await go(p,'/admin/');assert.equal(await p.locator('nav[aria-label="ადმინისტრირების განყოფილებები"]').count(),0);}
   console.log(role,unique.size,'internal targets OK');
  }
  results.sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));

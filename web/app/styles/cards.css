@@ -213,9 +213,7 @@
   font-weight: var(--fw-semibold);
   pointer-events: none;
 }
-.company-card__plan .icon { width: var(--size-13); height: var(--size-13); }
-.company-card__plan[data-plan=vip] { background: var(--tier-vip-bg); color: var(--tier-vip-text); box-shadow: inset 0 0 0 var(--size-1) var(--tier-vip-border), 0 var(--size-1) var(--size-4) var(--color-rgba-0-0-0-12); }
-.company-card__plan[data-plan=vip] .icon { color: var(--tier-vip-badge-bg); }
+.company-card__plan[data-plan=vip] { background: var(--tier-vip-bg); color: var(--tier-vip-text); border: var(--size-1) solid var(--tier-vip-border); border-radius: var(--size-6); padding: var(--space-1) var(--space-3); letter-spacing: .06em; box-shadow: none; }
 .company-card__save > button {
   border: 0;
   border-radius: var(--size-999);

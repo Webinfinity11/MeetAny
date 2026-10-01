@@ -220,3 +220,57 @@
 
 /* ---------- Reports: count of new reports on the navigation item ---------- */
 .navigation a > .navBadge { flex: none; min-width: var(--size-24); justify-content: center; font-variant-numeric: tabular-nums; }
+
+/* Presentation copy uses the same surfaces and rhythm as the working tools. */
+.presentationHint { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); background: var(--bg-subtle); }
+.presentationHint strong { font-size: var(--fs-sm); }
+.presentationHint p { margin: var(--space-1) 0 0; color: var(--text-2); font-size: var(--fs-xs); }
+.presentationHint :global(.ma-btn) { flex: none; }
+.demoIntro { display: grid; justify-items: start; gap: var(--space-3); padding: var(--space-5); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); background: var(--bg-subtle); }
+.demoIntro h2 { margin: 0; font-size: var(--fs-section-fixed); line-height: var(--lh-h3); }
+.demoIntro p { margin: 0; max-width: var(--size-720); color: var(--text-2); }
+.demoSteps { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-4); padding: 0; margin: var(--space-4) 0 0; list-style: none; }
+.demoStep { display: grid; grid-template-rows: auto auto 1fr auto; justify-items: start; gap: var(--space-3); min-width: 0; padding: var(--space-5); border: var(--size-1) solid var(--card-border); border-radius: var(--card-radius); background: var(--white); }
+.demoStepNumber { display: grid; place-items: center; width: var(--size-32); height: var(--size-32); border-radius: var(--radius-circle); background: var(--selected-bg); color: var(--selected-text); font-size: var(--fs-sm); font-weight: var(--fw-bold); }
+.demoStep h3 { display: flex; align-items: start; gap: var(--space-2); margin: 0; font-size: var(--fs-body); }
+.demoStep h3 svg { flex: none; width: var(--space-5); height: var(--space-5); color: var(--action); }
+.demoStep p { margin: 0; font-size: var(--fs-sm); color: var(--text-2); }
+.demoExamples { display: grid; padding: 0; margin: 0; list-style: none; }
+.demoExamples li + li { border-top: var(--size-1) solid var(--border); }
+.demoExamples a { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--space-1) var(--space-3); padding: var(--space-3) 0; color: var(--text); text-decoration: none; }
+.demoExamples strong { font-size: var(--fs-sm); }
+.demoExamples span { grid-column: 1; color: var(--text-3); font-size: var(--fs-xs); }
+.demoExamples svg { grid-column: 2; grid-row: 1 / 3; align-self: center; width: var(--space-5); height: var(--space-5); color: var(--action); }
+.demoExamples a:hover strong { color: var(--action); }
+.demoGlossary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-5); margin: 0; }
+.demoGlossary dt { margin-bottom: var(--space-2); font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.demoGlossary dd { margin: 0; color: var(--text-2); font-size: var(--fs-sm); }
+.panelHead h3 { margin: 0; font-size: var(--fs-sm); }
+@media (max-width:767px) {
+  .presentationHint { align-items: start; flex-direction: column; }
+  .demoSteps, .demoGlossary { grid-template-columns: minmax(0,1fr); }
+  .demoStep, .demoIntro { padding: var(--space-4); }
+}
+
+/* Short, finite motion: sections settle before reading; controls respond on intent. */
+@media (prefers-reduced-motion:no-preference) {
+  .content { animation: admin-enter var(--motion-base) var(--motion-ease-out); }
+  .overview > .kpis > .kpi, .demoStep { animation: admin-enter var(--motion-base) var(--motion-ease-out) backwards; }
+  .overview > .kpis > .kpi:nth-child(2), .demoStep:nth-child(2) { animation-delay: var(--motion-stagger); }
+  .overview > .kpis > .kpi:nth-child(3), .demoStep:nth-child(3) { animation-delay: calc(var(--motion-stagger) * 2); }
+  .overview > .kpis > .kpi:nth-child(4), .demoStep:nth-child(4) { animation-delay: calc(var(--motion-stagger) * 3); }
+  .overview > .kpis > .kpi:nth-child(5) { animation-delay: calc(var(--motion-stagger) * 4); }
+  .overview > .kpis > .kpi:nth-child(6) { animation-delay: calc(var(--motion-stagger) * 5); }
+  .chartBar { transform-box: fill-box; transform-origin: center bottom; animation: chart-enter var(--motion-slow) var(--motion-ease-out); }
+  .navigation a, .demoStep, .demoExamples a { transition: background-color var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease); }
+  .navigation a > svg:first-child, .demoExamples svg { transition: transform var(--motion-fast) var(--motion-ease); }
+}
+@media (prefers-reduced-motion:no-preference) and (hover:hover) and (pointer:fine) {
+  .navigation a:hover > svg:first-child, .demoExamples a:hover svg { transform: translateX(var(--size-2)); }
+  .demoStep:hover { border-color: var(--border-strong); box-shadow: var(--card-hover-shadow); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .kpi, .chartBar, .chartBarActive { transition: none; }
+}
+@keyframes admin-enter { from { opacity: .65; transform: translateY(var(--size-4)); } to { opacity: 1; transform: none; } }
+@keyframes chart-enter { from { opacity: .35; transform: scaleY(.75); } to { opacity: .78; transform: scaleY(1); } }

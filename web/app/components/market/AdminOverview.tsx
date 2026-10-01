@@ -38,7 +38,7 @@ function DailyBars({ title, rows }: { title: string; rows: { day: string; count:
           const bw = 300 / rows.length - 2;
           return <g key={r.day}>
             <rect className={styles.chartHit} x={x - 1} y="0" width={bw + 2} height="96" onMouseEnter={() => setHover(i)} />
-            {h ? <path className={hover === i ? styles.chartBarActive : styles.chartBar}
+            {h ? <path className={`${styles.chartBar} ${hover === i ? styles.chartBarActive : ""}`}
               d={`M${x},96 V${96 - h + 2} q0,-2 2,-2 h${bw - 4} q2,0 2,2 V96 Z`} /> : null}
           </g>;
         })}
@@ -99,15 +99,16 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   const expiring = requests.filter(r => !r.hidden && store.requestState(r) === "open" && store.daysLeft(r) <= 2);
 
   const kpis: { key: string; label: string; value: number; delta?: { current: number; previous: number }; href: string }[] = [
-    { key: "users", label: "მომხმარებელი", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
-    { key: "companies", label: "კომპანია", value: stats.companies, href: "/admin/?tab=users&role=company" },
-    { key: "open", label: "ღია მოთხოვნა", value: stats.open, delta: requestWeek, href: "/admin/?tab=requests&status=open" },
-    { key: "offers", label: "შეთავაზება", value: stats.offers, href: "/admin/?tab=offers" },
-    { key: "chosen", label: "არჩეული შეთავაზება", value: stats.chosen, href: "/admin/?tab=requests&status=chosen" },
-    { key: "verified", label: "დადასტურებული კომპანია", value: stats.verified, href: "/admin/?tab=users&status=verified" },
+    { key: "users", label: "რეგისტრირებული მომხმარებლები", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
+    { key: "companies", label: "კომპანიები", value: stats.companies, href: "/admin/?tab=users&role=company" },
+    { key: "open", label: "ღია მოთხოვნები", value: stats.open, delta: requestWeek, href: "/admin/?tab=requests&status=open" },
+    { key: "offers", label: "შეთავაზებები", value: stats.offers, href: "/admin/?tab=offers" },
+    { key: "chosen", label: "არჩეული მომწოდებლები", value: stats.chosen, href: "/admin/?tab=requests&status=chosen" },
+    { key: "verified", label: "დადასტურებული კომპანიები", value: stats.verified, href: "/admin/?tab=users&role=company&status=verified" },
   ];
 
   return <div className={styles.overview}>
+    <aside className={styles.presentationHint} aria-label="სადემო პრეზენტაცია"><div><strong>კლიენტს აცნობ MeetAny-ს?</strong><p>სადემო გზამკვლევში ნახავ გამოყენების მაგალითებსა და მაჩვენებლების განმარტებებს.</p></div><Button variant="secondary" href="/admin/?tab=demo">სადემო გზამკვლევი<Icon name="arrow-right" /></Button></aside>
     <div className={styles.kpis}>
       {kpis.map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
         <span className={styles.kpiLabel}>{k.label}</span>
@@ -118,7 +119,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
 
     <AdminMarketMetrics store={store} />
     <section className={styles.panel} aria-labelledby="activity-heading">
-      <header className={styles.panelHead}><h2 id="activity-heading">აქტივობა · ბოლო 30 დღე</h2><span>სატესტო ანგარიშების გარეშე</span></header>
+      <header className={styles.panelHead}><h2 id="activity-heading">აქტივობის დინამიკა · ბოლო 30 დღე</h2><span>სატესტო ანგარიშების გარეშე</span></header>
       <div className={styles.charts}>
         <DailyBars title="ახალი მოთხოვნები" rows={perDay(requestDates, days)} />
         {recentUsers ? <DailyBars title="ახალი რეგისტრაციები" rows={perDay(userDates, days)} />
@@ -130,8 +131,8 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
       <header className={styles.panelHead}><h2 id="attention-heading">ყურადღება სჭირდება</h2></header>
       <div className={styles.attention}>
         <div className={styles.queue}>
-          <h3><Icon name="badge-check" />დადასტურებას ელოდება <span>{pending?.length ?? "…"}</span></h3>
-          {pending && !pending.length ? <p className={styles.queueEmpty}>ყველა კომპანია გადამოწმებულია.</p> : null}
+          <h3><Icon name="badge-check" />კომპანიები დასადასტურებლად <span>{pending?.length ?? "…"}</span></h3>
+          {pending && !pending.length ? <p className={styles.queueEmpty}>ჩატვირთულ სიაში დასადასტურებელი კომპანია არ არის.</p> : null}
           <ul>
             {(pending || []).slice(0, 6).map(u => <li key={u.id}>
               <button type="button" className={styles.queueName} onClick={() => onOpenUser(u.id)}>
@@ -145,7 +146,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
         </div>
         <div className={styles.queue}>
           <h3><Icon name="hourglass" />3+ დღე შეთავაზების გარეშე <span>{unanswered.length}</span></h3>
-          {!unanswered.length ? <p className={styles.queueEmpty}>ყველა ღია მოთხოვნას აქვს შეთავაზება.</p> : null}
+          {!unanswered.length ? <p className={styles.queueEmpty}>3 დღეზე ძველი უპასუხო ღია მოთხოვნა არ არის.</p> : null}
           <ul>
             {unanswered.slice(0, 6).map(r => <li key={r.id}>
               <Link className={styles.queueName} href={`/requests/view/?id=${r.id}`}>
@@ -156,7 +157,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
           </ul>
         </div>
         <div className={styles.queue}>
-          <h3><Icon name="clock" />ვადა იწურება (≤ 2 დღე) <span>{expiring.length}</span></h3>
+          <h3><Icon name="clock" />ვადა 2 დღეში იწურება <span>{expiring.length}</span></h3>
           {!expiring.length ? <p className={styles.queueEmpty}>ახლო დღეებში ვადა არაფერს ეწურება.</p> : null}
           <ul>
             {expiring.slice(0, 6).map(r => <li key={r.id}>

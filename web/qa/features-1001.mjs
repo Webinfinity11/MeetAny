@@ -34,7 +34,7 @@ try {
  assert((await rpc(admin,'admin_list_reports',{p_status:'handled',p_offset:0})).items.some(x=>x.id===report.id&&x.resolution==='rejected'));
  for(const width of [1440,390]){
   await admin.setViewportSize({width,height:1000});await go(admin,'/admin/');
-  await admin.getByRole('heading',{name:'მიწოდება და მოთხოვნა',exact:true}).waitFor();
+  await admin.getByRole('heading',{name:'მოთხოვნა და მომწოდებლები',exact:true}).waitFor();
   await admin.locator('#market-metrics-heading').locator('..').locator('..').getByText('პირველი შეთავაზების საშუალო დრო').waitFor();
   assert(await admin.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'admin overflow');
   await admin.screenshot({path:`qa/shots/finish-1001/admin-${width}.png`,fullPage:true});

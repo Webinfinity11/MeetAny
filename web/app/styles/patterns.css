@@ -234,6 +234,10 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 @media(max-width:479.98px){.ma-header__inner{gap:var(--space-2)}}
 @media(max-width:359.98px){.ma-header__cta>.icon{display:none}}
 @media(prefers-reduced-motion:reduce){:is(.ma-btn,.ma-link)>.icon{transition:none!important;transform:none!important}}
+@media(prefers-reduced-motion:no-preference) and (hover:hover) and (pointer:fine){
+ .ma-btn:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):hover{transform:translateY(var(--size-neg-1))}
+ .ma-btn:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]):active{transform:translateY(var(--size-1))}
+}
 .sector-icon{display:inline-flex;align-items:center;justify-content:center;width:var(--space-8);height:var(--space-8);flex:none;color:var(--text-2)}
 .sector-icon svg{display:block;width:var(--icon-lg);height:var(--icon-lg);fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linejoin:round;stroke-linecap:round}
 .sector-icon .sector-fill{fill:var(--blue-50)}

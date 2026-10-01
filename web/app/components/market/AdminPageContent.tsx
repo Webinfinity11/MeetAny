@@ -21,6 +21,8 @@ import { AdminContacts } from "./AdminContacts";
 import { PageBand } from "./PageBand";
 import { AdminFilters } from "./AdminFilters";
 import { AdminOverview } from "./AdminOverview";
+import { AdminDemoGuide } from "./AdminDemoGuide";
+import { adminSections, type AdminSection } from "../../lib/admin-sections";
 import { AdminPhotos } from "./AdminPhotos";
 import { AdminReports, hideLabels, type ReportAction } from "./AdminReports";
 import { AdminDetail, type AdminTarget } from "./AdminDetail";
@@ -50,7 +52,7 @@ export function AdminPageContent() {
   }
   const selectedTab = searchParams.get("tab");
   // The overview is the landing screen; the other tabs are the working tools.
-  const tab = selectedTab === "reports" || selectedTab === "reviews" || selectedTab === "plans" || selectedTab === "requests" || selectedTab === "offers" || selectedTab === "users" || selectedTab === "photos" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "overview";
+  const tab: AdminSection = selectedTab && Object.hasOwn(adminSections, selectedTab) ? selectedTab as AdminSection : "overview";
   // QA/demo accounts are hidden from the lists unless asked for (?tests=1).
   const showTests = searchParams.get("tests") === "1";
   const cursor = searchParams.get("cursor") || "";
@@ -78,7 +80,7 @@ export function AdminPageContent() {
 
   const me = ready && available ? store?.currentUser() : null;
 
-  const ownData = tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports";
+  const ownData = tab === "demo" || tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports";
   const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && !ownData, tab: ownData ? "audit" : tab, query, status, role, cursor });
   // New reports: the tab badge. Loaded once per admin visit and updated by the reports tab itself.
   const [reportCount, setReportCount] = useState(0);
@@ -148,7 +150,7 @@ export function AdminPageContent() {
   const { stats, requests, users } = data!;
   // v2 needs both the migrated database and the store methods that call it.
   const v2 = Number(stats.adminApiVersion) >= 2 && typeof store?.adminSearchOffers === "function";
-  const hasFilters = tab !== "audit" && tab !== "overview" && tab !== "photos" && !!(query || status || role);
+  const hasFilters = tab !== "audit" && tab !== "overview" && tab !== "demo" && tab !== "photos" && !!(query || status || role);
   const clearFilters = () => router.replace(`/admin/?tab=${tab}`, { scroll: false });
 
   const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
@@ -252,30 +254,22 @@ export function AdminPageContent() {
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeading}><div><strong>ადმინისტრირება</strong><span>პლატფორმის მართვა</span></div></div>
         <nav ref={navigation} className={styles.navigation} aria-label="ადმინისტრირების განყოფილებები">
-          {[
-            { key: "overview", label: "მიმოხილვა", icon: "layout-grid" },
-            { key: "requests", label: "მოთხოვნები", icon: "clipboard-list" },
-            { key: "users", label: "მომხმარებლები", icon: "users" },
-            ...(v2 || tab === "offers" ? [{ key: "offers", label: "შეთავაზებები", icon: "inbox" }] : []),
-            { key: "reports", label: "საჩივრები", icon: "flag", badge: reportCount },
-            { key: "reviews", label: "შეფასებები", icon: "star" },
-            { key: "plans", label: "პაკეტები", icon: "sparkles" },
-            { key: "photos", label: "ფოტოები", icon: "image" },
-            { key: "audit", label: "მოქმედებების ჟურნალი", icon: "clock" },
-            { key: "contacts", label: "კონტაქტები", icon: "phone" },
-          ].map((item: { key: string; label: string; icon: string; badge?: number }) => <Link key={item.key} href={item.key === "overview" ? "/admin/" : `/admin/?tab=${item.key}`} aria-current={tab === item.key ? "page" : undefined}><Icon name={item.icon} /><span>{item.label}</span>{item.badge ? <b className={`ma-badge ma-badge--accent ma-badge--plain ${styles.navBadge}`} aria-label={`${item.badge} ახალი`}>{item.badge}</b> : null}<Icon name="chevron-right" className={styles.navArrow} /></Link>)}
+          {(Object.entries(adminSections) as [AdminSection, (typeof adminSections)[AdminSection]][])
+            .filter(([key]) => key !== "offers" || v2 || tab === "offers")
+            .map(([key, item]) => <Link key={key} href={key === "overview" ? "/admin/" : `/admin/?tab=${key}`} aria-current={tab === key ? "page" : undefined}><Icon name={item.icon} /><span>{item.label}</span>{key === "reports" && reportCount > 0 ? <b className={`ma-badge ma-badge--accent ma-badge--plain ${styles.navBadge}`} aria-label={`${reportCount} ახალი`}>{reportCount}</b> : null}<Icon name="chevron-right" className={styles.navArrow} /></Link>)}
         </nav>
         <Link className={styles.backToSite} href="/"><Icon name="arrow-left" />საიტზე დაბრუნება</Link>
       </aside>
-      <div className={styles.content}>
-      {tab !== "reviews" && tab !== "plans" ? <PageBand title={{ reports: "საჩივრები", reviews:"შეფასებები", plans:"პაკეტები", overview: "მიმოხილვა", photos: "ფოტოები", requests: "მოთხოვნები", users: "მომხმარებლები", offers: "შეთავაზებები", audit: "მოქმედებების ჟურნალი", contacts: "კონტაქტები" }[tab]} description={{ reports: "მომხმარებლების შეტყობინებები მოთხოვნებზე, კომპანიებსა და შეთავაზებებზე", reviews:"შეფასებების შემოწმება და გამოქვეყნება", plans:"კომპანიების ხილვადობის პაკეტები", overview: "პლატფორმის მდგომარეობა და ის, რასაც ყურადღება სჭირდება", photos: "კომპანიების ატვირთული ლოგოები და გალერეის ფოტოები", requests: "მოთხოვნების სტატუსი და მოდერაცია", users: "ანგარიშები, როლები და წვდომის მართვა", offers: "კომპანიების შეთავაზებების მართვა", audit: "პლატფორმაზე შესრულებული მოქმედებების ისტორია", contacts: "საკონტაქტო აქტივობა და სტატისტიკა" }[tab]} /> : null}
+      <div key={tab} className={styles.content}>
+      {tab !== "reviews" && tab !== "plans" ? <PageBand title={adminSections[tab].label} description={adminSections[tab].description} /> : null}
       {tab === "reviews" || tab === "plans" ? <AdminBusiness key={tab} kind={tab}/> : tab === "overview" ? <AdminOverview store={store!} stats={stats} onOpenUser={id => setDetail({ kind: "user", id })}
         onVerify={u => setPendingAction({ kind: "users", action: "verify", id: u.id, label: u.label })} /> : null}
 
+      {tab === "demo" ? <AdminDemoGuide store={store!} /> : null}
       {tab === "reports" ? <AdminReports key={status} store={store!} status={status === "handled" ? "handled" : "new"} revision={reportRevision} onStatus={value => setFilter("status", value === "new" ? "" : value)} onCount={onReportCount}
         onAction={({ report, action, label }: ReportAction) => setPendingAction({ kind: "reports", action: action === "reportReject" ? "reportReject" : `reportHide.${report.target_kind}`, id: report.id, label })} /> : null}
       {tab === "photos" ? <AdminPhotos store={store!} onRemove={p => setPendingAction({ kind: "photos", action: "removePhoto", id: p.userId, url: p.url, label: p.label })} /> : null}
-      {tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
+      {tab === "demo" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
       {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
       {hasFilters && (tab !== "offers" || v2) ? <Button type="button" variant="secondary" className={styles.clear} onClick={clearFilters}>ფილტრების გასუფთავება</Button> : null}
       {admin.mode === "legacy" && (tab === "requests" || tab === "users") ? <>

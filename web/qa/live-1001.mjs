@@ -18,10 +18,10 @@ try {
    if(key)assert.equal(await p.locator('#login-email').count(),0,`${role} signed in`);
    if(role==='admin'&&route.startsWith('/account/')){
     await p.waitForURL('**/admin/');
-    await p.getByRole('heading',{name:'მიწოდება და მოთხოვნა',exact:true}).waitFor();
+    await p.getByRole('heading',{name:'მოთხოვნა და მომწოდებლები',exact:true}).waitFor();
    }
    if(route==='/account/?tab=business')await p.getByRole('heading',{name:'პროდუქტები ფოტოთი',exact:true}).waitFor();
-   if(route==='/admin/')await p.getByRole('heading',{name:'მიწოდება და მოთხოვნა',exact:true}).waitFor();
+   if(route==='/admin/')await p.getByRole('heading',{name:'მოთხოვნა და მომწოდებლები',exact:true}).waitFor();
    if(route==='/admin/?tab=reports')assert((await p.locator('main').innerText()).includes('საჩივრები'));
    for(const width of [1440,390]){
     await p.setViewportSize({width,height:1000});await p.evaluate(()=>document.fonts.ready);

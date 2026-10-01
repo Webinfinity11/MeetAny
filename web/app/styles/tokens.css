@@ -382,10 +382,9 @@
 
   /* SEMANTIC LAYER — roles referencing primitive values */
   --catalog-title-case:normal;
-  --tier-vip-bg:color-mix(in srgb,var(--theme-accent) 4%,#fff);
-  --tier-vip-border:var(--orange-300);
-  --tier-vip-text:var(--orange-700);
-  --tier-vip-badge-bg:var(--orange-400);
+  --tier-vip-bg:var(--white);
+  --tier-vip-border:var(--ink-200);
+  --tier-vip-text:var(--ink-700);
   --tier-top-bg:var(--blue-50);
   --tier-top-border:var(--blue-200);
   --tier-top-text:var(--blue-700);
