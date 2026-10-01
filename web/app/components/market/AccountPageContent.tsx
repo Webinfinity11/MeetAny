@@ -372,14 +372,18 @@ function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab;
     const nav = list.current;
     const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
     if (!nav || !active) return;
+    let disposed = false;
     const reveal = () => {
-      if (nav.scrollWidth <= nav.clientWidth) return;
-      nav.scrollLeft += active.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - active.offsetWidth) / 2;
+      if (disposed || nav.scrollWidth <= nav.clientWidth) return;
+      nav.scrollLeft += active.getBoundingClientRect().left - nav.getBoundingClientRect().left - nav.clientLeft - (nav.clientWidth - active.getBoundingClientRect().width) / 2;
     };
     reveal();
+    // Font loading changes the tab widths without necessarily resizing the strip.
+    void document.fonts.ready.then(reveal);
     const resize = new ResizeObserver(reveal);
     resize.observe(nav);
-    return () => resize.disconnect();
+    resize.observe(active);
+    return () => { disposed = true; resize.disconnect(); };
   }, [tab]);
   return (
     <aside className="account-nav" aria-label="ანგარიში">
