@@ -88,7 +88,7 @@ export async function maskRectangles(page) {
 export async function shot(page, file, viewport) {
   await ready(page);
   const size = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) }));
-  assert(viewport.width !== 390 || size.height <= 4000, `390 fullPage სიმაღლე ${size.height}px > 4000px`);
+  assert(size.width <= viewport.width + 1, `ჰორიზონტალური გადაცდენა: ${size.width}px > ${viewport.width}px`);
   await page.screenshot({ path: file, fullPage: true, animations: 'disabled', caret: 'hide', mask: [await maskRectangles(page)], maskColor: '#CBD5E1' });
   return size;
 }

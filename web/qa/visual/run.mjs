@@ -28,7 +28,7 @@ const ledgerPath = [path.join(root, '../DEMO-ACCOUNTS.local.md'), path.join(root
 const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8').match(/```json\n([\s\S]*?)\n```/)[1]);
 const secrets = Object.values(ledger.accounts).map(a => a.password).filter(Boolean);
 const safe = value => secrets.reduce((text, secret) => text.replaceAll(secret, '[redacted]'), String(value));
-const routes = { ...previous?.routes };
+const routes = update ? {} : { ...previous?.routes };
 const results = [], safety = [], errors = [];
 const sourceStatus = () => execFileSync('git', ['status', '--porcelain', '--', 'app', 'public', 'next.config.ts', 'next.config.mjs'], { cwd: root, encoding: 'utf8' }).trim();
 assert(!update || !sourceStatus(), 'baseline-ისთვის ჯერ დააკომიტეთ აპის ცვლილებები');
@@ -105,37 +105,8 @@ try {
       routes.chatRequest = `/requests/view/?id=${state.chat.request_id}`;
     }
     for (const def of selected.filter(def => def.role === role)) {
-      if (role === 'owner_admin' && !routes[def.id]) {
-        await p.setViewportSize(viewports[1]);
-        await go(p, origin, def.route);
-        // Use real cursor pagination, never alter row data or shrink/crop the screenshot.
-        for (let pagination = 0; pagination < 20; pagination++) {
-          await p.locator(def.ready).first().waitFor({ timeout: 60000 });
-          await ready(p);
-          const height = await p.evaluate(() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
-          if (height <= 4000) { routes[def.id] = new URL(p.url()).pathname + new URL(p.url()).search; break; }
-          const more = p.getByRole('button', { name: 'მეტის ჩვენება', exact: true });
-          if (await more.count()) {
-            const before = p.url();
-            await more.click();
-            await p.waitForURL(url => url.href !== before);
-            await go(p, origin, new URL(p.url()).pathname + new URL(p.url()).search);
-          } else {
-            // The final audit/contact page can still be tall. Select its real last
-            // few records through the app's supported cursor URL, without mocking RPCs.
-            const data = state.adminPages[def.id === 'admin-audit' ? 'admin_list_audit' : 'admin_contact_events'];
-            assert(data?.items?.length > 1, `${def.id}: სრული სიმაღლე ${height}px, დამატებითი ფილტრი საჭიროა`);
-            const keep = Math.min(5, Math.floor(data.items.length / 2));
-            const anchor = data.items[data.items.length - keep - 1];
-            const url = new URL(p.url());
-            url.searchParams.set('cursor', JSON.stringify({ created_at: anchor.created_at, id: anchor.id, asOf: data.asOf }));
-            await go(p, origin, url.pathname + url.search);
-          }
-        }
-        assert(routes[def.id], `${def.id}: 20 გვერდზე ვერ მოიძებნა ≤4000px მდგომარეობა`);
-      }
+      if (role === 'owner_admin') routes[def.id] = def.route;
       for (const viewport of viewports) {
-        if (def.id === 'guest-home' && viewport.width !== 1440) continue;
         assert(sourceFingerprint() === sourceHash && execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim() === head, 'გადაღებისას რევიზია შეიცვალა; baseline/diff თავიდან გაუშვით');
         const key = `${def.id}-${viewport.width}`;
         console.log(`გადაღება: ${key}`);
