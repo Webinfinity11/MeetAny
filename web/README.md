@@ -34,3 +34,5 @@ QA_ORIGIN=http://localhost:3002 node qa/links-check.mjs --second
 ```
 
 `features-1001` creates and cleans an isolated QA request/report on auth-probe. Business form writes are mocked. The links scan is read-only. `node qa/live-1001.mjs` checks the pinned public demo with API writes blocked. `DEMO_API_ORIGIN=http://localhost:3002 node scripts/seed-demo-v2.cjs --refresh-dates` updates only the registered demo timeline; `--verify` alone is read-only.
+
+Admin presentation guide: `/admin/?tab=demo` (admin only). Section labels come from `app/lib/admin-sections.ts`. Run `node qa/admin-presentation.mjs` against localhost:3002, or set `PRESENTATION_ORIGIN=https://meet-any.vercel.app` for the public demo. The check covers labels, navigation, demo links, desktop/mobile layout, reduced motion and text-only VIP badges.
