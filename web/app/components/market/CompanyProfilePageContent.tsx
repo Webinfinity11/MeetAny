@@ -101,6 +101,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         <div className="company-hero__text">
           <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
           <h1 className="company-hero__name">{name}</h1>
+          {c.about?.startsWith("სადემო კომპანია.")?<p className="company-demo-label">სადემო კომპანია · ინფორმაცია და კონტაქტები პრეზენტაციის მაგალითია.</p>:null}
           <BusinessMarks feature={business.data?.find(f=>f.id===c.id)}/>
           <ul className="company-hero__meta" aria-label="კომპანიის დეტალები">
             {c.city ? <li><Icon name="map-pin" />{cities[c.city] || c.city}</li> : null}

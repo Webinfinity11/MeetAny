@@ -18,7 +18,8 @@ import { CompanyAvatar } from "./CompanyAvatar";
 import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { LogoField, GalleryField, type GalleryItem } from "./PhotoField";
-import { CompanyBusinessPanel } from "./CompanyBusiness";
+import { CompanyProducts } from "./CompanyProducts";
+import { CompanyBusinessPanel, CompanyDistributionPanel } from "./CompanyBusiness";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
@@ -46,6 +47,15 @@ type AnyUser = {
   lat?: number | null;
   lng?: number | null;
 };
+
+const profileSections = { details: "მონაცემები და ფოტოები", products: "პროდუქტები", distribution: "დისტრიბუცია", security: "პაროლი" };
+function CompanyProfile({me,section}:{me:AnyUser;section:string}) {
+ const active=Object.hasOwn(profileSections,section)?section:"details";
+ return <>
+  <nav className="company-profile-sections" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}</nav>
+  {active==="details"?<ProfileForm key={me.id} me={me}/>:active==="products"?<section className="account-section"><CompanyProducts companyId={me.id} edit/><p className="account-hint">ფოტოების დასამატებლად გახსენი <Link className="ma-link" href="/account/?tab=profile&section=details">მონაცემები და ფოტოები</Link>. ჯერ შეინახე გალერეა, შემდეგ აირჩიე პროდუქტის ფოტო.</p></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}
+ </>;
+}
 
 /** "41,7151" → 41.7151; empty → null; anything else → NaN. */
 function parseCoord(value: string) {
@@ -346,7 +356,7 @@ function PasswordForm() {
 
 type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
 type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
-type Tab = "overview" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
+type Tab = "overview" | "opportunities" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
 
 const DAY = 86400000;
 function postedLabel(createdAt: string, now: number) {
@@ -418,7 +428,7 @@ export function AccountPageContent() {
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
   // ?tab=alerts (old links) opens the notifications tab; ?tab=settings the profile.
-  const tab: Tab = rawTab === "business" || rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" || rawTab === "notifications" ? rawTab : rawTab === "alerts" ? "notifications" : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
+  const tab: Tab = rawTab === "opportunities" || rawTab === "business" || rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" || rawTab === "notifications" ? rawTab : rawTab === "alerts" ? "notifications" : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
 
@@ -463,15 +473,15 @@ export function AccountPageContent() {
   const myRequests = data?.myRequests ?? [];
   const matching = data?.matching ?? [];
   const myOffers = data?.myOffers ?? [];
-  const activeTab: Tab = tab === "overview" ? isCompany ? "offers" : "requests" : !isCompany && tab === "offers" ? "requests" : tab;
+  const activeTab: Tab = tab === "overview" ? isCompany ? "opportunities" : "requests" : !isCompany && (tab === "offers" || tab === "opportunities") ? "requests" : tab;
   const tabs: NavItem[] = [
-    ...(isCompany ? [{ key: "offers" as Tab, href: "/account/?tab=offers", label: "შეთავაზებები", icon: "send", count: myOffers.length }] : []),
+    ...(isCompany ? [{ key: "opportunities" as Tab, href: "/account/?tab=opportunities", label: "შესაბამისი მოთხოვნები", icon: "search" }, { key: "offers" as Tab, href: "/account/?tab=offers", label: "შეთავაზებები", icon: "send", count: myOffers.length }] : []),
     { key: "requests", href: "/account/?tab=requests", label: "მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
     { key: "saved", href: "/account/?tab=saved", label: "შენახული", icon: "bookmark", count: savedCount },
     { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები", icon: "message-square", count: unread, alert: true },
     { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები", icon: "bell" },
-    ...(isCompany ? [{ key:"business" as Tab, href:"/account/?tab=business", label:"განვითარება", icon:"sparkles" }] : []),
-    { key: "profile", href: "/account/?tab=profile", label: "პროფილი", icon: "user-round" },
+    ...(isCompany ? [{ key:"business" as Tab, href:"/account/?tab=business", label:"ხილვადობის პაკეტები", icon:"eye" }] : []),
+    { key: "profile", href: "/account/?tab=profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: "user-round" },
   ];
   const nav = <AccountTabs tab={activeTab} items={tabs} me={me} name={name} roleLabel={roleLabel} isCompany={isCompany} />;
 
@@ -500,8 +510,7 @@ export function AccountPageContent() {
       {nav}
       <div className="account-main account-main--profile">
         {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
-        <ProfileForm me={me} />
-        <PasswordForm key={me.id} />
+        {isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"} /> : <><ProfileForm me={me} /><PasswordForm key={me.id} /></>}
       </div>
     </div>
   );
@@ -570,9 +579,9 @@ export function AccountPageContent() {
       {nav}
       <div className="account-layout account-layout--single">
         <div className="account-main">
-          {isCompany && rawTab !== "requests" ? (
+          {isCompany && (activeTab === "offers" || activeTab === "opportunities") ? (
             <>
-              <section className="account-section">
+              {activeTab === "offers" ? <section className="account-section">
                 <h2 className="account-section__title">ჩემი შეთავაზებები ({myOffers.length})</h2>
                 {myOffers.length ? (
                   <ul className="account-rows">
@@ -593,14 +602,15 @@ export function AccountPageContent() {
                     })}
                   </ul>
                 ) : (
-                  <p className="account-empty">შეთავაზება ჯერ არ გაგიგზავნია.</p>
+                  <div><p className="account-empty">შეთავაზება ჯერ არ გაგიგზავნია.</p><Button variant="primary" href="/account/?tab=opportunities">შესაბამისი მოთხოვნების ნახვა</Button></div>
                 )}
-              </section>
-              <section className="account-section">
+              </section> : null}
+              {activeTab === "opportunities" ? <section className="account-section">
                 <div className="account-section__head">
-                  <h2 className="account-section__title">შენი დარგის მოთხოვნები ({matching.length})</h2>
-                  <Link className="account-link" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>ყველა ნახვა</Link>
+                  <h1 className="account-section__title">შესაბამისი მოთხოვნები ({matching.length})</h1>
+                  <Button variant="primary" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>მოთხოვნების ნახვა</Button>
                 </div>
+                <p className="account-hint">შეარჩიე მოთხოვნა და გაუგზავნე მის ავტორს შენი პირობები.</p>
                 {matching.length ? (
                   <ul className="account-rows">
                     {matching.slice(0, 5).map((r) => (
@@ -609,13 +619,14 @@ export function AccountPageContent() {
                           <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(r.id)}>{r.title}</Link></h3>
                           <p className="account-row__meta">{requestMeta(r, now)}</p>
                         </div>
+                        <Button variant="secondary" size="sm" href={requestHref(r.id)}>შეთავაზების გაგზავნა</Button>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="account-empty">შენი დარგით ღია მოთხოვნა ჯერ არ არის — ახალზე შეგატყობინებთ.</p>
+                  <p className="account-empty">შენი დარგით ღია მოთხოვნა ჯერ არ არის — შეგიძლია სხვა მიმართულებებიც ნახო.</p>
                 )}
-              </section>
+              </section> : null}
             </>
           ) : null}
           {!isCompany || tab === "requests" ? requestsSection : null}

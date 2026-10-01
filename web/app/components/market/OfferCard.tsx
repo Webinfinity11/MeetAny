@@ -15,6 +15,10 @@ export type OfferCardData = {
   city: string;
   createdAt: string;
   deliveryDays: number | null;
+  price?: number | null;
+  priceType?: string;
+  vatIncluded?: boolean;
+  deliveryIncluded?: boolean;
   body: string;
   status: string;
   isNew: boolean;
@@ -22,8 +26,11 @@ export type OfferCardData = {
   feature?: BusinessFeature;
 };
 
-// No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number, so the offer
-// is text plus an optional delivery time — see db/CONTRACT.md "შეთავაზება ფასის გარეშე").
+export function offerPrice(o: OfferCardData) {
+ if(o.price==null || o.priceType==="negotiable")return "შეთანხმებით";
+ return `${new Intl.NumberFormat("ka-GE",{maximumFractionDigits:2}).format(o.price)} ₾ · ${o.priceType==="unit"?"ერთეულის":"ჯამური"}`;
+}
+
 export function OfferCard({ o, onChoose, canChoose, canReport = false }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean }) {
   const cls =
     o.status === "chosen"
@@ -53,6 +60,7 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false }: { o: Of
           </div>
         </div>
       </header>
+      <dl className="offer-terms"><div><dt>ფასი</dt><dd>{offerPrice(o)}</dd></div><div><dt>მიწოდება</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div>{o.price!=null?<div><dt>დღგ</dt><dd>{o.vatIncluded?"ფასში შედის":"ფასში არ შედის"}</dd></div>:null}<div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div></dl>
       <p className="ma-ocard__body">{o.body}</p>
       <footer className="request-offer-actions">
         <Button variant="secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Button>

@@ -314,3 +314,18 @@
 }
 @keyframes admin-enter { from { opacity: .65; transform: translateY(var(--size-4)); } to { opacity: 1; transform: none; } }
 @keyframes chart-enter { from { opacity: .35; transform: scaleY(.75); } to { opacity: .78; transform: scaleY(1); } }
+
+/* Lists keep status visible; moderation and contact details belong to the drawer. */
+@media(max-width:767px) {
+ .workspace .compactRequests td[data-label="ავტორი"], .workspace .compactUsers td[data-label="კონტაქტი"], .workspace .compactUsers td[data-label="როლი"] { display: none; }
+ .workspace :is(.compactRequests,.compactUsers) td[data-label="მოქმედება"] { grid-column: 2; justify-self: end; align-self: end; }
+ .workspace .compactRequests td[data-label="შეთავაზებები"] { grid-column: 1; }
+ .workspace :is(.compactRequests,.compactUsers) td[data-label="სტატუსი"] { grid-column: 1; }
+ .workspace :is(.compactRequests,.compactUsers) td:is([data-label="მომხმარებელი"],[data-label="მოთხოვნა"],[data-label="მოქმედება"])::before { display: none; }
+ .workspace :is(.compactRequests,.compactUsers) tr { gap: var(--space-2) var(--space-3); }
+ .workspace :is(.compactRequests,.compactUsers) td[data-label="მოქმედება"]:last-child { grid-row: 2 / 4; }
+}
+
+@media(max-width:767px) {
+ .workspace .queue :global(.ma-btn) { min-height: var(--tap-min); }
+}

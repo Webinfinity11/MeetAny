@@ -123,6 +123,7 @@ function HomeCompanyCard({ c, feature }: { c: Company; feature?: BusinessFeature
     <div className="home-company__save"><SaveCompanyButton id={c.id} icon /></div>
     <h3 className="home-company__name"><Link href={href}>{c.company}</Link></h3>
     <BusinessMarks feature={feature}/>
+    {c.about.startsWith("სადემო კომპანია.")?<span className="company-demo-label">სადემო კომპანია</span>:null}
     <p className="home-company__meta">{categoryLabels[c.industry] || c.industry}</p>
     {place ? <p className="home-company__meta">{place}</p> : null}
   </article>;

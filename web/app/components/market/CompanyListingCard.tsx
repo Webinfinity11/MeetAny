@@ -46,6 +46,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       <div className="company-card__body">
         <h3 className="company-card__name"><Link className="card-main-link" href={href}>{c.name}</Link></h3>
         <BusinessMarks feature={c.feature} hidePlan/>
+        {c.about.startsWith("სადემო კომპანია.")?<span className="company-demo-label">სადემო კომპანია</span>:null}
         <p className="company-card__industry">{categories[c.industry] || c.industry}</p>
         {places ? <p className="company-card__places"><Icon name="map-pin" />{places}</p> : null}
         {c.offers.length ? <ul className="company-card__services" aria-label="მომსახურება">{c.offers.slice(0, 1).map((offer, index) => <li key={`${offer}-${index}`}>{offer}</li>)}{c.offers.length > 1 ? <li className="company-card__more">+{c.offers.length - 1}</li> : null}</ul> : null}

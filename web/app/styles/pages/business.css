@@ -9,3 +9,5 @@
 .distribution-facts { display: grid; gap: var(--space-4,var(--size-16)); }
 .distribution-facts dt { font-weight: 600; }
 .distribution-facts dd { margin: 0; overflow-wrap: anywhere; }
+
+.company-demo-label { display: block; margin-block: var(--space-1); color: var(--text-3); font-size: var(--fs-xs); line-height: var(--lh-xs); }

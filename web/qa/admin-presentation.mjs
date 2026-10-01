@@ -5,7 +5,7 @@ import { auth, credentials, safe, assert } from './e2e/lib.mjs';
 import { guard } from './visual/lib/browser.mjs';
 
 const origin = process.env.PRESENTATION_ORIGIN || 'http://localhost:3002';
-assert(['http://localhost:3002', 'https://meet-any.vercel.app'].includes(origin));
+assert(['http://localhost:3002', 'http://localhost:3003', 'https://meet-any.vercel.app'].includes(origin));
 const browser = await chromium.launch({ headless: true, executablePath: process.env.QA_BROWSER_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
 const out = `qa/shots/admin-presentation-${origin.includes('localhost') ? 'local' : 'live'}`;
 fs.mkdirSync(out, { recursive: true });

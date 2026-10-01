@@ -3,6 +3,7 @@
 import { toast } from '../components/Toasts';
 import { readAllRows } from './read-all-rows.js';
 import { categories, categoryKind, expandCategories } from './categories-data.js';
+import { isInternalTestAccount, isInternalTestRequest } from './catalog-visibility.js';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
 export function createMarketStore({initial=null,background=true}={}){
  const DAY=86400000,EXTEND_DAYS=7;
@@ -514,10 +515,11 @@ export function createMarketStore({initial=null,background=true}={}){
  function daysLeft(r,now=Date.now()){return Math.max(0,Math.ceil((Date.parse(r.expiresAt)-now)/DAY));}
  function offerCount(requestId){return cache.counts[requestId]||0;}
 
- function listRequests({category='',city='',state='open',q='',ownerId='',includeHidden=false}={}){
+ function listRequests({category='',city='',state='open',q='',ownerId='',includeHidden=false,includeTests=false}={}){
   const terms=clean(q,200).toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return cache.requests.filter(r=>{
    const s=requestState(r);
+   if(!ownerId&&!includeHidden&&!includeTests&&isInternalTestRequest(r,userById(r.ownerId)))return false;
    if(!includeHidden&&s==='hidden')return false;
    if(ownerId&&r.ownerId!==ownerId)return false;
    if(state==='open'&&s!=='open')return false;
@@ -782,9 +784,10 @@ export function createMarketStore({initial=null,background=true}={}){
  // Companies for the public catalog: search in name, about and offers; industry and city filters.
  // A company serves a city when it is its own city, a listed service city, or it serves all Georgia.
  function servesCity(c,city){return c.city===city||c.serviceCities.includes(city)||c.city==='georgia'||c.serviceCities.includes('georgia');}
- function listCompanies({q='',industry='',city='',verified=false,type=''}={}){
+ function listCompanies({q='',industry='',city='',verified=false,type='',includeTests=false}={}){
   const terms=clean(q,200).toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return cache.companies.filter(c=>{
+   if(!includeTests&&isInternalTestAccount(c))return false;
    if(industry&&!expandCategories(industry).includes(c.industry))return false;
    const supplier=categoryKind[c.industry]==='product';
    if(type==='suppliers'&&!supplier)return false;

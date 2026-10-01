@@ -5,13 +5,14 @@ import { useBusinessResource, businessError } from "../../lib/business-client";
 import { Button } from "../ui/Button";
 import { CustomSelect } from "../ui/CustomSelect";
 import { ProductCard, type ProductCardData } from "./ProductCard";
+import { ListSkeleton } from "./Skeletons";
 import { toast } from "../Toasts";
 export function CompanyProducts({companyId,edit=false}:{companyId:string;edit?:boolean}) {
  const {store,ready}=useMarketStore();
  const load=useCallback(()=>store!.companyProducts(companyId),[store,companyId]);
  const resource=useBusinessResource<ProductCardData[]>(ready&&store?load:undefined,companyId);
  if(resource.error)return <p role="alert">{resource.error} <Button variant="ghost" onClick={resource.reload}>ხელახლა ცდა</Button></p>;
- if(!resource.data)return null;
+ if(!resource.data)return <ListSkeleton compact kind="records" label="პროდუქტები იტვირთება…"/>;
  if(edit)return <ProductsForm key={companyId} initial={resource.data} onSaved={resource.replace}/>;
  if(!resource.data.length)return null;
  return <section className="company-detail-section"><h2>პროდუქტები</h2><div className="company-product-grid">{resource.data.map((product,i)=><ProductCard key={`${i}:${product.name}`} {...product}/>)}</div></section>;
@@ -25,7 +26,7 @@ function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(item
  {items.map((item,index)=><fieldset key={index} className="ma-panel ma-stack"><legend>პროდუქტი {index+1}</legend>
  <label className="ma-field">დასახელება<input className="ma-input" required minLength={2} maxLength={80} value={item.name} disabled={pending} onChange={e=>patch(index,{name:e.target.value})}/></label>
  <label className="ma-field">ფოტო<CustomSelect className="ma-select" value={item.photoUrl||""} disabled={pending} onChange={e=>patch(index,{photoUrl:e.target.value})}><option value="">აირჩიე ფოტო</option>{gallery.map((url,i)=><option value={url} key={url}>გალერეის ფოტო {i+1}</option>)}</CustomSelect></label>
- {item.photoUrl?<ProductCard {...item}/>:null}
+ {item.photoUrl?<ProductCard {...item} preview/>:null}
  <label className="ma-field">მოკლე აღწერა<input className="ma-input" maxLength={200} value={item.note||""} disabled={pending} onChange={e=>patch(index,{note:e.target.value})}/></label>
  <Button variant="danger-quiet" disabled={pending} onClick={()=>setItems(all=>all.filter((_,i)=>i!==index))}>პროდუქტის ამოღება</Button>
  </fieldset>)}

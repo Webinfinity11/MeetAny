@@ -10,3 +10,5 @@ web/qa
 web/scripts
 web/*.tsbuildinfo
 /db/
+
+DEMO-FEATURES.local.json

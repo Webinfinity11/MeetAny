@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NotificationBell } from "./market/EngagementPanels";
 import { ChatUnreadLink } from "./market/ChatPopup";
+import { groupOf } from "../lib/categories";
 import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
 import { toast } from "./Toasts";
@@ -53,10 +54,11 @@ export function Header() {
   const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
     : me.role === "company" ? [
+      ["search", "შესაბამისი მოთხოვნები", "/account/?tab=opportunities"],
       ["send", "ჩემი შეთავაზებები", "/account/?tab=offers"],
       ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
       ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-      ["sparkles", "განვითარება", "/account/?tab=business"],
+      ["eye", "ხილვადობის პაკეტები", "/account/?tab=business"],
       ["building-2", "კომპანიის პროფილი", "/account/?tab=profile"],
       ["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`],
     ] : [
@@ -92,7 +94,8 @@ export function Header() {
   }
   const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><img className="ma-header__symbol" src="/assets/meetany-symbol-transparent.png" alt="" width={1496} height={1051}/><img className="ma-header__wordmark" src="/assets/meetany-wordmark.png" alt="MeetAny" width={683} height={171}/></Link>;
   const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["companies", "კომპანიები", "/companies/"], ["requests", "მოთხოვნები", "/requests/"], ["ideas", "ბიზნესიდეები", "/ideas/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
-  const add = <Button variant="accent" className="ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Button>;
+  const isCompany = role === "company";
+  const add = <Button variant="accent" className="ma-header__cta" aria-label={isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის დამატება"} href={isCompany ? `/requests/?category=${encodeURIComponent(groupOf[me?.industry || ""] || me?.industry || "")}` : "/requests/new/"}><Icon name={isCompany ? "search" : "plus"}/><span className="ma-header__cta-label">{isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის დამატება"}</span><span className="ma-header__cta-short" aria-hidden="true">{isCompany ? "მოთხოვნები" : "დამატება"}</span></Button>;
   return <>
     <NavigationProgress />
     <header className="ma-header"><div className="ma-header__inner ma-container">

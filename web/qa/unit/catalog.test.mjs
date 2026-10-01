@@ -134,3 +134,17 @@ test('saving products preserves the complete JSON array, including empty lists',
   assert.deepEqual(await store.setMyProducts(products),products);
   assert.deepEqual(await store.setMyProducts([]),[]);
 });
+
+test('public discovery omits internal fixtures while owners and admin can inspect them', () => {
+ const now=new Date().toISOString(),expires=new Date(Date.now()+86400000).toISOString();
+ const normal={id:uuid(910),role:'company',company:'ტექსტილის პარტნიორი',about:'',offers:[],seeks:[],service_cities:[],city:'tbilisi',industry:'textiles',created_at:now};
+ const internal={...normal,id:uuid(911),company:'სატესტო კომპანია'};
+ const requests=[{id:uuid(912),owner_id:normal.id,title:'ტესტრექ',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}, {id:uuid(913),owner_id:normal.id,title:'სადემო მაგალითი: თეთრეული',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}];
+ const store=createMarketStore({initial:{companies:[normal,internal],profiles:[],requests,companyStats:[],counts:[]},background:false});
+ assert.deepEqual(store.listCompanies().map(c=>c.id),[normal.id]);
+ assert.equal(store.listCompanies({includeTests:true}).length,2);
+ assert.deepEqual(store.listRequests().map(r=>r.id),[uuid(913)]);
+ assert.equal(store.listRequests({ownerId:normal.id}).length,2);
+ assert.equal(store.listRequests({includeHidden:true,state:''}).length,2);
+ assert.equal(store.getRequest(uuid(912)).title,'ტესტრექ');
+});

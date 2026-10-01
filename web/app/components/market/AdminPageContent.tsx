@@ -276,7 +276,7 @@ export function AdminPageContent() {
       {tab === "offers" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminOffersTable offers={admin.page.items as unknown as AdminOffer[]} onDelete={offer => setPendingAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "კომპანია"} · ${offer.request_title || offer.body.slice(0, 80)}` })} /> : null}
       {canShowRecords && tab === "requests" && filteredRequests.length > 0 ? (
         <div className="ma-table-wrap">
-          <table className="ma-table">
+          <table className={`ma-table ${styles.compactRequests}`}>
             <caption className="ma-sr-only">მოთხოვნა — მოდერაცია</caption>
             <thead>
               <tr>
@@ -317,26 +317,7 @@ export function AdminPageContent() {
                       {r.hidden && r.hiddenReason ? <small>მიზეზი: {r.hiddenReason}</small> : null}
                     </td>
                     <td data-label="შეთავაზებები">{count}</td>
-                    <td data-label="მოქმედება">
-                      <div className="ma-proto-tableactions">
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={() =>
-                            setPendingAction({ kind: "requests", action: r.hidden ? "unhide" : "hide", id: r.id, label: r.title })
-                          }
-                        >
-                          {r.hidden ? "გამოჩენა" : "დამალვა"}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="danger-quiet"
-                          onClick={() => setPendingAction({ kind: "requests", action: "delete", id: r.id, label: r.title })}
-                        >
-                          წაშლა
-                        </Button>
-                      </div>
-                    </td>
+                    <td data-label="მოქმედება"><Button type="button" variant="secondary" onClick={() => setDetail({ kind: "request", id: r.id })}>დეტალები</Button></td>
                   </tr>
                 );
               })}
@@ -345,7 +326,7 @@ export function AdminPageContent() {
         </div>
       ) : canShowRecords && tab === "users" && filteredUsers.length > 0 ? (
         <div className="ma-table-wrap">
-          <table className="ma-table">
+          <table className={`ma-table ${styles.compactUsers}`}>
             <caption className="ma-sr-only">მომხმარებელი — მოდერაცია</caption>
             <thead>
               <tr>
@@ -385,42 +366,7 @@ export function AdminPageContent() {
                     )}
                     {u.blocked && u.blockedReason ? <small>მიზეზი: {u.blockedReason}</small> : null}
                   </td>
-                  <td data-label="მოქმედება">
-                    <div className="ma-proto-tableactions">
-                      {u.role === "company" ? (
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={() =>
-                            setPendingAction({
-                              kind: "users",
-                              action: u.verified ? "unverify" : "verify",
-                              id: u.id,
-                              label: u.company || u.name,
-                            })
-                          }
-                        >
-                          {u.verified ? "დადასტურების მოხსნა" : "დადასტურება"}
-                        </Button>
-                      ) : null}
-                      {u.role !== "admin" ? (
-                        <Button
-                          type="button"
-                          variant="danger-quiet"
-                          onClick={() =>
-                            setPendingAction({
-                              kind: "users",
-                              action: u.blocked ? "unblock" : "block",
-                              id: u.id,
-                              label: u.company || u.name,
-                            })
-                          }
-                        >
-                          {u.blocked ? "განბლოკვა" : "დაბლოკვა"}
-                        </Button>
-                      ) : null}
-                    </div>
-                  </td>
+                  <td data-label="მოქმედება"><Button type="button" variant="secondary" onClick={() => setDetail({ kind: "user", id: u.id })}>დეტალები</Button></td>
                 </tr>
               ))}
             </tbody>

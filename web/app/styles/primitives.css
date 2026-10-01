@@ -178,3 +178,7 @@
 .ma-select-menu__option[aria-selected="true"][data-active]{background:var(--blue-100)}
 .ma-select-menu__option[aria-disabled="true"]{color:var(--text-disabled);cursor:not-allowed}
 @media(forced-colors:active){.ma-select-menu__option[data-active]{outline:var(--size-1) solid Highlight}.ma-select-menu__option[aria-selected="true"]{color:Highlight}}
+
+@media(max-width:767px) {
+  .ma-proto main .ma-btn, .ma-proto .company-card__footer .ma-call { min-height: var(--tap-min); }
+}

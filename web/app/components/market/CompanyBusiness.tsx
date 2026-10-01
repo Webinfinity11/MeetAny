@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "../ui/Button";
 
-import { CompanyProducts } from "./CompanyProducts";
 import { DistributionForm } from "./Distribution";
 import type { Distribution } from "../../lib/distribution";
 import { useCallback, useState } from "react";
@@ -28,16 +27,29 @@ export function CompanyBusinessPanel({owner}:{owner:string}){
  const [error,setError]=useState('');
  const settings=resource.data;
  async function act(key:string,work:()=>Promise<Settings>){if(pending)return;setPending(key);setError('');try{resource.replace(await work());toast('ცვლილება შენახულია.');}catch(e){setError(businessError(e));}finally{setPending('');}}
- return <div className="business-panel"><header><p className="business-kicker">კომპანიის შესაძლებლობები</p><h1>შენი ბიზნესის განვითარებისთვის</h1><p>მიუთითე საქმიანობის ტიპი და შეარჩიე სასურველი ხილვადობა.</p></header>
+ return <div className="business-panel"><header><p className="business-kicker">Premium / VIP</p><h1>ხილვადობის პაკეტები</h1><p>შეარჩიე, სად და როგორ გამოჩნდეს შენი კომპანია.</p></header>
  {resource.error?<BusinessError error={resource.error} retry={resource.reload}/>:!settings?<ListSkeleton compact kind="records" label="იტვირთება…"/>:<>
- <section className="business-setting"><div><h2>დისტრიბუცია</h2><p>თუ პროდუქტებს სხვა ბიზნესებს აწვდი, გამოჩნდი დისტრიბუტორების ფილტრშიც. შენი დარგი უცვლელი რჩება.</p></div><label className="filter-switch"><span>ვარ დისტრიბუტორი</span><input type="checkbox" role="switch" checked={settings.distributor} disabled={!!pending} onChange={e=>{const checked=e.target.checked;void act('distributor',()=>store!.setCompanyDistributor(checked));}}/><span className="filter-switch__track" aria-hidden="true"/></label></section>
- <CompanyProducts companyId={owner} edit/>
- {settings.distributor?<DistributionForm key={owner} initial={settings.distribution} onSaved={resource.reload}/>:null}
  <section><div className="business-section-heading"><h2>ხილვადობის პაკეტები</h2><p>ძებნა, მოთხოვნები და მიმოწერა უფასოდ რჩება. ფასიანი განთავსება ხარისხის დადასტურებას არ ნიშნავს.</p></div>
  {settings.membership?<p className="business-notice" role="status">აქტიურია {settings.membership.plan==='vip'?'VIP':'Premium'} · მოქმედებს {new Date(settings.membership.expires_at).toLocaleDateString('ka-GE')}-მდე</p>:null}
  {settings.application?<div className="business-notice"><button type="button" className="ma-link" disabled={!!pending} onClick={resource.reload}><Icon name="refresh-cw"/>სტატუსის განახლება</button><strong>{settings.application.plan==='vip'?'VIP':'Premium'} · {({pending:'განაცხადი განხილვაშია',approved:'განაცხადი დადასტურებულია',declined:'განაცხადი არ დადასტურდა',cancelled:'განაცხადი გაუქმებულია'} as Record<string,string>)[settings.application.status]}</strong>{settings.application.note?<p>{settings.application.note}</p>:null}{settings.application.status==='pending'?<button type="button" className="ma-link" disabled={!!pending} onClick={()=>void act('cancel',()=>store!.cancelCompanyPlanRequest())}>განაცხადის გაუქმება</button>:null}</div>:null}
  <div className="business-plans">{plans.map(plan=><article className="business-plan" key={plan.id}><h3>{plan.name}</h3><p>{plan.intro}</p><ul>{plan.items.map(item=><li key={item}><Icon name="check"/>{item}</li>)}</ul><p className="business-plan__terms">ფასი და ვადა შეთანხმებით</p><Button type="button" variant="primary" disabled={!!pending||settings.application?.status==='pending'} onClick={()=>void act(plan.id,()=>store!.requestCompanyPlan(plan.id))}><Icon name="clipboard-list"/>{pending===plan.id?'იგზავნება…':'გააქტიურების მოთხოვნა'}</Button></article>)}</div><p className="business-fineprint">განაცხადის გაგზავნა პაკეტს ავტომატურად არ ააქტიურებს და თანხა არ ჩამოგეჭრება. ადმინისტრატორი შენთან პირობებს შეათანხმებს.</p></section></>}
  {error?<p className="ma-field__error" role="alert">{error}</p>:null}</div>;
+}
+
+/** Distribution is part of the company profile, alongside products and photos. */
+export function CompanyDistributionPanel({owner}:{owner:string}) {
+ const {store}=useMarketStore();
+ const resource=useBusinessResource<Settings>(store?.myBusinessSettings,owner);
+ const [pending,setPending]=useState('');
+ const [error,setError]=useState('');
+ const settings=resource.data;
+ async function act(key:string,work:()=>Promise<Settings>){if(pending)return;setPending(key);setError('');try{resource.replace(await work());toast('ცვლილება შენახულია.');}catch(e){setError(businessError(e));}finally{setPending('');}}
+ return <section className="business-panel"><header><h2>დისტრიბუციის პროფილი</h2><p>მიუთითე მიწოდების რეგიონები და პირობები.</p></header>
+ {resource.error?<BusinessError error={resource.error} retry={resource.reload}/>:!settings?<ListSkeleton compact kind="records"/>:<>
+ <section className="business-setting"><div><h2>დისტრიბუცია</h2><p>თუ პროდუქტებს სხვა ბიზნესებს აწვდი, გამოჩნდი დისტრიბუტორების ფილტრშიც. შენი დარგი უცვლელი რჩება.</p></div><label className="filter-switch"><span>ვარ დისტრიბუტორი</span><input type="checkbox" role="switch" checked={settings.distributor} disabled={!!pending} onChange={e=>{const checked=e.target.checked;void act('distributor',()=>store!.setCompanyDistributor(checked));}}/><span className="filter-switch__track" aria-hidden="true"/></label></section>
+ {settings.distributor?<DistributionForm key={owner} initial={settings.distribution} onSaved={resource.reload}/>:null}
+ </>}
+ {error?<p className="ma-field__error" role="alert">{error}</p>:null}</section>;
 }
 
 type Review={id:string;rating:number;body:string;author:string;updated_at:string};

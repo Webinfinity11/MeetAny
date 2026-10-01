@@ -713,3 +713,10 @@ body[data-market-page="account"] .ma-main{min-height:calc(100svh - var(--header-
 .account-location-details summary .icon { width: var(--size-18); height: var(--size-18); }
 .account-location-details summary:focus-visible { outline: var(--size-2) solid var(--action); outline-offset: var(--size-3); border-radius: var(--size-4); }
 .account-location-details[open] summary { margin-bottom: var(--size-16); }
+
+.company-profile-sections { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-2); }
+.company-profile-sections a { display: flex; align-items: center; justify-content: center; min-height: var(--tap-min); padding: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--radius-control); color: var(--text-2); background: var(--white); font-size: var(--fs-sm); text-align: center; text-decoration: none; }
+.company-profile-sections a[aria-current] { color: var(--selected-text); background: var(--selected-bg); border-color: var(--blue-200); font-weight: var(--fw-semibold); }
+.company-profile-sections a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.account-row--plain > .ma-btn { justify-self: start; }
+@media(min-width:768px) { .company-profile-sections { grid-template-columns: repeat(4,minmax(0,1fr)); } }

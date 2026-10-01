@@ -18,7 +18,7 @@ import { RequestFormSheet } from "./RequestFormSheet";
 import { useRouter } from "next/navigation";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { ConfirmSheet } from "../ui/ConfirmSheet";
-import { OfferCard, type OfferCardData } from "./OfferCard";
+import { offerPrice, OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
@@ -29,13 +29,15 @@ import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
 import { addressLabel, dateLabel, postedLabel } from "../../lib/format";
 
-// No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number). Omitting
-// price/priceType makes market-store.js's sendOffer() default to price:null,
-// priceType:'negotiable' on its own — see db/CONTRACT.md "შეთავაზება ფასის გარეშე".
+// Price is optional; existing API supports agreed, unit and total terms in GEL.
 function SendOfferForm({ requestId, existing, onDone }: { requestId: string; existing?: OfferCardData; onDone: () => void }) {
   const { store } = useMarketStore();
   const [deliveryDays, setDeliveryDays] = useState(existing?.deliveryDays != null ? String(existing.deliveryDays) : "");
   const [body, setBody] = useState(existing?.body || "");
+  const [priceType,setPriceType]=useState(existing?.priceType || "negotiable");
+  const [price,setPrice]=useState(existing?.price!=null?String(existing.price):"");
+  const [vatIncluded,setVatIncluded]=useState(!!existing?.vatIncluded);
+  const [deliveryIncluded,setDeliveryIncluded]=useState(!!existing?.deliveryIncluded);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,7 +46,7 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   useEffect(() => {
     const timer = setTimeout(() => {
     if (!existing) {
-      try {const saved = JSON.parse(localStorage.getItem(`meetany.offerDraft.${requestId}`) || "null"); if (saved) {setBody(saved.body || ""); setDeliveryDays(saved.deliveryDays || "");}} catch {}
+      try {const saved = JSON.parse(localStorage.getItem(`meetany.offerDraft.${requestId}`) || "null"); if (saved) {setBody(saved.body || ""); setDeliveryDays(saved.deliveryDays || "");setPriceType(["negotiable","unit","total"].includes(saved.priceType)?saved.priceType:"negotiable");setPrice(saved.price || "");setVatIncluded(!!saved.vatIncluded);setDeliveryIncluded(!!saved.deliveryIncluded);}} catch {}
     }
     setDraftLoaded(true);
     }, 0);
@@ -52,8 +54,8 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   }, [requestId, existing]);
   useEffect(() => {
     if (!draftLoaded || existing) return;
-    try {localStorage.setItem(`meetany.offerDraft.${requestId}`, JSON.stringify({body, deliveryDays}));} catch {}
-  }, [requestId, body, deliveryDays, draftLoaded, existing]);
+    try {localStorage.setItem(`meetany.offerDraft.${requestId}`, JSON.stringify({body, deliveryDays,priceType,price,vatIncluded,deliveryIncluded}));} catch {}
+  }, [requestId, body, deliveryDays, priceType, price, vatIncluded, deliveryIncluded, draftLoaded, existing]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,11 +64,15 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
     if (body.trim().length < 10) errors["of-body"] = body.trim() ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე შენი შეთავაზება";
     const days = Number(deliveryDays);
     if (deliveryDays.trim() && (!Number.isInteger(days) || days < 0 || days > 365)) errors["of-days"] = "მიწოდების ვადა უნდა იყოს 0-დან 365 დღემდე";
-    if (!v.check(errors, ["of-days", "of-body"])) return;
+    if(priceType!=="negotiable") {
+      const amount=Number(price.trim().replace(",","."));
+      if(!/^\d+(?:[.,]\d{1,2})?$/.test(price.trim()) || amount<=0 || amount>1000000000)errors["of-price"]="მიუთითე ფასი ლარში, მაქსიმუმ ორი ათწილადი ნიშნით";
+    }
+    if (!v.check(errors, ["of-price", "of-days", "of-body"])) return;
     setPending(true);
     setError(null);
     try {
-      await store.sendOffer(requestId, { deliveryDays: deliveryDays || undefined, body });
+      await store.sendOffer(requestId, { deliveryDays: deliveryDays || undefined, body, priceType, price:priceType==="negotiable"?undefined:price, vatIncluded, deliveryIncluded });
       try { localStorage.removeItem(`meetany.offerDraft.${requestId}`); } catch {}
       toast(existing ? "შეთავაზება განახლდა." : "შეთავაზება გაიგზავნა.");
       onDone();
@@ -79,6 +85,9 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
 
   return (
     <form className="ma-form" onSubmit={submit} noValidate>
+      <div className="ma-field"><label className="ma-field__label" htmlFor="of-price-type">ფასი</label><CustomSelect id="of-price-type" className="ma-select" value={priceType} onChange={e=>{setPriceType(e.target.value);v.clear("of-price");}}><option value="negotiable">შეთანხმებით</option><option value="total">ჯამური ფასი</option><option value="unit">ერთეულის ფასი</option></CustomSelect></div>
+      {priceType!=="negotiable"?<><div className="ma-field"><label className="ma-field__label" htmlFor="of-price">თანხა ლარში (₾) *</label><input className="ma-input" inputMode="decimal" value={price} onChange={e=>{setPrice(e.target.value);v.clear("of-price");}} {...v.control("of-price")}/>{v.message("of-price")}<small className="ma-note">ერთეულის ფასის შემთხვევაში აღწერაში მიუთითე ერთეული.</small></div><label className="ma-check"><input type="checkbox" checked={vatIncluded} onChange={e=>setVatIncluded(e.target.checked)}/>დღგ ფასში შედის</label></>:null}
+      <label className="ma-check"><input type="checkbox" checked={deliveryIncluded} onChange={e=>setDeliveryIncluded(e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="of-days">
           მიწოდება (დღე) <span className="ma-field__opt">არასავალდებულო</span>
@@ -90,7 +99,7 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
         <label className="ma-field__label" htmlFor="of-body">
           შეთავაზების აღწერა *
         </label>
-        <textarea className="ma-textarea" required minLength={10} maxLength={2000} value={body} onChange={(e) => {setBody(e.target.value); v.clear("of-body");}} {...v.control("of-body")} />
+        <textarea className="ma-textarea" placeholder="რა შედის შეთავაზებაში, გადახდის პირობები, გარანტია და სხვა დეტალები" required minLength={10} maxLength={2000} value={body} onChange={(e) => {setBody(e.target.value); v.clear("of-body");}} {...v.control("of-body")} />
         {v.message("of-body")}
       </div>
       {error ? (
@@ -157,7 +166,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     const isOwner = !!me && r.ownerId === me.id;
     const myOffer = me?.role === "company" ? offers.find((o: { companyUserId: string }) => o.companyUserId === me.id) : null;
     const contact = store.contactFor(r, me);
-    const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; deliveryDays: number | null; body: string; status: string }): OfferCardData => {
+    const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; deliveryDays: number | null; price: number | null; priceType: string; vatIncluded: boolean; deliveryIncluded: boolean; body: string; status: string }): OfferCardData => {
       const c = store.userById(o.companyUserId);
       const isNew = isOwner && seen?.id === id && (!seen.at || Date.parse(o.createdAt) > Date.parse(seen.at)) && o.status === "sent";
       return {
@@ -169,6 +178,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         city: c ? cities[c.city] || c.city : "",
         createdAt: o.createdAt,
         deliveryDays: o.deliveryDays,
+        price:o.price,priceType:o.priceType,vatIncluded:o.vatIncluded,deliveryIncluded:o.deliveryIncluded,
         body: o.body,
         status: o.status,
         isNew,
@@ -259,7 +269,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               {isOwner && chosenCompanyId ? <MessageButton companyId={chosenCompanyId} requestId={r.id}/> : null}
             </section>
           ) : null}
-          {compare && offers.length > 1 ? <div className="ma-table-wrap"><table className="ma-table"><caption>შეთავაზებების შედარება</caption><thead><tr><th>კომპანია</th><th>მიწოდება</th><th>პირობები</th></tr></thead><tbody>{orderedOffers.map(o => <tr key={o.id}><td data-label="კომპანია">{o.companyName}</td><td data-label="მიწოდება">{o.deliveryDays != null ? `${o.deliveryDays} დღე` : "დასაზუსტებელია"}</td><td data-label="პირობები">{o.body}</td></tr>)}</tbody></table></div> : null}
+          {compare && offers.length > 1 ? <section className="offer-comparison" aria-label="შეთავაზებების შედარება">{orderedOffers.map(o=><article className="offer-comparison__card" key={o.id}><header><h3><Link href={o.companyHref}>{o.companyName}</Link></h3>{o.status==="chosen"?<span className="ma-badge ma-badge--success">არჩეულია</span>:null}</header><dl className="offer-terms"><div><dt>ფასი</dt><dd>{offerPrice(o)}</dd></div><div><dt>მიწოდება</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div><div><dt>დღგ</dt><dd>{o.price==null?"დასაზუსტებელია":o.vatIncluded?"ფასში შედის":"ფასში არ შედის"}</dd></div><div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div></dl><details><summary>სრული პირობები</summary><p>{o.body}</p></details><footer><Button variant="secondary" href={o.companyHref}>კომპანიის ნახვა</Button>{isOwner&&!r.chosenOfferId&&state==="open"&&o.status==="sent"?<Button variant="primary" onClick={()=>setChooseId(o.id)}>შეთავაზების არჩევა</Button>:null}</footer></article>)}</section> : null}
           {offers.length === 0 ? (
             <div className="ma-empty">
               <h2 className="ma-empty__title">ჯერ შეთავაზება არ მიგიღია</h2>

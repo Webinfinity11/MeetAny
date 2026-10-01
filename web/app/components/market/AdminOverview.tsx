@@ -101,7 +101,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   const kpis: { key: string; label: string; value: number; delta?: { current: number; previous: number }; href: string }[] = [
     { key: "users", label: "მომხმარებლები", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
     { key: "companies", label: "კომპანიები", value: stats.companies, href: "/admin/?tab=users&role=company" },
-    { key: "open", label: "ღია მოთხოვნები", value: stats.open, delta: requestWeek, href: "/admin/?tab=requests&status=open" },
+    { key: "open", label: "ღია მოთხოვნები", value: stats.open, href: "/admin/?tab=requests&status=open" },
     { key: "offers", label: "შეთავაზებები", value: stats.offers, href: "/admin/?tab=offers" },
     { key: "chosen", label: "არჩეული მომწოდებლები", value: stats.chosen, href: "/admin/?tab=requests&status=chosen" },
     { key: "verified", label: "დადასტურებული კომპანიები", value: stats.verified, href: "/admin/?tab=users&role=company&status=verified" },
@@ -112,7 +112,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
       {[kpis[2], kpis[3], kpis[1], kpis[0]].map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
         <span className={styles.kpiLabel}>{k.label}</span>
         <strong className={styles.kpiValue}>{k.value ?? "—"}</strong>
-        {k.delta ? <Delta {...k.delta} /> : <span className={styles.delta}>ნახვა<Icon name="arrow-right" /></span>}
+        <span className={styles.delta}>საერთო რაოდენობა<Icon name="arrow-right" /></span>
       </Link>)}
     </div>
 
@@ -125,7 +125,8 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
         {recentUsers ? <DailyBars title="ახალი რეგისტრაციები" rows={perDay(userDates, days)} />
           : <div className={styles.chartEmpty}>{failed ? "რეგისტრაციები ვერ ჩაიტვირთა." : "იტვირთება…"}</div>}
       </div>
-      <p className={styles.note}>სატესტო ანგარიშების გარეშე</p>
+      <p className={styles.note}>ბოლო 30 დღე · სატესტო ანგარიშების გარეშე. საერთო რაოდენობები ზემოთ სატესტო და სადემო ჩანაწერებსაც მოიცავს.</p>
+      <div className={styles.overviewSecondary}><span>ახალი მოთხოვნები <Delta {...requestWeek}/></span>{recentUsers?<span>რეგისტრაციები <Delta {...userWeek}/></span>:null}</div>
     </section>
 
     <section className={styles.panel} aria-labelledby="attention-heading">

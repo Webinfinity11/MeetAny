@@ -9,6 +9,7 @@
 import { verifyCaller } from './neon-jwt.js';
 import { asCaller, isConnectionError } from './db.js';
 import { invalidatePublicSnapshot } from './public-snapshot.js';
+import { rpcValue } from './rpc-value.js';
 import { TABLES, tableQuery } from './table-query.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
@@ -77,7 +78,7 @@ async function rpcCall(db, name, args) {
   for (const k of keys) {
     const type = fn.types[fn.names.indexOf(k)];
     const v = args[k];
-    values.push(v !== null && typeof v === 'object' && !Array.isArray(v) ? JSON.stringify(v) : v);
+    values.push(rpcValue(v, type));
     named.push(`${q(k)} => $${values.length}::${type}`);
   }
   const call = `public.${q(name)}(${named.join(', ')})`;
