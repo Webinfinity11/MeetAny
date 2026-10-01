@@ -25,7 +25,9 @@ try {
  await p.getByRole('button',{name:'პროდუქტის ამოღება',exact:true}).click();
  await p.getByRole('button',{name:'პროდუქტების შენახვა',exact:true}).click();
  await p.waitForTimeout(1500);assert.deepEqual(products,[]);assert.deepEqual(errors,[]);
+ await p.mouse.move(0,0);
  await p.evaluate(()=>document.documentElement.style.setProperty('--action-primary','#123456'));
+ await p.waitForTimeout(250);
  assert(await p.locator('.ma-btn--primary').evaluateAll(nodes=>nodes.length>0&&nodes.every(el=>getComputedStyle(el).backgroundColor==='rgb(18, 52, 86)')),'primary token propagation');
  fs.mkdirSync('qa/shots/finish-1001',{recursive:true});await p.setViewportSize({width:390,height:844});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  await p.screenshot({path:'qa/shots/finish-1001/business-390.png',fullPage:true});
