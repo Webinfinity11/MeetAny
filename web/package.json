@@ -6,11 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint && npm run lint:design",
     "test": "node --test qa/unit/*.test.mjs",
     "e2e": "node qa/e2e/run.mjs",
     "visual:baseline": "node qa/visual/run.mjs --update",
-    "visual:diff": "node qa/visual/run.mjs"
+    "visual:diff": "node qa/visual/run.mjs",
+    "lint:design": "node scripts/lint-design.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

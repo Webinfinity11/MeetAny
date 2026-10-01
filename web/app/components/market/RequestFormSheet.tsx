@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { trapDialogFocus } from "../ui/dialog-focus";
 
@@ -344,10 +346,10 @@ export function RequestFormSheet({
         <button className="request-form__cancel" type="button" onClick={close}>
           გაუქმება
         </button>
-        {checked && !sessionPending && !signedIn ? <Link className="ma-btn ma-btn--primary" onClick={keepDraft} href={`/account/?next=${next}`}><Icon name="user-round" />შესვლა და გაგრძელება</Link> : checked && !sessionPending ? (
-          <button className="ma-btn ma-btn--primary" type="submit" form="new-request-form" disabled={pending || !signedIn}>
+        {checked && !sessionPending && !signedIn ? <Button variant="primary" onClick={keepDraft} href={`/account/?next=${next}`}><Icon name="user-round" />შესვლა და გაგრძელება</Button> : checked && !sessionPending ? (
+          <Button variant="primary" type="submit" form="new-request-form" disabled={pending || !signedIn}>
             {pending ? "იგზავნება…" : existing ? "შენახვა" : "გამოქვეყნება"}
-          </button>
+          </Button>
         ) : null}
       </footer>
     </dialog>

@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { trapDialogFocus } from "../ui/dialog-focus";
 
@@ -37,7 +39,7 @@ export function MessageButton({ companyId, requestId }: { companyId: string; req
   const sessionReady = useSessionReady(store);
   const me = ready && sessionReady ? store?.currentUser() : null;
   if (me?.role === "admin" || (me?.id === companyId && !requestId)) return null;
-  return <button type="button" className="ma-btn ma-btn--secondary" disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => {
+  return <Button type="button" variant="secondary" disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => {
     if (!me) {
       const next = window.location.pathname + window.location.search + window.location.hash;
       toast("მიწერისთვის შედი ანგარიშში.");
@@ -45,7 +47,7 @@ export function MessageButton({ companyId, requestId }: { companyId: string; req
       return;
     }
     openChat({ companyId, requestId });
-  }}><Icon name={me || !sessionReady ? "message-square" : "user-round"}/>{me || !sessionReady ? "მიწერა" : "შედი ანგარიშში და მიწერე"}</button>;
+  }}><Icon name={me || !sessionReady ? "message-square" : "user-round"}/>{me || !sessionReady ? "მიწერა" : "შედი ანგარიშში და მიწერე"}</Button>;
 }
 
 export function ChatUnreadLink() {
@@ -128,7 +130,7 @@ function ChatList({ store, owner, role, onSelect, onClose }: { store: Store; own
   return <dialog ref={dialog} className="ma-chat ma-chat--dock" aria-labelledby="ma-chat-list-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
     <header className="ma-chat__head"><div><h2 id="ma-chat-list-title">მიმოწერები</h2><span>ყველა საუბარი ერთ სივრცეში</span></div><Link className="ma-chat__close" href="/account/?tab=messages" onClick={onClose} aria-label="მიმოწერების სრულად გახსნა"><Icon name="layout-grid" /></Link><button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x" /></button></header>
     <div className="ma-chat-list" aria-busy={!current}>
-      {!current ? <p className="ma-chat-list__note" role="status">მიმოწერები იტვირთება…</p> : current.error && !current.items ? <div className="ma-chat-list__note" role="alert"><p>მიმოწერები ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={retry}>ხელახლა ცდა</button></div> : !current.items?.length ? <div className="ma-chat-list__note"><p>მიმოწერა ჯერ არ გაქვს.</p><Link className="ma-btn ma-btn--secondary" href={role === "company" ? "/requests/" : "/companies/"}><Icon name={role === "company" ? "clipboard-list" : "building-2"} />{role === "company" ? "მოთხოვნების ნახვა" : "კომპანიების ნახვა"}</Link></div> : <ul>{current.items.map((c: Conversation) => {
+      {!current ? <p className="ma-chat-list__note" role="status">მიმოწერები იტვირთება…</p> : current.error && !current.items ? <div className="ma-chat-list__note" role="alert"><p>მიმოწერები ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : !current.items?.length ? <div className="ma-chat-list__note"><p>მიმოწერა ჯერ არ გაქვს.</p><Button variant="secondary" href={role === "company" ? "/requests/" : "/companies/"}><Icon name={role === "company" ? "clipboard-list" : "building-2"} />{role === "company" ? "მოთხოვნების ნახვა" : "კომპანიების ნახვა"}</Button></div> : <ul>{current.items.map((c: Conversation) => {
         const other = c.otherId || (c.clientId === owner ? c.companyId : c.clientId);
         const name = c.otherCompany || c.otherName || "მომხმარებელი";
         return <li key={c.id}><button type="button" className="ma-chat-list__row" data-unread={c.unreadCount > 0 || undefined} onClick={() => onSelect({ companyId: c.companyId, requestId: c.requestId || undefined, conversation: c })}>
@@ -168,7 +170,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
       <label className="ma-sr-only" htmlFor="ma-chat-body">შეტყობინება</label>
       <textarea ref={input} id="ma-chat-body" className="ma-textarea" rows={2} maxLength={2000} value={body} readOnly={pending} aria-describedby="ma-chat-count" placeholder="დაწერე შეტყობინება…" onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(); } }}/>
       {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
-      <div className="ma-chat__composer-foot"><span id="ma-chat-count">{body.length} / 2000</span><button className="ma-btn ma-btn--primary" type="submit" disabled={!loaded || !body.trim() || pending}>{pending ? "იგზავნება…" : "გაგზავნა"}<Icon name="send"/></button></div>
+      <div className="ma-chat__composer-foot"><span id="ma-chat-count">{body.length} / 2000</span><Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}>{pending ? "იგზავნება…" : "გაგზავნა"}<Icon name="send"/></Button></div>
     </form>
   </dialog>;
 }

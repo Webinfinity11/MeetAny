@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -7,6 +9,7 @@ import type { Store } from "../../lib/market-client";
 import { categories } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
 import { isTestAccount, lastDays, perDay, windowCounts } from "../../lib/admin-helpers";
+import { AdminMarketMetrics } from "./AdminMarketMetrics";
 import styles from "./admin.module.css";
 
 type Stats = Record<string, number>;
@@ -113,6 +116,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
       </Link>)}
     </div>
 
+    <AdminMarketMetrics store={store} />
     <section className={styles.panel} aria-labelledby="activity-heading">
       <header className={styles.panelHead}><h2 id="activity-heading">აქტივობა · ბოლო 30 დღე</h2><span>სატესტო ანგარიშების გარეშე</span></header>
       <div className={styles.charts}>
@@ -134,7 +138,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
                 <strong>{u.company || u.name}</strong>
                 <small>{categories[u.industry || ""] || u.industry || "კომპანია"}</small>
               </button>
-              <button type="button" className="ma-btn ma-btn--secondary" onClick={() => onVerify({ id: u.id, label: u.company || u.name })}>დადასტურება</button>
+              <Button type="button" variant="secondary" onClick={() => onVerify({ id: u.id, label: u.company || u.name })}>დადასტურება</Button>
             </li>)}
           </ul>
           {(pending?.length || 0) > 6 ? <Link className={styles.queueMore} href="/admin/?tab=users&role=company">ყველა ({pending!.length})<Icon name="arrow-right" /></Link> : null}

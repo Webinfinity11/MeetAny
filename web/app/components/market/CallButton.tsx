@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "../ui/Button";
 import { useEffect, useRef, useState } from "react";
 import { getMarketStore } from "../../lib/market-client";
 import { Icon } from "../Icon";
@@ -28,15 +29,15 @@ export function CallButton({ phone, variant = "primary", contactId, requestId, s
     const targetId = targetKind === "request" ? requestId : contactId;
     if (targetId) void getMarketStore().logContactEvent(targetKind, targetId, action, source);
   };
-  const className = `ma-btn ma-btn--${variant} ma-call`;
 
-  if (!visible) return <button type="button" className={className} data-contact-action="reveal" onClick={() => {
+
+  if (!visible) return <Button type="button" variant={variant} className="ma-call" data-contact-action="reveal" onClick={() => {
     setRevealed(identity);
     report("reveal");
-  }}><Icon name="phone" /><span>დარეკვა</span></button>;
+  }}><Icon name="phone" /><span>დარეკვა</span></Button>;
 
   // Revealed: just the number — the phone icon already says "call", and the old label did not fit card footers.
-  return <a ref={link} className={className} data-contact-action="call" href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} onClick={() => report("call")}>
+  return <Button ref={link} variant={variant} className="ma-call" data-contact-action="call" href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} onClick={() => report("call")}>
     <Icon name="phone" /><span className="ma-call__number">{phone}</span>
-  </a>;
+  </Button>;
 }

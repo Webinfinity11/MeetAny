@@ -65,6 +65,7 @@ function fixture(t, { signedIn = true } = {}) {
       return reply({ token: token(url.pathname.endsWith('/anonymous') ? 'anonymous' : 'authenticated') });
     }
     const rpc = url.pathname.split('/rpc/')[1], args = options.body ? JSON.parse(options.body) : {};
+    if (rpc === 'set_my_products') return reply(args.p_items);
     if (rpc === 'my_profile') return reply(me);
     if (rpc === 'company_stats') return reply(args.ids.map(id => ({ company_id: id, offers_sent: 7, offers_chosen: 2 })));
     if (rpc === 'offer_counts') return reply(args.ids.map(id => ({ request_id: id, offers: 1105 })));
@@ -125,4 +126,11 @@ test('company detail works without the catalog, distinguishes missing/error, and
   f.setFailDetail();
   await assert.rejects(store.ensureCompany(uuid(1105)));
   assert.equal(store.getCompany(uuid(1105)).company, 'Newer name');
+});
+
+test('saving products preserves the complete JSON array, including empty lists', async t => {
+  fixture(t); const store=createMarketStore({background:false});
+  const products=[{name:'Chair',photoUrl:'https://example.test/chair.jpg'},{name:'Desk',photoUrl:'https://example.test/desk.jpg'}];
+  assert.deepEqual(await store.setMyProducts(products),products);
+  assert.deepEqual(await store.setMyProducts([]),[]);
 });

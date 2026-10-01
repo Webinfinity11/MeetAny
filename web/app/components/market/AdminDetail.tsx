@@ -1,7 +1,8 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Sheet } from "../ui/Sheet";
 import type { Store } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
@@ -98,9 +99,9 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
         </section> : null}
       </div>;
       footer = <div className={styles.detailActions}>
-        {user.role === "company" ? <Link className="ma-btn ma-btn--ghost" href={`/companies/view/?id=${user.id}`} target="_blank">საჯარო გვერდი</Link> : null}
-        {user.role === "company" ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => onAction({ kind: "users", action: user.verified ? "unverify" : "verify", id: user.id, label })}>{user.verified ? "დადასტურების მოხსნა" : "დადასტურება"}</button> : null}
-        {user.role !== "admin" ? <button type="button" className="ma-btn ma-btn--danger-quiet" onClick={() => onAction({ kind: "users", action: user.blocked ? "unblock" : "block", id: user.id, label })}>{user.blocked ? "განბლოკვა" : "დაბლოკვა"}</button> : null}
+        {user.role === "company" ? <Button variant="ghost" href={`/companies/view/?id=${user.id}`} target="_blank">საჯარო გვერდი</Button> : null}
+        {user.role === "company" ? <Button type="button" variant="secondary" onClick={() => onAction({ kind: "users", action: user.verified ? "unverify" : "verify", id: user.id, label })}>{user.verified ? "დადასტურების მოხსნა" : "დადასტურება"}</Button> : null}
+        {user.role !== "admin" ? <Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "users", action: user.blocked ? "unblock" : "block", id: user.id, label })}>{user.blocked ? "განბლოკვა" : "დაბლოკვა"}</Button> : null}
       </div>;
     }
   } else if (target?.kind === "request") {
@@ -123,9 +124,9 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
         </dl>
       </div>;
       footer = <div className={styles.detailActions}>
-        <Link className="ma-btn ma-btn--ghost" href={`/requests/view/?id=${request.id}`} target="_blank">საჯარო გვერდი</Link>
-        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => onAction({ kind: "requests", action: request.hidden ? "unhide" : "hide", id: request.id, label: request.title })}>{request.hidden ? "გამოჩენა" : "დამალვა"}</button>
-        <button type="button" className="ma-btn ma-btn--danger-quiet" onClick={() => onAction({ kind: "requests", action: "delete", id: request.id, label: request.title })}>წაშლა</button>
+        <Button variant="ghost" href={`/requests/view/?id=${request.id}`} target="_blank">საჯარო გვერდი</Button>
+        <Button type="button" variant="secondary" onClick={() => onAction({ kind: "requests", action: request.hidden ? "unhide" : "hide", id: request.id, label: request.title })}>{request.hidden ? "გამოჩენა" : "დამალვა"}</Button>
+        <Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "requests", action: "delete", id: request.id, label: request.title })}>წაშლა</Button>
       </div>;
     }
   }

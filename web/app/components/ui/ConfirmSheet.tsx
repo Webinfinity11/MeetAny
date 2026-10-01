@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "./Button";
+
 
 import { trapDialogFocus } from "./dialog-focus";
 
@@ -64,12 +66,12 @@ export function ConfirmSheet({
         ) : null}
       </div>
       <footer className="ma-sheet__footer">
-        <button className="ma-btn ma-btn--secondary" type="button" onClick={() => ref.current?.close()}>
+        <Button variant="secondary" type="button" onClick={() => ref.current?.close()}>
           გაუქმება
-        </button>
-        <button className={`ma-btn ${danger ? "ma-btn--danger" : "ma-btn--primary"}`} type="button" disabled={pending} onClick={onConfirm}>
+        </Button>
+        <Button variant={danger ? "danger" : "primary"} type="button" disabled={pending} onClick={onConfirm}>
           {pending ? pendingLabel : confirmLabel}
-        </button>
+        </Button>
       </footer>
     </dialog>
   );

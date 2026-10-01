@@ -15,7 +15,8 @@ const FILE = path.join(ROOT, '..', 'DEMO-ACCOUNTS.local.md');
 const LOCK = FILE + '.lock';
 const BASE = process.env.DEMO_API_ORIGIN || 'http://localhost:3000';
 const UPLOAD = process.env.DEMO_UPLOAD_ORIGIN || BASE;
-const VERIFY = process.argv.includes('--verify');
+const REFRESH_DATES = process.argv.includes('--refresh-dates');
+const VERIFY = process.argv.includes('--verify') || REFRESH_DATES;
 const DRY = process.argv.includes('--dry-run');
 for (const line of fs.readFileSync(path.join(ROOT, '.env.local'), 'utf8').split(/\r?\n/)) {
   const m = /^([A-Z0-9_]+)\s*=\s*(.*?)\s*$/.exec(line);
@@ -330,6 +331,22 @@ async function backdate() {
   assert.equal(u1.length,rq.length);assert.equal(u2.length,of.length);assert.equal(u4.length,jn.length);assert.equal(u5.length,qa[0].n);
   console.log('SQL:',JSON.stringify({requests:u1.length,offers:u2.length,phones:u3.length,joined:u4.length,chat:u5.length}));
 }
+// Refresh only the explicit demo timeline. Content, photos, accounts and messages stay intact.
+async function refreshDates() {
+  assert(state.v2,'Missing v2 demo inventory');
+  const sql=sqlClient();
+  const rq=requests.map(r=>({id:state.v2.requests[r.key],owner:state.accounts[r.owner].id,title:r.title,age:r.age,left:r.left}));
+  const jn=accounts.filter(a=>a.role==='company').map(a=>({id:state.accounts[a.key].id,email:a.email,days:JOINED[a.key]}));
+  const of=offers.map(o=>({request:state.v2.requests[o.request],company:state.accounts[o.company].id,age:requests.find(r=>r.key===o.request).age-o.after}));
+  const [check]=await sql`select count(*)::int n from public.requests t join jsonb_to_recordset(${JSON.stringify(rq)}::jsonb) v(id uuid,owner uuid,title text) on t.id=v.id and t.owner_id=v.owner and t.title=v.title`;
+  assert.equal(check.n,rq.length,'Demo identity check failed');
+  const changed=await sql.transaction([
+    sql`update public.requests t set created_at=now()-make_interval(hours=>v.age),expires_at=now()+make_interval(days=>v."left") from jsonb_to_recordset(${JSON.stringify(rq)}::jsonb) v(id uuid,owner uuid,title text,age int,"left" int) where t.id=v.id and t.owner_id=v.owner and t.title=v.title returning t.id`,
+    sql`update public.offers t set created_at=now()-make_interval(hours=>v.age) from jsonb_to_recordset(${JSON.stringify(of)}::jsonb) v(request uuid,company uuid,age int) where t.request_id=v.request and t.company_id=v.company returning t.id`,
+    sql`update public.profiles t set created_at=now()-make_interval(days=>v.days) from jsonb_to_recordset(${JSON.stringify(jn)}::jsonb) v(id uuid,email text,days int) where t.id=v.id and t.email=v.email returning t.id`,
+  ]);
+  console.log('Demo timeline refreshed:',JSON.stringify(changed.map(rows=>rows.length)));
+}
 async function verify() {
   for(const a of accounts) {
     if(!a.jwt) await login(a);
@@ -370,7 +387,7 @@ async function verify() {
   assert(OLD_COMPANIES.every(n=>!listed.some(c=>c.company===n)),'Old QA company still listed');
   const companies=accounts.filter(a=>a.role==='company');
   assert(companies.every(a=>listed.some(c=>c.id===a.id)));
-  const industries={};for(const c of listed)industries[c.industry]=(industries[c.industry]||0)+1;
+  const industries={};for(const c of listed.filter(c=>companies.some(a=>a.id===c.id)))industries[c.industry]=(industries[c.industry]||0)+1;
   assert.deepEqual(industries,INDUSTRY_COUNTS,'Industry counts');
   for(const a of companies) {
     const c=listed.find(c=>c.id===a.id);
@@ -382,7 +399,7 @@ async function verify() {
   const sent={};for(const o of offers)sent[o.company]=(sent[o.company]||0)+1;
   assert(companies.filter(a=>!sent[a.key]).length>=1,'Some company should have sent no offer');
   assert(Object.values(counts).every(n=>n<=2),'Offer counts repeat on three requests');
-  assert.equal((await sqlClient()`select count(*)::int n from meetany_private.messages where body like ${QA_CHAT} or body like '%ტესტ%'`)[0].n,0,'QA chat text left');
+  assert.equal((await sqlClient()`select count(*)::int n from meetany_private.messages m join meetany_private.conversations c on c.id=m.conversation_id where c.request_id=any(${ids}::uuid[]) and (m.body like ${QA_CHAT} or m.body like '%ტესტ%')`)[0].n,0,'QA chat text left');
   assert.equal((await oldData(await ownerAdmin())).reqs.length,0,'Old QA request still present');
   const phones=accounts.map(a=>a.phone);assert.equal(new Set(phones).size,phones.length);
   for(const key of ['hotel',CHOSEN.company]) assert.equal((await rpc(byKey(key),'contact_for_request',{p_request_id:state.v2.requests[CHOSEN.request]})).length,1);
@@ -397,6 +414,7 @@ async function main() {
     if(DRY) return await plan();
     if(VERIFY) assert(state.v2 && NEW_KEYS.every(k=>state.accounts[k]),'Run seed-demo-v2 first');
     else await seed();
+    if(REFRESH_DATES) await refreshDates();
     await verify();
   } finally {fs.unlinkSync(LOCK);}
 }

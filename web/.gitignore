@@ -43,3 +43,6 @@ next-env.d.ts
 # Local QA captures and generated reports
 /qa/shots/*
 /qa/*-report.json
+
+/qa/links-first.json
+/qa/links-second.json

@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "./ui/Button";
+
 
 import { useCompanyFeatures, type BusinessFeature } from "../lib/business-client";
 import { BusinessMarks } from "./market/CompanyBusiness";
@@ -22,7 +24,7 @@ export function HomeJoin() {
   const company = me?.role === "company";
   return <section className="home-join home-wrap"><div className="home-join__panel">
     <div><h2>{company ? "ნახე, რას ეძებენ სხვა ბიზნესები" : me ? "იპოვე პარტნიორი შენი ბიზნესისთვის" : "გააცანი შენი კომპანია სხვა ბიზნესებს"}</h2><p>{company ? "ღია მოთხოვნებზე შეთავაზების გაგზავნა უფასოა." : me ? "მოძებნე კომპანია დარგისა და ქალაქის მიხედვით." : "დაარეგისტრირე კომპანია, მიიღე მოთხოვნები შენს დარგში და გაუგზავნე შეთავაზებები."}</p></div>
-    <Link className="ma-btn ma-btn--lg home-join__cta" href={company ? "/requests/" : me ? "/companies/" : "/account/?tab=register&role=company"}>{company ? "ღია მოთხოვნების ნახვა" : me ? "კომპანიების მოძებნა" : "კომპანიის რეგისტრაცია"}<Icon name={company ? "clipboard-list" : me ? "search" : "building-2"} /></Link>
+    <Button variant="base" size="lg" className="home-join__cta" href={company ? "/requests/" : me ? "/companies/" : "/account/?tab=register&role=company"}>{company ? "ღია მოთხოვნების ნახვა" : me ? "კომპანიების მოძებნა" : "კომპანიის რეგისტრაცია"}<Icon name={company ? "clipboard-list" : me ? "search" : "building-2"} /></Button>
   </div></section>;
 }
 
@@ -157,7 +159,7 @@ export function HomeRequestStarter() {
   }
   return <form className="request-starter-form" onSubmit={start} noValidate>
     <div className="ma-field"><label className="ma-field__label" htmlFor="starter-title">რა პროდუქტი ან მომსახურება გჭირდება?</label><input ref={titleRef} id="starter-title" className="ma-input" value={title} onChange={e => {setTitle(e.target.value);setError("");}} maxLength={120} placeholder="მაგ. 20 სამუშაო მაგიდა ოფისისთვის" aria-describedby={error ? "starter-error" : undefined} required /></div>
-    <div className="request-starter-bottom"><div className="ma-field"><label className="ma-field__label" htmlFor="starter-city">რომელ ქალაქში?</label><CustomSelect ref={cityRef} id="starter-city" className="ma-select" value={city} onChange={e => {setCity(e.target.value);setError("");}} aria-describedby={error ? "starter-error" : undefined} required><option value="">აირჩიე ქალაქი</option>{Object.entries(cities).map(([id,name]) => <option key={id} value={id}>{name}</option>)}</CustomSelect></div><button className="ma-btn ma-btn--primary ma-btn--lg" type="submit">გაგრძელება</button></div>
+    <div className="request-starter-bottom"><div className="ma-field"><label className="ma-field__label" htmlFor="starter-city">რომელ ქალაქში?</label><CustomSelect ref={cityRef} id="starter-city" className="ma-select" value={city} onChange={e => {setCity(e.target.value);setError("");}} aria-describedby={error ? "starter-error" : undefined} required><option value="">აირჩიე ქალაქი</option>{Object.entries(cities).map(([id,name]) => <option key={id} value={id}>{name}</option>)}</CustomSelect></div><Button variant="primary" size="lg" type="submit">გაგრძელება</Button></div>
     {error ? <p className="request-starter-error" id="starter-error" role="alert">{error}</p> : null}
     <p className="request-starter-note">შემდეგ ნაბიჯზე დაამატებ დეტალებს. მოთხოვნა მხოლოდ შენი დადასტურების შემდეგ გამოქვეყნდება.</p>
   </form>;

@@ -1,6 +1,6 @@
 import { assert, rpc, db } from '../lib.mjs';
 import { offerAndChat } from './company.mjs';
-export default async function(t) {
+export default async function messaging(t) {
   const company = await t.page('wood'), client = await t.page('hotel');
   const request = await t.fixture(client, 'მიმოწერა');
   await offerAndChat(t, company, client, request);

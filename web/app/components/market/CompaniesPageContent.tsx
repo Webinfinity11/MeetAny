@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import Link from "next/link";
 
@@ -28,7 +30,9 @@ const CompaniesMap = dynamic(() => import("./CompaniesMap").then(m => m.Companie
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
 import { useFilters } from "../../lib/use-filters";
-import { useCompanyFeatures } from "../../lib/business-client";
+import { matchesDistribution } from "../../lib/distribution-filter";
+import { distributionChannels, type Distribution } from "../../lib/distribution";
+import { useBusinessResource, useCompanyFeatures } from "../../lib/business-client";
 import { BusinessError } from "./CompanyBusiness";
 import { fetchPhones } from "../../lib/phones";
 
@@ -74,6 +78,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const featureById = useMemo(() => new Map(business.data?.map(f => [f.id, f]) || []), [business.data]);
   const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "recommended");
   const paid = filters.get("plan") === "paid";
+  const distribution = useBusinessResource<Distribution[]>(ready && type === "distributors" ? store?.companyDistributionProfiles : undefined, "distribution");
+  const distributionById = useMemo(() => new Map(distribution.data?.map(d => [d.id, d]) || []), [distribution.data]);
+  const channels = filters.get("channels"), product = filters.get("product"), warehouse = filters.get("warehouse"), transport = filters.get("transport"), cold = filters.get("cold");
   // A chosen city means "serves it" (own city, service cities or all Georgia); "office" narrows to
   // companies based there, for when the buyer needs to visit in person.
   const office = !!city && city !== "georgia" && filters.get("office") === "1";
@@ -86,10 +93,14 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const list = useCallback(
     (overrides: Partial<{ industry: string; city: string }>) => {
       const where = overrides.city ?? city;
-      return (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type: type === "distributors" ? "" : type, q: query, ...overrides })
+      return (store?.listCompanies as (args: unknown) => MappedCompany[])?.({ industry, city, type: type === "distributors" ? "" : type, q: type === "distributors" ? "" : query, ...overrides })
+        ?.filter(c => {
+          if (type !== "distributors") return true;
+          return matchesDistribution(c, distributionById.get(c.id), {query,product,channels,warehouse,transport,cold}, categories);
+        })
         ?.filter(c => (type !== "distributors" || featureById.get(c.id)?.distributor) && (!coverage || c.city === "georgia" || c.serviceCities?.includes("georgia")) && (!office || !where || c.city === where) && (!paid || !!featureById.get(c.id)?.plan)) || [];
     },
-    [store, industry, city, query, type, coverage, office, paid, featureById],
+    [store, industry, city, query, type, coverage, office, paid, featureById, distributionById, channels, product, warehouse, transport, cold],
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
@@ -158,6 +169,13 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   }, [results, store, phones, sort, featureById]);
 
   const activeItems = [
+    ...(type === "distributors" ? [
+      ...(product ? [{key:"product",label:categories[product]||product}] : []),
+      ...(channels ? [{key:"channels",label:channels.split(",").map(c=>distributionChannels[c]||c).join(", ")}] : []),
+      ...(warehouse ? [{key:"warehouse",label:"საკუთარი საწყობი"}] : []),
+      ...(transport ? [{key:"transport",label:"საკუთარი ტრანსპორტი"}] : []),
+      ...(cold ? [{key:"cold",label:"გაცივებული მიწოდება"}] : []),
+    ] : []),
     ...(type ? [{key:"type",label:({distributors:"დისტრიბუტორები",suppliers:"მომწოდებლები",services:"მომსახურება",partners:"პარტნიორები"} as Record<string,string>)[type] || type}] : []),
     ...(coverage ? [{key: "coverage", label: "მთელი საქართველო"}] : []),
     ...(paid ? [{key: "plan", label: "Premium და VIP"}] : []),
@@ -169,7 +187,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
     else if (key === "city") setCity("");
     else filters.set({[key]: ""});
   };
-  const clearFilters = () => filters.set({industry: "", city: "", office: "", verified: "", q: "", type: "", coverage: "", plan: "", sort: ""});
+  const clearFilters = () => filters.set({industry: "", city: "", office: "", verified: "", q: "", type: "", coverage: "", plan: "", sort: "", channels:"", product:"", warehouse:"", transport:"", cold:""});
   const filterCount = activeItems.length;
   const mapView = filters.get("view") === "map";
   const mapped: MapCompany[] = useMemo(() => rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat as number, lng: c.lng as number })), [rows]);
@@ -189,6 +207,12 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         {filterCount > 0 ? <button type="button" className="catalog-clear" onClick={clearFilters}>გასუფთავება</button> : null}
       </div> : null}
       <div className="catalog-filter-group"><label className="catalog-filter-title" htmlFor={`${placement}-type`}>კომპანიის ტიპი</label><CustomSelect id={`${placement}-type`} className="ma-select" value={type} onChange={e=>filters.set({type:e.target.value})}><option value="">ყველა კომპანია</option><option value="suppliers">მომწოდებლები</option><option value="services">მომსახურება</option><option value="distributors">დისტრიბუტორები</option><option value="partners">პარტნიორის მაძიებლები</option></CustomSelect></div>
+      {type === "distributors" ? <div className="catalog-filter-group">
+        <label className="catalog-filter-title" htmlFor={`${placement}-product`}>პროდუქტის კატეგორია</label>
+        <CustomSelect className="ma-select" id={`${placement}-product`} value={product} onChange={e=>filters.set({product:e.target.value})}><option value="">ყველა პროდუქტი</option>{Object.entries(categories).map(([key,label])=><option key={key} value={key}>{label}</option>)}</CustomSelect>
+        <fieldset className="report-reasons"><legend className="catalog-filter-title">გაყიდვის არხები</legend>{Object.entries(distributionChannels).map(([key,label])=><label className="ma-check" key={key}><input type="checkbox" checked={channels.split(",").includes(key)} onChange={e=>filters.set({channels:(e.target.checked?[...channels.split(",").filter(Boolean),key]:channels.split(",").filter(v=>v!==key)).join(",")})}/>{label}</label>)}</fieldset>
+        {[["warehouse","საკუთარი საწყობი",warehouse],["transport","საკუთარი ტრანსპორტი",transport],["cold","გაცივებული / გაყინული მიწოდება",cold]].map(([key,label,value])=><label className="ma-check" key={key}><input type="checkbox" checked={!!value} onChange={e=>filters.set({[key]:e.target.checked?"1":""})}/>{label}</label>)}
+      </div> : null}
       <div className="catalog-filter-group">
         <h3 className="catalog-filter-title">დარგი</h3>
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
@@ -239,8 +263,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <div className="catalog-workspace">
         <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
         <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
-          <ResultsBar count={countLabel} filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</button>}
-            utility={<>{viewSwitch}{ready && store?.currentUser() ? <Link className="ma-btn ma-btn--ghost ma-btn--sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Link> : null}</>}
+          <ResultsBar count={countLabel} filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</Button>}
+            utility={<>{viewSwitch}{ready && store?.currentUser() ? <Button variant="ghost" size="sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Button> : null}</>}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "recommended", label: "რეკომენდებული"}, {value: "active", label: "ყველაზე აქტიური"}, {value: "newest", label: "უახლესი"}]}}
           />
           {sort === "recommended" && rows.some(c=>c.feature?.plan) ? <p className="business-fineprint">Premium და VIP — ფასიანი განთავსება რეკომენდებულ შედეგებში.</p> : null}
@@ -249,16 +273,16 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
               <ServiceUnavailable />
             ) : !ready ? (
               skeleton()
-            ) : type === "distributors" && business.error ? (<BusinessError error={business.error} retry={business.reload}/>) : type === "distributors" && business.loading ? (skeleton()) : rows.length === 0 ? (
+            ) : type === "distributors" && (business.error || distribution.error) ? (<BusinessError error={business.error || distribution.error!} retry={()=>{business.reload();distribution.reload();}}/>) : type === "distributors" && (business.loading || distribution.loading) ? (skeleton()) : rows.length === 0 ? (
               <div className="catalog-empty">
                 <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
                 <h2>{query ? `„${query}“ — ჯერ ვერავინ ვიპოვეთ` : "ამ პირობით კომპანია ჯერ არ გვყავს"}</h2>
                 <p>აღწერე, რა გჭირდება — მოთხოვნას შესაბამისი კომპანიები ნახავენ და თავად დაგიკავშირდებიან.</p>
                 <div className="catalog-empty__actions">
-                  <Link className="ma-btn ma-btn--primary" href={`/requests/new/?${new URLSearchParams({ title: query, category: industry, city })}`}>გამოაქვეყნე მოთხოვნა</Link>
+                  <Button variant="primary" href={`/requests/new/?${new URLSearchParams({ title: query || (type === "distributors" ? "ვეძებ დისტრიბუტორს" : ""), category: product || industry, city })}`}>გამოაქვეყნე მოთხოვნა</Button>
                   {filterCount > 0
-                    ? <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters}>ფილტრების გასუფთავება</button>
-                    : query ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setQuery("")}>ძიების გასუფთავება</button> : null}
+                    ? <Button type="button" variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>
+                    : query ? <Button type="button" variant="secondary" onClick={() => setQuery("")}>ძიების გასუფთავება</Button> : null}
                 </div>
               </div>
             ) : mapView ? (
@@ -280,8 +304,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         onOpenChange={setSheetOpen}
         triggerRef={filterButtonRef}
         footer={<>
-          <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters} disabled={filterCount === 0}>გასუფთავება</button>
-          <button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>ნახე {rows.length} კომპანია</button>
+          <Button type="button" variant="secondary" onClick={clearFilters} disabled={filterCount === 0}>გასუფთავება</Button>
+          <Button type="button" variant="primary" onClick={() => setSheetOpen(false)}>ნახე {rows.length} კომპანია</Button>
         </>}
       >
         {filtersBody("mobile")}

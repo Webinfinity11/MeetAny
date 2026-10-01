@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "./ui/Button";
+
 
 import { trapDialogFocus } from "./ui/dialog-focus";
 
@@ -20,13 +22,12 @@ function readRoleHint(): string {
 export function Header() {
   const { store, ready: dataReady } = useMarketStore();
   const [sessionReady, setSessionReady] = useState(false);
-  const hasStore = !!store;
   useEffect(() => {
-    if (!hasStore) return;
+    if (!store) return;
     let active = true;
     store?.ready().then(() => { if (active) setSessionReady(true); });
     return () => { active = false; };
-  }, [hasStore, store?.ready]);
+  }, [store]);
   const ready = dataReady && sessionReady;
   const me = ready ? store?.currentUser() : null;
   // The header must not pop in: the last known role (guest/client/company/admin) is remembered and
@@ -91,14 +92,14 @@ export function Header() {
   }
   const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><img className="ma-header__symbol" src="/assets/meetany-symbol-transparent.png" alt="" width={1496} height={1051}/><img className="ma-header__wordmark" src="/assets/meetany-wordmark.png" alt="MeetAny" width={683} height={171}/></Link>;
   const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["companies", "კომპანიები", "/companies/"], ["requests", "მოთხოვნები", "/requests/"], ["ideas", "ბიზნესიდეები", "/ideas/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
-  const add = <Link className="ma-btn ma-btn--accent ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Link>;
+  const add = <Button variant="accent" className="ma-header__cta" aria-label="მოთხოვნის დამატება" href="/requests/new/"><Icon name="plus"/><span className="ma-header__cta-label">მოთხოვნის დამატება</span><span className="ma-header__cta-short" aria-hidden="true">დამატება</span></Button>;
   return <>
     <NavigationProgress />
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
         {role && role !== "guest" && !isAdmin ? <div className="ma-header__updates">{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className="ma-header__slot" aria-hidden="true" /><span className="ma-header__slot" aria-hidden="true" /></>}</div> : null}
-        {role === "guest" ? <Link className="ma-btn ma-btn--ghost ma-header__login" href="/account/">შესვლა</Link> : null}{!isAdmin ? add : null}
+        {role === "guest" ? <Button variant="ghost" className="ma-header__login" href="/account/">შესვლა</Button> : null}{!isAdmin ? add : null}
         {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
           if (e.key === "Escape") {e.preventDefault(); e.stopPropagation(); setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {

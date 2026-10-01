@@ -1,7 +1,7 @@
 /* base: shared tokens; original selector specificity is preserved. */
 .ma,.ma *,.ma *::before,.ma *::after,.ma-header,.ma-header *,.ma-footer,.ma-footer *,.ma-mnav,.ma-mnav *,.ma-sheet,.ma-sheet *{box-sizing:border-box}
-html:has(body.ma){-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + 16px)}
-body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-regular);color:var(--text);background:var(--canvas);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+html:has(body.ma){-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + var(--size-16))}
+body.ma{margin:0;min-width:var(--size-320);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-regular);color:var(--text);background:var(--canvas);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
 .ma,.ma-header,.ma-footer,.ma-mnav,.ma-sheet,#form-dialog{font-feature-settings:normal}
 .ma :is(h1,h2),.ma :is(.ma-display,.ma-h1,.ma-h2,.ma-section__title,.ma-sheet__title),.ma-sheet :is(h1,h2,.ma-sheet__title),#form-dialog h2{font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
 .ma .ma-btn,.ma-header .ma-btn,.ma-mnav .ma-btn,.ma-sheet .ma-btn{font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
@@ -16,16 +16,16 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
 .ma ::selection{background:var(--blue-100)}
 .ma .icon,.ma-header .icon,.ma-footer .icon,.ma-mnav .icon,.ma-sheet .icon{width:var(--icon);height:var(--icon);flex:none;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:round;stroke-linejoin:round}
 .ma :focus-visible,.ma-header :focus-visible,.ma-footer :focus-visible,.ma-mnav :focus-visible,.ma-sheet :focus-visible{outline:none;box-shadow:var(--focus-ring)}
-.ma-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:calc(-1 * var(--space-hairline));overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.ma-skip{position:absolute;left:16px;top:-80px;z-index:100;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--ink-900);color:var(--white);font:var(--fw-semibold) var(--fs-sm)/var(--lh-sm) var(--font-sans);text-decoration:none;transition:top var(--dur) var(--ease)}
-.ma-skip:focus{top:12px}
+.ma-sr-only{position:absolute!important;width:var(--size-1);height:var(--size-1);padding:0;margin:calc(-1 * var(--space-hairline));overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.ma-skip{position:absolute;left:var(--size-16);top:var(--size-neg-80);z-index:100;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--ink-900);color:var(--white);font:var(--fw-semibold) var(--fs-sm)/var(--lh-sm) var(--font-sans);text-decoration:none;transition:top var(--dur) var(--ease)}
+.ma-skip:focus{top:var(--size-12)}
 .ma-h1{font-size:var(--fs-h1);line-height:var(--lh-h1);font-weight:var(--fw-bold);letter-spacing:-.005em}
 .ma-h3{font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-semibold)}
 .ma-eyebrow{display:block;font-size:var(--fs-eyebrow);line-height:var(--lh-eyebrow);font-weight:var(--fw-semibold);letter-spacing:var(--ls-eyebrow);color:var(--text-3);font-feature-settings:var(--ff-eyebrow)!important}
 .ma-prose{max-width:var(--measure);font-size:var(--fs-body-lg);line-height:var(--lh-body-lg);color:var(--ink-800);white-space:pre-line;overflow-wrap:break-word}
 .ma-lead{max-width:var(--measure);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--text-2)}
-.ma-link{padding:0;border:0;background:none;font:inherit;color:var(--text-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer;border-radius:var(--radius-xs)}
-.ma-link:hover{color:var(--action-hover);text-decoration-thickness:2px}
+.ma-link{padding:0;border:0;background:none;font:inherit;color:var(--text-link);text-decoration:underline;text-decoration-thickness:var(--size-1);text-underline-offset:var(--size-3);cursor:pointer;border-radius:var(--radius-xs)}
+.ma-link:hover{color:var(--action-hover);text-decoration-thickness:var(--size-2)}
 
 /* Meaningful icons (components/ui/DuoIcon, Solar linear sprite). `.icon-tile` = soft blue circle. */
 .duo-icon {
@@ -36,8 +36,8 @@ body.ma{margin:0;min-width:320px;font-family:var(--font-sans);font-size:var(--fs
   display: inline-grid;
   place-items: center;
   flex: none;
-  width: 48px;
-  height: 48px;
+  width: var(--size-48);
+  height: var(--size-48);
   border-radius: 50%;
   background: var(--blue-50);
   transition: background-color var(--motion-fast) var(--motion-ease);

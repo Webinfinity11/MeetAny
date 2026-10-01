@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode, Ref } from "react";
 
 type Common = {
-  variant?: "primary" | "secondary" | "ghost" | "danger";
+  variant?: "base" | "primary" | "secondary" | "ghost" | "danger" | "danger-quiet" | "outline" | "accent";
   size?: "sm" | "md" | "lg";
   icon?: ReactNode;
   loading?: boolean;
@@ -12,13 +12,13 @@ type Common = {
   className?: string;
 };
 export type ButtonProps = Common & (
-  | (ButtonHTMLAttributes<HTMLButtonElement> & { href?: never })
-  | (AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; disabled?: boolean })
+  | (ButtonHTMLAttributes<HTMLButtonElement> & { href?: never; ref?: Ref<HTMLButtonElement> })
+  | (AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; disabled?: boolean; ref?: Ref<HTMLAnchorElement> })
 );
 
 /** Shared ma-btn styling; href renders Next Link. Loading preserves label width and disables activation. */
 export function Button({ variant = "primary", size = "md", icon, loading = false, children, className = "", ...props }: ButtonProps) {
-  const cls = `ma-btn ma-btn--${variant}${size === "md" ? "" : ` ma-btn--${size}`} ${className}`.trim();
+  const cls = `ma-btn${variant === "base" ? "" : ` ma-btn--${variant}`}${size === "md" ? "" : ` ma-btn--${size}`} ${className}`.trim();
   if (props.href !== undefined) {
     const { disabled, onClick, ...link } = props;
     const inactive = disabled || loading;

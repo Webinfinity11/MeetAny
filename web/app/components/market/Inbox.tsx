@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -161,7 +163,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
       <label className="ma-sr-only" htmlFor="inbox-body">შეტყობინება</label>
       <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერე შეტყობინება…"
         onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void submit(); } }}/>
-      <button className="ma-btn ma-btn--primary" type="submit" disabled={!loaded || !body.trim() || pending}>{pending ? "იგზავნება…" : "გაგზავნა"}</button>
+      <Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}>{pending ? "იგზავნება…" : "გაგზავნა"}</Button>
       {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
     </form>
   </div>;

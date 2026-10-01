@@ -1,11 +1,11 @@
-import { assert, rpc, db, go, until, requestRow, query } from '../lib.mjs';
+import { assert, rpc, db, go, until, query } from '../lib.mjs';
 async function confirm(p, row, action) {
   await row.getByRole('button', { name: action, exact: true }).click();
   if (await p.locator('#moderation-reason').count()) await p.locator('#moderation-reason').fill('ავტომატური შემოწმების დროებითი მოქმედება');
   await p.locator('#moderation').getByRole('button', { name: 'დადასტურება', exact: true }).click();
   await p.locator('#moderation').waitFor({ state: 'hidden' });
 }
-export default async function(t) {
+export default async function admin(t) {
   const p = await t.page('owner_admin'), guest = await t.page();
   const users = await rpc(p, 'admin_list_users');
   // Use an unverified company so verified_at is restored exactly to NULL.

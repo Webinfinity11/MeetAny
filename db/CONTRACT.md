@@ -647,3 +647,18 @@ Migration `migrations/20261001-reports.sql` (additive, rerunnable; apply after `
 | `MA706` | საჩივარი უკვე დამუშავებულია. განაახლე სია. |
 
 Verification (2026-10-01): local suite `db/tests/report_tests.sql` — 43 assertions (guest denied, self-report, duplicate, validation, offer visibility, daily limit, MA003 for non-admins, hide request/offer/company, chosen offer, reject, audit rows).
+
+## Marketplace completion — 2026-10-01
+
+All new writes use `require_user()` (blocked accounts denied), admin reads use `require_admin()` (MA003). Private tables retain RLS and no direct API role grants.
+
+| RPC | Access | Result and validation |
+|---|---|---|
+| `admin_market_metrics()` | Admin | `{withoutOffers, averageFirstOfferHours, completed, chosen, chosenShare, gaps[]}`. Visible requests from unblocked authors; unanswered counts open requests without non-withdrawn offers. Average is request creation to earliest non-withdrawn offer, in hours. Conversion denominator is non-open requests (closed, expired, chosen); null when no denominator. Supply matches exact industry plus office/service/national geography. Gap rows sort by company count ascending, demand descending, category/city. |
+| `company_distribution_profiles()` | Public | Array of active opted-in companies: id, regions, categories, channels, brands, warehouse, transport, coldChain, minOrder, exclusive. No private contact data. |
+| `set_my_distribution(p_categories text[], p_channels text[], p_brands text[], p_warehouse text, p_transport text, p_cold_chain boolean, p_min_order text, p_exclusive boolean, p_regions text[] default null)` | Company | Enables distributor status, atomically updates existing service cities and distribution fields, returns `my_business_settings()`. At least one valid region/channel; max 6 categories, 8 known channels, 20 brands of 1–80 chars; min order <=80 chars. Warehouse none/own/rented; transport none/own/contracted. MA621 invalid input. |
+| `my_business_settings()` | Company | Existing membership/application fields plus `distribution`; opting out preserves distribution settings. |
+| `company_products(p_company_id uuid)` | Public | Array of `{name, photoUrl, note}` for an active company. Only photos still in its gallery are returned, so moderated or removed gallery images disappear from products too. |
+| `set_my_products(p_items jsonb)` | Company | Replaces own list, max 12. Name 2–80 chars, note <=200; photo must belong to the caller's approved Blob origin/path and existing gallery. Empty list removes own products. MA622 invalid input. |
+
+Distribution v1 covers profile, public block, brand search and catalog filters. A distinct distributor request type and its special alert/offer routing are later specification stages, not part of this release. Product photos reuse the existing gallery uploader and ownership validation.

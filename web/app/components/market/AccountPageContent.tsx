@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { CustomSelect } from "../ui/CustomSelect";
 import { AccountSkeleton } from "./Skeletons";
@@ -271,9 +273,9 @@ function ProfileForm({ me }: { me: AnyUser }) {
           </p>
         ) : null}
         <div className="account-form-actions">
-          <button className="ma-btn ma-btn--primary" type="submit" disabled={pending}>
+          <Button variant="primary" type="submit" disabled={pending}>
             {pending ? "ინახება…" : "შენახვა"}
-          </button>
+          </Button>
           {saved ? <p className="account-hint" role="status">ცვლილებები შენახულია.</p> : null}
         </div>
         {isCompany ? <div className="account-form-links">
@@ -335,7 +337,7 @@ function PasswordForm() {
         </fieldset>
         <div className="auth-field-message"><p className="ma-field__error" role="alert">{error || ""}</p></div>
         <div className="account-form-actions">
-          <button className="ma-btn ma-btn--primary" type="submit" disabled={pending}>{pending ? "ინახება…" : "პაროლის შეცვლა"}</button>
+          <Button variant="primary" type="submit" disabled={pending}>{pending ? "ინახება…" : "პაროლის შეცვლა"}</Button>
         </div>
       </form>
     </section>
@@ -553,7 +555,7 @@ export function AccountPageContent() {
           <DuoIcon name="file-text" size={26} tile />
           <p className="account-empty-state__title">მოთხოვნა ჯერ არ გაქვს</p>
           <p className="account-empty">აღწერე, რა გჭირდება — კომპანიები შეთავაზებებს თავად გამოგიგზავნიან.</p>
-          <Link className="ma-btn ma-btn--primary" href="/requests/new/">მოთხოვნის დამატება</Link>
+          <Button variant="primary" href="/requests/new/">მოთხოვნის დამატება</Button>
         </div>
       )}
     </section>

@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "./ui/Button";
+
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -45,7 +47,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
     </div>
     {open && value.trim() && !suggestions.length && emptyHref ? <div className="search-suggestions search-suggestions--empty" role="status">
       <p className="search-suggestions__none"><strong>„{value.trim()}“ ვერ მოიძებნა</strong><span>აღწერე, რა გჭირდება, და კომპანიები თავად დაგიკავშირდებიან.</span></p>
-      <a className="ma-btn ma-btn--primary ma-btn--sm" href={emptyHref} onMouseDown={e => e.preventDefault()}>მოთხოვნის გამოქვეყნება</a>
+      <Button variant="primary" size="sm" href={emptyHref} onMouseDown={e => e.preventDefault()}>მოთხოვნის გამოქვეყნება</Button>
     </div> : null}
     <div className="search-suggestions" hidden={!open || !suggestions.length}>
       <div role="listbox" id={`${id}-suggestions`} aria-label="ძიების შეთავაზებები">

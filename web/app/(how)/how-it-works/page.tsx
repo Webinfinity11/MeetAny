@@ -1,3 +1,5 @@
+
+import { Button } from "../../components/ui/Button";
 import Link from "next/link";
 import { Icon } from "../../components/Icon";
 import { DuoIcon } from "../../components/ui/DuoIcon";
@@ -41,8 +43,8 @@ export default function HowItWorksPage() {
         <h1 id="how-title">როგორ მუშაობს MeetAny</h1>
         <p>ბიზნესები აქ ერთმანეთს ორი გზით პოულობენ: მოძებნე კომპანია ან გამოაქვეყნე მოთხოვნა და შეთავაზებები თავად მოვა.</p>
         <nav className="how-hero__paths" aria-label="აირჩიე შენი გზა">
-          <a className="ma-btn ma-btn--lg how-hero__primary" href="#buyers"><Icon name="search" />მომწოდებელს ვეძებ</a>
-          <a className="ma-btn ma-btn--lg how-hero__secondary" href="#companies"><Icon name="building-2" />კომპანია ვარ</a>
+          <Button variant="base" size="lg" className="how-hero__primary" href="#buyers"><Icon name="search" />მომწოდებელს ვეძებ</Button>
+          <Button variant="base" size="lg" className="how-hero__secondary" href="#companies"><Icon name="building-2" />კომპანია ვარ</Button>
         </nav>
       </div>
     </section>
@@ -61,8 +63,8 @@ export default function HowItWorksPage() {
         </li>)}
       </ol>
       <div className="how-actions">
-        <Link className="ma-btn ma-btn--primary ma-btn--lg" href="/requests/new/"><Icon name="plus" />მოთხოვნის დამატება</Link>
-        <Link className="ma-btn ma-btn--secondary ma-btn--lg" href="/companies/">კომპანიების კატალოგი</Link>
+        <Button variant="primary" size="lg" href="/requests/new/"><Icon name="plus" />მოთხოვნის დამატება</Button>
+        <Button variant="secondary" size="lg" href="/companies/">კომპანიების კატალოგი</Button>
       </div>
     </section>
 
@@ -82,8 +84,8 @@ export default function HowItWorksPage() {
           </li>)}
         </ol>
         <div className="how-actions">
-          <Link className="ma-btn ma-btn--primary ma-btn--lg" href="/account/?tab=register&role=company"><Icon name="building-2" />კომპანიის რეგისტრაცია</Link>
-          <Link className="ma-btn ma-btn--secondary ma-btn--lg" href="/requests/">ღია მოთხოვნები</Link>
+          <Button variant="primary" size="lg" href="/account/?tab=register&role=company"><Icon name="building-2" />კომპანიის რეგისტრაცია</Button>
+          <Button variant="secondary" size="lg" href="/requests/">ღია მოთხოვნები</Button>
         </div>
       </div>
     </section>
@@ -119,8 +121,8 @@ export default function HowItWorksPage() {
     <section className="home-join home-wrap how-join"><div className="home-join__panel">
       <div><h2>მზად ხარ დასაწყებად?</h2><p>აღწერე, რა გჭირდება, ან დაარეგისტრირე კომპანია და მიიღე მოთხოვნები.</p></div>
       <div className="how-join__actions">
-        <Link className="ma-btn ma-btn--lg home-join__cta" href="/requests/new/">მოთხოვნის დამატება<Icon name="arrow-right" /></Link>
-        <Link className="ma-btn ma-btn--lg how-join__ghost" href="/account/?tab=register&role=company">კომპანიის რეგისტრაცია</Link>
+        <Button variant="base" size="lg" className="home-join__cta" href="/requests/new/">მოთხოვნის დამატება<Icon name="arrow-right" /></Button>
+        <Button variant="base" size="lg" className="how-join__ghost" href="/account/?tab=register&role=company">კომპანიის რეგისტრაცია</Button>
       </div>
     </div></section>
   </>;

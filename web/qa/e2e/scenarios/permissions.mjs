@@ -1,5 +1,5 @@
 import { assert, api, db, rpc, go, requestRow, requestPath } from '../lib.mjs';
-export default async function(t) {
+export default async function permissions(t) {
   const owner = await t.page('hotel'), company = await t.page('wood'), other = await t.page('cafe'), guest = await t.page();
   const request = await t.fixture(owner, 'უფლებები');
   const me = (await rpc(company, 'my_profile'))[0];

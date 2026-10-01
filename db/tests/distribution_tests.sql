@@ -1,0 +1,40 @@
+\set ON_ERROR_STOP 1
+\o /dev/null
+select t.as_super();
+create table t.distribution_start as select count(*) n from t.passed;
+grant select on t.distribution_start to public;
+select t.signup('ds_company','ds-company@example.ge','{"role":"company","name":"Distribution Owner","company":"Distribution Company","phone":"+995 522 774 001","city":"tbilisi","industry":"leasing"}');
+select t.signup('ds_client','ds-client@example.ge','{"role":"client","name":"Distribution Client","phone":"+995 522 774 002","city":"tbilisi"}');
+select t.as_user('ds_client');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','none','none',false,'',false,'{tbilisi}')$q$,'MA201','DS clients cannot update distribution');
+select t.as_user('ds_company');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','none','none',false,'',false,'{}')$q$,'MA621','DS region required');
+select t.throws($q$select public.set_my_distribution('{}','{invalid}','{}','none','none',false,'',false,'{tbilisi}')$q$,'MA621','DS known channel required');
+select t.throws($q$select public.set_my_distribution('{}','{}','{}','none','none',false,'',false,'{tbilisi}')$q$,'MA621','DS channel required');
+select t.throws($q$select public.set_my_distribution('{invalid}','{horeca}','{}','none','none',false,'',false,'{tbilisi}')$q$,'MA621','DS known category required');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','none','none',false,'',false,'{invalid}')$q$,'MA621','DS known city required');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','invalid','none',false,'',false,'{tbilisi}')$q$,'MA621','DS known warehouse required');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}',array_fill('brand'::text,array[21]),'none','none',false,'',false,'{tbilisi}')$q$,'MA621','DS brands limited');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','none','none',false,repeat('x',81),false,'{tbilisi}')$q$,'MA621','DS minimum order length');
+select t.ok(public.set_my_distribution('{leasing}','{horeca,online}','{Brand One}','own','contracted',true,'One pallet',true,'{georgia}')->'distribution'->>'warehouse'='own','DS all fields saved');
+select t.ok(public.my_business_settings()->'distribution'->'regions'='["georgia"]'::jsonb,'DS regions saved in existing profile');
+select t.as_anon();
+select t.ok(exists(select 1 from jsonb_array_elements(public.company_distribution_profiles()) x where x->>'id'=t.uid('ds_company')::text and x->'brands'='["Brand One"]'::jsonb),'DS public brands exposed');
+select t.ok(not exists(select 1 from jsonb_array_elements(public.company_distribution_profiles()) x where x ? 'email'),'DS no private email');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','none','none',false,'',false,'{tbilisi}')$q$,'42501','DS guest cannot mutate');
+select t.as_user('ds_company');
+select public.set_company_distributor(false);
+select t.as_anon();
+select t.ok(not exists(select 1 from jsonb_array_elements(public.company_distribution_profiles()) x where x->>'id'=t.uid('ds_company')::text),'DS opt out removes from catalog');
+select t.as_user('ds_company');
+select public.set_company_distributor(true);
+select t.ok(public.my_business_settings()->'distribution'->'brands'='["Brand One"]'::jsonb,'DS opt out preserves settings');
+select t.as_super();
+update public.profiles set blocked=true where id=t.uid('ds_company');
+select t.as_anon();
+select t.ok(not exists(select 1 from jsonb_array_elements(public.company_distribution_profiles()) x where x->>'id'=t.uid('ds_company')::text),'DS blocked company excluded');
+select t.as_user('ds_company');
+select t.throws($q$select public.set_my_distribution('{}','{horeca}','{}','none','none',false,'',false,'{tbilisi}')$q$,'MA002','DS blocked cannot mutate');
+select t.as_super();
+\o
+select 'Distribution tests: '||(count(*)-(select n from t.distribution_start))||' passed' from t.passed;

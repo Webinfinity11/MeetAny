@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useState } from "react";
@@ -10,10 +12,7 @@ import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 
 type Mode = "login" | "register" | "reset";
 
-// "?next=" after sign-in: a same-origin path only ("/x", never "//host" or "/\\host").
-function safeNext(value: string | null): string | null {
-  return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\") ? value : null;
-}
+import { safeNext } from "../../lib/auth-redirect";
 
 const WRONG_LOGIN = "ელფოსტა ან პაროლი არასწორია.";
 
@@ -94,9 +93,9 @@ function LoginForm({ onReset }: { onReset: () => void }) {
       </div>
       <div className="auth-submit">
         <FormAlert error={error} />
-        <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
+        <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>
           {pending ? "შესვლა…" : "შესვლა"}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -239,9 +238,9 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       </div>
       <div className="auth-submit">
         <FormAlert error={error} />
-        <button className="ma-btn ma-btn--primary ma-btn--block" type="submit" disabled={pending}>
+        <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>
           {pending ? "იქმნება…" : "ანგარიშის შექმნა"}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -340,7 +339,7 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
     {notice ? <p className="auth-hint" role="status">{notice}</p> : null}
     <div className="auth-submit">
       <FormAlert error={error || null} />
-      <button className="ma-btn ma-btn--primary ma-btn--block" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</button>
+      <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</Button>
     </div>
     {!verification ? <button type="button" className="auth-link" onClick={onDone}>შესვლაზე დაბრუნება</button> : null}
   </form>;

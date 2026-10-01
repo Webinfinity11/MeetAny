@@ -1,3 +1,5 @@
+
+import { Button } from "../ui/Button";
 import Link from "next/link";
 import { dateLabel } from "../../lib/format";
 import styles from "./admin.module.css";
@@ -19,7 +21,7 @@ export function AdminOffersTable({ offers, onDelete }: { offers: AdminOffer[]; o
       <td data-label="მოთხოვნა"><Link className="ma-link" href={`/requests/view/?id=${offer.request_id}`}>{offer.request_title || `მოთხოვნა · #${offer.request_id.slice(0, 8)}`}</Link>{offer.request_hidden ? <small>დამალული მოთხოვნა</small> : null}</td>
       <td data-label="სტატუსი"><span className={`ma-badge ma-badge--${offer.status === "chosen" ? "success" : "neutral"}`}>{statuses[offer.status]}</span></td>
       <td data-label="თარიღი"><time dateTime={offer.created_at}>{dateLabel(offer.created_at)}</time></td>
-      <td data-label="მოქმედება"><button type="button" className="ma-btn ma-btn--danger-quiet" disabled={offer.status === "chosen"} aria-describedby={offer.status === "chosen" ? `offer-locked-${offer.id}` : undefined} onClick={() => onDelete(offer)}>წაშლა</button>
+      <td data-label="მოქმედება"><Button type="button" variant="danger-quiet" disabled={offer.status === "chosen"} aria-describedby={offer.status === "chosen" ? `offer-locked-${offer.id}` : undefined} onClick={() => onDelete(offer)}>წაშლა</Button>
         {offer.status === "chosen" ? <small id={`offer-locked-${offer.id}`}>არჩეული შეთავაზება არ იშლება. შეგიძლია მოთხოვნის დამალვა ან წაშლა, ან კომპანიის დაბლოკვა.</small> : null}</td>
     </tr>)}</tbody>
   </table></div>;

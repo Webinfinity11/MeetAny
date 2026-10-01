@@ -4,12 +4,12 @@
 .how-hero {
   background: var(--blue-700);
   color: var(--white);
-  padding-block: 72px 64px;
+  padding-block: var(--size-72) var(--size-64);
   text-align: center;
 }
 .home-page .how-hero h1 {
   margin: 0;
-  font-size: clamp(30px, 3.2vw, 42px);
+  font-size: clamp(var(--size-30), 3.2vw, var(--size-42));
   line-height: 1.3;
   font-weight: var(--fw-bold);
   color: var(--white);
@@ -21,7 +21,7 @@
   margin: var(--space-4) auto 0;
   font-size: var(--fs-body);
   line-height: 1.7;
-  color: #e0e8fa;
+  color: var(--color--e0e8fa);
 }
 .how-hero__paths {
   display: flex;
@@ -32,12 +32,12 @@
 }
 .how-hero__paths .ma-btn { display: inline-flex; align-items: center; gap: var(--space-2); }
 .how-hero__primary { --btn-bg: var(--theme-accent); --btn-fg: var(--text); }
-.how-hero__primary:hover { --btn-bg: color-mix(in srgb, var(--theme-accent) 88%, #000); }
-.how-hero__secondary { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 1.5px #ffffff80; }
-.how-hero__secondary:hover { --btn-bg: #ffffff14; }
+.how-hero__primary:hover { --btn-bg: color-mix(in srgb, var(--theme-accent) 88%, var(--color-legacy-ink)); }
+.how-hero__secondary { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 var(--size-1p5) var(--color--ffffff80); }
+.how-hero__secondary:hover { --btn-bg: var(--color--ffffff14); }
 
-.how-section { margin-top: 80px; scroll-margin-top: calc(var(--header-h, 64px) + 24px); }
-.how-section--tinted { padding-block: 64px; background: var(--bg-subtle); }
+.how-section { margin-top: var(--size-80); scroll-margin-top: calc(var(--header-h, var(--size-64)) + var(--size-24)); }
+.how-section--tinted { padding-block: var(--size-64); background: var(--bg-subtle); }
 .how-section__head { margin-bottom: var(--space-8); text-align: center; }
 .how-section__eyebrow {
   margin: 0 0 var(--space-2);
@@ -64,15 +64,15 @@
   align-content: start;
   gap: var(--space-2);
   padding: var(--space-8) var(--space-6) var(--space-6);
-  border: 1px solid var(--card-border);
+  border: var(--size-1) solid var(--card-border);
   border-radius: var(--card-radius);
   background: var(--white);
   text-align: center;
 }
 .how-steps__art {
   display: block;
-  width: 120px;
-  height: 104px;
+  width: var(--size-120);
+  height: var(--size-104);
   background: url(/assets/need-process-icons.png) no-repeat;
   background-size: 300% auto;
 }
@@ -82,8 +82,8 @@
   left: var(--space-4);
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: var(--size-28);
+  height: var(--size-28);
   border-radius: 50%;
   background: var(--blue-50);
   color: var(--blue-700);
@@ -120,7 +120,7 @@
   align-items: flex-start;
   gap: var(--space-4);
   padding: var(--space-5);
-  border: 1px solid var(--card-border);
+  border: var(--size-1) solid var(--card-border);
   border-radius: var(--card-radius);
   background: var(--white);
 }
@@ -138,11 +138,11 @@
 }
 .how-trust li { display: grid; justify-items: start; align-content: start; gap: var(--space-2); }
 .how-trust li .icon-tile { margin-bottom: var(--space-2); }
-.how-trust .icon-tile .icon { width: 22px; height: 22px; stroke-width: 1.6; }
+.how-trust .icon-tile .icon { width: var(--size-22); height: var(--size-22); stroke-width: 1.6; }
 
 /* FAQ: native details, one border line per question. */
-.how-faq { max-width: 800px; margin-inline: auto; border-top: 1px solid var(--border); }
-.how-faq details { border-bottom: 1px solid var(--border); }
+.how-faq { max-width: var(--size-800); margin-inline: auto; border-top: var(--size-1) solid var(--border); }
+.how-faq details { border-bottom: var(--size-1) solid var(--border); }
 .how-faq summary {
   display: flex;
   align-items: center;
@@ -156,36 +156,36 @@
   cursor: pointer;
 }
 .how-faq summary::-webkit-details-marker { display: none; }
-.how-faq summary .icon { flex: none; width: 18px; height: 18px; color: var(--text-3); transition: transform var(--motion-fast) var(--motion-ease); }
+.how-faq summary .icon { flex: none; width: var(--size-18); height: var(--size-18); color: var(--text-3); transition: transform var(--motion-fast) var(--motion-ease); }
 .how-faq details[open] summary .icon { transform: rotate(180deg); }
 .how-faq summary:hover { color: var(--action); }
-.how-faq summary:focus-visible { outline: none; border-radius: 6px; box-shadow: var(--focus-ring); }
+.how-faq summary:focus-visible { outline: none; border-radius: var(--size-6); box-shadow: var(--focus-ring); }
 .how-faq details p { margin: 0; padding: 0 var(--space-1) var(--space-5); max-width: 68ch; font-size: var(--fs-sm); line-height: 1.7; color: var(--text-2); }
-.how-faq__more { max-width: 800px; margin: var(--space-4) auto 0; font-size: var(--fs-sm); color: var(--text-3); }
+.how-faq__more { max-width: var(--size-800); margin: var(--space-4) auto 0; font-size: var(--fs-sm); color: var(--text-3); }
 .how-faq__more a { color: var(--text-link); }
 
-.how-join { margin-top: 80px; margin-bottom: 64px; }
+.how-join { margin-top: var(--size-80); margin-bottom: var(--size-64); }
 .how-join__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); flex: none; }
 .how-join__actions .ma-btn { display: inline-flex; align-items: center; gap: var(--space-2); }
-.how-join__ghost { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 1.5px #ffffff80; }
-.how-join__ghost:hover { --btn-bg: #ffffff14; }
+.how-join__ghost { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 var(--size-1p5) var(--color--ffffff80); }
+.how-join__ghost:hover { --btn-bg: var(--color--ffffff14); }
 
 @media (max-width: 1023px) {
   .how-trust { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
   .how-list { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 767px) {
-  .how-hero { padding-block: 40px 36px; }
+  .how-hero { padding-block: var(--size-40) var(--size-36); }
   .how-hero__paths .ma-btn { flex: 1 1 100%; justify-content: center; }
-  .how-section { margin-top: 56px; }
-  .how-section--tinted { padding-block: 48px; }
+  .how-section { margin-top: var(--size-56); }
+  .how-section--tinted { padding-block: var(--size-48); }
   .how-section__head { margin-bottom: var(--space-6); }
   .how-steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .how-steps li { padding: var(--space-6) var(--space-5) var(--space-5); }
-  .how-steps__art { width: 96px; height: 84px; }
+  .how-steps__art { width: var(--size-96); height: var(--size-84); }
   .how-list li { padding: var(--space-4); }
   .how-actions .ma-btn { flex: 1 1 100%; justify-content: center; }
-  .how-join { margin-top: 56px; margin-bottom: 40px; }
+  .how-join { margin-top: var(--size-56); margin-bottom: var(--size-40); }
   .how-join .home-join__panel { flex-direction: column; align-items: stretch; padding: var(--space-6); }
   .how-join__actions .ma-btn { flex: 1 1 100%; justify-content: center; }
 }

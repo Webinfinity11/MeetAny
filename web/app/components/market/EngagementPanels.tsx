@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 import { ListSkeleton } from "./Skeletons";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 import { useEffect, useRef, useState } from "react";
@@ -79,9 +81,9 @@ export function NotificationBell() {
  return <div className={styles.bell} ref={root} onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false); }} onKeyDown={e => { if (e.key === "Escape") { setOpen(false); trigger.current?.focus(); } }}>
   <button ref={trigger} type="button" className={styles.save} aria-label={`შეტყობინებები${count ? `, ${count} წაუკითხავი` : ""}`} aria-expanded={open} aria-controls="notification-list" onClick={() => { setOpen(!open); if (!open) void refresh?.(); }}><Icon name="bell"/>{count ? <span className={styles.badge} aria-hidden="true">{count > 99 ? "99+" : count}</span> : null}</button>
   {open ? <div id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
-   <div className={styles.head}><strong>შეტყობინებები</strong><button type="button" className="ma-btn ma-btn--ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></button></div>
+   <div className={styles.head}><strong>შეტყობინებები</strong><Button type="button" variant="ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></Button></div>
    {state?.status === "ready" ? state.notifications.items.length ? <div onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows store={store} items={state.notifications.items} limit={5}/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : failed(state?.status) ? <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p> : <ListSkeleton compact label="შეტყობინებები იტვირთება…" />}
-   <Link className="ma-btn ma-btn--ghost" href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება</Link>
+   <Button variant="ghost" href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება</Button>
   </div> : null}
  </div>;
 }
@@ -115,12 +117,12 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
   {failed(state?.status) ? <ServiceUnavailable /> : state?.status !== "ready" ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : <>
    {kind === "notifications" && state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery} profile={store?.currentUser()}/> : null}
    {kind === "notifications" && state.emailDelivery ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე</label> : null}
-   {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</button></div> : <>
+   {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</Button></div> : <>
     {!current.page?.items.length ? <p>{kind === "saved" ? "კომპანია ჯერ არ შეგინახავს. კატალოგში შენახვის ნიშნით მონიშნე საინტერესო მომწოდებლები." : "შეტყობინებები ჯერ არ გაქვს."}</p> : kind === "notifications" ? <NoticeRows store={store} items={current.page.items} limit={all ? undefined : 5}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
      <div><h3 className="account-row__title"><Link href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p className="account-row__meta">{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
     </article>)}
     {kind === "notifications" && !all && current.page && (current.page.nextCursor || groupNotices(current.page.items).length > 5) ? <Link className="account-link" href="/account/?tab=notifications&alerts=all">ყველა შეტყობინება ({current.page.items.length}{current.page.nextCursor ? "+" : ""})</Link> : null}
-    {all || kind === "saved" ? <div className={styles.head}>{cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(null)}>პირველი გვერდი</button> : null}{current.page?.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setCursor(current.page!.nextCursor)}>შემდეგი გვერდი</button> : null}</div> : null}
+    {all || kind === "saved" ? <div className={styles.head}>{cursor ? <Button type="button" variant="secondary" onClick={() => setCursor(null)}>პირველი გვერდი</Button> : null}{current.page?.nextCursor ? <Button type="button" variant="secondary" onClick={() => setCursor(current.page!.nextCursor)}>შემდეგი გვერდი</Button> : null}</div> : null}
    </>}
    {kind === "saved" ? <Link href="/companies/" className="account-link">კომპანიების მოძებნა</Link> : null}
   </>}

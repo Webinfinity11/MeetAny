@@ -13,9 +13,11 @@ import { TABLES, tableQuery } from './table-query.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
+  'company_products','set_my_products','admin_market_metrics','company_distribution_profiles','set_my_distribution',
   'company_business_features','company_reviews','my_company_review_targets','save_company_review',
   'my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request',
   'admin_business_queue','admin_moderate_review','admin_resolve_plan',
+  'report_content', 'admin_list_reports', 'admin_resolve_report',
   'my_profile', 'complete_profile', 'update_my_profile', 'set_my_gallery', 'list_companies', 'company_stats', 'offer_counts',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'send_offer', 'withdraw_offer', 'choose_offer', 'contact_for_request', 'log_contact_event',
@@ -30,10 +32,13 @@ const RPCS = new Set([
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
 const PUBLIC_WRITES = new Set([
+  'set_my_distribution','set_my_products',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'admin_delete_offer', 'admin_delete_request_v2',
   'send_offer', 'withdraw_offer', 'choose_offer', 'update_my_profile', 'set_my_gallery', 'complete_profile',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
+  // Resolving a report may hide a request, delete an offer or block a company; filing one changes nothing public.
+  'admin_resolve_report',
 ]);
 
 const MAX_BODY = 64 * 1024;
@@ -98,7 +103,7 @@ function pgError(err, role) {
   return reply(500, { message: 'server error', code: 'MA999', details: null, hint: null });
 }
 
-export default {
+const handler = {
   async fetch(request) {
     const url = new URL(request.url);
     const path = url.pathname.replace(/^\/api\/db\/?/, '').replace(/^\/+|\/+$/g, '');
@@ -139,3 +144,5 @@ export default {
     }
   },
 };
+
+export default handler;

@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import Link from "next/link";
 import type { Store } from "../../lib/market-client";
@@ -31,7 +33,7 @@ export function AdminPhotos({ store, onRemove }: { store: Store; onRemove: (phot
           <Link href={`/companies/view/?id=${company.id}`} target="_blank">{company.company || company.name}</Link>
           <small>{kind} · {categories[company.industry || ""] || company.industry || ""}</small>
         </div>
-        <button type="button" className="ma-btn ma-btn--danger-quiet" onClick={() => onRemove({ userId: company.id, url, label: `${company.company || company.name} · ${kind}` })}>წაშლა</button>
+        <Button type="button" variant="danger-quiet" onClick={() => onRemove({ userId: company.id, url, label: `${company.company || company.name} · ${kind}` })}>წაშლა</Button>
       </li>)}
     </ul>
   </>;

@@ -2255,3 +2255,673 @@ revoke all on function meetany_private.delete_request_conversations() from publi
 revoke all on function public.start_conversation(uuid,uuid),public.list_my_conversations() from public,anonymous,authenticated;
 grant execute on function public.start_conversation(uuid,uuid),public.list_my_conversations() to authenticated;
 commit;
+
+-- Additive marketplace features (canonical bootstrap; migrations remain independently rerunnable).
+
+-- 20260930-business-features.sql
+-- Additive: no existing RPC signatures or profile rows are changed.
+-- Requires categories v2, company gallery and admin migrations.
+begin;
+set local lock_timeout='5s';
+
+-- Expanded financial-services taxonomy; existing stored keys remain valid.
+create or replace function meetany_private.categories() returns text[]
+language sql immutable set search_path='' as $$
+ select array['food_fresh','food_processed','beverages','catering','building_materials','renovation','engineering',
+ 'furniture','equipment','textiles','packaging','printing','freight','warehouse','customs','wholesale','office_household',
+ 'cleaning','laundry','technical_service','security','software_web','it_support','branding_design','advertising','photo_video','events',
+ 'accounting','legal','consulting','hr_training','hotel_services','tours','leasing','business_finance','business_insurance','other']::text[]
+$$;
+
+create table if not exists meetany_private.company_business (
+ company_id uuid primary key references public.profiles(id) on delete cascade,
+ distributor boolean not null default false,
+ updated_at timestamptz not null default now()
+);
+create table if not exists meetany_private.company_plans (
+ company_id uuid primary key references public.profiles(id) on delete cascade,
+ plan text not null check(plan in ('premium','vip')),
+ expires_at timestamptz not null,
+ updated_at timestamptz not null default now()
+);
+create table if not exists meetany_private.plan_requests (
+ id uuid primary key default gen_random_uuid(),
+ company_id uuid not null unique references public.profiles(id) on delete cascade,
+ plan text not null check(plan in ('premium','vip')),
+ status text not null default 'pending' check(status in ('pending','approved','declined','cancelled')),
+ note text not null default '' check(length(note)<=500),
+ updated_at timestamptz not null default now()
+);
+create table if not exists meetany_private.company_reviews (
+ id uuid primary key default gen_random_uuid(),
+ request_id uuid not null unique references public.requests(id) on delete cascade,
+ author_id uuid not null references public.profiles(id) on delete cascade,
+ company_id uuid not null references public.profiles(id) on delete cascade,
+ rating integer not null check(rating between 1 and 5),
+ body text not null check(length(btrim(body)) between 20 and 1500),
+ status text not null default 'pending' check(status in ('pending','published','hidden')),
+ reason text not null default '' check(length(reason)<=500),
+ updated_at timestamptz not null default now(),
+ check(author_id<>company_id)
+);
+create index if not exists company_reviews_company on meetany_private.company_reviews(company_id,status,updated_at desc);
+create table if not exists meetany_private.business_audit (
+ id bigint generated always as identity primary key,
+ actor_id uuid not null, target_id uuid not null, action text not null, detail jsonb not null,
+ created_at timestamptz not null default now()
+);
+-- Tables are not directly exposed to either API role, including self-upgrades and self-moderation.
+alter table meetany_private.company_business enable row level security;
+alter table meetany_private.company_plans enable row level security;
+alter table meetany_private.plan_requests enable row level security;
+alter table meetany_private.company_reviews enable row level security;
+alter table meetany_private.business_audit enable row level security;
+revoke all on meetany_private.company_business,meetany_private.company_plans,meetany_private.plan_requests,meetany_private.company_reviews,meetany_private.business_audit from public,anonymous,authenticated;
+
+create or replace function public.company_business_features() returns jsonb
+language sql stable security definer set search_path='' as $$
+ select coalesce(jsonb_agg(jsonb_build_object('id',p.id,'distributor',coalesce(b.distributor,false),
+ 'plan',case when m.expires_at>now() then m.plan else null end,
+ 'rating',r.rating,'reviewCount',coalesce(r.n,0))),'[]'::jsonb)
+ from public.profiles p
+ left join meetany_private.company_business b on b.company_id=p.id
+ left join meetany_private.company_plans m on m.company_id=p.id
+ left join lateral (select round(avg(v.rating),1) rating,count(*) n from meetany_private.company_reviews v
+   join public.profiles a on a.id=v.author_id and not a.blocked
+   where v.company_id=p.id and v.status='published') r on true
+ where p.role='company' and not p.blocked
+$$;
+
+create or replace function public.my_business_settings() returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user();
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ return jsonb_build_object('distributor',coalesce((select distributor from meetany_private.company_business where company_id=me.id),false),
+ 'membership',(select to_jsonb(p)-'company_id' from meetany_private.company_plans p where p.company_id=me.id and expires_at>now()),
+ 'application',(select to_jsonb(a)-'company_id' from meetany_private.plan_requests a where a.company_id=me.id));
+end $$;
+create or replace function public.set_company_distributor(p_distributor boolean) returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user();
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ if p_distributor is null then raise exception using errcode='22023',message='invalid distributor'; end if;
+ insert into meetany_private.company_business(company_id,distributor) values(me.id,p_distributor)
+ on conflict(company_id) do update set distributor=excluded.distributor,updated_at=now();
+ return public.my_business_settings();
+end $$;
+create or replace function public.request_company_plan(p_plan text) returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user();
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ if p_plan is null or p_plan not in ('premium','vip') then raise exception using errcode='22023',message='invalid plan'; end if;
+ insert into meetany_private.plan_requests(company_id,plan) values(me.id,p_plan)
+ on conflict(company_id) do update set plan=excluded.plan,status='pending',note='',updated_at=now();
+ return public.my_business_settings();
+end $$;
+create or replace function public.cancel_company_plan_request() returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user();
+begin
+ update meetany_private.plan_requests set status='cancelled',updated_at=now() where company_id=me.id and status='pending';
+ return public.my_business_settings();
+end $$;
+
+create or replace function public.company_reviews(p_company_id uuid,p_offset integer default 0) returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+declare result jsonb;
+begin
+ if p_offset is null or p_offset<0 then raise exception using errcode='22023',message='invalid offset'; end if;
+ if not exists(select 1 from public.profiles where id=p_company_id and role='company' and not blocked) then perform meetany_private.fail('MA302'); end if;
+ select jsonb_build_object('total',count(*),'rating',round(avg(v.rating),1)) into result
+ from meetany_private.company_reviews v join public.profiles a on a.id=v.author_id and not a.blocked
+ where v.company_id=p_company_id and v.status='published';
+ return result || jsonb_build_object('items',(select coalesce(jsonb_agg(to_jsonb(t)),'[]') from (
+ select v.id,v.rating,v.body,v.updated_at,coalesce(nullif(a.company,''),a.name) author
+ from meetany_private.company_reviews v join public.profiles a on a.id=v.author_id and not a.blocked
+ where v.company_id=p_company_id and v.status='published' order by v.updated_at desc,v.id limit 10 offset p_offset) t));
+end $$;
+create or replace function public.my_company_review_targets(p_company_id uuid) returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user();
+begin
+ return (select coalesce(jsonb_agg(to_jsonb(t)),'[]') from (
+ select r.id,r.title,v.rating,v.body,v.status,v.reason
+ from public.requests r join public.offers o on o.id=r.chosen_offer_id and o.company_id=p_company_id
+ left join meetany_private.company_reviews v on v.request_id=r.id and v.author_id=me.id and v.company_id=p_company_id
+ where r.owner_id=me.id and not r.hidden and me.id<>p_company_id order by r.created_at desc,r.id) t);
+end $$;
+create or replace function public.save_company_review(p_request_id uuid,p_rating integer,p_body text) returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user(); company uuid; v meetany_private.company_reviews;
+begin
+ if p_rating is null or p_rating not between 1 and 5 or p_body is null or length(btrim(p_body)) not between 20 and 1500 then
+ raise exception using errcode='22023',message='MA601: invalid review'; end if;
+ select o.company_id into company from public.requests r join public.offers o on o.id=r.chosen_offer_id
+ join public.profiles c on c.id=o.company_id and not c.blocked and c.role='company'
+ where r.id=p_request_id and r.owner_id=me.id and not r.hidden and o.company_id<>me.id for share of r;
+ if company is null then raise exception using errcode='42501',message='MA602: review requires your chosen offer'; end if;
+ insert into meetany_private.company_reviews(request_id,author_id,company_id,rating,body)
+ values(p_request_id,me.id,company,p_rating,btrim(p_body))
+ on conflict(request_id) do update set company_id=excluded.company_id,rating=excluded.rating,body=excluded.body,status='pending',reason='',updated_at=now()
+ where company_reviews.author_id=me.id returning * into v;
+ if v.id is null then raise exception using errcode='42501',message='MA602: review is not yours'; end if;
+ return to_jsonb(v);
+end $$;
+
+create or replace function public.admin_business_queue(p_kind text,p_offset integer default 0) returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+begin
+ perform meetany_private.require_admin();
+ if p_offset is null or p_offset<0 or p_kind is null or p_kind not in ('reviews','plans') then raise exception using errcode='22023',message='invalid queue'; end if;
+ if p_kind='reviews' then
+ return jsonb_build_object('total',(select count(*) from meetany_private.company_reviews),'items',(select coalesce(jsonb_agg(to_jsonb(t)),'[]') from (
+ select v.*,p.company,a.name author from meetany_private.company_reviews v join public.profiles p on p.id=v.company_id join public.profiles a on a.id=v.author_id
+ order by (v.status='pending') desc,v.updated_at desc,v.id limit 20 offset p_offset) t));
+ end if;
+ return jsonb_build_object('total',(select count(*) from meetany_private.plan_requests),'items',(select coalesce(jsonb_agg(to_jsonb(t)),'[]') from (
+ select v.*,p.company,p.email,p.phone,m.plan active_plan,m.expires_at from meetany_private.plan_requests v join public.profiles p on p.id=v.company_id
+ left join meetany_private.company_plans m on m.company_id=p.id
+ order by (v.status='pending') desc,v.updated_at desc,v.id limit 20 offset p_offset) t));
+end $$;
+create or replace function public.admin_moderate_review(p_id uuid,p_status text,p_reason text default '') returns void
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_admin();
+begin
+ if p_status is null or p_status not in ('published','hidden') or length(coalesce(p_reason,''))>500 or (p_status='hidden' and length(btrim(coalesce(p_reason,'')))<3) then
+ raise exception using errcode='22023',message='MA603: add moderation reason'; end if;
+ update meetany_private.company_reviews set status=p_status,reason=btrim(coalesce(p_reason,'')),updated_at=now() where id=p_id;
+ if not found then perform meetany_private.fail('MA302'); end if;
+ insert into meetany_private.business_audit(actor_id,target_id,action,detail) values(me.id,p_id,'review_'||p_status,jsonb_build_object('reason',p_reason));
+end $$;
+create or replace function public.admin_resolve_plan(p_id uuid,p_approve boolean,p_days integer default 30,p_note text default '') returns void
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_admin(); v meetany_private.plan_requests;
+begin
+ if p_approve is null or p_days is null or p_days not between 1 and 366 or length(coalesce(p_note,''))>500 then raise exception using errcode='22023',message='invalid plan resolution'; end if;
+ select * into v from meetany_private.plan_requests where id=p_id for update;
+ if v.id is null or v.status<>'pending' then raise exception using errcode='22023',message='MA604: application already processed'; end if;
+ if not exists(select 1 from public.profiles where id=v.company_id and role='company' and not blocked) then perform meetany_private.fail('MA302'); end if;
+ update meetany_private.plan_requests set status=case when p_approve then 'approved' else 'declined' end,note=coalesce(p_note,''),updated_at=now() where id=p_id;
+ if p_approve then
+ insert into meetany_private.company_plans(company_id,plan,expires_at) values(v.company_id,v.plan,now()+make_interval(days=>p_days))
+ on conflict(company_id) do update set plan=excluded.plan,expires_at=excluded.expires_at,updated_at=now();
+ end if;
+ insert into meetany_private.business_audit(actor_id,target_id,action,detail) values(me.id,p_id,'plan_resolved',jsonb_build_object('approved',p_approve,'days',p_days,'plan',v.plan,'note',p_note));
+end $$;
+-- Explicit grants, including revoking PostgreSQL's default PUBLIC execution.
+do $$
+declare f record;
+begin
+ for f in select oid::regprocedure sig,proname from pg_proc where pronamespace='public'::regnamespace and proname=any(array[
+ 'company_business_features','company_reviews','my_company_review_targets','save_company_review','my_business_settings','set_company_distributor',
+ 'request_company_plan','cancel_company_plan_request','admin_business_queue','admin_moderate_review','admin_resolve_plan']) loop
+ execute format('revoke all on function %s from public, anonymous, authenticated',f.sig);
+ execute format('grant execute on function %s to authenticated',f.sig);
+ if f.proname in ('company_business_features','company_reviews') then execute format('grant execute on function %s to anonymous',f.sig); end if;
+ end loop;
+end $$;
+create or replace function public.set_request_alert_preferences(p_enabled boolean,p_categories text[],p_cities text[],p_email_mode text default 'off') returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user(); cats text[]; towns text[]; changed boolean;
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ if p_enabled is null or p_email_mode is null or p_email_mode not in ('off','instant','daily')
+ or p_categories is null or p_cities is null or cardinality(p_categories)>cardinality(meetany_private.categories()) or cardinality(p_cities)>8
+ or array_position(p_categories,null) is not null or array_position(p_cities,null) is not null
+ or not p_categories <@ meetany_private.categories() or not p_cities <@ meetany_private.cities() then
+  raise exception using errcode='22023',message='invalid request alert preferences';
+ end if;
+ select coalesce(array_agg(distinct x order by x),'{}') into cats from unnest(p_categories) x;
+ select coalesce(array_agg(distinct x order by x),'{}') into towns from unnest(p_cities) x;
+ if 'georgia'=any(towns) then towns:=array['georgia']; end if;
+ if p_enabled and (cardinality(cats)=0 or cardinality(towns)=0) then raise exception using errcode='22023',message='select categories and cities'; end if;
+ insert into meetany_private.request_alert_preferences(user_id,enabled,categories,cities,email_mode)
+ values(me.id,p_enabled,cats,towns,p_email_mode)
+ on conflict(user_id) do update set enabled=excluded.enabled,categories=excluded.categories,cities=excluded.cities,email_mode=excluded.email_mode,generation=gen_random_uuid()
+ where (request_alert_preferences.enabled,request_alert_preferences.categories,request_alert_preferences.cities,request_alert_preferences.email_mode)
+ is distinct from (excluded.enabled,excluded.categories,excluded.cities,excluded.email_mode)
+ returning true into changed;
+ -- A preference change cancels queued delivery, not existing inbox history. No backfill.
+ update meetany_private.request_alert_emails set status='cancelled',lease_id=null,locked_until=null
+ where changed and user_id=me.id and status in ('pending','processing');
+ return public.request_alert_preferences();
+end $$;
+
+
+commit;
+
+-- 20261001-reports.sql
+-- T15.9: content reports („შეატყობინე“) and the admin reports queue. Additive and rerunnable.
+-- Apply after 20260929-admin-v2.sql (admin_delete_offer) and 20260930-business-features.sql (business_audit).
+-- 1. meetany_private.reports: one active ('new') report per (reporter, target); RLS on, no API-role access.
+-- 2. report_content(p_kind, p_target_id, p_reason, p_text): signed-in users only; request (not own, visible),
+--    company (not own, not blocked), offer (only the author of the request it answers). Max 10 per user per day.
+-- 3. admin_list_reports(p_status, p_offset), admin_resolve_report(p_id, p_action, p_reason): admin only (MA003).
+--    'hide' uses the existing audited moderation functions (request hide / offer delete / company block) and
+--    closes every new report on that target; 'reject' closes this report. Each resolution writes business_audit.
+-- Error codes: MA701 invalid reason/text, MA702 content not found, MA703 own content, MA704 already reported,
+--              MA705 daily limit, MA706 report already handled.
+begin;
+set local lock_timeout='5s';
+
+create table if not exists meetany_private.reports (
+ id uuid primary key default gen_random_uuid(),
+ reporter_id uuid not null references public.profiles(id) on delete cascade,
+ target_kind text not null check(target_kind in ('request','company','offer')),
+ -- No foreign key: the report (and its history) outlives a deleted target.
+ target_id uuid not null,
+ target_owner_id uuid,
+ target_label text not null default '' check(length(target_label)<=300),
+ context_id uuid,
+ reason text not null check(reason in ('spam','fake','offensive','other')),
+ body text not null default '' check(length(body)<=500),
+ status text not null default 'new' check(status in ('new','handled')),
+ resolution text check(resolution in ('hidden','rejected')),
+ resolution_reason text check(resolution_reason is null or length(resolution_reason)<=500),
+ handled_by uuid,
+ handled_at timestamptz,
+ created_at timestamptz not null default now(),
+ check(reason<>'other' or length(btrim(body))>=3),
+ check((status='new')=(resolution is null))
+);
+create unique index if not exists reports_one_active on meetany_private.reports(reporter_id,target_kind,target_id) where status='new';
+create index if not exists reports_queue on meetany_private.reports(status,created_at desc,id);
+create index if not exists reports_target on meetany_private.reports(target_kind,target_id);
+create index if not exists reports_reporter_day on meetany_private.reports(reporter_id,created_at desc);
+alter table meetany_private.reports enable row level security;
+revoke all on meetany_private.reports from public,anonymous,authenticated;
+
+create or replace function meetany_private.report_fail(p_code text) returns void
+language plpgsql volatile set search_path='' as $$
+declare t text := case p_code
+ when 'MA701' then 'choose a reason; other needs 3 to 500 characters'
+ when 'MA702' then 'content not found'
+ when 'MA703' then 'cannot report own content'
+ when 'MA704' then 'already reported'
+ when 'MA705' then 'daily report limit reached (10)'
+ when 'MA706' then 'report already handled'
+ else 'error' end;
+begin
+ raise exception using errcode='P0001',message=p_code||': '||t,hint=p_code;
+end $$;
+revoke all on function meetany_private.report_fail(text) from public,anonymous,authenticated;
+
+create or replace function public.report_content(p_kind text,p_target_id uuid,p_reason text,p_text text default '') returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare
+ me public.profiles:=meetany_private.require_user();
+ v_text text:=btrim(coalesce(p_text,''));
+ v_owner uuid; v_label text; v_context uuid; v meetany_private.reports;
+begin
+ if p_kind is null or p_kind not in ('request','company','offer') or p_target_id is null then perform meetany_private.report_fail('MA702'); end if;
+ if p_reason is null or p_reason not in ('spam','fake','offensive','other') or length(v_text)>500 or (p_reason='other' and length(v_text)<3) then
+  perform meetany_private.report_fail('MA701'); end if;
+ if p_kind='request' then
+  select r.owner_id,r.title into v_owner,v_label from public.requests r where r.id=p_target_id and not r.hidden;
+ elsif p_kind='company' then
+  select p.id,coalesce(nullif(p.company,''),p.name) into v_owner,v_label from public.profiles p where p.id=p_target_id and p.role='company' and not p.blocked;
+ else
+  -- Offers are sealed: only the author of the request they answer can see, and so report, them.
+  select o.company_id,coalesce(nullif(c.company,''),c.name),r.id into v_owner,v_label,v_context
+  from public.offers o join public.requests r on r.id=o.request_id join public.profiles c on c.id=o.company_id
+  where o.id=p_target_id and r.owner_id=me.id;
+ end if;
+ if v_owner is null then perform meetany_private.report_fail('MA702'); end if;
+ if v_owner=me.id then perform meetany_private.report_fail('MA703'); end if;
+ -- Serialise one reporter's submissions so the daily limit and the duplicate check cannot race.
+ perform pg_advisory_xact_lock(hashtextextended('meetany.report:'||me.id::text,0));
+ if exists(select 1 from meetany_private.reports where reporter_id=me.id and target_kind=p_kind and target_id=p_target_id and status='new') then
+  perform meetany_private.report_fail('MA704'); end if;
+ if (select count(*) from meetany_private.reports where reporter_id=me.id and created_at>now()-interval '1 day')>=10 then
+  perform meetany_private.report_fail('MA705'); end if;
+ insert into meetany_private.reports(reporter_id,target_kind,target_id,target_owner_id,target_label,context_id,reason,body)
+ values(me.id,p_kind,p_target_id,v_owner,left(coalesce(v_label,''),300),v_context,p_reason,v_text)
+ returning * into v;
+ return jsonb_build_object('id',v.id,'status',v.status,'created_at',v.created_at);
+end $$;
+
+create or replace function public.admin_list_reports(p_status text default 'new',p_offset integer default 0) returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_admin();
+begin
+ if p_offset is null or p_offset<0 or (p_status is not null and p_status not in ('new','handled')) then
+  raise exception using errcode='22023',message='invalid report queue'; end if;
+ return jsonb_build_object(
+ 'total',(select count(*) from meetany_private.reports where p_status is null or status=p_status),
+ 'newCount',(select count(*) from meetany_private.reports where status='new'),
+ 'items',(select coalesce(jsonb_agg(to_jsonb(t) order by t.created_at desc,t.id),'[]'::jsonb) from (
+  select x.id,x.target_kind,x.target_id,x.context_id,x.reason,x.body,x.status,x.resolution,x.resolution_reason,x.created_at,x.handled_at,
+   x.reporter_id,coalesce(nullif(rp.company,''),rp.name) reporter_name,rp.email reporter_email,
+   coalesce(case x.target_kind when 'request' then rq.title when 'company' then coalesce(nullif(co.company,''),co.name)
+     else coalesce(nullif(oc.company,''),oc.name) end,nullif(x.target_label,'')) target_label,
+   case x.target_kind when 'request' then rq.id is not null when 'company' then co.id is not null else o.id is not null end target_exists,
+   case x.target_kind when 'request' then coalesce(rq.hidden,false) when 'company' then coalesce(co.blocked,false) else false end target_removed,
+   coalesce(case when x.target_kind='offer' then oq.title end,'') context_label,
+   coalesce(case when x.target_kind='offer' then o.status end,'') offer_status,
+   (select count(*) from meetany_private.reports s where s.target_kind=x.target_kind and s.target_id=x.target_id) target_reports,
+   (select count(*) from meetany_private.reports s where s.target_kind=x.target_kind and s.target_id=x.target_id and s.status='new') target_new,
+   coalesce(nullif(h.company,''),h.name) handler_name
+  from meetany_private.reports x
+  left join public.profiles rp on rp.id=x.reporter_id
+  left join public.requests rq on x.target_kind='request' and rq.id=x.target_id
+  left join public.profiles co on x.target_kind='company' and co.id=x.target_id
+  left join public.offers o on x.target_kind='offer' and o.id=x.target_id
+  left join public.profiles oc on x.target_kind='offer' and oc.id=x.target_owner_id
+  left join public.requests oq on x.target_kind='offer' and oq.id=x.context_id
+  left join public.profiles h on h.id=x.handled_by
+  where p_status is null or x.status=p_status
+  order by x.created_at desc,x.id limit 20 offset p_offset) t));
+end $$;
+
+create or replace function public.admin_resolve_report(p_id uuid,p_action text,p_reason text) returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare
+ me public.profiles:=meetany_private.require_admin();
+ v_reason text:=meetany_private.moderation_reason(p_reason);
+ v meetany_private.reports; v_effect text:='none'; v_closed integer;
+begin
+ if v_reason is null then perform meetany_private.fail('MA304'); end if;
+ if p_action is null or p_action not in ('hide','reject') then raise exception using errcode='22023',message='invalid report action'; end if;
+ select * into v from meetany_private.reports where id=p_id for update;
+ if v.id is null or v.status<>'new' then perform meetany_private.report_fail('MA706'); end if;
+ if p_action='hide' then
+  -- Reuse the audited moderation functions; a target that is already gone or hidden needs no change.
+  if v.target_kind='request' then
+   if exists(select 1 from public.requests where id=v.target_id and not hidden) then
+    perform public.admin_set_hidden(v.target_id,true,v_reason); v_effect:='request.hide'; end if;
+  elsif v.target_kind='offer' then
+   if exists(select 1 from public.offers where id=v.target_id) then
+    perform public.admin_delete_offer(v.target_id,v_reason); v_effect:='offer.delete'; end if;
+  else
+   if exists(select 1 from public.profiles where id=v.target_id and not blocked and role<>'admin') then
+    perform public.admin_set_blocked(v.target_id,true,v_reason); v_effect:='user.block'; end if;
+  end if;
+  update meetany_private.reports set status='handled',resolution='hidden',resolution_reason=v_reason,handled_by=me.id,handled_at=now()
+  where target_kind=v.target_kind and target_id=v.target_id and status='new';
+ else
+  update meetany_private.reports set status='handled',resolution='rejected',resolution_reason=v_reason,handled_by=me.id,handled_at=now()
+  where id=v.id;
+ end if;
+ get diagnostics v_closed=row_count;
+ insert into meetany_private.business_audit(actor_id,target_id,action,detail)
+ values(me.id,v.id,'report_'||case when p_action='hide' then 'hidden' else 'rejected' end,
+  jsonb_build_object('kind',v.target_kind,'target_id',v.target_id,'reason',v_reason,'effect',v_effect,'closed',v_closed));
+ return jsonb_build_object('id',v.id,'action',p_action,'effect',v_effect,'closed',v_closed);
+end $$;
+
+do $$
+declare f record;
+begin
+ for f in select oid::regprocedure sig from pg_proc where pronamespace='public'::regnamespace
+  and proname=any(array['report_content','admin_list_reports','admin_resolve_report']) loop
+  execute format('revoke all on function %s from public, anonymous, authenticated',f.sig);
+  execute format('grant execute on function %s to authenticated',f.sig);
+ end loop;
+end $$;
+
+commit;
+
+-- 20261001-distribution.sql
+begin;
+set local lock_timeout='5s';
+alter table meetany_private.company_business
+ add column if not exists dist_categories text[] not null default '{}',
+ add column if not exists dist_channels text[] not null default '{}',
+ add column if not exists dist_brands text[] not null default '{}',
+ add column if not exists dist_warehouse text not null default 'none',
+ add column if not exists dist_transport text not null default 'none',
+ add column if not exists dist_cold_chain boolean not null default false,
+ add column if not exists dist_min_order text not null default '',
+ add column if not exists dist_exclusive boolean not null default false;
+create or replace function public.company_distribution_profiles() returns jsonb
+language sql stable security definer set search_path='' as $$
+ select coalesce(jsonb_agg(jsonb_build_object('id',p.id,'regions',p.service_cities,
+ 'categories',b.dist_categories,'channels',b.dist_channels,'brands',b.dist_brands,
+ 'warehouse',b.dist_warehouse,'transport',b.dist_transport,'coldChain',b.dist_cold_chain,
+ 'minOrder',b.dist_min_order,'exclusive',b.dist_exclusive) order by p.id),'[]'::jsonb)
+ from meetany_private.company_business b join public.profiles p on p.id=b.company_id
+ where b.distributor and p.role='company' and not p.blocked
+$$;
+create or replace function public.my_business_settings() returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user();
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ return jsonb_build_object('distributor',coalesce((select distributor from meetany_private.company_business where company_id=me.id),false),
+ 'distribution',(select jsonb_build_object('categories',dist_categories,'channels',dist_channels,'brands',dist_brands,
+ 'warehouse',dist_warehouse,'transport',dist_transport,'coldChain',dist_cold_chain,'minOrder',dist_min_order,'exclusive',dist_exclusive,
+ 'regions',me.service_cities) from meetany_private.company_business where company_id=me.id),
+ 'membership',(select to_jsonb(p)-'company_id' from meetany_private.company_plans p where p.company_id=me.id and expires_at>now()),
+ 'application',(select to_jsonb(a)-'company_id' from meetany_private.plan_requests a where a.company_id=me.id));
+end $$;
+-- Regions update the existing profile field atomically with distribution settings.
+create or replace function public.set_my_distribution(p_categories text[],p_channels text[],p_brands text[],p_warehouse text,p_transport text,p_cold_chain boolean,p_min_order text,p_exclusive boolean,p_regions text[] default null) returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user(); v text; regions text[]:=coalesce(p_regions,me.service_cities);
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ if coalesce(cardinality(regions),0)<1 or cardinality(regions)>40 then perform meetany_private.fail('MA621'); end if;
+ foreach v in array regions loop if v is null or not meetany_private.is_city(v) then perform meetany_private.fail('MA621'); end if; end loop;
+ if p_categories is null or cardinality(p_categories)>6 or p_channels is null or cardinality(p_channels) not between 1 and 8
+  or array_position(p_channels,null) is not null or not (p_channels <@ array['horeca','retail_chain','retail_small','pharmacy','subdistributors','online','institutions','export'])
+  then perform meetany_private.fail('MA621'); end if;
+ foreach v in array p_categories loop if v is null or not meetany_private.is_category(v) then perform meetany_private.fail('MA621'); end if; end loop;
+ if p_brands is null or cardinality(p_brands)>20 then perform meetany_private.fail('MA621'); end if;
+ foreach v in array p_brands loop if v is null or length(trim(v)) not between 1 and 80 then perform meetany_private.fail('MA621'); end if; end loop;
+ if p_warehouse is null or p_warehouse not in ('none','own','rented') or p_transport is null or p_transport not in ('none','own','contracted')
+  or p_cold_chain is null or p_exclusive is null or p_min_order is null or length(trim(p_min_order))>80 then perform meetany_private.fail('MA621'); end if;
+ update public.profiles set service_cities=regions where id=me.id;
+ insert into meetany_private.company_business(company_id,distributor,dist_categories,dist_channels,dist_brands,dist_warehouse,dist_transport,dist_cold_chain,dist_min_order,dist_exclusive)
+ values(me.id,true,p_categories,p_channels,p_brands,p_warehouse,p_transport,p_cold_chain,trim(p_min_order),p_exclusive)
+ on conflict(company_id) do update set distributor=true,dist_categories=excluded.dist_categories,dist_channels=excluded.dist_channels,dist_brands=excluded.dist_brands,
+ dist_warehouse=excluded.dist_warehouse,dist_transport=excluded.dist_transport,dist_cold_chain=excluded.dist_cold_chain,dist_min_order=excluded.dist_min_order,dist_exclusive=excluded.dist_exclusive,updated_at=now();
+ return public.my_business_settings();
+end $$;
+revoke all on function public.company_distribution_profiles(),public.set_my_distribution(text[],text[],text[],text,text,boolean,text,boolean,text[]) from public,anonymous,authenticated;
+grant execute on function public.company_distribution_profiles() to anonymous,authenticated;
+grant execute on function public.set_my_distribution(text[],text[],text[],text,text,boolean,text,boolean,text[]) to authenticated;
+commit;
+
+-- 20261001-market-metrics.sql
+begin;
+set local lock_timeout='5s';
+-- Demand is visible open requests; supply matches exact product category and
+-- either office city, service city or national coverage. All metrics use the
+-- same visible, unblocked population. Closed share excludes still-open requests.
+create or replace function public.admin_market_metrics() returns jsonb
+language plpgsql stable security definer set search_path='' as $$
+begin
+ perform meetany_private.require_admin();
+ return (
+ with eligible as (
+  select r.*, meetany_private.request_state(r) state from public.requests r
+  join public.profiles p on p.id=r.owner_id where not r.hidden and not p.blocked
+ ), first_offers as (
+  select r.id,min(o.created_at) first_at from eligible r join public.offers o on o.request_id=r.id
+  where o.status<>'withdrawn' group by r.id
+ ), demand as (
+  select category,city,count(*) requests from eligible where state='open' group by category,city
+ ), gaps as (
+  select d.*, (select count(*) from public.profiles p where p.role='company' and not p.blocked
+   and p.industry=d.category and (p.city=d.city or p.city='georgia' or d.city='georgia'
+     or d.city=any(p.service_cities) or 'georgia'=any(p.service_cities))) companies from demand d
+ )
+ select jsonb_build_object(
+  'withoutOffers',(select count(*) from eligible r where state='open' and not exists(select 1 from first_offers f where f.id=r.id)),
+  'averageFirstOfferHours',(select round(avg(greatest(0,extract(epoch from f.first_at-r.created_at)/3600))::numeric,1) from eligible r join first_offers f on f.id=r.id),
+  'completed',(select count(*) from eligible where state<>'open'),
+  'chosen',(select count(*) from eligible where chosen_offer_id is not null),
+  'chosenShare',(select round(100.0*count(*) filter(where chosen_offer_id is not null)/nullif(count(*) filter(where state<>'open'),0),1) from eligible),
+  'gaps',coalesce((select jsonb_agg(to_jsonb(g) order by companies,requests desc,category,city) from gaps g),'[]'::jsonb))
+ );
+end $$;
+revoke all on function public.admin_market_metrics() from public,anonymous,authenticated;
+grant execute on function public.admin_market_metrics() to authenticated;
+commit;
+
+-- Gallery and product bootstrap.
+-- T12.4b: optional public company gallery (Vercel Blob); additive and rerunnable.
+-- Apply after 20260924-company-logo.sql. RLS unchanged; the public column grant gains gallery.
+-- 1. profiles.gallery text[] (default empty) + CHECK: at most 8 URLs, each valid_photo_url in the
+--    owner's own folder (direct table writes cannot point at another user's file).
+-- 2. set_my_gallery(p_urls text[]): companies only; replaces the whole list (order kept, blanks
+--    and duplicates dropped). Every URL must be <Blob store origin>/<caller id>/gallery-<name>.<ext>,
+--    else MA116. update_my_profile is unchanged, so the running site keeps working.
+-- 3. list_companies() returns gallery; my_profile / admin_list_users / admin_search_users return
+--    whole profile rows and pick the column up by themselves.
+begin;
+set local lock_timeout='5s';
+
+create or replace function meetany_private.fail(p_code text) returns void
+language plpgsql volatile set search_path = '' as $$
+declare
+  t text := case p_code
+    when 'MA001' then 'not signed in'
+    when 'MA002' then 'account is blocked'
+    when 'MA003' then 'admin only'
+    when 'MA101' then 'title must be at least 5 characters'
+    when 'MA102' then 'description must be at least 10 characters'
+    when 'MA103' then 'invalid category'
+    when 'MA104' then 'invalid city'
+    when 'MA105' then 'too many open requests (max 5)'
+    when 'MA106' then 'request not found'
+    when 'MA107' then 'request belongs to another user'
+    when 'MA108' then 'chosen or hidden request cannot be extended'
+    when 'MA109' then 'invalid photo url'
+    when 'MA110' then 'request cannot be edited once it has offers or is chosen/hidden'
+    when 'MA111' then 'quantity must be a positive number up to 1e9'
+    when 'MA112' then 'quantity needs a valid unit (pcs, m2, kg, hour, service)'
+    when 'MA113' then 'needed-by date must be between today and 2 years ahead'
+    when 'MA114' then 'address note is longer than 120 characters'
+    when 'MA115' then 'invalid logo url'
+    when 'MA116' then 'gallery allows at most 8 own gallery photos'
+    when 'MA201' then 'only company accounts can send offers'
+    when 'MA202' then 'cannot send an offer on own request'
+    when 'MA203' then 'request no longer accepts offers'
+    when 'MA204' then 'offer must be at least 10 characters'
+    when 'MA205' then 'price must be a positive number up to 1e9'
+    when 'MA206' then 'offer not found'
+    when 'MA207' then 'chosen offer cannot be withdrawn'
+    when 'MA208' then 'request no longer allows choosing'
+    when 'MA209' then 'offer was changed, reload before choosing'
+    when 'MA210' then 'invalid price type (unit, total, negotiable)'
+    when 'MA211' then 'a negotiable offer has no price'
+    when 'MA212' then 'unit or total price type needs a price'
+    when 'MA213' then 'delivery days must be an integer from 0 to 365'
+    when 'MA301' then 'cannot block own account'
+    when 'MA302' then 'user not found'
+    when 'MA303' then 'only companies can be verified'
+    when 'MA304' then 'moderation reason must be 3 to 500 characters'
+    when 'MA401' then 'name is required'
+    when 'MA402' then 'company name is required'
+    when 'MA403' then 'invalid email'
+    when 'MA404' then 'invalid phone, expected +995 5XX XXX XXX'
+    when 'MA405' then 'phone already registered'
+    when 'MA407' then 'invalid industry'
+    when 'MA408' then 'email is not verified'
+    when 'MA410' then 'about text is longer than 1000 characters'
+    when 'MA411' then 'lists allow at most 8 items of up to 120 characters'
+    when 'MA412' then 'address is longer than 200 characters'
+    when 'MA413' then 'coordinates must be a valid latitude and longitude pair'
+    else 'error' end;
+begin
+  raise exception using errcode = 'P0001', message = p_code || ': ' || t, hint = p_code;
+end
+$$;
+
+create or replace function meetany_private.valid_gallery(p_urls text[], p_owner uuid) returns boolean
+language sql immutable set search_path = '' as $$
+  select p_urls is not null and coalesce(array_length(p_urls, 1), 0) <= 8 and coalesce(array_ndims(p_urls), 1) = 1
+     and not exists (select 1 from unnest(p_urls) u where not meetany_private.valid_photo_url(u, p_owner))
+$$;
+
+alter table public.profiles add column if not exists gallery text[] not null default '{}';
+alter table public.profiles drop constraint if exists profiles_gallery_check;
+alter table public.profiles add constraint profiles_gallery_check check
+  (meetany_private.valid_gallery(gallery, id));
+
+create or replace function public.set_my_gallery(p_urls text[])
+returns public.profiles
+language plpgsql security definer set search_path = '' as $$
+declare
+  me public.profiles := meetany_private.require_user();
+  v_origin text := meetany_private.photo_origin();
+  v_urls text[] := array(select u from (select btrim(x) u, min(n) n from unnest(coalesce(p_urls, '{}'::text[])) with ordinality a(x, n)
+                                       where btrim(coalesce(x, '')) <> '' group by 1) d order by n);
+  p public.profiles;
+begin
+  if me.role <> 'company' then perform meetany_private.fail('MA116'); end if;
+  if cardinality(v_urls) > 8 or (cardinality(v_urls) > 0 and v_origin is null) or exists (
+       select 1 from unnest(v_urls) u
+       where not meetany_private.valid_photo_url(u, me.id)
+          or lower(left(u, char_length(v_origin) + 1)) <> v_origin || '/'
+          or substr(u, char_length(v_origin) + 2, 45) <> me.id::text || '/gallery-') then
+    perform meetany_private.fail('MA116');
+  end if;
+  update public.profiles set gallery = v_urls where id = me.id returning * into p;
+  return p;
+end
+$$;
+
+drop function if exists public.list_companies();
+create or replace function public.list_companies()
+returns table (id uuid, company text, industry text, verified boolean, verified_at timestamptz, city text,
+               about text, offers text[], seeks text[], service_cities text[], created_at timestamptz,
+               address text, lat double precision, lng double precision, logo_url text, gallery text[])
+language sql stable security definer set search_path = '' as $$
+  select p.id, p.company, p.industry, p.verified, p.verified_at, p.city, p.about, p.offers, p.seeks,
+         p.service_cities, p.created_at, p.address, p.lat, p.lng, p.logo_url, p.gallery
+  from public.profiles p
+  where p.role = 'company' and not p.blocked
+  order by p.verified desc, p.created_at desc
+  limit 1000
+$$;
+
+grant select (gallery) on public.profiles to anonymous, authenticated;
+-- Evaluated by the CHECK as the writing role (same as valid_photo_url).
+grant execute on function meetany_private.valid_gallery(text[], uuid) to anonymous, authenticated;
+revoke all on function public.set_my_gallery(text[]) from public, anonymous, authenticated;
+grant execute on function public.set_my_gallery(text[]) to anonymous, authenticated;
+revoke all on function public.list_companies() from public, anonymous, authenticated;
+grant execute on function public.list_companies() to anonymous, authenticated;
+commit;
+
+begin;
+set local lock_timeout='5s';
+create table if not exists meetany_private.company_products (
+ company_id uuid primary key references public.profiles(id) on delete cascade,
+ items jsonb not null default '[]' check(jsonb_typeof(items)='array' and jsonb_array_length(items)<=12)
+);
+alter table meetany_private.company_products enable row level security;
+revoke all on meetany_private.company_products from public,anonymous,authenticated;
+create or replace function public.company_products(p_company_id uuid) returns jsonb
+language sql stable security definer set search_path='' as $$
+ select coalesce((select jsonb_agg(item order by ord) from meetany_private.company_products b
+ join public.profiles p on p.id=b.company_id cross join lateral jsonb_array_elements(b.items) with ordinality a(item,ord)
+ where p.id=p_company_id and p.role='company' and not p.blocked and item->>'photoUrl'=any(p.gallery)),'[]'::jsonb)
+$$;
+create or replace function public.set_my_products(p_items jsonb) returns jsonb
+language plpgsql security definer set search_path='' as $$
+declare me public.profiles:=meetany_private.require_user(); item jsonb; cleaned jsonb:='[]';
+begin
+ if me.role<>'company' then perform meetany_private.fail('MA201'); end if;
+ if p_items is null or jsonb_typeof(p_items)<>'array' then perform meetany_private.fail('MA622'); end if;
+ if jsonb_array_length(p_items)>12 then perform meetany_private.fail('MA622'); end if;
+ for item in select value from jsonb_array_elements(p_items) loop
+  if jsonb_typeof(item)<>'object' or jsonb_typeof(item->'name') is distinct from 'string' or length(trim(item->>'name')) not between 2 and 80
+   or jsonb_typeof(item->'photoUrl') is distinct from 'string' or not coalesce(meetany_private.valid_photo_url(item->>'photoUrl',me.id),false)
+   or not coalesce(item->>'photoUrl'=any(me.gallery),false)
+   or (item ? 'note' and jsonb_typeof(item->'note')<>'string') or length(coalesce(item->>'note',''))>200
+  then perform meetany_private.fail('MA622'); end if;
+  cleaned:=cleaned||jsonb_build_array(jsonb_build_object('name',trim(item->>'name'),'photoUrl',item->>'photoUrl','note',trim(coalesce(item->>'note',''))));
+ end loop;
+ insert into meetany_private.company_products(company_id,items) values(me.id,cleaned) on conflict(company_id) do update set items=excluded.items;
+ return cleaned;
+end $$;
+revoke all on function public.company_products(uuid),public.set_my_products(jsonb) from public,anonymous,authenticated;
+grant execute on function public.company_products(uuid) to anonymous,authenticated;
+grant execute on function public.set_my_products(jsonb) to authenticated;
+commit;

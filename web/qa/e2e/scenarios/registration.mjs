@@ -1,5 +1,5 @@
 import { assert, rpc, go, login, logout, randomPassword } from '../lib.mjs';
-export default async function(t) {
+export default async function registration(t) {
   await Promise.all(['client', 'company'].map(async (role, index) => {
     const p = await t.page();
     const account = { email: `e2e+${t.run}-${role}@meetany.local`, password: randomPassword() };

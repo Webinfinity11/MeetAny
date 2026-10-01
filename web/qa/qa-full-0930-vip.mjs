@@ -1,5 +1,4 @@
 // VIP/Premium visual check with a mocked company_business_features response (no DB writes).
-import fs from 'node:fs';
 import { chromium } from 'playwright';
 const OUT = 'qa/shots/qa-full-0930'; const O = 'http://localhost:3001';
 const browser = await chromium.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });

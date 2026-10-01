@@ -6,7 +6,7 @@
 .request-form__skeleton .ma-skel:nth-child(3){width:45%}
 
 .request-form__group{display:grid;gap:var(--space-3);min-width:0}
-.request-form__group+.request-form__group{padding-top:var(--space-5);border-top:1px solid var(--border-subtle)}
+.request-form__group+.request-form__group{padding-top:var(--space-5);border-top:var(--size-1) solid var(--border-subtle)}
 .ma-proto .request-form .request-form__group-title{display:flex;align-items:baseline;gap:var(--space-2);margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);color:var(--text);font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
 .request-form__group-opt{font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3);font-feature-settings:normal;letter-spacing:normal}
 .request-form__grid{display:grid;gap:var(--space-4);grid-template-columns:minmax(0,1fr)}
@@ -22,23 +22,23 @@
  .request-form__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .request-form__wide,.request-form__grid>:last-child:nth-child(odd){grid-column:1 / -1}
 }
-.ma-proto .request-form .ma-sheet__header{align-items:center;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-6);border-bottom:1px solid var(--border-subtle);background:var(--white)}
+.ma-proto .request-form .ma-sheet__header{align-items:center;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-6);border-bottom:var(--size-1) solid var(--border-subtle);background:var(--white)}
 .ma-proto .request-form .ma-sheet__title{margin:0;padding:0;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-bold);color:var(--text)}
 .request-form .ma-sheet__close{width:var(--tap-min);height:var(--tap-min);margin:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-2)}
 .request-form .ma-sheet__close:hover{background:var(--bg-subtle);color:var(--text)}
 .request-form .ma-sheet__body{padding-top:var(--space-5);gap:var(--space-5)}
 .request-form .ma-form{gap:var(--space-4)}
 .request-form .ma-note{font-size:var(--fs-sm);line-height:var(--lh-sm)}
-.request-form input[type="date"]{-webkit-appearance:none;appearance:none;display:block;height:var(--control-h);min-height:var(--control-h);text-align:left;border:1px solid var(--border-input);border-radius:var(--radius-sm);background:var(--white)}
+.request-form input[type="date"]{-webkit-appearance:none;appearance:none;display:block;height:var(--control-h);min-height:var(--control-h);text-align:left;border:var(--size-1) solid var(--border-input);border-radius:var(--radius-sm);background:var(--white)}
 .request-form .ma-field{align-content:start}
 .request-form input[type="date"]::-webkit-date-and-time-value{text-align:left;min-height:var(--lh-body)}
 .request-form input[type="date"]::-webkit-datetime-edit{padding:0}
 .request-form input[type="date"]::-webkit-calendar-picker-indicator{margin:0;opacity:.6;cursor:pointer}
-.request-form__qty{display:grid;grid-template-columns:minmax(0,1fr) auto;min-width:0;border:1px solid var(--border-input);border-radius:var(--radius-sm);background:var(--white);transition:border-color var(--motion-fast) var(--motion-ease)}
+.request-form__qty{display:grid;grid-template-columns:minmax(0,1fr) auto;min-width:0;border:var(--size-1) solid var(--border-input);border-radius:var(--radius-sm);background:var(--white);transition:border-color var(--motion-fast) var(--motion-ease)}
 .request-form__qty:hover{border-color:var(--ink-500)}
 .request-form__qty:focus-within{border-color:var(--action);box-shadow:var(--focus-ring)}
-.request-form .request-form__qty :is(.ma-input,.ma-select){min-height:calc(var(--control-h) - 2px);border:0;border-radius:0;background-color:transparent;box-shadow:none}
-.request-form .request-form__qty .ma-select{width:auto;border-left:1px solid var(--border-subtle)}
+.request-form .request-form__qty :is(.ma-input,.ma-select){min-height:calc(var(--control-h) - var(--size-2));border:0;border-radius:0;background-color:transparent;box-shadow:none}
+.request-form .request-form__qty .ma-select{width:auto;border-left:var(--size-1) solid var(--border-subtle)}
 .request-form .request-form__qty :is(.ma-input,.ma-select):is(:focus,:focus-visible){box-shadow:none}
 .ma-proto .request-form .ma-sheet__footer .ma-btn--primary{font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
 .ma-proto .request-form .ma-sheet__footer{align-items:center;gap:var(--space-5);padding:var(--space-3) var(--space-6);background:var(--white)}
@@ -57,8 +57,8 @@
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-4);
-  border: 1px solid var(--blue-100);
-  border-radius: 12px;
+  border: var(--size-1) solid var(--blue-100);
+  border-radius: var(--size-12);
   background: var(--blue-50);
   font-size: var(--fs-sm);
   line-height: var(--lh-sm);
@@ -66,9 +66,9 @@
 }
 .request-form__guest > .icon {
   flex: none;
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
+  width: var(--size-18);
+  height: var(--size-18);
+  margin-top: var(--size-2);
   color: var(--action);
 }
 .request-form__guest p {
@@ -77,7 +77,7 @@
 .request-form__guest a {
   color: var(--text-link);
   font-weight: var(--fw-semibold);
-  text-underline-offset: 3px;
+  text-underline-offset: var(--size-3);
 }
 
 /* Rhythm (2026-09-30): 24px between fields' rows, a divider and 24px between groups, titles at body size. */
@@ -104,7 +104,7 @@
   column-gap: var(--space-4);
 }
 .request-form .ma-textarea {
-  min-height: 120px;
+  min-height: var(--size-120);
 }
 .request-form__note {
   font-size: var(--fs-sm);

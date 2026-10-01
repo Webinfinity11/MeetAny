@@ -1,8 +1,11 @@
+
+import { Button } from "../ui/Button";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { BusinessMarks } from "./CompanyBusiness";
 import type { BusinessFeature } from "../../lib/business-client";
+import { ReportButton } from "./ReportButton";
 
 export type OfferCardData = {
   id: string;
@@ -21,7 +24,7 @@ export type OfferCardData = {
 
 // No price field (owner decision 2026-09-22: B2B pricing isn't a fixed number, so the offer
 // is text plus an optional delivery time — see db/CONTRACT.md "შეთავაზება ფასის გარეშე").
-export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean }) {
+export function OfferCard({ o, onChoose, canChoose, canReport = false }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean }) {
   const cls =
     o.status === "chosen"
       ? " ma-ocard--chosen"
@@ -52,8 +55,9 @@ export function OfferCard({ o, onChoose, canChoose }: { o: OfferCardData; onChoo
       </header>
       <p className="ma-ocard__body">{o.body}</p>
       <footer className="request-offer-actions">
-        <Link className="ma-btn ma-btn--secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Link>
-        {canChoose && o.status === "sent" ? <button type="button" className="ma-btn ma-btn--primary" onClick={onChoose}><Icon name="check"/>შეთავაზების არჩევა</button> : null}
+        <Button variant="secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Button>
+        {canReport ? <ReportButton kind="offer" targetId={o.id} /> : null}
+        {canChoose && o.status === "sent" ? <Button type="button" variant="primary" onClick={onChoose}><Icon name="check"/>შეთავაზების არჩევა</Button> : null}
       </footer>
     </article>
   );

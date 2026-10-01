@@ -41,7 +41,7 @@ export async function offerAndChat(t, p, client, request, chat = true) {
   }, p);
   return offer;
 }
-export default async function(t) {
+export default async function company(t) {
   const p = await t.page('wood');
   const original = (await rpc(p, 'my_profile'))[0];
   const originalArgs = await profileArgs(original);

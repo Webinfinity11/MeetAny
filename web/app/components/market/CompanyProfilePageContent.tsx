@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { ProfileSkeleton } from "./Skeletons";
 
@@ -10,6 +12,8 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
+import { CompanyProducts } from "./CompanyProducts";
+import { DistributionProfile } from "./Distribution";
 import { ProductCard, type ProductCardData } from "./ProductCard";
 import { avatarInitials, companyImage } from "./CompanyAvatar";
 import { CompanyGallery } from "./CompanyGallery";
@@ -17,6 +21,7 @@ import { SimilarCompanies } from "./SimilarCompanies";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
+import { ReportButton } from "./ReportButton";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { sinceMonthLabel } from "../../lib/format";
@@ -59,9 +64,9 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       <div className="ma-page">
         <div className="ma-empty">
           <h2 className="ma-empty__title">კომპანია ვერ მოიძებნა</h2>
-          <Link className="ma-btn ma-btn--secondary" href="/companies/">
+          <Button variant="secondary" href="/companies/">
             კომპანიების კატალოგზე დაბრუნება
-          </Link>
+          </Button>
         </div>
       </div>
     );
@@ -110,10 +115,11 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       <aside className="company-contact-card" aria-labelledby="company-contact-heading">
         <h2 id="company-contact-heading" className="detail-section-title">კონტაქტი</h2>
         <p>{ownProfile ? "ეს შენი კომპანიის საჯარო გვერდია. ინფორმაცია შეგიძლია ანგარიშიდან განაახლო." : "დაუკავშირდი კომპანიას პირობების დასაზუსტებლად."}</p>
-        <div className="company-contact-actions">{ownProfile ? <Link className="ma-btn ma-btn--primary" href="/account/?tab=profile">პროფილის რედაქტირება</Link> : <>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/></>}</div>
+        <div className="company-contact-actions">{ownProfile ? <Button variant="primary" href="/account/?tab=profile">პროფილის რედაქტირება</Button> : <>{phone ? <CallButton phone={phone} contactId={c.id} source="company-profile" /> : null}<MessageButton companyId={c.id}/></>}</div>
         {c.serviceCities?.length ? <div className="company-profile-coverage"><span>მომსახურების არეალი</span><p>{c.serviceCities.map((id: string) => cities[id] || id).join(" · ")}</p></div> : null}
         {Number.isFinite(c.lat) && Number.isFinite(c.lng) ? <CompaniesMap compact companies={[{ id: c.id, name, industry: c.industry, city: c.city, lat: c.lat, lng: c.lng }]} /> : null}
         {c.address || directions ? <div className="company-contact-address"><span>მისამართი</span>{c.address ? <p>{c.address}</p> : null}{directions ? <a href={directions} target="_blank" rel="noopener noreferrer"><Icon name="map-pin" />რუკაზე ნახვა</a> : null}</div> : null}
+        {!ownProfile && store?.currentUser()?.role !== "admin" ? <ReportButton kind="company" targetId={c.id} /> : null}
       </aside>
       <div className="company-profile-main">
         {!hasDetails ? <section className="company-profile-brief"><p>{ownProfile ? "დაამატე აღწერა, მომსახურება და პროდუქტები, რომ მომხმარებლებმა უკეთ გაიგონ, რას აკეთებ." : "პირობებისა და მომსახურების დეტალებისთვის დაუკავშირდი კომპანიას პირდაპირ."}</p></section> : null}
@@ -126,7 +132,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
           <h2 id="company-services" className="detail-section-title">პროდუქტები და მომსახურება</h2>
           {pictured.length ? <div className="company-product-grid">{pictured.map((product, index) => <div key={`${product.name}-${index}`}><ProductCard {...product} /></div>)}</div> : null}
           {plain.length ? <ul className="company-profile-services">{plain.map((product, index) => <li key={`${product.name}-${index}`}><Icon name="check" /><span>{product.name}</span></li>)}</ul> : null}
-          {!ownProfile ? <div className="company-profile-cta"><p>გჭირდება რომელიმე მათგანი?</p><Link className="ma-btn ma-btn--secondary" href={requestHref(products[0]?.name || "")}>მოთხოვნის გამოქვეყნება</Link></div> : null}
+          {!ownProfile ? <div className="company-profile-cta"><p>გჭირდება რომელიმე მათგანი?</p><Button variant="secondary" href={requestHref(products[0]?.name || "")}>მოთხოვნის გამოქვეყნება</Button></div> : null}
         </section> : null}
         {openRequests.length ? <section className="company-profile-requests" aria-labelledby="company-requests">
           <h2 id="company-requests" className="detail-section-title">ღია მოთხოვნები</h2>
@@ -137,7 +143,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
             </article>)}
           </div>
         </section> : null}
-        <CompanyReviews key={c.id} companyId={c.id}/>
+        <CompanyProducts companyId={c.id}/><DistributionProfile companyId={c.id}/><CompanyReviews key={c.id} companyId={c.id}/>
       </div>
 
       </div>

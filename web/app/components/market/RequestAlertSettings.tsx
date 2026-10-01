@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 import { CustomSelect } from "../ui/CustomSelect";
 import { useState } from "react";
 import { useMarketStore } from "../../lib/market-client";
@@ -44,7 +46,7 @@ export function RequestAlertSettings({ initial, emailDelivery, profile }: { init
  return <form className={styles.alertSettings} onSubmit={save} aria-label="ახალი მოთხოვნების შეტყობინებები">
   <div><h2 className="ma-h3">ახალი მოთხოვნები შენი დარგიდან</h2><p className={styles.meta}>შესაბამის ახალ მოთხოვნაზე ზარის ნიშნით შეგატყობინებთ.</p></div>
   <label className={styles.alertChoice}><input type="checkbox" checked={draft.enabled} disabled={pending} onChange={e => {change({enabled:e.target.checked});setEditing(e.target.checked);}}/> ახალ მოთხოვნებზე შემატყობინე</label>
-  {draft.enabled && !editing ? <div className={styles.alertSummary}><p>{summary(draft.categories)}<br/>{draft.cities.map(key => cities[key]).join(" · ")}</p><button type="button" className="ma-btn ma-btn--secondary" onClick={() => setEditing(true)}>პარამეტრების შეცვლა</button></div> : null}
+  {draft.enabled && !editing ? <div className={styles.alertSummary}><p>{summary(draft.categories)}<br/>{draft.cities.map(key => cities[key]).join(" · ")}</p><Button type="button" variant="secondary" onClick={() => setEditing(true)}>პარამეტრების შეცვლა</Button></div> : null}
   {draft.enabled && editing ? <>
    <fieldset className={styles.alertFieldset} disabled={pending}><legend>კატეგორიები</legend><div className={styles.alertChoices}>{categoryGroups.map(g => { const keys = g.items.map(([k]) => k); return <div key={g.id}>
     {keys.length > 1 ? <label className={styles.alertChoice}><input type="checkbox" checked={keys.every(k => draft.categories.includes(k))} onChange={() => toggleGroup(keys)}/><strong>{g.name}</strong></label> : null}
@@ -55,6 +57,6 @@ export function RequestAlertSettings({ initial, emailDelivery, profile }: { init
    {!emailDelivery ? <p className={styles.meta}>ელფოსტით გაგზავნა ჯერ არ არის ჩართული. საიტზე შეტყობინებებს მიიღებ.</p> : draft.emailMode === "daily" ? <p className={styles.meta}>შეჯამება თბილისის დროით მოვა, მხოლოდ ახალი მოთხოვნების არსებობისას.</p> : null}
    {(!draft.categories.length || !draft.cities.length) ? <p className={styles.meta}>აირჩიე მინიმუმ ერთი კატეგორია და ერთი ქალაქი.</p> : null}
   </> : null}
-  <div className={styles.alertActions}>{dirty || editing ? <button type="submit" className="ma-btn ma-btn--primary" disabled={pending || !dirty || (draft.enabled && (!draft.categories.length || !draft.cities.length))}>{pending ? "ინახება…" : "პარამეტრების შენახვა"}</button> : null}{message ? <p role={error ? "alert" : "status"}>{message}</p> : null}</div>
+  <div className={styles.alertActions}>{dirty || editing ? <Button type="submit" variant="primary" disabled={pending || !dirty || (draft.enabled && (!draft.categories.length || !draft.cities.length))}>{pending ? "ინახება…" : "პარამეტრების შენახვა"}</Button> : null}{message ? <p role={error ? "alert" : "status"}>{message}</p> : null}</div>
  </form>;
 }

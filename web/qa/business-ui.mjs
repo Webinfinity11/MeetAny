@@ -1,0 +1,33 @@
+import fs from 'node:fs';
+import { chromium } from 'playwright';
+import { Scenario, assert, rpc, go, safe } from './e2e/lib.mjs';
+const browser=await chromium.launch({headless:true,executablePath:process.env.QA_BROWSER_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+const t=new Scenario(browser,'business-ui',`${Date.now()}-business-ui`);
+try {
+ const p=await t.page('linen'),me=(await rpc(p,'my_profile'))[0];let products=[],distribution=null;const errors=[];p.on('pageerror',e=>errors.push(e.message));
+ const photo=me.gallery?.[0]||me.logo_url||'/assets/meetany-logo.jpeg';
+ await p.route('**/api/db/rpc/my_profile',r=>r.fulfill({json:[{...me,gallery:[photo]}]}));
+ await p.route('**/api/db/rpc/my_business_settings',r=>r.fulfill({json:{distributor:true,distribution:{regions:['tbilisi'],categories:[],channels:['horeca'],brands:[],warehouse:'none',transport:'none',coldChain:false,minOrder:'',exclusive:false},membership:null,application:null}}));
+ await p.route('**/api/db/rpc/company_products',r=>r.fulfill({json:products}));
+ await p.route('**/api/db/rpc/set_my_products',r=>{products=r.request().postDataJSON().p_items;return r.fulfill({json:products});});
+ await p.route('**/api/db/rpc/set_my_distribution',r=>{distribution=r.request().postDataJSON();return r.fulfill({json:{distributor:true}});});
+ await go(p,'/account/?tab=business');
+ await p.getByRole('button',{name:'პროდუქტის დამატება',exact:true}).click();
+ await p.getByLabel('დასახელება',{exact:true}).fill('სატესტო პროდუქტი');
+ await p.getByLabel('მოკლე აღწერა',{exact:true}).fill('პროდუქტის აღწერა');
+ await p.getByRole('button',{name:'პროდუქტების შენახვა',exact:true}).click();
+ await p.getByText('პროდუქტები შენახულია.',{exact:true}).waitFor();
+ assert.equal(products.length,1);assert.equal(products[0].name,'სატესტო პროდუქტი');
+ await p.getByLabel(/^ბრენდები/).fill('Alpha, Beta');
+ await p.getByRole('button',{name:'პროფილის შენახვა',exact:true}).click();
+ await p.getByText('დისტრიბუციის პროფილი შენახულია.',{exact:true}).waitFor();
+ assert.deepEqual(distribution.p_brands,['Alpha','Beta']);assert.deepEqual(distribution.p_channels,['horeca']);
+ await p.getByRole('button',{name:'პროდუქტის ამოღება',exact:true}).click();
+ await p.getByRole('button',{name:'პროდუქტების შენახვა',exact:true}).click();
+ await p.waitForTimeout(1500);assert.deepEqual(products,[]);assert.deepEqual(errors,[]);
+ await p.evaluate(()=>document.documentElement.style.setProperty('--action-primary','#123456'));
+ assert(await p.locator('.ma-btn--primary').evaluateAll(nodes=>nodes.length>0&&nodes.every(el=>getComputedStyle(el).backgroundColor==='rgb(18, 52, 86)')),'primary token propagation');
+ fs.mkdirSync('qa/shots/finish-1001',{recursive:true});await p.setViewportSize({width:390,height:844});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ await p.screenshot({path:'qa/shots/finish-1001/business-390.png',fullPage:true});
+ console.log('PASS: product add/save/remove keeps arrays; distribution form payload; mobile layout; no runtime errors. Writes mocked.');
+}catch(e){console.error(safe(e.stack));process.exitCode=1;}finally{await browser.close();}

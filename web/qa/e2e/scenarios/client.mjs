@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { assert, root, db, go, until, requestRow, requestPath, choose } from '../lib.mjs';
-export default async function(t) {
+export default async function client(t) {
   const p = await t.page('hotel');
   let request;
   await t.step('მოთხოვნის შექმნა ფოტოთი', 'ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს', async () => {

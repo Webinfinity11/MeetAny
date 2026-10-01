@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { AdminBusiness } from "./AdminBusiness";
 
@@ -6,7 +8,7 @@ import { AccountSkeleton, ListSkeleton } from "./Skeletons";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
@@ -20,6 +22,7 @@ import { PageBand } from "./PageBand";
 import { AdminFilters } from "./AdminFilters";
 import { AdminOverview } from "./AdminOverview";
 import { AdminPhotos } from "./AdminPhotos";
+import { AdminReports, hideLabels, type ReportAction } from "./AdminReports";
 import { AdminDetail, type AdminTarget } from "./AdminDetail";
 import { isTestAccount, downloadCsv, readAllAdminPages } from "../../lib/admin-helpers";
 import styles from "./admin.module.css";
@@ -28,8 +31,9 @@ import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
 
+type PendingKind = "requests" | "users" | "offers" | "photos" | "reports";
 // ids: a bulk action over the selected rows (id is then the first of them).
-type PendingAction = { kind: "requests" | "users" | "offers" | "photos"; action: string; id: string; label: string; ids?: string[]; url?: string } | null;
+type PendingAction = { kind: "requests" | "users" | "offers" | "photos" | "reports"; action: string; id: string; label: string; ids?: string[]; url?: string } | null;
 
 export function AdminPageContent() {
   const { store, ready, available } = useMarketStore();
@@ -46,7 +50,7 @@ export function AdminPageContent() {
   }
   const selectedTab = searchParams.get("tab");
   // The overview is the landing screen; the other tabs are the working tools.
-  const tab = selectedTab === "reviews" || selectedTab === "plans" || selectedTab === "requests" || selectedTab === "offers" || selectedTab === "users" || selectedTab === "photos" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "overview";
+  const tab = selectedTab === "reports" || selectedTab === "reviews" || selectedTab === "plans" || selectedTab === "requests" || selectedTab === "offers" || selectedTab === "users" || selectedTab === "photos" || selectedTab === "audit" || selectedTab === "contacts" ? selectedTab : "overview";
   // QA/demo accounts are hidden from the lists unless asked for (?tests=1).
   const showTests = searchParams.get("tests") === "1";
   const cursor = searchParams.get("cursor") || "";
@@ -74,7 +78,19 @@ export function AdminPageContent() {
 
   const me = ready && available ? store?.currentUser() : null;
 
-  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && tab !== "contacts" && tab !== "overview" && tab !== "photos" && tab !== "reviews" && tab !== "plans", tab: tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" ? "audit" : tab, query, status, role, cursor });
+  const ownData = tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports";
+  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && !ownData, tab: ownData ? "audit" : tab, query, status, role, cursor });
+  // New reports: the tab badge. Loaded once per admin visit and updated by the reports tab itself.
+  const [reportCount, setReportCount] = useState(0);
+  const [reportRevision, setReportRevision] = useState(0);
+  const isAdmin = !!me && me.role === "admin";
+  useEffect(() => {
+    if (!isAdmin || typeof store?.adminListReports !== "function") return;
+    let active = true;
+    store.adminListReports("new", 0).then((page: { newCount?: number }) => { if (active) setReportCount(Number(page.newCount) || 0); }, () => undefined);
+    return () => { active = false; };
+  }, [store, isAdmin]);
+  const onReportCount = useCallback((count: number) => setReportCount(count), []);
 
   const data = useMemo(() => {
     if (!store || !me || me.role !== "admin") return null;
@@ -120,9 +136,9 @@ export function AdminPageContent() {
           <h2 className="ma-empty__title">ადმინ-პანელი</h2>
           <p className="ma-empty__text">ეს გვერდი ხელმისაწვდომია მხოლოდ ადმინისტრატორისთვის.</p>
           {!me ? (
-            <Link className="ma-btn ma-btn--primary" href="/account/?next=%2Fadmin%2F">
+            <Button variant="primary" href="/account/?next=%2Fadmin%2F">
               შესვლა
-            </Link>
+            </Button>
           ) : null}
         </div>
       </div>
@@ -156,8 +172,9 @@ export function AdminPageContent() {
   const adminCount = unfilteredUsers === undefined ? 0 : Math.max(0, unfilteredUsers - stats.users);
   const adminNote = tab === "users" && adminCount ? ` · მათ შორის ${adminCount} ადმინი — ზედა მთვლელში არ ითვლება` : "";
 
-  async function run(kind: "requests" | "users" | "offers" | "photos", action: string, id: string, reason: string, url?: string) {
+  async function run(kind: PendingKind, action: string, id: string, reason: string, url?: string) {
     if (!store) return;
+    if (kind === "reports") { await store.adminResolveReport(id, action === "reportReject" ? "reject" : "hide", reason); return; }
     if (kind === "photos") { await store.adminRemovePhoto(id, url, reason); return; }
     if (kind === "requests") {
       if (action === "hide") await store.adminSetHidden(id, true, reason);
@@ -186,7 +203,7 @@ export function AdminPageContent() {
       catch (err) { failure = failure || err; }
     }
     setBusy(false);
-    if (done) admin.reload();
+    if (done) { admin.reload(); if (pendingAction.kind === "reports") setReportRevision(n => n + 1); }
     if (failure && !done) { setError(adminErrorMessage(failure, "მოქმედება ვერ შესრულდა. სცადე ხელახლა.")); return; }
     setPendingAction(null);
     if (pendingAction.ids) setSelected([]);
@@ -240,24 +257,27 @@ export function AdminPageContent() {
             { key: "requests", label: "მოთხოვნები", icon: "clipboard-list" },
             { key: "users", label: "მომხმარებლები", icon: "users" },
             ...(v2 || tab === "offers" ? [{ key: "offers", label: "შეთავაზებები", icon: "inbox" }] : []),
+            { key: "reports", label: "საჩივრები", icon: "flag", badge: reportCount },
             { key: "reviews", label: "შეფასებები", icon: "star" },
             { key: "plans", label: "პაკეტები", icon: "sparkles" },
             { key: "photos", label: "ფოტოები", icon: "image" },
             { key: "audit", label: "მოქმედებების ჟურნალი", icon: "clock" },
             { key: "contacts", label: "კონტაქტები", icon: "phone" },
-          ].map(item => <Link key={item.key} href={item.key === "overview" ? "/admin/" : `/admin/?tab=${item.key}`} aria-current={tab === item.key ? "page" : undefined}><Icon name={item.icon} /><span>{item.label}</span><Icon name="chevron-right" className={styles.navArrow} /></Link>)}
+          ].map((item: { key: string; label: string; icon: string; badge?: number }) => <Link key={item.key} href={item.key === "overview" ? "/admin/" : `/admin/?tab=${item.key}`} aria-current={tab === item.key ? "page" : undefined}><Icon name={item.icon} /><span>{item.label}</span>{item.badge ? <b className={`ma-badge ma-badge--accent ma-badge--plain ${styles.navBadge}`} aria-label={`${item.badge} ახალი`}>{item.badge}</b> : null}<Icon name="chevron-right" className={styles.navArrow} /></Link>)}
         </nav>
         <Link className={styles.backToSite} href="/"><Icon name="arrow-left" />საიტზე დაბრუნება</Link>
       </aside>
       <div className={styles.content}>
-      {tab !== "reviews" && tab !== "plans" ? <PageBand title={{ reviews:"შეფასებები", plans:"პაკეტები", overview: "მიმოხილვა", photos: "ფოტოები", requests: "მოთხოვნები", users: "მომხმარებლები", offers: "შეთავაზებები", audit: "მოქმედებების ჟურნალი", contacts: "კონტაქტები" }[tab]} description={{ reviews:"შეფასებების შემოწმება და გამოქვეყნება", plans:"კომპანიების ხილვადობის პაკეტები", overview: "პლატფორმის მდგომარეობა და ის, რასაც ყურადღება სჭირდება", photos: "კომპანიების ატვირთული ლოგოები და გალერეის ფოტოები", requests: "მოთხოვნების სტატუსი და მოდერაცია", users: "ანგარიშები, როლები და წვდომის მართვა", offers: "კომპანიების შეთავაზებების მართვა", audit: "პლატფორმაზე შესრულებული მოქმედებების ისტორია", contacts: "საკონტაქტო აქტივობა და სტატისტიკა" }[tab]} /> : null}
+      {tab !== "reviews" && tab !== "plans" ? <PageBand title={{ reports: "საჩივრები", reviews:"შეფასებები", plans:"პაკეტები", overview: "მიმოხილვა", photos: "ფოტოები", requests: "მოთხოვნები", users: "მომხმარებლები", offers: "შეთავაზებები", audit: "მოქმედებების ჟურნალი", contacts: "კონტაქტები" }[tab]} description={{ reports: "მომხმარებლების შეტყობინებები მოთხოვნებზე, კომპანიებსა და შეთავაზებებზე", reviews:"შეფასებების შემოწმება და გამოქვეყნება", plans:"კომპანიების ხილვადობის პაკეტები", overview: "პლატფორმის მდგომარეობა და ის, რასაც ყურადღება სჭირდება", photos: "კომპანიების ატვირთული ლოგოები და გალერეის ფოტოები", requests: "მოთხოვნების სტატუსი და მოდერაცია", users: "ანგარიშები, როლები და წვდომის მართვა", offers: "კომპანიების შეთავაზებების მართვა", audit: "პლატფორმაზე შესრულებული მოქმედებების ისტორია", contacts: "საკონტაქტო აქტივობა და სტატისტიკა" }[tab]} /> : null}
       {tab === "reviews" || tab === "plans" ? <AdminBusiness key={tab} kind={tab}/> : tab === "overview" ? <AdminOverview store={store!} stats={stats} onOpenUser={id => setDetail({ kind: "user", id })}
         onVerify={u => setPendingAction({ kind: "users", action: "verify", id: u.id, label: u.label })} /> : null}
 
+      {tab === "reports" ? <AdminReports key={status} store={store!} status={status === "handled" ? "handled" : "new"} revision={reportRevision} onStatus={value => setFilter("status", value === "new" ? "" : value)} onCount={onReportCount}
+        onAction={({ report, action, label }: ReportAction) => setPendingAction({ kind: "reports", action: action === "reportReject" ? "reportReject" : `reportHide.${report.target_kind}`, id: report.id, label })} /> : null}
       {tab === "photos" ? <AdminPhotos store={store!} onRemove={p => setPendingAction({ kind: "photos", action: "removePhoto", id: p.userId, url: p.url, label: p.label })} /> : null}
-      {tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
+      {tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
       {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
-      {hasFilters && (tab !== "offers" || v2) ? <button type="button" className={`ma-btn ma-btn--secondary ${styles.clear}`} onClick={clearFilters}>ფილტრების გასუფთავება</button> : null}
+      {hasFilters && (tab !== "offers" || v2) ? <Button type="button" variant="secondary" className={styles.clear} onClick={clearFilters}>ფილტრების გასუფთავება</Button> : null}
       {admin.mode === "legacy" && (tab === "requests" || tab === "users") ? <>
         <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი{adminNote}.</p>
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
@@ -268,7 +288,7 @@ export function AdminPageContent() {
         <input type="checkbox" role="switch" checked={showTests} onChange={e => setFilter("tests", e.target.checked ? "1" : "")} />
         <span className="filter-switch__track" aria-hidden="true" />
       </label>
-      <button type="button" className="ma-btn ma-btn--secondary" onClick={exportCsv} disabled={exporting}><Icon name="download" />{exporting ? "მზადდება…" : "CSV ექსპორტი"}</button></div> : null}
+      <Button type="button" variant="secondary" onClick={exportCsv} disabled={exporting}><Icon name="download" />{exporting ? "მზადდება…" : "CSV ექსპორტი"}</Button></div> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "error" ? <AdminState error title="ჩანაწერები ვერ ჩაიტვირთა" text={admin.error || undefined} onRetry={admin.reload} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
       {((tab === "offers" && !v2) || (tab === "audit" && admin.mode === "legacy")) ? <AdminState title="საჭიროა ბაზის განახლება" text={tab === "offers" ? "შეთავაზებების მოდერაცია ხელმისაწვდომი გახდება ადმინისტრირების API v2-ის ამოქმედების შემდეგ." : "მოქმედებების ჟურნალი ამ ვერსიაში ხელმისაწვდომი არ არის."} /> : null}
@@ -323,22 +343,22 @@ export function AdminPageContent() {
                     <td data-label="შეთავაზებები">{count}</td>
                     <td data-label="მოქმედება">
                       <div className="ma-proto-tableactions">
-                        <button
+                        <Button
                           type="button"
-                          className="ma-btn ma-btn--secondary"
+                          variant="secondary"
                           onClick={() =>
                             setPendingAction({ kind: "requests", action: r.hidden ? "unhide" : "hide", id: r.id, label: r.title })
                           }
                         >
                           {r.hidden ? "გამოჩენა" : "დამალვა"}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           type="button"
-                          className="ma-btn ma-btn--danger-quiet"
+                          variant="danger-quiet"
                           onClick={() => setPendingAction({ kind: "requests", action: "delete", id: r.id, label: r.title })}
                         >
                           წაშლა
-                        </button>
+                        </Button>
                       </div>
                     </td>
                   </tr>
@@ -392,9 +412,9 @@ export function AdminPageContent() {
                   <td data-label="მოქმედება">
                     <div className="ma-proto-tableactions">
                       {u.role === "company" ? (
-                        <button
+                        <Button
                           type="button"
-                          className="ma-btn ma-btn--secondary"
+                          variant="secondary"
                           onClick={() =>
                             setPendingAction({
                               kind: "users",
@@ -405,12 +425,12 @@ export function AdminPageContent() {
                           }
                         >
                           {u.verified ? "დადასტურების მოხსნა" : "დადასტურება"}
-                        </button>
+                        </Button>
                       ) : null}
                       {u.role !== "admin" ? (
-                        <button
+                        <Button
                           type="button"
-                          className="ma-btn ma-btn--danger-quiet"
+                          variant="danger-quiet"
                           onClick={() =>
                             setPendingAction({
                               kind: "users",
@@ -421,7 +441,7 @@ export function AdminPageContent() {
                           }
                         >
                           {u.blocked ? "განბლოკვა" : "დაბლოკვა"}
-                        </button>
+                        </Button>
                       ) : null}
                     </div>
                   </td>
@@ -433,14 +453,14 @@ export function AdminPageContent() {
       ) : null}
       {(tab === "requests" || tab === "users") && selected.length ? <div className={styles.bulkBar} role="region" aria-label="მონიშნულ ჩანაწერებზე მოქმედებები">
         <strong>{selected.length} მონიშნული</strong>
-        {bulkActions.map(b => { const ids = bulkTargets(b.action); return <button key={b.action} type="button" disabled={!ids.length}
-          className={`ma-btn ${b.danger ? "ma-btn--danger-quiet" : "ma-btn--secondary"}`}
-          onClick={() => setPendingAction({ kind: tab === "users" ? "users" : "requests", action: b.action, id: ids[0], ids, label: `${ids.length} ჩანაწერი` })}>{b.label}{ids.length !== selected.length ? ` (${ids.length})` : ""}</button>; })}
-        <button type="button" className="ma-btn ma-btn--ghost" onClick={() => setSelected([])}>გაუქმება</button>
+        {bulkActions.map(b => { const ids = bulkTargets(b.action); return <Button key={b.action} type="button" disabled={!ids.length}
+          variant={b.danger ? "danger-quiet" : "secondary"}
+          onClick={() => setPendingAction({ kind: tab === "users" ? "users" : "requests", action: b.action, id: ids[0], ids, label: `${ids.length} ჩანაწერი` })}>{b.label}{ids.length !== selected.length ? ` (${ids.length})` : ""}</Button>; })}
+        <Button type="button" variant="ghost" onClick={() => setSelected([])}>გაუქმება</Button>
       </div> : null}
       {admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">
-        {cursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</button> : null}
-        {admin.page.hasMore && admin.page.nextCursor ? <button type="button" className="ma-btn ma-btn--secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი<Icon name="arrow-right" /></button> : null}
+        {cursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</Button> : null}
+        {admin.page.hasMore && admin.page.nextCursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი<Icon name="arrow-right" /></Button> : null}
       </nav> : null}
 
       </>}
@@ -450,7 +470,7 @@ export function AdminPageContent() {
         open={!!pendingAction}
         title={
           pendingAction
-            ? { removePhoto: "ფოტოს წაშლა", hide: "მოთხოვნის დამალვა", unhide: "მოთხოვნის გამოჩენა", delete: "მოთხოვნის წაშლა", deleteOffer: "შეთავაზების წაშლა", verify: "დადასტურება", unverify: "დადასტურების მოხსნა", block: "დაბლოკვა", unblock: "განბლოკვა" }[pendingAction.action] || ""
+            ? { "reportHide.request": `საჩივარი · მოთხოვნის ${hideLabels.request}`, "reportHide.offer": `საჩივარი · შეთავაზების ${hideLabels.offer}`, "reportHide.company": `საჩივარი · კომპანიის ${hideLabels.company}`, reportReject: "საჩივრის უარყოფა", removePhoto: "ფოტოს წაშლა", hide: "მოთხოვნის დამალვა", unhide: "მოთხოვნის გამოჩენა", delete: "მოთხოვნის წაშლა", deleteOffer: "შეთავაზების წაშლა", verify: "დადასტურება", unverify: "დადასტურების მოხსნა", block: "დაბლოკვა", unblock: "განბლოკვა" }[pendingAction.action] || ""
             : ""
         }
         subject={pendingAction?.label || ""}

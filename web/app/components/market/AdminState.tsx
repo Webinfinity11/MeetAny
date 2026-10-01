@@ -1,3 +1,5 @@
+
+import { Button } from "../ui/Button";
 import styles from "./admin.module.css";
 
 export function AdminState({ title, text, error = false, onRetry, onClear, onFirst }: {
@@ -7,9 +9,9 @@ export function AdminState({ title, text, error = false, onRetry, onClear, onFir
     <h2 className="ma-empty__title">{title}</h2>
     {text ? <p className="ma-empty__text">{text}</p> : null}
     {onRetry || onClear || onFirst ? <div className="ma-empty__actions">
-      {onRetry ? <button type="button" className="ma-btn ma-btn--secondary" onClick={onRetry}>ხელახლა ცდა</button> : null}
-      {onClear ? <button type="button" className="ma-btn ma-btn--secondary" onClick={onClear}>ფილტრების გასუფთავება</button> : null}
-      {onFirst ? <button type="button" className="ma-btn ma-btn--secondary" onClick={onFirst}>პირველი გვერდი</button> : null}
+      {onRetry ? <Button type="button" variant="secondary" onClick={onRetry}>ხელახლა ცდა</Button> : null}
+      {onClear ? <Button type="button" variant="secondary" onClick={onClear}>ფილტრების გასუფთავება</Button> : null}
+      {onFirst ? <Button type="button" variant="secondary" onClick={onFirst}>პირველი გვერდი</Button> : null}
     </div> : null}
   </div>;
 }

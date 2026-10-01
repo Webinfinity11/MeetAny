@@ -1,6 +1,6 @@
 import { assert, db, go, requestRow, requestPath } from '../lib.mjs';
 import { offerAndChat } from './company.mjs';
-export default async function(t) {
+export default async function choose(t) {
   const client = await t.page('hotel'), company = await t.page('wood');
   const request = await t.fixture(client, 'არჩევა');
   const offer = await offerAndChat(t, company, client, request, false);

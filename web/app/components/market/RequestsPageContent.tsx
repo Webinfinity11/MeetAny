@@ -1,6 +1,7 @@
 "use client";
+import { Button } from "../ui/Button";
 
-import Link from "next/link";
+
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -227,7 +228,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             items={activeItems}
             onRemove={key => filters.set({[key]: ""})}
             onClear={clearFilters}
-            filterButton={<button type="button" className="ma-btn ma-btn--secondary catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length > 0 ? ` · ${activeItems.length}` : ""}</button>}
+            filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length > 0 ? ` · ${activeItems.length}` : ""}</Button>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
               {value: "expiring", label: "მალე იწურება"},
@@ -247,7 +248,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                         <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
                         <h2>ასეთი მოთხოვნა ჯერ არ გამოქვეყნებულა</h2>
                         <p>სცადე სხვა კატეგორია ან ქალაქი. ახალი მოთხოვნები ყოველდღე ემატება — შეტყობინებებს ანგარიშში მიიღებ.</p>
-                        <button type="button" className="ma-btn ma-btn--secondary" onClick={() => filters.set({city: "", category: "", q: ""})}>ყველა მოთხოვნის ნახვა</button>
+                        <Button type="button" variant="secondary" onClick={() => filters.set({city: "", category: "", q: ""})}>ყველა მოთხოვნის ნახვა</Button>
                       </div>
                     )
                   : <>
@@ -263,8 +264,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         onOpenChange={setSheetOpen}
         triggerRef={filterButtonRef}
         footer={<>
-          <button type="button" className="ma-btn ma-btn--secondary" onClick={clearFilters} disabled={activeItems.length === 0}>გასუფთავება</button>
-          <button type="button" className="ma-btn ma-btn--primary" onClick={() => setSheetOpen(false)}>ნახე {rows.length} მოთხოვნა</button>
+          <Button type="button" variant="secondary" onClick={clearFilters} disabled={activeItems.length === 0}>გასუფთავება</Button>
+          <Button type="button" variant="primary" onClick={() => setSheetOpen(false)}>ნახე {rows.length} მოთხოვნა</Button>
         </>}
       >
         {requestFilters("mobile")}

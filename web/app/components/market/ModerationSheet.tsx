@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { useEffect, useRef } from "react";
 import styles from "./admin.module.css";
@@ -26,9 +28,13 @@ export function ModerationSheet({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const form = useRef<HTMLFormElement>(null);
-  const needsReason = action === "hide" || action === "block" || action === "removePhoto" || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
-  const destructive = ["hide", "block", "delete", "deleteOffer", "unverify", "removePhoto"].includes(action);
+  const needsReason = action.startsWith("report") || action === "hide" || action === "block" || action === "removePhoto" || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
+  const destructive = action.startsWith("reportHide") || ["hide", "block", "delete", "deleteOffer", "unverify", "removePhoto"].includes(action);
   const consequences: Record<string, string> = {
+    "reportHide.request": "მოთხოვნა საჯარო სიიდან დაიმალება და ამ მოთხოვნის ყველა ახალი საჩივარი დამუშავებულად მოინიშნება.",
+    "reportHide.offer": "შეთავაზება სამუდამოდ წაიშლება და მისი ყველა ახალი საჩივარი დამუშავებულად მოინიშნება.",
+    "reportHide.company": "კომპანია დაიბლოკება და მისი ყველა ახალი საჩივარი დამუშავებულად მოინიშნება. განბლოკვა მოგვიანებით შესაძლებელია.",
+    reportReject: "საჩივარი დაიხურება, შინაარსი უცვლელი დარჩება.",
     removePhoto: "ფოტო კომპანიის პროფილიდან და საცავიდან სამუდამოდ წაიშლება. მიზეზი მოქმედებების ჟურნალში შეინახება.",
     hide: "მოთხოვნა საჯარო სიიდან დაიმალება. მისი გამოჩენა მოგვიანებით შესაძლებელია.",
     unhide: "მოთხოვნა კვლავ გამოჩნდება საჯაროდ, მისი მიმდინარე სტატუსის შესაბამისად.",
@@ -99,12 +105,12 @@ export function ModerationSheet({
         ) : null}
       </div>
       <footer className="ma-sheet__footer">
-        <button className={`ma-btn ma-btn--${destructive ? "danger" : "primary"}`} type="submit" disabled={pending}>
-          {pending ? "ინახება…" : ["delete", "deleteOffer"].includes(action) ? "სამუდამოდ წაშლა" : "დადასტურება"}
-        </button>
-        <button className="ma-btn ma-btn--secondary" type="button" disabled={pending} onClick={() => ref.current?.close()}>
+        <Button variant={destructive ? "danger" : "primary"} type="submit" disabled={pending}>
+          {pending ? "ინახება…" : ["delete", "deleteOffer", "reportHide.offer"].includes(action) ? "სამუდამოდ წაშლა" : "დადასტურება"}
+        </Button>
+        <Button variant="secondary" type="button" disabled={pending} onClick={() => ref.current?.close()}>
           გაუქმება
-        </button>
+        </Button>
       </footer>
       </form>
     </dialog>

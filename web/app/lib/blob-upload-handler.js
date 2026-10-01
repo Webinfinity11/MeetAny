@@ -95,10 +95,12 @@ async function removePhoto(request) {
   catch (err) { console.error('blob-upload: delete failed', err?.message); return json(500, { error: 'delete failed' }); }
 }
 
-export default {
+const handler = {
   async fetch(request) {
     if (request.method === 'POST') return createToken(request);
     if (request.method === 'DELETE') return removePhoto(request);
     return new Response(null, { status: 405, headers: { Allow: 'POST, DELETE' } });
   },
 };
+
+export default handler;

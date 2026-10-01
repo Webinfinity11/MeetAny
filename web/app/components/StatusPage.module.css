@@ -4,11 +4,11 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
-  max-width: 560px;
+  max-width: var(--size-560);
   margin: var(--space-16) auto var(--space-20);
   padding: var(--space-12) var(--space-8);
-  border: 1px solid var(--card-border);
-  border-radius: 24px;
+  border: var(--size-1) solid var(--card-border);
+  border-radius: var(--size-24);
   background: var(--white);
   box-shadow: var(--card-shadow);
   text-align: center;
@@ -90,7 +90,7 @@
   font-weight: var(--fw-medium);
   color: var(--text-link);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: var(--size-3);
 }
 
 .button:focus-visible,

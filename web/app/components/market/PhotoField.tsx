@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CompanyAvatar } from "./CompanyAvatar";
@@ -77,10 +79,10 @@ export function PhotoField({ file, onChange }: { file: File | null; onChange: (f
           {previewUrl ? (
             <img alt="" width={96} height={72} src={previewUrl} onError={() => setBroken(true)} />
           ) : null}
-          <button className="ma-btn ma-btn--ghost" type="button" onClick={remove}>
+          <Button variant="ghost" type="button" onClick={remove}>
             <Icon name="trash-2" />
             მოშორება
-          </button>
+          </Button>
         </div>
       ) : null}
       {broken ? <p className="ma-field__error" role="alert">სურათი ვერ გაიხსნა. აირჩიე სხვა ფოტო.</p> : null}
@@ -117,8 +119,8 @@ export function LogoField({ name, logoUrl, file, onChange, onRemove, disabled, u
         }
         setError(""); onChange(next);
       }} />
-      <button className="ma-btn ma-btn--secondary" type="button" disabled={disabled} onClick={() => input.current?.click()}>ატვირთვა</button>
-      {file || logoUrl ? <button className="ma-btn ma-btn--ghost" type="button" disabled={disabled} onClick={() => { setError(""); onRemove(); }}>წაშლა</button> : null}
+      <Button variant="secondary" type="button" disabled={disabled} onClick={() => input.current?.click()}>ატვირთვა</Button>
+      {file || logoUrl ? <Button variant="ghost" type="button" disabled={disabled} onClick={() => { setError(""); onRemove(); }}>წაშლა</Button> : null}
     </div>
     <p id="profile-logo-help" className="account-hint">JPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ.</p>
     {uploading ? <div className="logo-field__progress" role="status"><progress aria-label="ლოგო იტვირთება" />ლოგო იტვირთება…</div> : null}

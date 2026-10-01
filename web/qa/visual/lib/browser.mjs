@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { masks } from '../pages.mjs';
-export const readRPCs = new Set(['my_profile', 'list_companies', 'company_stats', 'offer_counts', 'contact_for_request', 'list_my_conversations', 'list_messages', 'unread_message_count', 'engagement_state', 'list_notifications', 'list_saved_companies', 'request_alert_preferences', 'admin_stats', 'admin_list_users', 'admin_search_users', 'admin_search_requests', 'admin_list_audit', 'admin_contact_events', 'admin_contact_stats', 'admin_message_stats', 'admin_list_conversations', 'admin_conversation_messages', 'mark_read']);
+export const readRPCs = new Set(['company_products', 'company_distribution_profiles', 'company_business_features', 'company_reviews', 'my_company_review_targets', 'my_business_settings', 'admin_market_metrics', 'admin_list_reports', 'admin_business_queue', 'admin_search_offers', 'admin_list_audit_v2', 'my_profile', 'list_companies', 'company_stats', 'offer_counts', 'contact_for_request', 'list_my_conversations', 'list_messages', 'unread_message_count', 'engagement_state', 'list_notifications', 'list_saved_companies', 'request_alert_preferences', 'admin_stats', 'admin_list_users', 'admin_search_users', 'admin_search_requests', 'admin_list_audit', 'admin_contact_events', 'admin_contact_stats', 'admin_message_stats', 'admin_list_conversations', 'admin_conversation_messages', 'mark_read']);
 export async function guard(context, state) {
   await context.route('**/api/**', async route => {
     const request = route.request(), url = new URL(request.url());
@@ -18,7 +18,7 @@ export async function guard(context, state) {
 }
 export async function go(page, origin, route) {
   for (let attempt = 0; attempt < 2; attempt++) {
-    try { await page.goto(origin + route, { waitUntil: 'networkidle', timeout: 60000 }); break; }
+    try { await page.goto(origin + route, { waitUntil: 'domcontentloaded', timeout: 60000 }); break; }
     catch (error) { if (attempt) { error.navigationRetried = true; throw error; } console.log(`ნელი გვერდის გამეორება: ${route.split('?')[0]}`); }
   }
   await page.waitForFunction(() => document.querySelector('main') && !document.querySelector('main [aria-busy="true"]') && !document.querySelector('main')?.innerText.includes('იტვირთება…'), null, { timeout: 60000 });

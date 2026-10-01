@@ -4,6 +4,9 @@ import { Pool } from '@neondatabase/serverless';
 const migration=process.argv[2]||'contact-events';
 const dryRun=process.argv.includes('--dry-run');
 const plans={
+ products:{file:'20261001-products',tables:['company_products'],routines:['company_products','set_my_products']},
+ 'market-metrics':{file:'20261001-market-metrics',tables:[],routines:['admin_market_metrics']},
+ distribution:{file:'20261001-distribution',tables:['company_business'],routines:['company_distribution_profiles','set_my_distribution','my_business_settings']},
  reports:{file:'20261001-reports',tables:['reports','business_audit'],routines:['report_content','admin_list_reports','admin_resolve_report']},
  'business-features':{file:'20260930-business-features',tables:['company_business','company_plans','plan_requests','company_reviews','business_audit'],routines:['company_business_features','company_reviews','my_company_review_targets','save_company_review','my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request','admin_business_queue','admin_moderate_review','admin_resolve_plan']},
  'request-alerts-default-on':{file:'20260929-request-alerts-default-on',tables:['request_alert_preferences'],routines:['request_alert_preferences']},

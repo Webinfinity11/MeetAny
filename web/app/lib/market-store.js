@@ -20,7 +20,11 @@ export function createMarketStore({initial=null,background=true}={}){
  const CHECK_EMAIL='შეამოწმე ელფოსტა';
  const STALE='მონაცემები ვერ განახლდა. გვერდზე შეიძლება ძველი ინფორმაცია ჩანდეს.';
  const MSG={
+   MA622:'დაამატე მაქსიმუმ 12 პროდუქტი: სახელი 2–80 სიმბოლო, აღწერა 200-მდე და ფოტო შენი გალერეიდან.',
+   MA621:'მიუთითე მინიმუმ ერთი რეგიონი და არხი. გადაამოწმე ველების ზომა და მნიშვნელობები.',
   MA601:'აირჩიე 1–5 ქულა და დაწერე 20–1500 სიმბოლო.',MA602:'შეფასება შეგიძლია შენ მიერ არჩეულ მომწოდებელზე.',MA603:'მიუთითე მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლე სია.',
+  MA701:'აირჩიე მიზეზი. „სხვა“ მიზეზისთვის დაწერე 3–500 სიმბოლო.',MA702:'ეს გვერდი ვეღარ მოიძებნა ან მისი შეტყობინება შეუძლებელია.',MA703:'საკუთარ გვერდზე შეტყობინებას ვერ გააგზავნი.',
+  MA704:'ამაზე უკვე შეგვატყობინე. შეტყობინებას განვიხილავთ.',MA705:'დღეში შეიძლება 10 შეტყობინება. სცადე ხვალ.',MA706:'საჩივარი უკვე დამუშავებულია. განაახლე სია.',
   MA001:'ამისთვის შედი ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისთვისაა.',
   MA101:'სათაური უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს.',MA102:'აღწერე საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიე კატეგორია.',MA104:'აირჩიე ქალაქი.',
   MA105:'ერთდროულად შეიძლება 5 ღია განცხადება. დახურე ძველი და სცადე თავიდან.',MA106:'განცხადება ვერ მოიძებნა.',MA107:'ეს განცხადება შენ არ გეკუთვნის.',
@@ -785,7 +789,6 @@ export function createMarketStore({initial=null,background=true}={}){
    const supplier=categoryKind[c.industry]==='product';
    if(type==='suppliers'&&!supplier)return false;
    if(type==='services'&&supplier)return false;
-   if(type==='distributors'&&c.industry!=='wholesale')return false;
    if(type==='partners'&&!c.seeks.length)return false;
    if(city&&!city.split(',').some(x=>servesCity(c,x)))return false;
    if(verified&&!c.verified)return false;
@@ -843,6 +846,12 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminModerateReview=(id,status,reason)=>rpc('admin_moderate_review',{p_id:id,p_status:status,p_reason:reason});
  const adminResolvePlan=(id,approve,days,note)=>rpc('admin_resolve_plan',{p_id:id,p_approve:approve,p_days:days,p_note:note});
 
+ /* ---------- reports („შეატყობინე“) ---------- */
+ const reportContent=(kind,targetId,reason,text)=>rpc('report_content',{p_kind:kind,p_target_id:targetId,p_reason:reason,p_text:String(text||'').trim()});
+ const adminListReports=(status,offset=0)=>rpc('admin_list_reports',{p_status:status||null,p_offset:offset});
+ // Hiding a target changes public data: refresh the cache like the other moderation actions.
+ const adminResolveReport=(id,action,reason)=>mutate('admin_resolve_report',{p_id:id,p_action:action,p_reason:String(reason||'').trim()});
+
  /* ---------- admin ---------- */
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
@@ -865,7 +874,13 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminRemovePhoto=(userId,url,reason)=>mutate('admin_remove_company_photo',{p_user_id:userId,p_url:url,p_reason:String(reason||'').trim()},mapUser).then(user=>{removePhoto(url);return user;});
 
  return {categories,cities,units,priceTypes,todayDate,maxNeededBy,stateLabels,EXTEND_DAYS,
+  companyProducts:id=>rpc('company_products',{p_company_id:id}),
+  setMyProducts:async items=>{const data=await rpc('set_my_products',{p_items:items});await refresh();warnStale(dataStale);return data;},
+  adminMarketMetrics:()=>rpc('admin_market_metrics'),
+  companyDistributionProfiles:()=>rpc('company_distribution_profiles'),
+  setMyDistribution:args=>mutate('set_my_distribution',args),
   companyBusinessFeatures,companyReviews,myCompanyReviewTargets,saveCompanyReview,myBusinessSettings,setCompanyDistributor,requestCompanyPlan,cancelCompanyPlanRequest,adminBusinessQueue,adminModerateReview,adminResolvePlan,
+  reportContent,adminListReports,adminResolveReport,
   engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}},
   refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),

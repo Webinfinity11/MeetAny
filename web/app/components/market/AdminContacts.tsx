@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "../ui/Button";
+
 import { CustomSelect } from "../ui/CustomSelect";
 import { AdminState } from "./AdminState";
 import { ListSkeleton } from "./Skeletons";
@@ -25,7 +27,7 @@ export function AdminContacts({ store, kind, target, period, cursor, onChange, o
       <div><label htmlFor="contact-target">სამიზნე</label><CustomSelect id="contact-target" className="ma-select" value={target} onChange={e => onChange("target", e.target.value)}><option value="">ყველა სამიზნე</option><option value="company">კომპანია</option><option value="request">მოთხოვნა</option></CustomSelect></div>
       <div><label htmlFor="contact-period">პერიოდი</label><CustomSelect id="contact-period" className="ma-select" value={period} onChange={e => onChange("period", e.target.value)}><option value="day">დღეს</option><option value="week">7 დღე</option><option value="month">30 დღე</option></CustomSelect></div>
     </div>
-    {hasFilters ? <button type="button" className={`ma-btn ma-btn--secondary ${styles.clear}`} onClick={onClear}>ფილტრების გასუფთავება</button> : null}
+    {hasFilters ? <Button type="button" variant="secondary" className={styles.clear} onClick={onClear}>ფილტრების გასუფთავება</Button> : null}
     {data.loading ? <ListSkeleton compact kind="records" label="კონტაქტები იტვირთება…" /> : data.error ? <AdminState error title="კონტაქტები ვერ ჩაიტვირთა" text={data.error} onRetry={data.reload} onFirst={cursor ? () => onChange("cursor", "") : undefined} /> : data.stats ? <>
       <div className="ma-proto-kpis">{[["day", "დღეს"], ["week", "7 დღე"], ["month", "30 დღე"]].flatMap(([key, label]) => [
         <div className="ma-stat" key={`${key}-reveal`}><strong className="ma-stat__value">{data.stats!.totals[key].reveals}</strong><span className="ma-stat__label">ნახვები · {label}</span></div>,
@@ -41,7 +43,7 @@ export function AdminContacts({ store, kind, target, period, cursor, onChange, o
         <td data-label="ვის"><Target row={row} /></td><td data-label="როდის"><time dateTime={row.created_at}>{new Date(row.created_at).toLocaleString("ka-GE", { timeZone: "Asia/Tbilisi", hour12: false })}</time></td>
         <td data-label="მოქმედება">{row.kind === "reveal" ? "ნომრის ნახვა" : "დარეკვა"}</td><td data-label="წყარო">{sources[row.source] || row.source}</td>
       </tr>) : <tr><td colSpan={5}>ამ ფილტრებით მოვლენები ვერ მოიძებნა.</td></tr>}</tbody></table></div>}
-      <nav className={styles.pagination} aria-label="კონტაქტების გვერდები">{cursor ? <button className="ma-btn ma-btn--secondary" onClick={() => onChange("cursor", "")}>პირველი გვერდი</button> : null}{data.page?.hasMore && data.page.nextCursor ? <button className="ma-btn ma-btn--secondary" onClick={() => onChange("cursor", JSON.stringify(data.page!.nextCursor))}>მეტის ჩვენება</button> : null}</nav>
+      <nav className={styles.pagination} aria-label="კონტაქტების გვერდები">{cursor ? <Button variant="secondary" type="submit" onClick={() => onChange("cursor", "")}>პირველი გვერდი</Button> : null}{data.page?.hasMore && data.page.nextCursor ? <Button variant="secondary" type="submit" onClick={() => onChange("cursor", JSON.stringify(data.page!.nextCursor))}>მეტის ჩვენება</Button> : null}</nav>
     </> : null}
   </section>;
 }

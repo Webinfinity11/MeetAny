@@ -8,10 +8,10 @@
 .companies-map {
   position: relative;
   isolation: isolate;
-  height: min(640px, calc(100vh - var(--header-h) - 160px));
-  min-height: 420px;
+  height: min(var(--size-640), calc(100vh - var(--header-h) - var(--size-160)));
+  min-height: var(--size-420);
   overflow: hidden;
-  border: 1px solid var(--card-border);
+  border: var(--size-1) solid var(--card-border);
   border-radius: var(--card-radius);
   background: var(--bg-subtle);
   box-shadow: var(--card-shadow);
@@ -53,19 +53,19 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 2px solid var(--white);
-  border-radius: 50% 50% 50% 4px;
+  width: var(--size-36);
+  height: var(--size-36);
+  border: var(--size-2) solid var(--white);
+  border-radius: 50% 50% 50% var(--size-4);
   transform: rotate(-45deg);
   background: var(--action);
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--ink-950) 28%, transparent);
+  box-shadow: 0 var(--size-6) var(--size-14) color-mix(in srgb, var(--ink-950) 28%, transparent);
   transition: background-color var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
 }
 .map-pin__initials {
   transform: rotate(45deg);
   color: var(--white);
-  font: var(--fw-bold) 12px/1 var(--font-sans);
+  font: var(--fw-bold) var(--size-12)/1 var(--font-sans);
 }
 .map-pin:hover .map-pin__dot,
 .leaflet-marker-icon:focus-visible .map-pin__dot {
@@ -86,20 +86,20 @@
 .map-cluster > span {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 2px solid var(--white);
+  width: var(--size-34);
+  height: var(--size-34);
+  border: var(--size-2) solid var(--white);
   border-radius: 50%;
   background: var(--action);
   color: var(--white);
-  font: var(--fw-bold) 13px/1 var(--font-sans);
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--ink-950) 25%, transparent);
+  font: var(--fw-bold) var(--size-13)/1 var(--font-sans);
+  box-shadow: 0 var(--size-6) var(--size-14) color-mix(in srgb, var(--ink-950) 25%, transparent);
 }
 
 /* Popup restyled to the card language */
 .map-popup .leaflet-popup-content-wrapper {
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
+  border: var(--size-1) solid var(--card-border);
+  border-radius: var(--size-14);
   box-shadow: var(--card-hover-shadow);
 }
 .map-popup .leaflet-popup-content {
@@ -130,25 +130,25 @@
   text-decoration: none;
 }
 .map-popup .leaflet-popup-close-button {
-  top: 6px !important;
-  right: 6px !important;
+  top: var(--size-6) !important;
+  right: var(--size-6) !important;
   color: var(--text-3) !important;
 }
 .companies-map .leaflet-control-zoom {
   overflow: hidden;
-  border: 1px solid var(--card-border) !important;
-  border-radius: 12px !important;
+  border: var(--size-1) solid var(--card-border) !important;
+  border-radius: var(--size-12) !important;
   box-shadow: var(--card-shadow) !important;
 }
 .companies-map .leaflet-bar.leaflet-control-zoom a {
   width: var(--tap-min);
   height: var(--tap-min);
   line-height: var(--tap-min);
-  font-size: 20px;
+  font-size: var(--size-20);
   color: var(--text);
 }
 .companies-map .leaflet-control-attribution {
-  font-size: 10px;
+  font-size: var(--size-10);
 }
 /* Tone the colourful OSM basemap down to the product's restrained palette. */
 .companies-map .leaflet-tile-pane {
@@ -158,22 +158,22 @@
 
 /* Compact: one company inside the profile contact card */
 .companies-map--compact {
-  height: 200px;
+  height: var(--size-200);
   min-height: 0;
-  border-radius: 12px;
+  border-radius: var(--size-12);
   box-shadow: none;
 }
 .companies-map--compact .leaflet-control-attribution {
-  font-size: 9px;
+  font-size: var(--size-9);
 }
 
 @media (max-width: 767px) {
   .companies-map {
     height: 70vh;
-    min-height: 360px;
+    min-height: var(--size-360);
   }
   .companies-map--compact {
-    height: 180px;
+    height: var(--size-180);
     min-height: 0;
   }
 }
