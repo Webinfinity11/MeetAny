@@ -35,7 +35,7 @@ try {
       await page.getByRole('heading', { name: 'მოთხოვნა და მომწოდებლები', exact: true }).waitFor();
       assert((await page.locator('main').innerText()).includes('მომწოდებლის არჩევის წილი'));
     }
-    for (const width of [1440, 390, 320]) {
+    for (const width of [1440, 1024, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(450);
@@ -55,6 +55,7 @@ try {
   const menu = page.getByRole('button', { name: /განყოფილება/ });
   assert.equal(await menu.getAttribute('aria-expanded'), 'false', 'mobile menu starts closed');
   await menu.click();
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'expanded mobile menu fits');
   await page.getByRole('link', { name: 'მოთხოვნები', exact: true }).waitFor({ state: 'visible' });
   await page.keyboard.press('Escape');
   assert.equal(await menu.getAttribute('aria-expanded'), 'false', 'Escape closes menu');
@@ -132,7 +133,7 @@ try {
   assert.equal(await guest.locator('.business-tier[data-plan="vip"] svg').count(), 0, 'profile VIP is text only');
   await guest.close();
   assert.deepEqual(errors, []); assert.deepEqual(state.blocked, []);
-  console.log('PASS: 11 admin sections × 3 widths; mobile menu/Escape/navigation; demo links; motion/reduced-motion; guest access; text-only VIP catalogue/profile');
+  console.log('PASS: 11 admin sections × 5 widths; mobile menu/Escape/navigation; demo links; motion/reduced-motion; guest access; text-only VIP catalogue/profile');
 } catch (error) {
   errors.push(safe(error.stack)); console.error(safe(error.stack)); process.exitCode = 1;
 } finally {

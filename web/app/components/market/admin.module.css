@@ -11,7 +11,7 @@
 .navGroup > p { margin: 0 0 var(--space-1); padding-inline: var(--space-3); font-size: var(--fs-xs); color: var(--text-3); }
 .navigation a { display: flex; align-items: center; gap: var(--space-3); min-height: var(--size-40); padding: var(--space-2) var(--space-3); border-radius: var(--size-8); color: var(--text-2); text-decoration: none; font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .navigation a > svg { flex: none; width: var(--size-18); height: var(--size-18); color: var(--text-3); }
-.navigation a > span { flex: 1; }
+.navigation a > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .navigation a:hover { background: var(--white); color: var(--text); }
 .navigation a[aria-current=page] { background: var(--selected-bg); color: var(--selected-text); font-weight: var(--fw-semibold); }
 .navigation a[aria-current=page] > svg { color: var(--action); }
@@ -153,10 +153,10 @@
   .navigation { display: none; overflow: visible; padding: var(--space-4); border-top: var(--size-1) solid var(--border-subtle); }
   .sidebar[data-open] .navigation { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-5); }
   .navigation a { min-height: var(--tap-min); }
-  .navigation a > svg { display: none; }
   .overviewSplit { grid-template-columns: minmax(0,1fr); }
 }
 @media(max-width:767px) {
+  .sidebar[data-open] .navigation { grid-template-columns: minmax(0,1fr); max-height: calc(100dvh - var(--header-h) - var(--size-120)); overflow-y: auto; }
   .content { gap: var(--space-5); }
   .content :global(.ma-h1) { font-size: var(--size-24); line-height: var(--size-32); }
   .workspace .content :global(.r2-band) { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--space-3); }
