@@ -1,29 +1,29 @@
 {
   "name": "admin",
-  "run": "1790276755145-admin",
+  "run": "1790840436000-admin",
   "label": "ადმინი — მომხმარებლები",
   "status": "PASS",
-  "ms": 36124,
+  "ms": 27812,
   "steps": [
     {
       "name": "მომხმარებლების სია და T4.4 რაოდენობა",
       "status": "PASS",
       "expected": "UI-ისა და admin_stats-ის მთვლელები ემთხვევა SQL-ისა და სიის არაადმინების რაოდენობას",
       "evidence": {
-        "ui": 32,
-        "api": 32,
-        "list": 34,
-        "total": 34,
-        "nonadmin": 32,
-        "active": 20
+        "ui": 46,
+        "api": 46,
+        "list": 47,
+        "total": 47,
+        "nonadmin": 46,
+        "active": 25
       },
-      "ms": 7186
+      "ms": 5053
     },
     {
       "name": "ვერიფიკაცია/ბლოკი და დაბრუნება",
       "status": "PASS",
       "expected": "UI ქმედებები იცვლება; RPC და საჯარო GET სტატუსს ადასტურებს",
-      "ms": 24820
+      "ms": 17272
     },
     {
       "name": "CSP დარღვევები",
@@ -57,11 +57,11 @@
     }
   ],
   "counts": {
-    "ui": 32,
-    "api": 32,
-    "list": 34,
-    "total": 34,
-    "nonadmin": 32,
-    "active": 20
+    "ui": 46,
+    "api": 46,
+    "list": 47,
+    "total": 47,
+    "nonadmin": 46,
+    "active": 25
   }
 }

@@ -1,4 +1,4 @@
-import { assert, rpc, db, go, requestRow, query } from '../lib.mjs';
+import { assert, rpc, db, go, until, requestRow, query } from '../lib.mjs';
 async function confirm(p, row, action) {
   await row.getByRole('button', { name: action, exact: true }).click();
   if (await p.locator('#moderation-reason').count()) await p.locator('#moderation-reason').fill('ავტომატური შემოწმების დროებითი მოქმედება');
@@ -16,7 +16,11 @@ export default async function(t) {
     await go(p, '/admin/?tab=users'); await p.locator('tbody tr').first().waitFor();
     const stats = await rpc(p, 'admin_stats');
     const actual = (await query('select count(*)::int total, count(*) filter(where role<>\'admin\')::int nonadmin, count(*) filter(where not blocked and role<>\'admin\')::int active from public.profiles'))[0];
-    const ui = Number(await p.locator('.ma-stat').filter({ has: p.getByText('მომხმარებლები (ადმინების გარეშე)', { exact: true }) }).locator('.ma-stat__value').innerText());
+    // The user count moved to the overview's KPI row („მომხმარებელი“, linking to the users tab).
+    await go(p, '/admin/');
+    const kpi = p.locator('a[href="/admin/?tab=users"]').filter({ hasText: 'მომხმარებელი' }).locator('strong');
+    await until(async () => /^\d+$/.test((await kpi.innerText()).trim()), 'მომხმარებლების მთვლელი არ ჩაიტვირთა');
+    const ui = Number((await kpi.innerText()).trim());
     const evidence = { ui, api: stats.users, list: users.length, total: actual.total, nonadmin: actual.nonadmin, active: actual.active };
     t.counts = evidence;
     assert.equal(users.filter(user => user.role !== 'admin').length, actual.nonadmin);
