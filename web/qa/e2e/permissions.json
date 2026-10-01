@@ -1,15 +1,15 @@
 {
   "name": "permissions",
-  "run": "1790669824000-permissions",
+  "run": "1790840517000-permissions",
   "label": "უფლებები",
   "status": "PASS",
-  "ms": 20040,
+  "ms": 20492,
   "steps": [
     {
       "name": "უფლებები UI-ზე",
       "status": "PASS",
       "expected": "სხვის მოთხოვნაზე რედაქტირება/გაგრძელება/არჩევა არ ჩანს",
-      "ms": 4519
+      "ms": 2257
     },
     {
       "name": "სხვისი update",
@@ -19,7 +19,7 @@
         "status": 400,
         "code": "MA107"
       },
-      "ms": 522
+      "ms": 1270
     },
     {
       "name": "სხვისი extend",
@@ -29,7 +29,7 @@
         "status": 400,
         "code": "MA107"
       },
-      "ms": 525
+      "ms": 1075
     },
     {
       "name": "სხვისი choose",
@@ -39,7 +39,7 @@
         "status": 400,
         "code": "MA206"
       },
-      "ms": 522
+      "ms": 806
     },
     {
       "name": "კომპანიის choose",
@@ -49,7 +49,7 @@
         "status": 400,
         "code": "MA107"
       },
-      "ms": 526
+      "ms": 542
     },
     {
       "name": "სხვისი საუბარი",
@@ -59,7 +59,7 @@
         "status": 400,
         "code": "MA501"
       },
-      "ms": 523
+      "ms": 546
     },
     {
       "name": "არაადმინის RPC",
@@ -69,7 +69,7 @@
         "status": 400,
         "code": "MA003"
       },
-      "ms": 524
+      "ms": 547
     },
     {
       "name": "სტუმრის admin RPC",
@@ -79,13 +79,13 @@
         "status": 401,
         "code": "42501"
       },
-      "ms": 1252
+      "ms": 1344
     },
     {
       "name": "მდგომარეობა შეტევების შემდეგ",
       "status": "PASS",
       "expected": "GET requests/offers უცვლელია",
-      "ms": 1028
+      "ms": 1110
     },
     {
       "name": "CSP დარღვევები",
@@ -94,7 +94,7 @@
       "evidence": {
         "violations": 0
       },
-      "ms": 0
+      "ms": 1
     }
   ],
   "cleanup": [
