@@ -29,9 +29,9 @@ export const pages = [
   page('client-profile', 'hotel', '/account/?tab=profile', null, '#profile-phone'),
   page('client-request-new', 'hotel', '/requests/new/', null, '#new-request[open] #title'),
   page('client-request-detail', 'hotel', 'ownRequest', null, '.request-detail-facts'),
-  page('company-account', 'supply', '/account/'),
-  page('company-profile', 'supply', '/account/?tab=profile', null, '#profile-phone'),
-  page('company-offer', 'supply', 'offerRequest', 'offer', '.request-detail-facts'),
-  page('company-chat', 'supply', 'chatRequest', 'chat', '.request-detail-facts'),
+  page('company-account', 'wood', '/account/'),
+  page('company-profile', 'wood', '/account/?tab=profile', null, '#profile-phone'),
+  page('company-offer', 'wood', 'offerRequest', 'offer', '.request-detail-facts'),
+  page('company-chat', 'wood', '/account/', 'chat-list'),
   ...['requests', 'users', 'audit', 'contacts'].map(tab => page(`admin-${tab}`, 'owner_admin', `/admin/?tab=${tab}${tab === 'requests' ? '&q=' + encodeURIComponent('სასტუმრო') : tab === 'users' ? '&role=client&q=demo-hotel%40meetany.ge' : tab === 'contacts' ? '&period=day&kind=call' : ''}`, null, '.ma-table')),
 ];

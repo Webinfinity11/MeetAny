@@ -1,27 +1,27 @@
 {
   "name": "guest",
-  "run": "1790777360000-guest",
+  "run": "1790844719213-guest",
   "label": "სტუმარი",
   "status": "PASS",
-  "ms": 11543,
+  "ms": 12510,
   "steps": [
     {
       "name": "მოთხოვნები: სია და დეტალი",
       "status": "PASS",
       "expected": "სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა",
-      "ms": 1010
+      "ms": 613
     },
     {
       "name": "მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება",
       "status": "PASS",
       "expected": "URL და ხილული შედეგები შეესაბამება მონაცემებს",
-      "ms": 415
+      "ms": 819
     },
     {
       "name": "კომპანიები: ძიება, ფილტრი და დალაგება",
       "status": "PASS",
       "expected": "URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია",
-      "ms": 383
+      "ms": 412
     },
     {
       "name": "კომპანიის დეტალი, ნომერი, tel:, მიმართულება, contact_events",
@@ -29,12 +29,12 @@
       "expected": "გამოჩენა/დარეკვა აღირიცხება; Maps სწორი ბმულია",
       "evidence": {
         "contactEvents": [
-          "5e67c403-2e8f-4ec3-8743-65f241c3ace4",
-          "c8d755ac-8c5b-43bc-8773-33cb77ce2e53"
+          "55a2cf0c-6a9d-4577-903e-b70541a6c8fe",
+          "8a0a611a-375c-421b-a61a-7b8031be8261"
         ],
         "maps": "https://www.google.com/maps/dir/?api=1&destination=41.6469,41.6372"
       },
-      "ms": 3616
+      "ms": 5514
     },
     {
       "name": "CSP დარღვევები",
@@ -43,7 +43,7 @@
       "evidence": {
         "violations": 0
       },
-      "ms": 1
+      "ms": 0
     }
   ],
   "cleanup": [

@@ -1,33 +1,33 @@
 {
-  "startedAt": "2026-09-24T19:05:55.145Z",
+  "startedAt": "2026-10-01T08:51:59.213Z",
   "origin": "http://localhost:3001",
-  "run": "1790276755145",
-  "ms": 496273,
+  "run": "1790844719213",
+  "ms": 299152,
   "results": [
     {
       "name": "guest",
-      "run": "1790276755145-guest",
+      "run": "1790844719213-guest",
       "label": "სტუმარი",
       "status": "PASS",
-      "ms": 13845,
+      "ms": 12510,
       "steps": [
         {
           "name": "მოთხოვნები: სია და დეტალი",
           "status": "PASS",
           "expected": "სიის ID-ები GET requests-შია; დეტალის სათაური ემთხვევა",
-          "ms": 3351
+          "ms": 613
         },
         {
           "name": "მოთხოვნები: ძიება, ფილტრი, ჩანართი, დალაგება",
           "status": "PASS",
           "expected": "URL და ხილული შედეგები შეესაბამება მონაცემებს",
-          "ms": 814
+          "ms": 819
         },
         {
           "name": "კომპანიები: ძიება, ფილტრი და დალაგება",
           "status": "PASS",
           "expected": "URL იცვლება; ID-ები, ქალაქი და სახელების მიმდევრობა სწორია",
-          "ms": 476
+          "ms": 412
         },
         {
           "name": "კომპანიის დეტალი, ნომერი, tel:, მიმართულება, contact_events",
@@ -35,12 +35,12 @@
           "expected": "გამოჩენა/დარეკვა აღირიცხება; Maps სწორი ბმულია",
           "evidence": {
             "contactEvents": [
-              "970c3ba8-fe25-4224-954b-4843703bdffa",
-              "d2f6e775-7de2-406d-9dc5-87fc48fa8d4d"
+              "55a2cf0c-6a9d-4577-903e-b70541a6c8fe",
+              "8a0a611a-375c-421b-a61a-7b8031be8261"
             ],
-            "maps": "https://www.google.com/maps/dir/?api=1&destination=41.7846,44.7712"
+            "maps": "https://www.google.com/maps/dir/?api=1&destination=41.6469,41.6372"
           },
-          "ms": 2778
+          "ms": 5514
         },
         {
           "name": "CSP დარღვევები",
@@ -70,22 +70,22 @@
     },
     {
       "name": "registration",
-      "run": "1790276755145-registration",
+      "run": "1790844719213-registration",
       "label": "რეგისტრაცია / აღდგენა",
       "status": "PASS",
-      "ms": 37535,
+      "ms": 34575,
       "steps": [
         {
           "name": "რეგისტრაცია / შესვლა / გასვლა: client",
           "status": "PASS",
           "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
-          "ms": 25525
+          "ms": 19962
         },
         {
           "name": "რეგისტრაცია / შესვლა / გასვლა: company",
           "status": "PASS",
           "expected": "ახალი პროფილი შესაბამისი როლით; sign-out შემდეგ my_profile ცარიელია",
-          "ms": 25680
+          "ms": 21139
         },
         {
           "name": "პაროლის აღდგენა: ვალიდაცია, კოდი, შეცდომა",
@@ -94,7 +94,7 @@
           "evidence": {
             "limitation": "რეალური OTP-ის მიღება/წარმატებული reset ელფოსტის გარეშე არ შემოწმებულა"
           },
-          "ms": 6300
+          "ms": 6199
         },
         {
           "name": "CSP დარღვევები",
@@ -124,32 +124,28 @@
     },
     {
       "name": "company",
-      "run": "1790277177912-company-retry",
+      "run": "1790844719213-company",
       "label": "კომპანია — პროფილი",
-      "status": "FAIL",
-      "ms": 12231,
+      "status": "PASS",
+      "ms": 13598,
       "steps": [
         {
           "name": "პროფილის მისამართი და პროდუქტები",
-          "status": "FAIL",
+          "status": "PASS",
           "expected": "შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება",
-          "actual": "UI: სერვისი დროებით მიუწვდომელია",
-          "visibleState": "ჩემი ანგარიში\nშეთავაზებები (6)\nშენახული (0)\nმიმოწერები\nპროფილი\nკომპანიის პროფილი\n\nეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში.\n\nლოგო\nხხ\nატვირთვა\n\nJPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ.\n\nსახელი და გვარი *\nკომპანიის დასახელება *\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\nმიმართულება *\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nკომპანიის შესახებ · მაქს. 1000 სიმბოლო\nრას ვთავაზობთ · თითო ხაზზე ერთი, მაქს. 8\nრას ვეძებთ · თითო ხაზზე ერთი, მაქს. 8\nრომელ ქალაქებს ემსახურებით?\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nმისამართი არასავალდებულო\n\nჩანს პროფილზე „მიმართულება“ ბმულით\n\nკოორდინატები არასავალდებულო\nგანედი\n",
-          "network": [],
-          "screenshot": "qa/shots/e2e/company-1.png",
-          "ms": 4712
+          "ms": 6130
         },
         {
           "name": "კოორდინატების რედაქტირების UI",
           "status": "PASS",
           "expected": "პროფილის ფორმაში განედი და გრძედი რედაქტირებადია",
-          "ms": 1058
+          "ms": 1682
         },
         {
           "name": "კოორდინატების API და პროფილის დაბრუნება",
           "status": "PASS",
           "expected": "API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება",
-          "ms": 2041
+          "ms": 2091
         },
         {
           "name": "CSP დარღვევები",
@@ -181,96 +177,32 @@
           "photos": 0,
           "remaining": 0
         }
-      ],
-      "attempts": [
-        {
-          "name": "company",
-          "run": "1790276755145-company",
-          "label": "კომპანია — პროფილი",
-          "status": "FAIL",
-          "ms": 11956,
-          "steps": [
-            {
-              "name": "პროფილის მისამართი და პროდუქტები",
-              "status": "FAIL",
-              "expected": "შეცვლილი მნიშვნელობები UI-სა და GET profiles-ში რჩება",
-              "actual": "UI: სერვისი დროებით მიუწვდომელია",
-              "visibleState": "ჩემი ანგარიში\nშეთავაზებები (6)\nშენახული (0)\nმიმოწერები\nპროფილი\nკომპანიის პროფილი\n\nეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში.\n\nლოგო\nხხ\nატვირთვა\n\nJPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ.\n\nსახელი და გვარი *\nკომპანიის დასახელება *\nქალაქი *\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nტელეფონი\n\nტელეფონი ჩანს სხვებისთვის. ელფოსტა არ ქვეყნდება.\n\nელფოსტა\nმიმართულება *\nავეჯი და ინვენტარი\nმშენებლობა და რემონტი\nტექსტილი და სასტუმროები\nსაკვები და სასმელი\nშეფუთვა და წარმოება\nლოგისტიკა და დისტრიბუცია\nდასუფთავება და მოვლა\nIT და ტექნოლოგიები\nმარკეტინგი და დიზაინი\nბუღალტერია და ფინანსები\nიურიდიული მომსახურება\nტურიზმი\nსხვა\nკომპანიის შესახებ · მაქს. 1000 სიმბოლო\nრას ვთავაზობთ · თითო ხაზზე ერთი, მაქს. 8\nრას ვეძებთ · თითო ხაზზე ერთი, მაქს. 8\nრომელ ქალაქებს ემსახურებით?\nთბილისი\nბათუმი\nქუთაისი\nრუსთავი\nზუგდიდი\nთელავი\nგორი\nმთელი საქართველო\nმისამართი არასავალდებულო\n\nჩანს პროფილზე „მიმართულება“ ბმულით\n\nკოორდინატები არასავალდებულო\nგანედი\n",
-              "network": [],
-              "screenshot": "qa/shots/e2e/company-first-1.png",
-              "ms": 4762
-            },
-            {
-              "name": "კოორდინატების რედაქტირების UI",
-              "status": "PASS",
-              "expected": "პროფილის ფორმაში განედი და გრძედი რედაქტირებადია",
-              "ms": 1151
-            },
-            {
-              "name": "კოორდინატების API და პროფილის დაბრუნება",
-              "status": "PASS",
-              "expected": "API კოორდინატებს ინახავს; თავდაპირველი მონაცემები სრულად აღდგება",
-              "ms": 2095
-            },
-            {
-              "name": "CSP დარღვევები",
-              "status": "PASS",
-              "expected": "ბრაუზერში securitypolicyviolation რაოდენობა 0",
-              "evidence": {
-                "violations": 0
-              },
-              "ms": 0
-            }
-          ],
-          "cleanup": [
-            {
-              "restore": "PASS",
-              "fields": [
-                "address",
-                "lat",
-                "lng",
-                "offers"
-              ],
-              "method": "auth-probe SQL; exact profile ID + email"
-            },
-            {
-              "messages": 0,
-              "conversations": 0,
-              "requests": 0,
-              "offers": 0,
-              "contacts": 0,
-              "photos": 0,
-              "remaining": 0
-            }
-          ]
-        }
-      ],
-      "retried": true
+      ]
     },
     {
       "name": "messaging",
-      "run": "1790276755145-messaging",
+      "run": "1790845400000-messaging",
       "label": "კომპანია / კლიენტი — ჩატი",
       "status": "PASS",
-      "ms": 48430,
+      "ms": 35343,
       "steps": [
         {
           "name": "კომპანია: შეთავაზების გაგზავნა",
           "status": "PASS",
           "expected": "UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას",
-          "ms": 12060
+          "ms": 7010
         },
         {
           "name": "ჩატი მოთხოვნიდან და წაუკითხავი ბეიჯი",
           "status": "PASS",
           "expected": "შეტყობინება RPC-შია და მიმღების ჰედერში წაუკითხავი იზრდება",
-          "ms": 10983
+          "ms": 8006
         },
         {
           "name": "კლიენტის პასუხი და კომპანიის ინბოქსი",
           "status": "PASS",
           "expected": "?tab=messages&c=id აჩვენებს საუბარს; პასუხი ბაზაშია; კომპანიის unread იზრდება",
-          "ms": 17820
+          "ms": 9847
         },
         {
           "name": "მოთხოვნის წაშლის შემდეგ ჩატის კონტრაქტი",
@@ -280,7 +212,7 @@
             "requestDeleted": true,
             "conversationsRetained": 0
           },
-          "ms": 1553
+          "ms": 2727
         },
         {
           "name": "CSP დარღვევები",
@@ -313,28 +245,28 @@
     },
     {
       "name": "client",
-      "run": "1790276755145-client",
+      "run": "1790844719213-client",
       "label": "კლიენტი — მოთხოვნა",
       "status": "PASS",
-      "ms": 54189,
+      "ms": 26878,
       "steps": [
         {
           "name": "მოთხოვნის შექმნა ფოტოთი",
           "status": "PASS",
           "expected": "ახალი მოთხოვნა და ატვირთული ფოტო GET requests-შია და UI-ზე ჩანს",
-          "ms": 21858
+          "ms": 10208
         },
         {
           "name": "რედაქტირება და ვადის გაგრძელება",
           "status": "PASS",
           "expected": "რაოდენობა 3 ხდება; ვადა იზრდება; UI ინახავს ცვლილებას",
-          "ms": 9101
+          "ms": 7083
         },
         {
           "name": "დახურვა და ხელახლა გახსნა",
           "status": "PASS",
           "expected": "UI იცვლება; status closed შემდეგ open ხდება",
-          "ms": 18631
+          "ms": 5580
         },
         {
           "name": "CSP დარღვევები",
@@ -367,22 +299,22 @@
     },
     {
       "name": "choose",
-      "run": "1790276755145-choose",
+      "run": "1790844719213-choose",
       "label": "კლიენტი — შეთავაზების არჩევა",
       "status": "PASS",
-      "ms": 37201,
+      "ms": 21529,
       "steps": [
         {
           "name": "კომპანია: შეთავაზების გაგზავნა",
           "status": "PASS",
           "expected": "UI აჩვენებს შეთავაზებას; GET offers შეიცავს იმავე ტექსტსა და ვადას",
-          "ms": 14147
+          "ms": 7468
         },
         {
           "name": "შეთავაზების არჩევა კომპანიის ნაბიჯების შემდეგ",
           "status": "PASS",
           "expected": "chosen_offer_id და offers.status შეესაბამება არჩეულ შეთავაზებას",
-          "ms": 12208
+          "ms": 8391
         },
         {
           "name": "CSP დარღვევები",
@@ -415,30 +347,30 @@
     },
     {
       "name": "admin",
-      "run": "1790276755145-admin",
+      "run": "1790844719213-admin",
       "label": "ადმინი — მომხმარებლები",
       "status": "PASS",
-      "ms": 36360,
+      "ms": 26461,
       "steps": [
         {
           "name": "მომხმარებლების სია და T4.4 რაოდენობა",
           "status": "PASS",
           "expected": "UI-ისა და admin_stats-ის მთვლელები ემთხვევა SQL-ისა და სიის არაადმინების რაოდენობას",
           "evidence": {
-            "ui": 32,
-            "api": 32,
-            "list": 34,
-            "total": 34,
-            "nonadmin": 32,
-            "active": 20
+            "ui": 50,
+            "api": 50,
+            "list": 51,
+            "total": 51,
+            "nonadmin": 50,
+            "active": 25
           },
-          "ms": 7186
+          "ms": 5173
         },
         {
           "name": "ვერიფიკაცია/ბლოკი და დაბრუნება",
           "status": "PASS",
           "expected": "UI ქმედებები იცვლება; RPC და საჯარო GET სტატუსს ადასტურებს",
-          "ms": 24820
+          "ms": 17310
         },
         {
           "name": "CSP დარღვევები",
@@ -447,7 +379,7 @@
           "evidence": {
             "violations": 0
           },
-          "ms": 0
+          "ms": 1
         }
       ],
       "cleanup": [
@@ -472,32 +404,32 @@
         }
       ],
       "counts": {
-        "ui": 32,
-        "api": 32,
-        "list": 34,
-        "total": 34,
-        "nonadmin": 32,
-        "active": 20
+        "ui": 50,
+        "api": 50,
+        "list": 51,
+        "total": 51,
+        "nonadmin": 50,
+        "active": 25
       }
     },
     {
       "name": "moderation",
-      "run": "1790276755145-moderation",
+      "run": "1790844719213-moderation",
       "label": "ადმინი — მოთხოვნები / კონტაქტები",
       "status": "PASS",
-      "ms": 28310,
+      "ms": 19425,
       "steps": [
         {
           "name": "მოთხოვნის დამალვა და დაბრუნება",
           "status": "PASS",
           "expected": "საჯარო GET-ში ქრება და ჩნდება; UI სტატუსი იცვლება",
-          "ms": 17543
+          "ms": 11197
         },
         {
           "name": "ადმინის კონტაქტების აღრიცხვა",
           "status": "PASS",
           "expected": "ახალი contact_event-ის ID და მოქმედება UI ცხრილში ჩანს",
-          "ms": 2574
+          "ms": 2107
         },
         {
           "name": "CSP დარღვევები",
@@ -534,16 +466,16 @@
     },
     {
       "name": "permissions",
-      "run": "1790276755145-permissions",
+      "run": "1790844719213-permissions",
       "label": "უფლებები",
       "status": "PASS",
-      "ms": 19809,
+      "ms": 18606,
       "steps": [
         {
           "name": "უფლებები UI-ზე",
           "status": "PASS",
           "expected": "სხვის მოთხოვნაზე რედაქტირება/გაგრძელება/არჩევა არ ჩანს",
-          "ms": 3642
+          "ms": 2955
         },
         {
           "name": "სხვისი update",
@@ -553,7 +485,7 @@
             "status": 400,
             "code": "MA107"
           },
-          "ms": 1394
+          "ms": 1406
         },
         {
           "name": "სხვისი extend",
@@ -563,7 +495,7 @@
             "status": 400,
             "code": "MA107"
           },
-          "ms": 688
+          "ms": 861
         },
         {
           "name": "სხვისი choose",
@@ -573,7 +505,7 @@
             "status": 400,
             "code": "MA206"
           },
-          "ms": 535
+          "ms": 527
         },
         {
           "name": "კომპანიის choose",
@@ -583,7 +515,7 @@
             "status": 400,
             "code": "MA107"
           },
-          "ms": 523
+          "ms": 524
         },
         {
           "name": "სხვისი საუბარი",
@@ -593,7 +525,7 @@
             "status": 400,
             "code": "MA501"
           },
-          "ms": 523
+          "ms": 532
         },
         {
           "name": "არაადმინის RPC",
@@ -603,7 +535,7 @@
             "status": 400,
             "code": "MA003"
           },
-          "ms": 515
+          "ms": 529
         },
         {
           "name": "სტუმრის admin RPC",
@@ -613,13 +545,13 @@
             "status": 401,
             "code": "42501"
           },
-          "ms": 1303
+          "ms": 1380
         },
         {
           "name": "მდგომარეობა შეტევების შემდეგ",
           "status": "PASS",
           "expected": "GET requests/offers უცვლელია",
-          "ms": 1028
+          "ms": 1061
         },
         {
           "name": "CSP დარღვევები",
@@ -653,49 +585,21 @@
   ],
   "suiteCleanup": {
     "code": 0,
-    "output": "{\n  \"branch\": \"auth-probe\",\n  \"results\": [\n    {\n      \"run\": \"1790276755145-admin\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-choose\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-client\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-company\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-guest\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-messaging\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-moderation\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-permissions\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790276755145-registration\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    }\n  ]\n}\n",
+    "output": "{\n  \"branch\": \"auth-probe\",\n  \"results\": [\n    {\n      \"run\": \"1790844719213-admin\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-choose\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-client\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-company\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-guest\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-messaging\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-moderation\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-permissions\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    },\n    {\n      \"run\": \"1790844719213-registration\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    }\n  ]\n}\n",
     "killed": false
   },
   "demoRowsUnchanged": true,
   "seedVerify": {
     "status": "PASS",
-    "code": 0,
-    "output": "{\"accounts\":19,\"companies\":12,\"requests\":14,\"open\":13,\"chosen\":1,\"fresh\":4,\"owners\":{\"hotel\":3,\"cafe\":3,\"shop\":2,\"winery\":2,\"dental\":2,\"garage\":2},\"photos\":[\"linen\",\"cleaning\",\"produce\"],\"offers\":42,\"offerCounts\":{\"0\":2,\"1\":2,\"2\":2,\"3\":2,\"4\":2,\"5\":2,\"6\":2},\"expiryDays\":[2,3,5,6,8,11,14,17,19,21,26,27,30],\"verified\":[\"wood\",\"linen\",\"web\",\"food\",\"port\",\"ads\"],\"industries\":{\"food\":1,\"marketing\":1,\"logistics\":1,\"technology\":2,\"textiles\":2,\"furniture\":3,\"cleaning\":1,\"construction\":1},\"sent\":{\"wood\":6,\"linen\":4,\"supply\":7,\"cleaning\":5,\"build\":6,\"web\":1,\"food\":0,\"port\":2,\"oak\":5,\"code\":1,\"ads\":3,\"stay\":2},\"joinedDays\":{\"wood\":92,\"linen\":78,\"supply\":64,\"build\":51,\"cleaning\":37,\"oak\":30,\"stay\":26,\"web\":23,\"port\":19,\"code\":11,\"ads\":8,\"food\":4},\"checks\":\"passed\"}\n"
+    "output": "{\"accounts\":19,\"companies\":12,\"requests\":14,\"open\":13,\"chosen\":1,\"fresh\":4,\"owners\":{\"hotel\":3,\"cafe\":3,\"shop\":2,\"winery\":2,\"dental\":2,\"garage\":2,\"admin\":0},\"photos\":[\"linen\",\"cleaning\",\"produce\"],\"offers\":42,\"offerCounts\":{\"0\":2,\"1\":2,\"2\":2,\"3\":2,\"4\":2,\"5\":2,\"6\":2},\"expiryDays\":[2,3,5,6,8,11,14,17,19,21,26,27,30],\"verified\":[\"wood\",\"linen\",\"web\",\"food\",\"port\",\"ads\"],\"industries\":{\"food_fresh\":1,\"branding_design\":1,\"freight\":1,\"software_web\":2,\"textiles\":1,\"furniture\":2,\"hotel_services\":1,\"cleaning\":1,\"renovation\":1,\"wholesale\":1},\"sent\":{\"wood\":6,\"linen\":4,\"supply\":7,\"cleaning\":5,\"build\":6,\"web\":1,\"food\":0,\"port\":2,\"oak\":5,\"code\":1,\"ads\":3,\"stay\":2},\"joinedDays\":{\"wood\":92,\"linen\":78,\"supply\":64,\"build\":51,\"cleaning\":37,\"oak\":30,\"stay\":26,\"web\":23,\"port\":19,\"code\":11,\"ads\":8,\"food\":4},\"checks\":\"passed\"}\n",
+    "origin": "http://localhost:3002"
   },
   "contractFindings": [
     "წინასწარ API-ზე delete_request საუბარს request_id=NULL-ით ტოვებდა. ახალი მიგრაციის შედეგი მოწმდება messaging ქვეკეისში; ცალკე SQL cleanup ორივე მდგომარეობას ამუშავებს.",
     "contact_events GET არ არის გამოქვეყნებული; შემოწმება იყენებს admin_contact_events RPC-სა და ადმინის UI-ს."
   ],
-  "firstRunMs": 387684,
-  "retryMs": 108589,
-  "retryCleanup": {
-    "code": 0,
-    "output": "{\n  \"branch\": \"auth-probe\",\n  \"results\": [\n    {\n      \"run\": \"1790277177912-company-retry\",\n      \"status\": \"PASS\",\n      \"alreadyClean\": true\n    }\n  ]\n}\n"
-  },
-  "csp": {
-    "violations": 0,
-    "checks": 10
-  },
-  "status": "FAIL",
-  "retryProcess": {
-    "code": 0,
-    "output": ""
-  },
-  "validation": {
-    "syntax": "PASS",
-    "unitTests": {
-      "passed": 5,
-      "failed": 0
-    }
-  },
-  "baseCommit": "abe2d9e",
-  "findings": [
-    {
-      "scenario": "company",
-      "step": "პროფილის მისამართი და პროდუქტები",
-      "observed": "go(/account/?tab=profile) detects service-unavailable text before editing; reproduced once; screenshot after assertion shows profile and notification skeletons",
-      "networkFailures": 0,
-      "inference": "EngagementPanels.tsx:108 renders service-unavailable for every status other than ready, including loading; possible source of transient text; exact origin not instrumented"
-    }
+  "verificationNotes": [
+    "Initial development run: messaging interrupted by Fast Refresh; rerun against immutable production build on localhost:3002 passed. Other eight scenarios passed in the initial run.",
+    "Seed verification rerun passed after scoping assertions to seed-owned companies and request conversations. Unrelated companies and messages are preserved."
   ]
 }

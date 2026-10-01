@@ -37,7 +37,7 @@ export async function ready(page) {
     scrollTo(0, 0);
   });
   await page.waitForLoadState('networkidle', { timeout: 60000 });
-  await page.waitForFunction(() => [...document.images].every(img => img.complete), null, { timeout: 60000 });
+  await page.waitForFunction(() => [...document.images].every(img => !img.getClientRects().length || getComputedStyle(img).visibility === "hidden" || img.complete), null, { timeout: 60000 });
   await page.evaluate(() => {
     // Safety net for phone numbers embedded in legacy text or message bodies.
     const phone = /(?:\+?995[\s()-]*)?5\d{2}[\s()-]*\d{2,3}[\s()-]*\d{2,3}[\s()-]*\d{0,2}/;

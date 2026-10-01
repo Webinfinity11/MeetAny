@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 import nextEnv from '@next/env';
 import { pages, masks, viewports } from './pages.mjs';
-import { guard, go, ready, shot } from './lib/browser.mjs';
+import { guard, go, shot } from './lib/browser.mjs';
 import { compare } from './lib/compare.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
@@ -92,6 +92,7 @@ try {
       const links = await p.locator('.request-card:not(.ma-rcard--closed) .card-main-link').evaluateAll(els => els.map(el => el.getAttribute('href')));
       for (const href of links) {
         await go(p, origin, href);
+        await p.waitForFunction(() => document.querySelector('#of-body') || document.querySelector('main')?.innerText.includes('შენი შეთავაზება') || document.querySelector('main')?.innerText.includes('მოთხოვნა შეთავაზებებს აღარ იღებს'), null, { timeout: 15000 });
         if (await p.locator('#of-body').count()) { routes.offerRequest = href; break; }
       }
       assert(routes.offerRequest, 'შეთავაზების ფორმიანი მოთხოვნა ვერ მოიძებნა');
@@ -120,6 +121,11 @@ try {
               await p.locator('.inbox-thread textarea').waitFor({ timeout: 30000 });
             }
             if (def.action === 'offer') await p.locator('#of-body').waitFor();
+            if (def.action === 'chat-list') {
+              await p.locator('.ma-chat-launcher').click();
+              await p.locator('.ma-chat-list__row').first().click();
+              await p.locator('#ma-chat-body').waitFor();
+            }
             if (def.action === 'chat') {
               await p.getByRole('button', { name: 'მიწერა', exact: true }).first().click();
               await p.locator('.ma-chat').waitFor();
@@ -162,6 +168,6 @@ try {
   discardStaging();
   for (const def of selected) for (const viewport of viewports) fs.rmSync(path.join(diff, `${def.id}-${viewport.width}.current.png`), { force: true });
   console.table(results.map(r => ({ გვერდი: r.page, viewport: r.viewport, '%': r.percent.toFixed(5), შედეგი: r.pass ? 'PASS' : 'FAIL' })));
-  fs.writeFileSync(path.join(update ? baseline : diff, only ? `report-${only}.json` : 'report.json'), JSON.stringify({ head, sourceHash, baselineHead: update ? head : previous?.head, update, only, results, safety, errors, complete: !process.exitCode && results.length === selected.reduce((n, p) => n + (p.id === 'guest-home' ? 1 : 2), 0) }, null, 2) + '\n');
+  fs.writeFileSync(path.join(update ? baseline : diff, only ? `report-${only}.json` : 'report.json'), JSON.stringify({ head, sourceHash, baselineHead: update ? head : previous?.head, update, only, results, safety, errors, complete: !process.exitCode && results.length === selected.length * viewports.length }, null, 2) + '\n');
   if (results.some(r => !r.pass)) process.exitCode = 1;
 }

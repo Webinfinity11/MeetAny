@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MeetAny web
 
-## Getting Started
+Next.js App Router application for the Georgian business marketplace. Pages, database API routes, photo uploads, and shared styles live in this directory.
 
-First, run the development server:
+Setup, environment variables, database tests, and production details: [project README](../README.md). Feature map: [FEATURES.md](FEATURES.md). UI conventions: [design system](../DESIGN-SYSTEM.md).
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Validation:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run lint
+npm test
+npm run build
+# Run the production build in a second terminal for browser QA:
+npm run start -- --port 3002
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Browser scripts use private demo credentials from the ignored local credentials file. Set `QA_BROWSER_PATH` when Chromium is outside the default location.
 
-## Learn More
+## 2026-10-01 validation
 
-To learn more about Next.js, take a look at the following resources:
+Current completion record: [qa/STATUS-2026-10-01.md](qa/STATUS-2026-10-01.md).
+`npm run lint` includes shared-button/CSS-token checks. New scenarios:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+QA_ORIGIN=http://localhost:3002 node qa/features-1001.mjs
+QA_ORIGIN=http://localhost:3002 node qa/business-ui.mjs
+QA_ORIGIN=http://localhost:3002 node qa/links-check.mjs
+QA_ORIGIN=http://localhost:3002 node qa/links-check.mjs --second
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`features-1001` creates and cleans an isolated QA request/report on auth-probe. Business form writes are mocked. The links scan is read-only. `node qa/live-1001.mjs` checks the pinned public demo with API writes blocked. `DEMO_API_ORIGIN=http://localhost:3002 node scripts/seed-demo-v2.cjs --refresh-dates` updates only the registered demo timeline; `--verify` alone is read-only.
