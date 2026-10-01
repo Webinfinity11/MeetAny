@@ -57,6 +57,9 @@ export default async function(t) {
     assert.equal(await p.locator('#address').inputValue(), row.address);
   }, p);
   await t.step('კოორდინატების რედაქტირების UI', 'პროფილის ფორმაში განედი და გრძედი რედაქტირებადია', async () => {
+    // Coordinates live in the collapsed „რუკაზე ზუსტი მდებარეობა“ section.
+    const location = p.locator('details.account-location-details');
+    if (!(await location.evaluate(d => d.open))) await location.locator('summary').click();
     await p.getByLabel('განედი', { exact: true }).fill('41.72');
     await p.getByLabel('გრძედი', { exact: true }).fill('44.79');
     await p.getByRole('button', { name: 'შენახვა', exact: true }).click();
