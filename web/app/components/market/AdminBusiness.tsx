@@ -8,14 +8,14 @@ import { useBusinessResource, businessError } from "../../lib/business-client";
 import { BusinessError } from "./CompanyBusiness";
 import { Icon } from "../Icon";
 import { toast } from "../Toasts";
-import { adminSections } from "../../lib/admin-sections";
+
 
 type Entry={id:string;company_id:string;company:string;status:string;rating?:number;body?:string;author?:string;plan?:string;phone?:string;email?:string;reason?:string;note?:string;expires_at?:string};
 export function AdminBusiness({kind}:{kind:'reviews'|'plans'}){
  const {store}=useMarketStore();const [offset,setOffset]=useState(0);
  const load=useCallback(()=>store!.adminBusinessQueue(kind,offset),[store,kind,offset]);
  const resource=useBusinessResource<{items:Entry[];total:number}>(store?load:undefined,`${kind}:${offset}`);
- return <section className="business-panel"><header><h1>{adminSections[kind].label}</h1><p>{kind==='reviews'?'გამოაქვეყნე გამოცდილებაზე დაფუძნებული შეფასებები. დამალვისას მიუთითე მიზეზი.':'პაკეტი გაააქტიურე კომპანიასთან პირობების შეთანხმების შემდეგ. გადახდა აქ არ მუშავდება.'}</p></header>
+ return <section className="business-panel"><header><p>{kind==='reviews'?'გამოაქვეყნე გამოცდილებაზე დაფუძნებული შეფასებები. დამალვისას მიუთითე მიზეზი.':'პაკეტი გაააქტიურე კომპანიასთან პირობების შეთანხმების შემდეგ. გადახდა აქ არ მუშავდება.'}</p></header>
  {resource.error?<BusinessError error={resource.error} retry={resource.reload}/>:!resource.data?<p role="status">იტვირთება…</p>:<><p>{resource.data.total} ჩანაწერი</p><div className="business-admin-list">{resource.data.items.length?resource.data.items.map(item=><AdminBusinessRow key={`${item.id}:${item.status}`} kind={kind} item={item} refresh={resource.reload}/>):<p className="business-empty">ჩანაწერი ჯერ არ არის.</p>}</div>{resource.data.total>20?<div className="business-pagination"><Button variant="secondary" type="submit" disabled={!offset} onClick={()=>setOffset(n=>Math.max(0,n-20))}>წინა</Button><span>{offset+1}–{Math.min(offset+20,resource.data.total)}</span><Button variant="secondary" type="submit" disabled={offset+20>=resource.data.total} onClick={()=>setOffset(n=>n+20)}>შემდეგი</Button></div>:null}</>}
  </section>;
 }

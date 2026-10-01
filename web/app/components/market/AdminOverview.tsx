@@ -48,7 +48,7 @@ function DailyBars({ title, rows }: { title: string; rows: { day: string; count:
       </span> : null}
     </div>
     <div className={styles.chartAxis} aria-hidden="true"><span>{shortDay(rows[0].day)}</span><span>დღეს</span></div>
-    <table className="ma-sr-only"><caption>{title}</caption><tbody>{rows.map(r => <tr key={r.day}><th scope="row">{r.day}</th><td>{r.count}</td></tr>)}</tbody></table>
+    <div className="ma-sr-only"><table><caption>{title}</caption><tbody>{rows.map(r => <tr key={r.day}><th scope="row">{r.day}</th><td>{r.count}</td></tr>)}</tbody></table></div>
   </figure>;
 }
 
@@ -99,7 +99,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   const expiring = requests.filter(r => !r.hidden && store.requestState(r) === "open" && store.daysLeft(r) <= 2);
 
   const kpis: { key: string; label: string; value: number; delta?: { current: number; previous: number }; href: string }[] = [
-    { key: "users", label: "რეგისტრირებული მომხმარებლები", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
+    { key: "users", label: "მომხმარებლები", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
     { key: "companies", label: "კომპანიები", value: stats.companies, href: "/admin/?tab=users&role=company" },
     { key: "open", label: "ღია მოთხოვნები", value: stats.open, delta: requestWeek, href: "/admin/?tab=requests&status=open" },
     { key: "offers", label: "შეთავაზებები", value: stats.offers, href: "/admin/?tab=offers" },
@@ -108,30 +108,32 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   ];
 
   return <div className={styles.overview}>
-    <aside className={styles.presentationHint} aria-label="სადემო პრეზენტაცია"><div><strong>კლიენტს აცნობ MeetAny-ს?</strong><p>სადემო გზამკვლევში ნახავ გამოყენების მაგალითებსა და მაჩვენებლების განმარტებებს.</p></div><Button variant="secondary" href="/admin/?tab=demo">სადემო გზამკვლევი<Icon name="arrow-right" /></Button></aside>
     <div className={styles.kpis}>
-      {kpis.map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
+      {[kpis[2], kpis[3], kpis[1], kpis[0]].map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
         <span className={styles.kpiLabel}>{k.label}</span>
         <strong className={styles.kpiValue}>{k.value ?? "—"}</strong>
-        {k.delta ? <Delta {...k.delta} /> : <span className={styles.delta}>&nbsp;</span>}
+        {k.delta ? <Delta {...k.delta} /> : <span className={styles.delta}>ნახვა<Icon name="arrow-right" /></span>}
       </Link>)}
     </div>
 
-    <AdminMarketMetrics store={store} />
+    <div className={styles.overviewSecondary}>{kpis.slice(4).map(k => <Link key={k.key} href={k.href}><span>{k.label}</span><strong>{k.value ?? "—"}</strong><Icon name="arrow-right" /></Link>)}</div>
+    <div className={styles.overviewSplit}>
     <section className={styles.panel} aria-labelledby="activity-heading">
-      <header className={styles.panelHead}><h2 id="activity-heading">აქტივობის დინამიკა · ბოლო 30 დღე</h2><span>სატესტო ანგარიშების გარეშე</span></header>
+      <header className={styles.panelHead}><h2 id="activity-heading">აქტივობის დინამიკა</h2><span>ბოლო 30 დღე</span></header>
       <div className={styles.charts}>
         <DailyBars title="ახალი მოთხოვნები" rows={perDay(requestDates, days)} />
         {recentUsers ? <DailyBars title="ახალი რეგისტრაციები" rows={perDay(userDates, days)} />
           : <div className={styles.chartEmpty}>{failed ? "რეგისტრაციები ვერ ჩაიტვირთა." : "იტვირთება…"}</div>}
       </div>
+      <p className={styles.note}>სატესტო ანგარიშების გარეშე</p>
     </section>
 
     <section className={styles.panel} aria-labelledby="attention-heading">
       <header className={styles.panelHead}><h2 id="attention-heading">ყურადღება სჭირდება</h2></header>
       <div className={styles.attention}>
-        <div className={styles.queue}>
-          <h3><Icon name="badge-check" />კომპანიები დასადასტურებლად <span>{pending?.length ?? "…"}</span></h3>
+        <details className={styles.queue}>
+          <summary><Icon name="badge-check" />დასადასტურებელი კომპანიები <span>{pending?.length ?? "…"}</span><Icon name="chevron-down" /></summary>
+          {failed ? <p className={styles.queueEmpty}>კომპანიების ჩატვირთვა ვერ მოხერხდა. განაახლე გვერდი.</p> : null}
           {pending && !pending.length ? <p className={styles.queueEmpty}>ჩატვირთულ სიაში დასადასტურებელი კომპანია არ არის.</p> : null}
           <ul>
             {(pending || []).slice(0, 6).map(u => <li key={u.id}>
@@ -143,9 +145,9 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
             </li>)}
           </ul>
           {(pending?.length || 0) > 6 ? <Link className={styles.queueMore} href="/admin/?tab=users&role=company">ყველა ({pending!.length})<Icon name="arrow-right" /></Link> : null}
-        </div>
-        <div className={styles.queue}>
-          <h3><Icon name="hourglass" />3+ დღე შეთავაზების გარეშე <span>{unanswered.length}</span></h3>
+        </details>
+        <details className={styles.queue}>
+          <summary><Icon name="hourglass" />3+ დღე უპასუხოდ <span>{unanswered.length}</span><Icon name="chevron-down" /></summary>
           {!unanswered.length ? <p className={styles.queueEmpty}>3 დღეზე ძველი უპასუხო ღია მოთხოვნა არ არის.</p> : null}
           <ul>
             {unanswered.slice(0, 6).map(r => <li key={r.id}>
@@ -155,9 +157,9 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
               </Link>
             </li>)}
           </ul>
-        </div>
-        <div className={styles.queue}>
-          <h3><Icon name="clock" />ვადა 2 დღეში იწურება <span>{expiring.length}</span></h3>
+        </details>
+        <details className={styles.queue}>
+          <summary><Icon name="clock" />ვადა იწურება <span>{expiring.length}</span><Icon name="chevron-down" /></summary>
           {!expiring.length ? <p className={styles.queueEmpty}>ახლო დღეებში ვადა არაფერს ეწურება.</p> : null}
           <ul>
             {expiring.slice(0, 6).map(r => <li key={r.id}>
@@ -167,9 +169,11 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
               </Link>
             </li>)}
           </ul>
-        </div>
+        </details>
       </div>
       <p className={styles.note}>დამალული: {stats.hidden ?? 0} მოთხოვნა · დაბლოკილი: {stats.blocked ?? 0} ანგარიში</p>
     </section>
+    </div>
+    <AdminMarketMetrics store={store} />
   </div>;
 }

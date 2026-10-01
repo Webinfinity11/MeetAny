@@ -6,7 +6,7 @@ export const adminSections = {
   offers: { label: "შეთავაზებები", icon: "inbox", description: "კომპანიების პასუხები მოთხოვნებზე და მათი სტატუსები" },
   reports: { label: "საჩივრები", icon: "flag", description: "მომხმარებლების საჩივრების განხილვა და დარღვევებზე რეაგირება" },
   reviews: { label: "შეფასებები", icon: "star", description: "კომპანიებზე დატოვებული შეფასებების შემოწმება და გამოქვეყნება" },
-  plans: { label: "Premium / VIP პაკეტები", icon: "sparkles", description: "კომპანიების განაცხადები დამატებით ხილვადობაზე" },
+  plans: { label: "Premium / VIP პაკეტები", icon: "building-2", description: "კომპანიების განაცხადები დამატებით ხილვადობაზე" },
   photos: { label: "ფოტოების შემოწმება", icon: "image", description: "კომპანიების ატვირთული ლოგოებისა და გალერეის ფოტოების მართვა" },
   audit: { label: "მოქმედებების ისტორია", icon: "clock", description: "ვინ, როდის და რა შეცვალა ადმინისტრირებისას" },
   contacts: { label: "დაკავშირების სტატისტიკა", icon: "phone", description: "ნომრის ნახვები, დარეკვის ღილაკზე დაჭერები და ახალი მიმოწერები" },

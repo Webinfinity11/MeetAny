@@ -25,3 +25,9 @@
 }
 @media(max-width:359.98px){.ma-proto-kpis .ma-stat{padding:var(--space-3)}.ma-proto-kpis .ma-stat__label{font-size:var(--fs-xs);line-height:var(--lh-xs)}}
 .ma-proto .ma-page:has(>.ma-proto-kpis)>.r2-band{margin:0}
+
+/* The admin workspace has its own canvas; public page widths stay unchanged. */
+body[data-market-page="admin"] { --container: var(--admin-container); background: var(--bg-subtle); }
+body[data-market-page="admin"] .ma-header { background: var(--white); }
+body[data-market-page="admin"] .ma-table-wrap { background: var(--white); border-radius: var(--size-8); }
+body[data-market-page="admin"] .ma-page { padding-top: var(--space-6); }

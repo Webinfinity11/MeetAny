@@ -21,7 +21,7 @@ export function AdminContacts({ store, kind, target, period, cursor, onChange, o
   const hasFilters = !!(kind || target || period !== "month");
   const data = useAdminContacts({ store, kind, target, period, cursor });
   return <section className={styles.contacts} aria-label="კონტაქტების აღრიცხვა">
-    <p className={styles.note}>„ნომრის ნახვა“ ნიშნავს ნომრის გამოჩენას; „დარეკვაზე დაჭერა“ — ტელეფონის ბმულის გახსნას. დასრულებული სატელეფონო საუბარი არ მოწმდება. განმეორებითი მოქმედებები წუთის განმავლობაში არ ითვლება; ანონიმური ვიზიტორები საერთო ჯგუფად აღირიცხება.</p>
+    <details className={styles.methodology}><summary>რა ითვლება დაკავშირებად?</summary><p className={styles.note}>„ნომრის ნახვა“ ნიშნავს ნომრის გამოჩენას; „დარეკვაზე დაჭერა“ — ტელეფონის ბმულის გახსნას. დასრულებული სატელეფონო საუბარი არ მოწმდება. განმეორებითი მოქმედებები წუთის განმავლობაში არ ითვლება; ანონიმური ვიზიტორები საერთო ჯგუფად აღირიცხება.</p></details>
     <div className={styles.filters} role="search" aria-label="კონტაქტების ფილტრები">
       <div><label htmlFor="contact-kind">მოქმედება</label><CustomSelect id="contact-kind" className="ma-select" value={kind} onChange={e => onChange("kind", e.target.value)}><option value="">ყველა მოქმედება</option><option value="reveal">ნომრის ნახვა</option><option value="call">დარეკვაზე დაჭერა</option></CustomSelect></div>
       <div><label htmlFor="contact-target">ვის დაუკავშირდნენ</label><CustomSelect id="contact-target" className="ma-select" value={target} onChange={e => onChange("target", e.target.value)}><option value="">კომპანიები და მოთხოვნები</option><option value="company">კომპანია</option><option value="request">მოთხოვნა</option></CustomSelect></div>
@@ -29,11 +29,13 @@ export function AdminContacts({ store, kind, target, period, cursor, onChange, o
     </div>
     {hasFilters ? <Button type="button" variant="secondary" className={styles.clear} onClick={onClear}>ფილტრების გასუფთავება</Button> : null}
     {data.loading ? <ListSkeleton compact kind="records" label="კონტაქტები იტვირთება…" /> : data.error ? <AdminState error title="კონტაქტები ვერ ჩაიტვირთა" text={data.error} onRetry={data.reload} onFirst={cursor ? () => onChange("cursor", "") : undefined} /> : data.stats ? <>
-      <div className="ma-proto-kpis">{[["day", "დღეს"], ["week", "7 დღე"], ["month", "30 დღე"]].flatMap(([key, label]) => [
-        <div className="ma-stat" key={`${key}-reveal`}><strong className="ma-stat__value">{data.stats!.totals[key].reveals}</strong><span className="ma-stat__label">ნომრის ნახვები · {label}</span></div>,
-        <div className="ma-stat" key={`${key}-call`}><strong className="ma-stat__value">{data.stats!.totals[key].calls}</strong><span className="ma-stat__label">დარეკვაზე დაჭერები · {label}</span></div>,
-        <div className="ma-stat" key={`${key}-chat`}><strong className="ma-stat__value">{data.messageStats?.totals[key].conversations ?? 0}</strong><span className="ma-stat__label">ახალი მიმოწერები · {label}</span></div>,
-      ])}</div>
+      <div className={styles.contactTotals}>{[["day", "დღეს"], ["week", "ბოლო 7 დღე"], ["month", "ბოლო 30 დღე"]].map(([key, label]) => <section className={styles.contactTotal} key={key}>
+        <h2>{label}</h2><dl>
+          <div><dt>ნომრის ნახვა</dt><dd>{data.stats!.totals[key].reveals}</dd></div>
+          <div><dt>დარეკვაზე დაჭერა</dt><dd>{data.stats!.totals[key].calls}</dd></div>
+          <div><dt>ახალი მიმოწერა</dt><dd>{data.messageStats?.totals[key].conversations ?? 0}</dd></div>
+        </dl>
+      </section>)}</div>
       <p className={styles.note}>ზედა მაჩვენებლები ყველა კონტაქტს მოიცავს. ტოპ სიები შერჩეულ პერიოდს ასახავს და ნახვებისა და დარეკვების ჯამით ლაგდება; მოქმედებისა და სამიზნის ფილტრები მოვლენების სიაზე მოქმედებს.</p>
       <div className={styles.contactTops}>{([['companies', 'ტოპ 10 კომპანია'], ['requests', 'ტოპ 10 მოთხოვნა']] as const).map(([key, label]) => <div className="ma-table-wrap" key={key}><table className="ma-table"><caption>{label}</caption><thead><tr><th scope="col">{key === "companies" ? "კომპანია" : "მოთხოვნა"}</th><th scope="col">ნომრის ნახვა</th><th scope="col">დარეკვაზე დაჭერა</th></tr></thead><tbody>{data.stats![key].length ? data.stats![key].map(row => <tr key={row.target_id}><td data-label="სამიზნე"><Target row={row} /></td><td data-label="ნომრის ნახვა">{row.reveals}</td><td data-label="დარეკვაზე დაჭერა">{row.calls}</td></tr>) : <tr><td colSpan={3}>ამ პერიოდში მოვლენები არ არის.</td></tr>}</tbody></table></div>)}</div>
       <h2 className="ma-h3">დაკავშირების ბოლო მოქმედებები</h2>

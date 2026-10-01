@@ -25,6 +25,7 @@ try {
   const login = await page.request.post(auth + '/sign-in/email', { data: credentials('owner_admin') });
   assert(login.ok(), 'admin login');
   for (const [tab, title] of sections) {
+    await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(origin + '/admin/' + (tab ? '?tab=' + tab : ''), { waitUntil: 'domcontentloaded' });
     await page.getByRole('heading', { level: 1, name: title, exact: true }).waitFor();
     await page.waitForLoadState('networkidle');
@@ -34,12 +35,12 @@ try {
       await page.getByRole('heading', { name: 'მოთხოვნა და მომწოდებლები', exact: true }).waitFor();
       assert((await page.locator('main').innerText()).includes('მომწოდებლის არჩევის წილი'));
     }
-    for (const width of [1440, 390]) {
+    for (const width of [1440, 390, 320]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(450);
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${tab} ${width} overflow`);
-      if (['', 'contacts', 'demo'].includes(tab)) await page.screenshot({ path: `${out}/${tab || 'analytics'}-${width}.png`, fullPage: true });
+      if (['', 'requests', 'users', 'contacts', 'demo'].includes(tab)) await page.screenshot({ path: `${out}/${tab || 'analytics'}-${width}.png`, fullPage: true });
       results.push({ section: tab || 'analytics', width, pass: true });
     }
   }
@@ -51,6 +52,20 @@ try {
     const response = await page.request.get(origin + href);
     assert.equal(response.status(), 200, 'demo request link');
   }
+  const menu = page.getByRole('button', { name: /განყოფილება/ });
+  assert.equal(await menu.getAttribute('aria-expanded'), 'false', 'mobile menu starts closed');
+  await menu.click();
+  await page.getByRole('link', { name: 'მოთხოვნები', exact: true }).waitFor({ state: 'visible' });
+  await page.keyboard.press('Escape');
+  assert.equal(await menu.getAttribute('aria-expanded'), 'false', 'Escape closes menu');
+  assert(await menu.evaluate(el => el === document.activeElement), 'menu retains keyboard focus');
+  await menu.click();
+  await page.getByRole('link', { name: 'მოთხოვნები', exact: true }).click();
+  await page.getByRole('heading', { level: 1, name: 'მოთხოვნები', exact: true }).waitFor();
+  assert.equal(await menu.getAttribute('aria-expanded'), 'false', 'navigation closes menu');
+  await menu.click();
+  await page.getByRole('link', { name: 'სადემო გზამკვლევი', exact: true }).click();
+  await page.getByRole('heading', { level: 1, name: 'სადემო გზამკვლევი', exact: true }).waitFor();
   await page.setViewportSize({ width: 320, height: 900 });
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'guide fits 320');
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -67,6 +82,31 @@ try {
   await page.getByRole('link', { name: 'ანალიტიკა', exact: true }).click();
   await page.getByRole('heading', { level: 1, name: 'ანალიტიკა', exact: true }).waitFor();
   assert(!new URL(page.url()).searchParams.has('tab'), 'navigation uses analytics landing');
+  const supply = page.locator('details').filter({ has: page.locator('summary', { hasText: 'სად არის მეტი მომწოდებელი საჭირო?' }) });
+  await supply.locator('summary').click();
+  await supply.locator('table').waitFor({ state: 'visible' });
+  await supply.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  assert.equal(await supply.getAttribute('open'), null, 'detail disclosure closes by keyboard');
+
+  await page.goto(origin + '/admin/?tab=requests');
+  const firstTitle = page.locator('td[data-label="მოთხოვნა"] button').first();
+  await firstTitle.waitFor();
+  await firstTitle.click();
+  await page.locator('dialog[open]').waitFor();
+  await page.keyboard.press('Escape');
+  await page.locator('dialog[open]').waitFor({ state: 'hidden' });
+  const selection = page.getByRole('checkbox', { name: /^მონიშვნა:/ }).first();
+  await selection.check();
+  const bulk = page.getByRole('region', { name: 'მონიშნულ ჩანაწერებზე მოქმედებები' });
+  await bulk.waitFor();
+  await bulk.getByRole('button', { name: 'გაუქმება', exact: true }).click();
+  assert.equal(await selection.isChecked(), false, 'bulk selection clears');
+  await page.locator('#admin-search').fill('qa-no-match-presentation-unique');
+  await page.getByRole('heading', { name: 'ამ ფილტრებით ჩანაწერები ვერ მოიძებნა' }).waitFor();
+  await page.getByRole('button', { name: 'ფილტრების გასუფთავება', exact: true }).first().click();
+  await firstTitle.waitFor();
+  assert.equal(await page.locator('#admin-search').inputValue(), '', 'clear filters restores list');
   assert.deepEqual(state.blocked, []); assert.deepEqual(errors, []);
   await context.close();
 
@@ -92,7 +132,7 @@ try {
   assert.equal(await guest.locator('.business-tier[data-plan="vip"] svg').count(), 0, 'profile VIP is text only');
   await guest.close();
   assert.deepEqual(errors, []); assert.deepEqual(state.blocked, []);
-  console.log('PASS: 11 admin sections × 2 widths; demo links; 320px guide; motion/reduced-motion; guest access; text-only VIP catalogue/profile');
+  console.log('PASS: 11 admin sections × 3 widths; mobile menu/Escape/navigation; demo links; motion/reduced-motion; guest access; text-only VIP catalogue/profile');
 } catch (error) {
   errors.push(safe(error.stack)); console.error(safe(error.stack)); process.exitCode = 1;
 } finally {

@@ -8,9 +8,8 @@ import { AccountSkeleton, ListSkeleton } from "./Skeletons";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { adminErrorMessage, useAdminData } from "../../lib/use-admin-data";
@@ -21,6 +20,7 @@ import { AdminContacts } from "./AdminContacts";
 import { PageBand } from "./PageBand";
 import { AdminFilters } from "./AdminFilters";
 import { AdminOverview } from "./AdminOverview";
+import { AdminNavigation } from "./AdminNavigation";
 import { AdminDemoGuide } from "./AdminDemoGuide";
 import { adminSections, type AdminSection } from "../../lib/admin-sections";
 import { AdminPhotos } from "./AdminPhotos";
@@ -56,16 +56,6 @@ export function AdminPageContent() {
   // QA/demo accounts are hidden from the lists unless asked for (?tests=1).
   const showTests = searchParams.get("tests") === "1";
   const cursor = searchParams.get("cursor") || "";
-  const navigation = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const nav = navigation.current;
-    const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (!nav || !active || nav.scrollWidth <= nav.clientWidth) return;
-    const bounds = nav.getBoundingClientRect();
-    const item = active.getBoundingClientRect();
-    if (item.left < bounds.left) nav.scrollLeft -= bounds.left - item.left;
-    else if (item.right > bounds.right) nav.scrollLeft += item.right - bounds.right;
-  }, [tab, ready, available]);
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [detail, setDetail] = useState<AdminTarget>(null);
   // Row selection belongs to one list view: a new tab, filter or page starts empty.
@@ -251,25 +241,17 @@ export function AdminPageContent() {
 
   return (
     <div className={`ma-page ${styles.workspace}`}>
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeading}><div><strong>ადმინისტრირება</strong><span>პლატფორმის მართვა</span></div></div>
-        <nav ref={navigation} className={styles.navigation} aria-label="ადმინისტრირების განყოფილებები">
-          {(Object.entries(adminSections) as [AdminSection, (typeof adminSections)[AdminSection]][])
-            .filter(([key]) => key !== "offers" || v2 || tab === "offers")
-            .map(([key, item]) => <Link key={key} href={key === "overview" ? "/admin/" : `/admin/?tab=${key}`} aria-current={tab === key ? "page" : undefined}><Icon name={item.icon} /><span>{item.label}</span>{key === "reports" && reportCount > 0 ? <b className={`ma-badge ma-badge--accent ma-badge--plain ${styles.navBadge}`} aria-label={`${reportCount} ახალი`}>{reportCount}</b> : null}<Icon name="chevron-right" className={styles.navArrow} /></Link>)}
-        </nav>
-        <Link className={styles.backToSite} href="/"><Icon name="arrow-left" />საიტზე დაბრუნება</Link>
-      </aside>
+      <AdminNavigation tab={tab} reports={reportCount} offersEnabled={v2} />
       <div key={tab} className={styles.content}>
-      {tab !== "reviews" && tab !== "plans" ? <PageBand title={adminSections[tab].label} description={adminSections[tab].description} /> : null}
+      <PageBand title={adminSections[tab].label} description={adminSections[tab].description} actions={tab === "overview" ? <Button variant="secondary" href="/admin/?tab=demo">სადემო გზამკვლევი<Icon name="arrow-right" /></Button> : undefined} />
       {tab === "reviews" || tab === "plans" ? <AdminBusiness key={tab} kind={tab}/> : tab === "overview" ? <AdminOverview store={store!} stats={stats} onOpenUser={id => setDetail({ kind: "user", id })}
         onVerify={u => setPendingAction({ kind: "users", action: "verify", id: u.id, label: u.label })} /> : null}
 
       {tab === "demo" ? <AdminDemoGuide store={store!} /> : null}
-      {tab === "reports" ? <AdminReports key={status} store={store!} status={status === "handled" ? "handled" : "new"} revision={reportRevision} onStatus={value => setFilter("status", value === "new" ? "" : value)} onCount={onReportCount}
-        onAction={({ report, action, label }: ReportAction) => setPendingAction({ kind: "reports", action: action === "reportReject" ? "reportReject" : `reportHide.${report.target_kind}`, id: report.id, label })} /> : null}
+      {tab === "reports" ? <section className={styles.listSurface}><AdminReports key={status} store={store!} status={status === "handled" ? "handled" : "new"} revision={reportRevision} onStatus={value => setFilter("status", value === "new" ? "" : value)} onCount={onReportCount}
+        onAction={({ report, action, label }: ReportAction) => setPendingAction({ kind: "reports", action: action === "reportReject" ? "reportReject" : `reportHide.${report.target_kind}`, id: report.id, label })} /></section> : null}
       {tab === "photos" ? <AdminPhotos store={store!} onRemove={p => setPendingAction({ kind: "photos", action: "removePhoto", id: p.userId, url: p.url, label: p.label })} /> : null}
-      {tab === "demo" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <>
+      {tab === "demo" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <section className={styles.listSurface} aria-label="ჩანაწერების მართვა">
       {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
       {hasFilters && (tab !== "offers" || v2) ? <Button type="button" variant="secondary" className={styles.clear} onClick={clearFilters}>ფილტრების გასუფთავება</Button> : null}
       {admin.mode === "legacy" && (tab === "requests" || tab === "users") ? <>
@@ -457,7 +439,7 @@ export function AdminPageContent() {
         {admin.page.hasMore && admin.page.nextCursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი<Icon name="arrow-right" /></Button> : null}
       </nav> : null}
 
-      </>}
+      </section>}
       </div>
       <AdminDetail store={store!} target={detail} v2={v2} onClose={() => setDetail(null)} onOpen={setDetail} onAction={setPendingAction} />
       <ModerationSheet
