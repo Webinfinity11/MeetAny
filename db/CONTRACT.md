@@ -624,3 +624,26 @@ Verification (2026-09-30): local suite `db/tests/admin_photo_tests.sql` — 13 a
 - რიგის გარეშე `emailMode='off'` და ელფოსტის job არ იქმნება. შენახული რიგების ელფოსტის რეჟიმი უცვლელია; გაგზავნა არ ჩართულა. ძველი მოთხოვნები არ ბრუნდება შეტყობინებებად; მოქმედებს მხოლოდ ახალი INSERT-ები, არსებული ბლოკირების/ავტორის/ქალაქის/კატეგორიის ფილტრებით.
 
 შემოწმება: `bash db/tests/run.sh` მთლიანად PASS; request alerts — 45 შემოწმება. მიგრაცია auth-probe-ზე ორჯერ შესრულდა; ცოცხალი API და გასუფთავება აღწერილია `web/qa/ALERTS-2026-09-29.md`-ში.
+
+## Reports („შეატყობინე“) — T15.9 (2026-10-01)
+
+Migration `migrations/20261001-reports.sql` (additive, rerunnable; apply after `20260929-admin-v2.sql` and `20260930-business-features.sql`): `node web/scripts/apply-migration.mjs reports` (`--dry-run` first). **Applied to auth-probe** on 2026-10-01 (dry-run, then real; 2 tables and 3 RPCs verified).
+
+- `meetany_private.reports` — RLS on, no rights for `anonymous`/`authenticated`. One **active** (`status='new'`) report per (reporter, target kind, target id) — partial unique index. No foreign key on the target: history survives deletion (`target_label` and `context_id` are kept).
+- `report_content(p_kind text, p_target_id uuid, p_reason text, p_text text default '') -> {id, status, created_at}` — signed-in users only (no `anonymous` grant; blocked -> MA002). `p_kind`: `request` (visible, not own) | `company` (not blocked, not own) | `offer` (only the author of the request it answers). `p_reason`: `spam` | `fake` | `offensive` | `other`; `p_text` up to 500, required (3+) for `other`. At most 10 reports per user per 24 hours.
+- `admin_list_reports(p_status text default 'new', p_offset integer default 0) -> {total, newCount, items[]}` — admin only (MA003). `p_status`: `new` | `handled` | null (all). 20 per page, newest first. Items: target (kind, id, current or saved label, `context_id`/`context_label` = the request of an offer, `target_exists`, `target_removed`, `offer_status`), reason, body, reporter name/email, dates, `target_reports`/`target_new` (reports on the same target), resolution, handler.
+- `admin_resolve_report(p_id uuid, p_action text, p_reason text) -> {id, action, effect, closed}` — admin only; reason 3–500 (MA304). `hide`: request -> `admin_set_hidden`, offer -> `admin_delete_offer` (a chosen offer -> MA207, report stays new), company -> `admin_set_blocked`; these write `moderation_audit` as before. An already hidden/deleted/blocked target is not changed again. All new reports on that target are marked handled. `reject`: only this report is closed. Every resolution writes `meetany_private.business_audit` (`report_hidden` / `report_rejected`). A handled report -> MA706.
+- Data API: all three RPCs are allowlisted; `admin_resolve_report` is a public write (drops the SSR snapshot), `report_content` is not.
+- Store: `reportContent(kind, targetId, reason, text)`, `adminListReports(status, offset)`, `adminResolveReport(id, 'hide'|'reject', reason)` (refreshes the cache).
+- UI: quiet „შეატყობინე“ text button on the request page (non-owners; guests go to sign-in with `?next=`), company profile (not own) and offer cards (request author only); admin tab „საჩივრები“ with the new-report count.
+
+| Code | Georgian user message |
+|---|---|
+| `MA701` | აირჩიე მიზეზი. „სხვა“ მიზეზისთვის დაწერე 3–500 სიმბოლო. |
+| `MA702` | ეს გვერდი ვეღარ მოიძებნა ან მისი შეტყობინება შეუძლებელია. |
+| `MA703` | საკუთარ გვერდზე შეტყობინებას ვერ გააგზავნი. |
+| `MA704` | ამაზე უკვე შეგვატყობინე. შეტყობინებას განვიხილავთ. |
+| `MA705` | დღეში შეიძლება 10 შეტყობინება. სცადე ხვალ. |
+| `MA706` | საჩივარი უკვე დამუშავებულია. განაახლე სია. |
+
+Verification (2026-10-01): local suite `db/tests/report_tests.sql` — 43 assertions (guest denied, self-report, duplicate, validation, offer visibility, daily limit, MA003 for non-admins, hide request/offer/company, chosen offer, reject, audit rows).
