@@ -25,6 +25,13 @@ type Source = {
 };
 const sources = new Map<string, Source>();
 
+/** "(N) " in front of the tab title while there are unread messages; the page's own title stays after it. */
+function titleCount(unread: number | null) {
+  if (typeof document === "undefined") return;
+  const base = document.title.replace(/^\(\d+\+?\) /, "");
+  document.title = unread ? `(${unread > 99 ? "99+" : unread}) ${base}` : base;
+}
+
 /** One 10 s poll per signed-in user feeds every badge and inbox list: the list when anyone shows it
  *  (its unread counts give the total), otherwise the unread count alone. Also runs on tab return
  *  and on chat changes elsewhere. */
@@ -54,6 +61,7 @@ function feed(owner: string): Source {
         if (!failed) toast(error);
         failed = true;
       } finally { busy = false; }
+      titleCount(src.state.unread);
       src.listeners.forEach(fn => fn());
       if (again) void src.run();
     },
@@ -75,10 +83,11 @@ function useFeed(store: Store | undefined, owner: string | undefined, wantsList:
     if (wantsList) src.listSubs++;
     if (src.listeners.size === 1) {
       const run = () => void src.run();
-      const timer = window.setInterval(run, 10000);
+      const timer = window.setInterval(run, 8000);
       window.addEventListener("meetany:chat-changed", run);
+      window.addEventListener("focus", run);
       document.addEventListener("visibilitychange", run);
-      src.stop = () => { clearInterval(timer); window.removeEventListener("meetany:chat-changed", run); document.removeEventListener("visibilitychange", run); };
+      src.stop = () => { clearInterval(timer); window.removeEventListener("meetany:chat-changed", run); window.removeEventListener("focus", run); document.removeEventListener("visibilitychange", run); titleCount(null); };
     }
     // A new list viewer needs items now; a badge reuses what the feed already has.
     if (src.state.unread === null || (wantsList && !src.state.list)) void src.run(); else update();
@@ -103,7 +112,8 @@ export function useConversationList(store: Store | undefined, owner: string | un
   return { current: current?.list && owner ? { owner, ...current.list } : null, retry };
 }
 
-/** One open conversation: starts it if needed, polls every 5s, marks read while visible, sends. */
+/** One open conversation: starts it if needed, polls (every 2s while the chat is active, 5s when
+ *  quiet, never on a hidden tab), marks read while visible, sends. */
 export function useChatThread(store: Store, target: ChatTarget, enabled = true) {
   const { startConversation, listConversations, listMessages, markRead, currentUser } = store;
   const alive = useRef(true);
@@ -115,6 +125,8 @@ export function useChatThread(store: Store, target: ChatTarget, enabled = true) 
   const [revision, setRevision] = useState(0);
   const [pending, setPending] = useState(false);
   const [sendError, setSendError] = useState("");
+  // Last time something happened in this chat (message in or out); recent activity polls faster.
+  const activity = useRef(0);
   const merge = (incoming: Message[]) => setMessages(old => [...new Map([...old, ...incoming].map(m => [m.id, m])).values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
   useEffect(() => {
@@ -146,7 +158,7 @@ export function useChatThread(store: Store, target: ChatTarget, enabled = true) 
         if (incoming.some(m => m.senderId !== me && !m.readAt)) unread = true;
         // Advance only from the ordered fetch, never from a send response: a peer's
         // message may have committed between our last poll and our own send.
-        if (incoming.length) after = incoming[incoming.length - 1].createdAt;
+        if (incoming.length) { after = incoming[incoming.length - 1].createdAt; activity.current = Date.now(); }
         setLoaded(true); setFailed(false);
         // Mark read only when the other side has something unread; an idle open chat writes nothing.
         if (unread && !document.hidden) { const result = await markRead(id); unread = false; if (active && result.marked) chatChanged(); }
@@ -155,10 +167,14 @@ export function useChatThread(store: Store, target: ChatTarget, enabled = true) 
         if (active) { setFailed(true); if (!hadError) toast(chatErrorText(err)); hadError = true; }
       } finally { busy = false; }
     };
-    void update();
-    const timer = window.setInterval(update, 5000);
+    // Fast while the conversation is live (activity in the last 2 minutes), slower when it is quiet.
+    let timer = 0;
+    const loop = async () => { await update(); if (active) timer = window.setTimeout(loop, Date.now() - activity.current < 120000 ? 2000 : 5000); };
+    activity.current = Date.now();
+    void loop();
+    window.addEventListener("focus", update);
     document.addEventListener("visibilitychange", update);
-    return () => { active = false; clearInterval(timer); document.removeEventListener("visibilitychange", update); };
+    return () => { active = false; clearTimeout(timer); window.removeEventListener("focus", update); document.removeEventListener("visibilitychange", update); };
   }, [startConversation, listConversations, listMessages, markRead, currentUser, target, revision, enabled]);
   /** Resolves true when the message was stored; `onStored` runs just before it joins the list. */
   async function send(body: string, onStored?: () => void) {
@@ -167,7 +183,7 @@ export function useChatThread(store: Store, target: ChatTarget, enabled = true) 
     try {
       const message: Message = await store.sendMessage(conversation.id, body.trim());
       if (!alive.current) return false;
-      onStored?.(); merge([message]); chatChanged();
+      onStored?.(); merge([message]); activity.current = Date.now(); chatChanged();
       return true;
     } catch (err) {
       if (alive.current) { const error = (err as { userMessage?: string })?.userMessage || "შეტყობინება ვერ გაიგზავნა. სცადე ხელახლა."; setSendError(error); toast(error); }

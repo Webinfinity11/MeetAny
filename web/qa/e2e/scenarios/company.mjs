@@ -24,7 +24,7 @@ export async function offerAndChat(t, p, client, request, chat = true) {
     assert(messages.some(m => m.body === body));
     await go(client, '/account/');
     await until(async () => Number(await client.locator('.ma-chat-badge').first().innerText()) >= previous + 1, 'ჰედერის unread ბეიჯი არ განახლდა');
-    await p.getByRole('button', { name: 'მიმოწერის დახურვა' }).click();
+    await p.getByRole('button', { name: 'მიმოწერის ჩაკეცვა' }).click();
   }, p);
   await t.step('კლიენტის პასუხი და კომპანიის ინბოქსი', '?tab=messages&c=id აჩვენებს საუბარს; პასუხი ბაზაშია; კომპანიის unread იზრდება', async () => {
     assert(conversation, 'წინა ნაბიჯში საუბარი არ შექმნილა');
