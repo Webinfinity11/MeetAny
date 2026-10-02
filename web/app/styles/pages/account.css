@@ -704,7 +704,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .account-welcome__stats span { font-size: var(--fs-xs); }
  .account-next-step { align-items: flex-start; flex-wrap: wrap; gap: var(--space-3); }
  .account-next-step > div { flex-basis: calc(100% - var(--size-56)); }
- .account-next-step > .ma-btn { margin-left: var(--size-56); }
+ .account-next-step > .ma-btn { margin-left: 0; max-width: 100%; white-space: normal; }
  .account-wide > .inbox--empty { padding: var(--space-4); }
  .inbox-empty-state { padding: var(--space-8) 0; }
  .inbox-empty-state > .ma-btn { width: 100%; white-space: normal; }

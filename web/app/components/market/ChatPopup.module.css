@@ -31,3 +31,10 @@
   .emptyArt,
   .emptyArt .illustration { animation: none; }
 }
+
+/* Give the participant and the request separate space from the conversation controls. */
+.threadHead { flex-wrap: wrap; gap: var(--space-2); }
+.threadHead .threadIdentity { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.threadHead .threadIdentity h2 { white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.threadHead .threadContext { display: flex; flex: 0 0 100%; align-items: center; gap: var(--space-2); min-width: 0; }
+.threadContext :global(.ma-chat__context) { flex: 1; min-width: 0; white-space: normal; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }

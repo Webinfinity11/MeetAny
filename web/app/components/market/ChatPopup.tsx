@@ -42,13 +42,13 @@ export function useSessionReady(store: { ready?: () => Promise<unknown> } | null
   return done;
 }
 
-export function MessageButton({ companyId, requestId }: { companyId: string; requestId?: string }) {
+export function MessageButton({ companyId, requestId, variant = "secondary" }: { companyId: string; requestId?: string; variant?: "secondary" | "ghost" }) {
   const { store, ready } = useMarketStore();
   const router = useRouter();
   const sessionReady = useSessionReady(store);
   const me = ready && sessionReady ? store?.currentUser() : null;
   if (me?.role === "admin" || (me?.id === companyId && !requestId)) return null;
-  return <Button type="button" variant="secondary" disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => {
+  return <Button type="button" variant={variant} disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => {
     if (!me) {
       const next = window.location.pathname + window.location.search + window.location.hash;
       toast("მიწერისთვის შედი ანგარიშში.");
@@ -176,7 +176,15 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
     if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); if (dialog.current?.open) input.current?.focus(); }
   }
   return <dialog ref={dialog} className="ma-chat ma-chat--dock" aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
-    <header className="ma-chat__head"><button type="button" className="ma-chat__close" aria-label="ყველა მიმოწერა" onClick={onBack}><Icon name="message-square" /></button><CompanyAvatar name={name} logoUrl={logoUrl}/><div><h2 id="ma-chat-title">{isCompany ? <Link className="ma-chat__peer-link" href={`/companies/view/?id=${encodeURIComponent(otherId)}`} onClick={onClose}>{name}</Link> : name}</h2><span className="ma-chat__context">{request ? <Link href={`/requests/view/?id=${encodeURIComponent(request.id)}`} onClick={onClose} title={request.title}>{request.title}</Link> : requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span></div>{conversation ? <Link className="ma-chat__close" href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose} aria-label="მიმოწერის სრულად გახსნა"><Icon name="layout-grid" /></Link> : null}<button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button></header>
+    <header className={`ma-chat__head ${styles.threadHead}`}>
+      <div className={styles.threadIdentity}><CompanyAvatar name={name} logoUrl={logoUrl}/><h2 id="ma-chat-title" title={name}>{isCompany ? <Link className="ma-chat__peer-link" href={`/companies/view/?id=${encodeURIComponent(otherId)}`} onClick={onClose}>{name}</Link> : name}</h2></div>
+      <button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" title="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button>
+      <div className={styles.threadContext}>
+        <button type="button" className="ma-chat__close" aria-label="ყველა მიმოწერა" title="ყველა მიმოწერა" onClick={onBack}><Icon name="message-square" /></button>
+        <span className="ma-chat__context">{request ? <Link href={`/requests/view/?id=${encodeURIComponent(request.id)}`} onClick={onClose} title={request.title}>{request.title}</Link> : requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span>
+        {conversation ? <Link className="ma-chat__close" href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose} aria-label="მიმოწერის სრულად გახსნა" title="მიმოწერის სრულად გახსნა"><Icon name="layout-grid" /></Link> : null}
+      </div>
+    </header>
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : messages.map(m => <div key={m.id} className={`ma-chat__message${m.senderId === owner ? " ma-chat__message--mine" : ""}`}><span className="ma-sr-only">{m.senderId === owner ? "შენ" : name}: </span><p>{m.body}</p><time dateTime={m.createdAt}>{chatDate(m.createdAt)}</time></div>)}
     </div>

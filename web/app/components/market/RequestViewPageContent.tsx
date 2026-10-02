@@ -272,7 +272,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               {isOwner && chosenCompanyId ? <MessageButton companyId={chosenCompanyId} requestId={r.id}/> : null}
             </section>
           ) : null}
-          {compare && offers.length > 1 ? <section className="offer-comparison" aria-label="შეთავაზებების შედარება">{orderedOffers.map(o=><article className="offer-comparison__card" key={o.id}><header><h3><Link href={o.companyHref}>{o.companyName}</Link></h3>{o.status==="chosen"?<span className="ma-badge ma-badge--success">არჩეულია</span>:null}</header><dl className="offer-terms"><div><dt>ფასი</dt><dd>{offerPrice(o)}</dd></div><div><dt>მიწოდება</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div><div><dt>დღგ</dt><dd>{o.price==null?"დასაზუსტებელია":o.vatIncluded?"ფასში შედის":"ფასში არ შედის"}</dd></div><div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div></dl><details><summary>სრული პირობები</summary><p>{o.body}</p></details><footer><Button variant="secondary" href={o.companyHref}>კომპანიის ნახვა</Button>{isOwner&&!r.chosenOfferId&&state==="open"&&o.status==="sent"?<Button variant="primary" onClick={()=>setChooseId(o.id)}>შეთავაზების არჩევა</Button>:null}</footer></article>)}</section> : null}
+          {compare && offers.length > 1 ? <section className="offer-comparison" aria-label="შეთავაზებების შედარება">{orderedOffers.map(o=><article className="offer-comparison__card" key={o.id}><header><h3><Link href={o.companyHref}>{o.companyName}</Link></h3>{o.status==="chosen"?<span className="ma-badge ma-badge--success">არჩეულია</span>:null}</header><dl className="offer-terms"><div><dt>ფასი</dt><dd>{offerPrice(o)}</dd></div><div><dt>მიწოდება</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div><div><dt>დღგ</dt><dd>{o.price==null?"დასაზუსტებელია":o.vatIncluded?"ფასში შედის":"ფასში არ შედის"}</dd></div><div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div></dl><details><summary>სრული პირობები</summary><p>{o.body}</p></details><footer>{isOwner && o.companyId ? <MessageButton companyId={o.companyId} requestId={r.id} variant="ghost" /> : null}<Button variant="secondary" href={o.companyHref}>კომპანიის ნახვა</Button>{isOwner&&!r.chosenOfferId&&state==="open"&&o.status==="sent"?<Button variant="primary" onClick={()=>setChooseId(o.id)}>შეთავაზების არჩევა</Button>:null}</footer></article>)}</section> : null}
           {offers.length === 0 ? (
             <div className="ma-empty">
               <h2 className="ma-empty__title">ჯერ შეთავაზება არ მიგიღია</h2>
@@ -281,7 +281,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           ) : !compare || offers.length < 2 ? (
             <div className="ma-stack request-offer-list">
               {orderedOffers.map((o) => (
-                <OfferCard key={o.id} o={o} canReport={isOwner} canChoose={isOwner && !r.chosenOfferId && state === "open"} onChoose={() => setChooseId(o.id)} />
+                <OfferCard key={o.id} o={o} messageTarget={isOwner && o.companyId ? { companyId: o.companyId, requestId: r.id } : undefined} canReport={isOwner} canChoose={isOwner && !r.chosenOfferId && state === "open"} onChoose={() => setChooseId(o.id)} />
               ))}
             </div>
           ) : null}
@@ -291,7 +291,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           {myOffer ? (
             <>
               <h2 className="ma-h3">შენი შეთავაზება</h2>
-              <OfferCard o={myOffer} canChoose={false} />
+              <OfferCard o={myOffer} canChoose={false} messageTarget={{ companyId: me.id, requestId: r.id }} />
               {me.verified && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
                 <div className="ma-cluster"><Button variant="secondary" type="submit" aria-label="შეთავაზების რედაქტირება" onClick={() => setEditOffer(!editOffer)}><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
                 {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)}/> : null}

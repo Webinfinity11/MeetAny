@@ -6,6 +6,7 @@ import { CompanyAvatar } from "./CompanyAvatar";
 import { BusinessMarks } from "./CompanyBusiness";
 import type { BusinessFeature } from "../../lib/business-client";
 import { ReportButton } from "./ReportButton";
+import { MessageButton } from "./ChatPopup";
 
 export type OfferCardData = {
   id: string;
@@ -31,7 +32,7 @@ export function offerPrice(o: OfferCardData) {
  return `${new Intl.NumberFormat("ka-GE",{maximumFractionDigits:2}).format(o.price)} ₾ · ${o.priceType==="unit"?"ერთეულის":"ჯამური"}`;
 }
 
-export function OfferCard({ o, onChoose, canChoose, canReport = false }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean }) {
+export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTarget }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean; messageTarget?: { companyId: string; requestId: string } }) {
   const cls =
     o.status === "chosen"
       ? " ma-ocard--chosen"
@@ -64,6 +65,7 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false }: { o: Of
       </dl>
       <p className="ma-ocard__body">{o.body}</p>
       <footer className="request-offer-actions">
+        {messageTarget ? <MessageButton {...messageTarget} variant="ghost" /> : null}
         <Button variant="secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Button>
         {canReport ? <ReportButton kind="offer" targetId={o.id} /> : null}
         {canChoose && o.status === "sent" ? <Button type="button" variant="primary" onClick={onChoose}><Icon name="check"/>შეთავაზების არჩევა</Button> : null}

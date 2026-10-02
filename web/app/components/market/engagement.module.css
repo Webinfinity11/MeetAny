@@ -7,6 +7,8 @@
 .popover > .head { font-size: var(--fs-body); line-height: var(--lh-body); }
 .popover > p { margin: var(--space-4) 0; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--text-3); }
 .noticeList { min-width: 0; }
+.noticeError { display: grid; justify-items: start; gap: var(--space-3); margin-block: var(--space-4); }
+.noticeError p { margin: 0; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--text-3); }
 .noticeFooter { width: 100%; justify-content: space-between; margin-top: var(--space-2); }
 .stack { display: grid; gap: var(--space-4); min-width: 0; }
 .head { display: flex; gap: var(--space-3); align-items: center; justify-content: space-between; }
