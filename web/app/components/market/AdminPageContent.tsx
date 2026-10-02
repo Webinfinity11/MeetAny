@@ -9,7 +9,7 @@ import { AccountSkeleton, ListSkeleton } from "./Skeletons";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
@@ -88,7 +88,8 @@ export function AdminPageContent() {
   }, [store, isAdmin]);
   const onReportCount = useCallback((count: number) => setReportCount(count), []);
 
-  const data = useMemo(() => {
+  // Store snapshots are mutable; read the current cache on every notified render.
+  const data = (() => {
     if (!store || !me || me.role !== "admin") return null;
     const stats = store.stats();
     const requests = store.listRequests({ state: "", includeHidden: true }) as {
@@ -118,7 +119,7 @@ export function AdminPageContent() {
       blockedReason?: string;
     }[];
     return { stats, requests, users };
-  }, [store, me]);
+  })();
 
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
 

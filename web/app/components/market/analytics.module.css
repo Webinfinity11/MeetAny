@@ -4,11 +4,12 @@
 .chart figcaption>div{min-width:0}
 .chart figcaption span{min-width:0;overflow-wrap:anywhere}
 .chart figcaption small{flex:none;padding-top:var(--space-1);color:var(--text-3);font-size:var(--fs-xs)}
-.chartHeadline{display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-2)}
+.chartHeadline{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-2)}
 .chartHeadline>strong{color:var(--text);font-size:var(--fs-stat);line-height:var(--lh-stat);font-weight:var(--fw-bold);font-variant-numeric:tabular-nums}
-.comparison{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-2);border-radius:var(--size-6);background:var(--bg-subtle);color:var(--text-3);font-size:var(--fs-xs);white-space:nowrap}
-.comparison[data-up]{background:var(--blue-50);color:var(--action)}
-.comparison[data-down]{background:var(--bg-subtle);color:var(--text-2)}
+.comparison{display:flex;align-items:flex-start;flex-direction:column;gap:var(--space-1);min-width:0;color:var(--text-3);font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.comparison strong{color:var(--text-2);font-weight:var(--fw-medium);font-variant-numeric:tabular-nums}
+.comparisonChange{display:inline-flex;padding:var(--space-1) var(--space-2);border-radius:var(--size-6);background:var(--bg-subtle);color:var(--text-2)}
+.comparisonChange[data-up]{background:var(--blue-50);color:var(--action)}
 .plot{position:relative;height:var(--size-180);margin-left:var(--space-6);margin-right:var(--space-2)}
 .plot svg{display:block;width:100%;height:100%;overflow:visible}
 .scale{position:absolute;top:0;bottom:0;left:var(--size-neg-24);width:var(--space-4);color:var(--text-3);font-size:var(--fs-xs);text-align:right}

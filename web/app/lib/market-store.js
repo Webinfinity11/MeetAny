@@ -862,6 +862,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminResolveReport=(id,action,reason)=>mutate('admin_resolve_report',{p_id:id,p_action:action,p_reason:String(reason||'').trim()});
 
  /* ---------- admin ---------- */
+ const adminOverview=()=>rpc('admin_overview');
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
  const adminSearchOffers=args=>rpc('admin_search_offers',args);
@@ -914,6 +915,6 @@ export function createMarketStore({initial=null,background=true}={}){
   updateProfile,uploadLogo,setGallery,listCompanies,getCompany,ensureCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
   adminEditProfile,adminEditRequest,adminCompanySettings,adminManagePlan,siteContent,adminSaveSiteContent,adminUploadPhoto,
-  adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminBusinessAudit,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminRemovePhoto,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminOverview,adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminBusinessAudit,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminRemovePhoto,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }

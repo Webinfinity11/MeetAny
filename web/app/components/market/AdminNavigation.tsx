@@ -7,10 +7,9 @@ import { adminSections, type AdminSection } from "../../lib/admin-sections";
 import styles from "./admin.module.css";
 
 const groups: { label: string; sections: AdminSection[] }[] = [
-  { label: "მონიტორინგი", sections: ["overview", "contacts"] },
-  { label: "მართვა", sections: ["companies", "requests", "offers", "users"] },
-  { label: "ხარისხი", sections: ["reports", "reviews", "photos", "audit"] },
-  { label: "ბიზნესი", sections: ["plans", "content"] },
+  { label: "ყოველდღიური მართვა", sections: ["overview", "companies", "requests", "offers", "reports"] },
+  { label: "ანგარიშები და საიტი", sections: ["users", "plans", "content", "reviews"] },
+  { label: "დამატებითი", sections: ["contacts", "photos", "audit"] },
 ];
 
 export function AdminNavigation({ tab, reports, offersEnabled }: { tab: AdminSection; reports: number; offersEnabled: boolean }) {

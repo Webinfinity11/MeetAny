@@ -5,6 +5,7 @@ const migration=process.argv[2]||'contact-events';
 const dryRun=process.argv.includes('--dry-run');
 const inspect=process.argv.includes('--inspect');
 const plans={
+ 'admin-overview':{file:'20261002-admin-overview',tables:[],routines:['admin_overview','admin_stats']},
  'admin-management':{file:'20261002-admin-management',tables:['moderation_audit','company_reviews','business_audit','site_content'],routines:['admin_edit_profile','admin_edit_request','admin_company_settings','admin_manage_plan','save_company_review','site_content','admin_save_site_content','admin_business_audit']},
  'company-approval':{file:'20261002-company-approval',tables:[],routines:['list_companies','company_business_features','company_products','company_distribution_profiles','company_stats','company_reviews','send_offer']},
  'registration-analytics':{file:'20261002-registration-analytics',tables:['registration_sessions','registration_events'],routines:['record_registration_event','admin_registration_analytics']},
@@ -149,6 +150,14 @@ try {
    (select pronargdefaults=2 and prosecdef and prosrc like '%meetany_private.require_user()%' from pg_proc where oid='public.record_registration_event(uuid,uuid,text,text,text,text)'::regprocedure) compatible_completion,
    not has_table_privilege('anonymous','meetany_private.registration_events','SELECT') and not has_table_privilege('authenticated','meetany_private.registration_sessions','SELECT') events_private`);
   if(v.private_rls_tables!==2||!v.started_marker||!v.completion_unique||!v.guest_events||!v.admin_private||v.event_overloads!==1||!v.compatible_completion||!v.events_private) throw Object.assign(new Error(),{code:'BAD_REGISTRATION_ANALYTICS_CONTRACT'});
+ }
+ if(migration==='admin-overview') {
+  const {rows:[v]}=await client.query(`select
+   (select prosecdef and provolatile='s' and prosrc like '%meetany_private.require_admin()%' and prosrc like '%generate_series(0,59)%' from pg_proc where oid='public.admin_overview()'::regprocedure) bounded_admin,
+   not has_function_privilege('anonymous','public.admin_overview()','EXECUTE') guest_denied,
+   has_function_privilege('authenticated','public.admin_overview()','EXECUTE') admin_rpc,
+   (select prosrc like '%adminRevision%' and prosrc like '%meetany_private.moderation_audit%' and prosrc like '%meetany_private.business_audit%' from pg_proc where oid='public.admin_stats()'::regprocedure) revision`);
+  if(!v.bounded_admin||!v.guest_denied||!v.admin_rpc||!v.revision) throw Object.assign(new Error(),{code:'BAD_ADMIN_OVERVIEW_CONTRACT'});
  }
  await client.query(dryRun?'rollback':'commit');transactionOpen=false;
  if(dryRun)console.log(`auth-probe: ${migration} dry-run ok, objects verified, rolled back`);else console.log(`auth-probe: ${migration}, ${rows[0].tables} tables and ${rows[0].routines} RPCs verified`);

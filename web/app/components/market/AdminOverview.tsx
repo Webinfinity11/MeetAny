@@ -2,13 +2,13 @@
 import { Button } from "../ui/Button";
 
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "../Icon";
+import type { AdminOverviewData } from "../../lib/admin-overview";
 import type { Store } from "../../lib/market-client";
 import { categories } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
-import { lastDays, perDay, windowCounts, readAllAdminPages } from "../../lib/admin-helpers";
 import { AdminMarketMetrics } from "./AdminMarketMetrics";
 import { AdminActivityChart } from "./AdminActivityChart";
 import { AdminRegistrationAnalytics } from "./AdminRegistrationAnalytics";
@@ -16,74 +16,65 @@ import styles from "./admin.module.css";
 import analyticsStyles from "./analytics.module.css";
 
 type Stats = Record<string, number>;
-type UserRow = { id: string; name: string; company?: string; email?: string; role: string; verified?: boolean; blocked?: boolean; created_at?: string; createdAt?: string; industry?: string };
-type RequestRow = { id: string; title: string; category: string; createdAt: string; ownerId: string; hidden: boolean };
-
-function Delta({ current, previous }: { current: number; previous: number }) {
-  if (!current && !previous) return <span className={styles.delta}>ბოლო 7 დღე: 0</span>;
-  const up = current >= previous;
-  return <span className={styles.delta}>
-    ბოლო 7 დღე: <b>+{current}</b>
-    {previous || current ? <em className={up ? styles.deltaUp : styles.deltaDown}>{up ? "▲" : "▼"} წინა კვირა {previous}</em> : null}
-  </span>;
-}
-
-/** Admin landing: platform totals with weekly change, 30-day activity and what needs attention. */
+/** Bounded server overview: next actions, totals and calendar-day activity. */
 export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   store: Store; stats: Stats;
   onVerify: (user: { id: string; label: string }) => void;
   onOpenUser: (id: string) => void;
 }) {
-  const [recentUsers, setRecentUsers] = useState<UserRow[] | null>(null);
-  const [pending, setPending] = useState<UserRow[] | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [resource, setResource] = useState<{ actor: string; data?: AdminOverviewData; failed?: boolean } | null>(null);
+  const [retry, setRetry] = useState(0);
+  const unansweredQueue = useRef<HTMLDetailsElement>(null);
+  const expiringQueue = useRef<HTMLDetailsElement>(null);
   const revision = store.dataRevision();
-  const loadUsers = store.adminSearchUsers;
-  const actorId = store.currentUser()?.id;
+  const loadOverview = store.adminOverview;
+  const actorId = store.currentUser()?.id as string;
+  const [activityPeriod, setActivityPeriod] = useState<7 | 30>(30);
   useEffect(() => {
     let cancelled = false;
-    Promise.all([
-      readAllAdminPages<UserRow>(loadUsers, {}, Number.MAX_SAFE_INTEGER),
-      readAllAdminPages<UserRow>(loadUsers, { p_role: "company", p_verified: false, p_blocked: false }, Number.MAX_SAFE_INTEGER),
-    ]).then(([recent, unverified]) => {
-      if (cancelled) return;
-      setRecentUsers(recent);
-      setPending(unverified);
-      setFailed(false);
-    }).catch(() => { if (!cancelled) setFailed(true); });
+    loadOverview().then((data: AdminOverviewData) => {
+      if (!cancelled) setResource({ actor: actorId, data });
+    }).catch(() => {
+      if (!cancelled) setResource(previous => ({ actor: actorId, data: previous?.actor === actorId ? previous.data : undefined, failed: true }));
+    });
     return () => { cancelled = true; };
-  }, [loadUsers, actorId, revision]);
-
-  const requests = useMemo(() => store.listRequests({ state: "", includeHidden: true }) as RequestRow[], [store]);
-  // The clock is read once per mount; the page is a snapshot, not a live monitor.
-  const [now] = useState(() => Date.now());
-  const [activityPeriod,setActivityPeriod]=useState<7|30>(30);
-  const days = useMemo(() => lastDays(activityPeriod, new Date(now)), [now,activityPeriod]);
-  const previousDays = useMemo(() => lastDays(activityPeriod, new Date(now-activityPeriod*86_400_000)), [now,activityPeriod]);
-  const requestDates = requests.map(r => r.createdAt);
-  const realUsers = (recentUsers || []).filter(u => u.role !== "admin");
-  const userDates = realUsers.map(u => u.created_at || u.createdAt);
-  const requestWeek = windowCounts(requestDates, 7, now);
-  const userWeek = windowCounts(userDates, 7, now);
-  // Open, older than 3 days and still without a single offer: the requests at risk of going unanswered.
-  const unanswered = requests.filter(r => !r.hidden && store.requestState(r) === "open" && store.offerCount(r.id) === 0 && now - Date.parse(r.createdAt) > 3 * 86_400_000);
-  const expiring = requests.filter(r => !r.hidden && store.requestState(r) === "open" && store.daysLeft(r) <= 2);
-
-  const kpis: { key: string; label: string; value: number; delta?: { current: number; previous: number }; href: string }[] = [
-    { key: "users", label: "მომხმარებლები", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
-    { key: "companies", label: "კომპანიები", value: stats.companies, href: "/admin/?tab=companies" },
-    { key: "open", label: "ღია მოთხოვნები", value: stats.open, href: "/admin/?tab=requests&status=open" },
-    { key: "offers", label: "შეთავაზებები", value: stats.offers, href: "/admin/?tab=offers" },
-    { key: "chosen", label: "არჩეული მომწოდებლები", value: stats.chosen, href: "/admin/?tab=requests&status=chosen" },
-    { key: "verified", label: "დადასტურებული კომპანიები", value: stats.verified, href: "/admin/?tab=companies&status=verified" },
+  }, [loadOverview, actorId, revision, retry]);
+  // Keep a successful snapshot visible during background refresh; never show another actor's data.
+  const current = resource?.actor === actorId ? resource : null;
+  const overview = current?.data;
+  const totals = overview?.stats || stats;
+  const failed = current?.failed;
+  const pending = overview?.pending;
+  const unanswered = overview?.unanswered;
+  const expiring = overview?.expiring;
+  const activity = overview?.activity || [];
+  const days = activity.slice(-activityPeriod);
+  const previousDays = activity.slice(-activityPeriod * 2, -activityPeriod);
+  const kpis = [
+    { key: "open", label: "ღია მოთხოვნები", value: totals.open, action: "მოთხოვნების ნახვა", href: "/admin/?tab=requests&status=open" },
+    { key: "offers", label: "შეთავაზებები", value: totals.offers, action: "შეთავაზებების ნახვა", href: "/admin/?tab=offers" },
+    { key: "companies", label: "კომპანიები", value: totals.companies, action: "კომპანიების ნახვა", href: "/admin/?tab=companies" },
+    { key: "users", label: "ანგარიშები", value: totals.users, action: "ანგარიშების ნახვა", href: "/admin/?tab=users" },
+    { key: "chosen", label: "მოთხოვნები არჩეული მომწოდებლით", value: totals.chosen, action: "ნახვა", href: "/admin/?tab=requests&status=chosen" },
+    { key: "verified", label: "დადასტურებული კომპანიები", value: totals.verified, action: "ნახვა", href: "/admin/?tab=companies&status=verified" },
   ];
 
   return <div className={styles.overview}>
+    <div className={styles.nextActions} aria-label="შემდეგი მოქმედებები">
+      <strong><Icon name="badge-check" />შემდეგი მოქმედებები</strong>
+      {overview ? <>
+        {pending!.total > 0 ? <Link href="/admin/?tab=companies&status=unverified">{pending!.total} კომპანია განხილვას ელოდება<Icon name="arrow-right" /></Link> : null}
+        {unanswered!.total > 0 ? <a href="#unanswered-queue" onClick={() => { if (unansweredQueue.current) unansweredQueue.current.open = true; }}>{unanswered!.total} მოთხოვნა უპასუხოდაა<Icon name="arrow-right" /></a> : null}
+        {expiring!.total > 0 ? <a href="#expiring-queue" onClick={() => { if (expiringQueue.current) expiringQueue.current.open = true; }}>{expiring!.total} მოთხოვნის ვადა იწურება<Icon name="arrow-right" /></a> : null}
+        {!pending!.total && !unanswered!.total && !expiring!.total ? <p>მიმდინარე რიგებში გადაუდებელი მოქმედება არ არის.</p> : null}
+      </> : <p role="status">{failed ? "მოქმედებები ვერ ჩაიტვირთა." : "მოქმედებები იტვირთება…"}</p>}
+    </div>
+    {failed ? <div className={`${styles.panel} ${styles.overviewError}`} role="alert"><p>{overview ? "განახლება ვერ მოხერხდა. ნაჩვენებია ბოლოს ჩატვირთული მონაცემები." : "მიმოხილვა ვერ ჩაიტვირთა. სცადე ხელახლა."}</p><Button variant="secondary" size="sm" onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button></div> : null}
     <div className={styles.kpis}>
-      {[kpis[2], kpis[3], kpis[1], kpis[0]].map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
+      {kpis.slice(0, 4).map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
         <span className={styles.kpiLabel}>{k.label}</span>
         <strong className={styles.kpiValue}>{k.value ?? "—"}</strong>
-        <span className={styles.delta}>საერთო რაოდენობა<Icon name="arrow-right" /></span>
+        <span className={styles.delta}>{k.action}<Icon name="arrow-right" /></span>
       </Link>)}
     </div>
 
@@ -92,24 +83,22 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
     <section className={styles.panel} aria-labelledby="activity-heading">
       <header className={analyticsStyles.activityHeader}><h2 id="activity-heading">აქტივობის ანალიტიკა</h2><div className={analyticsStyles.periodControl} role="group" aria-label="აქტივობის პერიოდი">{([7,30] as const).map(period=><Button key={period} variant="ghost" size="sm" aria-pressed={activityPeriod===period} onClick={()=>setActivityPeriod(period)}>{period} დღე</Button>)}</div></header>
       <div className={analyticsStyles.activityCharts}>
-        <AdminActivityChart title="ახალი მოთხოვნები" rows={perDay(requestDates, days)} previousTotal={perDay(requestDates,previousDays).reduce((sum,row)=>sum+row.count,0)} />
-        {recentUsers ? <AdminActivityChart title="ახალი რეგისტრაციები" rows={perDay(userDates, days)} previousTotal={perDay(userDates,previousDays).reduce((sum,row)=>sum+row.count,0)} />
-          : <div className={styles.chartEmpty}>{failed ? "რეგისტრაციები ვერ ჩაიტვირთა." : "იტვირთება…"}</div>}
+        {overview ? <>
+          <AdminActivityChart title="ახალი მოთხოვნები" rows={days.map(row => ({ day: row.day, count: row.requests }))} previousTotal={previousDays.reduce((sum, row) => sum + row.requests, 0)} />
+          <AdminActivityChart title="ახალი რეგისტრაციები" rows={days.map(row => ({ day: row.day, count: row.registrations }))} previousTotal={previousDays.reduce((sum, row) => sum + row.registrations, 0)} />
+        </> : <div className={styles.chartEmpty} role="status">{failed ? "ანალიტიკა ვერ ჩაიტვირთა." : "ანალიტიკა იტვირთება…"}</div>}
       </div>
-      <p className={styles.note}>ბოლო {activityPeriod} დღე · ყველა ჩანაწერი</p>
-      <div className={styles.overviewSecondary}><span>ახალი მოთხოვნები <Delta {...requestWeek}/></span>{recentUsers?<span>რეგისტრაციები <Delta {...userWeek}/></span>:null}</div>
+      <p className={styles.note}>ბოლო {activityPeriod} დღე · დამალული მოთხოვნების გარეშე · თბილისის დროით</p>
     </section>
 
     <section className={styles.panel} aria-labelledby="attention-heading">
       <header className={styles.panelHead}><h2 id="attention-heading">ყურადღება სჭირდება</h2></header>
       <div className={styles.attention}>
         <details className={styles.queue} open>
-          <summary><Icon name="badge-check" />დასადასტურებელი კომპანიები <span>{pending?.length ?? "…"}</span><Icon name="chevron-down" /></summary>
-          <p className={styles.queueEmpty}>ახალი კომპანიის პროფილები აქ გადამოწმდება.</p>
-          {failed ? <p className={styles.queueEmpty}>კომპანიების ჩატვირთვა ვერ მოხერხდა. განაახლე გვერდი.</p> : null}
-          {pending && !pending.length ? <p className={styles.queueEmpty}>ჩატვირთულ სიაში დასადასტურებელი კომპანია არ არის.</p> : null}
+          <summary><Icon name="badge-check" />დასადასტურებელი კომპანიები <span>{pending?.total ?? "…"}</span><Icon name="chevron-down" /></summary>
+          {pending && !pending.total ? <p className={styles.queueEmpty}>განხილვის მომლოდინე კომპანია არ არის.</p> : null}
           <ul>
-            {(pending || []).slice(0, 6).map(u => <li key={u.id}>
+            {(pending?.items || []).map(u => <li key={u.id}>
               <button type="button" className={styles.queueName} onClick={() => onOpenUser(u.id)}>
                 <strong>{u.company || u.name}</strong>
                 <small>{categories[u.industry || ""] || u.industry || "კომპანია"}</small>
@@ -117,34 +106,37 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
               <Button type="button" variant="secondary" onClick={() => onVerify({ id: u.id, label: u.company || u.name })}>დადასტურება</Button>
             </li>)}
           </ul>
+          {(pending?.total || 0) > 6 ? <p className={styles.queueEmpty}>ნაჩვენებია 6 კომპანია {pending!.total}-დან.</p> : null}
           <Link className={styles.queueMore} href="/admin/?tab=companies&status=unverified">დასადასტურებელი კომპანიების ნახვა<Icon name="arrow-right" /></Link>
         </details>
-        <details className={styles.queue}>
-          <summary><Icon name="hourglass" />3+ დღე უპასუხოდ <span>{unanswered.length}</span><Icon name="chevron-down" /></summary>
-          {!unanswered.length ? <p className={styles.queueEmpty}>3 დღეზე ძველი უპასუხო ღია მოთხოვნა არ არის.</p> : null}
+        <details id="unanswered-queue" ref={unansweredQueue} className={styles.queue}>
+          <summary><Icon name="hourglass" />3+ დღე უპასუხოდ <span>{(unanswered?.total ?? "…")}</span><Icon name="chevron-down" /></summary>
+          {unanswered && !unanswered.total ? <p className={styles.queueEmpty}>3 დღეზე ძველი უპასუხო ღია მოთხოვნა არ არის.</p> : null}
           <ul>
-            {unanswered.slice(0, 6).map(r => <li key={r.id}>
+            {(unanswered?.items || []).map(r => <li key={r.id}>
               <Link className={styles.queueName} href={`/requests/view/?id=${r.id}`}>
                 <strong>{r.title}</strong>
                 <small>{categories[r.category] || r.category} · {dateLabel(r.createdAt)}</small>
               </Link>
             </li>)}
           </ul>
+          {(unanswered?.total || 0) > 6 ? <p className={styles.queueEmpty}>ნაჩვენებია 6 ყველაზე ძველი მოთხოვნა.</p> : null}
         </details>
-        <details className={styles.queue}>
-          <summary><Icon name="clock" />ვადა იწურება <span>{expiring.length}</span><Icon name="chevron-down" /></summary>
-          {!expiring.length ? <p className={styles.queueEmpty}>ახლო დღეებში ვადა არაფერს ეწურება.</p> : null}
+        <details id="expiring-queue" ref={expiringQueue} className={styles.queue}>
+          <summary><Icon name="clock" />ვადა იწურება <span>{(expiring?.total ?? "…")}</span><Icon name="chevron-down" /></summary>
+          {expiring && !expiring.total ? <p className={styles.queueEmpty}>ახლო დღეებში ვადა არაფერს ეწურება.</p> : null}
           <ul>
-            {expiring.slice(0, 6).map(r => <li key={r.id}>
+            {(expiring?.items || []).map(r => <li key={r.id}>
               <Link className={styles.queueName} href={`/requests/view/?id=${r.id}`}>
                 <strong>{r.title}</strong>
-                <small>{store.offerCount(r.id)} შეთავაზება · {store.daysLeft(r)} დღე დარჩა</small>
+                <small>{r.offerCount} შეთავაზება · {r.daysLeft} დღე დარჩა</small>
               </Link>
             </li>)}
           </ul>
+          {(expiring?.total || 0) > 6 ? <p className={styles.queueEmpty}>ნაჩვენებია 6 უახლოესი ვადა.</p> : null}
         </details>
       </div>
-      <p className={styles.note}>დამალული: {stats.hidden ?? 0} მოთხოვნა · დაბლოკილი: {stats.blocked ?? 0} ანგარიში</p>
+      <p className={styles.note}>დამალული: {totals.hidden ?? 0} მოთხოვნა · დაბლოკილი: {totals.blocked ?? 0} ანგარიში</p>
     </section>
     </div>
     <AdminRegistrationAnalytics />

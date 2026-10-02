@@ -36,9 +36,9 @@ export function AdminActivityChart({title,rows,previousTotal}:{title:string;rows
  const area=points.length?`${line} L${points.at(-1)!.x},${base} L${points[0].x},${base} Z`:"";
  const ticks=ceiling===1?[1,0]:[ceiling,Math.floor(ceiling/2),0];
  const delta=previousTotal===undefined?null:total-previousTotal;
- const deltaLabel=delta===null?null:previousTotal?`${delta>0?"+":""}${Math.round(delta/previousTotal!*100)}%`:`${delta>0?"+":""}${delta}`;
+ const comparisonLabel=delta===null?null:delta>0?`${delta}-ით მეტი`:delta<0?`${Math.abs(delta)}-ით ნაკლები`:"იგივე რაოდენობა";
  return <figure ref={figure} className={styles.chart} aria-labelledby={id} data-chart-phase={phase} data-reduced-motion={reduced||undefined}>
-  <figcaption id={id}><div><span>{title}</span><div className={styles.chartHeadline}><strong>{total}</strong>{deltaLabel!==null?<span className={styles.comparison} data-up={delta!>0||undefined} data-down={delta!<0||undefined} title={`წინა ${rows.length} დღეში: ${previousTotal}`}>{delta!>0?"↗":delta!<0?"↘":"→"} {deltaLabel}<span className="ma-sr-only"> — წინა {rows.length} დღესთან შედარებით; წინა პერიოდში {previousTotal}</span></span>:null}</div></div><small>{rows.length} დღეში</small></figcaption>
+  <figcaption id={id}><div><span>{title}</span><div className={styles.chartHeadline}><strong>{total}</strong>{comparisonLabel!==null?<div className={styles.comparison}><span>წინა {rows.length} დღეში: <strong>{previousTotal}</strong></span><span className={styles.comparisonChange} data-up={delta!>0||undefined} data-down={delta!<0||undefined}>{comparisonLabel}</span></div>:null}</div></div><small>{rows.length} დღეში</small></figcaption>
   <div className={styles.plot} onMouseLeave={()=>setActive(null)}>
    <div className={styles.scale} aria-hidden="true">{ticks.map(tick=><span key={tick} style={{top:`${(base-tick/ceiling*(base-top))/height*100}%`}}>{tick}</span>)}</div>
    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">

@@ -33,29 +33,46 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
   const editing = target ? editTarget === `${target.kind}:${target.id}` : false;
   const requestClose = () => { if (editing && dirty) setDiscard("close"); else {setEditTarget(null);setDirty(false);onClose();} };
   const requestCancel = () => {if(dirty)setDiscard("cancel");else setEditTarget(null);};
-  const [loaded, setLoaded] = useState<{ key: string; user: User | null; offers: Offer[] | null; error: boolean } | null>(null);
+  const [loaded, setLoaded] = useState<{ key: string; user: User | null; offers: Offer[] | null; error: boolean; offersError: boolean } | null>(null);
+  const [requestLoaded, setRequestLoaded] = useState<{ key: string; request: Request | null; error: boolean } | null>(null);
+  const [loadRevision, setLoadRevision] = useState(0);
+  const retry = () => setLoadRevision(value => value + 1);
+  const {adminSearchUsers, adminSearchOffers, ensureRequest} = store;
   const revision = store.dataRevision();
   const key = target?.kind === "user" ? `${target.id}:${revision}` : "";
+  const requestKey = target?.kind === "request" ? `${target.id}:${revision}` : "";
 
   useEffect(() => {
     if (target?.kind !== "user") return;
     let cancelled = false;
-    store.adminSearchUsers({ p_q: target.id, p_limit: 1 }).then(async (page: { items: User[] }) => {
+    adminSearchUsers({ p_q: target.id, p_limit: 1 }).then(async (page: { items: User[] }) => {
       const found = page.items.find(u => u.id === target.id) || null;
       if (cancelled) return;
-      setLoaded({ key, user: found, offers: null, error: false });
+      setLoaded(previous => ({ key, user: found, offers: previous?.key === key ? previous.offers : null, error: false, offersError: false }));
       if (found?.role === "company" && v2) {
-        // A failed offers read leaves the profile visible; the list then shows as empty.
-        const list = await store.adminSearchOffers({ p_q: found.company || found.name, p_limit: 20 }).catch(() => ({ items: [] }));
-        if (!cancelled) setLoaded({ key, user: found, offers: (list.items as Offer[]).filter(o => !o.company_id || o.company_id === found.id), error: false });
+        try {
+          const list = await adminSearchOffers({ p_q: found.company || found.name, p_limit: 20 });
+          if (!cancelled) setLoaded({ key, user: found, offers: (list.items as Offer[]).filter(o => !o.company_id || o.company_id === found.id), error: false, offersError: false });
+        } catch {
+          if (!cancelled) setLoaded(previous => ({ key, user: found, offers: previous?.key === key ? previous.offers : null, error: false, offersError: true }));
+        }
       }
-    }).catch(() => { if (!cancelled) setLoaded({ key, user: null, offers: null, error: true }); });
+    }).catch(() => { if (!cancelled) setLoaded({ key, user: null, offers: null, error: true, offersError: false }); });
     return () => { cancelled = true; };
-  }, [store, target, v2, key]);
+  }, [adminSearchUsers, adminSearchOffers, target, v2, key, loadRevision]);
+  useEffect(() => {
+    if (target?.kind !== "request") return;
+    let cancelled = false;
+    ensureRequest(target.id, {cached: true}).then((request: Request | null) => {
+      if (!cancelled) setRequestLoaded({key: requestKey, request, error: false});
+    }).catch(() => {if (!cancelled) setRequestLoaded(previous => ({key: requestKey, request: previous?.key === requestKey ? previous.request : null, error: true}));});
+    return () => {cancelled = true;};
+  }, [ensureRequest, target, requestKey, loadRevision]);
   const current = loaded?.key === key ? loaded : null;
   const user = current?.user || null, offers = current?.offers || null, error = !!current?.error;
 
-  const request: Request | null = target?.kind === "request" ? store.getRequest(target.id) : null;
+  const currentRequest = requestLoaded?.key === requestKey ? requestLoaded : null;
+  const request: Request | null = target?.kind === "request" ? store.getRequest(target.id) || currentRequest?.request || null : null;
   const owner: User | null = request ? store.userById(request.ownerId) : null;
   const userRequests: Request[] = target?.kind === "user"
     ? (store.listRequests({ state: "", includeHidden: true }) as Request[]).filter(r => r.ownerId === target.id) : [];
@@ -65,8 +82,8 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
   let footer: React.ReactNode = null;
 
   if (target?.kind === "user") {
-    if (error) body = <p className={styles.note}>მონაცემები ვერ ჩაიტვირთა.</p>;
-    else if (!user) body = <p className={styles.note}>იტვირთება…</p>;
+    if (error) body = <div role="alert"><p className={styles.note}>მონაცემები ვერ ჩაიტვირთა.</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div>;
+    else if (!user) body = <p className={styles.note} role="status">{current ? "მომხმარებელი ვერ მოიძებნა — შესაძლოა წაშლილია." : "იტვირთება…"}</p>;
     else {
       const label = user.company || user.name;
       body = <div className={styles.detail}>
@@ -96,13 +113,15 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
             <button type="button" onClick={() => onOpen({ kind: "request", id: r.id })}>{r.title}</button>
             <small>{r.hidden ? "დამალული" : stateLabel[store.requestState(r)] || ""} · {store.offerCount(r.id)} შეთავაზება</small>
           </li>)}</ul> : <p className={styles.note}>მოთხოვნები არ აქვს.</p>}
+          {userRequests.length > 8 ? <p className={styles.note}>ნაჩვენებია 8 ბოლო მოთხოვნა.</p> : null}
         </section>
         {user.role === "company" && v2 ? <section className={styles.detailList}>
-          <h4>გაგზავნილი შეთავაზებები <span>{offers?.length ?? "…"}</span></h4>
+          <h4>ბოლო შეთავაზებები <span>{offers ? Math.min(offers.length, 8) : current?.offersError ? "—" : "…"}</span></h4>
+          {current?.offersError ? <div role="alert"><p className={styles.note}>შეთავაზებები ვერ ჩაიტვირთა.</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : null}
           {offers?.length ? <ul>{offers.slice(0, 8).map(o => <li key={o.id}>
             {o.request_id ? <button type="button" onClick={() => onOpen({ kind: "request", id: o.request_id! })}>{o.request_title || "მოთხოვნა"}</button> : <span>{o.request_title || "მოთხოვნა"}</span>}
-            <small>{o.status === "chosen" ? "არჩეული" : "გაგზავნილი"} · {o.price ? `${o.price} ₾` : "ფასი შეთანხმებით"} · {dateLabel(o.created_at)}</small>
-          </li>)}</ul> : offers ? <p className={styles.note}>შეთავაზებები არ აქვს.</p> : null}
+            <small>{o.status === "chosen" ? "არჩეული" : o.status === "declined" ? "უარყოფილი" : "გაგზავნილი"} · {o.price ? `${o.price} ₾` : "ფასი შეთანხმებით"} · {dateLabel(o.created_at)}</small>
+          </li>)}</ul> : offers && !current?.offersError ? <p className={styles.note}>შეთავაზებები არ აქვს.</p> : null}
         </section> : null}
       </div>;
       if (editing) body = <AdminEditPanel store={store} row={{...user}} kind="user" onDirtyChange={setDirty} onDone={() => {setDirty(false);setEditTarget(null);setLoaded(null);}} onCancel={requestCancel} />;
@@ -114,10 +133,11 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
       </div>;
     }
   } else if (target?.kind === "request") {
-    if (!request) body = <p className={styles.note}>მოთხოვნა ვერ მოიძებნა — შესაძლოა წაშლილია.</p>;
+    if (!request) body = currentRequest?.error ? <div role="alert"><p className={styles.note}>მოთხოვნა ვერ ჩაიტვირთა.</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : <p className={styles.note} role="status">{currentRequest ? "მოთხოვნა ვერ მოიძებნა — შესაძლოა წაშლილია." : "მოთხოვნა იტვირთება…"}</p>;
     else {
       const state = request.hidden ? "დამალული" : stateLabel[store.requestState(request)] || "";
       body = <div className={styles.detail}>
+        {currentRequest?.error ? <div role="alert"><p className={styles.note}>განახლება ვერ მოხერხდა.</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : null}
         <div className={styles.detailHead}>
           <h3>{request.title}</h3>
           <p>{categories[request.category] || request.category} · {cities[request.city] || request.city}</p>
