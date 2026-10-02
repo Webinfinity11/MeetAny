@@ -710,16 +710,8 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .inbox-empty-state > .ma-btn { width: 100%; white-space: normal; }
 }
 
-/* Profile editing: discrete items, selectable city pills and an interactive location. */
-.profile-city-choices{margin:var(--space-4) 0}
-.profile-city-pills{display:flex;flex-wrap:wrap;gap:var(--space-2)}
-.profile-city-pill{position:relative;display:inline-flex;min-height:var(--tap-min);cursor:pointer}
-.profile-city-pill input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
-.profile-city-pill>span{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border:var(--size-1) solid var(--card-border);border-radius:var(--radius-pill);background:var(--white);color:var(--text-2);font-size:var(--fs-sm);transition:background var(--motion-fast),border-color var(--motion-fast)}
-.profile-city-pill .icon{width:var(--size-16);height:var(--size-16)}
-.profile-city-pill input:checked+span{background:var(--blue-50);border-color:var(--blue-200);color:var(--action)}
-.profile-city-pill input:focus-visible+span{outline:var(--size-2) solid var(--action);outline-offset:var(--size-2)}
-.profile-city-pill:has(input:disabled){opacity:.6;cursor:default}
+/* Profile editing: discrete items, compact city controls and an interactive location. */
+.profile-city-field{max-width:var(--size-400)}
 .profile-items>.ma-field__label{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)}
 .profile-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);list-style:none;padding:0;margin:0}
 .profile-chips:empty{display:none}
@@ -733,12 +725,17 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .profile-item-input .ma-btn{flex:none}
 .profile-location-picker{display:grid;gap:var(--space-3);margin-top:var(--space-4)}
 .companies-map.profile-location-map{height:var(--size-320);min-height:0;box-shadow:none}
+.companies-map.profile-location-map .leaflet-tile-pane{filter:grayscale(.2) saturate(.8) contrast(1.02) brightness(1.025)}
+.profile-location-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-2)}
+.profile-location-heading .ma-field__label{margin:0}
+.profile-location-state{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--fs-xs);color:var(--action)}
+.profile-location-state .icon{width:var(--size-14);height:var(--size-14)}
 .profile-location-actions{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-2)}
-.profile-location-actions>span{font-size:var(--fs-sm);color:var(--text-3)}
+.profile-location-picker .profile-location-actions>.ma-btn{width:auto;min-height:var(--tap-min);padding:var(--space-2) var(--space-3);font-size:var(--fs-sm)}
+.profile-location-picker>.ma-field__help{margin:0}
 .account-save-feedback{display:flex;align-items:center;gap:var(--space-2);color:var(--action);font-size:var(--fs-sm);margin:0}
 .account-save-feedback .icon{width:var(--size-18);height:var(--size-18)}
-@media(max-width:767px){.companies-map.profile-location-map{height:var(--size-280);min-height:0}.profile-location-actions>span{flex-basis:100%}.profile-item-input{flex-wrap:wrap}.profile-item-input input{flex-basis:100%}}
-@media(prefers-reduced-motion:reduce){.profile-city-pill>span{transition:none}}
+@media(max-width:767px){.companies-map.profile-location-map{height:var(--size-280);min-height:0}.profile-item-input{flex-wrap:wrap}.profile-item-input input{flex-basis:100%}}
 
 .business-panel--plans{gap:var(--space-5)}
 .business-panel--plans>header h1{font-size:var(--fs-h2);line-height:var(--lh-h2);margin:0 0 var(--space-1)}
@@ -763,3 +760,23 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .business-application summary{min-height:var(--tap-min);display:flex;align-items:center;color:var(--text-3);cursor:pointer}
 .business-application details p{padding-bottom:var(--space-2);font-size:var(--fs-sm);overflow-wrap:anywhere}
 @media(max-width:767px){.business-membership{flex-wrap:wrap}.business-panel--plans .business-plan{padding:var(--space-4)}}
+
+/* Sent offers: amount and decision stay visible beside the request. */
+.account-offers__head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-2)}
+.account-offers__total{color:var(--text-3);font-size:var(--fs-sm);line-height:var(--lh-sm);font-variant-numeric:tabular-nums}
+.account-offer-filters{display:flex;flex-wrap:wrap;gap:var(--space-1);padding-bottom:var(--space-2);border-bottom:var(--size-1) solid var(--border-subtle)}
+.account-offer-filters .ma-btn{min-height:var(--tap-min);padding-inline:var(--space-3);border-radius:var(--size-6);font-size:var(--fs-sm)}
+.account-offer-filters .ma-btn[aria-pressed=true]{color:var(--action);background:var(--selected-bg)}
+.account-page .account-offer{grid-template-columns:minmax(0,1fr) var(--size-144) var(--size-160);align-items:center;gap:var(--space-4);padding-block:var(--space-3)}
+.ma-proto .account-page .account-offer .account-row__title{font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold)}
+.account-offer .account-row__main{gap:var(--space-1)}
+.account-offer .account-row__meta{font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.account-offer__terms{display:grid;gap:var(--space-half);font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3);font-variant-numeric:tabular-nums}
+.account-offer__terms strong{font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);color:var(--text);overflow-wrap:anywhere}
+.account-offer__actions{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-3);font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.account-offer__actions .account-link{gap:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);margin-block:0}
+.account-offer__actions .account-link svg{width:var(--size-14);height:var(--size-14)}
+.account-offer .account-status[data-tone=open]::before{background:var(--ink-300)}
+.account-offers__empty{display:grid;justify-items:start;gap:var(--space-3);padding-block:var(--space-4)}
+@media(max-width:1023.98px){.account-page .account-offer{grid-template-columns:minmax(0,1fr) var(--size-128) var(--size-144);gap:var(--space-3)}}
+@media(max-width:767.98px){.account-page .account-offer{grid-template-columns:minmax(0,1fr) auto;gap:var(--space-3);padding-block:var(--space-4)}.account-offer .account-row__main{grid-column:1/-1}.account-offer__actions{display:grid;justify-items:end;text-align:right;gap:var(--space-1)}.account-offer__actions .account-link{justify-self:end}.account-offer-filters .ma-btn{padding-inline:var(--space-2)}}

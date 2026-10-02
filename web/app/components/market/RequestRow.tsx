@@ -64,7 +64,7 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
             {quantity ? <li><Icon name="package" />{quantity}</li> : null}
             <li className={urgent ? "is-urgent" : "request-card__deadline"}><Icon name="clock" />{deadline}</li>
           </ul>
-          <Link className="request-card__open" href={href} aria-label={`დეტალების ნახვა: ${r.title}`}>დეტალების ნახვა<Icon name="arrow-right" /></Link>
+          <Link className="request-card__open" href={href} aria-label={`დეტალების ნახვა: ${r.title}`}>დეტალების ნახვა</Link>
         </div>
         {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <p className="request-card__status">
           {r.isOwn ? <span className="is-own">შენი მოთხოვნა</span> : null}

@@ -87,7 +87,7 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
       <span className="icon-tile" aria-hidden="true"><Icon name="message-square"/></span>
       <h2 className="account-empty-state__title">პირველი საუბარი წინ არის</h2>
       <p className="account-empty">{me.role === "company" ? "აქ გამოჩნდება კლიენტებთან მიმოწერები. შეარჩიე მოთხოვნა და შესთავაზე შენი მომსახურება — საუბარი მოთხოვნასთან ერთად შეინახება." : "მოძებნე შესაბამისი კომპანია და მის პროფილზე აირჩიე მიმოწერის დაწყება. ყველა საუბარს აქ დაუბრუნდები."}</p>
-      <Button variant="primary" href={me.role === "company" ? "/account/?tab=opportunities" : "/companies/"}>{me.role === "company" ? "შესაბამისი მოთხოვნების ნახვა" : "კომპანიების ნახვა"}<Icon name="arrow-right"/></Button>
+      <Button variant="primary" href={me.role === "company" ? "/account/?tab=opportunities" : "/companies/"}>{me.role === "company" ? "შესაბამისი მოთხოვნების ნახვა" : "კომპანიების ნახვა"}</Button>
       <p className="inbox-empty-state__tip">შეთანხმებები და მნიშვნელოვანი დეტალები შეინახე ერთ მიმოწერაში.</p>
     </div>
   </section>;

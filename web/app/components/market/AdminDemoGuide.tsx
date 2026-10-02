@@ -41,7 +41,7 @@ export function AdminDemoGuide({ store }: { store: Store }) {
           <span className={styles.demoStepNumber} aria-hidden="true">{index + 1}</span>
           <h3><Icon name={step.icon} />{step.title}</h3>
           <p>{step.text}</p>
-          <Button variant="secondary" href={step.href}>{step.action}<Icon name="arrow-right" /></Button>
+          <Button variant="secondary" href={step.href}>{step.action}</Button>
         </li>)}
       </ol>
     </section>
@@ -49,7 +49,7 @@ export function AdminDemoGuide({ store }: { store: Store }) {
     <section className={styles.panel} aria-labelledby="demo-examples-heading">
       <header className={styles.panelHead}><h2 id="demo-examples-heading">სადემო მოთხოვნების მაგალითები</h2><span>არსებული ღია მოთხოვნებიდან</span></header>
       {accounts.error ? <AdminState error title="სადემო მაგალითები ვერ ჩაიტვირთა" text={accounts.error} onRetry={accounts.reload} /> : !accounts.data ? <p role="status">სადემო მაგალითები იტვირთება…</p> : examples.length ? <ul className={styles.demoExamples}>{examples.map(request => <li key={request.id}>
-        <Link href={`/requests/view/?id=${encodeURIComponent(request.id)}`}><strong>{request.title}</strong><span>{categories[request.category] || request.category} · {cities[request.city] || request.city} · {store.offerCount(request.id)} შეთავაზება</span><Icon name="arrow-right" /></Link>
+        <Link href={`/requests/view/?id=${encodeURIComponent(request.id)}`}><strong>{request.title}</strong><span>{categories[request.category] || request.category} · {cities[request.city] || request.city} · {store.offerCount(request.id)} შეთავაზება</span></Link>
       </li>)}</ul> : <p className={styles.note}>ღია სადემო მაგალითები ამჟამად არ არის. სრული კატალოგი მოთხოვნების გვერდზეა.</p>}
     </section>
 

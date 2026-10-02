@@ -154,7 +154,7 @@ function popup(c: MapCompany): HTMLElement {
   const link = document.createElement("a");
   link.className = "map-popup__link";
   link.href = title.href;
-  link.textContent = "პროფილის ნახვა →";
+  link.textContent = "პროფილის ნახვა";
   root.append(title, meta, link);
   return root;
 }

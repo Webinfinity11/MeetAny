@@ -63,9 +63,9 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
     <div className={styles.nextActions} aria-label="შემდეგი მოქმედებები">
       <strong><Icon name="badge-check" />შემდეგი მოქმედებები</strong>
       {overview ? <>
-        {pending!.total > 0 ? <Link href="/admin/?tab=companies&status=unverified">{pending!.total} კომპანია განხილვას ელოდება<Icon name="arrow-right" /></Link> : null}
-        {unanswered!.total > 0 ? <a href="#unanswered-queue" onClick={() => { if (unansweredQueue.current) unansweredQueue.current.open = true; }}>{unanswered!.total} მოთხოვნა უპასუხოდაა<Icon name="arrow-right" /></a> : null}
-        {expiring!.total > 0 ? <a href="#expiring-queue" onClick={() => { if (expiringQueue.current) expiringQueue.current.open = true; }}>{expiring!.total} მოთხოვნის ვადა იწურება<Icon name="arrow-right" /></a> : null}
+        {pending!.total > 0 ? <Link href="/admin/?tab=companies&status=unverified">{pending!.total} კომპანია განხილვას ელოდება</Link> : null}
+        {unanswered!.total > 0 ? <a href="#unanswered-queue" onClick={() => { if (unansweredQueue.current) unansweredQueue.current.open = true; }}>{unanswered!.total} მოთხოვნა უპასუხოდაა</a> : null}
+        {expiring!.total > 0 ? <a href="#expiring-queue" onClick={() => { if (expiringQueue.current) expiringQueue.current.open = true; }}>{expiring!.total} მოთხოვნის ვადა იწურება</a> : null}
         {!pending!.total && !unanswered!.total && !expiring!.total ? <p>მიმდინარე რიგებში გადაუდებელი მოქმედება არ არის.</p> : null}
       </> : <p role="status">{failed ? "მოქმედებები ვერ ჩაიტვირთა." : "მოქმედებები იტვირთება…"}</p>}
     </div>
@@ -74,11 +74,11 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
       {kpis.slice(0, 4).map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
         <span className={styles.kpiLabel}>{k.label}</span>
         <strong className={styles.kpiValue}>{k.value ?? "—"}</strong>
-        <span className={styles.delta}>{k.action}<Icon name="arrow-right" /></span>
+        <span className={styles.delta}>{k.action}</span>
       </Link>)}
     </div>
 
-    <div className={styles.overviewSecondary}>{kpis.slice(4).map(k => <Link key={k.key} href={k.href}><span>{k.label}</span><strong>{k.value ?? "—"}</strong><Icon name="arrow-right" /></Link>)}</div>
+    <div className={styles.overviewSecondary}>{kpis.slice(4).map(k => <Link key={k.key} href={k.href}><span>{k.label}</span><strong>{k.value ?? "—"}</strong></Link>)}</div>
     <div className={styles.overviewSplit}>
     <section className={styles.panel} aria-labelledby="activity-heading">
       <header className={analyticsStyles.activityHeader}><h2 id="activity-heading">აქტივობის ანალიტიკა</h2><div className={analyticsStyles.periodControl} role="group" aria-label="აქტივობის პერიოდი">{([7,30] as const).map(period=><Button key={period} variant="ghost" size="sm" aria-pressed={activityPeriod===period} onClick={()=>setActivityPeriod(period)}>{period} დღე</Button>)}</div></header>
@@ -107,7 +107,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
             </li>)}
           </ul>
           {(pending?.total || 0) > 6 ? <p className={styles.queueEmpty}>ნაჩვენებია 6 კომპანია {pending!.total}-დან.</p> : null}
-          <Link className={styles.queueMore} href="/admin/?tab=companies&status=unverified">დასადასტურებელი კომპანიების ნახვა<Icon name="arrow-right" /></Link>
+          <Link className={styles.queueMore} href="/admin/?tab=companies&status=unverified">დასადასტურებელი კომპანიების ნახვა</Link>
         </details>
         <details id="unanswered-queue" ref={unansweredQueue} className={styles.queue}>
           <summary><Icon name="hourglass" />3+ დღე უპასუხოდ <span>{(unanswered?.total ?? "…")}</span><Icon name="chevron-down" /></summary>

@@ -3,6 +3,7 @@ import { Button } from "../ui/Button";
 
 
 import { CustomSelect } from "../ui/CustomSelect";
+import { CompactMultiSelect } from "../ui/CompactMultiSelect";
 import { AccountSkeleton } from "./Skeletons";
 
 import { EngagementPanel } from "./EngagementPanels";
@@ -23,7 +24,7 @@ import { ProfileItems } from "./ProfileItems";
 import { LocationPicker } from "./LocationPicker";
 import { CompanyBusinessPanel, CompanyDistributionPanel } from "./CompanyBusiness";
 import { Inbox } from "./Inbox";
-import { useMarketStore } from "../../lib/market-client";
+import { useMarketStore, type Store } from "../../lib/market-client";
 import { useUnreadMessageCount } from "../../lib/chat-client";
 import { categories, cities, groupOf } from "../../lib/categories";
 import { categoryOptions } from "./CategoryOptions";
@@ -168,7 +169,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
             {v.message("company")}
           </div>
         </div>
-        <fieldset className="ma-field profile-city-choices"><legend className="ma-field__label">ქალაქი *</legend><div className="profile-city-pills">{Object.entries(cities).map(([id,label])=><label key={id} className="profile-city-pill"><input type="radio" name="profile-city" value={id} checked={city===id} onChange={()=>setCity(id)}/><span>{city===id?<Icon name="check"/>:null}{label}</span></label>)}</div></fieldset>
+        <div className="ma-field profile-city-field"><label className="ma-field__label" htmlFor="profile-city">ქალაქი *</label><CustomSelect id="profile-city" value={city} onChange={event=>setCity(event.target.value)}>{Object.entries(cities).map(([id,label])=><option key={id} value={id}>{label}</option>)}</CustomSelect></div>
         <div className="ma-form__row ma-form__row--3 account-contact">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="profile-phone">
@@ -210,23 +211,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
               <ProfileItems id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);setSaved(false);}}/>
               <ProfileItems id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
             </div>
-            <fieldset className="ma-field">
-              <legend className="ma-field__label">რომელ ქალაქებს ემსახურებით?</legend>
-              <div className="profile-city-pills">
-                {Object.entries(cities).map(([id, label]) => (
-                  <label className="profile-city-pill" key={id}>
-                    <input
-                      type="checkbox"
-                      checked={serviceCities.includes(id)}
-                      onChange={(e) =>
-                        setServiceCities((prev) => (e.target.checked ? id==="georgia"?[id]:[...prev.filter(c=>c!=="georgia"),id] : prev.filter((c) => c !== id)))
-                      }
-                    />
-                    <span>{serviceCities.includes(id)?<Icon name="check"/>:null}{label}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
+            <CompactMultiSelect id="profile-service-cities" label="მომსახურების ქალაქები" options={Object.entries(cities).map(([value,label])=>({value,label}))} value={serviceCities} exclusiveValue="georgia" disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
           </fieldset>
           <fieldset className="account-form-group" disabled={pending}>
             <legend>მისამართი</legend>
@@ -340,7 +325,7 @@ function PasswordForm() {
 }
 
 type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
-type OfferItem = { id: string; requestId: string; status: string; createdAt: string };
+type OfferItem = { id: string; requestId: string; status: string; createdAt: string; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
 type Tab = "overview" | "opportunities" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
 
 const DAY = 86400000;
@@ -406,6 +391,34 @@ function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab;
 
 function Status({ tone, children }: { tone: string; children: React.ReactNode }) {
   return <span className="account-status" data-tone={tone}>{children}</span>;
+}
+
+// Compact amount/status rows: https://mobbin.com/screens/f576b06e-b290-4864-a0be-2d753324fd1d
+function SentOffers({ offers, store, now }: { offers: OfferItem[]; store?: Store; now: number }) {
+  const [status, setStatus] = useState("all");
+  const filters = [["all", "ყველა"], ["sent", "გაგზავნილი"], ["chosen", "არჩეული"], ["declined", "არ აირჩიეს"]];
+  const visible = status === "all" ? offers : offers.filter(offer => offer.status === status);
+  const amount = (offer: OfferItem) => offer.price == null || offer.priceType === "negotiable" ? "შეთანხმებით" : `${new Intl.NumberFormat("ka-GE", { maximumFractionDigits: 2 }).format(offer.price)} ₾`;
+  return <section className="account-section account-offers" aria-labelledby="account-offers-heading">
+    <div className="account-offers__head"><h2 className="account-section__title" id="account-offers-heading">გაგზავნილი შეთავაზებები</h2><span className="account-offers__total" role="status">{visible.length} შეთავაზება</span></div>
+    {offers.length ? <>
+      <div className="account-offer-filters" role="group" aria-label="შეთავაზების სტატუსი">{filters.map(([key, label]) => <Button key={key} type="button" variant="ghost" size="sm" aria-pressed={status === key} onClick={() => setStatus(key)}>{label}</Button>)}</div>
+      {visible.length ? <ul className="account-rows account-offer-list">{visible.map(offer => {
+        const request = store?.getRequest(offer.requestId) as RequestItem | null;
+        const href = `/requests/view/?id=${encodeURIComponent(offer.requestId)}`;
+        const title = request?.title || "მოთხოვნა";
+        const fixedPrice = offer.price != null && offer.priceType !== "negotiable";
+        return <li className="account-row account-offer" key={offer.id}>
+          <div className="account-row__main">
+            <h3 className="account-row__title"><Link className="account-row__link" href={href} title={title}>{title}</Link></h3>
+            <p className="account-row__meta">{[request ? categories[request.category] || request.category : "", request ? cities[request.city] || request.city : "", `გაიგზავნა ${postedLabel(offer.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
+          </div>
+          <div className="account-offer__terms"><strong>{amount(offer)}</strong>{fixedPrice ? <span>{offer.priceType === "unit" ? "ერთეულის ფასი" : "ჯამური ფასი"}</span> : null}{offer.deliveryDays != null ? <span>მიწოდება: {offer.deliveryDays} დღე</span> : null}</div>
+          <div className="account-row__actions account-offer__actions"><Status tone={offerTone(offer.status)}>{offerLabel(offer.status)}</Status><Link className="account-link" href={href} aria-label={`შეთავაზების დეტალები: ${title}`}>ნახვა</Link></div>
+        </li>;
+      })}</ul> : <div className="account-offers__empty"><p className="account-empty">ამ სტატუსით შეთავაზება არ არის.</p><Button variant="ghost" size="sm" onClick={() => setStatus("all")}>ყველას ნახვა</Button></div>}
+    </> : <div className="account-offers__empty"><p className="account-empty">შეთავაზება ჯერ არ გაგიგზავნია.</p><Button variant="primary" href="/account/?tab=opportunities">შესაბამისი მოთხოვნების ნახვა</Button></div>}
+  </section>;
 }
 
 function CompanyWelcome({ me, matching, offers, unread }: { me: AnyUser; matching: number; offers: number; unread: number | null }) {
@@ -591,30 +604,7 @@ export function AccountPageContent() {
           {isCompany && activeTab === "opportunities" ? <CompanyWelcome me={me} matching={matching.length} offers={myOffers.length} unread={unread}/> : null}
           {isCompany && (activeTab === "offers" || activeTab === "opportunities") ? (
             <>
-              {activeTab === "offers" ? <section className="account-section">
-                <h2 className="account-section__title">ჩემი შეთავაზებები ({myOffers.length})</h2>
-                {myOffers.length ? (
-                  <ul className="account-rows">
-                    {myOffers.map((o) => {
-                      const r = store?.getRequest(o.requestId) as RequestItem | null;
-                      return (
-                        <li className="account-row" key={o.id}>
-                          <div className="account-row__main">
-                            <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(o.requestId)}>{r?.title || "მოთხოვნა"}</Link></h3>
-                            <p className="account-row__meta">{[r ? categories[r.category] || r.category : "", r ? cities[r.city] || r.city : "", `გაიგზავნა ${postedLabel(o.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
-                          </div>
-                          <div className="account-row__stats">
-                            <Status tone={offerTone(o.status)}>{offerLabel(o.status)}</Status>
-                          </div>
-                          <div className="account-row__actions" />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <div><p className="account-empty">შეთავაზება ჯერ არ გაგიგზავნია.</p><Button variant="primary" href="/account/?tab=opportunities">შესაბამისი მოთხოვნების ნახვა</Button></div>
-                )}
-              </section> : null}
+              {activeTab === "offers" ? <SentOffers key={me.id} offers={myOffers} store={store} now={now} /> : null}
               {activeTab === "opportunities" ? <section className="account-section">
                 <div className="account-section__head">
                   <h2 className="account-section__title">შესაბამისი მოთხოვნები ({matching.length})</h2>

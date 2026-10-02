@@ -519,7 +519,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
  .ma-header__inner{gap:var(--space-4)}
  .ma-header__nav{gap:0}
  .ma-header__link{padding-inline:var(--space-2);font-size:var(--fs-xs)}
- .ma-header__account .ma-menu__trigger>span,.ma-header__account .ma-menu__trigger>.icon:last-child{display:none}
+ .ma-header__account .ma-menu__trigger>.ma-menu__label,.ma-header__account .ma-menu__trigger>.icon:last-child{display:none}
  .ma-header__account .ma-menu__trigger{width:var(--tap-min);padding:0;justify-content:center}.ma-header__account .ma-menu__trigger>.icon:first-child{display:block}
 }
 @media(max-width:767px){
@@ -542,3 +542,15 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-header__slot{display:block;width:var(--tap-min);height:var(--tap-min)}
 /* Keep the add icon visible when signed-in mobile headers hide the CTA text. */
 @media(max-width:767px){.ma-header__actions:has(.ma-header__updates) .ma-header__cta{width:var(--tap-min);padding:0;flex:none}.ma-header__actions:has(.ma-header__updates) .ma-header__cta>.icon{display:block;flex:none}.ma-header__actions:has(.ma-header__updates) .ma-header__cta-short,.ma-header__actions:has(.ma-header__updates) .ma-header__cta-label{display:none}}
+
+/* Profile identity uses the actual logo, with stable compact avatar geometry. */
+.ma-header__account .ma-header__avatar,.ma-mnav__identity .ma-header__avatar{width:var(--size-28);height:var(--size-28);border-radius:var(--radius-circle);border:var(--size-1) solid var(--card-border);background:var(--bg-subtle);color:var(--text-2);font-size:var(--fs-xs);line-height:var(--lh-solid);font-weight:var(--fw-semibold);flex:none}
+.ma-header__avatar img{object-fit:contain;background:var(--white)}
+.ma-menu__identity{display:grid;gap:var(--space-1);min-width:0;margin-bottom:var(--space-1);padding:var(--space-3);border-bottom:var(--size-1) solid var(--border-subtle);color:var(--text);font-size:var(--fs-sm);line-height:var(--lh-sm);overflow-wrap:anywhere}
+.ma-menu__identity strong{font-weight:var(--fw-semibold)}
+.ma-menu__identity>span{color:var(--text-3);font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.ma-mnav__identity{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-2);margin-bottom:var(--space-2);border-bottom:var(--size-1) solid var(--border-subtle)}
+.ma-mnav__identity .ma-menu__identity{flex:1;margin:0;padding:0;border:0}
+
+.ma-header__account .ma-menu__trigger--compact{width:var(--tap-min);height:var(--tap-min);min-height:var(--tap-min);padding:0;gap:0;justify-content:center;border-radius:var(--radius-circle);flex:none}
+.ma-header__account .ma-menu__trigger--compact .icon{transform:none}

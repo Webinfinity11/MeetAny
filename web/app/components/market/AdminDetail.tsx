@@ -98,7 +98,6 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
           </div>
           {user.blocked && user.blocked_reason ? <p className={styles.note}>მიზეზი: {user.blocked_reason}</p> : null}
         </div>
-        {user.role === "company" ? <AdminPlanEditor store={store} id={user.id} /> : null}
         <dl className={styles.detailFacts}>
           <dt>სახელი</dt><dd>{user.name}</dd>
           <dt>ტელეფონი</dt><dd>{user.phone ? <a href={`tel:${user.phone.replace(/[^+\d]/g, "")}`}>{user.phone}</a> : "—"}</dd>
@@ -107,6 +106,10 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
           <dt>რეგისტრაცია</dt><dd>{user.created_at ? dateLabel(user.created_at) : "—"}</dd>
         </dl>
         {user.about ? <p className={styles.detailText}>{user.about}</p> : null}
+        {user.role === "company" ? <details className={styles.disclosure}>
+          <summary>პაკეტი</summary>
+          <div className={styles.disclosureBody}><AdminPlanEditor store={store} id={user.id} /></div>
+        </details> : null}
         <section className={styles.detailList}>
           <h4>მოთხოვნები <span>{userRequests.length}</span></h4>
           {userRequests.length ? <ul>{userRequests.slice(0, 8).map(r => <li key={r.id}>

@@ -9,21 +9,22 @@ const centers: Record<string,[number,number]> = {tbilisi:[41.7151,44.8271],batum
 type Point = {lat:number;lng:number};
 export function LocationPicker({city,value,disabled=false,onChange}:{city:string;value:Point|null;disabled?:boolean;onChange:(value:Point|null)=>void}) {
  const host=useRef<HTMLDivElement>(null),map=useRef<LeafletMap|null>(null),marker=useRef<Marker|null>(null),leaflet=useRef<typeof import("leaflet")|null>(null);
- const latest=useRef({value,disabled,onChange});
+ const latest=useRef({city,value,disabled,onChange});
  const [ready,setReady]=useState(false),[failed,setFailed]=useState(false);
  const [tileState,setTileState]=useState("loading");
- useEffect(()=>{latest.current={value,disabled,onChange};},[value,disabled,onChange]);
+ useEffect(()=>{latest.current={city,value,disabled,onChange};},[city,value,disabled,onChange]);
  useEffect(()=>{
   let cancelled=false,observer:ResizeObserver|undefined;
   const setup=async()=>{
    const {default:L}=await import("leaflet");
    if(cancelled||!host.current)return;
    leaflet.current=L;
-   const m=L.map(host.current,{scrollWheelZoom:false,zoomControl:false,fadeAnimation:false,zoomAnimation:!matchMedia("(prefers-reduced-motion: reduce)").matches}).setView(centers.tbilisi,13);
+   const initial=latest.current;
+   const m=L.map(host.current,{scrollWheelZoom:false,zoomControl:false,fadeAnimation:false,zoomAnimation:!matchMedia("(prefers-reduced-motion: reduce)").matches}).setView(initial.value?[initial.value.lat,initial.value.lng]:centers[initial.city]||centers.tbilisi,initial.value?15:initial.city==="georgia"?7:13);
    map.current=m;m.attributionControl.setPrefix(false);L.control.zoom({position:"bottomright"}).addTo(m);
    let loaded=false;
    const tiles=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
-   tiles.on("tileload",()=>{loaded=true;});tiles.on("load",()=>{if(!cancelled)setTileState(loaded?"ready":"failed");});tiles.addTo(m);
+   tiles.on("loading",()=>{loaded=false;if(!cancelled)setTileState("loading");});tiles.on("tileload",()=>{loaded=true;});tiles.on("load",()=>{if(!cancelled)setTileState(loaded||host.current?.querySelector(".leaflet-tile-loaded")?"ready":"failed");});tiles.addTo(m);
    m.on("click",event=>{if(!latest.current.disabled)latest.current.onChange({lat:Number(event.latlng.lat.toFixed(6)),lng:Number(event.latlng.lng.toFixed(6))});});
    // Wheel zoom follows an intentional click or focus, preserving ordinary page scrolling.
    m.on("focus click",()=>m.scrollWheelZoom.enable());m.on("blur mouseout",()=>m.scrollWheelZoom.disable());
@@ -57,13 +58,13 @@ export function LocationPicker({city,value,disabled=false,onChange}:{city:string
   if(!m.getBounds().contains([value.lat,value.lng]))m.setView([value.lat,value.lng],Math.max(13,m.getZoom()),{animate:false});
  },[city,ready,disabled,value]);
  return <div className="profile-location-picker">
-  <p className="ma-field__help" id="location-picker-help">მონიშნე წერტილი რუკაზე ან გადაადგილე მარკერი.</p>
+  <div className="profile-location-heading"><span className="ma-field__label">მდებარეობა რუკაზე</span>{value?<span className="profile-location-state" role="status"><Icon name="check"/>მონიშნულია</span>:null}</div>
   <div className="companies-map profile-location-map"><div ref={host} className="companies-map__canvas" role="region" aria-label="კომპანიის მდებარეობის არჩევა" aria-describedby="location-picker-help" aria-busy={!failed&&(!ready||tileState==="loading")}/>
    {!ready&&!failed?<div className="companies-map__loading" role="status">რუკა იტვირთება…</div>:null}
    {failed?<div className="companies-map__loading" role="alert">რუკა ვერ ჩაიტვირთა. შეგიძლია კოორდინატები მიუთითო.</div>:null}
    {ready&&tileState!=="ready"?<div className="companies-map__tile-status" role="status">{tileState==="loading"?"რუკა იტვირთება…":"რუკის ფონი ვერ ჩაიტვირთა."}</div>:null}
   </div>
-  <div className="profile-location-actions"><Button variant="secondary" disabled={!ready||disabled} onClick={()=>{const at=map.current!.getCenter();onChange({lat:Number(at.lat.toFixed(6)),lng:Number(at.lng.toFixed(6))});requestAnimationFrame(()=>marker.current?.getElement()?.focus());}}><Icon name="map-pin"/>{value?"ცენტრში გადატანა":"ცენტრში მონიშვნა"}</Button>{value?<Button variant="ghost" disabled={disabled} onClick={()=>onChange(null)}>წერტილის წაშლა</Button>:null}<span role="status">{value?"მდებარეობა მონიშნულია":"წერტილი ჯერ არ არის მონიშნული"}</span></div>
-  <p className="ma-field__help">მარკერის არჩევის შემდეგ ისრებით გადაადგილებაც შეგიძლია. მისამართი ცალკე მიუთითე.</p>
+  <div className="profile-location-actions"><Button variant="secondary" disabled={!ready||disabled} aria-label={value?"მარკერის რუკის ცენტრში გადატანა":"რუკის ცენტრში მონიშვნა"} onClick={()=>{const at=map.current!.getCenter();onChange({lat:Number(at.lat.toFixed(6)),lng:Number(at.lng.toFixed(6))});requestAnimationFrame(()=>marker.current?.getElement()?.focus());}}><Icon name="map-pin"/>{value?"ცენტრში":"მონიშვნა"}</Button>{value?<Button variant="ghost" disabled={disabled} aria-label="მდებარეობის წერტილის წაშლა" onClick={()=>onChange(null)}>წაშლა</Button>:null}</div>
+  <p className="ma-field__help" id="location-picker-help">დააწკაპუნე რუკაზე ან გადაადგილე მარკერი.</p>
  </div>;
 }

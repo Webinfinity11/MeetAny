@@ -82,7 +82,7 @@ export function NotificationBell() {
   {open ? <div id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
    <div className={styles.head}><strong>შეტყობინებები</strong><Button type="button" variant="ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></Button></div>
    {state?.status === "ready" ? state.notifications.items.length ? <div className={styles.noticeList} onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows store={store} items={state.notifications.items} limit={5} compact/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : failed(state?.status) ? <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p> : <ListSkeleton compact label="შეტყობინებები იტვირთება…" />}
-   <Button variant="ghost" size="sm" className={styles.noticeFooter} href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება<Icon name="arrow-right"/></Button>
+   <Button variant="ghost" size="sm" className={styles.noticeFooter} href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება</Button>
   </div> : null}
  </div>;
 }

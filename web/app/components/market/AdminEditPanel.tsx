@@ -31,7 +31,7 @@ export function AdminEditPanel({store,row,kind,onDone,onCancel,onDirtyChange}:{s
 export function AdminPlanEditor({store,id}:{store:Store;id:string}){
  const load=useCallback(()=>store.adminCompanySettings(id),[store,id]);
  const resource=useBusinessResource<{membership:{plan:string;expires_at:string}|null}>(load,id);
- return <section className={styles.plan}><h4>ხილვადობის პაკეტი</h4>{resource.error?<p role="alert">{businessError(resource.error)}</p>:resource.data?<PlanForm key={`${id}:${resource.data.membership?.expires_at}:${resource.data.membership?.plan}`} store={store} id={id} current={resource.data.membership} reload={resource.reload}/>:<p role="status">იტვირთება…</p>}</section>;
+ return <section className={styles.plan} aria-label="კომპანიის პაკეტის მართვა">{resource.error?<p role="alert">{businessError(resource.error)}</p>:resource.data?<PlanForm key={`${id}:${resource.data.membership?.expires_at}:${resource.data.membership?.plan}`} store={store} id={id} current={resource.data.membership} reload={resource.reload}/>:<p role="status">იტვირთება…</p>}</section>;
 }
 function PlanForm({store,id,current,reload}:{store:Store;id:string;current:{plan:string;expires_at:string}|null;reload:()=>void}){
  const [today]=useState(()=>new Date().toISOString().slice(0,10));

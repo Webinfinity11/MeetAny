@@ -246,7 +246,8 @@ export function AdminPageContent() {
     <div className={`ma-page ${styles.workspace}`}>
       <AdminNavigation tab={tab} reports={reportCount} offersEnabled={v2} />
       <div key={tab} className={styles.content}>
-      <PageBand title={adminSections[tab].label} description={adminSections[tab].description}  />
+      <PageBand title={tab === "plans" ? "პაკეტის განაცხადები" : adminSections[tab].label} description={adminSections[tab].description}  />
+      {tab === "plans" ? <div className={styles.listTools}><Button variant="ghost" href="/admin/?tab=companies"><Icon name="arrow-left" />კომპანიები</Button></div> : null}
       {tab === "reviews" || tab === "plans" ? <AdminBusiness key={tab} kind={tab}/> : tab === "overview" ? <AdminOverview store={store!} stats={stats} onOpenUser={id => setDetail({ kind: "user", id })}
         onVerify={u => setPendingAction({ kind: "users", action: "verify", id: u.id, label: u.label })} /> : null}
 
@@ -264,6 +265,7 @@ export function AdminPageContent() {
       </> : null}
       {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი{adminNote}</p> : null}
       {(tab === "requests" || (tab === "users" || tab === "companies")) && canShowRecords ? <div className={styles.listTools}>
+      {tab === "companies" ? <Button variant="secondary" href="/admin/?tab=plans">პაკეტის განაცხადები</Button> : null}
       <Button type="button" variant="secondary" onClick={exportCsv} disabled={exporting}><Icon name="download" />{exporting ? "მზადდება…" : "CSV ექსპორტი"}</Button></div> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "ready" && admin.error ? <p className="ma-field__error" role="status">{admin.error} <Button variant="ghost" onClick={admin.reload}>თავიდან ცდა</Button></p> : null}
