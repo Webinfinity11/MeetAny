@@ -4,12 +4,6 @@ import { Icon } from "../components/Icon";
 import { HomeBusinessScene } from "../components/HomeBusinessScene";
 import { HomeHeroText, HomeSectionHeading, HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin } from "../components/HomeLive";
 
-const steps = [
-  { title: "მოძებნე ან აღწერე", text: "რა სჭირდება შენს ბიზნესს" },
-  { title: "შეადარე პირობები", text: "შენთვის სასურველი შეთავაზებები" },
-  { title: "დაიწყე თანამშრომლობა", text: "დაუკავშირდი კომპანიას პირდაპირ" },
-];
-
 export default function HomePage() {
   return <>
     <section className="home-hero" aria-labelledby="discovery-title">
@@ -21,15 +15,6 @@ export default function HomePage() {
           </div>
           <HomeBusinessScene />
         </div>
-        <ol className="hero-steps" id="how" aria-label="როგორ მუშაობს">
-          {steps.map((step, index) => <li key={step.title}>
-            <span className="hero-steps__text">
-              <h2>{step.title}</h2>
-              <span>{step.text}</span>
-            </span>
-            <span className="hero-steps__number" aria-hidden="true">0{index + 1}</span>
-          </li>)}
-        </ol>
       </div>
     </section>
 

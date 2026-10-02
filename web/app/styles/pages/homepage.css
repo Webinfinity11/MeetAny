@@ -147,24 +147,6 @@
   to { transform: translateY(0); }
 }
 
-/* Compact text-only process steps. */
-.hero-steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--size-32);
-  margin: var(--size-28) 0 0;
-  padding: var(--size-20) var(--size-24);
-  border: var(--size-1) solid var(--blue-700);
-  border-radius: var(--size-20);
-  background: var(--blue-700);
-  list-style: none;
-}
-.hero-steps li { position: relative; display: flex; align-items: center; gap: var(--size-14); min-width: 0; }
-.hero-steps li + li { border-left: var(--size-1) solid var(--color--ffffff29); padding-left: var(--size-28); }
-.hero-steps__text { display: grid; gap: var(--size-4); }
-.home-page .hero-steps h2 { margin: 0; font-size: var(--size-14); line-height: var(--size-22); color: var(--white); font-weight: var(--fw-semibold); }
-.hero-steps__text > span { font-size: var(--size-12); line-height: var(--size-20); color: var(--color--d4def6); }
-.hero-steps__number { margin-left: auto; align-self: start; color: var(--color--c5d3f5); font-size: var(--size-11); font-variant-numeric: tabular-nums; }
 
 
 @media (max-width: 1199px) and (min-width: 900px) {
@@ -183,10 +165,6 @@
   .hero-scene__card img { height: var(--size-128); }
   .hero-scene__card > span { font-size: var(--size-11); }
   .hero-scene__card .icon { display: none; }
-  .hero-steps { gap: var(--size-16); }
-  .hero-steps li { gap: var(--size-10); }
-  .hero-steps li + li { padding-left: var(--size-16); }
-  .hero-steps__number { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-scene__track { animation: none; transform: none; }
@@ -639,9 +617,6 @@
   .hero-layout { gap: var(--size-20); }
   .hero-scene { display: none; }
 
-  .hero-steps { grid-template-columns: minmax(0, 1fr); gap: var(--size-16); margin-top: var(--size-20); padding: var(--size-16) var(--size-12); }
-  .hero-steps li + li { padding-left: 0; border-left: 0; }
-  .hero-steps__number { display: block; align-self: center; }
   .home-section {
     margin-top: var(--space-10);
   }
