@@ -427,7 +427,7 @@ function CompanyWelcome({ me, matching, offers, unread }: { me: AnyUser; matchin
         <p>{!me.verified ? "კომპანია დამატებულია ადმინისტრატორის დასადასტურებელ სიაში. დადასტურების შემდეგ პროფილზე შესაბამისი ნიშანი გამოჩნდება." : "აღწერა, ლოგო და მომსახურებები კლიენტს შენი კომპანიის გაცნობაში ეხმარება."}</p>
         {!profileComplete && !me.verified ? <p>დაამატე აღწერა, ლოგო და მომსახურებები, რომ პროფილი სრულად წარმოაჩინო.</p> : null}
       </div>
-      <Button variant="secondary" size="sm" href="/account/?tab=profile">{profileComplete ? "პროფილის ნახვა" : "პროფილის შევსება"}</Button>
+      <Button variant="secondary" size="sm" href="/account/?tab=profile">{profileComplete ? "ჩემი პროფილის რედაქტირება" : "ჩემი პროფილის შევსება"}</Button>
     </div> : null}
   </section>;
 }

@@ -1208,6 +1208,30 @@
 .offer-comparison__card details p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .offer-comparison__card footer { display: grid; gap: var(--space-2); }
 
+/* Offers keep their facts together and their actions close to the full conditions. */
+.request-workspace .ma-ocard { gap: var(--space-3); align-content: start; }
+.request-workspace .ma-ocard__head { grid-template-columns: auto minmax(0,1fr); align-items: center; }
+.request-workspace .ma-ocard__who { gap: var(--space-half); }
+.request-workspace .ma-ocard__body { line-height: var(--lh-body); max-width: none; overflow-wrap: anywhere; }
+.request-workspace .offer-terms--compact { grid-template-columns: minmax(0,1.4fr) repeat(2,minmax(0,1fr)); gap: var(--space-3); margin: 0; padding: var(--space-3); border-radius: var(--radius-control); background: var(--bg-subtle); }
+.request-workspace .offer-terms--compact > div { align-content: start; gap: var(--space-half); }
+.request-workspace .offer-terms--compact dd { line-height: var(--lh-sm); }
+.request-workspace .offer-terms--compact small { display: block; margin-top: var(--space-half); color: var(--text-3); font-size: var(--fs-xs); line-height: var(--lh-xs); font-weight: var(--fw-regular); }
+.request-workspace .request-offer-actions { padding-top: var(--space-3); gap: var(--space-2); }
+@media(min-width:768px) {
+ .request-workspace .ma-ocard__name { min-height: 0; }
+}
+@media(max-width:767px) {
+ .request-workspace .offer-terms--compact { grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-3) var(--space-2); font-size: var(--fs-xs); }
+ .request-workspace .offer-terms--compact .offer-terms__price { grid-column: 1 / -1; grid-template-columns: auto minmax(0,1fr); align-items: baseline; gap: var(--space-2); }
+ .request-workspace .offer-terms__price dd { text-align: right; }
+ .request-workspace .request-offer-actions { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+ .request-workspace .request-offer-actions .ma-btn { font-size: var(--fs-xs); min-height: var(--tap-min); }
+ .request-workspace .request-offer-actions .ma-btn--primary { grid-column: 1 / -1; grid-row: 1; }
+ .request-workspace .request-offer-actions .report-link { min-height: var(--tap-min); margin: 0; justify-self: end; }
+ .request-workspace .request-offer-actions > :only-child { grid-column: 1 / -1; justify-self: start; width: auto; }
+}
+
 .request-description-brief{border-top:var(--size-1) solid var(--border-subtle)}
 .request-description-brief>h2{display:flex;align-items:center;gap:var(--space-2);margin:0;padding:var(--space-4) var(--size-20);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
 .request-description-brief>h2 .icon{width:var(--size-18);height:var(--size-18);color:var(--text-3)}

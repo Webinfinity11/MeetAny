@@ -54,13 +54,14 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false }: { o: Of
             {o.isNew && o.status === "sent" ? <span className="ma-badge ma-badge--accent">ახალი</span> : null}
           </div>
           <BusinessMarks feature={o.feature} />
-          <div className="ma-meta">
-            <span>{o.city}</span>
-            {o.deliveryDays != null ? <span>მიწოდება {o.deliveryDays} დღეში</span> : null}
-          </div>
+          {o.city ? <div className="ma-meta"><span>{o.city}</span></div> : null}
         </div>
       </header>
-      <dl className="offer-terms"><div><dt>ფასი</dt><dd>{offerPrice(o)}</dd></div><div><dt>მიწოდება</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div>{o.price!=null?<div><dt>დღგ</dt><dd>{o.vatIncluded?"ფასში შედის":"ფასში არ შედის"}</dd></div>:null}<div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div></dl>
+      <dl className="offer-terms offer-terms--compact">
+        <div className="offer-terms__price"><dt>ფასი</dt><dd>{offerPrice(o)}{o.price!=null?<small>{o.vatIncluded?"დღგ ფასში შედის":"დღგ ფასში არ შედის"}</small>:null}</dd></div>
+        <div><dt>მიწოდების ვადა</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div>
+        <div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div>
+      </dl>
       <p className="ma-ocard__body">{o.body}</p>
       <footer className="request-offer-actions">
         <Button variant="secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Button>

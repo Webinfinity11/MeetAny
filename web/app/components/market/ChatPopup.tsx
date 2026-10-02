@@ -6,18 +6,27 @@ import { trapDialogFocus } from "../ui/dialog-focus";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMarketStore, type Store } from "../../lib/market-client";
 import { useChatThread, useConversationList, useUnreadMessageCount, type ChatTarget, type Conversation } from "../../lib/chat-client";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { Icon } from "../Icon";
 import { toast } from "../Toasts";
+import styles from "./ChatPopup.module.css";
 
 export type { Conversation } from "../../lib/chat-client";
 export const chatDate = (value: string) => {
   const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tbilisi", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date(value)).map(p => [p.type, p.value]));
   return `${parts.day}.${parts.month}.${parts.year}, ${parts.hour}:${parts.minute}`;
 };
+
+/** Decorative invitation for a genuinely empty thread; never a peer's typing or presence state. */
+function EmptyConversationArt() {
+  return <span className={styles.emptyArt} aria-hidden="true">
+    <Image className={styles.illustration} src="/assets/chat-conversation-v1.png" width={1536} height={1024} sizes="216px" alt="" />
+  </span>;
+}
 export function openChat(target: ChatTarget) {
   window.dispatchEvent(new CustomEvent("meetany:chat-open", { detail: target }));
 }
@@ -133,9 +142,11 @@ function ChatList({ store, owner, role, onSelect, onClose }: { store: Store; own
       {!current ? <p className="ma-chat-list__note" role="status">მიმოწერები იტვირთება…</p> : current.error && !current.items ? <div className="ma-chat-list__note" role="alert"><p>მიმოწერები ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : !current.items?.length ? <div className="ma-chat-list__note"><p>მიმოწერა ჯერ არ გაქვს.</p><Button variant="secondary" href={role === "company" ? "/requests/" : "/companies/"}><Icon name={role === "company" ? "clipboard-list" : "building-2"} />{role === "company" ? "მოთხოვნების ნახვა" : "კომპანიების ნახვა"}</Button></div> : <ul>{current.items.map((c: Conversation) => {
         const other = c.otherId || (c.clientId === owner ? c.companyId : c.clientId);
         const name = c.otherCompany || c.otherName || "მომხმარებელი";
+        const requestId = c.requestId || (c.contextKey && c.contextKey !== "general" ? c.contextKey : null);
+        const context = requestId ? store.getRequest(requestId)?.title || "მოთხოვნის შესახებ" : "პირადი მიმოწერა";
         return <li key={c.id}><button type="button" className="ma-chat-list__row" data-unread={c.unreadCount > 0 || undefined} onClick={() => onSelect({ companyId: c.companyId, requestId: c.requestId || undefined, conversation: c })}>
           <CompanyAvatar name={name} logoUrl={store.userById(other)?.logoUrl} />
-          <span className="ma-chat-list__text"><strong>{name}</strong><small>{c.requestId || c.contextKey && c.contextKey !== "general" ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</small><span>{c.lastMessage ? `${c.lastMessage.senderId === owner ? "შენ: " : ""}${c.lastMessage.body}` : "შეტყობინება ჯერ არ არის"}</span></span>
+          <span className="ma-chat-list__text"><strong>{name}</strong><small>{context}</small><span>{c.lastMessage ? `${c.lastMessage.senderId === owner ? "შენ: " : ""}${c.lastMessage.body}` : "შეტყობინება ჯერ არ არის"}</span></span>
           {c.unreadCount > 0 ? <span className="ma-chat-badge" aria-label={`${c.unreadCount} წაუკითხავი`}>{c.unreadCount > 99 ? "99+" : c.unreadCount}</span> : null}
         </button></li>;
       })}</ul>}
@@ -151,9 +162,13 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
   const atBottom = useRef(true);
   const { conversation, messages, loaded, failed, pending, sendError, send: deliver, retry } = useChatThread(store, target, visible);
   const [body, setBody] = useState("");
-  const otherId = conversation?.otherId || (conversation ? (conversation.clientId === owner ? conversation.companyId : conversation.clientId) : target.companyId);
-  const logoUrl = store.userById(otherId)?.logoUrl;
-  const name = conversation?.otherCompany || conversation?.otherName || store.userById(target.companyId)?.company || "მიმოწერა";
+  const otherId = conversation?.otherId || (conversation ? (conversation.clientId === owner ? conversation.companyId : conversation.clientId) : target.companyId !== owner ? target.companyId : "");
+  const peer = store.userById(otherId);
+  const logoUrl = peer?.logoUrl;
+  const name = conversation?.otherCompany || conversation?.otherName || peer?.company || peer?.name || "მიმოწერა";
+  const isCompany = peer?.role === "company" || otherId === (conversation?.companyId || target.companyId);
+  const requestId = conversation?.requestId || (conversation?.contextKey && conversation.contextKey !== "general" ? conversation.contextKey : null) || target.requestId;
+  const request = requestId ? store.getRequest(requestId) : null;
   useEffect(() => {
     if (atBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [messages]);
@@ -161,9 +176,9 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
     if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); if (dialog.current?.open) input.current?.focus(); }
   }
   return <dialog ref={dialog} className="ma-chat ma-chat--dock" aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
-    <header className="ma-chat__head"><button type="button" className="ma-chat__close" aria-label="ყველა მიმოწერა" onClick={onBack}><Icon name="message-square" /></button><CompanyAvatar name={name} logoUrl={logoUrl}/><div><h2 id="ma-chat-title">{name}</h2><span>{conversation?.requestId || target.requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span></div><button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button></header>
+    <header className="ma-chat__head"><button type="button" className="ma-chat__close" aria-label="ყველა მიმოწერა" onClick={onBack}><Icon name="message-square" /></button><CompanyAvatar name={name} logoUrl={logoUrl}/><div><h2 id="ma-chat-title">{isCompany ? <Link className="ma-chat__peer-link" href={`/companies/view/?id=${encodeURIComponent(otherId)}`} onClick={onClose}>{name}</Link> : name}</h2><span className="ma-chat__context">{request ? <Link href={`/requests/view/?id=${encodeURIComponent(request.id)}`} onClick={onClose} title={request.title}>{request.title}</Link> : requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span></div>{conversation ? <Link className="ma-chat__close" href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose} aria-label="მიმოწერის სრულად გახსნა"><Icon name="layout-grid" /></Link> : null}<button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button></header>
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
-      {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><Icon name="message-square"/><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : messages.map(m => <div key={m.id} className={`ma-chat__message${m.senderId === owner ? " ma-chat__message--mine" : ""}`}><span className="ma-sr-only">{m.senderId === owner ? "შენ" : name}: </span><p>{m.body}</p><time dateTime={m.createdAt}>{chatDate(m.createdAt)}</time></div>)}
+      {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : messages.map(m => <div key={m.id} className={`ma-chat__message${m.senderId === owner ? " ma-chat__message--mine" : ""}`}><span className="ma-sr-only">{m.senderId === owner ? "შენ" : name}: </span><p>{m.body}</p><time dateTime={m.createdAt}>{chatDate(m.createdAt)}</time></div>)}
     </div>
     {failed ? <div className="ma-chat__retry"><span>განახლება ვერ მოხერხდა.</span><button className="ma-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
     <form className="ma-chat__composer" onSubmit={e => { e.preventDefault(); void send(); }}>

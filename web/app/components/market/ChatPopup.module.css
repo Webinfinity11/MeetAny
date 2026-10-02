@@ -1,0 +1,33 @@
+.emptyArt {
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--size-112);
+  height: var(--size-88);
+  margin-bottom: var(--size-4);
+  overflow: hidden;
+  animation: invitationEnter .45s var(--motion-ease-out) both;
+}
+.emptyArt .illustration {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size-216);
+  height: var(--size-144);
+  max-width: none;
+  transform: translate(-50%, -50%);
+  animation: invitationNudge 10s ease-in-out 1s infinite;
+}
+.emptyArt:hover .illustration { animation-play-state: paused; }
+@keyframes invitationEnter {
+  from { opacity: 0; transform: translateY(var(--size-4)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes invitationNudge {
+  0%, 12%, 100% { transform: translate(-50%, -50%); }
+  6% { transform: translate(-50%, calc(-50% - var(--size-2))); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .emptyArt,
+  .emptyArt .illustration { animation: none; }
+}

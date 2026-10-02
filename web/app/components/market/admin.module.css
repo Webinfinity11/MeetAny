@@ -74,7 +74,7 @@
 .overviewSecondary strong { color: var(--text); font-variant-numeric: tabular-nums; }
 .overviewSecondary svg { width: var(--size-14); height: var(--size-14); color: var(--text-3); }
 .overviewSecondary a:hover { color: var(--action); }
-.overviewSplit { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(0,1fr); gap: var(--space-5); align-items: start; }
+.overviewSplit { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--space-6); align-items: start; }
 .panel { display: grid; gap: var(--space-5); min-width: 0; padding: var(--space-5); border: var(--size-1) solid var(--border); border-radius: var(--size-12); background: var(--white); }
 .panelHead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); flex-wrap: wrap; }
 .panelHead h2 { margin: 0; font-size: var(--fs-body); line-height: var(--lh-sm); }

@@ -3,21 +3,30 @@
 .save:disabled { opacity: .5; cursor: wait; }
 .bell { position: relative; }
 .badge { position: absolute; top: 0; right: 0; min-width: var(--space-4); padding: 0 var(--space-1); border-radius: var(--radius-pill); background: var(--blue-600); color: var(--white); font-size: var(--fs-xs); line-height: var(--space-4); }
-.popover { position: absolute; right: 0; top: calc(100% + var(--space-3)); width: min(var(--size-360), calc(100vw - var(--space-8))); max-height: 70vh; overflow-y: auto; background: var(--bg); border: var(--size-1) solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow-3); z-index: var(--z-menu); }
+.popover { position: absolute; right: 0; top: calc(100% + var(--space-3)); width: min(var(--size-400), calc(100vw - var(--space-8))); max-height: 70vh; overflow-y: auto; background: var(--bg); border: var(--size-1) solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow-3); z-index: var(--z-menu); }
+.popover > .head { font-size: var(--fs-body); line-height: var(--lh-body); }
+.popover > p { margin: var(--space-4) 0; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--text-3); }
+.noticeList { min-width: 0; }
+.noticeFooter { width: 100%; justify-content: space-between; margin-top: var(--space-2); }
 .stack { display: grid; gap: var(--space-4); min-width: 0; }
 .head { display: flex; gap: var(--space-3); align-items: center; justify-content: space-between; }
 .head h2 { margin: 0; }
-.row { padding: var(--space-4) 0; border-bottom: var(--size-1) solid var(--border); display: grid; gap: var(--space-2); overflow-wrap: anywhere; }
+.row { border-bottom: var(--size-1) solid var(--border); min-width: 0; overflow-wrap: anywhere; }
 .row p { margin: 0; color: var(--text-2); font-size: var(--fs-sm); }
-.row a { color: var(--text); font-weight: var(--fw-medium); text-decoration: none; }
-.row a:hover { color: var(--action); }
-.row[data-unread="true"] a { color: var(--text); font-weight: var(--fw-bold); }
-.row[data-unread="true"] { box-shadow: inset var(--size-3) 0 0 var(--action); padding-left: var(--space-4); }
+.row .noticeLink { display: grid; gap: var(--space-2); min-height: var(--tap-min); padding: var(--space-4) var(--space-2); color: var(--text); font-size: var(--fs-sm); font-weight: var(--fw-medium); line-height: var(--lh-sm); text-decoration: none; border-radius: var(--radius-sm); }
+.row .noticeLink:hover { background: var(--bg-subtle); }
+.noticeTop { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1) var(--space-3); color: var(--text-3); font-size: var(--fs-xs); line-height: var(--lh-sm); }
+.noticeKind { display: inline-flex; align-items: center; gap: var(--space-2); }
+.noticeTop time { font-weight: var(--fw-regular); white-space: nowrap; }
+.unreadDot { width: var(--size-6); height: var(--size-6); flex-shrink: 0; border-radius: var(--radius-pill); background: var(--action); }
+.noticeTitle { color: var(--text); }
+.row[data-unread="true"] .noticeTitle { font-weight: var(--fw-semibold); }
+.previewTitle { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .meta { color: var(--text-3); font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .savedRow { display: flex; justify-content: space-between; align-items: start; gap: var(--space-4); padding: var(--space-4) 0; border-bottom: var(--size-1) solid var(--border-subtle); }
 .savedRow h3 { margin: 0 0 var(--space-1); }
 .savedRow p { margin: 0; color: var(--text-2); }
-@media(max-width:767px) { .popover { position: fixed; top: var(--space-20); right: var(--space-4); } }
+@media(max-width:1023px) { .popover { position: fixed; top: var(--space-20); right: var(--space-4); } }
 
 .saveIcon { width: var(--tap-min); height: var(--tap-min); border-color: var(--border-strong); border-radius: var(--radius-sm); background: var(--white); color: var(--text-2); }
 .saveLabel { width: auto; min-height: var(--tap-min); gap: var(--space-2); padding-inline: var(--space-3); border-color: transparent; background: transparent; font-size: var(--fs-sm); }

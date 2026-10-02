@@ -18,7 +18,7 @@ type Saved = { company_id: string; company: string; city: string; industry: stri
 type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
 // Store statuses: idle (not loaded yet) → ready | unavailable (feature off) | error (request failed).
 const failed = (status?: string) => status === "unavailable" || status === "error";
-const label = (kind: string) => kind === "request_match" ? "ახალი მოთხოვნა შენს კატეგორიაში" : kind === "offer_chosen" ? "შენი შეთავაზება აირჩიეს" : "ახალი შეთავაზება მიიღე";
+const label = (kind: string) => kind === "request_match" ? "შესაბამისი მოთხოვნა" : kind === "offer_chosen" ? "შეთავაზება აირჩიეს" : "ახალი შეთავაზება";
 const date = (value: string, withTime = true) => {
  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {timeZone: withTime ? "Asia/Tbilisi" : "UTC",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date(value)).map(p => [p.type,p.value]));
  return `${parts.day}.${parts.month}.${parts.year}${withTime ? `, ${parts.hour}:${parts.minute}` : ""}`;
@@ -42,7 +42,7 @@ function groupNotices(items: Notice[]): Group[] {
  return [...groups.values()];
 }
 const groupLabel = (g: Group) => g.latest.kind === "offer_received" ? (g.items.length > 1 ? `${g.items.length} ახალი შეთავაზება` : "ახალი შეთავაზება") : label(g.latest.kind);
-function NoticeRows({ items, limit, store }: { items: Notice[]; limit?: number; store?: Store }) {
+function NoticeRows({ items, limit, store, compact = false }: { items: Notice[]; limit?: number; store?: Store; compact?: boolean }) {
  const [now] = useState(() => Date.now());
  const groups = groupNotices(items);
  return <>{(limit ? groups.slice(0, limit) : groups).map(g => {
@@ -53,8 +53,12 @@ function NoticeRows({ items, limit, store }: { items: Notice[]; limit?: number; 
     // Read acknowledgement runs in the background; navigation remains immediate.
     void Promise.all(unread.map(x => store.markNotificationRead(x.id)))
       .catch(() => toast("წაკითხვის მონიშვნა ვერ შესრულდა."));
-   }}>{groupLabel(g)} — {n.title}{unread.length ? <span className="ma-sr-only"> — წაუკითხავი</span> : null}</Link>
-   {n.kind === "request_match" ? <span className={styles.meta}>{categories[n.category || ""]} · {cities[n.city || ""]}{n.needed_by ? ` · საჭიროა ${date(n.needed_by, false)}` : ""}</span> : null}<time className={styles.meta} dateTime={n.created_at}>{relative(n.created_at, now)}</time>
+   }} className={styles.noticeLink}>
+    <span className={styles.noticeTop}><span className={styles.noticeKind}>{unread.length ? <span className={styles.unreadDot} aria-hidden="true"/> : null}{groupLabel(g)}</span><time dateTime={n.created_at}>{relative(n.created_at, now)}</time></span>
+    <span className={`${styles.noticeTitle}${compact ? ` ${styles.previewTitle}` : ""}`}>{n.title}</span>
+    {n.kind === "request_match" ? <span className={styles.meta}>{[categories[n.category || ""], cities[n.city || ""]].filter(Boolean).join(" · ")}{!compact && n.needed_by ? ` · საჭიროა ${date(n.needed_by, false)}` : ""}</span> : null}
+    {unread.length ? <span className="ma-sr-only">წაუკითხავი</span> : null}
+   </Link>
   </article>;
  })}</>;
 }
@@ -77,8 +81,8 @@ export function NotificationBell() {
   <button ref={trigger} type="button" className={styles.save} aria-label={`შეტყობინებები${count ? `, ${count} წაუკითხავი` : ""}`} aria-expanded={open} aria-controls="notification-list" onClick={() => { setOpen(!open); if (!open) void refresh?.(); }}><Icon name="bell"/>{count ? <span className={styles.badge} aria-hidden="true">{count > 99 ? "99+" : count}</span> : null}</button>
   {open ? <div id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
    <div className={styles.head}><strong>შეტყობინებები</strong><Button type="button" variant="ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></Button></div>
-   {state?.status === "ready" ? state.notifications.items.length ? <div onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows store={store} items={state.notifications.items} limit={5}/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : failed(state?.status) ? <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p> : <ListSkeleton compact label="შეტყობინებები იტვირთება…" />}
-   <Button variant="ghost" href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება</Button>
+   {state?.status === "ready" ? state.notifications.items.length ? <div className={styles.noticeList} onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows store={store} items={state.notifications.items} limit={5} compact/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვს.</p> : failed(state?.status) ? <p role="status">შეტყობინებები დროებით მიუწვდომელია.</p> : <ListSkeleton compact label="შეტყობინებები იტვირთება…" />}
+   <Button variant="ghost" size="sm" className={styles.noticeFooter} href="/account/?tab=notifications&alerts=all" onClick={() => setOpen(false)}>ყველა შეტყობინება<Icon name="arrow-right"/></Button>
   </div> : null}
  </div>;
 }

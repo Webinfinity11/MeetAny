@@ -238,7 +238,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
           <span className="filter-switch__track" aria-hidden="true" />
         </label>
         <label className="filter-switch">
-          <span><strong>Premium და VIP</strong><small>კომპანიები ფასიანი განთავსებით</small></span>
+          <span><strong>Premium და VIP</strong></span>
           <input type="checkbox" role="switch" checked={paid} onChange={e => filters.set({ plan: e.target.checked ? "paid" : "" })} />
           <span className="filter-switch__track" aria-hidden="true" />
         </label>
@@ -269,7 +269,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
             utility={<>{viewSwitch}{ready && store?.currentUser() ? <Button variant="ghost" size="sm" className="catalog-saved-toggle" aria-label="შენახული კომპანიების ნახვა" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Button> : null}</>}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "recommended", label: "რეკომენდებული"}, {value: "active", label: "ყველაზე აქტიური"}, {value: "newest", label: "უახლესი"}]}}
           />
-          {sort === "recommended" && rows.some(c=>c.feature?.plan) ? <p className="business-fineprint">Premium და VIP — ფასიანი განთავსება რეკომენდებულ შედეგებში.</p> : null}
           <div className="company-directory-list">
             {!available ? (
               <ServiceUnavailable />

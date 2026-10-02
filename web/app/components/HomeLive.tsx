@@ -58,7 +58,7 @@ export function HomeCategories() {
   </Link>)}</div>;
 }
 
-/** Every category has a recognisable icon from one local rounded family; scrolls sideways
+/** Every category has a recognisable ready-made outline icon; scrolls sideways
  *  (wheel, touch, drag) with round arrow buttons at the edges. */
 export function HomeIndustries() {
   const list = useRef<HTMLUListElement>(null);

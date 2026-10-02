@@ -1,0 +1,8 @@
+{
+  "mode": "built-in image_gen",
+  "use": "Empty conversation illustration",
+  "generatedAt": "2026-10-02",
+  "asset": "chat-conversation-v1.png",
+  "alphaPreserved": true,
+  "finalPrompt": "Refine this illustration for an extremely minimal professional B2B empty chat state. Keep only the two overlapping softly rounded speech bubbles and three tiny dots, preserve their balanced composition. Remove ALL glow, bloom, haze, wide shadows and luminous edges. Make both bubbles clean matte near-flat color with only barely perceptible depth: restrained cobalt foreground and pale ice-blue rear. Everything outside the crisp object contours must have alpha zero, truly transparent. No background and no cast shadow. No text, no other objects. Elegant, quiet, simple, designed for a 110px UI illustration."
+}

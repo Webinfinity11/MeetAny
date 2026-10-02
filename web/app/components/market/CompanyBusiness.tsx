@@ -14,7 +14,7 @@ import "../../styles/pages/business.css";
 
 export function BusinessMarks({feature,hidePlan=false}:{feature?:BusinessFeature;hidePlan?:boolean}) {
  if(!feature||(hidePlan&&!feature.distributor&&!(feature.reviewCount>0)))return null;
- return <div className="business-marks">{feature.plan&&!hidePlan?<span className="business-tier" data-plan={feature.plan} title="ფასიანი განთავსება">{feature.plan==='vip'?'VIP':'Premium'}<span className="ma-sr-only"> — ფასიანი განთავსება</span></span>:null}{feature.distributor?<span><Icon name="truck"/>დისტრიბუტორი</span>:null}{feature.reviewCount>0?<span><Icon name="star"/>{feature.rating} <small>({feature.reviewCount})</small></span>:null}</div>;
+ return <div className="business-marks">{feature.plan&&!hidePlan?<span className="business-tier" data-plan={feature.plan}>{feature.plan==='vip'?'VIP':'Premium'}</span>:null}{feature.distributor?<span><Icon name="truck"/>დისტრიბუტორი</span>:null}{feature.reviewCount>0?<span><Icon name="star"/>{feature.rating} <small>({feature.reviewCount})</small></span>:null}</div>;
 }
 export function BusinessError({error,retry}:{error:string;retry:()=>void}){return <div className="business-error" role="alert"><p>{error}</p><Button type="button" variant="secondary" onClick={retry}><Icon name="refresh-cw"/>ხელახლა ცდა</Button></div>;}
 

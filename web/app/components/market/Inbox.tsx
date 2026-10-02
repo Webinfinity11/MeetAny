@@ -12,6 +12,7 @@ import { categories } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { Icon } from "../Icon";
+import { trapDialogFocus } from "../ui/dialog-focus";
 
 type Me = { id: string; role: string };
 type Profile = { logoUrl?: string | null; role?: string; industry?: string } | null;
@@ -62,13 +63,21 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
   const wide = useWide();
   const params = useSearchParams();
   // ?tab=messages&c=<id> opens one conversation directly.
-  const [selected, setSelected] = useState<string | null>(() => params.get("c"));
+  const query = params.get("c");
+  const [selection, setSelection] = useState(() => ({ query, id: query }));
+  const selected = selection.query === query ? selection.id : query;
+  const opener = useRef<HTMLButtonElement | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const items = current?.items;
   // Relative times ("14:20", "გუშინ") stay right across midnight.
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 60000); return () => clearInterval(timer); }, []);
   // Desktop opens the newest conversation; mobile starts on the list.
   const active = items?.find(c => c.id === selected) || (wide && items?.length ? items[0] : null);
+  const backToList = () => {
+    const trigger = opener.current || document.querySelector<HTMLButtonElement>(`.inbox-list li[data-id="${active?.id}"] button`);
+    setSelection({ query, id: null });
+    requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
+  };
 
   if (!current) return <section className="inbox inbox--empty" aria-busy="true"><header className="inbox-section-head"><h1>მიმოწერები</h1><p>კლიენტებთან და კომპანიებთან საუბრები ერთ სივრცეში.</p></header><div className="account-empty-state" role="status"><span className="icon-tile" aria-hidden="true"><Icon name="message-square"/></span><p className="account-empty">მიმოწერები იტვირთება…</p></div></section>;
   if (current.error && !items) return <section className="inbox"><div role="alert" className="inbox-note"><p className="account-empty">{current.error}</p><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div></section>;
@@ -91,7 +100,7 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
           const last = c.lastMessage;
           const unread = c.unreadCount > 0 && c.id !== active?.id;
           return <li key={c.id} data-id={c.id} data-context={d.requestId ? "request" : "general"}>
-            <button type="button" className="inbox-row" aria-current={c.id === active?.id ? "true" : undefined} data-unread={unread || undefined} onClick={() => setSelected(c.id)}>
+            <button type="button" className="inbox-row" aria-current={c.id === active?.id ? "true" : undefined} data-unread={unread || undefined} onClick={event => { opener.current = event.currentTarget; setSelection({ query, id: c.id }); }}>
               <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
               <span className="inbox-row__text">
                 <span className="inbox-row__top">
@@ -106,7 +115,7 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
         })}
       </ul>
     </div>
-    {active ? <Thread key={active.id} store={store} me={me} conversation={active} wide={!!wide} onBack={() => setSelected(null)}/> : wide === false ? null : <div className="inbox-thread inbox-thread--none"/>}
+    {active ? <Thread key={active.id} store={store} me={me} conversation={active} wide={!!wide} onBack={backToList}/> : wide === false ? null : <div className="inbox-thread inbox-thread--none"/>}
   </section>;
 }
 
@@ -136,7 +145,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   let lastDay = "";
   const sheet = !wide;
   const requestHref = d.requestId && d.requestFound ? `/requests/view/?id=${encodeURIComponent(d.requestId)}` : "";
-  const pane = <div className={sheet ? "inbox-thread inbox-thread--sheet" : "inbox-thread"} role={sheet ? "dialog" : undefined} aria-label={sheet ? d.name : undefined}>
+  const pane = <div className={sheet ? "inbox-thread inbox-thread--sheet" : "inbox-thread"} role={sheet ? "dialog" : undefined} aria-modal={sheet ? true : undefined} aria-label={sheet ? d.name : undefined} tabIndex={sheet ? -1 : undefined} onKeyDown={event => { if (!sheet) return; trapDialogFocus(event); if (event.key === "Escape") { event.preventDefault(); onBack(); } }}>
     {!wide ? <button ref={back} type="button" className="inbox-back" onClick={onBack}><Icon name="arrow-left"/>მიმოწერები</button> : null}
     <header className="inbox-head">
       <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>

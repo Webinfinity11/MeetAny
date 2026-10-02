@@ -15,8 +15,8 @@ try {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   // Inspect the real local sprite independently from authentication or catalogue data.
-  const cells = categories.map(({ key, label }) => `<div class="cell"><div class="tile"><svg data-category="${key}" viewBox="0 0 960 960"><use href="/icons-categories.svg#${key}"/></svg></div><span>${label}</span></div>`).join('');
-  const html = `<!doctype html><meta charset="utf-8"><style>body{font:14px Arial;padding:32px;color:#15304a}h1{font-size:24px}.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:30px 20px}.cell{text-align:center;line-height:1.5}.tile{width:48px;height:48px;border-radius:50%;background:#edf3ff;color:#2457c7;display:grid;place-items:center;margin:0 auto 10px}.tile svg{width:28px;height:28px;fill:currentColor}</style><h1>MeetAny · Rounded category icons</h1><div class="grid">${cells}</div>`;
+  const cells = categories.map(({ key, label }) => `<div class="cell"><div class="tile"><svg data-category="${key}" viewBox="0 0 24 24"><use href="/icons-categories.svg#${key}"/></svg></div><span>${label}</span></div>`).join('');
+  const html = `<!doctype html><meta charset="utf-8"><style>body{font:14px Arial;padding:32px;color:#15304a}h1{font-size:24px}.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:30px 20px}.cell{text-align:center;line-height:1.5}.tile{width:48px;height:48px;border-radius:12px;background:#fff;color:#526174;display:grid;place-items:center;margin:0 auto 10px}.tile svg{width:28px;height:28px;fill:none}</style><h1>MeetAny · Lucide outline category icons</h1><div class="grid">${cells}</div>`;
   await page.route(`${origin}/__qa-category-icons`, route => route.fulfill({ contentType: 'text/html', body: html }));
   await page.goto(`${origin}/__qa-category-icons`, { waitUntil: 'networkidle' });
   const glyphs = [];
@@ -25,7 +25,7 @@ try {
     let ink = 0;
     for (let index = 0; index < pixels.data.length; index += 4) {
       const [red, green, blue] = pixels.data.subarray(index, index + 3);
-      if (red < 130 && green < 170 && blue > 140) ink++;
+      if (red < 160 && green < 160 && blue < 180) ink++;
     }
     assert(ink > 12, `Invisible or clipped glyph: ${key} (${ink} pixels)`);
     glyphs.push({ key, ink });

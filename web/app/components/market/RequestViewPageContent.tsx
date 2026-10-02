@@ -299,7 +299,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
           ) : !me.verified ? (
-            <div className="ma-stack" id="send-offer"><h2 className="ma-h3">კომპანია დასადასტურებელია</h2><p className="ma-note">შენი განაცხადი ადმინთანაა. დადასტურების შემდეგ შეძლებ შეთავაზების გაგზავნას.</p><Button variant="secondary" href="/account/?tab=profile">პროფილის ნახვა</Button></div>
+            <div className="ma-stack" id="send-offer"><h2 className="ma-h3">კომპანია დასადასტურებელია</h2><p className="ma-note">შენი განაცხადი ადმინთანაა. დადასტურების შემდეგ შეძლებ შეთავაზების გაგზავნას.</p><Button variant="secondary" href="/account/?tab=profile">ჩემი პროფილის რედაქტირება</Button></div>
           ) : closed ? (
             <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           ) : (
@@ -389,7 +389,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
       </div>
 
       {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <div className="detail-actionbar">
-        {me ? <Button variant="primary" href={me.verified ? "#send-offer" : "/account/?tab=profile"}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "პროფილის ნახვა"}</Button>
+        {me ? <Button variant="primary" href={me.verified ? "#send-offer" : "/account/?tab=profile"}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "ჩემი პროფილის რედაქტირება"}</Button>
           : <Button variant="primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}><Icon name="send"/>შედი და გაგზავნე შეთავაზება</Button>}
       </div> : null}
       <ConfirmSheet

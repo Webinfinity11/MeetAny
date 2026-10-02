@@ -8,7 +8,7 @@ import { DuoIcon } from "../ui/DuoIcon";
 export type Facet = { id: string; label: string; count: number; icon?: string; children?: Facet[] };
 
 const VISIBLE = 8;
-const groupGlyphs: Record<string,string> = {food:"food_fresh",construction:"renovation",interior:"furniture",production:"packaging",logistics:"freight",trade:"wholesale",facility:"cleaning",digital:"software_web",marketing:"advertising",business:"consulting",finance:"business_finance",tourism:"hotel_services"};
+const groupGlyphs: Record<string,string> = {food:"food_fresh",construction:"renovation",interior:"furniture",production:"packaging",logistics:"freight",trade:"wholesale",facility:"cleaning",it:"software_web",marketing:"advertising",business:"consulting",finance:"business_finance",tourism:"hotel_services",other:"other"};
 
 export function FacetList({
   all,

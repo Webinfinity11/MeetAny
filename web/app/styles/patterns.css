@@ -347,6 +347,10 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-chat__head h2{margin:0;color:var(--text-on-brand);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-semibold);font-feature-settings:var(--ff-heading)}
 .ma-chat .ma-chat__head .ma-avatar{flex:none;background:var(--action-subtle);color:var(--action)}
 .ma-chat__head span:not(.ma-avatar){font-size:var(--fs-xs);line-height:var(--lh-xs)}
+.ma-chat__peer-link,.ma-chat__context a{color:inherit;text-decoration:none}
+.ma-chat__peer-link:hover,.ma-chat__context a:hover{text-decoration:underline}
+.ma-chat__peer-link:focus-visible,.ma-chat__context a:focus-visible{outline:var(--size-2) solid currentColor;outline-offset:calc(-1 * var(--size-2))}
+.ma-chat__context{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ma-chat__close{display:grid;place-items:center;flex:none;width:var(--tap-min);height:var(--tap-min);border:0;border-radius:var(--radius-control);background:transparent;color:inherit;cursor:pointer;transition:background var(--motion-fast) var(--motion-ease)}
 .ma-chat__close:hover{background:var(--action-hover)}
 .ma-chat__messages{display:flex;flex-direction:column;gap:var(--space-3);flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:var(--space-5);background:var(--bg)}
@@ -381,7 +385,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 .ma-chat-list__row>.ma-avatar{flex:none;width:var(--size-42);height:var(--size-42)}
 .ma-chat-list__text{flex:1;min-width:0;display:grid;gap:var(--size-3)}
 .ma-chat-list__text strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--size-14);font-weight:var(--fw-semibold)}
-.ma-chat-list__text small{font-size:var(--size-11);color:var(--text-3)}
+.ma-chat-list__text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--size-11);color:var(--text-3)}
 .ma-chat-list__text>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--size-13);color:var(--text-2)}
 .ma-chat-list__row[data-unread] .ma-chat-list__text strong{color:var(--blue-700)}
 .ma-chat-list__row[data-unread] .ma-chat-list__text>span{font-weight:var(--fw-semibold)}

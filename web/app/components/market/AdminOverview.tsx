@@ -71,11 +71,11 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
 
   const kpis: { key: string; label: string; value: number; delta?: { current: number; previous: number }; href: string }[] = [
     { key: "users", label: "მომხმარებლები", value: stats.users, delta: recentUsers ? userWeek : undefined, href: "/admin/?tab=users" },
-    { key: "companies", label: "კომპანიები", value: stats.companies, href: "/admin/?tab=users&role=company" },
+    { key: "companies", label: "კომპანიები", value: stats.companies, href: "/admin/?tab=companies" },
     { key: "open", label: "ღია მოთხოვნები", value: stats.open, href: "/admin/?tab=requests&status=open" },
     { key: "offers", label: "შეთავაზებები", value: stats.offers, href: "/admin/?tab=offers" },
     { key: "chosen", label: "არჩეული მომწოდებლები", value: stats.chosen, href: "/admin/?tab=requests&status=chosen" },
-    { key: "verified", label: "დადასტურებული კომპანიები", value: stats.verified, href: "/admin/?tab=users&role=company&status=verified" },
+    { key: "verified", label: "დადასტურებული კომპანიები", value: stats.verified, href: "/admin/?tab=companies&status=verified" },
   ];
 
   return <div className={styles.overview}>

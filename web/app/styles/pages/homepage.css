@@ -254,11 +254,12 @@
 .home-catbar a:hover {
   color: var(--blue-700);
 }
-.home-catbar .icon-tile { border: var(--size-1) solid var(--blue-100); border-radius: 50%; background: var(--blue-50); transition: background var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease); }
+.home-catbar .icon-tile { border: 0; border-radius: var(--size-12); background: transparent; transition: background var(--motion-fast) var(--motion-ease); }
+.home-catbar .icon-tile .duo-icon { color: var(--text-2); transition: color var(--motion-fast) var(--motion-ease); }
 .home-catbar a:hover .icon-tile {
-  background: var(--blue-100);
-  border-color: var(--blue-200);
+  background: var(--bg-subtle);
 }
+.home-catbar a:hover .duo-icon { color: var(--action); }
 .home-catbar a:focus-visible { outline: var(--size-2) solid var(--blue-700); outline-offset: var(--size-4); border-radius: var(--size-14); }
 .home-catbar__arrow {
   position: absolute;

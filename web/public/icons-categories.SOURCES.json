@@ -1,51 +1,200 @@
 {
-  "family": "Google Material Symbols",
-  "style": "Rounded",
-  "weight": 400,
-  "fill": 0,
-  "opticalSize": 24,
-  "source": "https://github.com/google/material-design-icons",
-  "guide": "https://developers.google.com/fonts/docs/material_symbols",
-  "license": "Apache 2.0 (icons-categories.LICENSE.txt)",
-  "usage": "Local SVG subset, no external browser requests",
+  "family": "Lucide",
+  "style": "Outline",
+  "viewBox": "0 0 24 24",
+  "strokeWidth": 1.5,
+  "source": "https://github.com/lucide-icons/lucide",
+  "revision": "aace268b9be318c4f6d8a09a35139f860d07d9c5",
+  "guide": "https://lucide.dev/",
+  "license": "ISC / MIT (icons-categories.LICENSE.txt)",
+  "usage": "Ready-made official SVGs stored locally; original paths unchanged; no image generation",
   "mapping": {
-    "food_fresh": "nutrition",
-    "food_processed": "takeout_dining",
-    "beverages": "wine_bar",
-    "catering": "restaurant",
-    "building_materials": "foundation",
-    "renovation": "format_paint",
-    "engineering": "handyman",
-    "furniture": "chair",
-    "equipment": "shelves",
-    "textiles": "checkroom",
-    "packaging": "package_2",
-    "printing": "print",
-    "freight": "local_shipping",
+    "food_fresh": "apple",
+    "food_processed": "package-check",
+    "beverages": "wine",
+    "catering": "utensils",
+    "building_materials": "brick-wall",
+    "renovation": "paint-roller",
+    "engineering": "construction",
+    "furniture": "armchair",
+    "equipment": "store",
+    "textiles": "shirt",
+    "packaging": "package-open",
+    "printing": "printer",
+    "freight": "truck",
     "warehouse": "warehouse",
-    "customs": "fact_check",
-    "wholesale": "shopping_cart_checkout",
-    "office_household": "home_work",
-    "cleaning": "cleaning_services",
-    "laundry": "local_laundry_service",
-    "technical_service": "home_repair_service",
-    "security": "verified_user",
-    "software_web": "developer_mode_tv",
-    "it_support": "headset_mic",
-    "branding_design": "palette",
-    "advertising": "campaign",
-    "photo_video": "photo_camera",
-    "events": "celebration",
-    "accounting": "calculate",
-    "legal": "balance",
-    "consulting": "insights",
-    "hr_training": "groups",
+    "customs": "clipboard-check",
+    "wholesale": "shopping-cart",
+    "office_household": "briefcase-business",
+    "cleaning": "spray-can",
+    "laundry": "washing-machine",
+    "technical_service": "wrench",
+    "security": "shield-check",
+    "software_web": "square-code",
+    "it_support": "headphones",
+    "branding_design": "pen-tool",
+    "advertising": "megaphone",
+    "photo_video": "camera",
+    "events": "calendar-days",
+    "accounting": "calculator",
+    "legal": "scale",
+    "consulting": "chart-no-axes-combined",
+    "hr_training": "users-round",
     "leasing": "handshake",
-    "business_finance": "account_balance",
-    "business_insurance": "shield_with_heart",
-    "hotel_services": "hotel",
-    "tours": "explore",
-    "other": "category"
+    "business_finance": "landmark",
+    "business_insurance": "shield",
+    "hotel_services": "bed-double",
+    "tours": "map-pinned",
+    "other": "layout-grid"
   },
-  "normalization": "SVGs are translated/scaled from their original viewBox to 0 0 960 960"
+  "assets": {
+    "food_fresh": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/apple.svg",
+      "sha256": "55ae3426d521764c769c295a02a5bf11323068e6abf46c89a4b418b75e7e0f54"
+    },
+    "food_processed": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/package-check.svg",
+      "sha256": "ce6b0e8a3102a9dc0a00b68f613dfd43ca6fa45182bc13786aafc338c1961fcf"
+    },
+    "beverages": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/wine.svg",
+      "sha256": "3adb2e9107cd4781fbce74a2aaf8704f7a1dbe8f24a024c207d4151491464d9e"
+    },
+    "catering": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/utensils.svg",
+      "sha256": "9b5eb803bc342b8503b6a154ff63a0f754ba52a13fa24c2e270d2ab89c70f76a"
+    },
+    "building_materials": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/brick-wall.svg",
+      "sha256": "819daf0e7b1aec7a40d725c1400e698b6f94015f2fc5db8f33bde133be8e55af"
+    },
+    "renovation": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/paint-roller.svg",
+      "sha256": "5ee870ae29a42f19e5876cddee9bec1caed915e7554716844963a271e7dac740"
+    },
+    "engineering": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/construction.svg",
+      "sha256": "75eadbc2abdde6da2b16d55c3d100280bf6bde60d192978d7752930d8cc508a7"
+    },
+    "furniture": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/armchair.svg",
+      "sha256": "94040a227db83a21e42834b8839426754b4e1f36530eb90a440abaa3f3ee13eb"
+    },
+    "equipment": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/store.svg",
+      "sha256": "ab2cb92d8cff487f5a53a06f5ee3ba0c2cf522b95281adc1de9ec8410c26e99a"
+    },
+    "textiles": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/shirt.svg",
+      "sha256": "6e7df3e5ab01881bce6e00eebd449c950fd8535de656c7b720e6cba6b5a70602"
+    },
+    "packaging": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/package-open.svg",
+      "sha256": "261a0676ee3db3e5c64a528ac7f81a4893ddb3dfebd0549562f4ef5033757920"
+    },
+    "printing": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/printer.svg",
+      "sha256": "fa9a6381687bc519a62eb9eac2492d5d51e8e659182822296b6e14bf2f00ecfb"
+    },
+    "freight": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/truck.svg",
+      "sha256": "1476faa56b56414ba5d5f01d15e851b8bfd79bef6c36f5855811c27590136e50"
+    },
+    "warehouse": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/warehouse.svg",
+      "sha256": "709f50b56a6808e03de3f0d3a9dc74234825d1dd162382cc87460e414e1eb915"
+    },
+    "customs": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/clipboard-check.svg",
+      "sha256": "e2bac86a6b24caa0d7d0dcc2719ec6b7870ec5eef2d21afae498d8cb5eefda96"
+    },
+    "wholesale": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/shopping-cart.svg",
+      "sha256": "7cdc07053044af9e5fd24fff5e089ce97b2a39ea978933a160c4bbfebf8a167c"
+    },
+    "office_household": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/briefcase-business.svg",
+      "sha256": "98388a2bf7b9d102d77772d125d26f59ea3bed0d8573a5fc8907003099ae9a54"
+    },
+    "cleaning": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/spray-can.svg",
+      "sha256": "19c310ec728c651f668e6c7ce64fb14d4ab50d6230ba44ea358dbab3e7c6964e"
+    },
+    "laundry": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/washing-machine.svg",
+      "sha256": "47de24566c8f95282ffd4a80a10100295ef35a0c4163254a3d477e7a80945ed4"
+    },
+    "technical_service": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/wrench.svg",
+      "sha256": "b5f3bf792743edb9e81b543dd1b13ccc26d3afe1d33500a1cd8dee2e052d6197"
+    },
+    "security": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/shield-check.svg",
+      "sha256": "8d4fcdbde5bba4abb1a2f6fe53e37ceb6343a1d5449a9d88f6f97c1971d26c4e"
+    },
+    "software_web": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/square-code.svg",
+      "sha256": "a3098343d7966a906420f153f8efea3900f4003c130c08ae1a49d5971c4d8236"
+    },
+    "it_support": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/headphones.svg",
+      "sha256": "7719585dafa921805aefc21fc3262bbcc621507610a653b84e1632236650b35a"
+    },
+    "branding_design": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/pen-tool.svg",
+      "sha256": "a31b434a7b7e379bd37b05fe7ae4b632c0cf38baf7463a726961ce65dd0cb089"
+    },
+    "advertising": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/megaphone.svg",
+      "sha256": "279096a06626ec84f76a6358cf25b919d77d6fa53e82892397c0f2a907602850"
+    },
+    "photo_video": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/camera.svg",
+      "sha256": "ebbb3178dd80dfd942770a2237fe7bfc3515c55c7daa9d3666933a656d2790e3"
+    },
+    "events": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/calendar-days.svg",
+      "sha256": "9330eb8d7c4989e97b6361314abbf02953243c602874725c9e58ceca00da3bd7"
+    },
+    "accounting": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/calculator.svg",
+      "sha256": "a6b191250b1ffabdf9fc9536662309f1b0f65336aa681d75bae9f1708baaefd0"
+    },
+    "legal": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/scale.svg",
+      "sha256": "a7faa238b153311b18aaffb14ade8989128eaac35a92482edb7a7ee04c7333de"
+    },
+    "consulting": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/chart-no-axes-combined.svg",
+      "sha256": "2f8a708c357488cfde7428d9b055b9bb4a99c08dc71e9296da03ecc19291c4ab"
+    },
+    "hr_training": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/users-round.svg",
+      "sha256": "8b41ee3ada1609e25a410d64056aa333952cf27d770f0c379a100065270de7f7"
+    },
+    "leasing": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/handshake.svg",
+      "sha256": "f58638064a1884e256895720c9a665d9e98cfc6935c52e14782ce0e84ecdad02"
+    },
+    "business_finance": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/landmark.svg",
+      "sha256": "28408ef995796bffc390e8f217cdaa61e383627789d66300d4ff839248a3f144"
+    },
+    "business_insurance": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/shield.svg",
+      "sha256": "be32f6a86df7cbe43a83c439dd8849e5bcf5145e484d23420c20d8b98a78e82b"
+    },
+    "hotel_services": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/bed-double.svg",
+      "sha256": "b8db0c1a2178019c7659f10d0461e5903eddd4e8bb8a826b380eba556278bac5"
+    },
+    "tours": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/map-pinned.svg",
+      "sha256": "2dedd29b37abb0dfbc24825952e8a9906148c21b428abffc3f52a443e88b799f"
+    },
+    "other": {
+      "url": "https://raw.githubusercontent.com/lucide-icons/lucide/aace268b9be318c4f6d8a09a35139f860d07d9c5/icons/layout-grid.svg",
+      "sha256": "b8903f61d09b1d75e55c71158277d26570962f69c2099446a251871e0a2d6678"
+    }
+  }
 }

@@ -41,7 +41,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
       <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">
         {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="company-card__initials"><Icon name="building-2" /></span>}
       </Link>
-      {c.feature?.plan ? <span className="company-card__plan" data-plan={c.feature.plan}>{c.feature.plan === "vip" ? "VIP" : "Premium"}<span className="ma-sr-only"> — ფასიანი განთავსება</span></span> : null}
+      {c.feature?.plan ? <span className="company-card__plan" data-plan={c.feature.plan}>{c.feature.plan === "vip" ? "VIP" : "Premium"}</span> : null}
       <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>
       <div className="company-card__body">
         <h3 className="company-card__name"><Link className="card-main-link" href={href}>{c.name}</Link></h3>
