@@ -2,7 +2,7 @@ import Link from "next/link";
 import { DiscoverySearch } from "../components/DiscoverySearch";
 import { Icon } from "../components/Icon";
 import { HomeBusinessScene } from "../components/HomeBusinessScene";
-import { HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin } from "../components/HomeLive";
+import { HomeHeroText, HomeSectionHeading, HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin } from "../components/HomeLive";
 
 const steps = [
   { frame: 0, title: "მოძებნე ან აღწერე", text: "რა სჭირდება შენს ბიზნესს" },
@@ -16,8 +16,7 @@ export default function HomePage() {
       <div className="home-wrap">
         <div className="hero-layout">
           <div className="hero-copy">
-            <h1 id="discovery-title">შენი შემდეგი<br /><span>ბიზნესპარტნიორი აქაა.</span></h1>
-            <p className="hero-description">იპოვე მომწოდებელი, მიიღე შეთავაზებები და დაიწყე თანამშრომლობა.</p>
+            <HomeHeroText />
             <DiscoverySearch />
           </div>
           <HomeBusinessScene />
@@ -39,7 +38,7 @@ export default function HomePage() {
 
     <section className="home-section home-wrap" aria-labelledby="requests-heading">
       <div className="home-section-head">
-        <h2 id="requests-heading">ახალი მოთხოვნები</h2>
+        <HomeSectionHeading section="requests" />
         <Link className="home-text-link" href="/requests/">ყველა მოთხოვნა<Icon name="clipboard-list" /></Link>
       </div>
       <HomeRequests />
@@ -47,7 +46,7 @@ export default function HomePage() {
 
     <section className="home-section home-wrap" aria-labelledby="featured-heading">
       <div className="home-section-head">
-        <h2 id="featured-heading">გაიცანი კომპანიები</h2>
+        <HomeSectionHeading section="companies" />
         <Link className="home-text-link" href="/companies/">ყველა კომპანია<Icon name="building-2" /></Link>
       </div>
       <HomeFeatured />

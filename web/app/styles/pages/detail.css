@@ -842,7 +842,7 @@
 }
 
 /* Keep the footer below the viewport while detail/loading/empty states swap. */
-body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
+.ma-frame:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
   min-height: calc(100svh - var(--header-h));
 }
 
@@ -1207,3 +1207,10 @@ body:is([data-market-page="request"], [data-market-page="company"]) .ma-main {
 .offer-comparison__card summary { cursor: pointer; min-height: var(--tap-min); display: flex; align-items: center; color: var(--text-link); font-size: var(--fs-sm); }
 .offer-comparison__card details p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .offer-comparison__card footer { display: grid; gap: var(--space-2); }
+
+.request-description-brief{border-top:var(--size-1) solid var(--border-subtle)}
+.request-description-brief>h2{display:flex;align-items:center;gap:var(--space-2);margin:0;padding:var(--space-4) var(--size-20);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
+.request-description-brief>h2 .icon{width:var(--size-18);height:var(--size-18);color:var(--text-3)}
+.request-session-note{display:flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--text-3);min-height:var(--tap-min)}
+.request-session-note p,.request-offer-privacy{margin:0}
+.request-offer-privacy{font-size:var(--fs-xs);line-height:var(--lh-body);color:var(--text-3);padding-top:var(--space-4);border-top:var(--size-1) solid var(--border-subtle)}

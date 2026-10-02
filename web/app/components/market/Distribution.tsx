@@ -11,14 +11,14 @@ export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;o
  const {store}=useMarketStore();
  const [value,setValue]=useState<Distribution>(()=>({...emptyDistribution,...initial,regions:initial?.regions||store?.currentUser()?.serviceCities||[]}));
  const [brands,setBrands]=useState(value.brands.join(", "));
- const [pending,setPending]=useState(false),[error,setError]=useState("");
- const patch=(change:Partial<Distribution>)=>setValue(v=>({...v,...change}));
+ const [pending,setPending]=useState(false),[error,setError]=useState(""),[saved,setSaved]=useState(false);
+ const patch=(change:Partial<Distribution>)=>{setSaved(false);setValue(v=>({...v,...change}));};
  function choices(key:"regions"|"categories"|"channels",label:string,options:Record<string,string>,max:number) {
   return <fieldset className="distribution-choices"><legend>{label}</legend>{Object.entries(options).map(([id,text])=><label className="ma-check" key={id}><input type="checkbox" checked={value[key].includes(id)} disabled={pending||(!value[key].includes(id)&&value[key].length>=max)} onChange={e=>patch({[key]:e.target.checked?[...value[key],id]:value[key].filter(v=>v!==id)})}/>{text}</label>)}</fieldset>;
  }
- return <form className="ma-form distribution-form" onSubmit={async e=>{e.preventDefault();if(pending)return;setPending(true);setError("");try {
+ return <form className="ma-form distribution-form" onChange={()=>setSaved(false)} onSubmit={async e=>{e.preventDefault();if(pending)return;setPending(true);setError("");setSaved(false);try {
   await store!.setMyDistribution({p_regions:value.regions,p_categories:value.categories,p_channels:value.channels,p_brands:brands.split(/[,\n]/).map(s=>s.trim()).filter(Boolean),p_warehouse:value.warehouse,p_transport:value.transport,p_cold_chain:value.coldChain,p_min_order:value.minOrder,p_exclusive:value.exclusive});
-  toast("დისტრიბუციის პროფილი შენახულია.");onSaved();
+  toast("დისტრიბუციის პროფილი შენახულია.");setSaved(true);onSaved();
  }catch(err){setError(businessError(err));}finally{setPending(false);}}}>
  <h3>დისტრიბუციის პროფილი</h3>
  {choices("regions","მომსახურების რეგიონები · აირჩიე მინიმუმ ერთი",cities,40)}
@@ -31,6 +31,7 @@ export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;o
  <label className="ma-check"><input type="checkbox" checked={value.exclusive} disabled={pending} onChange={e=>patch({exclusive:e.target.checked})}/>მზად ვარ ექსკლუზიური თანამშრომლობისთვის</label>
  {error?<p className="ma-field__error" role="alert">{error}</p>:null}
  <Button type="submit" loading={pending} disabled={!value.regions.length||!value.channels.length}>პროფილის შენახვა</Button>
+ {saved?<p className="account-save-feedback" role="status">დისტრიბუციის პროფილი შენახულია.</p>:null}
  </form>;
 }
 export function DistributionProfile({companyId}:{companyId:string}) {

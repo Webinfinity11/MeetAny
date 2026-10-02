@@ -3,26 +3,40 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "./Icon";
+import { useSiteContent } from "../lib/site-content";
 
-// Existing illustrative business photography; sources: assets/photos/cover/SOURCES.txt.
+// Genuine illustrative stock photography, optimised WebP crops; credits in photos/hero/SOURCES.txt.
 const sectors = [
-  { id: "production", label: "წარმოება", photo: "ceramics", icon: "package" },
-  { id: "logistics", label: "ლოგისტიკა", photo: "warehouse", icon: "truck" },
-  { id: "food", label: "საკვები და სასმელი", photo: "produce", icon: "utensils" },
-  { id: "marketing", label: "მარკეტინგი", photo: "team", icon: "megaphone" },
+  { id: "production", label: "წარმოება", photo: "/assets/photos/hero/production.webp", icon: "package" },
+  { id: "food", label: "საკვები და სასმელი", photo: "/assets/photos/hero/food.webp", icon: "utensils" },
+  { id: "logistics", label: "ლოგისტიკა", photo: "/assets/photos/hero/logistics.webp", icon: "truck" },
+  { id: "marketing", label: "მარკეტინგი", photo: "/assets/photos/hero/marketing.webp", icon: "megaphone" },
 ];
 
 export function HomeBusinessScene() {
   const [paused, setPaused] = useState(false);
+  const content = useSiteContent();
+  const cards = sectors.map((sector, index) => ({
+    ...sector,
+    photo: content[`heroImage${index + 1}`] || sector.photo,
+    label: content[`heroLabel${index + 1}`] || sector.label,
+  }));
+  const columns = [cards.slice(0, 2), cards.slice(2)];
   return <nav className="hero-scene" aria-label="აღმოაჩინე კომპანიები დარგების მიხედვით" data-paused={paused || undefined}>
-    <div className="hero-scene__orbit" aria-hidden="true" />
     <div className="hero-scene__photos">
-      {sectors.map((sector, index) => <Link key={sector.id} href={`/companies/?industry=${sector.id}`} className={`hero-scene__card hero-scene__card--${index + 1}`}>
-        <img src={`/assets/photos/cover/${sector.photo}.jpg`} width={320} height={400} alt="" decoding="async" />
-        <span><Icon name={sector.icon} />{sector.label}</span>
-      </Link>)}
+      {columns.map((column, index) => <div className="hero-scene__column" key={index}>
+        <div className="hero-scene__track">
+          {/* Equal groups give the descending loop no jump. Copies remain mouse-accessible,
+              while screen readers and keyboard navigation encounter each destination once. */}
+          {[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>
+            {column.map(sector => <Link key={sector.id} href={`/companies/?industry=${sector.id}`} className="hero-scene__card" tabIndex={duplicate ? -1 : undefined}>
+              <img src={sector.photo} width={480} height={360} alt="" decoding="async" />
+              <span><Icon name={sector.icon} />{sector.label}</span>
+            </Link>)}
+          </div>)}
+        </div>
+      </div>)}
     </div>
-    <span className="hero-scene__connection" aria-hidden="true"><img src="/assets/meetany-symbol-transparent.png" width={44} height={44} alt="" /></span>
-    <button className="hero-scene__motion" type="button" onClick={() => setPaused(value => !value)} aria-label={paused ? "ანიმაციის ჩართვა" : "ანიმაციის შეჩერება"} title={paused ? "ანიმაციის ჩართვა" : "ანიმაციის შეჩერება"}><Icon name={paused ? "play" : "pause"} /></button>
+    <button className="hero-scene__motion" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label={paused ? "ანიმაციის ჩართვა" : "ანიმაციის შეჩერება"} title={paused ? "ანიმაციის ჩართვა" : "ანიმაციის შეჩერება"}><Icon name={paused ? "play" : "pause"} /></button>
   </nav>;
 }

@@ -14,7 +14,7 @@ export const categoryGroups = [
     ["renovation", "რემონტი და მოწყობა", "service"],
     ["engineering", "ელექტრო/სანტექნიკა", "service"],
   ] },
-  { id: "interior", short: "ავეჯი და ტექსტილი", name: "ავეჯი, ინვენტარი და ტექსტილი", icon: "armchair", photo: "workshop-banner.jpg", items: [
+  { id: "interior", short: "ავეჯი, ინვენტარი და ტექსტილი", name: "ავეჯი, ინვენტარი და ტექსტილი", icon: "armchair", photo: "workshop-banner.jpg", items: [
     ["furniture", "ავეჯი", "product"],
     ["equipment", "კომერციული ინვენტარი", "product"],
     ["textiles", "ტექსტილი", "product"],

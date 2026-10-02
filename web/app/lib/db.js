@@ -4,13 +4,17 @@
 // with the verified JWT claims in request.jwt.claims, so the RLS policies and SECURITY DEFINER
 // functions of db/schema.sql decide what the caller may see or do (meetany_private.uid()).
 import { Pool } from '@neondatabase/serverless';
+import pg from 'pg';
 
 let pool = null;
 function getPool() {
-  const url = String(process.env.DATABASE_URL || '').trim();
+  const localUrl = String(process.env.MEETANY_LOCAL_DATABASE_URL || '').trim();
+  if (localUrl && !['localhost', '127.0.0.1', '[::1]'].includes(new URL(localUrl).hostname)) throw new Error('Local database must use a loopback host');
+  const url = localUrl || String(process.env.DATABASE_URL || '').trim();
   if (!/^postgres(ql)?:\/\//.test(url)) throw Object.assign(new Error('DATABASE_URL is not set'), { status: 500 });
   if (!pool) {
-    pool = new Pool({ connectionString: url, max: 5, connectionTimeoutMillis: 5000 });
+    const Driver = localUrl ? pg.Pool : Pool;
+    pool = new Driver({ connectionString: url, max: 5, connectionTimeoutMillis: 5000 });
     // An idle client whose WebSocket drops emits 'error' on the pool; unhandled, it kills the process.
     pool.on('error', (err) => console.warn('db pool:', err?.code || err?.message || 'connection error'));
   }
@@ -30,6 +34,11 @@ export function isConnectionError(err) {
 async function open(role, claims) {
   const client = await getPool().connect();
   try {
+    // The preview uses a local Auth metadata mirror. Verified JWTs can introduce
+    // a newly signed-up user without copying credentials or writing to Neon.
+    if (process.env.MEETANY_LOCAL_DATABASE_URL && role === 'authenticated' && claims?.sub && claims?.email) {
+      await client.query('insert into neon_auth."user"(id,name,email,"emailVerified") values($1,$2,$3,$4) on conflict(id) do update set "emailVerified"=excluded."emailVerified" where neon_auth."user"."emailVerified" is distinct from excluded."emailVerified"', [claims.sub,'ანგარიში',claims.email,claims.emailVerified === true]);
+    }
     await client.query(`begin; select set_config('request.jwt.claims', ${client.escapeLiteral(JSON.stringify({ ...claims, role }))}, true), `
       + `set_config('statement_timeout', '8000', true); set local role ${role}`);
     return client;

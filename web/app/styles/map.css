@@ -21,6 +21,7 @@
   inset: 0;
   font-family: var(--font-sans);
 }
+.companies-map .leaflet-container { background: var(--bg-subtle); }
 .companies-map__loading {
   position: absolute;
   inset: 0;
@@ -28,6 +29,25 @@
   place-items: center;
   color: var(--text-3);
   font-size: var(--fs-sm);
+  background: var(--bg-subtle);
+  z-index: 500;
+}
+.companies-map__tile-status {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-3);
+  right: var(--size-72);
+  width: fit-content;
+  padding: var(--space-2) var(--space-3);
+  border: var(--size-1) solid var(--card-border);
+  border-radius: var(--size-8);
+  background: var(--white);
+  color: var(--text-3);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-sm);
+  box-shadow: var(--card-shadow);
+  pointer-events: none;
+  z-index: 500;
 }
 .companies-map__unmapped {
   margin: 0;
@@ -44,8 +64,10 @@
   text-decoration: underline;
 }
 
-/* Pin: brand-blue teardrop with the company initials */
+/* A quiet location dot. Its 44px hit area remains larger than the visible disc. */
 .map-pin {
+  display: grid;
+  place-items: center;
   background: none;
   border: 0;
 }
@@ -53,27 +75,30 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: var(--size-36);
-  height: var(--size-36);
+  width: var(--size-32);
+  height: var(--size-32);
   border: var(--size-2) solid var(--white);
-  border-radius: 50% 50% 50% var(--size-4);
-  transform: rotate(-45deg);
-  background: var(--action);
-  box-shadow: 0 var(--size-6) var(--size-14) color-mix(in srgb, var(--ink-950) 28%, transparent);
-  transition: background-color var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--action) 12%, var(--white));
+  box-shadow: 0 0 0 var(--size-6) color-mix(in srgb, var(--action) 12%, transparent), 0 var(--size-2) var(--size-8) color-mix(in srgb, var(--ink-950) 18%, transparent);
+  transition: box-shadow var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
 }
-.map-pin__initials {
-  transform: rotate(45deg);
-  color: var(--white);
-  font: var(--fw-bold) var(--size-12)/1 var(--font-sans);
+.map-pin__dot::after {
+  content: "";
+  width: var(--size-10);
+  height: var(--size-10);
+  border-radius: 50%;
+  background: var(--action);
 }
 .map-pin:hover .map-pin__dot,
 .leaflet-marker-icon:focus-visible .map-pin__dot {
-  background: var(--action-hover);
-  transform: rotate(-45deg) scale(1.08);
+  box-shadow: 0 0 0 var(--size-6) color-mix(in srgb, var(--action) 22%, transparent), 0 var(--size-2) var(--size-8) color-mix(in srgb, var(--ink-950) 18%, transparent);
+  transform: scale(1.08);
 }
 .leaflet-marker-icon:focus-visible {
-  outline: none;
+  outline: var(--size-2) solid var(--action);
+  outline-offset: var(--size-2);
+  border-radius: 50%;
 }
 
 /* Cluster: white disc with the brand ring and the count */
@@ -81,7 +106,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--action) 18%, transparent);
+  background: color-mix(in srgb, var(--action) 14%, transparent);
 }
 .map-cluster > span {
   display: grid;
@@ -90,10 +115,10 @@
   height: var(--size-34);
   border: var(--size-2) solid var(--white);
   border-radius: 50%;
-  background: var(--action);
-  color: var(--white);
+  background: var(--white);
+  color: var(--action);
   font: var(--fw-bold) var(--size-13)/1 var(--font-sans);
-  box-shadow: 0 var(--size-6) var(--size-14) color-mix(in srgb, var(--ink-950) 25%, transparent);
+  box-shadow: 0 var(--size-2) var(--size-8) color-mix(in srgb, var(--ink-950) 16%, transparent);
 }
 
 /* Popup restyled to the card language */
@@ -148,11 +173,18 @@
   color: var(--text);
 }
 .companies-map .leaflet-control-attribution {
+  padding: var(--size-2) var(--space-2);
+  border-top-left-radius: var(--size-6);
+  background: color-mix(in srgb, var(--white) 92%, transparent);
+  color: var(--text-3);
   font-size: var(--size-10);
 }
-/* Tone the colourful OSM basemap down to the product's restrained palette. */
+.companies-map .leaflet-control-attribution a {
+  color: var(--text-2);
+}
+/* Restrain only the basemap: names remain crisp and marker colours are untouched. */
 .companies-map .leaflet-tile-pane {
-  filter: saturate(.45) contrast(.96) brightness(1.04);
+  filter: grayscale(.75) saturate(.55) contrast(.94) brightness(1.06);
 }
 
 
@@ -165,6 +197,10 @@
 }
 .companies-map--compact .leaflet-control-attribution {
   font-size: var(--size-9);
+}
+.companies-map--compact .companies-map__tile-status {
+  right: var(--space-3);
+  bottom: var(--space-6);
 }
 
 @media (max-width: 767px) {

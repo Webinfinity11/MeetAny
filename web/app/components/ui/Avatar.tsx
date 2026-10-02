@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type HTMLAttributes } from "react";
+import { Icon } from "../Icon";
 
 const LEGAL_FORMS = new Set(["შპს", "სს", "იმ", "ი/მ", "llc", "ltd", "inc"]);
 /** Letters only; skips legal forms and preserves Georgian mkhedruli. */
@@ -26,14 +27,15 @@ export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
   logoUrl?: string | null;
   /** Numeric sizes are the new API; named sizes retain CompanyAvatar's existing geometry. */
   size?: 40 | 48 | 56 | "sm" | "lg" | "xl";
+  symbol?: "building-2" | "user-round";
 };
-/** Decorative logo/initials next to a company name; failed logos fall back to initials. */
-export function Avatar({ name, logoUrl, size = 40, className = "", ...props }: AvatarProps) {
+/** Decorative logo next to a name; failed logos use a neutral profile symbol. */
+export function Avatar({ name, logoUrl, size = 40, symbol = "building-2", className = "", ...props }: AvatarProps) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const modifier = typeof size === "number" ? ` ma-avatar--${size}` : size === "sm" ? "" : ` ma-avatar--${size}`;
-  return <span aria-hidden="true" {...props} className={`ma-avatar${modifier} ${className}`.trim()} data-tone={avatarTone(name)}>
-    {logoUrl && loadedUrl === logoUrl && failedUrl !== logoUrl ? null : avatarInitials(name)}
+  return <span aria-hidden="true" {...props} className={`ma-avatar${modifier} ${className}`.trim()} data-tone="neutral" title={name}>
+    {logoUrl && loadedUrl === logoUrl && failedUrl !== logoUrl ? null : <Icon name={symbol} />}
     {logoUrl && logoUrl !== failedUrl ? <img key={logoUrl} src={logoUrl} alt="" style={{ position: "absolute", inset: 0, opacity: loadedUrl === logoUrl ? 1 : 0 }} onLoad={() => setLoadedUrl(logoUrl)} onError={() => setFailedUrl(logoUrl)} /> : null}
   </span>;
 }

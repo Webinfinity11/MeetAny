@@ -21,6 +21,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const CHECK_EMAIL='შეამოწმე ელფოსტა';
  const STALE='მონაცემები ვერ განახლდა. გვერდზე შეიძლება ძველი ინფორმაცია ჩანდეს.';
  const MSG={
+  MA801:'შეთავაზების გაგზავნას კომპანიის დადასტურება სჭირდება. განაცხადი ადმინთან უკვე გაგზავნილია.',
    MA622:'დაამატე მაქსიმუმ 12 პროდუქტი: სახელი 2–80 სიმბოლო, აღწერა 200-მდე და ფოტო შენი გალერეიდან.',
    MA621:'მიუთითე მინიმუმ ერთი რეგიონი და არხი. გადაამოწმე ველების ზომა და მნიშვნელობები.',
   MA601:'აირჩიე 1–5 ქულა და დაწერე 20–1500 სიმბოლო.',MA602:'შეფასება შეგიძლია შენ მიერ არჩეულ მომწოდებელზე.',MA603:'მიუთითე მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლე სია.',
@@ -155,7 +156,7 @@ export function createMarketStore({initial=null,background=true}={}){
 
  /* ---------- cache ---------- */
  let cache={me:null,requests:[],offers:[],counts:{},profiles:{},contacts:{},users:null,stats:null,companies:[],companyStats:{}};
- let isReady=false,loadFailed=!configured;
+ let isReady=false,loadFailed=!configured,sessionReady=false;
  let dataRevision=0;
  const requestLoads=new Map();
  const companyLoads=new Map();
@@ -305,8 +306,9 @@ export function createMarketStore({initial=null,background=true}={}){
   for(const p of profileRows)if(!next.profiles[p.id])next.profiles[p.id]=mapUser(p);
   if(me)next.profiles[me.id]=me;
   for(const [id,c] of contactList)if(c)next.contacts[id]={name:c.name,company:c.company,phone:c.phone,email:c.email};
-  cache=next;
-  dataRevision++;
+  // Polling is a freshness check, not a new UI state. Unchanged payloads must not
+  // invalidate detail/list views or flash their skeletons every thirty seconds.
+  if(JSON.stringify(cache)!==JSON.stringify(next)){cache=next;dataRevision++;}
   if(pre)pre.actor=me?.id||null;
   await refreshEngagement(pre);
  }
@@ -317,7 +319,7 @@ export function createMarketStore({initial=null,background=true}={}){
   if(!configured)return Promise.resolve();
   if(running){if(!queued)queued=running.then(()=>{queued=null;return refresh();});return queued;}
   running=load().then(()=>{loadFailed=false;dataStale=false;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!isReady)loadFailed=true;else dataStale=true;})
-   .then(()=>{running=null;isReady=true;emit();});
+   .then(()=>{running=null;isReady=true;sessionReady=true;emit();});
   return running;
  }
  // Page mounts ask for current data; a load in flight or finished moments ago already is.
@@ -551,8 +553,11 @@ export function createMarketStore({initial=null,background=true}={}){
  function allUsers(){return [...(cache.users||Object.values(cache.profiles))].sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0));}
 
  // Detail routes load their own record: admin pagination can open records beyond the catalog cap.
- async function ensureRequest(id){
+ async function ensureRequest(id,{cached=false}={}){
   if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id||'')))return null;
+  // A completed session refresh already contains this record, its RLS-scoped offers,
+  // author and count. Route mounts can reuse it; explicit reads still bypass it.
+  if(cached&&sessionReady&&dataRevision>0&&!dataStale){const found=getRequest(id);if(found)return found;}
   const actor=currentUser()?.id||null,revision=dataRevision,key=[id,actor,revision].join(':');
   if(requestLoads.has(key))return requestLoads.get(key);
   const work=(async()=>{
@@ -801,8 +806,9 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  function getCompany(id){return cache.companies.find(c=>c.id===id)||null;}
  // Direct profile links must work before the full catalog has finished loading.
- async function ensureCompany(id){
+ async function ensureCompany(id,{cached=false}={}){
   if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id||'')))return null;
+  if(cached&&sessionReady&&dataRevision>0&&!dataStale){const found=getCompany(id);if(found)return found;}
   const revision=dataRevision,key=[id,revision].join(':');
   if(companyLoads.has(key))return companyLoads.get(key);
   const work=(async()=>{
@@ -859,6 +865,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminSearchRequests=args=>rpc('admin_search_requests',args);
  const adminSearchUsers=args=>rpc('admin_search_users',args);
  const adminSearchOffers=args=>rpc('admin_search_offers',args);
+ const adminBusinessAudit=(offset=0,limit=20)=>rpc('admin_business_audit',{p_offset:offset,p_limit:limit});
  const adminListAudit=args=>rpc(Number(stats()?.adminApiVersion)>=2?'admin_list_audit_v2':'admin_list_audit',args);
  const adminContactEvents=args=>rpc('admin_contact_events',args);
  const adminContactStats=args=>rpc('admin_contact_stats',args);
@@ -873,6 +880,15 @@ export function createMarketStore({initial=null,background=true}={}){
  const adminDeleteRequest=(requestId,reason)=>reason!==undefined?mutate('admin_delete_request_v2',{p_request_id:requestId,p_reason:String(reason||'').trim()}):mutate('admin_delete_request',{p_request_id:requestId});
  const adminSetBlocked=(userId,blocked,reason)=>mutate('admin_set_blocked',{p_user_id:userId,p_blocked:!!blocked,p_reason:blocked&&reason?String(reason).trim():null});
  const adminSetVerified=(userId,verified)=>mutate('admin_set_verified',{p_user_id:userId,p_verified:!!verified});
+ const adminEditProfile=(id,patch)=>mutate('admin_edit_profile',{p_id:id,p_patch:patch},mapUser);
+ const adminEditRequest=(id,patch)=>mutate('admin_edit_request',{p_id:id,p_patch:patch},mapRequest);
+ const adminCompanySettings=id=>rpc('admin_company_settings',{p_id:id});
+ const adminManagePlan=(id,plan,expires)=>mutate('admin_manage_plan',{p_id:id,p_plan:plan,p_expires_at:expires});
+ let contentCache=null,contentUntil=0,contentFlight=null;
+ const siteContent=()=>{if(contentCache&&Date.now()<contentUntil)return Promise.resolve(contentCache);if(contentFlight)return contentFlight;contentFlight=rpc('site_content').then(data=>{contentCache=data;contentUntil=Date.now()+60000;return data;}).finally(()=>{contentFlight=null;});return contentFlight;};
+ const adminSaveSiteContent=async content=>{const result=await rpc('admin_save_site_content',{p_content:content});contentCache=result;contentUntil=0;await refresh();return result;};
+ const adminUploadPhoto=(id,file,kind)=>{if(requireUser().role!=='admin')fail(MSG.MA403||'წვდომა შეზღუდულია.','MA403');return uploadPhoto({id},file,{prefix:kind==='logo'?'logo-':kind==='gallery'?'gallery-':'site-',maxBytes:kind==='logo'?2*1024*1024:5*1024*1024});};
+
  // Photo moderation: clear the reference (audited), then remove the Blob file (best effort).
  const adminRemovePhoto=(userId,url,reason)=>mutate('admin_remove_company_photo',{p_user_id:userId,p_url:url,p_reason:String(reason||'').trim()},mapUser).then(user=>{removePhoto(url);return user;});
 
@@ -888,7 +904,7 @@ export function createMarketStore({initial=null,background=true}={}){
   refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
-  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,
+  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isSessionReady:()=>sessionReady,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,
   // A signed-in session exists even when its profile has not loaded yet (e.g. a failed first refresh).
   hasSession:()=>!!authUser,
   currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
@@ -897,6 +913,7 @@ export function createMarketStore({initial=null,background=true}={}){
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,
   updateProfile,uploadLogo,setGallery,listCompanies,getCompany,ensureCompany,companyStats,directionsUrl,
   startConversation,sendMessage,listConversations,listMessages,markRead,unreadMessageCount,
-  adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminRemovePhoto,adminSetBlocked,adminSetVerified,stats,allUsers,
+  adminEditProfile,adminEditRequest,adminCompanySettings,adminManagePlan,siteContent,adminSaveSiteContent,adminUploadPhoto,
+  adminSearchRequests,adminSearchUsers,adminSearchOffers,adminDeleteOffer,adminBusinessAudit,adminListAudit,adminContactEvents,adminContactStats,adminMessageStats,logContactEvent,adminSetHidden,adminDeleteRequest,adminRemovePhoto,adminSetBlocked,adminSetVerified,stats,allUsers,
   subscribe:fn=>{listeners.add(fn);return()=>listeners.delete(fn);}};
 }

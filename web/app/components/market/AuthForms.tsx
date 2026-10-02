@@ -13,6 +13,7 @@ import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 type Mode = "login" | "register" | "reset";
 
 import { safeNext } from "../../lib/auth-redirect";
+import { trackRegistration } from "../../lib/registration-telemetry";
 
 const WRONG_LOGIN = "ელფოსტა ან პაროლი არასწორია.";
 
@@ -120,10 +121,12 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   const [error, setError] = useState<string | null>(null);
   const v = useFieldErrors();
   const edit = (id: string, set: (value: string) => void) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {set(e.target.value); v.clear(id);};
+  useEffect(() => { trackRegistration(role, "form_open"); }, [role]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!store || pending) return;
+    trackRegistration(role, "form_started");
     setError(null);
     const errors: FieldErrors = {};
     if (name.trim().length < 2) errors["reg-name"] = "მიუთითე სახელი და გვარი";
@@ -134,9 +137,12 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "მინიმუმ 8 სიმბოლო" : "მიუთითე პაროლი";
     if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმე წესებს";
     if (!v.check(errors, ["reg-name", "reg-company", "reg-phone", "reg-email", "reg-industry", "reg-password", "reg-terms"])) return;
+    trackRegistration(role, "form_submitted");
     setPending(true);
     try {
       await store.register({ role, name, company, phone, email: email.trim(), city, industry, password, acceptTerms });
+      if (store.currentUser()) trackRegistration(role, "profile_created");
+      else if (store.pendingEmail()) trackRegistration(role, "email_pending");
       if (next && store.currentUser()) router.push(next);
       else router.refresh();
       window.dispatchEvent(new Event("meetany:auth"));
@@ -148,7 +154,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   }
 
   return (
-    <form className="ma-form auth-register" onSubmit={submit} noValidate>
+    <form className="ma-form auth-register" onSubmit={submit} onChange={() => trackRegistration(role, "form_started")} noValidate>
       <fieldset className="ma-field">
         <legend className="ma-field__label">ვინ ხარ?</legend>
         <div className="auth-roles">
@@ -318,7 +324,7 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
     if (!v.check(errors, ["reset-email", "reset-code", "reset-password"])) return;
     setPending(true); setError("");
     try {
-      if (verification) {await store.verifyEmailCode(code); onDone();}
+      if (verification) {await store.verifyEmailCode(code); trackRegistration(store.currentUser()?.role, "profile_created"); onDone();}
       else if (sent) {await store.resetPassword(code, password); onDone();}
       else {await store.requestPasswordReset(email.trim()); setSent(true);}
     } catch (err) {setError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}

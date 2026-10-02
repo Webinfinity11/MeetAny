@@ -5,7 +5,6 @@ import { ListSkeleton } from "./Skeletons";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useMarketStore, type Store } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { Icon } from "../Icon";
@@ -44,20 +43,16 @@ function groupNotices(items: Notice[]): Group[] {
 }
 const groupLabel = (g: Group) => g.latest.kind === "offer_received" ? (g.items.length > 1 ? `${g.items.length} ახალი შეთავაზება` : "ახალი შეთავაზება") : label(g.latest.kind);
 function NoticeRows({ items, limit, store }: { items: Notice[]; limit?: number; store?: Store }) {
- const router = useRouter();
  const [now] = useState(() => Date.now());
  const groups = groupNotices(items);
  return <>{(limit ? groups.slice(0, limit) : groups).map(g => {
   const n = g.latest, unread = g.items.filter(x => !x.read_at);
   return <article key={g.key} className={styles.row} data-unread={unread.length > 0}>
-   <Link href={`/requests/view/?id=${n.request_id}`} onClick={async e => {
+   <Link href={`/requests/view/?id=${n.request_id}`} onClick={() => {
     if (!store || !unread.length) return;
-    const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
-    // Different root layouts cause a document navigation: finish the write before leaving.
-    if (!modified) e.preventDefault();
-    try { await Promise.all(unread.map(x => store.markNotificationRead(x.id))); }
-    catch { toast("წაკითხვის მონიშვნა ვერ შესრულდა."); }
-    finally { if (!modified) router.push(`/requests/view/?id=${n.request_id}`); }
+    // Read acknowledgement runs in the background; navigation remains immediate.
+    void Promise.all(unread.map(x => store.markNotificationRead(x.id)))
+      .catch(() => toast("წაკითხვის მონიშვნა ვერ შესრულდა."));
    }}>{groupLabel(g)} — {n.title}{unread.length ? <span className="ma-sr-only"> — წაუკითხავი</span> : null}</Link>
    {n.kind === "request_match" ? <span className={styles.meta}>{categories[n.category || ""]} · {cities[n.city || ""]}{n.needed_by ? ` · საჭიროა ${date(n.needed_by, false)}` : ""}</span> : null}<time className={styles.meta} dateTime={n.created_at}>{relative(n.created_at, now)}</time>
   </article>;
@@ -115,16 +110,18 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
  return <section className={styles.stack}>
   <h2 className="account-section__title">{kind === "saved" ? "შენახული კომპანიები" : "შეტყობინებები"}</h2>
   {failed(state?.status) ? <ServiceUnavailable /> : state?.status !== "ready" ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : <>
-   {kind === "notifications" && state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery} profile={store?.currentUser()}/> : null}
-   {kind === "notifications" && state.emailDelivery ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending} onChange={e => email(e.target.checked)}/> შეთავაზებების შესახებ ელფოსტითაც შემატყობინე</label> : null}
    {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</Button></div> : <>
-    {!current.page?.items.length ? <p>{kind === "saved" ? "კომპანია ჯერ არ შეგინახავს. კატალოგში შენახვის ნიშნით მონიშნე საინტერესო მომწოდებლები." : "შეტყობინებები ჯერ არ გაქვს."}</p> : kind === "notifications" ? <NoticeRows store={store} items={current.page.items} limit={all ? undefined : 5}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
+    {!current.page?.items.length ? <div className={styles.emptyState}><span className={styles.emptyIcon}><Icon name={kind === "saved" ? "bookmark" : "bell"}/></span><h3>{kind === "saved" ? "შენახული კომპანიები ჯერ არ გაქვს" : "შეტყობინებები ჯერ არ გაქვს"}</h3><p>{kind === "saved" ? "მონიშნე საინტერესო მომწოდებლები და აქ მარტივად დაუბრუნდი." : "ახალი შეთავაზებები და შესაბამისი მოთხოვნები აქ გამოჩნდება."}</p><Button variant="secondary" href={kind === "saved" ? "/companies/" : "/requests/"}>{kind === "saved" ? "კომპანიების ნახვა" : "მოთხოვნების ნახვა"}</Button></div> : kind === "notifications" ? <NoticeRows store={store} items={current.page.items} limit={all ? undefined : 5}/> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
      <div><h3 className="account-row__title"><Link href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p className="account-row__meta">{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
     </article>)}
     {kind === "notifications" && !all && current.page && (current.page.nextCursor || groupNotices(current.page.items).length > 5) ? <Link className="account-link" href="/account/?tab=notifications&alerts=all">ყველა შეტყობინება ({current.page.items.length}{current.page.nextCursor ? "+" : ""})</Link> : null}
     {all || kind === "saved" ? <div className={styles.head}>{cursor ? <Button type="button" variant="secondary" onClick={() => setCursor(null)}>პირველი გვერდი</Button> : null}{current.page?.nextCursor ? <Button type="button" variant="secondary" onClick={() => setCursor(current.page!.nextCursor)}>შემდეგი გვერდი</Button> : null}</div> : null}
    </>}
-   {kind === "saved" ? <Link href="/companies/" className="account-link">კომპანიების მოძებნა</Link> : null}
+   {kind === "notifications" && (state.requestAlerts || state.emailDelivery) ? <details className={styles.preferences}><summary><Icon name="settings"/><span>შეტყობინებების პარამეტრები</span><Icon name="chevron-down"/></summary><div>
+    {state.requestAlerts ? <RequestAlertSettings key={actor} initial={state.requestAlerts} emailDelivery={!!state.emailDelivery} profile={store?.currentUser()}/> : null}
+    {state.emailDelivery ? <label className="ma-check"><input type="checkbox" checked={!!state.emailOffers} disabled={pending} onChange={e=>email(e.target.checked)}/>შეთავაზებებზე ელფოსტითაც შემატყობინე</label> : null}
+   </div></details>:null}
+   {kind === "saved" && !!current?.page?.items.length ? <Link href="/companies/" className="account-link">კომპანიების მოძებნა</Link> : null}
   </>}
  </section>;
 }

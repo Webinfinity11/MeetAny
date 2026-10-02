@@ -70,12 +70,16 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
   // Desktop opens the newest conversation; mobile starts on the list.
   const active = items?.find(c => c.id === selected) || (wide && items?.length ? items[0] : null);
 
-  if (!current) return <section className="inbox"><p className="account-empty" role="status">მიმოწერები იტვირთება…</p></section>;
+  if (!current) return <section className="inbox inbox--empty" aria-busy="true"><header className="inbox-section-head"><h1>მიმოწერები</h1><p>კლიენტებთან და კომპანიებთან საუბრები ერთ სივრცეში.</p></header><div className="account-empty-state" role="status"><span className="icon-tile" aria-hidden="true"><Icon name="message-square"/></span><p className="account-empty">მიმოწერები იტვირთება…</p></div></section>;
   if (current.error && !items) return <section className="inbox"><div role="alert" className="inbox-note"><p className="account-empty">{current.error}</p><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div></section>;
-  if (!items?.length) return <section className="inbox">
-    <div className="inbox-note">
-      <p className="account-empty">საუბარი ჯერ არ არის.</p>
-      {me.role === "company" ? <Link className="account-link" href="/requests/">მოთხოვნების ნახვა</Link> : <Link className="account-link" href="/companies/">კომპანიების ნახვა</Link>}
+  if (!items?.length) return <section className="inbox inbox--empty" aria-labelledby="inbox-heading">
+    <header className="inbox-section-head"><h1 id="inbox-heading">მიმოწერები</h1><p>კლიენტებთან და კომპანიებთან საუბრები ერთ სივრცეში.</p></header>
+    <div className="account-empty-state inbox-empty-state">
+      <span className="icon-tile" aria-hidden="true"><Icon name="message-square"/></span>
+      <h2 className="account-empty-state__title">პირველი საუბარი წინ არის</h2>
+      <p className="account-empty">{me.role === "company" ? "აქ გამოჩნდება კლიენტებთან მიმოწერები. შეარჩიე მოთხოვნა და შესთავაზე შენი მომსახურება — საუბარი მოთხოვნასთან ერთად შეინახება." : "მოძებნე შესაბამისი კომპანია და მის პროფილზე აირჩიე მიმოწერის დაწყება. ყველა საუბარს აქ დაუბრუნდები."}</p>
+      <Button variant="primary" href={me.role === "company" ? "/account/?tab=opportunities" : "/companies/"}>{me.role === "company" ? "შესაბამისი მოთხოვნების ნახვა" : "კომპანიების ნახვა"}<Icon name="arrow-right"/></Button>
+      <p className="inbox-empty-state__tip">შეთანხმებები და მნიშვნელოვანი დეტალები შეინახე ერთ მიმოწერაში.</p>
     </div>
   </section>;
 

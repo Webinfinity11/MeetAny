@@ -6,7 +6,6 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./Icon";
 import { DuoIcon } from "./ui/DuoIcon";
-import { avatarInitials } from "./ui/Avatar";
 import type { SearchSuggestion } from "../lib/search-suggestions";
 
 /** Bold the part of `text` that matches the query (case-insensitive, first occurrence). */
@@ -59,7 +58,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
             {s.kind === "category"
               ? <span className="search-suggestion__category-icon"><DuoIcon name={s.category} size={18} /></span>
               : s.image ? <img className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={36} height={36} />
-              : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? avatarInitials(s.label) : <DuoIcon name="file-text" size={20} />}</span>}
+              : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? <DuoIcon name="building-2" size={20} /> : <DuoIcon name="file-text" size={20} />}</span>}
             <span><strong><Highlight text={s.label} query={value} /></strong><small>{s.detail}</small></span>
           </button></Fragment>;
         })}

@@ -91,7 +91,7 @@ function ChatDock({ store, owner, role }: { store: Store; owner: string; role: s
     return () => { window.removeEventListener("meetany:chat-open", open); window.removeEventListener("meetany:chat-list", list); };
   }, []);
   return <>
-    <button type="button" className="ma-chat-launcher" aria-label={`მიმოწერა${unread ? `, ${unread} წაუკითხავი` : ""}`} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><Icon name="message-square" /><span>მიმოწერა</span>{unread ? <span className="ma-chat-badge">{unread > 99 ? "99+" : unread}</span> : null}</button>
+    {selection ? <button type="button" className="ma-chat-launcher" aria-label={`მიმოწერა${unread ? `, ${unread} წაუკითხავი` : ""}`} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><Icon name="message-square" /><span>მიმოწერა</span>{unread ? <span className="ma-chat-badge">{unread > 99 ? "99+" : unread}</span> : null}</button> : null}
     {expanded && view === "list" ? <ChatList store={store} owner={owner} role={role} onSelect={choose} onClose={() => setExpanded(false)} /> : null}
     {selection ? <ChatWindow key={selection.key} store={store} owner={owner} target={selection.target} visible={expanded && view === "thread"} onBack={() => setView("list")} onClose={() => setExpanded(false)} /> : null}
   </>;

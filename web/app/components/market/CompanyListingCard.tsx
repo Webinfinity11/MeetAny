@@ -2,7 +2,7 @@ import { BusinessMarks } from "./CompanyBusiness";
 import type { BusinessFeature } from "../../lib/business-client";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import Link from "next/link";
-import { avatarInitials, companyImage } from "./CompanyAvatar";
+import { companyImage } from "./CompanyAvatar";
 import type { CSSProperties } from "react";
 import { CallButton } from "./CallButton";
 import { categories, cities } from "../../lib/categories";
@@ -39,7 +39,7 @@ export function CompanyListingCard({ c, entranceIndex }: { c: CompanyListingData
   return (
     <article className="company-card" data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>
       <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">
-        {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="company-card__initials">{avatarInitials(c.name)}</span>}
+        {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="company-card__initials"><Icon name="building-2" /></span>}
       </Link>
       {c.feature?.plan ? <span className="company-card__plan" data-plan={c.feature.plan}>{c.feature.plan === "vip" ? "VIP" : "Premium"}<span className="ma-sr-only"> — ფასიანი განთავსება</span></span> : null}
       <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>

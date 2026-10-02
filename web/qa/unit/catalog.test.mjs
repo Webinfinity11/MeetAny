@@ -148,3 +148,19 @@ test('public discovery omits internal fixtures while owners and admin can inspec
  assert.equal(store.listRequests({includeHidden:true,state:''}).length,2);
  assert.equal(store.getRequest(uuid(912)).title,'ტესტრექ');
 });
+
+
+test('route detail cache reuses a completed session, while explicit reads stay fresh', async t => {
+ const f=fixture(t),store=createMarketStore({background:false});
+ assert.equal(store.isSessionReady(),false);
+ await store.refresh();assert.equal(store.isSessionReady(),true);
+ const revision=store.dataRevision(),before=f.calls.length;
+ await store.ensureRequest(uuid(1105),{cached:true});
+ await store.ensureCompany(uuid(1105),{cached:true});
+ assert.equal(f.calls.length,before,'route mount adds no duplicate reads');
+ await store.refresh();assert.equal(store.dataRevision(),revision,'unchanged polling does not invalidate UI');
+ f.requests[0].title='Changed request';await store.refresh();
+ assert.equal(store.dataRevision(),revision+1,'real change advances revision');
+ const reads=f.calls.length;await store.ensureRequest(uuid(1105));
+ assert(f.calls.length>reads,'explicit read bypasses the route cache');
+});

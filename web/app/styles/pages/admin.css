@@ -27,7 +27,11 @@
 .ma-proto .ma-page:has(>.ma-proto-kpis)>.r2-band{margin:0}
 
 /* The admin workspace has its own canvas; public page widths stay unchanged. */
-body[data-market-page="admin"] { --container: var(--admin-container); background: var(--bg-subtle); }
-body[data-market-page="admin"] .ma-header { background: var(--white); }
-body[data-market-page="admin"] .ma-table-wrap { background: var(--white); border-radius: var(--size-8); }
-body[data-market-page="admin"] .ma-page { padding-top: var(--space-6); }
+.ma-frame[data-market-page="admin"] { --container: var(--admin-container); background: var(--bg-subtle); }
+.ma-frame[data-market-page="admin"] .ma-header { background: var(--white); }
+.ma-frame[data-market-page="admin"] .ma-table-wrap { background: var(--white); border-radius: var(--size-8); }
+.ma-frame[data-market-page="admin"] .ma-page { padding-top: var(--space-6); }
+/* Leave room for the shared keyboard focus ring inside the scrolling sidebar. */
+@media(min-width:1024px) {
+ .ma-frame[data-market-page="admin"] #admin-section-navigation { padding: var(--space-1); }
+}

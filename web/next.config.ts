@@ -38,7 +38,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_NEON_AUTH_BASE_URL: authBaseUrl },
   poweredByHeader: false,
-  // Several root layouts (one per route group), so unmatched URLs need app/global-not-found.tsx.
+  // A shared root retains the browser session across route groups; unknown URLs use the global fallback.
   experimental: {
     globalNotFound: true,
   },

@@ -12,11 +12,27 @@ import { useMarketStore } from "../lib/market-client";
 import { categories as needs } from "../lib/home-data";
 import { categories as categoryLabels, categoryGroups, cities } from "../lib/categories";
 import { SaveCompanyButton } from "./market/SaveCompanyButton";
-import { avatarInitials, companyImage } from "./market/CompanyAvatar";
+import { companyImage } from "./market/CompanyAvatar";
 import { Icon } from "./Icon";
 import { DuoIcon } from "./ui/DuoIcon";
+import { useSiteContent } from "../lib/site-content";
 
 type Company = {id: string; company: string; city: string; industry: string; logoUrl?: string | null; gallery?: string[]; about: string; offers: string[]; serviceCities?: string[]};
+
+export function HomeHeroText() {
+  const content = useSiteContent();
+  return <>
+    <h1 id="discovery-title">{content.heroTitle || "შენი შემდეგი"}<br /><span>{content.heroAccent || "ბიზნესპარტნიორი აქაა."}</span></h1>
+    <p className="hero-description">{content.heroSubtitle || "იპოვე მომწოდებელი, მიიღე შეთავაზებები და დაიწყე თანამშრომლობა."}</p>
+  </>;
+}
+
+export function HomeSectionHeading({ section }: { section: "requests" | "companies" }) {
+  const content = useSiteContent();
+  return <h2 id={section === "requests" ? "requests-heading" : "featured-heading"}>
+    {section === "requests" ? content.requestsTitle || "ახალი მოთხოვნები" : content.companiesTitle || "გაიცანი კომპანიები"}
+  </h2>;
+}
 
 export function HomeJoin() {
   const {store, ready} = useMarketStore();
@@ -42,7 +58,7 @@ export function HomeCategories() {
   </Link>)}</div>;
 }
 
-/** Airbnb-style category carousel: every category with its own thin icon, scrolls sideways
+/** Every category has a recognisable icon from one local rounded family; scrolls sideways
  *  (wheel, touch, drag) with round arrow buttons at the edges. */
 export function HomeIndustries() {
   const list = useRef<HTMLUListElement>(null);
@@ -79,7 +95,7 @@ export function HomeIndustries() {
   return <nav className="home-catbar" aria-label="კატეგორიები" data-start={edges.start || undefined} data-end={edges.end || undefined}>
     <button type="button" className="home-catbar__arrow home-catbar__arrow--prev" aria-label="წინა კატეგორიები" hidden={edges.start} onClick={() => scroll(-1)}><Icon name="chevron-left" /></button>
     <ul ref={list}>{items.map(item => <li key={item.id}><Link href={`/companies/?industry=${item.id}`}>
-      <DuoIcon name={item.id} size={24} tile />
+      <DuoIcon name={item.id} family="category" size={28} tile />
       <span>{item.label}</span>
     </Link></li>)}</ul>
     <button type="button" className="home-catbar__arrow home-catbar__arrow--next" aria-label="შემდეგი კატეგორიები" hidden={edges.end} onClick={() => scroll(1)}><Icon name="chevron-right" /></button>
@@ -111,14 +127,14 @@ export function HomeRequests() {
   </div>;
 }
 
-/** Photo-first company card (home): picture or initials tile on top, text below, no frame. */
+/** Photo-first company card: real photo or a neutral company symbol, with text below. */
 function HomeCompanyCard({ c, feature }: { c: Company; feature?: BusinessFeature }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const image = companyImage(c.company, c.logoUrl, c.gallery);
   const place = [c.city, ...(c.serviceCities || [])].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 2).map(id => cities[id] || id).join(", ");
   return <article className="home-company">
     <Link className="home-company__media" href={href} tabIndex={-1} aria-hidden="true">
-      {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="home-company__initials">{avatarInitials(c.company)}</span>}
+      {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="home-company__initials"><Icon name="building-2" /></span>}
     </Link>
     <div className="home-company__save"><SaveCompanyButton id={c.id} icon /></div>
     <h3 className="home-company__name"><Link href={href}>{c.company}</Link></h3>

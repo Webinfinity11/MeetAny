@@ -35,6 +35,7 @@ import { distributionChannels, type Distribution } from "../../lib/distribution"
 import { useBusinessResource, useCompanyFeatures } from "../../lib/business-client";
 import { BusinessError } from "./CompanyBusiness";
 import { fetchPhones } from "../../lib/phones";
+import { useSiteContent } from "../../lib/site-content";
 
 type MappedCompany = {
   id: string;
@@ -71,6 +72,7 @@ function skeleton() {
 }
 
 export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) {
+  const content = useSiteContent();
   const { store, ready, available } = useMarketStore(initial);
   const filters = useFilters("/companies/");
   const industry = currentCategory(filters.get("industry")), city = filters.get("city"), query = filters.get("q");
@@ -249,8 +251,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <CatalogHeader
         tone="light"
         center
-        title="იპოვე სანდო მომწოდებელი"
-        description="კომპანიები და მომსახურება მთელი საქართველოდან."
+        title={content.businessTitle || "იპოვე სანდო მომწოდებელი"}
+        description={content.businessSubtitle || "კომპანიები და მომსახურება მთელი საქართველოდან."}
         artwork={<CompanyCatalogCover />}
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("company-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
           <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება"
@@ -264,7 +266,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
         <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
           <ResultsBar count={countLabel} filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</Button>}
-            utility={<>{viewSwitch}{ready && store?.currentUser() ? <Button variant="ghost" size="sm" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Button> : null}</>}
+            utility={<>{viewSwitch}{ready && store?.currentUser() ? <Button variant="ghost" size="sm" className="catalog-saved-toggle" aria-label="შენახული კომპანიების ნახვა" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Button> : null}</>}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "recommended", label: "რეკომენდებული"}, {value: "active", label: "ყველაზე აქტიური"}, {value: "newest", label: "უახლესი"}]}}
           />
           {sort === "recommended" && rows.some(c=>c.feature?.plan) ? <p className="business-fineprint">Premium და VIP — ფასიანი განთავსება რეკომენდებულ შედეგებში.</p> : null}

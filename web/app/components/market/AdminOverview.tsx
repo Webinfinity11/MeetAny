@@ -8,49 +8,16 @@ import { Icon } from "../Icon";
 import type { Store } from "../../lib/market-client";
 import { categories } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
-import { isTestAccount, lastDays, perDay, windowCounts } from "../../lib/admin-helpers";
+import { lastDays, perDay, windowCounts, readAllAdminPages } from "../../lib/admin-helpers";
 import { AdminMarketMetrics } from "./AdminMarketMetrics";
+import { AdminActivityChart } from "./AdminActivityChart";
+import { AdminRegistrationAnalytics } from "./AdminRegistrationAnalytics";
 import styles from "./admin.module.css";
+import analyticsStyles from "./analytics.module.css";
 
 type Stats = Record<string, number>;
 type UserRow = { id: string; name: string; company?: string; email?: string; role: string; verified?: boolean; blocked?: boolean; created_at?: string; createdAt?: string; industry?: string };
 type RequestRow = { id: string; title: string; category: string; createdAt: string; ownerId: string; hidden: boolean };
-
-const shortDay = (key: string) => {
-  const [, m, d] = key.split("-");
-  return `${Number(d)}.${m}`;
-};
-
-/** Single-series daily bars (brand blue), hover tooltip per bar, table for screen readers. */
-function DailyBars({ title, rows }: { title: string; rows: { day: string; count: number }[] }) {
-  const [hover, setHover] = useState<number | null>(null);
-  const max = Math.max(1, ...rows.map(r => r.count));
-  const total = rows.reduce((n, r) => n + r.count, 0);
-  const w = 100 / rows.length;
-  return <figure className={styles.chart}>
-    <figcaption><span>{title}</span><strong>{total}</strong></figcaption>
-    <div className={styles.chartPlot} onMouseLeave={() => setHover(null)}>
-      <svg viewBox="0 0 300 96" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="0" x2="300" y1="95.5" y2="95.5" className={styles.chartBase} />
-        {rows.map((r, i) => {
-          const h = r.count ? Math.max(3, (r.count / max) * 88) : 0;
-          const x = i * (300 / rows.length) + 1;
-          const bw = 300 / rows.length - 2;
-          return <g key={r.day}>
-            <rect className={styles.chartHit} x={x - 1} y="0" width={bw + 2} height="96" onMouseEnter={() => setHover(i)} />
-            {h ? <path className={`${styles.chartBar} ${hover === i ? styles.chartBarActive : ""}`}
-              d={`M${x},96 V${96 - h + 2} q0,-2 2,-2 h${bw - 4} q2,0 2,2 V96 Z`} /> : null}
-          </g>;
-        })}
-      </svg>
-      {hover !== null ? <span className={styles.chartTip} style={{ left: `${Math.min(88, Math.max(4, (hover + 0.5) * w))}%` }}>
-        <b>{rows[hover].count}</b> · {shortDay(rows[hover].day)}
-      </span> : null}
-    </div>
-    <div className={styles.chartAxis} aria-hidden="true"><span>{shortDay(rows[0].day)}</span><span>დღეს</span></div>
-    <div className="ma-sr-only"><table><caption>{title}</caption><tbody>{rows.map(r => <tr key={r.day}><th scope="row">{r.day}</th><td>{r.count}</td></tr>)}</tbody></table></div>
-  </figure>;
-}
 
 function Delta({ current, previous }: { current: number; previous: number }) {
   if (!current && !previous) return <span className={styles.delta}>ბოლო 7 დღე: 0</span>;
@@ -71,26 +38,30 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   const [pending, setPending] = useState<UserRow[] | null>(null);
   const [failed, setFailed] = useState(false);
   const revision = store.dataRevision();
+  const loadUsers = store.adminSearchUsers;
+  const actorId = store.currentUser()?.id;
   useEffect(() => {
     let cancelled = false;
     Promise.all([
-      store.adminSearchUsers({ p_limit: 100 }),
-      store.adminSearchUsers({ p_role: "company", p_verified: false, p_blocked: false, p_limit: 50 }),
+      readAllAdminPages<UserRow>(loadUsers, {}, Number.MAX_SAFE_INTEGER),
+      readAllAdminPages<UserRow>(loadUsers, { p_role: "company", p_verified: false, p_blocked: false }, Number.MAX_SAFE_INTEGER),
     ]).then(([recent, unverified]) => {
       if (cancelled) return;
-      setRecentUsers(recent.items as UserRow[]);
-      setPending((unverified.items as UserRow[]).filter(u => !isTestAccount(u)));
+      setRecentUsers(recent);
+      setPending(unverified);
+      setFailed(false);
     }).catch(() => { if (!cancelled) setFailed(true); });
     return () => { cancelled = true; };
-  }, [store, revision]);
+  }, [loadUsers, actorId, revision]);
 
-  const requests = useMemo(() => (store.listRequests({ state: "", includeHidden: true }) as RequestRow[])
-    .filter(r => !isTestAccount(store.userById(r.ownerId))), [store]);
+  const requests = useMemo(() => store.listRequests({ state: "", includeHidden: true }) as RequestRow[], [store]);
   // The clock is read once per mount; the page is a snapshot, not a live monitor.
   const [now] = useState(() => Date.now());
-  const days = useMemo(() => lastDays(30, new Date(now)), [now]);
+  const [activityPeriod,setActivityPeriod]=useState<7|30>(30);
+  const days = useMemo(() => lastDays(activityPeriod, new Date(now)), [now,activityPeriod]);
+  const previousDays = useMemo(() => lastDays(activityPeriod, new Date(now-activityPeriod*86_400_000)), [now,activityPeriod]);
   const requestDates = requests.map(r => r.createdAt);
-  const realUsers = (recentUsers || []).filter(u => u.role !== "admin" && !isTestAccount(u));
+  const realUsers = (recentUsers || []).filter(u => u.role !== "admin");
   const userDates = realUsers.map(u => u.created_at || u.createdAt);
   const requestWeek = windowCounts(requestDates, 7, now);
   const userWeek = windowCounts(userDates, 7, now);
@@ -119,21 +90,22 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
     <div className={styles.overviewSecondary}>{kpis.slice(4).map(k => <Link key={k.key} href={k.href}><span>{k.label}</span><strong>{k.value ?? "—"}</strong><Icon name="arrow-right" /></Link>)}</div>
     <div className={styles.overviewSplit}>
     <section className={styles.panel} aria-labelledby="activity-heading">
-      <header className={styles.panelHead}><h2 id="activity-heading">აქტივობის დინამიკა</h2><span>ბოლო 30 დღე</span></header>
-      <div className={styles.charts}>
-        <DailyBars title="ახალი მოთხოვნები" rows={perDay(requestDates, days)} />
-        {recentUsers ? <DailyBars title="ახალი რეგისტრაციები" rows={perDay(userDates, days)} />
+      <header className={analyticsStyles.activityHeader}><h2 id="activity-heading">აქტივობის ანალიტიკა</h2><div className={analyticsStyles.periodControl} role="group" aria-label="აქტივობის პერიოდი">{([7,30] as const).map(period=><Button key={period} variant="ghost" size="sm" aria-pressed={activityPeriod===period} onClick={()=>setActivityPeriod(period)}>{period} დღე</Button>)}</div></header>
+      <div className={analyticsStyles.activityCharts}>
+        <AdminActivityChart title="ახალი მოთხოვნები" rows={perDay(requestDates, days)} previousTotal={perDay(requestDates,previousDays).reduce((sum,row)=>sum+row.count,0)} />
+        {recentUsers ? <AdminActivityChart title="ახალი რეგისტრაციები" rows={perDay(userDates, days)} previousTotal={perDay(userDates,previousDays).reduce((sum,row)=>sum+row.count,0)} />
           : <div className={styles.chartEmpty}>{failed ? "რეგისტრაციები ვერ ჩაიტვირთა." : "იტვირთება…"}</div>}
       </div>
-      <p className={styles.note}>ბოლო 30 დღე · სატესტო ანგარიშების გარეშე. საერთო რაოდენობები ზემოთ სატესტო და სადემო ჩანაწერებსაც მოიცავს.</p>
+      <p className={styles.note}>ბოლო {activityPeriod} დღე · ყველა ჩანაწერი</p>
       <div className={styles.overviewSecondary}><span>ახალი მოთხოვნები <Delta {...requestWeek}/></span>{recentUsers?<span>რეგისტრაციები <Delta {...userWeek}/></span>:null}</div>
     </section>
 
     <section className={styles.panel} aria-labelledby="attention-heading">
       <header className={styles.panelHead}><h2 id="attention-heading">ყურადღება სჭირდება</h2></header>
       <div className={styles.attention}>
-        <details className={styles.queue}>
+        <details className={styles.queue} open>
           <summary><Icon name="badge-check" />დასადასტურებელი კომპანიები <span>{pending?.length ?? "…"}</span><Icon name="chevron-down" /></summary>
+          <p className={styles.queueEmpty}>ახალი კომპანიის პროფილები აქ გადამოწმდება.</p>
           {failed ? <p className={styles.queueEmpty}>კომპანიების ჩატვირთვა ვერ მოხერხდა. განაახლე გვერდი.</p> : null}
           {pending && !pending.length ? <p className={styles.queueEmpty}>ჩატვირთულ სიაში დასადასტურებელი კომპანია არ არის.</p> : null}
           <ul>
@@ -145,7 +117,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
               <Button type="button" variant="secondary" onClick={() => onVerify({ id: u.id, label: u.company || u.name })}>დადასტურება</Button>
             </li>)}
           </ul>
-          {(pending?.length || 0) > 6 ? <Link className={styles.queueMore} href="/admin/?tab=users&role=company">ყველა ({pending!.length})<Icon name="arrow-right" /></Link> : null}
+          <Link className={styles.queueMore} href="/admin/?tab=companies&status=unverified">დასადასტურებელი კომპანიების ნახვა<Icon name="arrow-right" /></Link>
         </details>
         <details className={styles.queue}>
           <summary><Icon name="hourglass" />3+ დღე უპასუხოდ <span>{unanswered.length}</span><Icon name="chevron-down" /></summary>
@@ -175,6 +147,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
       <p className={styles.note}>დამალული: {stats.hidden ?? 0} მოთხოვნა · დაბლოკილი: {stats.blocked ?? 0} ანგარიში</p>
     </section>
     </div>
+    <AdminRegistrationAnalytics />
     <AdminMarketMetrics store={store} />
   </div>;
 }

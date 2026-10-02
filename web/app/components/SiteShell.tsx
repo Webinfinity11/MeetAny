@@ -1,7 +1,5 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { Toasts } from "./Toasts";
-import { ChatPopup } from "./market/ChatPopup";
 
 // Shared marketplace shell; each route group uses the same aligned container.
 export function SiteShell({
@@ -21,8 +19,7 @@ export function SiteShell({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ka">
-      <body className={proto ? "ma ma-proto ma-frame" : "ma ma-frame"} data-market-page={dataMarketPage} data-open={dataOpen}>
+      <div className={proto ? "ma ma-proto ma-frame" : "ma ma-frame"} data-market-page={dataMarketPage} data-open={dataOpen}>
         <a className="ma-skip" href="#main">
           ძირითად შინაარსზე გადასვლა
         </a>
@@ -31,9 +28,6 @@ export function SiteShell({
           <div className="ma-container">{children}</div>
         </main>
         {footer ? <Footer /> : null}
-        <ChatPopup />
-        <Toasts />
-      </body>
-    </html>
+      </div>
   );
 }

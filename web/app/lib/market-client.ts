@@ -72,7 +72,7 @@ export function getMarketStore(initial?: PublicSnapshot): Store {
   singleton.seedPublic(initial);
   return singleton;
 }
-export function useMarketStore(initial?: PublicSnapshot): { store: Store | undefined; ready: boolean; available: boolean } {
+export function useMarketStore(initial?: PublicSnapshot): { store: Store | undefined; ready: boolean; sessionReady: boolean; available: boolean } {
   const preview = useMemo(() => initial ? createMarketStore({initial, background: false}) : undefined, [initial]);
   const [store, setStore] = useState<Store>();
   useEffect(() => {
@@ -90,5 +90,5 @@ export function useMarketStore(initial?: PublicSnapshot): { store: Store | undef
     return () => { unsubscribe(); unwatch(); };
   }, [initial]);
   const current = store?.isReady() ? store : preview || store;
-  return { store: current, ready: !!current?.isReady(), available: current ? !!current.isAvailable() : true };
+  return { store: current, ready: !!current?.isReady(), sessionReady: !!current?.isSessionReady(), available: current ? !!current.isAvailable() : true };
 }

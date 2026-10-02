@@ -10,6 +10,7 @@ export type AdminAuditEvent = {
 };
 
 export const auditActions: Record<string, string> = {
+  edit_profile: "პროფილის რედაქტირება", edit_request: "მოთხოვნის რედაქტირება",
   "request.hide": "მოთხოვნის დამალვა", "request.show": "მოთხოვნის გამოჩენა", "request.delete": "მოთხოვნის წაშლა",
   "offer.delete": "შეთავაზების წაშლა",
   "user.photo_remove": "ფოტოს წაშლა",

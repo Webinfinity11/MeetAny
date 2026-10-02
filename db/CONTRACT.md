@@ -670,3 +670,20 @@ All new writes use `require_user()` (blocked accounts denied), admin reads use `
 | `set_my_products(p_items jsonb)` | Company | Replaces own list, max 12. Name 2–80 chars, note <=200; photo must belong to the caller's approved Blob origin/path and existing gallery. Empty list removes own products. MA622 invalid input. |
 
 Distribution v1 covers profile, public block, brand search and catalog filters. A distinct distributor request type and its special alert/offer routing are later specification stages, not part of this release. Product photos reuse the existing gallery uploader and ownership validation.
+
+
+## ადგილობრივი UX და ადმინის განახლება — 2026-10-02
+
+მიგრაციები `20261002-admin-management.sql`, `20261002-company-approval.sql`, `20261002-registration-analytics.sql` შესრულებულია მხოლოდ იზოლირებულ ადგილობრივ ბაზაში. საჯარო ბაზაზე ჯერ არ გამოყენებულა. თითოეული SQL suite-ში ორჯერ სრულდება; სრული suite — 1,545 შემოწმება PASS (83 ახალი).
+
+- `admin_edit_profile(uuid,jsonb)` და `admin_edit_request(uuid,jsonb)` — ადმინისტრატორის ვალიდირებული ცვლილებები; `admin_company_settings(uuid)` — დამატებითი კომპანიის პარამეტრები. ცვლილებები იწერება ბიზნესჟურნალში.
+- `admin_manage_plan(uuid,text,timestamptz)` — პირდაპირი Premium/VIP ან გაუქმება, ვადა და ისტორია.
+- `site_content()` — საჯარო კონტენტი; `admin_save_site_content(jsonb)` — მხოლოდ ადმინის ცვლილება; ნებადართული ველები და ფოტოს მისამართები მოწმდება სერვერზე.
+- `admin_business_audit(integer,integer)` — მხოლოდ ადმინის გვერდებად დაყოფილი ჟურნალი, ადამიანისთვის გასაგები მონაცემებით.
+- `save_company_review(uuid,integer,text)` — არჩეულ კომპანიაზე ახალი შეფასება პირდაპირ ქვეყნდება. მოდერატორის მიერ დამალული შეფასების ავტორის განახლება დამალვას არ აუქმებს.
+- კომპანიის დამტკიცება იყენებს `verified` მდგომარეობას. დაუმტკიცებელი კომპანია საჯარო დირექტორიაში/პროფილში/პროდუქტებში არ ჩანს; მფლობელი და ადმინი ხედავენ. შეთავაზების გაგზავნა უარყოფილია `MA801`-ით. დამტკიცება არსებულ ადმინისტრაციულ მოქმედებას იყენებს.
+- `record_registration_event(uuid,uuid,text,text,text,text)` ინახავს მცირე allowlist მოვლენას; პირადი ველები უარყოფილია. `admin_registration_analytics(integer,text)` — პერიოდი, როლი, ეტაპები და მცდელობების ბოლო ეტაპი. `profile_created` მოითხოვს ახლად შექმნილ ავტორიზებულ პროფილს. სტუმრის მოვლენები არ არის უნიკალური ადამიანების ზუსტი რაოდენობა.
+- `/api/analytics/registration` POST-ში 512-byte ნაკადის ზღვარი და ფორმატის ვალიდაციაა; ჩართვა — `REGISTRATION_ANALYTICS_ENABLED=true`. ლოკალურად ჩართულია, წარმოებაზე ნაგულისხმევად გამორთული.
+- ლოკალური `pg.Pool` მხოლოდ `MEETANY_LOCAL_DATABASE_URL` loopback მისამართით მუშაობს; მისი არყოფნისას არსებული Neon გზა უცვლელია. ადგილობრივად დამოწმებული JWT-ის metadata გამოიყენება stub მომხმარებლისთვის; ავთენტიკაციის საიდუმლოებები არ კოპირდება.
+
+ზუსტი QA ფარგლები, კვლევა, მონაცემთა იზოლაცია და გაშვება: `web/qa/STATUS-2026-10-02.md`. ტელეფონის/ელფოსტის დადასტურებისა და გაგზავნის ახალი არხები ამ ეტაპს არ ეკუთვნის.

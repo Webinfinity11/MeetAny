@@ -15,7 +15,7 @@ import { Icon } from "../Icon";
 import { CompanyProducts } from "./CompanyProducts";
 import { DistributionProfile } from "./Distribution";
 import { ProductCard, type ProductCardData } from "./ProductCard";
-import { avatarInitials, companyImage } from "./CompanyAvatar";
+import { companyImage } from "./CompanyAvatar";
 import { CompanyGallery } from "./CompanyGallery";
 import { SimilarCompanies } from "./SimilarCompanies";
 import { SaveCompanyButton } from "./SaveCompanyButton";
@@ -36,11 +36,11 @@ const CompaniesMap = dynamic(() => import("./CompaniesMap").then(m => m.Companie
 });
 
 export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapshot }) {
-  const { store, ready, available } = useMarketStore(initial);
+  const { store, ready, sessionReady, available } = useMarketStore(initial);
   const business = useCompanyFeatures(store, ready && available);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
-  const detail = useCompanyDetail(store, ready, available, id);
+  const detail = useCompanyDetail(store, sessionReady, available, id);
 
   const data = useMemo(() => {
     if (!store || !ready || !available || !id) return null;
@@ -58,7 +58,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
 
   if (ready && (!available || detail.error)) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready || (!data && detail.loading)) return <ProfileSkeleton />;
+  if (!ready || (!data && (!sessionReady || detail.loading))) return <ProfileSkeleton />;
   if (!data) {
     return (
       <div className="ma-page">
@@ -97,7 +97,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       <Link className="ma-back" href="/companies/"><Icon name="arrow-left" />კომპანიების კატალოგი</Link>
       <CompanyGallery photos={photos} name={name} />
       <header className="company-hero">
-        {thumb !== null ? <span className="company-hero__thumb">{thumb ? <img src={thumb} alt="" /> : <span aria-hidden="true">{avatarInitials(name)}</span>}</span> : null}
+        {thumb !== null ? <span className="company-hero__thumb">{thumb ? <img src={thumb} alt="" /> : <span aria-hidden="true"><Icon name="building-2" /></span>}</span> : null}
         <div className="company-hero__text">
           <p className="company-hero__industry">{categories[c.industry] || c.industry}</p>
           <h1 className="company-hero__name">{name}</h1>

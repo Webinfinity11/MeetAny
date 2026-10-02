@@ -1,0 +1,55 @@
+\set ON_ERROR_STOP 1
+\o /dev/null
+select t.as_super();
+create table t.management_start as select count(*) n from t.passed;
+select t.as_user('bx_admin');
+select t.lives($q$select public.admin_edit_profile(t.uid('bx_company'),'{"company":"Edited supplier","about":"Edited company description"}')$q$,'MG admin edits company');
+select t.ok((select company='Edited supplier' from public.profiles where id=t.uid('bx_company')),'MG company edit persisted');
+select t.throws($q$select public.admin_edit_profile(t.uid('bx_company'),'{"role":"admin"}')$q$,'22023','MG role escalation disallowed');
+select t.throws($q$select public.admin_edit_profile(t.uid('bx_company'),'{"email":"replacement@example.com"}')$q$,'22023','MG auth email cannot diverge');
+select t.throws($q$select public.admin_edit_profile(t.uid('bx_company'),'{"gallery":["https://evil.example/x.jpg"]}')$q$,'MA116','MG gallery owner and origin validated');
+select t.lives($q$select public.admin_edit_request(t.get('bx_request'),'{"title":"Updated chosen request","body":"Corrected request description even with existing offers"}')$q$,'MG admin corrects request with offers');
+select t.ok((select title='Updated chosen request' from public.requests where id=t.get('bx_request')),'MG request edit persisted');
+select t.throws($q$select public.admin_edit_request(t.get('bx_request'),'{"owner_id":"00000000-0000-0000-0000-000000000000"}')$q$,'22023','MG request ownership immutable');
+select public.admin_edit_request(t.get('bx_request'),'{"status":"closed"}');
+select t.throws($q$select public.admin_edit_request(t.get('bx_request'),'{"status":"open"}')$q$,'22023','MG chosen request not reopened');
+select public.admin_manage_plan(t.uid('bx_company'),'vip',now()+interval '90 days');
+select t.ok(public.admin_company_settings(t.uid('bx_company'))->'membership'->>'plan'='vip','MG direct VIP assigned');
+select public.admin_manage_plan(t.uid('bx_company'),'premium',now()+interval '15 days');
+select t.ok(public.admin_company_settings(t.uid('bx_company'))->'membership'->>'plan'='premium','MG plan changed');
+select t.throws($q$select public.admin_manage_plan(t.uid('bx_company'),'vip',now()-interval '1 day')$q$,'22023','MG past expiry refused');
+select public.admin_manage_plan(t.uid('bx_company'),null);
+select t.ok(public.admin_company_settings(t.uid('bx_company'))->'membership'='null'::jsonb,'MG plan removed');
+select public.admin_save_site_content('{"heroTitle":"Professional marketplace","heroImage1":"/images/sample.jpg"}');
+select t.ok(public.site_content()->>'heroTitle'='Professional marketplace','MG CMS persists');
+select t.lives($q$select public.admin_save_site_content('{"heroTitle":"Professional marketplace","heroImage1":"/assets/photos/hero/production.webp"}')$q$,'MG bundled photo paths editable');
+select t.throws($q$select public.admin_save_site_content('{"heroImage1":"javascript:alert(1)"}')$q$,'22023','MG unsafe content photos refused');
+select t.throws($q$select public.admin_save_site_content('{"role":"admin"}')$q$,'22023','MG CMS unknown keys rejected');
+select t.as_user('bx_client');
+select t.throws($q$select public.admin_edit_profile(t.uid('bx_company'),'{"company":"Spoofed"}')$q$,'MA003','MG non-admin cannot edit profile');
+select t.throws($q$select public.admin_edit_request(t.get('bx_request'),'{"title":"Spoofed request"}')$q$,'MA003','MG non-admin cannot use admin edit');
+select t.throws($q$select public.admin_manage_plan(t.uid('bx_company'),'vip',now()+interval '30 days')$q$,'MA003','MG self upgrade refused');
+select t.throws($q$select public.admin_save_site_content('{"heroTitle":"Spoofed"}')$q$,'MA003','MG non-admin CMS refused');
+select public.save_company_review(t.get('bx_request'),5,'A verified customer experience published immediately');
+select t.ok(public.my_company_review_targets(t.uid('bx_replacement'))->0->>'status'='published','MG review immediate publication');
+select t.as_user('bx_admin');
+select public.admin_moderate_review((select (v->>'id')::uuid from jsonb_array_elements(public.admin_business_queue('reviews')->'items') v where v->>'request_id'=t.get('bx_request')::text),'hidden','Policy violation');
+select t.as_user('bx_client');
+select public.save_company_review(t.get('bx_request'),4,'Hidden review edited but must not bypass moderation');
+select t.ok(public.my_company_review_targets(t.uid('bx_replacement'))->0->>'status'='hidden','MG author edit cannot unhide moderated review');
+select t.as_anon();
+select t.ok(public.site_content()->>'heroTitle'='Professional marketplace','MG guest sees published content');
+select t.throws($q$select public.admin_company_settings(t.uid('bx_company'))$q$,'42501','MG anonymous denied admin');
+
+select t.as_user('bx_admin');
+select t.ok((public.admin_business_audit()->>'total')::integer>0,'MG business history visible to admin');
+select t.ok(not(public.admin_business_audit()->'items'->0 ? 'detail') and not(public.admin_business_audit()->'items'->0 ? 'actor_id'),'MG business audit exposes readable safe fields only');
+select t.ok(exists(select 1 from jsonb_array_elements(public.admin_business_audit(0,100)->'items') entry where entry->>'action'='review_saved'),'MG direct review publication recorded');
+select t.throws($q$select public.admin_business_audit(-1)$q$,'22023','MG invalid business audit page refused');
+select t.as_user('bx_client');
+select t.throws($q$select public.admin_business_audit()$q$,'MA003','MG customer cannot read business audit');
+select t.as_anon();
+select t.throws($q$select public.admin_business_audit()$q$,'42501','MG anonymous cannot read business audit');
+select t.as_super();
+\o
+select 'Admin management: '||(count(*)-(select n from t.management_start))||' assertions passed' from t.passed;

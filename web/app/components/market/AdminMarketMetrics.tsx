@@ -20,7 +20,7 @@ export function AdminMarketMetrics({store}:{store:Store}) {
     <div className={styles.metric}><span>პირველ შეთავაზებამდე საშუალო დრო</span><strong className={styles.kpiValue}>{data.averageFirstOfferHours===null?'—':`${data.averageFirstOfferHours} სთ`}</strong><small>მთელი პერიოდი · შეთავაზების მქონე მოთხოვნები</small></div>
     <div className={styles.metric}><span>მომწოდებლის არჩევის წილი</span><strong className={styles.kpiValue}>{data.chosenShare===null?'—':`${data.chosenShare}%`}</strong><small>{data.chosen} არჩევა / {data.completed} დასრულებული ან ვადაგასული მოთხოვნა · მთელი პერიოდი</small></div>
    </div>
-   <p className={styles.note}>სატესტო და სადემო ჩანაწერებიც ითვლება. მომწოდებლის არჩევა გადახდილ ან მიწოდებულ შეკვეთას არ ნიშნავს.</p>
+   <p className={styles.note}>მომწოდებლის არჩევა გადახდილ ან მიწოდებულ შეკვეთას არ ნიშნავს.</p>
    {data.completed>0&&data.completed<10?<p className={styles.note}>არჩევის წილი მხოლოდ {data.completed} მოთხოვნას ეფუძნება — ნიმუში ჯერ მცირეა.</p>:null}
    <details className={styles.disclosure}><summary><span>სად არის მეტი მომწოდებელი საჭირო?</span><span className={styles.disclosureCount}>{data.gaps.length} მიმართულება</span></summary><div className={styles.disclosureBody}>
    <p className={styles.note}>დარგისა და ქალაქის მიხედვით — ჯერ ის მიმართულებები, სადაც შესაბამისი კომპანიების რაოდენობა მცირეა. შესაბამისობა ეფუძნება საქმიანობასა და მომსახურების რეგიონს.</p>

@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Store } from "./market-client";
+import { adminUserFilterParams } from "./admin-user-filters";
 
 export type AdminPage = {
   items: Record<string, unknown>[];
@@ -54,9 +55,13 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
   const version = Number(store?.stats()?.adminApiVersion) || 0;
   // Offers need the v2 database and the store method that calls it.
   const supported = enabled && (tab === "offers" ? version >= 2 && typeof store?.adminSearchOffers === "function" : version >= 1);
-  const key = JSON.stringify([tab, query, status, role, cursor, version, revision, store?.dataRevision(), store?.currentUser()?.id]);
+  const latestStore = useRef(store);
+  useEffect(() => { latestStore.current = store; }, [store]);
+  const key = JSON.stringify([tab, query, status, role, cursor, version, store?.currentUser()?.id]);
+  const fetchKey = JSON.stringify([key, revision, store?.dataRevision()]);
   const reload = useCallback(() => setRevision(value => value + 1), []);
   useEffect(() => {
+    const store = latestStore.current;
     if (!supported || !store) return;
     let cancelled = false;
     const timer = window.setTimeout(async () => {
@@ -64,9 +69,7 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
         const p_cursor = cursor ? JSON.parse(cursor) : null;
         const pagination = { p_cursor, p_limit: 25 };
         const raw = await (tab === "requests" ? store.adminSearchRequests({ ...pagination, p_q: query || null, p_state: status || null })
-          : tab === "users" ? store.adminSearchUsers({ ...pagination, p_q: query || null, p_role: role || null,
-            p_blocked: status === "blocked" ? true : ["active", "verified"].includes(status) ? false : null,
-            p_verified: status === "verified" ? true : null })
+          : tab === "users" ? store.adminSearchUsers({ ...pagination, p_q: query || null, ...adminUserFilterParams(status, role) })
           : tab === "offers" ? store.adminSearchOffers({ ...pagination, p_q: query || null, p_status: status || null })
           : store.adminListAudit(pagination));
         // v2 audit rows carry names from the server; v1 rows are named here.
@@ -80,15 +83,15 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
           ...r, createdAt: r.created_at, ownerId: r.owner_id, ownerName: r.owner_name, ownerCompany: r.owner_company,
           offerCount: r.offer_count, hiddenReason: r.hidden_reason, expiresAt: r.expires_at, chosenOfferId: r.chosen_offer_id,
         }) };
-        if (!cancelled) setResult({ key, page, error: null });
+        if (!cancelled) setResult(previous => previous?.key === key && !previous.error && JSON.stringify(previous.page) === JSON.stringify(page) ? previous : { key, page, error: null });
       } catch (err) {
-        if (!cancelled) setResult({ key, page: null, error: adminErrorMessage(err) });
+        if (!cancelled) setResult(previous => ({ key, page: previous?.key === key ? previous.page : null, error: adminErrorMessage(err) }));
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
-  }, [supported, store, key, tab, query, status, role, cursor]);
+  }, [supported, key, fetchKey, tab, query, status, role, cursor]);
   const current = result?.key === key ? result : null;
-  const mode: "legacy" | "loading" | "ready" | "error" = !supported ? "legacy" : !current ? "loading" : current.error ? "error" : "ready";
+  const mode: "legacy" | "loading" | "ready" | "error" = !supported ? "legacy" : !current ? "loading" : current.page ? "ready" : "error";
   return { mode, page: current?.page || null, error: current?.error || null, reload };
 }
 
@@ -112,6 +115,7 @@ export function useAdminContacts({ store, kind, target, period, cursor }: {
   const [result, setResult] = useState<ContactResult | null>(null);
   const filterKey = JSON.stringify([kind, target, period, revision, store.currentUser()?.id]);
   const key = JSON.stringify([filterKey, cursor]);
+  const contactEvents=store.adminContactEvents,contactStats=store.adminContactStats,loadMessageStats=store.adminMessageStats;
   useEffect(() => {
     let cancelled = false;
     const timer = window.setTimeout(async () => {
@@ -123,9 +127,9 @@ export function useAdminContacts({ store, kind, target, period, cursor }: {
           : at - (period === "week" ? 7 : 30) * 86400000;
         const from = p_cursor?.from || new Date(boundary).toISOString();
         const [page, stats, messageStats] = await Promise.all([
-          store.adminContactEvents({ p_cursor, p_kind: kind || null, p_target_kind: target || null, p_from: from, p_limit: 25 }),
-          store.adminContactStats({ p_period: period }),
-          store.adminMessageStats(),
+          contactEvents({ p_cursor, p_kind: kind || null, p_target_kind: target || null, p_from: from, p_limit: 25 }),
+          contactStats({ p_period: period }),
+          loadMessageStats(),
         ]);
         if (page.nextCursor) page.nextCursor = { ...page.nextCursor, from };
         if (!cancelled) setResult(previous => {
@@ -137,7 +141,7 @@ export function useAdminContacts({ store, kind, target, period, cursor }: {
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
-  }, [store, kind, target, period, cursor, key, filterKey]);
+  }, [contactEvents, contactStats, loadMessageStats, kind, target, period, cursor, key, filterKey]);
   const current = result?.key === key ? result : null;
   return { ...current, loading: !current, reload: () => setRevision(value => value + 1) };
 }

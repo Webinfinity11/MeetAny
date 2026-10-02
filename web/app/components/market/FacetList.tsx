@@ -8,6 +8,7 @@ import { DuoIcon } from "../ui/DuoIcon";
 export type Facet = { id: string; label: string; count: number; icon?: string; children?: Facet[] };
 
 const VISIBLE = 8;
+const groupGlyphs: Record<string,string> = {food:"food_fresh",construction:"renovation",interior:"furniture",production:"packaging",logistics:"freight",trade:"wholesale",facility:"cleaning",digital:"software_web",marketing:"advertising",business:"consulting",finance:"business_finance",tourism:"hotel_services"};
 
 export function FacetList({
   all,
@@ -39,7 +40,7 @@ export function FacetList({
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
-      {child ? null : <DuoIcon name={f.icon || (f.id ? "shapes" : "layout-grid")} size={18} className="catalog-facet__icon" />}
+      {child ? null : <DuoIcon family={groupGlyphs[f.id] ? "category" : "solar"} name={groupGlyphs[f.id] || f.icon || (f.id ? "map-pin" : "layout-grid")} size={20} className="catalog-facet__icon" />}
       <span className="catalog-facet__label">{f.label}</span>
       <span className="catalog-facet__count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>

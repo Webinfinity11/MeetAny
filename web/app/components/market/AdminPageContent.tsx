@@ -2,6 +2,7 @@
 import { Button } from "../ui/Button";
 
 
+import { AdminContentEditor } from "./AdminContentEditor";
 import { AdminBusiness } from "./AdminBusiness";
 
 import { AccountSkeleton, ListSkeleton } from "./Skeletons";
@@ -13,11 +14,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
 import { adminErrorMessage, useAdminData } from "../../lib/use-admin-data";
+import { adminUserFilterParams, adminUserMatchesStatus } from "../../lib/admin-user-filters";
+import { AdminBusinessAudit } from "./AdminBusinessAudit";
 import { AdminAuditTable, type AdminAuditEvent } from "./AdminAuditTable";
 import { AdminState } from "./AdminState";
 import { AdminOffersTable, type AdminOffer } from "./AdminOffersTable";
 import { AdminContacts } from "./AdminContacts";
 import { PageBand } from "./PageBand";
+import { AdminUserStatus } from "./AdminUserStatus";
 import { AdminFilters } from "./AdminFilters";
 import { AdminOverview } from "./AdminOverview";
 import { AdminNavigation } from "./AdminNavigation";
@@ -26,7 +30,7 @@ import { adminSections, type AdminSection } from "../../lib/admin-sections";
 import { AdminPhotos } from "./AdminPhotos";
 import { AdminReports, hideLabels, type ReportAction } from "./AdminReports";
 import { AdminDetail, type AdminTarget } from "./AdminDetail";
-import { isTestAccount, downloadCsv, readAllAdminPages } from "../../lib/admin-helpers";
+import { downloadCsv, readAllAdminPages } from "../../lib/admin-helpers";
 import styles from "./admin.module.css";
 import { ModerationSheet } from "./ModerationSheet";
 import { useMarketStore } from "../../lib/market-client";
@@ -43,23 +47,23 @@ export function AdminPageContent() {
   const router = useRouter();
   const query = searchParams.get("q") || "";
   const status = searchParams.get("status") || "";
-  const role = searchParams.get("role") || "";
+  const role = searchParams.get("tab") === "companies" ? "company" : searchParams.get("role") || "";
   function setFilter(key: string, value: string) {
     const next = new URLSearchParams(searchParams.toString());
     if (value) next.set(key, value); else next.delete(key);
+    if (key === "status" && value === "unverified") next.set("role", "company");
+    if (key === "role" && value !== "company" && status === "unverified") next.delete("status");
     if (key !== "cursor") next.delete("cursor");
     router.replace(`/admin/?${next}`, { scroll: false });
   }
   const selectedTab = searchParams.get("tab");
   // The overview is the landing screen; the other tabs are the working tools.
   const tab: AdminSection = selectedTab && Object.hasOwn(adminSections, selectedTab) ? selectedTab as AdminSection : "overview";
-  // QA/demo accounts are hidden from the lists unless asked for (?tests=1).
-  const showTests = searchParams.get("tests") === "1";
   const cursor = searchParams.get("cursor") || "";
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [detail, setDetail] = useState<AdminTarget>(null);
   // Row selection belongs to one list view: a new tab, filter or page starts empty.
-  const selectionKey = JSON.stringify([selectedTab, query, status, role, cursor, showTests]);
+  const selectionKey = JSON.stringify([selectedTab, query, status, role, cursor]);
   const [selection, setSelection] = useState<{ key: string; ids: string[] }>({ key: "", ids: [] });
   const selected = selection.key === selectionKey ? selection.ids : [];
   const setSelected = (ids: string[]) => setSelection({ key: selectionKey, ids });
@@ -70,8 +74,8 @@ export function AdminPageContent() {
 
   const me = ready && available ? store?.currentUser() : null;
 
-  const ownData = tab === "demo" || tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports";
-  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && !ownData, tab: ownData ? "audit" : tab, query, status, role, cursor });
+  const ownData = tab === "content" || tab === "demo" || tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports";
+  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && !ownData, tab: ownData ? "audit" : tab === "companies" ? "users" : tab, query, status, role, cursor });
   // New reports: the tab badge. Loaded once per admin visit and updated by the reports tab itself.
   const [reportCount, setReportCount] = useState(0);
   const [reportRevision, setReportRevision] = useState(0);
@@ -149,20 +153,18 @@ export function AdminPageContent() {
     const owner = store?.userById(r.ownerId);
     return (!status || store?.requestState(r) === status) && matches(`${r.title} ${r.id} ${owner?.company || ""} ${owner?.name || ""}`);
   });
-  const cachedUsers = users.filter(u => (!role || u.role === role) && (!status || (status === "blocked" ? u.blocked : status === "verified" ? u.role === "company" && u.verified && !u.blocked : !u.blocked)) && matches(`${u.company || ""} ${u.name} ${u.email} ${u.phone} ${u.id}`));
+  const cachedUsers = users.filter(u => (!role || status === "unverified" || u.role === role) && adminUserMatchesStatus(u, status) && matches(`${u.company || ""} ${u.name} ${u.email} ${u.phone} ${u.id}`));
 
   const allRequests = admin.mode === "legacy" ? cachedRequests : (tab === "requests" ? admin.page?.items || [] : []) as unknown as typeof requests;
-  const allUsers = admin.mode === "legacy" ? cachedUsers : (tab === "users" ? admin.page?.items || [] : []) as unknown as typeof users;
-  const requestOwner = (r: (typeof requests)[number]) => admin.mode === "ready" ? { name: r.ownerName, company: r.ownerCompany } : store?.userById(r.ownerId);
-  const filteredRequests = showTests ? allRequests : allRequests.filter(r => !isTestAccount(requestOwner(r)));
-  const filteredUsers = showTests ? allUsers : allUsers.filter(u => !isTestAccount(u));
-  const hiddenTests = tab === "requests" ? allRequests.length - filteredRequests.length : tab === "users" ? allUsers.length - filteredUsers.length : 0;
+  const allUsers = admin.mode === "legacy" ? cachedUsers : (tab === "users" || tab === "companies" ? admin.page?.items || [] : []) as unknown as typeof users;
+  const filteredRequests = allRequests;
+  const filteredUsers = allUsers;
   const canShowRecords = admin.mode === "legacy" || admin.mode === "ready";
   // One definition for the KPI and the users tab: admin_stats().users counts non-admins only,
   // the list also shows admins — say how many, so the two numbers add up.
   const unfilteredUsers = admin.mode === "ready" ? (!query && !status && !role ? admin.page?.filteredTotal : undefined) : users.length;
   const adminCount = unfilteredUsers === undefined ? 0 : Math.max(0, unfilteredUsers - stats.users);
-  const adminNote = tab === "users" && adminCount ? ` · მათ შორის ${adminCount} ადმინი — ზედა მთვლელში არ ითვლება` : "";
+  const adminNote = (tab === "users" || tab === "companies") && adminCount ? ` · მათ შორის ${adminCount} ადმინი — ზედა მთვლელში არ ითვლება` : "";
 
   async function run(kind: PendingKind, action: string, id: string, reason: string, url?: string) {
     if (!store) return;
@@ -207,16 +209,16 @@ export function AdminPageContent() {
     setExporting(true);
     try {
       const date = new Date().toISOString().slice(0, 10);
-      if (tab === "users") {
+      if ((tab === "users" || tab === "companies")) {
         const rows = admin.mode === "legacy" ? allUsers as unknown as Record<string, unknown>[] : await readAllAdminPages<Record<string, unknown>>(store.adminSearchUsers, {
-          p_q: query || null, p_role: role || null, p_blocked: status === "blocked" ? true : ["active", "verified"].includes(status) ? false : null, p_verified: status === "verified" ? true : null });
-        const list = showTests ? rows : rows.filter(u => !isTestAccount(u as { name?: string; company?: string; email?: string }));
+          p_q: query || null, ...adminUserFilterParams(status, role) });
+        const list = rows;
         downloadCsv(`meetany-users-${date}.csv`, [["ID", "სახელი", "კომპანია", "როლი", "დარგი", "ქალაქი", "ტელეფონი", "ელფოსტა", "დადასტურებული", "დაბლოკილი", "რეგისტრაცია"],
           ...list.map(u => [u.id, u.name, u.company, u.role === "company" ? "კომპანია" : u.role === "admin" ? "ადმინი" : "კლიენტი", categories[String(u.industry || "")] || u.industry, cities[String(u.city || "")] || u.city, u.phone, u.email, u.verified ? "კი" : "არა", u.blocked ? "კი" : "არა", String(u.created_at || u.createdAt || "").slice(0, 10)] as string[])]);
       } else {
         const rows = admin.mode === "legacy" ? allRequests as unknown as Record<string, unknown>[] : await readAllAdminPages<Record<string, unknown>>(store.adminSearchRequests, { p_q: query || null, p_state: status || null });
         const owner = (r: Record<string, unknown>) => admin.mode === "legacy" ? store.userById(String(r.ownerId)) : { name: r.owner_name, company: r.owner_company };
-        const list = showTests ? rows : rows.filter(r => !isTestAccount(owner(r)));
+        const list = rows;
         downloadCsv(`meetany-requests-${date}.csv`, [["ID", "სათაური", "კატეგორია", "ქალაქი", "ავტორი", "სტატუსი", "შეთავაზებები", "დამალული", "გამოქვეყნდა"],
           ...list.map(r => { const o = owner(r) as { name?: string; company?: string } | null; return [r.id, r.title, categories[String(r.category)] || r.category, cities[String(r.city)] || r.city, o?.company || o?.name, ({ open: "ღია", chosen: "არჩეული", expired: "ვადაგასული", closed: "დახურული", hidden: "დამალული" } as Record<string, string>)[String(r.state || store.requestState(r))] || r.state, r.offer_count ?? store.offerCount(r.id), r.hidden ? "კი" : "არა", String(r.created_at || r.createdAt || "").slice(0, 10)] as string[]; })]);
       }
@@ -229,13 +231,13 @@ export function AdminPageContent() {
   }
 
   // Bulk actions per list: nothing permanent (no bulk delete).
-  const bulkActions: { action: string; label: string; danger?: boolean }[] = tab === "users"
+  const bulkActions: { action: string; label: string; danger?: boolean }[] = (tab === "users" || tab === "companies")
     ? [{ action: "verify", label: "დადასტურება" }, { action: "unblock", label: "განბლოკვა" }, { action: "block", label: "დაბლოკვა", danger: true }]
     : [{ action: "unhide", label: "გამოჩენა" }, { action: "hide", label: "დამალვა", danger: true }];
-  const bulkTargets = (action: string) => tab === "users"
+  const bulkTargets = (action: string) => (tab === "users" || tab === "companies")
     ? filteredUsers.filter(u => selected.includes(u.id) && u.role !== "admin" && (action !== "verify" || (u.role === "company" && !u.verified)) && (action !== "block" || !u.blocked) && (action !== "unblock" || u.blocked)).map(u => u.id)
     : filteredRequests.filter(r => selected.includes(r.id) && (action === "hide" ? !r.hidden : r.hidden)).map(r => r.id);
-  const visibleIds = tab === "users" ? filteredUsers.filter(u => u.role !== "admin").map(u => u.id) : filteredRequests.map(r => r.id);
+  const visibleIds = (tab === "users" || tab === "companies") ? filteredUsers.filter(u => u.role !== "admin").map(u => u.id) : filteredRequests.map(r => r.id);
   const allSelected = visibleIds.length > 0 && visibleIds.every(id => selected.includes(id));
   const selectAll = <input type="checkbox" className={styles.check} aria-label="ყველას მონიშვნა ამ გვერდზე" checked={allSelected} onChange={() => setSelected(allSelected ? [] : visibleIds)} />;
 
@@ -243,35 +245,34 @@ export function AdminPageContent() {
     <div className={`ma-page ${styles.workspace}`}>
       <AdminNavigation tab={tab} reports={reportCount} offersEnabled={v2} />
       <div key={tab} className={styles.content}>
-      <PageBand title={adminSections[tab].label} description={adminSections[tab].description} actions={tab === "overview" ? <Button variant="secondary" href="/admin/?tab=demo">სადემო გზამკვლევი<Icon name="arrow-right" /></Button> : undefined} />
+      <PageBand title={adminSections[tab].label} description={adminSections[tab].description}  />
       {tab === "reviews" || tab === "plans" ? <AdminBusiness key={tab} kind={tab}/> : tab === "overview" ? <AdminOverview store={store!} stats={stats} onOpenUser={id => setDetail({ kind: "user", id })}
         onVerify={u => setPendingAction({ kind: "users", action: "verify", id: u.id, label: u.label })} /> : null}
 
+      {tab === "content" ? <AdminContentEditor store={store!} /> : null}
       {tab === "demo" ? <AdminDemoGuide store={store!} /> : null}
       {tab === "reports" ? <section className={styles.listSurface}><AdminReports key={status} store={store!} status={status === "handled" ? "handled" : "new"} revision={reportRevision} onStatus={value => setFilter("status", value === "new" ? "" : value)} onCount={onReportCount}
         onAction={({ report, action, label }: ReportAction) => setPendingAction({ kind: "reports", action: action === "reportReject" ? "reportReject" : `reportHide.${report.target_kind}`, id: report.id, label })} /></section> : null}
       {tab === "photos" ? <AdminPhotos store={store!} onRemove={p => setPendingAction({ kind: "photos", action: "removePhoto", id: p.userId, url: p.url, label: p.label })} /> : null}
-      {tab === "demo" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <section className={styles.listSurface} aria-label="ჩანაწერების მართვა">
-      {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters tab={tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
+      {tab === "content" || tab === "demo" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "plans" || tab === "reports" ? null : tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : <section className={styles.listSurface} aria-label="ჩანაწერების მართვა">
+      {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters lockRole={tab === "companies"} tab={tab === "companies" ? "users" : tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
       {hasFilters && (tab !== "offers" || v2) ? <Button type="button" variant="secondary" className={styles.clear} onClick={clearFilters}>ფილტრების გასუფთავება</Button> : null}
-      {admin.mode === "legacy" && (tab === "requests" || tab === "users") ? <>
+      {admin.mode === "legacy" && (tab === "requests" || (tab === "users" || tab === "companies")) ? <>
         <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი{adminNote}.</p>
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლე გვერდი."}</p>
       </> : null}
       {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი{adminNote}</p> : null}
-      {(tab === "requests" || tab === "users") && canShowRecords ? <div className={styles.listTools}><label className={`filter-switch ${styles.testSwitch}`}>
-        <span><strong>სატესტო ანგარიშების ჩვენება</strong><small>{showTests ? "ნაჩვენებია ყველა ჩანაწერი" : hiddenTests ? `ამ გვერდზე დამალულია ${hiddenTests}` : "e2e და სატესტო ანგარიშები დამალულია"}</small></span>
-        <input type="checkbox" role="switch" checked={showTests} onChange={e => setFilter("tests", e.target.checked ? "1" : "")} />
-        <span className="filter-switch__track" aria-hidden="true" />
-      </label>
+      {(tab === "requests" || (tab === "users" || tab === "companies")) && canShowRecords ? <div className={styles.listTools}>
       <Button type="button" variant="secondary" onClick={exportCsv} disabled={exporting}><Icon name="download" />{exporting ? "მზადდება…" : "CSV ექსპორტი"}</Button></div> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
+      {admin.mode === "ready" && admin.error ? <p className="ma-field__error" role="status">{admin.error} <Button variant="ghost" onClick={admin.reload}>თავიდან ცდა</Button></p> : null}
       {admin.mode === "error" ? <AdminState error title="ჩანაწერები ვერ ჩაიტვირთა" text={admin.error || undefined} onRetry={admin.reload} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
       {((tab === "offers" && !v2) || (tab === "audit" && admin.mode === "legacy")) ? <AdminState title="საჭიროა ბაზის განახლება" text={tab === "offers" ? "შეთავაზებების მოდერაცია ხელმისაწვდომი გახდება ადმინისტრირების API v2-ის ამოქმედების შემდეგ." : "მოქმედებების ჟურნალი ამ ვერსიაში ხელმისაწვდომი არ არის."} /> : null}
-      {canShowRecords && !(tab === "offers" && !v2) && !(tab === "audit" && admin.mode === "legacy") && (tab === "requests" ? !filteredRequests.length : tab === "users" ? !filteredUsers.length : !admin.page?.items.length) ? <AdminState
+      {canShowRecords && !(tab === "offers" && !v2) && !(tab === "audit" && admin.mode === "legacy") && (tab === "requests" ? !filteredRequests.length : (tab === "users" || tab === "companies") ? !filteredUsers.length : !admin.page?.items.length) ? <AdminState
         title={hasFilters ? "ამ ფილტრებით ჩანაწერები ვერ მოიძებნა" : cursor ? "ამ გვერდზე ჩანაწერები აღარ არის" : "ჩანაწერები ჯერ არ არის"}
         text={hasFilters ? "შეცვალე ძიება ან გაასუფთავე ფილტრები." : "ახალი ჩანაწერები აქ გამოჩნდება."}
         onClear={hasFilters ? clearFilters : undefined} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
+      {tab === "audit" ? <AdminBusinessAudit store={store!} /> : null}
       {tab === "audit" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminAuditTable events={admin.page.items as unknown as AdminAuditEvent[]} /> : null}
       {tab === "offers" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminOffersTable offers={admin.page.items as unknown as AdminOffer[]} onDelete={offer => setPendingAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "კომპანია"} · ${offer.request_title || offer.body.slice(0, 80)}` })} /> : null}
       {canShowRecords && tab === "requests" && filteredRequests.length > 0 ? (
@@ -324,14 +325,14 @@ export function AdminPageContent() {
             </tbody>
           </table>
         </div>
-      ) : canShowRecords && tab === "users" && filteredUsers.length > 0 ? (
+      ) : canShowRecords && (tab === "users" || tab === "companies") && filteredUsers.length > 0 ? (
         <div className="ma-table-wrap">
           <table className={`ma-table ${styles.compactUsers}`}>
-            <caption className="ma-sr-only">მომხმარებელი — მოდერაცია</caption>
+            <caption className="ma-sr-only">{tab === "companies" ? "კომპანიები" : "მომხმარებლები"} — მოდერაცია</caption>
             <thead>
               <tr>
                 <th scope="col" className={styles.checkCell}>{selectAll}</th>
-                <th scope="col">მომხმარებელი</th>
+                <th scope="col">{tab === "companies" ? "კომპანია" : "მომხმარებელი"}</th>
                 <th scope="col">როლი</th>
                 <th scope="col">კონტაქტი</th>
                 <th scope="col">სტატუსი</th>
@@ -342,7 +343,7 @@ export function AdminPageContent() {
               {filteredUsers.map((u) => (
                 <tr key={u.id} data-selected={selected.includes(u.id) || undefined}>
                   <td className={styles.checkCell}>{u.role !== "admin" ? <input type="checkbox" className={styles.check} aria-label={`მონიშვნა: ${u.company || u.name}`} checked={selected.includes(u.id)} onChange={() => toggleSelected(u.id)} /> : null}</td>
-                  <td data-label="მომხმარებელი">
+                  <td data-label={tab === "companies" ? "კომპანია" : "მომხმარებელი"}>
                     <button type="button" className={styles.rowLink} onClick={() => setDetail({ kind: "user", id: u.id })}>{u.company || u.name}</button>
                     <small>
                       {u.name} · {cities[u.city] || u.city}
@@ -357,14 +358,7 @@ export function AdminPageContent() {
                     <small>{u.email}</small>
                   </td>
                   <td data-label="სტატუსი">
-                    {u.blocked ? (
-                      <span className="ma-badge ma-badge--danger">დაბლოკილი</span>
-                    ) : u.role === "company" && u.verified ? (
-                      <span className="ma-badge ma-badge--success">დადასტურებული</span>
-                    ) : (
-                      <span className="ma-badge ma-badge--info">აქტიური</span>
-                    )}
-                    {u.blocked && u.blockedReason ? <small>მიზეზი: {u.blockedReason}</small> : null}
+                    <AdminUserStatus user={u} onAction={setPendingAction} />
                   </td>
                   <td data-label="მოქმედება"><Button type="button" variant="secondary" onClick={() => setDetail({ kind: "user", id: u.id })}>დეტალები</Button></td>
                 </tr>
@@ -373,11 +367,11 @@ export function AdminPageContent() {
           </table>
         </div>
       ) : null}
-      {(tab === "requests" || tab === "users") && selected.length ? <div className={styles.bulkBar} role="region" aria-label="მონიშნულ ჩანაწერებზე მოქმედებები">
+      {(tab === "requests" || (tab === "users" || tab === "companies")) && selected.length ? <div className={styles.bulkBar} role="region" aria-label="მონიშნულ ჩანაწერებზე მოქმედებები">
         <strong>{selected.length} მონიშნული</strong>
         {bulkActions.map(b => { const ids = bulkTargets(b.action); return <Button key={b.action} type="button" disabled={!ids.length}
           variant={b.danger ? "danger-quiet" : "secondary"}
-          onClick={() => setPendingAction({ kind: tab === "users" ? "users" : "requests", action: b.action, id: ids[0], ids, label: `${ids.length} ჩანაწერი` })}>{b.label}{ids.length !== selected.length ? ` (${ids.length})` : ""}</Button>; })}
+          onClick={() => setPendingAction({ kind: (tab === "users" || tab === "companies") ? "users" : "requests", action: b.action, id: ids[0], ids, label: `${ids.length} ჩანაწერი` })}>{b.label}{ids.length !== selected.length ? ` (${ids.length})` : ""}</Button>; })}
         <Button type="button" variant="ghost" onClick={() => setSelected([])}>გაუქმება</Button>
       </div> : null}
       {admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">

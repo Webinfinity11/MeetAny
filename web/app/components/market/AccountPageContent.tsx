@@ -19,6 +19,8 @@ import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { LogoField, GalleryField, type GalleryItem } from "./PhotoField";
 import { CompanyProducts } from "./CompanyProducts";
+import { ProfileItems } from "./ProfileItems";
+import { LocationPicker } from "./LocationPicker";
 import { CompanyBusinessPanel, CompanyDistributionPanel } from "./CompanyBusiness";
 import { Inbox } from "./Inbox";
 import { useMarketStore } from "../../lib/market-client";
@@ -72,8 +74,8 @@ function ProfileForm({ me }: { me: AnyUser }) {
   const [city, setCity] = useState(me.city);
   const [industry, setIndustry] = useState(me.industry || "");
   const [about, setAbout] = useState(me.about || "");
-  const [offers, setOffers] = useState((me.offers || []).join("\n"));
-  const [seeks, setSeeks] = useState((me.seeks || []).join("\n"));
+  const [offers, setOffers] = useState<string[]>(me.offers || []);
+  const [seeks, setSeeks] = useState<string[]>(me.seeks || []);
   const [serviceCities, setServiceCities] = useState<string[]>(me.serviceCities || []);
   const [address, setAddress] = useState(me.address || "");
   const [lat, setLat] = useState(me.lat == null ? "" : String(me.lat));
@@ -87,6 +89,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const coordinateDetails = useRef<HTMLDetailsElement>(null);
   const v = useFieldErrors();
 
   async function submit(e: React.FormEvent) {
@@ -103,6 +106,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
       if (latValue === null && lngValue !== null) errors.lat = "მიუთითე განედიც — ან წაშალე ორივე";
       if (lngValue === null && latValue !== null) errors.lng = "მიუთითე გრძედიც — ან წაშალე ორივე";
     }
+    if ((errors.lat || errors.lng) && coordinateDetails.current) coordinateDetails.current.open=true;
     if (!v.check(errors, ["name", "company", "lat", "lng"])) return;
     setPending(true);
     setError(null);
@@ -127,6 +131,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
         setGalleryChanged(false);
       }
       setSaved(true);
+      toast("პროფილი შენახულია.");
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {
@@ -139,15 +144,15 @@ function ProfileForm({ me }: { me: AnyUser }) {
     <section className="account-section">
       <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პირადი მონაცემები"}</h2>
       <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
-      <form className="ma-form" onSubmit={submit} noValidate>
-        <fieldset className="account-form-group">
+      <form className="ma-form" onSubmit={submit} onChange={() => setSaved(false)} noValidate>
+        <fieldset className="account-form-group" disabled={pending}>
           {isCompany ? <legend>ძირითადი</legend> : null}
         {isCompany ? <LogoField name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading === "logo"}
           onChange={file => { setLogoFile(file); setLogoChanged(true); setSaved(false); }}
           onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); setSaved(false); }} /> : null}
         {isCompany ? <GalleryField items={gallery} disabled={pending} uploading={uploading === "gallery"}
           onChange={next => { setGallery(next); setGalleryChanged(true); setSaved(false); }} /> : null}
-        <div className="ma-form__row ma-form__row--3">
+        <div className="ma-form__row ma-form__row--2">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="name">
               სახელი და გვარი *
@@ -162,19 +167,8 @@ function ProfileForm({ me }: { me: AnyUser }) {
             <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={(e) => {setCompany(e.target.value); v.clear("company");}} {...v.control("company")} />
             {v.message("company")}
           </div>
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="profile-city">
-              ქალაქი *
-            </label>
-            <CustomSelect className="ma-select" id="profile-city" value={city} onChange={(e) => setCity(e.target.value)}>
-              {Object.entries(cities).map(([id, label]) => (
-                <option key={id} value={id}>
-                  {label}
-                </option>
-              ))}
-            </CustomSelect>
-          </div>
         </div>
+        <fieldset className="ma-field profile-city-choices"><legend className="ma-field__label">ქალაქი *</legend><div className="profile-city-pills">{Object.entries(cities).map(([id,label])=><label key={id} className="profile-city-pill"><input type="radio" name="profile-city" value={id} checked={city===id} onChange={()=>setCity(id)}/><span>{city===id?<Icon name="check"/>:null}{label}</span></label>)}</div></fieldset>
         <div className="ma-form__row ma-form__row--3 account-contact">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="profile-phone">
@@ -203,7 +197,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
         </fieldset>
         {isCompany ? (
           <>
-          <fieldset className="account-form-group">
+          <fieldset className="account-form-group" disabled={pending}>
             <legend>მომსახურება</legend>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="about">
@@ -213,38 +207,28 @@ function ProfileForm({ me }: { me: AnyUser }) {
               <p className="ma-field__help account-counter" id="about-count">{about.length}/1000</p>
             </div>
             <div className="ma-form__row ma-form__row--2">
-              <div className="ma-field">
-                <label className="ma-field__label" htmlFor="offers">
-                  რას ვთავაზობთ · თითო ხაზზე ერთი, მაქს. 8
-                </label>
-                <textarea className="ma-textarea" id="offers" value={offers} onChange={(e) => setOffers(e.target.value)} />
-              </div>
-              <div className="ma-field">
-                <label className="ma-field__label" htmlFor="seeks">
-                  რას ვეძებთ · თითო ხაზზე ერთი, მაქს. 8
-                </label>
-                <textarea className="ma-textarea" id="seeks" value={seeks} onChange={(e) => setSeeks(e.target.value)} />
-              </div>
+              <ProfileItems id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);setSaved(false);}}/>
+              <ProfileItems id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
             </div>
             <fieldset className="ma-field">
               <legend className="ma-field__label">რომელ ქალაქებს ემსახურებით?</legend>
-              <div className="ma-cluster">
+              <div className="profile-city-pills">
                 {Object.entries(cities).map(([id, label]) => (
-                  <label className="ma-check" key={id}>
+                  <label className="profile-city-pill" key={id}>
                     <input
                       type="checkbox"
                       checked={serviceCities.includes(id)}
                       onChange={(e) =>
-                        setServiceCities((prev) => (e.target.checked ? [...prev, id] : prev.filter((c) => c !== id)))
+                        setServiceCities((prev) => (e.target.checked ? id==="georgia"?[id]:[...prev.filter(c=>c!=="georgia"),id] : prev.filter((c) => c !== id)))
                       }
                     />
-                    <span>{label}</span>
+                    <span>{serviceCities.includes(id)?<Icon name="check"/>:null}{label}</span>
                   </label>
                 ))}
               </div>
             </fieldset>
           </fieldset>
-          <fieldset className="account-form-group">
+          <fieldset className="account-form-group" disabled={pending}>
             <legend>მისამართი</legend>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="address">
@@ -253,8 +237,9 @@ function ProfileForm({ me }: { me: AnyUser }) {
               <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
               <p className="ma-field__help" id="address-help">ჩანს პროფილზე „მიმართულება“ ბმულით</p>
             </div>
-            <details className="account-location-details">
-              <summary><Icon name="map-pin" />რუკაზე ზუსტი მდებარეობა</summary>
+            <LocationPicker city={city} disabled={pending} value={Number.isFinite(parseCoord(lat))&&Number.isFinite(parseCoord(lng))&&Math.abs(parseCoord(lat)!)<=90&&Math.abs(parseCoord(lng)!)<=180?{lat:parseCoord(lat)!,lng:parseCoord(lng)!}:null} onChange={point=>{setLat(point?String(point.lat):"");setLng(point?String(point.lng):"");v.clear("lat");v.clear("lng");setSaved(false);}}/>
+            <details className="account-location-details" ref={coordinateDetails}>
+              <summary>კოორდინატების ხელით მითითება</summary>
             <fieldset className="ma-field account-coords" aria-describedby="coords-help">
               <legend className="ma-field__label">
                 კოორდინატები <span className="ma-field__opt">არასავალდებულო</span>
@@ -271,7 +256,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
                   {v.message("lng")}
                 </div>
               </div>
-              <p className="account-coords__help" id="coords-help">Google Maps-იდან: მარჯვენა ღილაკი → კოორდინატები. თუ მითითებულია, „მიმართულება“ ზუსტ წერტილზე მიგიყვანს.</p>
+              <p className="account-coords__help" id="coords-help">ზუსტი კოორდინატების მითითება რუკაზე მონიშვნის ნაცვლადაც შეგიძლია.</p>
             </fieldset>
             </details>
           </fieldset>
@@ -286,7 +271,7 @@ function ProfileForm({ me }: { me: AnyUser }) {
           <Button variant="primary" type="submit" disabled={pending}>
             {pending ? "ინახება…" : "შენახვა"}
           </Button>
-          {saved ? <p className="account-hint" role="status">ცვლილებები შენახულია.</p> : null}
+          {saved ? <p className="account-save-feedback" role="status"><Icon name="check"/>ცვლილებები შენახულია.</p> : null}
         </div>
         {isCompany ? <div className="account-form-links">
           <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link>
@@ -402,6 +387,7 @@ function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab;
         <div>
           <p className="account-nav__name">{name}</p>
           <p className="account-nav__role">{roleLabel}{me.blocked ? " · დაბლოკილია" : ""}</p>
+          {isCompany && !me.blocked ? <span className="account-nav__verification" data-verified={me.verified || undefined}><Icon name={me.verified ? "badge-check" : "clock"}/>{me.verified ? "დადასტურებული" : "დადასტურების მოლოდინში"}</span> : null}
         </div>
       </div>
       {isCompany ? <Link className="account-nav__public" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="external-link" />საჯარო გვერდის ნახვა</Link> : null}
@@ -420,6 +406,30 @@ function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab;
 
 function Status({ tone, children }: { tone: string; children: React.ReactNode }) {
   return <span className="account-status" data-tone={tone}>{children}</span>;
+}
+
+function CompanyWelcome({ me, matching, offers, unread }: { me: AnyUser; matching: number; offers: number; unread: number | null }) {
+  const profileComplete = !!me.about?.trim() && !!me.logoUrl && !!me.offers?.length;
+  return <section className="account-welcome" aria-labelledby="account-welcome-heading">
+    <div className="account-welcome__intro">
+      <p className="account-welcome__eyebrow">კომპანიის სამუშაო სივრცე</p>
+      <h1 id="account-welcome-heading">გამარჯობა, {me.name.trim().split(/\s+/)[0] || "მოგესალმებით"}</h1>
+      <p>აქ მართავ კომპანიის პროფილს, პოულობ მოთხოვნებს და აგრძელებ კლიენტებთან ურთიერთობას.</p>
+    </div>
+    <div className="account-welcome__stats" aria-label="შენი აქტივობა">
+      <Link href="/account/?tab=opportunities"><Icon name="search"/><strong>{matching}</strong><span>შესაბამისი მოთხოვნა</span></Link>
+      <Link href="/account/?tab=offers"><Icon name="send"/><strong>{offers}</strong><span>გაგზავნილი შეთავაზება</span></Link>
+      <Link href="/account/?tab=messages"><Icon name="message-square"/><strong>{unread ?? "…"}</strong><span>წაუკითხავი შეტყობინება</span></Link>
+    </div>
+    {!me.blocked && (!profileComplete || !me.verified) ? <div className="account-next-step">
+      <span className="icon-tile" aria-hidden="true"><Icon name={me.verified ? "building-2" : "badge-check"}/></span>
+      <div><strong>{!me.verified ? "კომპანიის დადასტურების მოლოდინში" : "შეავსე კომპანიის პროფილი"}</strong>
+        <p>{!me.verified ? "კომპანია დამატებულია ადმინისტრატორის დასადასტურებელ სიაში. დადასტურების შემდეგ პროფილზე შესაბამისი ნიშანი გამოჩნდება." : "აღწერა, ლოგო და მომსახურებები კლიენტს შენი კომპანიის გაცნობაში ეხმარება."}</p>
+        {!profileComplete && !me.verified ? <p>დაამატე აღწერა, ლოგო და მომსახურებები, რომ პროფილი სრულად წარმოაჩინო.</p> : null}
+      </div>
+      <Button variant="secondary" size="sm" href="/account/?tab=profile">{profileComplete ? "პროფილის ნახვა" : "პროფილის შევსება"}</Button>
+    </div> : null}
+  </section>;
 }
 
 export function AccountPageContent() {
@@ -476,10 +486,9 @@ export function AccountPageContent() {
   const activeTab: Tab = tab === "overview" ? isCompany ? "opportunities" : "requests" : !isCompany && (tab === "offers" || tab === "opportunities") ? "requests" : tab;
   const tabs: NavItem[] = [
     ...(isCompany ? [{ key: "opportunities" as Tab, href: "/account/?tab=opportunities", label: "შესაბამისი მოთხოვნები", icon: "search" }, { key: "offers" as Tab, href: "/account/?tab=offers", label: "შეთავაზებები", icon: "send", count: myOffers.length }] : []),
+    { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები", icon: "message-square", count: unread, alert: true },
     { key: "requests", href: "/account/?tab=requests", label: "მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
     { key: "saved", href: "/account/?tab=saved", label: "შენახული", icon: "bookmark", count: savedCount },
-    { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები", icon: "message-square", count: unread, alert: true },
-    { key: "notifications", href: "/account/?tab=notifications", label: "შეტყობინებები", icon: "bell" },
     ...(isCompany ? [{ key:"business" as Tab, href:"/account/?tab=business", label:"ხილვადობის პაკეტები", icon:"eye" }] : []),
     { key: "profile", href: "/account/?tab=profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: "user-round" },
   ];
@@ -579,6 +588,7 @@ export function AccountPageContent() {
       {nav}
       <div className="account-layout account-layout--single">
         <div className="account-main">
+          {isCompany && activeTab === "opportunities" ? <CompanyWelcome me={me} matching={matching.length} offers={myOffers.length} unread={unread}/> : null}
           {isCompany && (activeTab === "offers" || activeTab === "opportunities") ? (
             <>
               {activeTab === "offers" ? <section className="account-section">
@@ -607,7 +617,7 @@ export function AccountPageContent() {
               </section> : null}
               {activeTab === "opportunities" ? <section className="account-section">
                 <div className="account-section__head">
-                  <h1 className="account-section__title">შესაბამისი მოთხოვნები ({matching.length})</h1>
+                  <h2 className="account-section__title">შესაბამისი მოთხოვნები ({matching.length})</h2>
                   <Button variant="primary" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>მოთხოვნების ნახვა</Button>
                 </div>
                 <p className="account-hint">შეარჩიე მოთხოვნა და გაუგზავნე მის ავტორს შენი პირობები.</p>
@@ -619,7 +629,7 @@ export function AccountPageContent() {
                           <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(r.id)}>{r.title}</Link></h3>
                           <p className="account-row__meta">{requestMeta(r, now)}</p>
                         </div>
-                        <Button variant="secondary" size="sm" href={requestHref(r.id)}>შეთავაზების გაგზავნა</Button>
+                        <Button variant="secondary" size="sm" href={requestHref(r.id)}>{me.verified ? "შეთავაზების გაგზავნა" : "მოთხოვნის ნახვა"}</Button>
                       </li>
                     ))}
                   </ul>

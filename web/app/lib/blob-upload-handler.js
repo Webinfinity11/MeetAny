@@ -32,7 +32,7 @@ async function caller(request) {
   try { profile = await myProfile(claims); }
   catch (err) { console.error('blob-upload: profile check failed', err?.message); return json(502, { error: 'profile check failed' }); }
   if (!profile || profile.id !== claims.sub || profile.blocked) return json(403, { error: 'forbidden' });
-  return claims;
+  return { ...claims, profileRole: profile.role };
 }
 
 async function readJson(request) {
@@ -53,7 +53,7 @@ async function createToken(request) {
       body, request,
       onBeforeGenerateToken: async (pathname, _clientPayload, multipart) => {
         const m = NAME.exec(pathname);
-        if (!m || m[1] !== who.sub || multipart) throw Object.assign(new Error('forbidden pathname'), { forbidden: true });
+        if (!m || (m[1] !== who.sub && who.profileRole !== 'admin') || multipart) throw Object.assign(new Error('forbidden pathname'), { forbidden: true });
         return {
           allowedContentTypes: ALLOWED_TYPES,
           maximumSizeInBytes: m[2].startsWith('logo-') ? LOGO_MAX_BYTES : MAX_BYTES,

@@ -14,10 +14,11 @@ import { TABLES, tableQuery } from './table-query.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
+  'admin_edit_profile','admin_edit_request','admin_company_settings','admin_manage_plan','site_content','admin_save_site_content',
   'company_products','set_my_products','admin_market_metrics','company_distribution_profiles','set_my_distribution',
   'company_business_features','company_reviews','my_company_review_targets','save_company_review',
   'my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request',
-  'admin_business_queue','admin_moderate_review','admin_resolve_plan',
+  'admin_business_audit', 'admin_business_queue','admin_moderate_review','admin_resolve_plan',
   'report_content', 'admin_list_reports', 'admin_resolve_report',
   'my_profile', 'complete_profile', 'update_my_profile', 'set_my_gallery', 'list_companies', 'company_stats', 'offer_counts',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
@@ -33,6 +34,7 @@ const RPCS = new Set([
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
 const PUBLIC_WRITES = new Set([
+  'admin_edit_profile','admin_edit_request','admin_manage_plan','admin_save_site_content','save_company_review','admin_moderate_review','admin_resolve_plan',
   'set_my_distribution','set_my_products',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'admin_delete_offer', 'admin_delete_request_v2',

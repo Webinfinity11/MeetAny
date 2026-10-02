@@ -1,0 +1,6 @@
+Homepage sector photography. WebP crops of existing, credited genuine stock photographs.
+Illustrative environments, not verified listed companies.
+production.webp <- ../cover/welding.jpg (Unsplash; ../cover/SOURCES.txt)
+food.webp <- ../cover/grocery.jpg (Unsplash; ../cover/SOURCES.txt)
+logistics.webp <- ../logistics-warehouse.jpg (Tiger Lily, Pexels; ../sources.json)
+marketing.webp <- ../creative-team.jpg (cottonbro studio, Pexels; ../sources.json)

@@ -8,9 +8,9 @@ import styles from "./admin.module.css";
 
 const groups: { label: string; sections: AdminSection[] }[] = [
   { label: "მონიტორინგი", sections: ["overview", "contacts"] },
-  { label: "მართვა", sections: ["requests", "offers", "users"] },
+  { label: "მართვა", sections: ["companies", "requests", "offers", "users"] },
   { label: "ხარისხი", sections: ["reports", "reviews", "photos", "audit"] },
-  { label: "ბიზნესი", sections: ["plans", "demo"] },
+  { label: "ბიზნესი", sections: ["plans", "content"] },
 ];
 
 export function AdminNavigation({ tab, reports, offersEnabled }: { tab: AdminSection; reports: number; offersEnabled: boolean }) {

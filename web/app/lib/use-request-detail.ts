@@ -12,7 +12,7 @@ export function useRequestDetail(store: Store | undefined, ready: boolean, avail
   useEffect(() => {
     if (!ready || !available || !ensure) return;
     let cancelled = false;
-    ensure(id).then(() => { if (!cancelled) setResult({ key, error: false }); }, () => { if (!cancelled) setResult({ key, error: true }); });
+    ensure(id, {cached: true}).then(() => { if (!cancelled) setResult({ key, error: false }); }, () => { if (!cancelled) setResult({ key, error: true }); });
     return () => { cancelled = true; };
   }, [ready, available, ensure, id, key]);
   return { loading: ready && available && result?.key !== key, error: result?.key === key && result.error };

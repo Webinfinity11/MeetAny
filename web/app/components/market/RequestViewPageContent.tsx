@@ -42,20 +42,23 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   const [error, setError] = useState<string | null>(null);
 
   const v = useFieldErrors();
-  const [draftLoaded, setDraftLoaded] = useState(false);
+  const draftOwner = store?.currentUser()?.id;
+  const draftKey = draftOwner ? `meetany.offerDraft.${draftOwner}.${requestId}` : null;
+  const [loadedDraftKey, setLoadedDraftKey] = useState<string | null>(null);
   useEffect(() => {
+    if (!draftKey || existing) return;
     const timer = setTimeout(() => {
-    if (!existing) {
-      try {const saved = JSON.parse(localStorage.getItem(`meetany.offerDraft.${requestId}`) || "null"); if (saved) {setBody(saved.body || ""); setDeliveryDays(saved.deliveryDays || "");setPriceType(["negotiable","unit","total"].includes(saved.priceType)?saved.priceType:"negotiable");setPrice(saved.price || "");setVatIncluded(!!saved.vatIncluded);setDeliveryIncluded(!!saved.deliveryIncluded);}} catch {}
+    if (!existing && draftKey) {
+      try {const saved = JSON.parse(localStorage.getItem(draftKey) || "null"); if (saved) {setBody(saved.body || ""); setDeliveryDays(saved.deliveryDays || "");setPriceType(["negotiable","unit","total"].includes(saved.priceType)?saved.priceType:"negotiable");setPrice(saved.price || "");setVatIncluded(!!saved.vatIncluded);setDeliveryIncluded(!!saved.deliveryIncluded);}} catch {}
     }
-    setDraftLoaded(true);
+    setLoadedDraftKey(draftKey);
     }, 0);
     return () => clearTimeout(timer);
-  }, [requestId, existing]);
+  }, [draftKey, existing]);
   useEffect(() => {
-    if (!draftLoaded || existing) return;
-    try {localStorage.setItem(`meetany.offerDraft.${requestId}`, JSON.stringify({body, deliveryDays,priceType,price,vatIncluded,deliveryIncluded}));} catch {}
-  }, [requestId, body, deliveryDays, priceType, price, vatIncluded, deliveryIncluded, draftLoaded, existing]);
+    if (loadedDraftKey !== draftKey || existing || !draftKey) return;
+    try {localStorage.setItem(draftKey, JSON.stringify({body, deliveryDays,priceType,price,vatIncluded,deliveryIncluded}));} catch {}
+  }, [draftKey, body, deliveryDays, priceType, price, vatIncluded, deliveryIncluded, loadedDraftKey, existing]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,7 +76,7 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
     setError(null);
     try {
       await store.sendOffer(requestId, { deliveryDays: deliveryDays || undefined, body, priceType, price:priceType==="negotiable"?undefined:price, vatIncluded, deliveryIncluded });
-      try { localStorage.removeItem(`meetany.offerDraft.${requestId}`); } catch {}
+      try { if(draftKey)localStorage.removeItem(draftKey); } catch {}
       toast(existing ? "შეთავაზება განახლდა." : "შეთავაზება გაიგზავნა.");
       onDone();
     } catch (err) {
@@ -115,10 +118,10 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
 }
 
 export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }) {
-  const { store, ready, available } = useMarketStore(initial);
+  const { store, ready, sessionReady, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
-  const detail = useRequestDetail(store, ready, available, id);
+  const detail = useRequestDetail(store, sessionReady, available, id);
   const business = useCompanyFeatures(store, ready && available);
   const router = useRouter();
   const [editRequest, setEditRequest] = useState(false);
@@ -192,7 +195,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
   if ((ready && !available) || detail.error) return <div className="ma-page"><ServiceUnavailable /></div>;
 
-  if (!ready || (detail.loading && !data)) return <DetailSkeleton />;
+  if (!ready || (!data && (!sessionReady || detail.loading))) return <DetailSkeleton />;
   if (!data) {
     return (
       <div className="ma-page">
@@ -250,7 +253,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     }
   }
 
-  const responsePanel = (isOwner || me?.role === "admin" ? (
+  const responsePanel = (!sessionReady ? <section className="request-session-note" role="status"><Icon name="user-round"/><p>ანგარიში მოწმდება…</p></section> : isOwner || me?.role === "admin" ? (
         <>
           <div className="request-offers-header">
             <div><h2 className="request-offers__title" id="request-offers-title">შეთავაზებები <span className="request-offers-count">{offers.length}</span>
@@ -289,12 +292,14 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <>
               <h2 className="ma-h3">შენი შეთავაზება</h2>
               <OfferCard o={myOffer} canChoose={false} />
-              {state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
+              {me.verified && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
                 <div className="ma-cluster"><Button variant="secondary" type="submit" aria-label="შეთავაზების რედაქტირება" onClick={() => setEditOffer(!editOffer)}><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
                 {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)}/> : null}
               </div> : null}
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
+          ) : !me.verified ? (
+            <div className="ma-stack" id="send-offer"><h2 className="ma-h3">კომპანია დასადასტურებელია</h2><p className="ma-note">შენი განაცხადი ადმინთანაა. დადასტურების შემდეგ შეძლებ შეთავაზების გაგზავნას.</p><Button variant="secondary" href="/account/?tab=profile">პროფილის ნახვა</Button></div>
           ) : closed ? (
             <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           ) : (
@@ -314,9 +319,10 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         </section>
       ) : (
         <section className="detail-aside__block" aria-label="შეთავაზების გაგზავნა">
-          <p className="detail-aside__text">შეთავაზების გასაგზავნად შედი კომპანიის ანგარიშით.</p>
+          <h2 className="ma-h3">გაქვს შესაბამისი მომსახურება?</h2>
+          <p className="detail-aside__text">შედი კომპანიის ანგარიშით და გაუგზავნე ავტორს შენი პირობები.</p>
           <Button variant="primary" className="detail-aside__primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}>
-            შეთავაზების გაგზავნა
+            შესვლა და შეთავაზება
           </Button>
           <Link className="detail-link" href={`/account/?tab=register&role=company&next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}>
             კომპანიის რეგისტრაცია
@@ -340,11 +346,12 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               <div><dt><Icon name="map-pin"/>ადგილი</dt><dd>{[cities[r.city] || r.city, r.addressNote ? addressLabel(r.addressNote) : null].filter(Boolean).join(" · ")}</dd></div>
               {r.quantity != null ? <div><dt><Icon name="package"/>რაოდენობა</dt><dd>{r.quantity} {units[r.unit] || r.unit}</dd></div> : null}
               {r.neededBy ? <div><dt><Icon name="calendar"/>საჭიროა</dt><dd>{dateLabel(r.neededBy)}-მდე</dd></div> : null}
+              {state === "open" ? <div><dt><Icon name="clock"/>შეთავაზებების მიღება</dt><dd>{dateLabel(r.expiresAt)}-მდე</dd></div> : null}
             </dl>
-            <details className="request-description-disclosure" open={!isOwner || offers.length === 0} key={`${r.id}:${isOwner}`}><summary><Icon name="file-text"/><span>აღწერა{r.photo ? " და ფოტო" : ""}</span><span className="request-disclosure-hint">დეტალები</span><Icon name="plus"/></summary><div className="request-description-content">
+            <div className="request-description-brief"><h2><Icon name="file-text"/>მოთხოვნის აღწერა</h2><div className="request-description-content">
             <p className="ma-prose">{r.body}</p>
             {r.photo ? <figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure> : null}
-            </div></details>
+            </div></div>
           </section>
           {isOwner || me?.role === "admin" ? <section className="request-responses" id="request-responses" aria-labelledby="request-offers-title">{responsePanel}</section> : null}
           {!isOwner && me?.role === "company" ? responsePanel : null}
@@ -360,6 +367,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             </section>
           ) : null}
           {!isOwner && me?.role !== "admin" && me?.role !== "company" ? responsePanel : null}
+          {sessionReady && !isOwner && me?.role !== "admin" ? <p className="request-offer-privacy">{offerCount} შეთავაზება · პასუხებს მხოლოდ მოთხოვნის ავტორი ხედავს.</p> : null}
           {isOwner ? <section className="request-management"><h2><Icon name="settings"/>მოთხოვნის მართვა</h2><p className="request-management-note">{state === "open" ? "მოთხოვნა აქტიურია და კომპანიების პასუხებს იღებს." : statusText}</p>
             {offerCount === 0 && ["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" onClick={() => setEditRequest(true)}><Icon name="pencil"/>რედაქტირება</Button> : null}
             {["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" disabled={actionPending} onClick={() => action("extend")}><Icon name="calendar"/>{closed ? "ხელახლა გახსნა" : "ვადის გაგრძელება"}<span className="request-action-detail">+7 დღე</span></Button> : null}
@@ -380,8 +388,8 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         </aside>
       </div>
 
-      {!isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <div className="detail-actionbar">
-        {me ? <Button variant="primary" href="#send-offer"><Icon name="send"/>შეთავაზების გაგზავნა</Button>
+      {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <div className="detail-actionbar">
+        {me ? <Button variant="primary" href={me.verified ? "#send-offer" : "/account/?tab=profile"}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "პროფილის ნახვა"}</Button>
           : <Button variant="primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}><Icon name="send"/>შედი და გაგზავნე შეთავაზება</Button>}
       </div> : null}
       <ConfirmSheet

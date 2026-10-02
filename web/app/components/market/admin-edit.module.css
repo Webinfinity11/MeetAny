@@ -1,0 +1,36 @@
+.form { display: grid; gap: var(--space-5); }
+.grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-4); }
+.field { display: grid; gap: var(--space-2); min-width: 0; font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text); }
+.field input,.field textarea,.field select { font-weight: var(--fw-regular); width: 100%; }
+.imageField { display: grid; gap: var(--space-3); }
+.gallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-3); }
+.photo { display: grid; gap: var(--space-1); min-width: 0; }
+.photo img { width: 100%; max-width: var(--size-160); height: var(--size-120); object-fit: cover; border-radius: var(--radius-lg); border: var(--size-1) solid var(--border); }
+.upload { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; padding: var(--space-3); border: var(--size-1) dashed var(--border-strong); border-radius: var(--radius-lg); font-size: var(--fs-sm); }
+.upload input { max-width: 100%; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); padding-top: var(--space-3); border-top: var(--size-1) solid var(--border); }
+.plan { display: grid; gap: var(--space-4); padding: var(--space-5); background: var(--surface-subtle); border-radius: var(--radius-xl); }
+.plan h4 { margin: 0; }
+.cms { display: grid; gap: var(--space-6); }
+.surface { padding: var(--space-6); background: var(--white); border: var(--size-1) solid var(--border); border-radius: var(--radius-xl); display: grid; gap: var(--space-5); }
+.surface h2 { margin: 0; font-size: var(--fs-h3); }
+.preview { padding: var(--space-6); border: var(--size-1) solid var(--border); border-radius: var(--radius-xl); background: var(--surface-subtle); }
+.preview img { width: 100%; height: var(--size-120); object-fit: cover; border-radius: var(--radius-lg); }
+.preview h3 { margin: 0 0 var(--space-3); }
+@media(max-width:35rem){.grid{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.surface{padding:var(--space-4)}.plan{padding:var(--space-4)}}
+.cms,.surface,.imageField,.upload { min-width: 0; }
+.actions :global(.ma-btn) { min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.surface summary { overflow-wrap: anywhere; cursor: pointer; }
+
+.upload { position: relative; min-height: var(--tap-min); color: var(--action); font-weight: var(--fw-medium); }
+.upload input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.upload:focus-within { box-shadow: var(--focus-ring); }
+.dirty { flex-basis: 100%; color: var(--text-3); font-size: var(--fs-xs); }
+.businessAudit { padding: var(--space-4); border: var(--size-1) solid var(--border); border-radius: var(--radius-lg); min-width: 0; }
+.businessAudit summary { cursor: pointer; font-weight: var(--fw-semibold); }
+.auditList { list-style: none; padding: 0; margin: var(--space-4) 0 0; display: grid; gap: var(--space-4); }
+.auditList li { padding-bottom: var(--space-4); border-bottom: var(--size-1) solid var(--border-subtle); min-width: 0; overflow-wrap: anywhere; }
+.auditList li > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); }
+.auditList time,.auditList small { color: var(--text-3); font-size: var(--fs-xs); }
+.auditList p { margin: var(--space-2) 0; font-size: var(--fs-sm); }
+.auditList p > span { color: var(--text-3); }

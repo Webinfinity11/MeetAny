@@ -8,8 +8,6 @@ import "../styles/search.css";
 import "../styles/pages/homepage.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { Toasts } from "../components/Toasts";
-import { ChatPopup } from "../components/market/ChatPopup";
 
 export const metadata: Metadata = {
   title: "MeetAny — იპოვე შენი ბიზნესპარტნიორი",
@@ -31,8 +29,7 @@ export const viewport: Viewport = {
 
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ka">
-      <body className="ma ma-homepage">
+      <div className="ma ma-homepage">
         <a className="ma-skip" href="#main">
           ძირითად შინაარსზე გადასვლა
         </a>
@@ -43,9 +40,6 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
         </div>
-        <ChatPopup />
-        <Toasts />
-      </body>
-    </html>
+      </div>
   );
 }

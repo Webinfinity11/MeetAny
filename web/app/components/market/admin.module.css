@@ -6,7 +6,7 @@
 .sidebarHeading div > span { font-size: var(--fs-xs); color: var(--text-3); }
 .workspaceIcon { display: grid; place-items: center; width: var(--size-36); height: var(--size-36); border: var(--size-1) solid var(--border); background: var(--white); border-radius: var(--size-10); color: var(--action); }
 .workspaceIcon svg { width: var(--size-18); height: var(--size-18); }
-.navigation { display: grid; gap: var(--space-4); min-height: 0; overflow-y: auto; }
+.navigation { display: grid; gap: var(--space-4); min-height: 0; overflow-y: auto; padding: var(--space-1); scrollbar-gutter: stable; }
 .navGroup { display: grid; gap: var(--space-1); }
 .navGroup > p { margin: 0 0 var(--space-1); padding-inline: var(--space-3); font-size: var(--fs-xs); color: var(--text-3); }
 .navigation a { display: flex; align-items: center; gap: var(--space-3); min-height: var(--size-40); padding: var(--space-2) var(--space-3); border-radius: var(--size-8); color: var(--text-2); text-decoration: none; font-size: var(--fs-sm); line-height: var(--lh-sm); }
@@ -228,10 +228,8 @@
 .detailList li button { padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: var(--fs-sm); font-weight: var(--fw-medium); text-align: left; cursor: pointer; }
 .detailList li button:hover { color: var(--action); text-decoration: underline; }
 .detailList li small { font-size: var(--fs-xs); color: var(--text-3); }
-.detailActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
-.detailActions { flex-wrap: nowrap; }
-.detailActions :global(.ma-btn) { min-height: var(--size-40); padding-inline: var(--space-3); font-size: var(--fs-sm); white-space: nowrap; }
-@media (max-width: 420px) { .detailActions { flex-wrap: wrap; } }
+.detailActions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-2); width: 100%; }
+.drawer .detailActions :global(.ma-btn) { min-width: 0; width: 100%; min-height: var(--tap-min); padding-inline: var(--space-3); font-size: var(--fs-sm); white-space: normal; line-height: var(--lh-sm); overflow-wrap: anywhere; }
 
 /* ---------- Selection, bulk bar, list tools ---------- */
 .listTools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
@@ -328,4 +326,13 @@
 
 @media(max-width:767px) {
  .workspace .queue :global(.ma-btn) { min-height: var(--tap-min); }
+}
+
+/* Status words stay intact; actions wrap as a whole on narrow company/user cards. */
+@media(max-width:767px) {
+ .workspace .compactUsers tr { display: flex; flex-wrap: wrap; align-items: end; }
+ .workspace .compactUsers td:is([data-label="მომხმარებელი"],[data-label="კომპანია"]) { flex-basis: 100%; }
+ .workspace .compactUsers td[data-label="კომპანია"]::before { display: none; }
+ .workspace .compactUsers td[data-label="სტატუსი"] { flex: 0 1 auto; min-width: min-content; max-width: 100%; }
+ .workspace .compactUsers td[data-label="მოქმედება"] { flex: 0 0 auto; margin-left: auto; }
 }

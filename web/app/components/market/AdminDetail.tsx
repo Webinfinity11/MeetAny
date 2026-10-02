@@ -7,7 +7,7 @@ import { Sheet } from "../ui/Sheet";
 import type { Store } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
-import { isTestAccount } from "../../lib/admin-helpers";
+import { AdminEditPanel, AdminPlanEditor } from "./AdminEditPanel";
 import styles from "./admin.module.css";
 
 export type AdminTarget = { kind: "user" | "request"; id: string } | null;
@@ -27,6 +27,12 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
   onClose: () => void; onOpen: (target: AdminTarget) => void; onAction: (action: Action) => void;
 }) {
   // Results are keyed by the user and data revision, so a new target never shows the previous one.
+  const [dirty, setDirty] = useState(false);
+  const [discard, setDiscard] = useState<"close" | "cancel" | null>(null);
+  const [editTarget, setEditTarget] = useState<string | null>(null);
+  const editing = target ? editTarget === `${target.kind}:${target.id}` : false;
+  const requestClose = () => { if (editing && dirty) setDiscard("close"); else {setEditTarget(null);setDirty(false);onClose();} };
+  const requestCancel = () => {if(dirty)setDiscard("cancel");else setEditTarget(null);};
   const [loaded, setLoaded] = useState<{ key: string; user: User | null; offers: Offer[] | null; error: boolean } | null>(null);
   const revision = store.dataRevision();
   const key = target?.kind === "user" ? `${target.id}:${revision}` : "";
@@ -54,7 +60,7 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
   const userRequests: Request[] = target?.kind === "user"
     ? (store.listRequests({ state: "", includeHidden: true }) as Request[]).filter(r => r.ownerId === target.id) : [];
 
-  const title = target?.kind === "request" ? "მოთხოვნა" : "მომხმარებელი";
+  const title = target?.kind === "request" ? "მოთხოვნა" : user?.role === "company" ? "კომპანია" : "მომხმარებელი";
   let body: React.ReactNode = null;
   let footer: React.ReactNode = null;
 
@@ -70,11 +76,12 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
           <div className={styles.detailBadges}>
             {user.blocked ? <span className="ma-badge ma-badge--danger">დაბლოკილი</span>
               : user.role === "company" && user.verified ? <span className="ma-badge ma-badge--success">დადასტურებული</span>
-              : <span className="ma-badge ma-badge--info">აქტიური</span>}
-            {isTestAccount(user) ? <span className="ma-badge ma-badge--neutral">სატესტო</span> : null}
+              : user.role === "company" ? <span className="ma-badge ma-badge--warning">დასადასტურებელი</span> : <span className="ma-badge ma-badge--info">აქტიური</span>}
+
           </div>
           {user.blocked && user.blocked_reason ? <p className={styles.note}>მიზეზი: {user.blocked_reason}</p> : null}
         </div>
+        {user.role === "company" ? <AdminPlanEditor store={store} id={user.id} /> : null}
         <dl className={styles.detailFacts}>
           <dt>სახელი</dt><dd>{user.name}</dd>
           <dt>ტელეფონი</dt><dd>{user.phone ? <a href={`tel:${user.phone.replace(/[^+\d]/g, "")}`}>{user.phone}</a> : "—"}</dd>
@@ -98,7 +105,9 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
           </li>)}</ul> : offers ? <p className={styles.note}>შეთავაზებები არ აქვს.</p> : null}
         </section> : null}
       </div>;
-      footer = <div className={styles.detailActions}>
+      if (editing) body = <AdminEditPanel store={store} row={{...user}} kind="user" onDirtyChange={setDirty} onDone={() => {setDirty(false);setEditTarget(null);setLoaded(null);}} onCancel={requestCancel} />;
+      footer = editing ? null : <div className={styles.detailActions}>
+        <Button type="button" variant="primary" onClick={() => setEditTarget(`user:${user.id}`)}>რედაქტირება</Button>
         {user.role === "company" ? <Button variant="ghost" href={`/companies/view/?id=${user.id}`} target="_blank">საჯარო გვერდი</Button> : null}
         {user.role === "company" ? <Button type="button" variant="secondary" onClick={() => onAction({ kind: "users", action: user.verified ? "unverify" : "verify", id: user.id, label })}>{user.verified ? "დადასტურების მოხსნა" : "დადასტურება"}</Button> : null}
         {user.role !== "admin" ? <Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "users", action: user.blocked ? "unblock" : "block", id: user.id, label })}>{user.blocked ? "განბლოკვა" : "დაბლოკვა"}</Button> : null}
@@ -123,7 +132,9 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
           {request.expiresAt ? <><dt>ვადა</dt><dd>{dateLabel(request.expiresAt)}</dd></> : null}
         </dl>
       </div>;
-      footer = <div className={styles.detailActions}>
+      if (editing) body = <AdminEditPanel store={store} row={{...request}} kind="request" onDirtyChange={setDirty} onDone={() => {setDirty(false);setEditTarget(null);}} onCancel={requestCancel} />;
+      footer = editing ? null : <div className={styles.detailActions}>
+        <Button type="button" variant="primary" onClick={() => setEditTarget(`request:${request.id}`)}>რედაქტირება</Button>
         <Button variant="ghost" href={`/requests/view/?id=${request.id}`} target="_blank">საჯარო გვერდი</Button>
         <Button type="button" variant="secondary" onClick={() => onAction({ kind: "requests", action: request.hidden ? "unhide" : "hide", id: request.id, label: request.title })}>{request.hidden ? "გამოჩენა" : "დამალვა"}</Button>
         <Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "requests", action: "delete", id: request.id, label: request.title })}>წაშლა</Button>
@@ -131,5 +142,5 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
     }
   }
 
-  return <Sheet open={!!target} onClose={onClose} title={title} footer={footer} className={styles.drawer}>{body}</Sheet>;
+  return <><Sheet open={!!target} onClose={requestClose} title={title} footer={footer} className={styles.drawer}>{body}</Sheet><Sheet open={!!discard} onClose={() => setDiscard(null)} title="შეუნახავი ცვლილებები" footer={<><Button variant="secondary" type="button" onClick={() => setDiscard(null)}>რედაქტირების გაგრძელება</Button><Button variant="danger-quiet" type="button" onClick={() => {const intent=discard;setDiscard(null);setDirty(false);setEditTarget(null);if(intent==="close")onClose();}}>ცვლილებების გაუქმება</Button></>}><p>ცვლილებები ჯერ არ შენახულა.</p></Sheet></>;
 }

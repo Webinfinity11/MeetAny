@@ -13,7 +13,6 @@ import { groupOf } from "../lib/categories";
 import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
 import { toast } from "./Toasts";
-import { NavigationProgress } from "./ProgressBar";
 
 const subscribeNothing = () => () => {};
 function readRoleHint(): string {
@@ -51,7 +50,7 @@ export function Header() {
   const accountLabel = isAdmin ? "ადმინი" : role === "company" ? "ჩემი კომპანია" : "ჩემი ანგარიში";
   const focusEdge = useRef<"first" | "last" | null>(null);
   // Messages and notifications live once, as the badged icons in the header bar (visible at every width).
-  const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company"]]
+  const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company&entry=header"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
     : me.role === "company" ? [
       ["search", "შესაბამისი მოთხოვნები", "/account/?tab=opportunities"],
@@ -71,6 +70,12 @@ export function Header() {
     ? [["settings", "ანგარიშის პარამეტრები", "/account/?tab=profile"],
       ...(me.role === "company" ? [["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`]] : [])]
     : links;
+  // The drawer is a route chooser, not a second copy of the account sidebar.
+  const mobileLinks = !me ? links : isAdmin ? links : [
+    [isCompanyRole(me.role) ? "building-2" : "clipboard-list", isCompanyRole(me.role) ? "ჩემი კომპანია" : "ჩემი მოთხოვნები", "/account/"],
+    ["message-square", "მიმოწერები", "/account/?tab=messages"],
+    ["settings", "პროფილის პარამეტრები", "/account/?tab=profile"],
+  ];
   useLayoutEffect(() => {
     if (!accountOpen || !focusEdge.current) return;
     const items = dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
@@ -97,7 +102,6 @@ export function Header() {
   const isCompany = role === "company";
   const add = <Button variant="accent" className="ma-header__cta" aria-label={isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის დამატება"} href={isCompany ? `/requests/?category=${encodeURIComponent(groupOf[me?.industry || ""] || me?.industry || "")}` : "/requests/new/"}><Icon name={isCompany ? "search" : "plus"}/><span className="ma-header__cta-label">{isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის დამატება"}</span><span className="ma-header__cta-short" aria-hidden="true">{isCompany ? "მოთხოვნები" : "დამატება"}</span></Button>;
   return <>
-    <NavigationProgress />
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
@@ -129,8 +133,10 @@ export function Header() {
     <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className="ma-mnav" aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
       <div className="ma-mnav__head">{brand}<button className="ma-mnav__close" aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
       <div className="ma-mnav__body"><nav className="ma-mnav__group" aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
-        <div className="ma-mnav__group"><span className="ma-eyebrow">{me ? accountLabel : "ანგარიში"}</span>{links.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}{me ? <button className="ma-mnav__link" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button> : null}</div>
-      </div>{!isAdmin ? <div className="ma-mnav__foot">{add}</div> : null}
+        <div className="ma-mnav__group"><span className="ma-eyebrow">სამუშაო სივრცე</span>{mobileLinks.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}</div>
+      </div>{me ? <div className="ma-mnav__foot"><Button variant="ghost" disabled={pending} onClick={logout}><Icon name="log-out"/>ანგარიშიდან გასვლა</Button></div> : !isAdmin ? <div className="ma-mnav__foot">{add}</div> : null}
     </dialog>
   </>;
 }
+
+const isCompanyRole = (role: string) => role === "company";

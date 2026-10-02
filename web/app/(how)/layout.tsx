@@ -9,8 +9,6 @@ import "../styles/pages/homepage.css";
 import "../styles/pages/how.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { ChatPopup } from "../components/market/ChatPopup";
-import { Toasts } from "../components/Toasts";
 
 export const metadata: Metadata = {
   title: "როგორ მუშაობს — MeetAny",
@@ -32,8 +30,7 @@ export const viewport: Viewport = {
 
 export default function HowLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ka">
-      <body className="ma ma-homepage">
+      <div className="ma ma-homepage">
         <a className="ma-skip" href="#main">
           ძირითად შინაარსზე გადასვლა
         </a>
@@ -44,9 +41,6 @@ export default function HowLayout({ children }: { children: React.ReactNode }) {
           </main>
           <Footer />
         </div>
-        <ChatPopup />
-        <Toasts />
-      </body>
-    </html>
+      </div>
   );
 }

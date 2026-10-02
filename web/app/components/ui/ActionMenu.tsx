@@ -1,0 +1,20 @@
+"use client";
+import {useId,useLayoutEffect,useRef,useState,type ReactNode} from 'react';
+import {Button} from './Button';
+import {Icon} from '../Icon';
+import styles from './action-menu.module.css';
+export type ActionMenuItem={id:string;label:string;disabled?:boolean;danger?:boolean;onSelect:()=>void};
+/** Anchored action menu in the browser top layer, with keyboard navigation and focus restoration. */
+export function ActionMenu({label,children,items,className=''}:{label:string;children:ReactNode;items:ActionMenuItem[];className?:string}){
+ const id=useId(),trigger=useRef<HTMLButtonElement>(null),panel=useRef<HTMLDivElement>(null),first=useRef<'first'|'last'>('first');const [open,setOpen]=useState(false);
+ const close=(restore=true)=>{if(panel.current?.matches(':popover-open'))panel.current.hidePopover();setOpen(false);if(restore)trigger.current?.focus();};
+ useLayoutEffect(()=>{if(!open||!panel.current||!trigger.current)return;const menu=panel.current,button=trigger.current;
+ const position=()=>{const box=button.getBoundingClientRect(),viewport=window.visualViewport;const left=viewport?.offsetLeft||0,top=viewport?.offsetTop||0,width=viewport?.width||innerWidth,height=viewport?.height||innerHeight;const below=top+height-box.bottom-12,above=box.top-top-12,upwards=below<menu.scrollHeight&&above>below;menu.style.width=`${Math.min(260,width-24)}px`;menu.style.maxHeight=`${Math.max(48,Math.min(360,upwards?above:below))}px`;menu.style.left=`${Math.max(left+12,Math.min(box.left,left+width-menu.offsetWidth-12))}px`;menu.style.top=`${upwards?Math.max(top+12,box.top-menu.offsetHeight-6):box.bottom+6}px`;};
+ menu.showPopover();position();const buttons=menu.querySelectorAll<HTMLButtonElement>('button:not(:disabled)');(first.current==='last'?buttons[buttons.length-1]:buttons[0])?.focus();
+ const dismiss=(event:PointerEvent)=>{if(!menu.contains(event.target as Node)&&!button.contains(event.target as Node)){menu.hidePopover();setOpen(false);button.focus();}};
+ const resize=new ResizeObserver(position);resize.observe(button);document.addEventListener('pointerdown',dismiss);window.addEventListener('resize',position);window.addEventListener('scroll',position,true);window.visualViewport?.addEventListener('resize',position);
+ return()=>{if(menu.matches(':popover-open'))menu.hidePopover();resize.disconnect();document.removeEventListener('pointerdown',dismiss);window.removeEventListener('resize',position);window.removeEventListener('scroll',position,true);window.visualViewport?.removeEventListener('resize',position);};
+ },[open]);
+ const show=(edge:'first'|'last'='first')=>{first.current=edge;setOpen(true);};
+ return <><Button variant="ghost" ref={trigger} className={`${styles.trigger} ${className}`} style={{minHeight:'var(--tap-min)'}} aria-label={label} aria-haspopup="menu" aria-expanded={open} aria-controls={id} onClick={()=>open?close():show()} onKeyDown={event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();show(event.key==='ArrowUp'?'last':'first');}else if(event.key==='Escape'&&open){event.preventDefault();close();}}}><span>{children}</span><Icon name="chevron-down"/></Button><div id={id} ref={panel} role="menu" aria-label={label} popover="manual" className={styles.panel} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();}else if(event.key==='Tab'){close();}else if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();const buttons=Array.from(panel.current!.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')),index=buttons.indexOf(document.activeElement as HTMLButtonElement);const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;buttons[next]?.focus();}}}>{items.map(item=><Button key={item.id} type="button" role="menuitem" tabIndex={-1} variant="ghost" className={styles.item} style={{minHeight:'var(--tap-min)'}} data-danger={item.danger||undefined} disabled={item.disabled} onClick={()=>{close();item.onSelect();}}>{item.label}</Button>)}</div></>;
+}

@@ -182,3 +182,7 @@
 @media(max-width:767px) {
   .ma-proto main .ma-btn, .ma-proto .company-card__footer .ma-call { min-height: var(--tap-min); }
 }
+
+/* Quiet symbols for profiles without a logo; names remain beside the avatar. */
+.ma-avatar[data-tone="neutral"]{background:var(--bg-muted);color:var(--text-3)}
+.ma-avatar>.icon{width:50%;height:50%;max-width:var(--size-28)}
