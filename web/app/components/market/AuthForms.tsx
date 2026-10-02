@@ -282,11 +282,10 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
           <h2>ბიზნესები აქ პოულობენ ერთმანეთს</h2>
           <ol className="auth-steps">
             {[
-              [0, "მოძებნე ან აღწერე, რა გჭირდება"],
-              [1, "მიიღე და შეადარე შეთავაზებები"],
-              [2, "შეთანხმდი კომპანიასთან პირდაპირ"],
-            ].map(([frame, title]) => <li key={title}>
-              <span className="auth-steps__art" aria-hidden="true" style={{ backgroundPosition: `${Number(frame) * 50}% 50%` }} />
+              "მოძებნე ან აღწერე, რა გჭირდება",
+              "მიიღე და შეადარე შეთავაზებები",
+              "შეთანხმდი კომპანიასთან პირდაპირ",
+            ].map(title => <li key={title}>
               <strong>{title}</strong>
             </li>)}
           </ol>

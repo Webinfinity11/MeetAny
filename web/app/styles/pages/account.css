@@ -302,19 +302,13 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 }
 .auth-steps li {
   display: grid;
-  grid-template-columns: var(--size-72) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
+  padding: var(--space-4);
   border: var(--size-1) solid color-mix(in srgb, var(--white) 14%, transparent);
   border-radius: var(--size-14);
   background: color-mix(in srgb, var(--white) 8%, transparent);
-}
-.auth-steps__art {
-  width: var(--size-72);
-  height: var(--size-62);
-  background: url(/assets/need-process-icons.png) no-repeat;
-  background-size: 300% auto;
 }
 .auth-steps strong {
   font-size: var(--fs-body);

@@ -147,7 +147,7 @@
   to { transform: translateY(0); }
 }
 
-/* The owner's preferred 3D process illustrations, in a compact connected row. */
+/* Compact text-only process steps. */
 .hero-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -161,7 +161,6 @@
 }
 .hero-steps li { position: relative; display: flex; align-items: center; gap: var(--size-14); min-width: 0; }
 .hero-steps li + li { border-left: var(--size-1) solid var(--color--ffffff29); padding-left: var(--size-28); }
-.hero-steps__art { flex: none; display: block; width: var(--size-84); height: var(--size-74); background: url(/assets/need-process-icons.png) no-repeat; background-size: 300% auto; }
 .hero-steps__text { display: grid; gap: var(--size-4); }
 .home-page .hero-steps h2 { margin: 0; font-size: var(--size-14); line-height: var(--size-22); color: var(--white); font-weight: var(--fw-semibold); }
 .hero-steps__text > span { font-size: var(--size-12); line-height: var(--size-20); color: var(--color--d4def6); }
@@ -643,7 +642,6 @@
   .hero-steps { grid-template-columns: minmax(0, 1fr); gap: var(--size-16); margin-top: var(--size-20); padding: var(--size-16) var(--size-12); }
   .hero-steps li + li { padding-left: 0; border-left: 0; }
   .hero-steps__number { display: block; align-self: center; }
-  .hero-steps__art { width: var(--size-70); height: var(--size-62); }
   .home-section {
     margin-top: var(--space-10);
   }

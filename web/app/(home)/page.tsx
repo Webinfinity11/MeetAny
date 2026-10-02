@@ -5,9 +5,9 @@ import { HomeBusinessScene } from "../components/HomeBusinessScene";
 import { HomeHeroText, HomeSectionHeading, HomeIndustries, HomeRequests, HomeFeatured, HomeRequestStarter, HomeJoin } from "../components/HomeLive";
 
 const steps = [
-  { frame: 0, title: "მოძებნე ან აღწერე", text: "რა სჭირდება შენს ბიზნესს" },
-  { frame: 1, title: "შეადარე პირობები", text: "შენთვის სასურველი შეთავაზებები" },
-  { frame: 2, title: "დაიწყე თანამშრომლობა", text: "დაუკავშირდი კომპანიას პირდაპირ" },
+  { title: "მოძებნე ან აღწერე", text: "რა სჭირდება შენს ბიზნესს" },
+  { title: "შეადარე პირობები", text: "შენთვის სასურველი შეთავაზებები" },
+  { title: "დაიწყე თანამშრომლობა", text: "დაუკავშირდი კომპანიას პირდაპირ" },
 ];
 
 export default function HomePage() {
@@ -23,7 +23,6 @@ export default function HomePage() {
         </div>
         <ol className="hero-steps" id="how" aria-label="როგორ მუშაობს">
           {steps.map((step, index) => <li key={step.title}>
-            <span className="hero-steps__art" aria-hidden="true" style={{ backgroundPosition: `${step.frame * 50}% 50%` }} />
             <span className="hero-steps__text">
               <h2>{step.title}</h2>
               <span>{step.text}</span>
