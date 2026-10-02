@@ -277,19 +277,6 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
           <p className="auth-lead">{lead}</p>
           <div className="auth-form">{body}</div>
         </section>
-        <aside className="auth-aside" aria-label="რატომ MeetAny">
-          <p className="auth-aside__eyebrow">MeetAny</p>
-          <h2>ბიზნესები აქ პოულობენ ერთმანეთს</h2>
-          <ol className="auth-steps">
-            {[
-              "მოძებნე ან აღწერე, რა გჭირდება",
-              "მიიღე და შეადარე შეთავაზებები",
-              "შეთანხმდი კომპანიასთან პირდაპირ",
-            ].map(title => <li key={title}>
-              <strong>{title}</strong>
-            </li>)}
-          </ol>
-        </aside>
       </div>
     </div>
   );
