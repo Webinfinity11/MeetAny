@@ -432,13 +432,17 @@ The Data API has no realtime channel: refresh on focus / after mutations, as tod
      "send_verification_email_on_sign_up":true,"send_verification_email_on_sign_in":true,
      "auto_sign_in_after_verification":true,"disable_sign_up":false}`.)
    - Password length: Better Auth default (min 8, max 128); see §5.3 step 2.
-   - Configuration -> Application Name `MeetAny`; Domains -> add `https://meet-any.vercel.app`
+   - Configuration -> Application Name `MeetAny`; Domains -> add `https://www.meetany.ge`,
+     `https://meetany.ge`, and the retained legacy origin `https://meet-any.vercel.app`
      (and preview domains if used); turn "Allow localhost" off in production.
    - Email provider: the shared Neon sender works for testing (rate-limited); use custom SMTP for
      production.
 3. **Data API** -> enable for `neondb` with **Neon Auth** as the auth provider. Leave
    **"Grant public schema access" unchecked** (schema.sql sets every grant itself). Exposed schema:
-   `public` only (never `meetany_private`). CORS allowed origins: `https://meet-any.vercel.app`.
+   `public` only (never `meetany_private`). If using the Data API directly from the browser,
+   its CORS origins must include `https://www.meetany.ge`, `https://meetany.ge`, and any retained
+   legacy frontend. The current application uses its same-origin `/api/db` server endpoint;
+   Neon Auth trusted domains are still required for browser sign-in.
    This creates the roles `authenticated` / `anonymous` and installs `pg_session_jwt` (`auth.uid()`).
 4. SQL editor (as the owner role): run `db/schema.sql` (it refuses to run if steps 2–3 are missing),
    then set the Blob store origin:
@@ -696,3 +700,11 @@ Distribution v1 covers profile, public block, brand search and catalog filters. 
 `admin_stats().adminRevision` არის აუდიტის ბოლო ცვლილების გაუმჭვირვალე ნიშნული. ადმინის რედაქტირება განაახლებს დამოკიდებულ სიებს მაშინაც, როდესაც საერთო რაოდენობები უცვლელია; უცვლელი მონაცემები ჩამოტვირთვის ეკრანს არ იწვევს. მიმოხილვა შეცდომისას ინარჩუნებს ბოლო წარმატებულ მონაცემებს და ხელახლა ცდის შესაძლებლობას იძლევა.
 
 მიგრაციის განმეორებადობა, უფლებები, რიგების შეზღუდვა, კალენდარული საზღვრები და აუდიტის ნიშნულის ცვლილება მოწმდება 25 ახალი SQL შემოწმებით; სრული suite: 1,570 PASS. ამ მიგრაციას მომხმარებლის ჩანაწერები არ წაუშლია ან შეუცვლია.
+
+## საჯარო დომენი — 2026-10-02
+
+მთავარი მისამართია `https://www.meetany.ge`; `https://meetany.ge` Vercel-ზე 308-ით მასზე გადადის. ორივე დომენი დადასტურებულია. ძველი `https://meet-any.vercel.app` მოქმედებს. `robots.txt`, `sitemap.xml` და იდეების canonical ბმულები უკვე `www.meetany.ge`-ს იყენებს. `SITE_URL` დამატებული არ არის: `siteUrl()` იღებს Vercel-ის `VERCEL_PROJECT_PRODUCTION_URL` მნიშვნელობას. მომავალში ამ ცვლადის override უნდა ემთხვეოდეს დომენს, რომელზეც გადამისამართება სრულდება.
+
+წარმოების Neon Auth-ის სანდო დომენებს ოფიციალური branch API-ით დაემატა `https://www.meetany.ge` და `https://meetany.ge` (`auth_provider: better_auth`): ორივე დამატება 201-ით დასრულდა და GET-ით გადამოწმდა. ძველი დომენისა და არსებული ადგილობრივი მისამართების დაშვება შენარჩუნდა. ეს აუცილებელი იყო: CORS OPTIONS მოთხოვნა 204-ს აბრუნებდა, მაგრამ ახალი დომენიდან რეალური შესვლის POST ჯერ კიდევ 403-ით იბლოკებოდა. მხოლოდ CORS-ის შემოწმება შესვლის წარმატებას არ ადასტურებს.
+
+ახალი frontend დომენის დამატებისას შეამოწმეთ [Neon Auth trusted domains](https://api-docs.neon.tech/reference/listbranchneonauthtrusteddomains), შემდეგ რეალური ბრაუზერიდან შესვლა და სესიის შენარჩუნება. დომენის გადასვლისთვის მომხმარებლების, პაროლების, ბაზისა და Blob ფოტოების შეცვლა საჭირო არ არის.
