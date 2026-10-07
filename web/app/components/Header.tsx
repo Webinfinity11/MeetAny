@@ -106,7 +106,7 @@ export function Header() {
     finally { setPending(false); }
   }
   const identity = me ? <div className="ma-menu__identity" role="presentation"><strong>{me.company || me.name}</strong>{me.company && me.company !== me.name ? <span>{me.name}</span> : null}</div> : null;
-  const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><Logo size={24}/></Link>;
+  const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><Logo/></Link>;
   const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "შესაძლებლობები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
   const isCompany = role === "company";
   const add = <Button variant="primary" className="ma-header__cta" aria-label={isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის განთავსება"} href={isCompany ? `/requests/?category=${encodeURIComponent(groupOf[me?.industry || ""] || me?.industry || "")}` : "/requests/new/"}><Icon name={isCompany ? "search" : "plus"}/><span className="ma-header__cta-label">{isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის განთავსება"}</span><span className="ma-header__cta-short" aria-hidden="true">{isCompany ? "მოთხოვნები" : "მოთხოვნა"}</span></Button>;

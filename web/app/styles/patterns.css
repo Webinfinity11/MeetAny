@@ -111,6 +111,10 @@ body:has(.ma-actionbar) .ma-toasts{bottom:calc(var(--size-88) + env(safe-area-in
 .ma-header__inner{display:flex;align-items:center;gap:var(--space-6);height:var(--header-h)}
 .ma-header__brand{display:inline-flex;align-items:center;gap:var(--space-2);flex:none;min-height:var(--tap-min);padding:0 var(--space-1) 0 0;margin-left:0;border-radius:var(--radius-md);text-decoration:none}
 .ma-header__brand img{display:block;width:auto;max-width:none}
+/* Original PNG logo: the symbol takes --logo-h (28px by default), the wordmark keeps its 22/28 proportion. */
+.ma-logo{display:inline-flex;align-items:center;gap:var(--space-2);line-height:var(--lh-solid)}
+.ma-logo__symbol{display:block;height:var(--logo-h,var(--size-28));width:auto;max-width:none}
+.ma-logo__wordmark{display:block;height:calc(var(--logo-h,var(--size-28)) * .786);width:auto;max-width:none}
 .ma-header__symbol{height:var(--size-28)}
 .ma-header__wordmark{height:var(--size-22)}
 .ma-header__nav{display:none;align-items:center;gap:var(--space-1);min-width:0}
@@ -612,8 +616,7 @@ html:has(.ma-mnav[open]),html:has(.ma-sheet[open]){overflow:hidden}
 }
 @media(max-width:359.98px){
  .ma-header__inner:has(.ma-header__updates){gap:var(--space-1)}
- .ma-header:has(.ma-header__updates) .ma-header__brand>span{font-size:var(--size-12)!important;gap:var(--space-1)!important}
- .ma-header:has(.ma-header__updates) .ma-header__brand svg{width:var(--size-24);height:var(--size-18)}
+ .ma-header:has(.ma-header__updates) .ma-logo{--logo-h:var(--size-20);gap:var(--space-1)}
  .ma-header__actions:has(.ma-header__updates){gap:0}
  .ma-header__actions:has(.ma-header__updates) .ma-header__cta{width:var(--size-40)}
 }
