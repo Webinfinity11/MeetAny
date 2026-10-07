@@ -59,7 +59,7 @@ export function ResultsBar({
         {utility}
         {sort ? (
           <div className="catalog-sort">
-            <label htmlFor="sort">დალაგება</label>
+            <label htmlFor="sort">დალაგება:</label>
             <CustomSelect
               className="ma-select"
               id="sort"

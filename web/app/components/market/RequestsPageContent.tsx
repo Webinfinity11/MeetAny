@@ -6,20 +6,16 @@ import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { SegmentedSearch } from "../SegmentedSearch";
-import { useSearchSuggestions } from "../../lib/search-suggestions";
-import { useRouter } from "next/navigation";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
-import { CustomSelect } from "../ui/CustomSelect";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { RequestRow, type RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, categoryGroups, cities, currentCategory, groupNames } from "../../lib/categories";
 import { FacetList, type Facet } from "./FacetList";
+import { CatalogSearch } from "./CatalogSearch";
 import { CatalogHeader } from "./CatalogHeader";
-import { RequestCatalogCover } from "./RequestCatalogCover";
 import { useFilters } from "../../lib/use-filters";
 import { postedLabel } from "../../lib/format";
 import { RequestFormSheet } from "./RequestFormSheet";
@@ -99,12 +95,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     [store, category, city, query],
   );
 
-  const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
-  const coverRequests = useMemo(() => ready && available
-    ? ((store?.listRequests as (args: unknown) => MappedRequest[])?.({ state: "open" }) || []).slice(0, 16)
-    : [], [store, ready, available]);
-  const suggestions = useSearchSuggestions("requests", query, "", results.map(result => result.id));
-  const router = useRouter();
+  const deadline = filters.get("deadline");
+  const results = useMemo(() => (ready && available ? list({}).filter(r => {
+    const days = store?.daysLeft(r) ?? 0;
+    return deadline === "7" ? days <= 7 : deadline === "30" ? days <= 30 : deadline === "later" ? days > 30 : true;
+  }) : []), [ready, available, list, store, deadline]);
   const categoryFacets: Facet[] = useMemo(
     () => categoryGroups.map(g => ({
       id: g.id, label: g.short, icon: g.icon, count: list({ category: g.id }).length,
@@ -164,6 +159,8 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
         state,
         daysLeft,
         isOwn,
+        offerCount: store.offerCount(r.id),
+        canOffer: !isOwn && (!me || me.role === "company") && state === "open",
         ownOfferStatus,
         showOwnOfferBadge: me?.role === "company" && !isOwn,
         posted: postedLabel(r.createdAt, now),
@@ -174,28 +171,34 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
   const [sheetOpen, setSheetOpen] = useState(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const activeItems = [
+    ...(deadline ? [{key: "deadline", label: deadline === "7" ? "7 დღემდე" : deadline === "30" ? "30 დღემდე" : "30 დღეზე მეტი"}] : []),
     ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: cities[city] || city}] : []),
   ];
-  const clearFilters = () => filters.set({city: "", category: ""});
+  const clearFilters = () => filters.set({city: "", category: "", deadline: ""});
 
   const filterCount = activeItems.length;
-  // Same panel as the companies catalog; the city list shares its value with the search pill.
+  // The desktop sidebar and mobile sheet share the same URL-backed filters.
   const requestFilters = (placement: "desktop" | "mobile") => <div className="catalog-filters">
     {placement === "desktop" ? <div className="catalog-filters__head">
       <h2>ფილტრები{filterCount > 0 ? <span className="catalog-filters__count">{filterCount}</span> : null}</h2>
-      {filterCount > 0 ? <button type="button" className="catalog-clear" onClick={clearFilters}>გასუფთავება</button> : null}
     </div> : null}
     <div className="catalog-filter-group">
-      <h3 className="catalog-filter-title">კატეგორია</h3>
+      <h3 className="catalog-filter-title">კატეგორიები</h3>
       <FacetList all={categoryFacets} loading={!ready} allLabel="ყველა კატეგორია" allCount={allCount} activeId={category} onSelect={setCategory} />
     </div>
     <div className="catalog-filter-group">
-      <label className="catalog-filter-title" htmlFor={`${placement}-city`}>ქალაქი</label>
-      <CustomSelect className="ma-select catalog-city-select" id={`${placement}-city`} value={city} onChange={e => setCity(e.target.value)}>
-        <option value="">ყველა ქალაქი</option>
-        {cityFacets.map(f => <option key={f.id} value={f.id} disabled={!f.count && f.id !== city}>{f.label} · {f.count}</option>)}
-      </CustomSelect>
+      <h3 className="catalog-filter-title">ადგილმდებარეობა</h3>
+      <div className="catalog-location-checks">{cityFacets.map(f => <label className="catalog-check" key={f.id}>
+        <input type="checkbox" checked={city === f.id} disabled={!f.count && city !== f.id} onChange={e => setCity(e.target.checked ? f.id : "")} />
+        <span>{f.label}</span><small>{f.count}</small>
+      </label>)}</div>
+    </div>
+    <div className="catalog-filter-group">
+      <h3 className="catalog-filter-title">ვადა</h3>
+      {[["7", "7 დღემდე"], ["30", "30 დღემდე"], ["later", "30 დღეზე მეტი"]].map(([value, label]) => <label className="catalog-check" key={value}>
+        <input type="checkbox" checked={deadline === value} onChange={e => filters.set({deadline: e.target.checked ? value : ""})} /><span>{label}</span>
+      </label>)}
     </div>
   </div>;
 
@@ -203,21 +206,17 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
     ? ""
     : !ready
       ? ""
-      : `${rows.length} ღია მოთხოვნა`;
+      : `ნაპოვნია ${rows.length} შესაძლებლობა`;
 
   return (
     <div className="ma-page requests-catalog catalog-page request-board">
       <CatalogHeader
-        tone="light"
-        center
-        title="შენი შემდეგი შეკვეთა"
-        description="ნახე, რა სჭირდებათ ბიზნესებს და გააგზავნე შეთავაზება."
-        artwork={<RequestCatalogCover requests={coverRequests} />}
+        title="ბიზნეს შესაძლებლობები"
+        description="რეალური ბიზნეს მოთხოვნები — გაუგზავნე შეთავაზება იმათ, ვისაც შენი პროდუქტი სჭირდება."
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("request-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-          <SegmentedSearch framed id="query" label="მოთხოვნის ძიება" placeholder="მაგ. ავეჯი, შეფუთვა, გადაზიდვა"
-            query={query} onQuery={setQuery} suggestions={suggestions}
-            onSelect={item => item.kind === "category" ? filters.set({ category: item.category, q: "" }) : router.push(item.href)}
-            city={city} onCity={setCity} />
+          <CatalogSearch id="query" label="ძიება" placeholder="მოძებნე პროდუქტი, მომსახურება, კომპანია ან კატეგორია"
+            value={query} onChange={setQuery} mode="requests" resultIds={results.map(r => r.id)}
+            onCategory={value => filters.set({ category: value, q: "" })} />
         </form>}
       />
         <div className="catalog-workspace">
@@ -228,7 +227,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
             items={activeItems}
             onRemove={key => filters.set({[key]: ""})}
             onClear={clearFilters}
-            filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length > 0 ? ` · ${activeItems.length}` : ""}</Button>}
+            filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრები{activeItems.length > 0 ? ` · ${activeItems.length}` : ""}</Button>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
               {value: "expiring", label: "მალე იწურება"},
@@ -248,7 +247,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial }: { autoOpen
                         <span className="catalog-empty__icon"><DuoIcon name="search" size={34} /></span>
                         <h2>ასეთი მოთხოვნა ჯერ არ გამოქვეყნებულა</h2>
                         <p>სცადე სხვა კატეგორია ან ქალაქი. ახალი მოთხოვნები ყოველდღე ემატება — შეტყობინებებს ანგარიშში მიიღებ.</p>
-                        <Button type="button" variant="secondary" onClick={() => filters.set({city: "", category: "", q: ""})}>ყველა მოთხოვნის ნახვა</Button>
+                        <Button type="button" variant="secondary" onClick={() => filters.set({city: "", category: "", q: "", deadline: ""})}>ყველა მოთხოვნის ნახვა</Button>
                       </div>
                     )
                   : <>

@@ -8,6 +8,6 @@ export function CatalogSearch({ id, label, placeholder, value, onChange, mode, o
 }) {
   const suggestions = useSearchSuggestions(mode, value, "", resultIds);
   const router = useRouter();
-  return <SearchCombobox id={id} label={label} placeholder={placeholder} value={value} onChange={onChange} suggestions={suggestions}
+  return <SearchCombobox hideLabel id={id} label={label} placeholder={placeholder} value={value} onChange={onChange} suggestions={suggestions}
     onSelect={item => item.kind === "category" ? onCategory(item.category) : router.push(item.href)} />;
 }

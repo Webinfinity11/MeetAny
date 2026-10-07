@@ -7,16 +7,13 @@ import Link from "next/link";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { SegmentedSearch } from "../SegmentedSearch";
-import { useSearchSuggestions } from "../../lib/search-suggestions";
-import { useRouter } from "next/navigation";
 import { Icon } from "../Icon";
 import { DuoIcon } from "../ui/DuoIcon";
 import { CustomSelect } from "../ui/CustomSelect";
 import { FacetList, type Facet } from "./FacetList";
 import { ResultsBar } from "./ResultsBar";
+import { CatalogSearch } from "./CatalogSearch";
 import { CatalogHeader } from "./CatalogHeader";
-import { CompanyCatalogCover } from "./CompanyCatalogCover";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
 import dynamic from "next/dynamic";
@@ -106,8 +103,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   );
 
   const results = useMemo(() => (ready && available ? list({}) : []), [ready, available, list]);
-  const suggestions = useSearchSuggestions("companies", query, "", results.map(result => result.id));
-  const router = useRouter();
 
   const industryFacets: Facet[] = useMemo(
     () => categoryGroups.map(g => ({
@@ -195,18 +190,17 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const mapped: MapCompany[] = useMemo(() => rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat as number, lng: c.lng as number })), [rows]);
   const unmapped = rows.filter(c => c.lat == null || c.lng == null);
   const viewSwitch = <div className="view-switch" role="group" aria-label="ხედი">
-    <button type="button" aria-pressed={!mapView} onClick={() => filters.set({ view: "" })}><Icon name="layout-grid" />სია</button>
+    <button type="button" aria-pressed={!mapView} onClick={() => filters.set({ view: "" })}><Icon name="layout-grid" />ბადე</button>
     <button type="button" aria-pressed={mapView} onClick={() => filters.set({ view: "map" })}><Icon name="map-pin" />რუკა</button>
   </div>;
 
-  const countLabel = !available || !ready ? "" : `${rows.length} კომპანია`;
+  const countLabel = !available || !ready ? "" : `ნაპოვნია ${rows.length} კომპანია`;
 
-  // The city list shares its value with the search pill.
+  // All location controls use the same URL-backed city selection.
   const filtersBody = (placement: "desktop" | "mobile") => (
     <div className="catalog-filters">
       {placement === "desktop" ? <div className="catalog-filters__head">
         <h2>ფილტრები{filterCount > 0 ? <span className="catalog-filters__count">{filterCount}</span> : null}</h2>
-        {filterCount > 0 ? <button type="button" className="catalog-clear" onClick={clearFilters}>გასუფთავება</button> : null}
       </div> : null}
       <div className="catalog-filter-group"><label className="catalog-filter-title" htmlFor={`${placement}-type`}>კომპანიის ტიპი</label><CustomSelect id={`${placement}-type`} className="ma-select" value={type} onChange={e=>filters.set({type:e.target.value})}><option value="">ყველა კომპანია</option><option value="suppliers">მომწოდებლები</option><option value="services">მომსახურება</option><option value="distributors">დისტრიბუტორები</option><option value="partners">პარტნიორის მაძიებლები</option></CustomSelect></div>
       {type === "distributors" ? <div className="catalog-filter-group">
@@ -220,11 +214,11 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <FacetList all={industryFacets} loading={!ready} allLabel="ყველა დარგი" allCount={allCount} activeId={industry} onSelect={setIndustry} />
       </div>
       <div className="catalog-filter-group">
-        <label className="catalog-filter-title" htmlFor={`${placement}-city`}>ქალაქი</label>
-        <CustomSelect className="ma-select catalog-city-select" id={`${placement}-city`} value={city} onChange={e => setCity(e.target.value)}>
-          <option value="">ყველა ქალაქი</option>
-          {cityFacets.map(f => <option key={f.id} value={f.id} disabled={!f.count && f.id !== city}>{f.label} · {f.count}</option>)}
-        </CustomSelect>
+      <h3 className="catalog-filter-title">ადგილმდებარეობა</h3>
+      <div className="catalog-location-checks">{cityFacets.map(f => <label className="catalog-check" key={f.id}>
+        <input type="checkbox" checked={city === f.id} disabled={!f.count && city !== f.id} onChange={e => setCity(e.target.checked ? f.id : "")} />
+        <span>{f.label}</span><small>{f.count}</small>
+      </label>)}</div>
         {city && city !== "georgia" && Object.hasOwn(cities, city) ? <label className="filter-switch filter-switch--nested">
           <span><strong>ოფისი {cities[city].replace(/ი$/, "")}ში</strong><small>მხოლოდ ამ ქალაქში მდებარე კომპანიები</small></span>
           <input type="checkbox" role="switch" checked={office} onChange={e => filters.set({ office: e.target.checked ? "1" : "" })} />
@@ -249,23 +243,18 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   return (
     <div className="ma-page companies-catalog catalog-page">
       <CatalogHeader
-        tone="light"
-        center
-        title={content.businessTitle || "იპოვე სანდო მომწოდებელი"}
+        title="კომპანიები"
         description={content.businessSubtitle || "კომპანიები და მომსახურება მთელი საქართველოდან."}
-        artwork={<CompanyCatalogCover />}
         search={<form onSubmit={e => { e.preventDefault(); document.getElementById("company-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-          <SegmentedSearch framed id="company-query" label="კომპანიის ძიება" placeholder="სახელი ან მომსახურება"
-            emptyHref={`/requests/new/?${new URLSearchParams({ title: query.trim(), city })}`}
-            query={query} onQuery={setQuery} suggestions={suggestions}
-            onSelect={item => item.kind === "category" ? filters.set({ industry: item.category, q: "" }) : router.push(item.href)}
-            city={city} onCity={setCity} />
+          <CatalogSearch id="company-query" label="ძიება" placeholder="მოძებნე პროდუქტი, მომსახურება, კომპანია ან კატეგორია"
+            value={query} onChange={setQuery} mode="companies" resultIds={results.map(r => r.id)}
+            onCategory={value => filters.set({ industry: value, q: "" })} />
         </form>}
       />
       <div className="catalog-workspace">
         <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{filtersBody("desktop")}</aside>
         <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
-          <ResultsBar count={countLabel} filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{filterCount > 0 ? ` · ${filterCount}` : ""}</Button>}
+          <ResultsBar count={countLabel} filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრები{filterCount > 0 ? ` · ${filterCount}` : ""}</Button>}
             utility={<>{viewSwitch}{ready && store?.currentUser() ? <Button variant="ghost" size="sm" className="catalog-saved-toggle" aria-label="შენახული კომპანიების ნახვა" href="/account/?tab=saved"><Icon name="bookmark" />შენახული</Button> : null}</>}
             items={activeItems} onRemove={removeFilter} onClear={clearFilters} sort={{value: sort, onChange: value => filters.set({sort: value}), options: [{value: "recommended", label: "რეკომენდებული"}, {value: "active", label: "ყველაზე აქტიური"}, {value: "newest", label: "უახლესი"}]}}
           />
@@ -292,7 +281,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
                 {unmapped.length ? <p className="companies-map__unmapped">რუკაზე არ ჩანს ({unmapped.length}), მისამართი არ აქვს მითითებული: {unmapped.map((c, i) => <span key={c.id}>{i ? ", " : ""}<Link href={`/companies/view/?id=${encodeURIComponent(c.id)}`}>{c.name}</Link></span>)}</p> : null}
               </div>
             ) : (
-              rows.map((c, index) => <CompanyListingCard key={c.id} c={c} entranceIndex={index} />)
+              rows.map((c, index) => <CompanyListingCard catalog key={c.id} c={c} entranceIndex={index} />)
             )}
           </div>
         </section>

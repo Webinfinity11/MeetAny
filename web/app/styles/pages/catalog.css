@@ -1082,3 +1082,54 @@
  .catalog-sort>label{position:static;width:auto;height:auto;overflow:visible;clip-path:none}
  .catalog-sort .ma-select{flex:1;min-width:0;width:auto}
 }
+
+/* Opportunities artboard: scoped so requests/new and other card consumers retain their layout. */
+.catalog-page { background: var(--ink-50); }
+body:has(.catalog-page) { background: var(--ink-50); }
+.catalog-page .catalog-header--opportunities {
+  display: block;
+  padding-block: var(--space-10) 0;
+  color: var(--ink-950);
+}
+.catalog-page .catalog-header::before { display: none; }
+.catalog-page .catalog-title { margin: 0; font-size: var(--size-36); line-height: 1.25; font-weight: var(--fw-bold); font-feature-settings: normal; letter-spacing: -.025em; color: var(--ink-950); }
+.catalog-page .catalog-description { max-width: none; margin-top: var(--space-2); color: var(--ink-600); font-size: var(--size-15); }
+.catalog-page .catalog-search-area { margin-top: var(--space-8); padding: var(--space-3); border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); width: 100%; max-width: none; }
+.catalog-page .catalog-search { margin: 0; }
+.catalog-page .catalog-search .ma-input { height: var(--size-44); min-height: var(--size-44); border-color: var(--ink-200); background: var(--white); color: var(--ink-950); font-size: var(--size-14); }
+.catalog-page .catalog-workspace { grid-template-columns: var(--size-220) minmax(0, 1fr); gap: var(--space-8); padding-top: var(--space-8); }
+.catalog-page .catalog-sidebar { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.catalog-page .catalog-filters__head { display: none; }
+.catalog-page .catalog-filter-group + .catalog-filter-group { border: 0; padding-top: var(--space-2); }
+.catalog-page .catalog-facet { border: 0; background: transparent; border-radius: var(--size-8); color: var(--ink-800); }
+.catalog-page .catalog-facet[aria-pressed="true"] { background: var(--ink-950); color: var(--white); }
+.catalog-page .catalog-facet[aria-pressed="true"] :is(.catalog-facet__count,.catalog-facet__icon) { color: inherit; }
+.catalog-check { display: flex; align-items: center; gap: var(--space-2); min-height: var(--size-32); font-size: var(--size-14); color: var(--ink-800); }
+.catalog-check input { width: var(--size-18); height: var(--size-18); flex-shrink: 0; accent-color: var(--ink-950); }
+.catalog-check span { flex: 1; }
+.catalog-check small { color: var(--ink-500); font-size: var(--size-12); }
+.catalog-page .catalog-count { font-size: var(--size-14); font-weight: var(--fw-regular); line-height: 1.5; color: var(--ink-600); }
+.catalog-page .catalog-results-bar { gap: var(--space-3); margin-bottom: var(--space-4); }
+.catalog-page .catalog-results-controls { flex-wrap: wrap; }
+.catalog-page :is(.request-card-grid,.company-directory-list,.catalog-skeleton) { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-4); }
+.catalog-page :is(.catalog-skeleton,.catalog-empty,.companies-map-view,.service-unavailable) { grid-column: 1 / -1; }
+.catalog-page .catalog-skeleton__card { min-height: var(--size-320); padding: var(--space-4); }
+.catalog-page .catalog-skeleton__card::before { content: ""; display: block; aspect-ratio: 2; margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) var(--space-4); background: var(--ink-100); }
+@media(max-width:1023px) {
+  .catalog-page .catalog-workspace { grid-template-columns: minmax(0,1fr); }
+  .catalog-page .catalog-sidebar { display: none; }
+  .catalog-page :is(.request-card-grid,.company-directory-list,.catalog-skeleton) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:599px) {
+  .catalog-page .catalog-title { font-size: var(--size-28); }
+  .catalog-page .catalog-header--opportunities { padding-top: var(--space-8); }
+  .catalog-page :is(.request-card-grid,.company-directory-list,.catalog-skeleton) { grid-template-columns: minmax(0,1fr); }
+  .catalog-page .catalog-results-controls { margin-left: 0; width: 100%; justify-content: space-between; }
+  .catalog-page .catalog-results-controls .catalog-sort { flex: 0 1 auto; }
+  .catalog-page .catalog-sort .ma-select { max-width: var(--size-160); }
+}
+.catalog-page .catalog-facet__label { white-space: normal; text-overflow: clip; text-align: left; }
+.catalog-page .request-card-grid > :not(.request-card) { grid-column: 1 / -1; }
+@media(max-width:1023px) {
+  .ma-proto .catalog-page #filters { width: 100%; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; }
+}
