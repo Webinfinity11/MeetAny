@@ -8,18 +8,20 @@ import { Icon } from "../Icon";
 
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
-export function PhotoField({ file, onChange }: { file: File | null; onChange: (file: File | null) => void }) {
+export function PhotoField({ file, onChange, variant = "drop" }: { file: File | null; onChange: (file: File | null) => void; variant?: "drop" | "tile" }) {
   const [broken, setBroken] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOver, setIsOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const previewUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
+    const url = file ? URL.createObjectURL(file) : null;
+    // Synchronize the browser-owned resource; recreate it after Strict Mode's cleanup.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPreviewUrl(url);
+    return () => { if (url) URL.revokeObjectURL(url); };
+  }, [file]);
 
   const load = (next: File | undefined | null) => {
     setError(null);
@@ -45,6 +47,24 @@ export function PhotoField({ file, onChange }: { file: File | null; onChange: (f
     if (inputRef.current) inputRef.current.value = "";
     inputRef.current?.focus();
   };
+
+  if (variant === "tile") return <div className="post-photos">
+    <div className="post-photos__tiles">
+      {file && previewUrl && !broken ? <div className="post-photos__tile">
+        <img src={previewUrl} width={88} height={88} alt="არჩეული ფოტო" onError={() => { setBroken(true); onChange(null); }} />
+        <Button variant="ghost" className="post-photos__remove" aria-label="ფოტოს წაშლა" onClick={remove}><Icon name="x" /></Button>
+      </div> : null}
+      <label className={`ma-drop post-photos__add${isOver ? " is-over" : ""}`}
+        onDragOver={e => { e.preventDefault(); setIsOver(true); }} onDragLeave={() => setIsOver(false)}
+        onDrop={e => { e.preventDefault(); setIsOver(false); load(e.dataTransfer.files[0]); }}>
+        <Icon name="upload" /><span>{file ? "შეცვლა" : "დამატება"}</span>
+        <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" aria-label="მოთხოვნის ფოტოს არჩევა"
+          onChange={e => { load(e.target.files?.[0]); e.target.value = ""; }} />
+      </label>
+    </div>
+    <p className="post-hint">ერთი ფოტო · JPG, PNG, WEBP ან GIF · მაქსიმუმ 5 მბ</p>
+    {broken || error ? <p className="ma-field__error" role="alert">{error || "სურათი ვერ გაიხსნა. აირჩიე სხვა ფოტო."}</p> : null}
+  </div>;
 
   return (
     <div className="ma-field">
