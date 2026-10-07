@@ -43,12 +43,13 @@
 .hero-description { max-width: calc(var(--size-240) * 2); margin: var(--size-24) 0 0; color: var(--ink-600); font-size: var(--size-16); line-height: 1.75; }
 .hero-actions { display: flex; gap: var(--size-12); margin-top: var(--size-32); }
 .hero-actions .ma-btn { padding-inline: var(--size-16); font-size: var(--size-14); }
-.discovery-search { position: relative; display: flex; align-items: center; gap: var(--size-8); min-width: 0; margin-top: var(--size-32); }
-.market-search-types { flex: none; display: flex; gap: var(--size-2); min-width: 0; margin: 0; padding: var(--size-2); border: var(--size-1) solid var(--ink-200); border-radius: var(--radius-md); }
-.market-search-types label { position: relative; display: grid; place-items: center; min-width: var(--size-36); min-height: var(--size-40); padding: var(--size-4); border-radius: var(--radius-sm); cursor: pointer; color: var(--ink-500); }
+/* Search sits under the hero CTAs as its own row (design: hairline + meta row); the type toggle is on top, the framed search takes the full column width. */
+.discovery-search { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--size-12); min-width: 0; margin-top: var(--size-32); padding-top: var(--size-24); border-top: var(--size-1) solid var(--ink-200); }
+.market-search-types { justify-self: start; display: flex; gap: var(--size-2); min-width: 0; margin: 0; padding: var(--size-2); border: var(--size-1) solid var(--ink-200); border-radius: var(--radius-md); }
+.market-search-types label { position: relative; display: flex; align-items: center; gap: var(--size-6); min-height: var(--size-36); padding: var(--size-4) var(--size-10); border-radius: var(--radius-sm); cursor: pointer; color: var(--ink-500); font-size: var(--size-13); font-weight: var(--fw-semibold); white-space: nowrap; }
 .market-search-types label:has(input:checked) { background: var(--white); color: var(--ink-950); box-shadow: var(--shadow-1); }
 .market-search-types label:has(input:focus-visible) { outline: var(--size-2) solid var(--ink-950); }
-.market-search-types input, .market-search-types label > span { position: absolute; width: var(--size-1); height: var(--size-1); overflow: hidden; clip-path: inset(50%); }
+.market-search-types input { position: absolute; width: var(--size-1); height: var(--size-1); overflow: hidden; clip-path: inset(50%); }
 .market-search-types .duo-icon { width: var(--size-18); height: var(--size-18); }
 
 /* Shared search behavior stays intact; these compact controls apply only to the home. */
@@ -115,8 +116,10 @@
 .home-opportunity-visual { position: relative; }
 .home-opportunity-photo { aspect-ratio: 16 / 10; }
 .home-opportunity-new { position: absolute; top: var(--size-10); left: var(--size-10); }
-.home-opportunity-chips { position: absolute; bottom: var(--size-10); left: var(--size-10); right: var(--size-10); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--size-4); }
-.home-opportunity-chips > span { min-width: 0; max-width: 100%; padding: var(--size-2) var(--size-8); border-radius: var(--size-6); font-size: var(--size-11); font-weight: var(--fw-semibold); line-height: var(--size-16); }
+.home-opportunity-chips { position: absolute; bottom: var(--size-10); left: var(--size-10); right: var(--size-10); display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: var(--size-4); }
+/* One line each: the category chip shrinks with an ellipsis, the deadline badge keeps its width. */
+.home-opportunity-chips > span { flex: 0 1 auto; min-width: 0; max-width: 100%; padding: var(--size-2) var(--size-8); border-radius: var(--size-6); font-size: var(--size-11); font-weight: var(--fw-semibold); line-height: var(--size-16); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.home-opportunity-chips > .ma-badge { flex: none; }
 .home-opportunity-chips > span:first-child, .home-opportunity-chips .ma-badge--neutral { background: var(--white); color: var(--ink-800); }
 .home-opportunity-body { flex: 1; padding: var(--size-16); }
 .home-opportunity-body h3 { margin: 0 0 var(--size-12); font-size: var(--size-15); line-height: var(--size-22); font-weight: var(--fw-bold); overflow-wrap: anywhere; }

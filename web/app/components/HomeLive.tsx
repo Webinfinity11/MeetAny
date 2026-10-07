@@ -6,6 +6,7 @@ import { useMarketStore } from "../lib/market-client";
 import { categories, cities, currentCategory, units } from "../lib/categories";
 import { Icon } from "./Icon";
 import { Badge } from "./ui/Badge";
+import { RequestCatalogCover } from "./market/RequestCatalogCover";
 
 export type HomeRequest = {
   id: string; title: string; category: string; city: string; createdAt: string;
@@ -30,7 +31,7 @@ export function HomeRequestPhoto({ request, live = false }: { request: HomeReque
   return <div className={live ? "home-live-photo" : "home-opportunity-photo"}>
     {request.photo && failed !== request.photo
       ? <img src={request.photo} alt="" width={480} height={300} loading={live ? "eager" : "lazy"} onError={() => setFailed(request.photo)} />
-      : <span className="home-photo-placeholder" aria-hidden="true"><Icon name="file-text" /></span>}
+      : <RequestCatalogCover category={request.category} />}
   </div>;
 }
 
