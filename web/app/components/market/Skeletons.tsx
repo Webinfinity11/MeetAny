@@ -52,10 +52,7 @@ export function DetailSkeleton({ compact, label = "მოთხოვნა ი�
 
 export function AccountSkeleton({ compact, label = "ანგარიში იტვირთება…", admin = false }: SkeletonProps & { admin?: boolean }) {
   return <Frame compact={compact} label={label}>
-    <Heading avatar={!admin} />
-    <div className="ma-loading__facts">{[0, 1, 2].map(i => <div className="ma-loading__stat" key={i}><Line kind="h1" /><Line kind="w60" /></div>)}</div>
-    <div className="ma-loading__tabs"><Line kind="btn" /><Line kind="btn" /></div>
-    <Rows count={admin ? 4 : 2} />
+    {admin ? <><Heading /><Rows count={4}/></> : <div className="account-loading-shell"><aside><Line kind="btn"/>{[0, 1, 2, 3, 4].map(i => <Line key={i} kind="title"/>)}</aside><div><Heading/><div className="ma-loading__tabs"><Line kind="btn"/><Line kind="btn"/></div><Rows count={3}/></div></div>}
   </Frame>;
 }
 

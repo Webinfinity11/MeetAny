@@ -14,8 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "../Toasts";
 import { Icon } from "../Icon";
-import { DuoIcon } from "../ui/DuoIcon";
-import { CompanyAvatar } from "./CompanyAvatar";
+import { openChat } from "./ChatPopup";
 import { AuthForms, PasswordInput } from "./AuthForms";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 import { LogoField, GalleryField, type GalleryItem } from "./PhotoField";
@@ -25,7 +24,7 @@ import { LocationPicker } from "./LocationPicker";
 import { CompanyBusinessPanel, CompanyDistributionPanel } from "./CompanyBusiness";
 import { Inbox } from "./Inbox";
 import { useMarketStore, type Store } from "../../lib/market-client";
-import { useUnreadMessageCount } from "../../lib/chat-client";
+import { useConversationList, useUnreadMessageCount } from "../../lib/chat-client";
 import { categories, cities, groupOf } from "../../lib/categories";
 import { categoryOptions } from "./CategoryOptions";
 
@@ -324,138 +323,114 @@ function PasswordForm() {
   );
 }
 
-type RequestItem = { id: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean };
-type OfferItem = { id: string; requestId: string; status: string; createdAt: string; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
+type RequestItem = { id: string; ownerId: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean; photo?: string | null; quantity?: number | null; unit?: string | null };
+type OfferItem = { id: string; companyUserId: string; requestId: string; status: string; createdAt: string; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
 type Tab = "overview" | "opportunities" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
-
-const DAY = 86400000;
-function postedLabel(createdAt: string, now: number) {
-  const days = Math.floor((now - Date.parse(createdAt)) / DAY);
-  return days <= 0 ? "გამოქვეყნდა დღეს" : days === 1 ? "გამოქვეყნდა გუშინ" : `გამოქვეყნდა ${days} დღის წინ`;
-}
-const requestMeta = (r: RequestItem, now: number) => [categories[r.category] || r.category, cities[r.city] || r.city, postedLabel(r.createdAt, now)].filter(Boolean).join(" · ");
-// Last visit per own request, written by RequestViewPageContent when the author opens it.
+type NavItem = { key: Tab; label: string; icon: string; count?: number | null };
+const requestHref = (id: string) => `/requests/view/?id=${encodeURIComponent(id)}`;
+const offerLabel = (status: string) => status === "chosen" ? "არჩეული" : status === "declined" ? "არ შეირჩა" : "მოლოდინში";
+const amount = (offer: OfferItem) => offer.price == null || offer.priceType === "negotiable" ? "შეთანხმებით" : `${new Intl.NumberFormat("ka-GE", { maximumFractionDigits: 2 }).format(offer.price)} ₾${offer.priceType === "unit" ? " / ერთეული" : ""}`;
 function readSeen(): Record<string, string> {
   if (typeof window === "undefined") return {};
-  try {return JSON.parse(localStorage.getItem("meetany.seen") || "{}") || {};} catch {return {};}
+  try { return JSON.parse(localStorage.getItem("meetany.seen") || "{}") || {}; } catch { return {}; }
 }
-const offerTone = (status: string) => status === "chosen" ? "chosen" : status === "sent" ? "open" : "done";
-const offerLabel = (status: string) => status === "chosen" ? "არჩეულია" : status === "declined" ? "არ აირჩიეს" : "გაგზავნილია";
-
-// One tab strip for both widths and every account view (registry design system).
-type NavItem = { key: Tab; href: string; label: string; icon: string; count?: number | null; alert?: boolean };
-
-/** Account sidebar (Airbnb-style account hub): who you are on top, sections with icons and counts. */
-function AccountTabs({ tab, items, me, name, roleLabel, isCompany }: { tab: Tab; items: NavItem[]; me: AnyUser; name: string; roleLabel: string; isCompany: boolean }) {
+function Status({ tone, children }: { tone: string; children: React.ReactNode }) {
+  return <span className="account-status" data-tone={tone}>{children}</span>;
+}
+function RequestPhoto({ request }: { request?: RequestItem | null }) {
+  const [failed, setFailed] = useState<string | null>(null);
+  return request?.photo && request.photo !== failed ? <img className="account-item-photo" src={request.photo} alt="" width={80} height={56} onError={() => setFailed(request.photo!)} /> : null;
+}
+function AccountTabs({ tab, items, company }: { tab: Tab; items: NavItem[]; company: boolean }) {
   const list = useRef<HTMLElement>(null);
   useEffect(() => {
     const nav = list.current;
     const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
     if (!nav || !active) return;
-    let disposed = false;
-    const reveal = () => {
-      if (disposed || nav.scrollWidth <= nav.clientWidth) return;
-      nav.scrollLeft += active.getBoundingClientRect().left - nav.getBoundingClientRect().left - nav.clientLeft - (nav.clientWidth - active.getBoundingClientRect().width) / 2;
-    };
+    const reveal = () => { if (nav.scrollWidth > nav.clientWidth) nav.scrollLeft += active.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - active.getBoundingClientRect().width) / 2; };
     reveal();
-    // Font loading changes the tab widths without necessarily resizing the strip.
-    void document.fonts.ready.then(reveal);
-    const resize = new ResizeObserver(reveal);
-    resize.observe(nav);
-    resize.observe(active);
-    return () => { disposed = true; resize.disconnect(); };
+    const observer = new ResizeObserver(reveal);
+    observer.observe(nav); observer.observe(active);
+    return () => observer.disconnect();
   }, [tab]);
-  return (
-    <aside className="account-nav" aria-label="ანგარიში">
-      <div className="account-nav__who">
-        <CompanyAvatar name={name} logoUrl={(me as { logoUrl?: string | null }).logoUrl} size="lg" />
-        <div>
-          <p className="account-nav__name">{name}</p>
-          <p className="account-nav__role">{roleLabel}{me.blocked ? " · დაბლოკილია" : ""}</p>
-          {isCompany && !me.blocked ? <span className="account-nav__verification" data-verified={me.verified || undefined}><Icon name={me.verified ? "badge-check" : "clock"}/>{me.verified ? "დადასტურებული" : "დადასტურების მოლოდინში"}</span> : null}
-        </div>
-      </div>
-      {isCompany ? <Link className="account-nav__public" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="external-link" />საჯარო გვერდის ნახვა</Link> : null}
-      <nav ref={list} className="account-nav__list" aria-label="ანგარიშის განყოფილებები">
-        {items.map((t) => (
-          <Link key={t.key} href={t.href} aria-current={tab === t.key ? "page" : undefined}>
-            <Icon name={t.icon} />
-            <span>{t.label}</span>
-            {t.count ? <span className={t.alert ? "account-nav__count is-alert" : "account-nav__count"}>{t.count}</span> : null}
-          </Link>
-        ))}
-      </nav>
-    </aside>
-  );
+  return <aside className="account-nav" aria-label="ანგარიში">
+    <div className="account-space">{company ? <><Link href="/account/?tab=requests" aria-current={tab === "requests" ? "page" : undefined}>ყიდვა</Link><Link href="/account/?tab=overview" aria-current={tab !== "requests" ? "page" : undefined}>გაყიდვა</Link></> : <strong>ყიდვა</strong>}</div>
+    <nav ref={list} className="account-nav__list" aria-label="ანგარიშის განყოფილებები">{items.map(item => <Link key={item.key} href={`/account/?tab=${item.key}`} aria-current={tab === item.key ? "page" : undefined}><Icon name={item.icon}/><span>{item.label}</span>{item.count != null ? <span className="account-nav__count">{item.count}</span> : null}</Link>)}</nav>
+  </aside>;
 }
-
-function Status({ tone, children }: { tone: string; children: React.ReactNode }) {
-  return <span className="account-status" data-tone={tone}>{children}</span>;
+function Filters({ items, value, onChange, label }: { items: { key: string; label: string; count: number }[]; value: string; onChange: (key: string) => void; label: string }) {
+  return <div className="account-filter-chips" role="group" aria-label={label}>{items.map(item => <Button key={item.key} variant="secondary" size="sm" aria-pressed={value === item.key} onClick={() => onChange(item.key)}>{item.label}<span>{item.count}</span></Button>)}</div>;
 }
-
-// Compact amount/status rows: https://mobbin.com/screens/f576b06e-b290-4864-a0be-2d753324fd1d
-function SentOffers({ offers, store, now }: { offers: OfferItem[]; store?: Store; now: number }) {
+function MyRequests({ requests, store, me, now, seen }: { requests: RequestItem[]; store: Store; me: AnyUser; now: number; seen: Record<string, string> }) {
+  const [filter, setFilter] = useState("all");
+  const [pending, setPending] = useState<string | null>(null);
+  const { current: conversations } = useConversationList(store, me.blocked ? undefined : me.id);
+  const states = [...new Set(requests.map(request => store.requestState(request) as string))];
+  const visible = requests.filter(request => filter === "all" || store.requestState(request) === filter);
+  async function extend(id: string) {
+    if (pending) return;
+    setPending(id);
+    try { await store.extendRequest(id); toast("ვადა გაგრძელდა 7 დღით."); }
+    catch (err) { toast((err as { userMessage?: string }).userMessage || "ვერ შესრულდა."); }
+    finally { setPending(null); }
+  }
+  return <section className="account-records" aria-label="ჩემი მოთხოვნები">
+    <Filters label="მოთხოვნის სტატუსი" value={filter} onChange={setFilter} items={[{ key: "all", label: "ყველა", count: requests.length }, ...states.map(key => ({ key, label: store.stateLabels[key] || key, count: requests.filter(request => store.requestState(request) === key).length }))]}/>
+    {visible.length ? <ul className="account-rows account-request-list">{visible.map(request => {
+      const state = store.requestState(request);
+      const count = store.offerCount(request.id) ?? 0;
+      const fresh = (store.visibleOffers(request.id, me) as OfferItem[]).filter(offer => offer.status === "sent" && (!seen[request.id] || Date.parse(offer.createdAt) > Date.parse(seen[request.id]))).length;
+      const left = state === "open" ? store.daysLeft(request, now) : null;
+      const conversation = conversations?.items?.find(item => item.requestId === request.id);
+      const canExtend = (state === "open" && left != null && left <= 7) || state === "expired" || state === "closed";
+      return <li className="account-request-card" data-highlight={fresh > 0 || undefined} key={request.id}>
+        <div className="account-item-heading"><RequestPhoto request={request}/><div><h2><Link href={requestHref(request.id)} title={request.title}>{request.title}</Link></h2><p>{[request.quantity != null ? `${request.quantity} ${store.units[request.unit || ""] || ""}` : categories[request.category], cities[request.city] || request.city].filter(Boolean).join(" · ")}</p></div></div>
+        <Status tone={state === "open" ? "success" : state === "chosen" ? "dark" : "neutral"}>{store.stateLabels[state] || state}</Status>
+        <span className="account-request-count"><Icon name="inbox"/>{count} შეთავაზება{fresh ? <strong>+{fresh} ახალი</strong> : null}</span>
+        {count ? <Button variant="primary" href={requestHref(request.id)}>შეთავაზებების ნახვა</Button> : conversation ? <Button variant="secondary" onClick={() => openChat({ companyId: conversation.companyId, requestId: request.id, conversation })}><Icon name="message-square"/>ჩატი</Button> : canExtend ? <Button variant="secondary" loading={pending === request.id} disabled={!!pending} onClick={() => void extend(request.id)}>გაგრძელება</Button> : <Button variant="secondary" href={requestHref(request.id)}>მოთხოვნის ნახვა</Button>}
+      </li>;
+    })}</ul> : <div className="account-empty-state"><p className="account-empty-state__title">{requests.length ? "ამ სტატუსით მოთხოვნა არ არის" : "მოთხოვნა ჯერ არ გაქვს"}</p><p className="account-empty">აღწერე, რა გჭირდება — კომპანიები შეთავაზებებს გამოგიგზავნიან.</p></div>}
+  </section>;
+}
+function SentOffers({ offers, store, me }: { offers: OfferItem[]; store: Store; me: AnyUser }) {
   const [status, setStatus] = useState("all");
-  const filters = [["all", "ყველა"], ["sent", "გაგზავნილი"], ["chosen", "არჩეული"], ["declined", "არ აირჩიეს"]];
   const visible = status === "all" ? offers : offers.filter(offer => offer.status === status);
-  const amount = (offer: OfferItem) => offer.price == null || offer.priceType === "negotiable" ? "შეთანხმებით" : `${new Intl.NumberFormat("ka-GE", { maximumFractionDigits: 2 }).format(offer.price)} ₾`;
-  return <section className="account-section account-offers" aria-labelledby="account-offers-heading">
-    <div className="account-offers__head"><h2 className="account-section__title" id="account-offers-heading">გაგზავნილი შეთავაზებები</h2><span className="account-offers__total" role="status">{visible.length} შეთავაზება</span></div>
-    {offers.length ? <>
-      <div className="account-offer-filters" role="group" aria-label="შეთავაზების სტატუსი">{filters.map(([key, label]) => <Button key={key} type="button" variant="ghost" size="sm" aria-pressed={status === key} onClick={() => setStatus(key)}>{label}</Button>)}</div>
+  const selected = visible.find(offer => offer.status === "chosen");
+  const selectedRequest = selected ? store.getRequest(selected.requestId) as RequestItem | null : null;
+  const buyer = selectedRequest ? store.userById(selectedRequest.ownerId) as AnyUser | null : null;
+  return <section className="account-records" aria-label="ჩემი შეთავაზებები">
+    <Filters label="შეთავაზების სტატუსი" value={status} onChange={setStatus} items={[{ key: "all", label: "ყველა", count: offers.length }, ...["sent", "chosen", "declined"].map(key => ({ key, label: offerLabel(key), count: offers.filter(offer => offer.status === key).length }))]}/>
+    <div className={`account-offers-layout${selected ? " account-offers-layout--detail" : ""}`}>
       {visible.length ? <ul className="account-rows account-offer-list">{visible.map(offer => {
-        const request = store?.getRequest(offer.requestId) as RequestItem | null;
-        const href = `/requests/view/?id=${encodeURIComponent(offer.requestId)}`;
-        const title = request?.title || "მოთხოვნა";
-        const fixedPrice = offer.price != null && offer.priceType !== "negotiable";
-        return <li className="account-row account-offer" key={offer.id}>
-          <div className="account-row__main">
-            <h3 className="account-row__title"><Link className="account-row__link" href={href} title={title}>{title}</Link></h3>
-            <p className="account-row__meta">{[request ? categories[request.category] || request.category : "", request ? cities[request.city] || request.city : "", `გაიგზავნა ${postedLabel(offer.createdAt, now).replace("გამოქვეყნდა ", "")}`].filter(Boolean).join(" · ")}</p>
-          </div>
-          <div className="account-offer__terms"><strong>{amount(offer)}</strong>{fixedPrice ? <span>{offer.priceType === "unit" ? "ერთეულის ფასი" : "ჯამური ფასი"}</span> : null}{offer.deliveryDays != null ? <span>მიწოდება: {offer.deliveryDays} დღე</span> : null}</div>
-          <div className="account-row__actions account-offer__actions"><Status tone={offerTone(offer.status)}>{offerLabel(offer.status)}</Status><Link className="account-link" href={href} aria-label={`შეთავაზების დეტალები: ${title}`}>ნახვა</Link></div>
-        </li>;
-      })}</ul> : <div className="account-offers__empty"><p className="account-empty">ამ სტატუსით შეთავაზება არ არის.</p><Button variant="ghost" size="sm" onClick={() => setStatus("all")}>ყველას ნახვა</Button></div>}
-    </> : <div className="account-offers__empty"><p className="account-empty">შეთავაზება ჯერ არ გაგიგზავნია.</p><Button variant="primary" href="/account/?tab=opportunities">შესაბამისი მოთხოვნების ნახვა</Button></div>}
+        const request = store.getRequest(offer.requestId) as RequestItem | null;
+        const owner = request ? store.userById(request.ownerId) as AnyUser | null : null;
+        return <li className="account-offer-card" data-highlight={offer.status === "chosen" || undefined} key={offer.id}><RequestPhoto request={request}/><div className="account-offer-copy"><h2><Link href={requestHref(offer.requestId)} title={request?.title}>{request?.title || "მოთხოვნა"}</Link></h2><div className="account-offer-buyer"><p>{owner?.company || owner?.name || (request ? cities[request.city] : "")}</p><Status tone={offer.status === "chosen" ? "dark" : offer.status === "sent" ? "warning" : "neutral"}>{offerLabel(offer.status)}</Status></div><div className="account-offer-facts"><strong>{amount(offer)}</strong>{offer.deliveryDays != null ? <span><Icon name="truck"/>{offer.deliveryDays} დღე</span> : null}</div></div></li>;
+      })}</ul> : <div className="account-empty-state"><p className="account-empty">{offers.length ? "ამ სტატუსით შეთავაზება არ არის." : "შეთავაზება ჯერ არ გაგიგზავნია."}</p></div>}
+      {selected ? <aside className="account-offer-detail" aria-label="არჩეული შეთავაზება"><h2>{selectedRequest?.title || "არჩეული შეთავაზება"}</h2><Status tone="dark">არჩეული</Status><dl><div><dt>ფასი</dt><dd>{amount(selected)}</dd></div>{selected.deliveryDays != null ? <div><dt>მიწოდება</dt><dd>{selected.deliveryDays} დღე</dd></div> : null}<div><dt>მიწოდების ხარჯი</dt><dd>{selected.deliveryIncluded ? "შედის" : "დასაზუსტებელია"}</dd></div>{selected.price != null ? <div><dt>დღგ</dt><dd>{selected.vatIncluded ? "შედის" : "არ შედის"}</dd></div> : null}</dl>{buyer ? <div className="account-buyer-card"><strong>{buyer.company || buyer.name}</strong><p>{cities[buyer.city] || buyer.city}</p></div> : null}{!me.blocked && selectedRequest ? <Button variant="primary" onClick={() => openChat({ companyId: me.id, requestId: selected.requestId })}><Icon name="message-square"/>დეტალების განხილვა</Button> : null}</aside> : null}
+    </div>
   </section>;
 }
-
-function CompanyWelcome({ me, matching, offers, unread }: { me: AnyUser; matching: number; offers: number; unread: number | null }) {
-  const profileComplete = !!me.about?.trim() && !!me.logoUrl && !!me.offers?.length;
-  return <section className="account-welcome" aria-labelledby="account-welcome-heading">
-    <div className="account-welcome__intro">
-      <p className="account-welcome__eyebrow">კომპანიის სამუშაო სივრცე</p>
-      <h1 id="account-welcome-heading">გამარჯობა, {me.name.trim().split(/\s+/)[0] || "მოგესალმებით"}</h1>
-      <p>აქ მართავ კომპანიის პროფილს, პოულობ მოთხოვნებს და აგრძელებ კლიენტებთან ურთიერთობას.</p>
-    </div>
-    <div className="account-welcome__stats" aria-label="შენი აქტივობა">
-      <Link href="/account/?tab=opportunities"><Icon name="search"/><strong>{matching}</strong><span>შესაბამისი მოთხოვნა</span></Link>
-      <Link href="/account/?tab=offers"><Icon name="send"/><strong>{offers}</strong><span>გაგზავნილი შეთავაზება</span></Link>
-      <Link href="/account/?tab=messages"><Icon name="message-square"/><strong>{unread ?? "…"}</strong><span>წაუკითხავი შეტყობინება</span></Link>
-    </div>
-    {!me.blocked && (!profileComplete || !me.verified) ? <div className="account-next-step">
-      <span className="icon-tile" aria-hidden="true"><Icon name={me.verified ? "building-2" : "badge-check"}/></span>
-      <div><strong>{!me.verified ? "კომპანიის დადასტურების მოლოდინში" : "შეავსე კომპანიის პროფილი"}</strong>
-        <p>{!me.verified ? "კომპანია დამატებულია ადმინისტრატორის დასადასტურებელ სიაში. დადასტურების შემდეგ პროფილზე შესაბამისი ნიშანი გამოჩნდება." : "აღწერა, ლოგო და მომსახურებები კლიენტს შენი კომპანიის გაცნობაში ეხმარება."}</p>
-        {!profileComplete && !me.verified ? <p>დაამატე აღწერა, ლოგო და მომსახურებები, რომ პროფილი სრულად წარმოაჩინო.</p> : null}
-      </div>
-      <Button variant="secondary" size="sm" href="/account/?tab=profile">{profileComplete ? "ჩემი პროფილის რედაქტირება" : "ჩემი პროფილის შევსება"}</Button>
-    </div> : null}
-  </section>;
+function CompanyWelcome({ me }: { me: AnyUser }) {
+  const fields: [string, boolean][] = [["დასახელება", !!me.company?.trim()], ["ქალაქი", !!me.city], ["მიმართულება", !!me.industry], ["აღწერა", !!me.about?.trim()], ["ლოგო", !!me.logoUrl], ["მომსახურებები", !!me.offers?.length], ["მომსახურების ქალაქები", !!me.serviceCities?.length], ["გალერეა", !!me.gallery?.length]];
+  const remaining = fields.filter(([, filled]) => !filled).map(([label]) => label);
+  const completion = Math.round((fields.length - remaining.length) / fields.length * 100);
+  return <><section className="account-profile-status"><div><h2>დადასტურება <Status tone={me.blocked ? "neutral" : me.verified ? "success" : "warning"}>{me.blocked ? "დაბლოკილია" : me.verified ? "დადასტურებული" : "მიმდინარეობს"}</Status></h2><p>{me.verified ? "კომპანიის პროფილი დადასტურებულია." : "კომპანიის მონაცემებს ადმინისტრატორი ამოწმებს."}</p></div><div><div className="account-progress-heading"><h2>პროფილი · {completion}%</h2><Link href="/account/?tab=profile">{remaining.length ? "დასრულება" : "რედაქტირება"}</Link></div><progress aria-label="პროფილის სისრულე" value={completion} max={100}/><p>{remaining.length ? `დარჩა: ${remaining.join(", ")}` : "პროფილი სრულად შევსებულია"}</p></div></section><div className="account-quick-actions"><Button variant="primary" href="/requests/"><Icon name="search"/>მოთხოვნების ნახვა</Button><Button variant="secondary" href="/companies/"><Icon name="building-2"/>კომპანიები</Button><Button variant="secondary" href="/account/?tab=saved"><Icon name="bookmark"/>შენახული</Button><Button variant="secondary" href="/account/?tab=profile"><Icon name="user-round"/>პროფილი</Button></div></>;
 }
-
+function Opportunities({ requests, store, overview }: { requests: RequestItem[]; store: Store; overview: boolean }) {
+  return <section className="account-records"><div className="account-section__head"><h2 className="account-section__title">{overview ? "თქვენთვის" : "შესაბამისი მოთხოვნები"}</h2>{overview ? <Link className="account-link" href="/account/?tab=opportunities">ყველა</Link> : null}</div>{requests.length ? <ul className="account-recommendations">{(overview ? requests.slice(0, 4) : requests).map(request => {
+    const owner = store.userById(request.ownerId) as AnyUser | null;
+    return <li key={request.id}><RequestPhoto request={request}/><div><Status tone="success">ყიდვის მოთხოვნა</Status><h3><Link href={requestHref(request.id)} title={request.title}>{request.title}</Link></h3><p>{[owner?.company || owner?.name, cities[request.city] || request.city].filter(Boolean).join(" · ")}</p><Link className="account-link" href={requestHref(request.id)}>შეთავაზება</Link></div></li>;
+  })}</ul> : <p className="account-empty">შენი დარგით ღია მოთხოვნა ჯერ არ არის — შეგიძლია სხვა მიმართულებებიც ნახო.</p>}</section>;
+}
 export function AccountPageContent() {
   const { store, ready, available } = useMarketStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
-  // ?tab=alerts (old links) opens the notifications tab; ?tab=settings the profile.
   const tab: Tab = rawTab === "opportunities" || rawTab === "business" || rawTab === "saved" || rawTab === "messages" || rawTab === "requests" || rawTab === "offers" || rawTab === "notifications" ? rawTab : rawTab === "alerts" ? "notifications" : ["profile", "settings"].includes(rawTab) ? "profile" : "overview";
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
-
-  const me = ready && available ? (store?.currentUser() as AnyUser | null) : null;
+  const me = ready && available ? store?.currentUser() as AnyUser | null : null;
   const unread = useUnreadMessageCount(store, me?.id, !!me && !me.blocked && me.role !== "admin");
   useEffect(() => { if (me?.role === "admin") router.replace("/admin/"); }, [me?.role, router]);
   useEffect(() => {
@@ -466,172 +441,43 @@ export function AccountPageContent() {
     const url = new URL(next, window.location.origin);
     if (url.origin === window.location.origin && ["/companies/view/", "/requests/view/"].includes(url.pathname)) router.replace(url.pathname + url.search + url.hash);
   }, [me?.id, router]);
-
   const data = useMemo(() => {
     if (!store || !me) return null;
     const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true }) as RequestItem[];
     if (me.role === "company") {
-      const matching = (store.listRequests({ category: groupOf[me.industry || ""] || me.industry }) as (RequestItem & { ownerId: string })[])
-        .filter((r) => r.ownerId !== me.id)
-        .sort((a, b) => Number(b.city === me.city) - Number(a.city === me.city));
-      const myOffers = store.myOffers(me) as OfferItem[];
-      return { matching, myOffers, myRequests };
+      const matching = (store.listRequests({ category: groupOf[me.industry || ""] || me.industry }) as RequestItem[]).filter(request => request.ownerId !== me.id).sort((a, b) => Number(b.city === me.city) - Number(a.city === me.city));
+      return { matching, myOffers: store.myOffers(me) as OfferItem[], myRequests };
     }
     return { matching: [] as RequestItem[], myOffers: [] as OfferItem[], myRequests };
   }, [store, me]);
-
-  if (ready && !available) return <div className="ma-page"><ServiceUnavailable /></div>;
-
-  if (!ready) return <AccountSkeleton />;
-
-  if (me?.role === "admin") return <AccountSkeleton admin label="ადმინ-პანელი იტვირთება…" />;
-
-  if (!me) return <AuthForms initialRole={searchParams.get("role") || ""} />;
-
+  if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
+  if (!ready || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
+  if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
   const isCompany = me.role === "company";
-  const name = me.company || me.name;
-  const roleLabel = isCompany ? "კომპანია" : "კლიენტი";
-  const engagement = store?.engagement();
-  const savedCount = engagement?.status === "ready" ? (engagement.savedIds as string[]).length : null;
-  const myRequests = data?.myRequests ?? [];
-  const matching = data?.matching ?? [];
-  const myOffers = data?.myOffers ?? [];
-  const activeTab: Tab = tab === "overview" ? isCompany ? "opportunities" : "requests" : !isCompany && (tab === "offers" || tab === "opportunities") ? "requests" : tab;
+  const activeTab: Tab = !isCompany && ["overview", "opportunities", "offers", "business"].includes(tab) ? "requests" : tab;
+  const { myRequests = [], myOffers = [], matching = [] } = data || {};
+  const engagement = store.engagement();
   const tabs: NavItem[] = [
-    ...(isCompany ? [{ key: "opportunities" as Tab, href: "/account/?tab=opportunities", label: "შესაბამისი მოთხოვნები", icon: "search" }, { key: "offers" as Tab, href: "/account/?tab=offers", label: "შეთავაზებები", icon: "send", count: myOffers.length }] : []),
-    { key: "messages", href: "/account/?tab=messages", label: "მიმოწერები", icon: "message-square", count: unread, alert: true },
-    { key: "requests", href: "/account/?tab=requests", label: "მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
-    { key: "saved", href: "/account/?tab=saved", label: "შენახული", icon: "bookmark", count: savedCount },
-    ...(isCompany ? [{ key:"business" as Tab, href:"/account/?tab=business", label:"ხილვადობის პაკეტები", icon:"eye" }] : []),
-    { key: "profile", href: "/account/?tab=profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: "user-round" },
+    ...(isCompany ? [{ key: "overview" as Tab, label: "მიმოხილვა", icon: "layout-grid" }, { key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "search", count: matching.length }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send", count: myOffers.length }] : []),
+    { key: "requests", label: "ჩემი მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
+    { key: "saved", label: isCompany ? "შენახული" : "შენახული კომპანიები", icon: "bookmark", count: engagement?.status === "ready" ? engagement.savedIds.length : null },
+    { key: "messages", label: "მესიჯები", icon: "message-square", count: unread },
+    { key: "notifications", label: "შეტყობინებები", icon: "bell", count: engagement?.status === "ready" ? engagement.unread : null },
+    ...(isCompany ? [{ key: "business" as Tab, label: "ხილვადობის პაკეტები", icon: "eye" }] : []),
+    { key: "profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: "user-round" },
   ];
-  const nav = <AccountTabs tab={activeTab} items={tabs} me={me} name={name} roleLabel={roleLabel} isCompany={isCompany} />;
-
-  if (tab === "notifications") return (
-    <div className="ma-page account-page">
-      {nav}
-      <div id="alerts" className="account-main account-main--profile account-alerts">
-        <EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"} />
-      </div>
-    </div>
-  );
-
-  if (tab === "saved" || tab === "messages") return (
-    <div className="ma-page account-page">
-      {nav}
-      <div className="account-wide">
-        {tab === "messages" ? (store ? <Inbox key={me.id} store={store} me={me}/> : null) : <EngagementPanel key={tab} kind={tab}/>}
-      </div>
-    </div>
-  );
-
-  if (tab === "business" && isCompany) return <div className="ma-page account-page">{nav}<div className="account-wide"><CompanyBusinessPanel key={me.id} owner={me.id}/></div></div>;
-
-  if (tab === "profile") return (
-    <div className="ma-page account-page">
-      {nav}
-      <div className="account-main account-main--profile">
-        {me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}
-        {isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"} /> : <><ProfileForm me={me} /><PasswordForm key={me.id} /></>}
-      </div>
-    </div>
-  );
-
-  async function extend(id: string) {
-    try {await store?.extendRequest(id); toast("ვადა გაგრძელდა 7 დღით.");}
-    catch (err) {toast((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
-  }
-
-  const requestHref = (id: string) => `/requests/view/?id=${encodeURIComponent(id)}`;
-  const addRequest = <Link className="account-link" href="/requests/new/">მოთხოვნის დამატება</Link>;
-
-  const requestsSection = (
-    <section className="account-section">
-      <div className="account-section__head">
-        <h2 className="account-section__title">ჩემი მოთხოვნები</h2>
-        {myRequests.length ? addRequest : null}
-      </div>
-      {myRequests.length ? (
-        <ul className="account-rows">
-          {myRequests.map((r) => {
-            const state = store?.requestState(r) as string;
-            const count = store?.offerCount(r.id) ?? 0;
-            const seenAt = seen[r.id];
-            const fresh = (store?.visibleOffers(r.id, me) as OfferItem[] | undefined ?? []).filter((o) => o.status === "sent" && (!seenAt || Date.parse(o.createdAt) > Date.parse(seenAt))).length;
-            const left = state === "open" ? (store?.daysLeft(r, now) as number) : null;
-            return (
-              <li className="account-row" key={r.id}>
-                <div className="account-row__main">
-                  <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(r.id)}>{r.title}</Link></h3>
-                  <p className="account-row__meta">{requestMeta(r, now)}</p>
-                </div>
-                <div className="account-row__stats">
-                  <span className="account-row__count">
-                    <strong>{count} შეთავაზება</strong>
-                    {fresh ? <span className="account-row__new">{fresh} ახალი</span> : null}
-                  </span>
-                  {state !== "open" ? <Status tone={state === "chosen" ? "chosen" : "done"}>{store?.stateLabels?.[state] || state}</Status> : null}
-                </div>
-                <div className="account-row__actions">
-                  {left != null ? <span className="account-row__due" data-soon={left <= 2 ? "" : undefined}>{left <= 0 ? "ვადა დღეს იწურება" : `კიდევ ${left} დღე`}</span> : null}
-                  {/* Offer the extension only when it matters: a week or less left, or already closed. */}
-                  {(state === "open" && left != null && left <= 7) || state === "expired" || state === "closed" ? (
-                    <button type="button" className="account-link" onClick={() => extend(r.id)}>
-                      {state === "open" ? "ვადის გაგრძელება" : "ხელახლა გახსნა"} +{store?.EXTEND_DAYS ?? 7} დღე
-                    </button>
-                  ) : null}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <div className="account-empty-state">
-          <DuoIcon name="file-text" size={26} tile />
-          <p className="account-empty-state__title">მოთხოვნა ჯერ არ გაქვს</p>
-          <p className="account-empty">აღწერე, რა გჭირდება — კომპანიები შეთავაზებებს თავად გამოგიგზავნიან.</p>
-          <Button variant="primary" href="/requests/new/">მოთხოვნის დამატება</Button>
-        </div>
-      )}
-    </section>
-  );
-
-  return (
-    <div className="ma-page account-page">
-      {nav}
-      <div className="account-layout account-layout--single">
-        <div className="account-main">
-          {isCompany && activeTab === "opportunities" ? <CompanyWelcome me={me} matching={matching.length} offers={myOffers.length} unread={unread}/> : null}
-          {isCompany && (activeTab === "offers" || activeTab === "opportunities") ? (
-            <>
-              {activeTab === "offers" ? <SentOffers key={me.id} offers={myOffers} store={store} now={now} /> : null}
-              {activeTab === "opportunities" ? <section className="account-section">
-                <div className="account-section__head">
-                  <h2 className="account-section__title">შესაბამისი მოთხოვნები ({matching.length})</h2>
-                  <Button variant="primary" href={`/requests/?category=${encodeURIComponent(groupOf[me.industry || ""] || me.industry || "")}`}>მოთხოვნების ნახვა</Button>
-                </div>
-                <p className="account-hint">შეარჩიე მოთხოვნა და გაუგზავნე მის ავტორს შენი პირობები.</p>
-                {matching.length ? (
-                  <ul className="account-rows">
-                    {matching.slice(0, 5).map((r) => (
-                      <li className="account-row account-row--plain" key={r.id}>
-                        <div className="account-row__main">
-                          <h3 className="account-row__title"><Link className="account-row__link" href={requestHref(r.id)}>{r.title}</Link></h3>
-                          <p className="account-row__meta">{requestMeta(r, now)}</p>
-                        </div>
-                        <Button variant="secondary" size="sm" href={requestHref(r.id)}>{me.verified ? "შეთავაზების გაგზავნა" : "მოთხოვნის ნახვა"}</Button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="account-empty">შენი დარგით ღია მოთხოვნა ჯერ არ არის — შეგიძლია სხვა მიმართულებებიც ნახო.</p>
-                )}
-              </section> : null}
-            </>
-          ) : null}
-          {!isCompany || tab === "requests" ? requestsSection : null}
-        </div>
-      </div>
-    </div>
-  );
+  const buying = !isCompany || activeTab === "requests";
+  const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : tabs.find(item => item.key === activeTab)?.label;
+  return <div className="ma-page account-page"><AccountTabs tab={activeTab} items={tabs} company={isCompany}/><div className="account-main">
+    <header className="account-page-heading"><div><h1>{title}</h1><p>{activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : activeTab === "requests" ? "მართე მოთხოვნები და მიღებული შეთავაზებები." : activeTab === "offers" ? "თვალი ადევნე გაგზავნილ შეთავაზებებს." : "შენი ანგარიშის სამუშაო სივრცე."}</p></div>{activeTab !== "overview" ? <Button variant={buying ? "primary" : "secondary"} href={buying ? "/requests/new/" : "/requests/"}><Icon name={buying ? "plus" : "search"}/>{buying ? "ახალი მოთხოვნა" : "ახალი შესაძლებლობები"}</Button> : null}</header>
+    {activeTab === "overview" ? <><CompanyWelcome me={me}/><Opportunities requests={matching} store={store} overview/></> : null}
+    {activeTab === "opportunities" ? <Opportunities requests={matching} store={store} overview={false}/> : null}
+    {activeTab === "requests" ? <MyRequests key={me.id} requests={myRequests} store={store} me={me} now={now} seen={seen}/> : null}
+    {activeTab === "offers" ? <SentOffers key={me.id} offers={myOffers} store={store} me={me}/> : null}
+    {activeTab === "saved" ? <div className="account-panel"><EngagementPanel kind="saved"/></div> : null}
+    {activeTab === "notifications" ? <div id="alerts" className="account-panel account-alerts"><EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"}/></div> : null}
+    {activeTab === "messages" ? <div className="account-wide"><Inbox key={me.id} store={store} me={me}/></div> : null}
+    {activeTab === "business" ? <CompanyBusinessPanel key={me.id} owner={me.id}/> : null}
+    {activeTab === "profile" ? <div className="account-main--profile">{me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}{isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"}/> : <><ProfileForm me={me}/><PasswordForm key={me.id}/></>}</div> : null}
+  </div></div>;
 }
