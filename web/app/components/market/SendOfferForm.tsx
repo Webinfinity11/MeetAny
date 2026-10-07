@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useMarketStore } from '../../lib/market-client';
 import { hasOfferTerms, readOwnOffer, setOfferTerms, termsEqual, type OfferTerms, type StoredOffer } from '../../lib/offer-terms-client';
 import { flowError } from '../../lib/matching-client';
+import { ListSkeleton } from './Skeletons';
 import type { OfferCardData } from './OfferCard';
 import { useFieldErrors, type FieldErrors } from './fieldErrors';
 import { Button } from '../ui/Button';
@@ -120,6 +121,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel }: { reque
       setError(`${saved ? 'ძირითადი შეთავაზება შენახულია; დამატებითი პირობების შენახვა ვერ დადასტურდა. ' : ''}${flowError(err)}`);
     } finally { busy.current = false; setPending(false); }
   }
+  if ((!key || loaded !== key) && !error) return <ListSkeleton compact kind="records" label="შეთავაზების პირობები იტვირთება…"/>;
   return <form className={styles.form} onSubmit={submit} noValidate aria-label="შეთავაზების ფორმა">
     <fieldset disabled={pending || !!partial || conflict || !key || loaded !== key || completed} className={styles.fields}>
       <div className="ma-field"><label htmlFor="of-priceType">ფასი</label><CustomSelect id="of-priceType" value={values.priceType} onChange={e => change('priceType', e.target.value)}><option value="negotiable">შეთანხმებით</option><option value="total">ჯამური ფასი</option><option value="unit">ერთეულის ფასი</option></CustomSelect></div>
@@ -130,7 +132,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel }: { reque
       <div className="ma-field"><label htmlFor="of-paymentTerms">გადახდის პირობები</label><textarea className="ma-textarea" maxLength={500} value={values.paymentTerms} placeholder="მაგ.: 50% წინასწარ, დარჩენილი მიწოდებისას" onChange={e => change('paymentTerms', e.target.value)} {...v.control('of-paymentTerms')}/>{v.message('of-paymentTerms')}</div>
       <div className="ma-field"><label htmlFor="of-commercialTerms">კომერციული პირობები</label><textarea className="ma-textarea" value={values.commercialTerms} placeholder="თითო პირობა ახალ ხაზზე" onChange={e => change('commercialTerms', e.target.value)} {...v.control('of-commercialTerms')}/>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div>
     </fieldset>
-    {error ? <div className={styles.notice} role="alert"><p>{error}</p>{conflict || partial || loaded !== key ? <Button variant="secondary" disabled={pending} onClick={() => void reload()}>ბოლო ვერსიის ჩატვირთვა</Button> : null}</div> : loaded !== key ? <p role="status">პირობები იტვირთება…</p> : null}
+    {error ? <div className={styles.notice} role="alert"><p>{error}</p>{conflict || partial || loaded !== key ? <Button variant="secondary" disabled={pending} onClick={() => void reload()}>ბოლო ვერსიის ჩატვირთვა</Button> : null}</div> : null}
     {completed ? <p role="status">შეთავაზება და პირობები შენახულია.</p> : null}
     <p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p>
     <div className={styles.actions}><Button variant="secondary" disabled={pending} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={!key || loaded !== key || conflict || completed}>{partial ? 'პირობების შენახვის გამეორება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div>

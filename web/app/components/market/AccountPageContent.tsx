@@ -344,7 +344,7 @@ function RequestPhoto({ request }: { request?: RequestItem | null }) {
   const [failed, setFailed] = useState<string | null>(null);
   return request?.photo && request.photo !== failed ? <img className="account-item-photo" src={request.photo} alt="" width={80} height={56} onError={() => setFailed(request.photo!)} /> : null;
 }
-function AccountTabs({ tab, items, company }: { tab: Tab; items: NavItem[]; company: boolean }) {
+export function AccountTabs({ tab, items, company }: { tab: Tab; items: NavItem[]; company: boolean }) {
   const list = useRef<HTMLElement>(null);
   useEffect(() => {
     const nav = list.current;

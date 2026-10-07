@@ -44,3 +44,9 @@
 .offerSheet dl{display:grid;gap:var(--space-3)}
 .offerSheet dl>div{display:flex;justify-content:space-between;gap:var(--space-3)}
 .offerSheet dd{margin:0;text-align:right;font-weight:var(--fw-semibold)}
+
+.identity{display:flex;align-items:center;gap:var(--space-3);border-top:var(--space-hairline) solid var(--border);padding-top:var(--space-4);min-width:0}
+.identity:empty{display:none}
+.identity>div{min-width:0}
+.identity strong{font-size:var(--fs-sm);overflow-wrap:anywhere}
+.identity p{font-size:var(--fs-xs);color:var(--text-3);margin-top:var(--space-1)}
