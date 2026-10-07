@@ -143,7 +143,8 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       await store.register({ role, name, company, phone, email: email.trim(), city, industry, password, acceptTerms });
       if (store.currentUser()) trackRegistration(role, "profile_created");
       else if (store.pendingEmail()) trackRegistration(role, "email_pending");
-      if (next && store.currentUser()) router.push(next);
+      if (store.currentUser()?.role === "company") router.push("/onboarding/?step=type");
+      else if (next && store.currentUser()) router.push(next);
       else router.refresh();
       window.dispatchEvent(new Event("meetany:auth"));
     } catch (err) {
@@ -292,6 +293,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
 }
 
 function RecoveryForm({ verification = false, onDone }: {verification?: boolean; onDone: () => void}) {
+  const router = useRouter();
   const {store} = useMarketStore();
   const [email, setEmail] = useState(store?.pendingResetEmail() || "");
   const [sent, setSent] = useState(verification || !!store?.pendingResetEmail());
@@ -310,7 +312,7 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
     if (!v.check(errors, ["reset-email", "reset-code", "reset-password"])) return;
     setPending(true); setError("");
     try {
-      if (verification) {await store.verifyEmailCode(code); trackRegistration(store.currentUser()?.role, "profile_created"); onDone();}
+      if (verification) {await store.verifyEmailCode(code); trackRegistration(store.currentUser()?.role, "profile_created"); if (store.currentUser()?.role === "company") router.push("/onboarding/?step=type"); onDone();}
       else if (sent) {await store.resetPassword(code, password); onDone();}
       else {await store.requestPasswordReset(email.trim()); setSent(true);}
     } catch (err) {setError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
