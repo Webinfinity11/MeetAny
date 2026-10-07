@@ -52,14 +52,14 @@ export function PostRequestPage({ initial }: { initial?: PublicSnapshot }) {
 
 function PostRequestForm({ store }: { store: Store }) {
   const params = useSearchParams();
-  const [draft] = useState(() => params.get("draft") === "1" ? readRequestDraft() : null);
+  const [draft] = useState(() => readRequestDraft());
   const initialCategory = currentCategory(params.get("category") || "");
-  const [title, setTitle] = useState(draft?.title || (params.get("title") || "").slice(0, 120));
-  const [category, setCategory] = useState(draft?.category || (Object.hasOwn(categories, initialCategory) ? initialCategory : ""));
+  const [title, setTitle] = useState(params.has("title") ? (params.get("title") || "").slice(0, 120) : draft?.title || "");
+  const [category, setCategory] = useState(params.has("category") ? (Object.hasOwn(categories, initialCategory) ? initialCategory : "") : draft?.category || "");
   const [body, setBody] = useState(draft?.body || "");
   const [quantity, setQuantity] = useState(draft?.quantity || "");
   const [unit, setUnit] = useState(draft?.unit || "pcs");
-  const [cityChoice, setCity] = useState(draft?.city || (Object.hasOwn(cities, params.get("city") || "") ? params.get("city")! : ""));
+  const [cityChoice, setCity] = useState(params.has("city") ? (Object.hasOwn(cities, params.get("city") || "") ? params.get("city")! : "") : draft?.city || "");
   const [addressNote, setAddressNote] = useState(draft?.addressNote || "");
   const [neededBy, setNeededBy] = useState(draftDate(draft?.neededByText || ""));
   const [photo, setPhoto] = useState<File | null>(null);
@@ -74,6 +74,19 @@ function PostRequestForm({ store }: { store: Store }) {
   const user = store.currentUser();
   const city = cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
   const signedIn = !!user;
+  useEffect(() => {
+    // State is initialized from storage before the first save, including on auth remounts.
+    if (published) return;
+    saveRequestDraft({ title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body });
+  }, [title, category, city, addressNote, quantity, unit, neededBy, body, published]);
+  useEffect(() => {
+    // Prefills apply once: a later reload must restore edits, not the original URL text.
+    const url = new URL(window.location.href);
+    if (["title", "category", "city"].some(key => url.searchParams.has(key))) {
+      for (const key of ["title", "category", "city"]) url.searchParams.delete(key);
+      window.history.replaceState(null, "", url);
+    }
+  }, []);
   const requestedStep = Number(params.get("step") || 1);
   const step = published ? 4 : Math.min(furthest, [1, 2, 3].includes(requestedStep) ? requestedStep : 1);
   const preview = useMemo(() => photo ? URL.createObjectURL(photo) : null, [photo]);

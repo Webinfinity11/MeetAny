@@ -1,4 +1,4 @@
-// Keep only text in this tab while a guest signs in. Never store photos or credentials.
+// Keep only text in this tab across navigation and sign-in. Never store photos or credentials.
 const key = "meetany.requestDraft";
 export type RequestDraft = {
   title: string; category: string; city: string; addressNote: string;
