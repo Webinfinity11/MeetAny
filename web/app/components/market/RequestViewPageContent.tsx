@@ -2,7 +2,8 @@
 import { Button } from "../ui/Button";
 
 
-import { useFieldErrors, type FieldErrors } from "./fieldErrors";
+import { SendOfferForm } from "./SendOfferForm";
+import { compareHref, dealHref, selectOfferDeal, flowCode, staleReview } from "../../lib/deal-client";
 import { CustomSelect } from "../ui/CustomSelect";
 import { DetailSkeleton } from "./Skeletons";
 
@@ -17,7 +18,7 @@ import { toast } from "../Toasts";
 import { RequestFormSheet } from "./RequestFormSheet";
 import { useRouter } from "next/navigation";
 import { ConfirmSheet } from "../ui/ConfirmSheet";
-import { offerPrice, OfferCard, type OfferCardData } from "./OfferCard";
+import { OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
@@ -27,94 +28,6 @@ import { useCompanyFeatures } from "../../lib/business-client";
 import { categories, cities, units } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
 import { addressLabel, dateLabel, postedLabel } from "../../lib/format";
-
-// Price is optional; existing API supports agreed, unit and total terms in GEL.
-function SendOfferForm({ requestId, existing, onDone, onCancel }: { requestId: string; existing?: OfferCardData; onDone: () => void; onCancel: () => void }) {
-  const { store } = useMarketStore();
-  const [deliveryDays, setDeliveryDays] = useState(existing?.deliveryDays != null ? String(existing.deliveryDays) : "");
-  const [body, setBody] = useState(existing?.body || "");
-  const [priceType,setPriceType]=useState(existing?.priceType || "negotiable");
-  const [price,setPrice]=useState(existing?.price!=null?String(existing.price):"");
-  const [vatIncluded,setVatIncluded]=useState(!!existing?.vatIncluded);
-  const [deliveryIncluded,setDeliveryIncluded]=useState(!!existing?.deliveryIncluded);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const v = useFieldErrors();
-  const draftOwner = store?.currentUser()?.id;
-  const draftKey = draftOwner ? `meetany.offerDraft.${draftOwner}.${requestId}` : null;
-  const [loadedDraftKey, setLoadedDraftKey] = useState<string | null>(null);
-  useEffect(() => {
-    if (!draftKey || existing) return;
-    const timer = setTimeout(() => {
-    if (!existing && draftKey) {
-      try {const saved = JSON.parse(localStorage.getItem(draftKey) || "null"); if (saved) {setBody(saved.body || ""); setDeliveryDays(saved.deliveryDays || "");setPriceType(["negotiable","unit","total"].includes(saved.priceType)?saved.priceType:"negotiable");setPrice(saved.price || "");setVatIncluded(!!saved.vatIncluded);setDeliveryIncluded(!!saved.deliveryIncluded);}} catch {}
-    }
-    setLoadedDraftKey(draftKey);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, [draftKey, existing]);
-  useEffect(() => {
-    if (loadedDraftKey !== draftKey || existing || !draftKey) return;
-    try {localStorage.setItem(draftKey, JSON.stringify({body, deliveryDays,priceType,price,vatIncluded,deliveryIncluded}));} catch {}
-  }, [draftKey, body, deliveryDays, priceType, price, vatIncluded, deliveryIncluded, loadedDraftKey, existing]);
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!store || pending) return;
-    const errors: FieldErrors = {};
-    if (body.trim().length < 10) errors["of-body"] = body.trim() ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე შენი შეთავაზება";
-    const days = Number(deliveryDays);
-    if (deliveryDays.trim() && (!Number.isInteger(days) || days < 0 || days > 365)) errors["of-days"] = "მიწოდების ვადა უნდა იყოს 0-დან 365 დღემდე";
-    if(priceType!=="negotiable") {
-      const amount=Number(price.trim().replace(",","."));
-      if(!/^\d+(?:[.,]\d{1,2})?$/.test(price.trim()) || amount<=0 || amount>1000000000)errors["of-price"]="მიუთითე ფასი ლარში, მაქსიმუმ ორი ათწილადი ნიშნით";
-    }
-    if (!v.check(errors, ["of-price", "of-days", "of-body"])) return;
-    setPending(true);
-    setError(null);
-    try {
-      await store.sendOffer(requestId, { deliveryDays: deliveryDays || undefined, body, priceType, price:priceType==="negotiable"?undefined:price, vatIncluded, deliveryIncluded });
-      try { if(draftKey)localStorage.removeItem(draftKey); } catch {}
-      toast(existing ? "შეთავაზება განახლდა." : "შეთავაზება გაიგზავნა.");
-      onDone();
-    } catch (err) {
-      setError((err as { userMessage?: string })?.userMessage || "შეთავაზება ვერ გაიგზავნა. სცადე თავიდან.");
-    } finally {
-      setPending(false);
-    }
-  }
-
-  return (
-    <form className="ma-form offer-compose" onSubmit={submit} noValidate>
-      <div className="ma-field"><label className="ma-field__label" htmlFor="of-price-type">ფასი</label><CustomSelect id="of-price-type" className="ma-select" value={priceType} onChange={e=>{setPriceType(e.target.value);v.clear("of-price");}}><option value="negotiable">შეთანხმებით</option><option value="total">ჯამური ფასი</option><option value="unit">ერთეულის ფასი</option></CustomSelect></div>
-      {priceType!=="negotiable"?<><div className="ma-field"><label className="ma-field__label" htmlFor="of-price">თანხა ლარში (₾) *</label><div className="offer-price-input"><span aria-hidden="true">₾</span><input className="ma-input" inputMode="decimal" value={price} onChange={e=>{setPrice(e.target.value);v.clear("of-price");}} {...v.control("of-price")}/></div>{v.message("of-price")}<small className="ma-note">ერთეულის ფასის შემთხვევაში აღწერაში მიუთითე ერთეული.</small></div><label className="ma-check"><input type="checkbox" checked={vatIncluded} onChange={e=>setVatIncluded(e.target.checked)}/>დღგ ფასში შედის</label></>:null}
-      <label className="ma-check"><input type="checkbox" checked={deliveryIncluded} onChange={e=>setDeliveryIncluded(e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label>
-      <div className="ma-field">
-        <label className="ma-field__label" htmlFor="of-days">
-          მიწოდება (დღე) <span className="ma-field__opt">არასავალდებულო</span>
-        </label>
-        <input className="ma-input" inputMode="numeric" value={deliveryDays} onChange={(e) => {setDeliveryDays(e.target.value); v.clear("of-days");}} {...v.control("of-days")} />
-        {v.message("of-days")}
-      </div>
-      <div className="ma-field">
-        <label className="ma-field__label" htmlFor="of-body">
-          შეთავაზების აღწერა *
-        </label>
-        <textarea className="ma-textarea" placeholder="რა შედის შეთავაზებაში, გადახდის პირობები, გარანტია და სხვა დეტალები" required minLength={10} maxLength={2000} value={body} onChange={(e) => {setBody(e.target.value); v.clear("of-body");}} {...v.control("of-body")} />
-        {v.message("of-body")}<small className="offer-character-count">{body.length} / 2000</small>
-      </div>
-      {error ? (
-        <p className="ma-field__error" role="alert">
-          {error}
-        </p>
-      ) : null}
-      <div className="offer-compose-actions"><Button variant="secondary" type="button" disabled={pending} onClick={onCancel}>გაუქმება</Button><Button variant="primary" type="submit" disabled={pending}>
-        {pending ? "იგზავნება…" : existing ? "შეთავაზების განახლება" : "შეთავაზების გაგზავნა"} <Icon name="send" />
-      </Button></div>
-    </form>
-  );
-}
 
 export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, sessionReady, available } = useMarketStore(initial);
@@ -128,7 +41,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const [actionPending, setActionPending] = useState(false);
   const [actionError, setActionError] = useState("");
   const [offerSort, setOfferSort] = useState("newest");
-  const [compare, setCompare] = useState(false);
+  const [chooseVersion, setChooseVersion] = useState<string | null>(null);
   const [chooseId, setChooseId] = useState<string | null>(null);
   const [choosePending, setChoosePending] = useState(false);
   const [chooseError, setChooseError] = useState<string | null>(null);
@@ -168,7 +81,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     const isOwner = !!me && r.ownerId === me.id;
     const myOffer = me?.role === "company" ? offers.find((o: { companyUserId: string }) => o.companyUserId === me.id) : null;
     const contact = store.contactFor(r, me);
-    const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; deliveryDays: number | null; price: number | null; priceType: string; vatIncluded: boolean; deliveryIncluded: boolean; body: string; status: string }): OfferCardData => {
+    const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; updatedAt?: string; paymentTerms?: string | null; validUntil?: string | null; commercialTerms?: string[]; deliveryDays: number | null; price: number | null; priceType: string; vatIncluded: boolean; deliveryIncluded: boolean; body: string; status: string }): OfferCardData => {
       const c = store.userById(o.companyUserId);
       const isNew = isOwner && seen?.id === id && (!seen.at || Date.parse(o.createdAt) > Date.parse(seen.at)) && o.status === "sent";
       return {
@@ -179,6 +92,10 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         companyHref: `/companies/view/?id=${encodeURIComponent(o.companyUserId)}`,
         city: c ? cities[c.city] || c.city : "",
         createdAt: o.createdAt,
+        updatedAt: o.updatedAt,
+        paymentTerms: o.paymentTerms,
+        validUntil: o.validUntil,
+        commercialTerms: o.commercialTerms,
         deliveryDays: o.deliveryDays,
         price:o.price,priceType:o.priceType,vatIncluded:o.vatIncluded,deliveryIncluded:o.deliveryIncluded,
         body: o.body,
@@ -238,19 +155,27 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   }
 
   async function confirmChoose() {
-    if (!chooseId || !store) return;
+    if (!chooseId || !store || choosePending) return;
     setChoosePending(true);
     setChooseError(null);
     try {
-      await store.chooseOffer(chooseId);
+      const deal = await selectOfferDeal(store, chooseId, chooseVersion);
       setChooseId(null);
-      toast("შეთავაზება არჩეულია. კომპანიის კონტაქტი ქვემოთ ჩანს.");
+      router.push(dealHref(deal.id));
     } catch (err) {
-      setChooseError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
+      if (flowCode(err) === "MA904") {
+        setChooseId(null); setActionError(staleReview);
+        await store.ensureRequest(r.id).catch(() => undefined);
+      } else setChooseError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
     } finally {
       setChoosePending(false);
     }
   }
+
+  const choose = (offerId: string) => {
+    setChooseVersion(store?.visibleOffers(r.id).find((o: { id: string }) => o.id === offerId)?.updatedAt || null);
+    setChooseError(null); setChooseId(offerId);
+  };
 
   const responsePanel = (!sessionReady ? <section className="request-session-note" role="status"><Icon name="user-round"/><p>ანგარიში მოწმდება…</p></section> : isOwner || me?.role === "admin" ? (
         <>
@@ -258,8 +183,9 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <div><h2 className="request-offers__title" id="request-offers-title">შეთავაზებები <span className="request-offers-count">{offers.length}</span>
               {offers.some(o => o.isNew) ? <span className="request-offers__new">{offers.filter(o => o.isNew).length} ახალი</span> : null}
             </h2><p className="request-offers-privacy"><Icon name="lock" />შეთავაზებები მხოლოდ შენ და ადმინისტრატორს გეჩვენებათ.</p></div>
-            {offers.length > 1 ? <div className="request-offers-tools"><label className="ma-sr-only" htmlFor="offer-sort">შეთავაზებების დალაგება</label><CustomSelect id="offer-sort" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">მიწოდების ვადა</option></CustomSelect><Button variant="secondary" type="submit" aria-pressed={compare} onClick={() => setCompare(!compare)}><Icon name={compare ? "layout-grid" : "list-filter"}/>{compare ? "სია" : "შედარება"}</Button></div> : null}
+            {offers.length > 1 ? <div className="request-offers-tools"><label className="ma-sr-only" htmlFor="offer-sort">შეთავაზებების დალაგება</label><CustomSelect id="offer-sort" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">მიწოდების ვადა</option></CustomSelect>{isOwner ? <Button variant="secondary" href={compareHref(r.id)}><Icon name="list-filter"/>შედარება</Button> : null}</div> : null}
           </div>
+          {isOwner && r.chosenOfferId ? <Button variant="primary" disabled={choosePending} onClick={() => choose(r.chosenOfferId)}>გარიგების გახსნა</Button> : null}
           {contact ? (
             <section className="ma-panel">
               <h2 className="ma-h3">საკონტაქტო ინფორმაცია</h2>
@@ -271,19 +197,18 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               {isOwner && chosenCompanyId ? <MessageButton companyId={chosenCompanyId} requestId={r.id}/> : null}
             </section>
           ) : null}
-          {compare && offers.length > 1 ? <section className="offer-comparison" aria-label="შეთავაზებების შედარება">{orderedOffers.map(o=><article className="offer-comparison__card" key={o.id}><header><h3><Link href={o.companyHref}>{o.companyName}</Link></h3>{o.status==="chosen"?<span className="ma-badge ma-badge--success">არჩეულია</span>:null}</header><dl className="offer-terms"><div><dt>ფასი</dt><dd>{offerPrice(o)}</dd></div><div><dt>მიწოდება</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div><div><dt>დღგ</dt><dd>{o.price==null?"დასაზუსტებელია":o.vatIncluded?"ფასში შედის":"ფასში არ შედის"}</dd></div><div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div></dl><details><summary>სრული პირობები</summary><p>{o.body}</p></details><footer>{isOwner && o.companyId ? <MessageButton companyId={o.companyId} requestId={r.id} variant="ghost" /> : null}<Button variant="secondary" href={o.companyHref}>კომპანიის ნახვა</Button>{isOwner&&!r.chosenOfferId&&state==="open"&&o.status==="sent"?<Button variant="primary" onClick={()=>setChooseId(o.id)}>შეთავაზების არჩევა</Button>:null}</footer></article>)}</section> : null}
           {offers.length === 0 ? (
             <div className="ma-empty">
               <h2 className="ma-empty__title">ჯერ შეთავაზება არ მიგიღია</h2>
               <p className="ma-empty__text">კომპანიების პასუხები აქ გამოჩნდება. მეტი გამოხმაურებისთვის გააზიარე მოთხოვნა.</p>
             </div>
-          ) : !compare || offers.length < 2 ? (
+          ) : (
             <div className="ma-stack request-offer-list">
               {orderedOffers.map((o) => (
-                <OfferCard key={o.id} o={o} messageTarget={isOwner && o.companyId ? { companyId: o.companyId, requestId: r.id } : undefined} canReport={isOwner} canChoose={isOwner && !r.chosenOfferId && state === "open"} onChoose={() => setChooseId(o.id)} />
+                <OfferCard key={o.id} o={o} messageTarget={isOwner && o.companyId ? { companyId: o.companyId, requestId: r.id } : undefined} canReport={isOwner} canChoose={isOwner && !r.chosenOfferId && state === "open"} onChoose={() => choose(o.id)} />
               ))}
             </div>
-          ) : null}
+          )}
         </>
       ) : me?.role === "company" ? (
         <section className="detail-aside__block">
@@ -305,7 +230,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <>
               <h2 className="ma-h3" id="send-offer" tabIndex={-1}>შეთავაზების გაგზავნა</h2>
               <p className="ma-note">შენს შეთავაზებას მხოლოდ მოთხოვნის ავტორი ნახავს.</p>
-              <SendOfferForm requestId={r.id} onDone={() => undefined} onCancel={() => {document.querySelector<HTMLElement>(".detail-hero__title")?.focus(); window.scrollTo({top: 0, behavior: "smooth"});}} />
+              <Button variant="primary" href={`/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზების მომზადება</Button>
             </>
           )}
         </section>
@@ -358,7 +283,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <aside className="request-detail-aside" id="request-contact" aria-label={isOwner ? "მოთხოვნის მართვა" : "კონტაქტი და შეთავაზება"}>
 
           <section className="request-submit-card"><dl className="request-summary-facts"><div><dt>მიღება სრულდება</dt><dd>{state === "open" ? (daysLeft > 0 ? `${daysLeft} დღეში` : "დღეს") : statusText}</dd></div><div><dt>მიღებულია</dt><dd>{offerCount} შეთავაზება</dd></div></dl>
-          {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <Button variant="primary" className="request-submit-cta" href={!me ? `/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}` : me.verified ? "#send-offer" : "/account/?tab=profile"} onClick={me?.verified ? () => document.getElementById("send-offer")?.focus() : undefined}><Icon name="send"/>შეთავაზების გაგზავნა</Button> : null}</section>
+          {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <Button variant="primary" className="request-submit-cta" href={!me ? `/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}` : me.verified ? `/offers/new/?requestId=${encodeURIComponent(r.id)}` : "/account/?tab=profile"}><Icon name="send"/>შეთავაზების გაგზავნა</Button> : null}</section>
           {owner ? (
             <section className="request-author"><p className="detail-label">მყიდველი</p>
               <div className="request-author-identity"><span className="detail-buyer-avatar">{owner.logoUrl ? <img src={owner.logoUrl} alt=""/> : (owner.company || owner.name || "მყიდველი").slice(0, 2)}</span><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{owner.industry ? categories[owner.industry] || owner.industry : null}</p></div></div>
@@ -391,7 +316,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
       </div>
 
       {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <div className="detail-actionbar">
-        {me ? <Button variant="primary" href={me.verified ? "#send-offer" : "/account/?tab=profile"} onClick={me.verified ? () => document.getElementById("send-offer")?.focus() : undefined}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "ჩემი პროფილის რედაქტირება"}</Button>
+        {me ? <Button variant="primary" href={me.verified ? `/offers/new/?requestId=${encodeURIComponent(r.id)}` : "/account/?tab=profile"}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "ჩემი პროფილის რედაქტირება"}</Button>
           : <Button variant="primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}><Icon name="send"/>შეთავაზების გაგზავნა</Button>}
       </div> : null}
       <ConfirmSheet
