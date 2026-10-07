@@ -16,7 +16,6 @@ import { Icon } from "../Icon";
 import { toast } from "../Toasts";
 import { RequestFormSheet } from "./RequestFormSheet";
 import { useRouter } from "next/navigation";
-import { CompanyAvatar } from "./CompanyAvatar";
 import { ConfirmSheet } from "../ui/ConfirmSheet";
 import { offerPrice, OfferCard, type OfferCardData } from "./OfferCard";
 import { ChooseOfferSheet } from "./ChooseOfferSheet";
@@ -30,7 +29,7 @@ import { usePublicPhone } from "../../lib/phones";
 import { addressLabel, dateLabel, postedLabel } from "../../lib/format";
 
 // Price is optional; existing API supports agreed, unit and total terms in GEL.
-function SendOfferForm({ requestId, existing, onDone }: { requestId: string; existing?: OfferCardData; onDone: () => void }) {
+function SendOfferForm({ requestId, existing, onDone, onCancel }: { requestId: string; existing?: OfferCardData; onDone: () => void; onCancel: () => void }) {
   const { store } = useMarketStore();
   const [deliveryDays, setDeliveryDays] = useState(existing?.deliveryDays != null ? String(existing.deliveryDays) : "");
   const [body, setBody] = useState(existing?.body || "");
@@ -87,9 +86,9 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
   }
 
   return (
-    <form className="ma-form" onSubmit={submit} noValidate>
+    <form className="ma-form offer-compose" onSubmit={submit} noValidate>
       <div className="ma-field"><label className="ma-field__label" htmlFor="of-price-type">ფასი</label><CustomSelect id="of-price-type" className="ma-select" value={priceType} onChange={e=>{setPriceType(e.target.value);v.clear("of-price");}}><option value="negotiable">შეთანხმებით</option><option value="total">ჯამური ფასი</option><option value="unit">ერთეულის ფასი</option></CustomSelect></div>
-      {priceType!=="negotiable"?<><div className="ma-field"><label className="ma-field__label" htmlFor="of-price">თანხა ლარში (₾) *</label><input className="ma-input" inputMode="decimal" value={price} onChange={e=>{setPrice(e.target.value);v.clear("of-price");}} {...v.control("of-price")}/>{v.message("of-price")}<small className="ma-note">ერთეულის ფასის შემთხვევაში აღწერაში მიუთითე ერთეული.</small></div><label className="ma-check"><input type="checkbox" checked={vatIncluded} onChange={e=>setVatIncluded(e.target.checked)}/>დღგ ფასში შედის</label></>:null}
+      {priceType!=="negotiable"?<><div className="ma-field"><label className="ma-field__label" htmlFor="of-price">თანხა ლარში (₾) *</label><div className="offer-price-input"><span aria-hidden="true">₾</span><input className="ma-input" inputMode="decimal" value={price} onChange={e=>{setPrice(e.target.value);v.clear("of-price");}} {...v.control("of-price")}/></div>{v.message("of-price")}<small className="ma-note">ერთეულის ფასის შემთხვევაში აღწერაში მიუთითე ერთეული.</small></div><label className="ma-check"><input type="checkbox" checked={vatIncluded} onChange={e=>setVatIncluded(e.target.checked)}/>დღგ ფასში შედის</label></>:null}
       <label className="ma-check"><input type="checkbox" checked={deliveryIncluded} onChange={e=>setDeliveryIncluded(e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="of-days">
@@ -103,16 +102,16 @@ function SendOfferForm({ requestId, existing, onDone }: { requestId: string; exi
           შეთავაზების აღწერა *
         </label>
         <textarea className="ma-textarea" placeholder="რა შედის შეთავაზებაში, გადახდის პირობები, გარანტია და სხვა დეტალები" required minLength={10} maxLength={2000} value={body} onChange={(e) => {setBody(e.target.value); v.clear("of-body");}} {...v.control("of-body")} />
-        {v.message("of-body")}
+        {v.message("of-body")}<small className="offer-character-count">{body.length} / 2000</small>
       </div>
       {error ? (
         <p className="ma-field__error" role="alert">
           {error}
         </p>
       ) : null}
-      <Button variant="primary" type="submit" disabled={pending}>
+      <div className="offer-compose-actions"><Button variant="secondary" type="button" disabled={pending} onClick={onCancel}>გაუქმება</Button><Button variant="primary" type="submit" disabled={pending}>
         {pending ? "იგზავნება…" : existing ? "შეთავაზების განახლება" : "შეთავაზების გაგზავნა"} <Icon name="send" />
-      </Button>
+      </Button></div>
     </form>
   );
 }
@@ -294,7 +293,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               <OfferCard o={myOffer} canChoose={false} messageTarget={{ companyId: me.id, requestId: r.id }} />
               {me.verified && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
                 <div className="ma-cluster"><Button variant="secondary" type="submit" aria-label="შეთავაზების რედაქტირება" onClick={() => setEditOffer(!editOffer)}><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
-                {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)}/> : null}
+                {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)} onCancel={() => setEditOffer(false)}/> : null}
               </div> : null}
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
@@ -304,9 +303,9 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           ) : (
             <>
-              <h2 className="ma-h3" id="send-offer">შეთავაზების გაგზავნა</h2>
+              <h2 className="ma-h3" id="send-offer" tabIndex={-1}>შეთავაზების გაგზავნა</h2>
               <p className="ma-note">შენს შეთავაზებას მხოლოდ მოთხოვნის ავტორი ნახავს.</p>
-              <SendOfferForm requestId={r.id} onDone={() => undefined} />
+              <SendOfferForm requestId={r.id} onDone={() => undefined} onCancel={() => {document.querySelector<HTMLElement>(".detail-hero__title")?.focus(); window.scrollTo({top: 0, behavior: "smooth"});}} />
             </>
           )}
         </section>
@@ -332,16 +331,14 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
   return (
     <div className="ma-page request-detail detail-page request-workspace" data-owner={isOwner || undefined}>
-      <div className="request-topline"><Link className="ma-back" href={isOwner ? "/account/?tab=requests" : "/requests/"}><Icon name="clipboard-list"/>{isOwner ? "ჩემი მოთხოვნები" : "მოთხოვნები"}</Link><span className="request-state" data-state={state}><Icon name={state === "open" ? "clock" : state === "chosen" ? "circle-check" : "lock"}/>{state === "open" ? `ღიაა · ${statusText}` : statusText}</span></div>
-      {/* Each fact appears once: context line, title, then a plain fact list next to the text. */}
-      <header className="detail-hero">
-        <p className="detail-hero__context">{categories[r.category] || r.category}{posted ? ` · გამოქვეყნდა ${posted}` : ""}</p>
-        <h1 className="detail-hero__title">{r.title}</h1>
-        {isOwner && offers.length ? <a className="request-offer-shortcut" href="#request-responses"><Icon name="inbox"/>{offers.length} შეთავაზების ნახვა</a> : null}
-      </header>
+      <nav className="detail-breadcrumb" aria-label="ნავიგაცია"><Link href="/requests/">შესაძლებლობები</Link><span>/</span><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>{categories[r.category] || r.category}</Link><span>/</span><span>{r.title}</span></nav>
       <div className="request-detail-grid">
         <div className="request-detail-main">
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
+            <header className="detail-hero">
+              <div className="detail-brief-meta"><span className={`ma-badge ma-badge--${state === "open" || state === "chosen" ? "success" : "neutral"}`}>{state === "open" ? (now && now - Date.parse(r.createdAt) < 3 * 86400000 ? "ახალი" : "ღიაა") : statusText}</span><span className="detail-category">{categories[r.category] || r.category}</span><span>{posted ? `გამოქვეყნდა ${posted}` : ""}</span></div>
+              <h1 className="detail-hero__title" tabIndex={-1}>{r.title}</h1>
+            </header>
             <dl className="request-detail-facts">
               <div><dt><Icon name="map-pin"/>ადგილი</dt><dd>{[cities[r.city] || r.city, r.addressNote ? addressLabel(r.addressNote) : null].filter(Boolean).join(" · ")}</dd></div>
               {r.quantity != null ? <div><dt><Icon name="package"/>რაოდენობა</dt><dd>{r.quantity} {units[r.unit] || r.unit}</dd></div> : null}
@@ -350,24 +347,28 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             </dl>
             <div className="request-description-brief"><h2><Icon name="file-text"/>მოთხოვნის აღწერა</h2><div className="request-description-content">
             <p className="ma-prose">{r.body}</p>
-            {r.photo ? <figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure> : null}
+
             </div></div>
           </section>
+          {r.photo ? <section className="detail-media-card"><h2 className="detail-section-title">ფაილები/ფოტოები</h2><figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure></section> : null}
           {isOwner || me?.role === "admin" ? <section className="request-responses" id="request-responses" aria-labelledby="request-offers-title">{responsePanel}</section> : null}
-          {!isOwner && me?.role === "company" ? responsePanel : null}
+
           {actionError ? <p role="alert" className="ma-field__error">{actionError}</p> : null}
         </div>
         <aside className="request-detail-aside" id="request-contact" aria-label={isOwner ? "მოთხოვნის მართვა" : "კონტაქტი და შეთავაზება"}>
 
-          {owner && !isOwner ? (
-            <section className="request-author">
-              <div className="request-author-identity"><CompanyAvatar name={owner.company || owner.name} logoUrl={owner.logoUrl} /><div><h2 className="detail-author__name">{owner.company || owner.name}</h2><p>მოთხოვნის ავტორი</p></div></div>
-              {ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" contactId={r.ownerId} requestId={r.id} source="request-owner" /> : null}
+          <section className="request-submit-card"><dl className="request-summary-facts"><div><dt>მიღება სრულდება</dt><dd>{state === "open" ? (daysLeft > 0 ? `${daysLeft} დღეში` : "დღეს") : statusText}</dd></div><div><dt>მიღებულია</dt><dd>{offerCount} შეთავაზება</dd></div></dl>
+          {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <Button variant="primary" className="request-submit-cta" href={!me ? `/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}` : me.verified ? "#send-offer" : "/account/?tab=profile"} onClick={me?.verified ? () => document.getElementById("send-offer")?.focus() : undefined}><Icon name="send"/>შეთავაზების გაგზავნა</Button> : null}</section>
+          {owner ? (
+            <section className="request-author"><p className="detail-label">მყიდველი</p>
+              <div className="request-author-identity"><span className="detail-buyer-avatar">{owner.logoUrl ? <img src={owner.logoUrl} alt=""/> : (owner.company || owner.name || "მყიდველი").slice(0, 2)}</span><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{owner.industry ? categories[owner.industry] || owner.industry : null}</p></div></div>
+              {owner.role === "company" ? <Button variant="secondary" href={`/companies/view/?id=${encodeURIComponent(owner.id)}`}>კომპანიის პროფილი</Button> : null}
+              {!isOwner && ownerPhone ? <CallButton phone={ownerPhone} variant="secondary" contactId={r.ownerId} requestId={r.id} source="request-owner" /> : null}
               {!isOwner && me?.role === "company" ? <MessageButton companyId={me.id} requestId={r.id}/> : null}
             </section>
           ) : null}
-          {!isOwner && me?.role !== "admin" && me?.role !== "company" ? responsePanel : null}
-          {sessionReady && !isOwner && me?.role !== "admin" ? <p className="request-offer-privacy">{offerCount} შეთავაზება · პასუხებს მხოლოდ მოთხოვნის ავტორი ხედავს.</p> : null}
+          {me && !isOwner && me.role !== "admin" && me.role !== "company" ? responsePanel : null}
+
           {isOwner ? <section className="request-management"><h2><Icon name="settings"/>მოთხოვნის მართვა</h2><p className="request-management-note">{state === "open" ? "მოთხოვნა აქტიურია და კომპანიების პასუხებს იღებს." : statusText}</p>
             {offerCount === 0 && ["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" onClick={() => setEditRequest(true)}><Icon name="pencil"/>რედაქტირება</Button> : null}
             {["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" disabled={actionPending} onClick={() => action("extend")}><Icon name="calendar"/>{closed ? "ხელახლა გახსნა" : "ვადის გაგრძელება"}<span className="request-action-detail">+7 დღე</span></Button> : null}
@@ -386,11 +387,12 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           </div>
           {!isOwner && me?.role !== "admin" ? <ReportButton kind="request" targetId={r.id} /> : null}
         </aside>
+        {!isOwner && me?.role === "company" ? <div className="request-company-response">{responsePanel}</div> : null}
       </div>
 
       {sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer)) ? <div className="detail-actionbar">
-        {me ? <Button variant="primary" href={me.verified ? "#send-offer" : "/account/?tab=profile"}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "ჩემი პროფილის რედაქტირება"}</Button>
-          : <Button variant="primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}><Icon name="send"/>შედი და გაგზავნე შეთავაზება</Button>}
+        {me ? <Button variant="primary" href={me.verified ? "#send-offer" : "/account/?tab=profile"} onClick={me.verified ? () => document.getElementById("send-offer")?.focus() : undefined}><Icon name={me.verified ? "send" : "building-2"}/>{me.verified ? "შეთავაზების გაგზავნა" : "ჩემი პროფილის რედაქტირება"}</Button>
+          : <Button variant="primary" href={`/account/?next=${encodeURIComponent(`/requests/view/?id=${encodeURIComponent(r.id)}`)}`}><Icon name="send"/>შეთავაზების გაგზავნა</Button>}
       </div> : null}
       <ConfirmSheet
         id="request-confirm"

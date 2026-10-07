@@ -52,7 +52,7 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTa
             </Link>
             {o.status === "chosen" ? <span className="ma-badge ma-badge--success">არჩეულია</span> : null}
             {o.status === "declined" ? <span className="ma-badge ma-badge--neutral">არ აირჩიეს</span> : null}
-            {o.isNew && o.status === "sent" ? <span className="ma-badge ma-badge--accent">ახალი</span> : null}
+            {o.isNew && o.status === "sent" ? <span className="ma-badge ma-badge--success">ახალი</span> : null}
           </div>
           <BusinessMarks feature={o.feature} />
           {o.city ? <div className="ma-meta"><span>{o.city}</span></div> : null}

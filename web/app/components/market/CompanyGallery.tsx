@@ -12,7 +12,7 @@ export function CompanyGallery({ photos: all, name }: { photos: string[]; name: 
   // A photo that fails to load is dropped rather than shown as a broken tile.
   const [failed, setFailed] = useState<string[]>([]);
   const photos = all.filter(src => !failed.includes(src));
-  if (photos.length < 2) return null;
+  if (!photos.length) return null;
   const shown = photos.slice(0, 5);
   const extra = photos.length - shown.length;
   const open = (i: number) => { setIndex(i); dialog.current?.showModal(); };

@@ -7,16 +7,18 @@ import { CustomSelect } from "../ui/CustomSelect";
 import { ProductCard, type ProductCardData } from "./ProductCard";
 import { ListSkeleton } from "./Skeletons";
 import { toast } from "../Toasts";
-export function CompanyProducts({companyId,edit=false}:{companyId:string;edit?:boolean}) {
+export function CompanyProducts({companyId,edit=false,fallback=[]}:{companyId:string;edit?:boolean;fallback?:ProductCardData[]}) {
  const {store,ready}=useMarketStore();
  const read=store?.companyProducts;
  const load=useCallback(()=>read!(companyId),[read,companyId]);
  const resource=useBusinessResource<ProductCardData[]>(ready&&store?load:undefined,companyId);
- if(resource.error)return <p role="alert">{resource.error} <Button variant="ghost" onClick={resource.reload}>ხელახლა ცდა</Button></p>;
- if(!resource.data)return <ListSkeleton compact kind="records" label="პროდუქტები იტვირთება…"/>;
- if(edit)return <ProductsForm key={companyId} initial={resource.data} onSaved={resource.replace}/>;
- if(!resource.data.length)return null;
- return <section className="company-detail-section"><h2>პროდუქტები</h2><div className="company-product-grid">{resource.data.map((product,i)=><ProductCard key={`${i}:${product.name}`} {...product}/>)}</div></section>;
+ if(resource.error && (edit || !fallback.length))return <p role="alert">{resource.error} <Button variant="ghost" onClick={resource.reload}>ხელახლა ცდა</Button></p>;
+ if(!resource.data && (edit || !fallback.length))return <ListSkeleton compact kind="records" label="პროდუქტები იტვირთება…"/>;
+ if(edit)return <ProductsForm key={companyId} initial={resource.data || []} onSaved={resource.replace}/>;
+ const loaded = resource.data || [];
+ const products = [...loaded, ...fallback.filter(item => !loaded.some(product => product.name === item.name))];
+ if(!products.length)return null;
+ return <section className="company-detail-section"><h2>პროდუქტები და მომსახურება</h2><div className="company-product-grid">{products.map((product,i)=><ProductCard key={`${i}:${product.name}`} {...product}/>)}</div></section>;
 }
 function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(items:ProductCardData[])=>void}) {
  const {store}=useMarketStore();const [items,setItems]=useState(initial),[pending,setPending]=useState(false),[error,setError]=useState(""),[saved,setSaved]=useState(false);
