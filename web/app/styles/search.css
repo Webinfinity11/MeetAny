@@ -96,8 +96,8 @@
   padding: 0 var(--space-6);
   border: 0;
   border-radius: var(--size-999);
-  background: var(--theme-accent);
-  color: var(--ink-950);
+  background: var(--btn-accent-bg);
+  color: var(--btn-accent-text);
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   font-feature-settings: var(--ff-button);
@@ -105,7 +105,7 @@
   transition: background-color var(--motion-fast) var(--motion-ease);
 }
 .home-search-submit:hover {
-  background: var(--orange-500);
+  background: var(--btn-accent-hover);
 }
 .home-search-submit .icon {
   width: var(--size-18);

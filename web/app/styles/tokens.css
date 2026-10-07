@@ -1,6 +1,16 @@
-/* MeetAny design tokens (spec §3). The ONLY token source for pages (home included): market.css and every
-   component read these custom properties; nothing else defines colours, type, space or motion.
-   Source of truth: this file (theme knobs at the top) + site/DESIGN-SYSTEM.md. Georgian-first. */
+/* MeetAny — ერთი დიზაინ-ფაილი. საიტის ყველა ფერი, შრიფტი, ზომა, რადიუსი, ჩრდილი და მოძრაობა აქ განისაზღვრება;
+   სხვა CSS და კომპონენტები მხოლოდ ამ ცვლადებს კითხულობენ (ნედლი hex სხვაგან არ წერია).
+   წყარო: Design პანელის პროექტი „meetany“ (theme.json, memory.md) — შავ-თეთრი MVP, 2026-10-07.
+
+   როგორ შევცვალო:
+   · მთავარი ფერი / ღილაკები / ბმულები → --theme-primary (ყველა --blue-* მისგან გამოითვლება)
+   · „მოთხოვნის განთავსების“ ღილაკი → --theme-accent (ყველა --orange-* მისგან)
+   · ტექსტი, ჩარჩოები, ნაცრისფერი ფონები → --theme-ink (ყველა --ink-*)
+   · სტატუსები (ვერიფიკაცია/წარმატება/გაფრთხილება/შეცდომა) → --info-*, --success-*, --warning-*, --danger-*
+   · ღილაკის / ველის / ბარათის მომრგვალება → --btn-radius, --field-radius, --card-radius
+   · მთავრული სათაურებსა და ღილაკებზე → --theme-caps-* ("case" 1 = ჩართული, normal = გამორთული)
+   ფენები: PRIMITIVE (პალიტრა, ზომები) → SEMANTIC (როლები: --text, --action, --border ...) → COMPONENT (--btn-*, --card-* ...).
+   გვერდები SEMANTIC/COMPONENT ფენას იყენებენ. --blue-* და --orange-* ისტორიული სახელებია — ფერს თემის სახელური წყვეტს. */
 
 /* FiraGO 400/500/600/700, subset to Basic Latin + Latin-1 + Georgian (mkhedruli + mtavruli)
    + general punctuation + ₾ (≈40 KB each; built from the full files with pyftsubset).
@@ -13,17 +23,16 @@
 :root{
 
   /* PRIMITIVE LAYER — palette, exact compatibility scales, radius, elevation and motion */
-  --theme-primary:#245DDD;
-  --theme-accent:#FE8E2F;
-  --theme-ink:#172D44;
+  --theme-primary:#171717;
+  --theme-accent:#171717;
+  --theme-ink:#111111;
   --theme-surface:#FFFFFF;
   --theme-font:FiraGO;
   --theme-radius:8px;
-  --theme-caps-headings:"case" 1;
-  --theme-caps-buttons:"case" 1;
-  --theme-caps-tracking:.03em;
-  /* Mtavruli is reserved for the home hero title only (design refresh 2026-09-29). */
-  --theme-caps-hero:"case" 1;
+  --theme-caps-headings:normal;
+  --theme-caps-buttons:normal;
+  --theme-caps-tracking:0;
+  --theme-caps-hero:normal;
   --theme-icon-stroke:1.75;
   --blue-50:color-mix(in srgb,var(--theme-primary) 7%,#fff);
   --blue-100:color-mix(in srgb,var(--theme-primary) 15%,#fff);
@@ -42,11 +51,7 @@
   --orange-500:color-mix(in srgb,var(--theme-accent) 88%,#000);
   --orange-600:color-mix(in srgb,var(--theme-accent) 65%,#000);
   --orange-700:color-mix(in srgb,var(--theme-accent) 52%,#000);
-  --cyan-400:#4CCEFC;
-  --violet-500:#C734B7;
-  --coral-500:#FC5632;
-  --pink-500:#FC308C;
-  --brand-gradient:linear-gradient(120deg,#4CCEFC 0%,#2A6DFB 30%,#C734B7 55%,#FC5632 78%,#FE8E2F 100%);
+  --brand-gradient:var(--theme-primary);
   --ink-950:color-mix(in srgb,var(--theme-ink) 80%,#000);
   --ink-900:var(--theme-ink);
   --ink-800:color-mix(in srgb,var(--theme-ink) 90%,#fff);
@@ -60,18 +65,23 @@
   --ink-100:color-mix(in srgb,var(--theme-ink) 7%,#fff);
   --ink-50:color-mix(in srgb,var(--theme-ink) 3.5%,#fff);
   --white:var(--theme-surface);
-  --success-50:#E8F6EF;
-  --success-100:#CDEBDC;
-  --success-600:#11805A;
-  --success-700:#0B6647;
-  --warning-50:#FFF6E5;
-  --warning-100:#FDE7BF;
-  --warning-600:#B25E09;
-  --warning-700:#8A4A06;
-  --danger-50:#FDECEC;
-  --danger-100:#F9CFCF;
-  --danger-600:#D12C2C;
-  --danger-700:#A81E1E;
+  /* Status colours — the only colour in the UI besides photos. */
+  --info-50:#EFF6FF;
+  --info-100:#DBEAFE;
+  --info-600:#2563EB;
+  --info-700:#1D4ED8;
+  --success-50:#ECFDF3;
+  --success-100:#D1FAE5;
+  --success-600:#16A34A;
+  --success-700:#15803D;
+  --warning-50:#FFFBEB;
+  --warning-100:#FEF3C7;
+  --warning-600:#D97706;
+  --warning-700:#B45309;
+  --danger-50:#FEF2F2;
+  --danger-100:#FEE2E2;
+  --danger-600:#DC2626;
+  --danger-700:#B91C1C;
   --font-sans:var(--theme-font),"Noto Sans Georgian",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --font-num:var(--theme-font),system-ui,sans-serif;
   --fs-display:40px;
@@ -206,17 +216,17 @@
   /* Exact dimensions and colors retained from the established layouts. */
   --size-320:320px;
   --size-neg-80:-80px;
-  --color--dfe5ed:#dfe5ed;
-  --color--1c365509:#1c365509;
-  --color--bdcce0:#bdcce0;
-  --color--eff3fa:#eff3fa;
-  --color--edf0f5:#edf0f5;
-  --color--e7ebf1:#e7ebf1;
-  --color--f7f8fa:#f7f8fa;
-  --color--f0f4fc:#f0f4fc;
-  --color--e6ecf7:#e6ecf7;
-  --color--365681:#365681;
-  --color--ffe2c5:#ffe2c5;
+  --color--dfe5ed:var(--ink-200);
+  --color--1c365509:color-mix(in srgb,var(--ink-900) 4%,transparent);
+  --color--bdcce0:var(--ink-300);
+  --color--eff3fa:var(--ink-50);
+  --color--edf0f5:var(--ink-100);
+  --color--e7ebf1:var(--ink-150);
+  --color--f7f8fa:var(--ink-50);
+  --color--f0f4fc:var(--ink-50);
+  --color--e6ecf7:var(--ink-100);
+  --color--365681:var(--ink-700);
+  --color--ffe2c5:var(--ink-150);
   --size-34:34px;
   --color-rgba-0-0-0-12:rgba(0, 0, 0, .12);
   --size-640:640px;
@@ -236,9 +246,9 @@
   --color-rgba-255-255-255-94:rgba(255,255,255,.94);
   --color-rgba-0-0-0-18:rgba(0,0,0,.18);
   --size-1p5:1.5px;
-  --color--172b4d26:#172b4d26;
+  --color--172b4d26:color-mix(in srgb,var(--ink-900) 15%,transparent);
   --size-220:220px;
-  --color--F6F7FA:#F6F7FA;
+  --color--F6F7FA:var(--ink-50);
   --size-104:104px;
   --size-440:440px;
   --size-116:116px;
@@ -249,18 +259,18 @@
   --size-148:148px;
   --size-128:128px;
   --size-132:132px;
-  --color--EEF3FB:#EEF3FB;
+  --color--EEF3FB:var(--ink-50);
   --size-196:196px;
   --size-neg-42:-42px;
   --size-neg-18:-18px;
   --size-neg-65:-65px;
   --size-142:142px;
-  --color--dfe7f2:#dfe7f2;
-  --color-rgb-29-51-71-5:rgb(29 51 71 / 5%);
+  --color--dfe7f2:var(--ink-200);
+  --color-rgb-29-51-71-5:color-mix(in srgb,var(--ink-900) 5%,transparent);
   --size-11:11px;
   --size-19:19px;
-  --color--fff1e3:#fff1e3;
-  --color--945015:#945015;
+  --color--fff1e3:var(--ink-100);
+  --color--945015:var(--ink-800);
   --size-976:976px;
   --size-212:212px;
   --size-176:176px;
@@ -285,34 +295,34 @@
   --size-164:164px;
   --size-188:188px;
   --size-23:23px;
-  --color--f1f4f9:#f1f4f9;
-  --color--172b4d0d:#172b4d0d;
+  --color--f1f4f9:var(--ink-100);
+  --color--172b4d0d:color-mix(in srgb,var(--ink-900) 5%,transparent);
   --size-152:152px;
-  --color--d4dce8:#d4dce8;
-  --color--172b4d0b:#172b4d0b;
-  --color--172b4d05:#172b4d05;
-  --color--dce4f1:#dce4f1;
-  --color--d4deee:#d4deee;
-  --color--e5eaf2:#e5eaf2;
-  --color--10255812:#10255812;
-  --color--10255808:#10255808;
+  --color--d4dce8:var(--ink-200);
+  --color--172b4d0b:color-mix(in srgb,var(--ink-900) 4%,transparent);
+  --color--172b4d05:color-mix(in srgb,var(--ink-900) 2%,transparent);
+  --color--dce4f1:var(--ink-200);
+  --color--d4deee:var(--ink-200);
+  --color--e5eaf2:var(--ink-150);
+  --color--10255812:color-mix(in srgb,var(--ink-900) 7%,transparent);
+  --color--10255808:color-mix(in srgb,var(--ink-900) 3%,transparent);
   --size-neg-12:-12px;
-  --color--10255822:#10255822;
-  --color--1025581a:#1025581a;
+  --color--10255822:color-mix(in srgb,var(--ink-900) 13%,transparent);
+  --color--1025581a:color-mix(in srgb,var(--ink-900) 10%,transparent);
   --size-50:50px;
   --size-neg-8:-8px;
   --size-neg-7:-7px;
   --color--ffffff29:#ffffff29;
   --size-84:84px;
   --size-74:74px;
-  --color--d4def6:#d4def6;
-  --color--c5d3f5:#c5d3f5;
+  --color--d4def6:var(--ink-200);
+  --color--c5d3f5:var(--ink-300);
   --size-124:124px;
   --size-neg-28:-28px;
   --color-rgba-0-0-0-10:rgba(0, 0, 0, .10);
   --size-neg-16:-16px;
   --size-70:70px;
-  --color--e0e8fa:#e0e8fa;
+  --color--e0e8fa:var(--ink-150);
   --color--ffffff80:#ffffff80;
   --color--ffffff14:#ffffff14;
   --size-800:800px;
@@ -341,7 +351,7 @@
   --size-232:232px;
   --size-260:260px;
   --size-neg-6:-6px;
-  --color--1b2330:#1b2330;
+  --color--1b2330:var(--ink-900);
   --color-rgba-0-0-0-22:rgba(0, 0, 0, .22);
 
   --size-16:16px;
@@ -392,8 +402,6 @@
   --tier-top-border:var(--blue-200);
   --tier-top-text:var(--blue-700);
   --tier-top-badge-bg:var(--blue-100);
-  --info-50:var(--blue-50);
-  --info-700:var(--blue-700);
   --bg:var(--white);
   --bg-subtle:var(--ink-50);
   --bg-muted:var(--ink-100);
@@ -429,20 +437,21 @@
   --status-error-text:var(--danger-700);
 
   /* COMPONENT LAYER — shared component controls; legacy names remain supported */
-  --avatar-bg:var(--blue-100);
-  --avatar-text:var(--blue-700);
-  --avatar-1-bg:var(--blue-100);
-  --avatar-1-text:var(--blue-800);
-  --avatar-2-bg:#e2efee;
-  --avatar-2-text:#0b5852;
-  --avatar-3-bg:#e8efe7;
-  --avatar-3-text:#2f5e2c;
-  --avatar-4-bg:#f6eae1;
-  --avatar-4-text:#873e07;
-  --avatar-5-bg:#f0e7f1;
-  --avatar-5-text:#5e2c69;
-  --avatar-6-bg:#f6e7ea;
-  --avatar-6-text:#87273b;
+  /* Avatars: black square with white initials (design: CP / SF / BL). */
+  --avatar-bg:var(--ink-900);
+  --avatar-text:var(--white);
+  --avatar-1-bg:var(--avatar-bg);
+  --avatar-1-text:var(--avatar-text);
+  --avatar-2-bg:var(--avatar-bg);
+  --avatar-2-text:var(--avatar-text);
+  --avatar-3-bg:var(--avatar-bg);
+  --avatar-3-text:var(--avatar-text);
+  --avatar-4-bg:var(--avatar-bg);
+  --avatar-4-text:var(--avatar-text);
+  --avatar-5-bg:var(--avatar-bg);
+  --avatar-5-text:var(--avatar-text);
+  --avatar-6-bg:var(--avatar-bg);
+  --avatar-6-text:var(--avatar-text);
   --card-pad:16px;
   --field-error-ring:0 0 0 2px var(--white),0 0 0 4px var(--danger-600);
   --badge-accent-ring:0 0 0 3px var(--orange-50);
@@ -459,24 +468,23 @@
   --btn-primary-text:var(--white);
   --btn-secondary-bg:var(--white);
   --btn-accent-bg:var(--orange-400);
-  --btn-accent-hover:var(--orange-500);
-  --btn-accent-text:var(--ink-950);
+  --btn-accent-hover:var(--ink-800);
+  --btn-accent-text:var(--white);
   --btn-tint-bg:var(--blue-50);
   --btn-tint-hover:var(--blue-100);
   --btn-tint-text:var(--blue-700);
-  /* Surface layer (2026-09-30): Airbnb-style blended with the MeetAny brand. White page, 12px cards with
-     #DDD borders, shadows only on floating elements (search, sticky cards, menus). */
+  /* Surface layer: white page, 12px cards with hairline borders, shadows only on floating elements. */
   --shadow-float:0 6px 16px rgba(0,0,0,.12);
   --shadow-search:0 3px 12px rgba(0,0,0,.10);
-  --accent-soft:#FFF4DA;
-  --accent-text:color-mix(in srgb,var(--theme-accent) 55%,#000);
-  --accent-line:#F6DFA4;
-  --canvas:#FFFFFF;
+  --accent-soft:var(--ink-100);
+  --accent-text:var(--ink-900);
+  --accent-line:var(--ink-200);
+  --canvas:var(--theme-surface);
   --card-radius:12px;
-  --card-border:#DDDDDD;
-  --card-shadow:none;
-  --card-hover-border:#DDDDDD;
-  --card-hover-shadow:0 6px 16px rgba(0,0,0,.12);
+  --card-border:var(--ink-200);
+  --card-shadow:0 1px 2px 0 rgb(0 0 0 / .04),0 1px 3px 0 rgb(0 0 0 / .06);
+  --card-hover-border:var(--ink-300);
+  --card-hover-shadow:0 10px 30px -10px rgb(0 0 0 / .22);
   --hero-bg:var(--white);
   --hero-text:var(--text);
   --hero-text-2:var(--text-2);

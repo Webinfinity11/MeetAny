@@ -31,8 +31,8 @@
   margin-top: var(--space-8);
 }
 .how-hero__paths .ma-btn { display: inline-flex; align-items: center; gap: var(--space-2); }
-.how-hero__primary { --btn-bg: var(--theme-accent); --btn-fg: var(--text); }
-.how-hero__primary:hover { --btn-bg: color-mix(in srgb, var(--theme-accent) 88%, var(--color-legacy-ink)); }
+.how-hero__primary { --btn-bg: var(--btn-accent-bg); --btn-fg: var(--btn-accent-text); }
+.how-hero__primary:hover { --btn-bg: var(--btn-accent-hover); }
 .how-hero__secondary { --btn-bg: transparent; --btn-fg: var(--white); box-shadow: inset 0 0 0 var(--size-1p5) var(--color--ffffff80); }
 .how-hero__secondary:hover { --btn-bg: var(--color--ffffff14); }
 
