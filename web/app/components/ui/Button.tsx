@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode, Ref } from "react";
 
 type Common = {
-  variant?: "base" | "primary" | "secondary" | "ghost" | "danger" | "danger-quiet" | "outline" | "accent";
+  variant?: "base" | "primary" | "secondary" | "ghost" | "danger" | "danger-quiet" | "outline" | "accent" | "tint";
   size?: "sm" | "md" | "lg";
   icon?: ReactNode;
   loading?: boolean;

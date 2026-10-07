@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "./ui/Button";
+import { Logo } from "./Logo";
 import { Avatar, avatarInitials } from "./ui/Avatar";
 
 
@@ -20,9 +21,9 @@ function readRoleHint(): string {
   try { return localStorage.getItem("meetany.headerRole") || "guest"; } catch { return "guest"; }
 }
 
+// Design: black circle with initials; an uploaded company logo still shows when one exists (Avatar falls back on load errors).
 function HeaderAvatar({ name, logoUrl }: { name: string; logoUrl?: string | null }) {
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
-  return logoUrl && logoUrl !== failedUrl ? <Avatar name={name} logoUrl={logoUrl} size={40} className="ma-header__avatar" onErrorCapture={() => setFailedUrl(logoUrl)} />
+  return logoUrl ? <Avatar name={name} logoUrl={logoUrl} size={40} className="ma-header__avatar" />
     : <span className="ma-avatar ma-header__avatar" aria-hidden="true" title={name}>{avatarInitials(name)}</span>;
 }
 
@@ -105,16 +106,16 @@ export function Header() {
     finally { setPending(false); }
   }
   const identity = me ? <div className="ma-menu__identity" role="presentation"><strong>{me.company || me.name}</strong>{me.company && me.company !== me.name ? <span>{me.name}</span> : null}</div> : null;
-  const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><img className="ma-header__symbol" src="/assets/meetany-symbol-transparent.png" alt="" width={1496} height={1051}/><img className="ma-header__wordmark" src="/assets/meetany-wordmark.png" alt="MeetAny" width={683} height={171}/></Link>;
-  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["companies", "კომპანიები", "/companies/"], ["requests", "მოთხოვნები", "/requests/"], ["ideas", "ბიზნესიდეები", "/ideas/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
+  const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><Logo size={24}/></Link>;
+  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "შესაძლებლობები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
   const isCompany = role === "company";
-  const add = <Button variant="accent" className="ma-header__cta" aria-label={isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის დამატება"} href={isCompany ? `/requests/?category=${encodeURIComponent(groupOf[me?.industry || ""] || me?.industry || "")}` : "/requests/new/"}><Icon name={isCompany ? "search" : "plus"}/><span className="ma-header__cta-label">{isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის დამატება"}</span><span className="ma-header__cta-short" aria-hidden="true">{isCompany ? "მოთხოვნები" : "დამატება"}</span></Button>;
+  const add = <Button variant="primary" className="ma-header__cta" aria-label={isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის განთავსება"} href={isCompany ? `/requests/?category=${encodeURIComponent(groupOf[me?.industry || ""] || me?.industry || "")}` : "/requests/new/"}><Icon name={isCompany ? "search" : "plus"}/><span className="ma-header__cta-label">{isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის განთავსება"}</span><span className="ma-header__cta-short" aria-hidden="true">{isCompany ? "მოთხოვნები" : "მოთხოვნა"}</span></Button>;
   return <>
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
         {role && role !== "guest" && !isAdmin ? <div className="ma-header__updates">{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className="ma-header__slot" aria-hidden="true" /><span className="ma-header__slot" aria-hidden="true" /></>}</div> : null}
-        {role === "guest" ? <Button variant="ghost" className="ma-header__login" href="/account/">შესვლა</Button> : null}{!isAdmin ? add : null}
+        {role === "guest" ? <Button variant="secondary" className="ma-header__login" href="/account/">შესვლა</Button> : null}{!isAdmin ? add : null}
         {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
           if (e.key === "Escape") {e.preventDefault(); e.stopPropagation(); setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
@@ -126,7 +127,7 @@ export function Header() {
             items[next]?.focus();
           }
         }}>
-          <button className={`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`} title={accountLabel} aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}>{isAdmin ? <><Icon name="shield-check"/><span className="ma-menu__label">{accountLabel}</span><Icon name="chevron-down"/></> : <HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/>}</button>
+          <button className={`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`} title={accountLabel} aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}>{isAdmin ? <><Icon name="shield-check"/><span className="ma-menu__label">{accountLabel}</span><Icon name="chevron-down"/></> : <><HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/><span className="ma-menu__label">{me.company || me.name}</span></>}</button>
           <div className="ma-menu__list" id="ma-account-menu" role="menu" hidden={!accountOpen}>
             {identity}
             {desktopLinks.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}

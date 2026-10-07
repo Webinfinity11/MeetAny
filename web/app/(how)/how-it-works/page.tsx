@@ -121,7 +121,7 @@ export default function HowItWorksPage() {
     <section className="home-join home-wrap how-join"><div className="home-join__panel">
       <div><h2>მზად ხარ დასაწყებად?</h2><p>აღწერე, რა გჭირდება, ან დაარეგისტრირე კომპანია და მიიღე მოთხოვნები.</p></div>
       <div className="how-join__actions">
-        <Button variant="base" size="lg" className="home-join__cta" href="/requests/new/">მოთხოვნის დამატება<Icon name="arrow-right" /></Button>
+        <Button variant="base" size="lg" className="home-join__cta" href="/requests/new/">მოთხოვნის დამატება</Button>
         <Button variant="base" size="lg" className="how-join__ghost" href="/account/?tab=register&role=company">კომპანიის რეგისტრაცია</Button>
       </div>
     </div></section>

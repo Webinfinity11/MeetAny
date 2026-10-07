@@ -21,7 +21,8 @@
   box-shadow: var(--focus-ring);
 }
 .request-card,
-.company-card {
+.company-card,
+.catalog-skeleton__card {
   position: relative;
   isolation: isolate;
   min-width: 0;
@@ -29,10 +30,11 @@
   border-radius: var(--card-radius);
   background: var(--white);
   box-shadow: var(--card-shadow);
-  transition: border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 .request-card:hover,
-.company-card:hover {
+.company-card:hover,
+.catalog-skeleton__card:hover {
   border-color: var(--card-hover-border);
   box-shadow: var(--card-hover-shadow);
 }
@@ -68,14 +70,9 @@
   grid-template-columns: var(--size-64) minmax(0, 1fr);
   gap: var(--size-20);
   padding: var(--size-24);
-  border: var(--size-1) solid var(--color--dfe5ed);
-  border-radius: var(--size-14);
-  box-shadow: none;
 }
 .request-card:hover {
   transform: none;
-  box-shadow: 0 var(--size-4) var(--size-16) var(--color--1c365509);
-  border-color: var(--color--bdcce0);
 }
 .request-card:hover .card-main-link { color: var(--action); }
 .request-card__visual {
@@ -355,7 +352,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .request-card,
-  .company-card { transition: none; }
+  .company-card,
+  .catalog-skeleton__card { transition: none; }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {

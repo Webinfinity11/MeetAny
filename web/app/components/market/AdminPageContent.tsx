@@ -379,7 +379,7 @@ export function AdminPageContent() {
       </div> : null}
       {admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">
         {cursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</Button> : null}
-        {admin.page.hasMore && admin.page.nextCursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი<Icon name="arrow-right" /></Button> : null}
+        {admin.page.hasMore && admin.page.nextCursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი</Button> : null}
       </nav> : null}
 
       </section>}

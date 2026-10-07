@@ -464,15 +464,19 @@
   --btn-radius:8px;
   --btn-fs:var(--fs-button);
   --btn-weight:var(--fw-semibold);
-  --btn-primary-bg:var(--action);
+  --btn-primary-bg:var(--ink-950);
+  --btn-primary-hover:var(--ink-800);
+  --btn-primary-press:var(--ink-900);
+  --badge-py:2px;
+  --badge-px:10px;
   --btn-primary-text:var(--white);
   --btn-secondary-bg:var(--white);
-  --btn-accent-bg:var(--orange-400);
-  --btn-accent-hover:var(--ink-800);
+  --btn-accent-bg:var(--btn-primary-bg);
+  --btn-accent-hover:var(--btn-primary-hover);
   --btn-accent-text:var(--white);
-  --btn-tint-bg:var(--blue-50);
-  --btn-tint-hover:var(--blue-100);
-  --btn-tint-text:var(--blue-700);
+  --btn-tint-bg:var(--ink-100);
+  --btn-tint-hover:var(--ink-150);
+  --btn-tint-text:var(--ink-900);
   /* Surface layer: white page, 12px cards with hairline borders, shadows only on floating elements. */
   --shadow-float:0 6px 16px rgba(0,0,0,.12);
   --shadow-search:0 3px 12px rgba(0,0,0,.10);
@@ -490,9 +494,9 @@
   --hero-text-2:var(--text-2);
   --glass:var(--white);
   --glass-border:var(--border);
-  --btn-secondary-text:var(--text);
+  --btn-secondary-text:var(--ink-950);
   --btn-ghost-bg:transparent;
-  --btn-ghost-text:var(--text);
+  --btn-ghost-text:var(--ink-900);
   --btn-danger-bg:var(--danger-600);
   --btn-danger-text:var(--white);
   --row-pad:var(--space-4);
