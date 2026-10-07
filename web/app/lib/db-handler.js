@@ -30,6 +30,9 @@ const RPCS = new Set([
   'admin_search_offers', 'admin_delete_offer', 'admin_delete_request_v2', 'admin_list_audit_v2',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
   'admin_contact_events', 'admin_contact_stats', 'admin_message_stats', 'admin_list_conversations', 'admin_conversation_messages',
+  // New flows (migrations 20261007-*): offer terms and comparison, deals, deal contact, matching, onboarding.
+  'set_offer_terms', 'compare_offers', 'select_offer_deal', 'get_deal', 'advance_deal', 'propose_deal_terms', 'confirm_deal_terms', 'rate_deal',
+  'get_deal_contact', 'set_matching_categories', 'list_matching', 'set_onboarding_details', 'admin_set_document_status',
 ]);
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
@@ -42,6 +45,8 @@ const PUBLIC_WRITES = new Set([
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
   // Resolving a report may hide a request, delete an offer or block a company; filing one changes nothing public.
   'admin_resolve_report',
+  // Selecting an offer closes the request publicly; onboarding changes public company fields.
+  'select_offer_deal', 'set_onboarding_details', 'set_matching_categories',
 ]);
 
 const MAX_BODY = 64 * 1024;

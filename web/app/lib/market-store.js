@@ -25,6 +25,10 @@ export function createMarketStore({initial=null,background=true}={}){
    MA622:'დაამატე მაქსიმუმ 12 პროდუქტი: სახელი 2–80 სიმბოლო, აღწერა 200-მდე და ფოტო შენი გალერეიდან.',
    MA621:'მიუთითე მინიმუმ ერთი რეგიონი და არხი. გადაამოწმე ველების ზომა და მნიშვნელობები.',
   MA601:'აირჩიე 1–5 ქულა და დაწერე 20–1500 სიმბოლო.',MA602:'შეფასება შეგიძლია შენ მიერ არჩეულ მომწოდებელზე.',MA603:'მიუთითე მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლე სია.',
+  // New flows (CONTRACT.md 2026-10-07): deals, comparison, contact, matching, onboarding.
+  MA901:'ეს ჩანაწერი ვერ მოიძებნა ან შენთვის მიუწვდომელია.',MA902:'გადაამოწმე ველები: ზომა, კატეგორია ან სტატუსი არასწორია.',
+  MA903:'ეს მოქმედება ამ ეტაპზე დაუშვებელია.',MA904:'მონაცემები განახლდა. გვერდი ხელახლა წაიკითხე და სცადე თავიდან.',
+  MA905:'პირობებს ჯერ ორივე მხარე უნდა ადასტურებდეს.',MA906:'დასრულების დადასტურება მხოლოდ მყიდველს შეუძლია.',
   MA701:'აირჩიე მიზეზი. „სხვა“ მიზეზისთვის დაწერე 3–500 სიმბოლო.',MA702:'ეს გვერდი ვეღარ მოიძებნა ან მისი შეტყობინება შეუძლებელია.',MA703:'საკუთარ გვერდზე შეტყობინებას ვერ გააგზავნი.',
   MA704:'ამაზე უკვე შეგვატყობინე. შეტყობინებას განვიხილავთ.',MA705:'დღეში შეიძლება 10 შეტყობინება. სცადე ხვალ.',MA706:'საჩივარი უკვე დამუშავებულია. განაახლე სია.',
   MA001:'ამისთვის შედი ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისთვისაა.',
@@ -907,6 +911,10 @@ export function createMarketStore({initial=null,background=true}={}){
   refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
+  // Generic entry points for the new flows (deals, comparison, matching, onboarding): callRpc reads,
+  // mutateRpc writes and then refreshes the public snapshot. Errors carry MAxxx userMessage texts.
+  callRpc:(name,args={})=>rpc(name,args),
+  mutateRpc:(name,args={})=>mutate(name,args),
   seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isSessionReady:()=>sessionReady,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,
   // A signed-in session exists even when its profile has not loaded yet (e.g. a failed first refresh).
   hasSession:()=>!!authUser,
