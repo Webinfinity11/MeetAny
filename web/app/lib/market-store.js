@@ -239,6 +239,7 @@ export function createMarketStore({initial=null,background=true}={}){
   quantity:r.quantity==null?null:Number(r.quantity),unit:r.quantity!=null&&Object.hasOwn(units,r.unit)?r.unit:null,neededBy:r.needed_by?String(r.needed_by).slice(0,10):null,status:r.status,hidden:!!r.hidden,hiddenReason:r.hidden&&r.hidden_reason||null,chosenOfferId:r.chosen_offer_id||null,createdAt:r.created_at,expiresAt:r.expires_at});
  const mapOffer=o=>({id:o.id,requestId:o.request_id,companyUserId:o.company_id,body:o.body,price:o.price==null?null:Number(o.price),
   priceType:Object.hasOwn(priceTypes,o.price_type)?o.price_type:(o.price==null?'negotiable':'total'),vatIncluded:!!o.vat_included,
+  paymentTerms:o.payment_terms||null,validUntil:o.valid_until||null,commercialTerms:Array.isArray(o.commercial_terms)?o.commercial_terms:[],
   deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
  const compareCompanies=(a,b)=>Number(b.verified)-Number(a.verified)||Date.parse(b.createdAt)-Date.parse(a.createdAt)||a.id.localeCompare(b.id);
