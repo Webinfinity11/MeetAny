@@ -238,7 +238,9 @@ export function createMarketStore({initial=null,background=true}={}){
   deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
  const compareCompanies=(a,b)=>Number(b.verified)-Number(a.verified)||Date.parse(b.createdAt)-Date.parse(a.createdAt)||a.id.localeCompare(b.id);
- const PUBLIC_PROFILE='id,phone,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url,gallery';
+ // Contact (phone) is no longer a public column (migration 20261007-contact-visibility): it is read through
+ // contact_for_request / get_deal_contact only after an offer is selected.
+ const PUBLIC_PROFILE='id,role,company,industry,verified,verified_at,city,about,offers,seeks,service_cities,created_at,address,lat,lng,logo_url,gallery';
 
 
  // A render-local public store never starts auth/network work. The browser singleton

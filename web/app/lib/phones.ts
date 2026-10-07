@@ -2,18 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-// Public phone projection only. Never request email or select=* for profiles.
+// Contact rule (owner, 2026-10-07; migration 20261007-contact-visibility): profiles.phone is no longer a
+// public column, so there is nothing to fetch here. The contact of a chosen company is read through the
+// contact_for_request / get_deal_contact RPCs by the parties of a selected offer (design step 6).
 export async function fetchPhones(ids: string[]): Promise<Record<string, string>> {
-  const unique = [...new Set(ids)].filter(Boolean);
-  if (!unique.length) return {};
-  try {
-    const res = await fetch(`/api/db/profiles?select=id,phone&id=in.(${unique.map(encodeURIComponent).join(",")})`);
-    if (!res.ok) return {};
-    const rows: { id: string; phone: string }[] = await res.json();
-    return Object.fromEntries(rows.map((r) => [r.id, r.phone]));
-  } catch {
-    return {};
-  }
+  void ids;
+  return {};
 }
 
 export async function fetchPhone(id: string): Promise<string | null> {
