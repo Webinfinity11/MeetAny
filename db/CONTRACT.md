@@ -708,3 +708,154 @@ Distribution v1 covers profile, public block, brand search and catalog filters. 
 წარმოების Neon Auth-ის სანდო დომენებს ოფიციალური branch API-ით დაემატა `https://www.meetany.ge` და `https://meetany.ge` (`auth_provider: better_auth`): ორივე დამატება 201-ით დასრულდა და GET-ით გადამოწმდა. ძველი დომენისა და არსებული ადგილობრივი მისამართების დაშვება შენარჩუნდა. ეს აუცილებელი იყო: CORS OPTIONS მოთხოვნა 204-ს აბრუნებდა, მაგრამ ახალი დომენიდან რეალური შესვლის POST ჯერ კიდევ 403-ით იბლოკებოდა. მხოლოდ CORS-ის შემოწმება შესვლის წარმატებას არ ადასტურებს.
 
 ახალი frontend დომენის დამატებისას შეამოწმეთ [Neon Auth trusted domains](https://api-docs.neon.tech/reference/listbranchneonauthtrusteddomains), შემდეგ რეალური ბრაუზერიდან შესვლა და სესიის შენარჩუნება. დომენის გადასვლისთვის მომხმარებლების, პაროლების, ბაზისა და Blob ფოტოების შეცვლა საჭირო არ არის.
+
+## 2026-10-07 — ახალი ფლოუების პროექტი (არ არის გამოყენებული production-ზე)
+
+მიგრაციების რიგი: `20261007-offer-terms.sql` → `20261007-deals.sql` →
+`20261007-contact-visibility.sql` → `20261007-matching.sql` → `20261007-onboarding.sql`.
+ეს დამატება აღწერს მომავალ კონტრაქტს; ზემოთ აღწერილი საჯარო ტელეფონი იცვლება მხოლოდ
+contact-visibility-ის გამოყენებისას. `schema.sql` შეგნებულად არ შეცვლილა.
+გადაწყვეტილებები და ჩართვის წინაპირობები: [DEALS-MIGRATION.md](DEALS-MIGRATION.md).
+
+ყველა ქვემოთ ჩამოთვლილი RPC არის `security definer set search_path=''`, მხოლოდ
+`authenticated` როლისთვის. ავტორი მოწმდება `require_user()`-ით; სტუმარს EXECUTE არ აქვს,
+დაბლოკილს ებრუნება `MA002`. ადმინისტრატორის წაკითხვა არ ნიშნავს მხარის სახელით მოქმედებას.
+ახალი RPC-ები ჯერ არ არის HTTP allowlist-ში და UI არ იყენებს მათ.
+
+| ეკრანი | RPC და ზუსტი არგუმენტები | შედეგი / წვდომა |
+|---|---|---|
+| შეთავაზების ფორმა | `set_offer_terms(p_offer_id uuid, p_payment_terms text, p_valid_until date, p_commercial_terms text[], p_expected_updated_at timestamptz)` | `public.offers`; მხოლოდ ავტორი, ღია მოთხოვნა; ვერსია სავალდებულოა |
+| compare-offers | `compare_offers(p_request_id uuid)` | JSON მასივი; მხოლოდ მოთხოვნის მფლობელი; `total_gel`, `best_price`, `fastest`, კომპანიის სახელი/ქალაქი/verified და offer-ის ველები |
+| deal-selected | `select_offer_deal(p_offer_id uuid, p_expected_updated_at timestamptz default null)` | JSON deal; მხოლოდ მოთხოვნის მფლობელი; არსებული `choose_offer` ატომურად ირჩევს გამარჯვებულს |
+| DealShell / DealStepper | `get_deal(p_deal_id uuid)` | JSON deal + `events`; მხარეები და ადმინი |
+| deal-discuss / progress / complete | `advance_deal(p_deal_id uuid, p_stage text, p_expected_revision integer)` | JSON deal; ქვემოთ მოცემული გადასვლები |
+| deal-terms | `propose_deal_terms(p_deal_id uuid, p_expected_revision integer, p_total_price numeric, p_quantity numeric, p_unit text, p_delivery_days integer, p_delivery_date date, p_delivery_place text, p_payment_terms text, p_includes text[])` | JSON deal; ორივე მხარეს შეუძლია; წინადადება ორივე დადასტურებას აუქმებს |
+| deal-terms | `confirm_deal_terms(p_deal_id uuid, p_expected_revision integer)` | JSON deal; ადასტურებს მხოლოდ გამომძახებლის მხარეს |
+| deal-complete | `rate_deal(p_deal_id uuid, p_rating integer, p_review text, p_expected_revision integer)` | JSON deal; დასრულების შემდეგ მხოლოდ მყიდველი, ერთხელ; შეფასება 1–5, ტექსტი ≤2000 |
+| SupplierContact | `get_deal_contact(p_deal_id uuid)` | JSON მასივი: `id,name,company,phone,email`; მხარე იღებს მხოლოდ პარტნიორს, ადმინი ორივეს |
+| onboard-provide / need | `set_matching_categories(p_provide text[], p_need text[])` | JSON `{provide,need}`; მხოლოდ კომპანია; არსებული taxonomy-ის მაქს. 34 გასაღები, შენახვისას დუბლიკატები იშლება |
+| matching | `list_matching(p_request_id uuid default null, p_city text default null, p_limit integer default 25, p_offset integer default 0)` | JSON მასივი; request_id-ის გარეშე დამტკიცებული კომპანიისთვის მოთხოვნები; ID-ით მხოლოდ მოთხოვნის მფლობელისთვის მომწოდებლები; მაქს. 100, offset ≤10000 |
+| onboard-type / details / profile / review | `set_onboarding_details(p_account_intent text, p_employee_band text, p_founded_year integer, p_markets text[], p_languages text[], p_legal_name text, p_registration_code text, p_legal_form text, p_contact_position text, p_website text, p_business_tags text[], p_certificates text[])` | `public.profiles`; მხოლოდ საკუთარი კომპანია; სრული ჩანაცვლება, არა partial patch |
+| onboard-verify / ადმინისტრატორი | `admin_set_document_status(p_profile_id uuid, p_status text)` | text; მხოლოდ `require_admin()`, მოქმედება business_audit-ში |
+
+### შეთავაზებები და შედარება
+
+`offers.price numeric(12,2)`, `price_type`, `delivery_days`, `vat_included`,
+`delivery_included` უკვე არსებობს და მეორედ არ ემატება. ვალუტა GEL-ია.
+ახალია `payment_terms text` (1–500 ან null), `valid_until date` (სასრული ან null),
+`commercial_terms text[]` (არსებული `valid_items`: მაქს. 8, თითო 1–120 სიმბოლო).
+არსებულ შეთავაზებებს ახალი პირობები ავტომატურად არ ენიჭება.
+
+შედარება ადგენს მთლიან თანხას: `total` პირდაპირ, `unit × request.quantity`, ხოლო
+`negotiable` ან უცნობი რაოდენობა → null. ნიშნები სერვერზე ითვლება: თანაბარი მინიმუმის
+ყველა შეთავაზება იღებს ნიშანს; ვადაგასული და declined ვერ იმარჯვებს. დღგ/მიწოდების
+ფასს სერვერი არ ვარაუდობს: ფასი არის ციტირებული თანხა, შესაბამისი ჩიპები ცალკე ჩანს.
+მფლობელი ხედავს ვადაგასულ შეთავაზებასაც, მაგრამ ახალი selection RPC ვერ ირჩევს მას.
+
+### Deal-ის მდგომარეობა და კონკურენტული განახლებები
+
+`meetany_private.deals` ინახავს request/offer/buyer/supplier კავშირებს,
+ეტაპების ექვს თარიღს, integer `revision`-ს, შეთანხმებულ მთლიან GEL ფასს,
+რაოდენობას/ერთეულს, მიწოდების დღეებს/თარიღს/ადგილს, გადახდას, `includes`-ს,
+ორ დადასტურებასა და ერთჯერად შეფასებას. `complete_at` მყიდველის დადასტურების დროა.
+FK-ები წაშლას ზღუდავს, რათა გარიგების ისტორია არ დაიკარგოს. ერთ მოთხოვნაზე მხოლოდ ერთი deal.
+
+- `selected → discuss`: რომელიმე მხარე.
+- `discuss → terms`: მხოლოდ ვალიდური პირობების შეთავაზებით.
+- `terms → terms`: ახალი პირობები ორივე დადასტურებას ანულებს.
+- `terms → progress`: ორივე მხარის დადასტურების შემდეგ, რომელიმე მხარე.
+- `progress → complete`: მხოლოდ მყიდველი.
+- `selected/discuss/terms → cancelled`: რომელიმე მხარე. progress-ის გაუქმება ამ პროექტში არ არსებობს.
+
+პირობებისთვის სავალდებულოა დადებითი ფასი/რაოდენობა, არსებული ერთეულის გასაღები,
+0–365 მიწოდების დღე, ადგილი და გადახდა; ზუსტი მიწოდების თარიღი არასავალდებულოა.
+ყველა მუტაცია deal-ის მწკრივს კეტავს და მოითხოვს მიმდინარე revision-ს.
+დადასტურებაც ზრდის revision-ს: მეორე მხარემ ჯერ განახლებული deal უნდა წაიკითხოს.
+პირობების შეთავაზება თავისთავად არცერთი მხარის თანხმობა არ არის.
+
+არჩევა request-ის საკეტს იყენებს, ისევე როგორც `choose_offer`. ერთი და იმავე აქტიური
+არჩევის გამეორება აბრუნებს იმავე deal-ს. ძველი chosen მოთხოვნა კონვერტირდება მხოლოდ
+მფლობელის მიერ იმავე offer ID-ის გადაცემით; ავტომატური backfill არ ხდება.
+ძველი `choose_offer` უცვლელია და თავისით deal-ს არ ქმნის. cancelled არ ხსნის მოთხოვნას
+და არ აბრუნებს declined შეთავაზებებს. არჩევის/დასრულების შემდეგ ხელახალი შერჩევა არ არსებობს.
+
+RLS SELECT: მხოლოდ არადაბლოკილი მხარეები ან ადმინი; პირდაპირი INSERT/UPDATE/DELETE არავის.
+`get_deal` იგივე საზღვარს იცავს. `deal_events` პირდაპირ არ იკითხება: ისტორიას აბრუნებს
+`get_deal`. შეფასება საჯარო `company_reviews`-ში არ ხვდება.
+
+### შეტყობინებები და კონტაქტი
+
+`deal_events` თითო revision-ზე ინახავს actor/action/time-ს. არსებული engagement inbox-ის
+`offer_chosen` ჩანაწერი მიმღებისთვის განახლდება და unread გახდება; დამატებულია
+`deal_id`, `deal_action`, `deal_revision`. `list_notifications` ამ ველებსაც აბრუნებს.
+UI-მ deal metadata-ს უნდა მიანიჭოს უპირატესობა ძველ kind-თან შედარებით. inbox აერთიანებს
+ერთი გარიგების ცვლილებებს, ხოლო სრული ისტორია `deal_events`-ში რჩება.
+პირველი არჩევის email კვლავ არსებული outbox-ით მიდის; ეტაპების ახალი email template
+ჯერ არ არსებობს და განმეორებითი „შეთავაზება აგირჩიეს“ წერილები არ რიგდება.
+
+`profiles.phone` და `email` არც anonymous-ს და არც authenticated-ს პირდაპირ არ აქვს
+SELECT. უსაფრთხო საჯარო სვეტები ხელახლა გაიცემა explicit column grant-ით.
+`my_profile()` საკუთარი კონტაქტებისთვის უცვლელია. `list_companies()` ისედაც არ აბრუნებს
+ტელეფონს. არსებულ `contact_for_request(uuid)`-ს რჩება მხოლოდ არჩეული პარტნიორის წვდომა;
+ახალი cancelled deal ამ ძველ გზასაც კეტავს. `get_deal_contact` cancelled-ის კონტაქტს
+მხოლოდ ადმინს აძლევს; დაბლოკილი პარტნიორის კონტაქტი მხარეს არ უბრუნდება.
+`log_contact_event(text,uuid,text,text)` აღარ ეძლევა სტუმარს; მხარეებს არჩევის კავშირი
+უმოწმდებათ, ადმინს რჩება წვდომა. ეს RPC კონტაქტს არ აბრუნებს.
+
+### Matching და onboarding
+
+კატეგორიების ზუსტი დამთხვევა აუცილებელია და იძლევა 70 ქულას; იგივე ქალაქი ან
+მომწოდებლის service_cities კიდევ 30-ს. დახურული/არჩეული/დამალული მოთხოვნები,
+დაბლოკილი ავტორები, საკუთარი მოთხოვნები და დაუმტკიცებელი მომწოდებლები გამოირიცხება.
+მხოლოდ კატეგორიები გამოიყენება matching-ში; free-text `offers/seeks` არ გადაითარგმნება
+ავტომატურად. `need_categories` პირადი შესყიდვის ინტერესია; საჯარო column grant არ აქვს.
+
+ახალი profile ველები: `account_intent` (`buy/sell/both`, default both), `employee_band`
+(`1-7/8-50/51-200/201+`), `founded_year`, `markets`, `languages`, `legal_name`,
+`registration_code`, `legal_form`, `contact_position`, `website`, `business_tags`,
+`certificates`, `verification_documents_status` (`not_submitted/pending/approved/rejected`).
+ამ ველებს ჯერ საჯარო SELECT არ აქვს. `my_profile` საკუთარ პროგრესს აბრუნებს.
+`account_intent` არ ცვლის ავტორიზაციის role-ს. დოკუმენტების სტატუსი არ ცვლის `verified`-ს;
+იურიდიული იდენტობის შეცვლა დოკუმენტების სტატუსს `not_submitted`-ზე აბრუნებს.
+სურათის/დოკუმენტის ატვირთვა, KYC და ფაილის URL-ები ამ პროექტში არ იქმნება.
+სახელი, კომპანია, ტელეფონი, ელფოსტა, ქალაქი, მისამართი, აღწერა, ლოგო, გალერეა,
+პროდუქტები და service_cities არსებული API-ებით იმართება.
+
+### ახალი შეცდომები
+
+`meetany_private.flow_fail(text)` იყენებს არსებულ სტილს: SQLSTATE `P0001`,
+`message = MAxxx: ...`, `hint = MAxxx`.
+
+| კოდი | მნიშვნელობა |
+|---|---|
+| MA901 | რესურსი არ არსებობს ან გამომძახებლისთვის ხელმისაწვდომი არ არის |
+| MA902 | არასწორი ველები / ლიმიტი / კატეგორია / სტატუსი |
+| MA903 | დაუშვებელი ეტაპი ან მოქმედება, ვადაგასული არჩევა, განმეორებითი შეფასება |
+| MA904 | ძველი ან გამოტოვებული revision / expected_updated_at |
+| MA905 | პირობებს ორივე მხარე ჯერ არ ადასტურებს |
+| MA906 | დასრულება მხოლოდ მყიდველს შეუძლია |
+
+არსებული `require_user`, `require_admin`, `choose_offer`-ის MA001/MA002/MA003 და
+შეთავაზების MAxxx კოდები რჩება. HTTP ფენა ჯერ ამ ახალი კოდების ტექსტებს არ იცნობს.
+ტესტები: `db/tests/flows_20261007.sql`, არსებული `t` harness-ის შემდეგ, მხოლოდ დროებით ლოკალურ ბაზაზე.
+
+
+### ლოკალური გამოყენება — 2026-10-07 განახლება
+
+ხუთივე `20261007-*` მიგრაცია უკვე გამოყენებულია **მხოლოდ ლოკალურ preview ბაზაზე**.
+Production-ზე apply არ შესრულებულა; ახალი მითითების შემდეგ იქ dry-run-იც აკრძალულია.
+`web/scripts/apply-migration.mjs`-ში ამ ხუთი მიგრაციის ჩანაწერები აღარ არის.
+
+ლოკალური გამშვები: `node web/scripts/apply-migration-local.mjs all --dry-run`, შემდეგ
+`node web/scripts/apply-migration-local.mjs all`. მხოლოდ `MEETANY_LOCAL_DATABASE_URL`
+(environment ან სკრიპტის მიერ წაკითხული `web/.env.local`); მხოლოდ localhost/127.0.0.1/::1.
+გარე host → `LOCAL_HOST_REQUIRED`, URL host override/query/hash → `INVALID_LOCAL_DATABASE_URL`,
+არალოკალური PostgreSQL peer → `LOCAL_SERVER_REQUIRED`; ყველა შეცდომა exit 1-ს იძლევა.
+კავშირის მონაცემები არ იბეჭდება და `DATABASE_URL` fallback არ არსებობს.
+
+`all` ერთ ტრანზაქციაში ატარებს ხუთივე მიგრაციას დამოკიდებულებების რიგით; dry-run
+ასრულებს rollback-ს, ჩვეულებრივი apply — commit-ს; ერთის შეცდომა მთელ ჯგუფს აბრუნებს.
+ინდივიდუალური სახელი მხოლოდ უკვე დაკმაყოფილებული წინაპირობებისას გამოიყენება.
+ორივე გაშვებაში ხუთივე შედეგი **ok**. rollback-ისა და apply-ის ეფექტები ცალკე
+კატალოგისა და უფლებების წაკითხვით დადასტურდა. SQL კონტრაქტი და ზემოთ ჩამოთვლილი
+კლიენტის ჩართვის წინაპირობები უცვლელია; მიგრაცია თავისთავად ახალ UI ფლოუს არ აერთებს.

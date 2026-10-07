@@ -1,0 +1,22 @@
+\set ON_ERROR_STOP 1
+select t.as_super();
+select t.signup('flow_b','flow-b@test.ge','{"role":"client","name":"Buyer","company":"Buyer Ltd","phone":"599881001","city":"tbilisi"}');
+select t.signup('flow_s','flow-s@test.ge','{"role":"company","name":"Seller","company":"Seller Ltd","phone":"599881002","city":"tbilisi","industry":"other"}');
+select t.signup('flow_x','flow-x@test.ge','{"role":"company","name":"Other","company":"Other Ltd","phone":"599881003","city":"batumi","industry":"other"}');
+update public.profiles set verified=true where id in (t.uid('flow_s'),t.uid('flow_x'));
+insert into public.requests(id,owner_id,title,body,category,city,quantity,unit) values(t.put('flow_r',gen_random_uuid()),t.uid('flow_b'),'Flow request','Flow request body','other','tbilisi',10,'pcs');
+select t.as_user('flow_s');
+select t.put('flow_o',(public.send_offer(t.get('flow_r'),'Structured offer',100,'total',true,5,true)).id);
+select public.set_offer_terms(t.get('flow_o'),'50/50',current_date+7,array['VAT'],(select updated_at from public.offers where id=t.get('flow_o')));
+select t.throws($q$select public.set_offer_terms(t.get('flow_o'),'x',current_date+7,'{}',null)$q$,'MA904','FLOW stale offer rejected');
+select t.throws($q$select public.compare_offers(t.get('flow_r'))$q$,'MA901','FLOW supplier cannot compare sealed offers');
+select t.as_user('flow_x');
+select t.put('flow_other_o',(public.send_offer(t.get('flow_r'),'Another offer',20,'unit',true,3,true)).id);
+select t.throws($q$select public.set_offer_terms(t.get('flow_o'),'x',null,'{}',now())$q$,'MA901','FLOW other supplier cannot edit');
+select t.as_user('flow_b');
+select t.ok(jsonb_array_length(public.compare_offers(t.get('flow_r')))=2,'FLOW owner sees two offers');
+select t.ok((public.compare_offers(t.get('flow_r'))->0->>'best_price')::boolean,'FLOW total beats unit total (100 vs 200)');
+select t.ok((public.compare_offers(t.get('flow_r'))->1->>'fastest')::boolean,'FLOW fastest selected independently');
+select t.as_anon();
+select t.throws($q$select public.compare_offers(t.get('flow_r'))$q$,'42501','FLOW guest comparison denied');
+select t.as_super();
