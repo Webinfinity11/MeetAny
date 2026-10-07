@@ -9,7 +9,7 @@ import type { SearchSuggestion } from "../lib/search-suggestions";
 /** The segmented search pill (styles/search.css): "what" combobox | city select | search button.
  *  No visible labels (owner): the placeholder and "ყველა ქალაქი" say it; aria labels stay.
  *  Used by the home hero (inside a GET form) and by catalog headers (live filters). */
-export function SegmentedSearch({ id, label, placeholder, query, onQuery, suggestions, onSelect, city, onCity, framed = false, cityField = false, emptyHref, allResultsHref }: {
+export function SegmentedSearch({ id, label, placeholder, query, onQuery, suggestions, onSelect, city, onCity, framed = false, cityField = false, cityPlaceholder = "ყველა ქალაქი", emptyHref, allResultsHref }: {
   id: string; label: string; placeholder: string;
   query: string; onQuery: (value: string) => void;
   suggestions: SearchSuggestion[]; onSelect: (item: SearchSuggestion) => void;
@@ -18,6 +18,7 @@ export function SegmentedSearch({ id, label, placeholder, query, onQuery, sugges
   framed?: boolean;
   /** Submit the city with a GET form (home); catalogs filter live instead. */
   cityField?: boolean;
+  cityPlaceholder?: string;
   emptyHref?: string;
   allResultsHref?: string;
 }) {
@@ -27,7 +28,7 @@ export function SegmentedSearch({ id, label, placeholder, query, onQuery, sugges
     </div>
     <div className="home-search-seg home-search-seg--city">
       <CustomSelect className="home-search-city" name={cityField && city ? "city" : undefined} value={city} onChange={e => onCity(e.target.value)} aria-label="ქალაქი">
-        <option value="">ყველა ქალაქი</option>
+        <option value="">{cityPlaceholder}</option>
         {Object.entries(cities).map(([value, name]) => <option key={value} value={value}>{name}</option>)}
       </CustomSelect>
     </div>
