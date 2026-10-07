@@ -20,7 +20,8 @@
 .note{font-size:.8125rem;color:var(--ink-500);margin-top:.75rem;line-height:1.65}
 .steps{padding:1rem 1.25rem;margin-top:1.5rem}
 .steps ol{display:flex;gap:.5rem;list-style:none;margin:0;padding:0}
-.steps li{display:flex;align-items:center;gap:.625rem;flex:1;min-width:0;font-size:.8125rem;color:var(--ink-500)}
+.steps li{display:flex;align-items:center;gap:.625rem;flex:1;min-width:0;font-size:.75rem;color:var(--ink-500)}
+@media(min-width:64rem){.steps li{flex:1 1 auto}.steps li>span:last-child{white-space:nowrap}.steps li:not(:last-child)::after{content:"";height:.0625rem;min-width:.5rem;flex:1;margin-left:.25rem;background:var(--ink-200)}.steps li[data-done=true]::after{background:var(--success-600)}}
 .steps small{display:block;font-size:.6875rem;margin-top:.125rem;font-weight:400}
 .stepNumber{display:flex;width:2rem;height:2rem;border-radius:50%;border:.0625rem solid var(--ink-300);justify-content:center;align-items:center;flex-shrink:0}
 .steps li[data-current=true]{color:var(--ink-950);font-weight:700}

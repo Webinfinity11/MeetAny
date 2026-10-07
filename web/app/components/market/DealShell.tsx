@@ -50,8 +50,11 @@ export function DealContactCard({ store, deal, participant }: { store: Store; de
   </section>;
 }
 export function DealTermsRecord({ deal, compact = false, actions }: { deal: Deal; compact?: boolean; actions?: ReactNode }) {
+  const unitPrice = !compact && deal.total_price != null && deal.quantity != null && deal.quantity > 0 && deal.unit
+    ? `${money(deal.total_price / deal.quantity)} / ${units[deal.unit] || deal.unit}`
+    : null;
   const rows = [
-    ["wallet", "ჯამური ფასი", money(deal.total_price)],
+    ["wallet", "ჯამური ფასი", `${money(deal.total_price)}${unitPrice ? ` · ${unitPrice}` : ""}`],
     ["package", "რაოდენობა", deal.quantity == null ? "დასაზუსტებელია" : `${deal.quantity} ${units[deal.unit || ""] || deal.unit || ""}`],
     ["truck", "მიწოდების ვადა", `${deal.delivery_days == null ? "დასაზუსტებელია" : `${deal.delivery_days} დღე`}${deal.delivery_date ? ` · ${dealDate(deal.delivery_date)}` : ""}`],
     ["map-pin", "ადგილი", deal.delivery_place || "დასაზუსტებელია"],
