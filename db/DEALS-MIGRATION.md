@@ -1,6 +1,6 @@
 # ახალი ფლოუების მონაცემთა მოდელი — პროექტი, 2026-10-07
 
-**ხუთივე მიგრაცია გამოყენებულია მხოლოდ ლოკალურ preview ბაზაზე. Production-ზე არ არის გამოყენებული. UI და HTTP API არ შეცვლილა.**
+**ხუთივე მიგრაცია გამოყენებულია მხოლოდ ლოკალურ preview ბაზაზე. Production-ზე არ არის გამოყენებული. SQL-ის თავდაპირველ სვლაში UI და HTTP API არ შეცვლილა; შემდგომი UI integration აღწერილია დოკუმენტის ბოლოში.**
 საფუძველი: `schema.sql`, არსებული მიგრაციები/ტესტები, compare-offers, matching,
 ხუთი deal-* და შვიდი onboard-* artboard, `design-system.tsx`-ის საერთო კომპონენტები.
 ზუსტი RPC კონტრაქტი დაემატა [CONTRACT.md](CONTRACT.md)-ს.
@@ -72,9 +72,11 @@
   პროდუქტების აქტიურობის ახალი სისტემა ან KYC: ესენი artboard-შია, მაგრამ მოთხოვნილი
   ხუთი მონაცემთა ცვლილების ფარგლებს სცდება. არსებული პროდუქტები/გალერეა რჩება.
 
-## რა უნდა შეიცვალოს კლიენტსა და API-ში ჩართვამდე
+## კლიენტისა და API-ის ჩართვის წინაპირობები — SQL სვლის ისტორიული ჩანაწერი
 
-ამ ეტაპზე ქვემოთ ჩამოთვლილი ფაილები **არ შეცვლილა**:
+SQL-ის თავდაპირველ ეტაპზე ქვემოთ ჩამოთვლილი ფაილები **არ იყო შეცვლილი**.
+ეს არის იმ ეტაპის სამუშაო სია და არა მიმდინარე UI-ის სტატუსი; შემდგომი
+განხორციელება აღწერილია ბოლო ნაწილში. სქემის კონსოლიდაცია კვლავ ცალკე ამოცანაა:
 
 - `web/app/lib/market-store.js`: `PUBLIC_PROFILE`-დან `phone` ამოსაღებია;
   public projection-ის ყველა გამოძახება უნდა დარჩეს უსაფრთხო სვეტებზე.
@@ -216,6 +218,173 @@ onboarding ველი არ არსებობდა, საჯარო p
 გარე host უარყოფილია `LOCAL_HOST_REQUIRED`-ით, loopback URL-ის host override —
 `INVALID_LOCAL_DATABASE_URL`-ით. Node syntax check წარმატებულია.
 
-ეს ცვლის მხოლოდ ლოკალურ მონაცემთა მოდელს. 3001-ზე ახალი ეკრანების ფუნქციონირება
-ჯერ მოითხოვს ზემოთ აღწერილ RPC allowlist/store/UI ცვლილებებს; კერძოდ ძველმა
-PUBLIC_PROFILE პროექციამ phone აღარ უნდა მოითხოვოს. UI-ის მუშაობა ამ სვლაში არ დადასტურებულა.
+ამ SQL სვლამ შეცვალა მხოლოდ ლოკალური მონაცემთა მოდელი. იმ მომენტში 3001-ზე
+ახალი ეკრანები ჯერ მოითხოვდა ზემოთ აღწერილ RPC allowlist/store/UI ცვლილებებს,
+მათ შორის PUBLIC_PROFILE-დან phone-ის ამოღებას. UI-ის მუშაობა იმ სვლაში
+არ დადასტურებულა; შემდგომი პირველადი ვერსიების QA აღწერილია ქვემოთ.
+
+
+## მიმდინარე UI integration — საბოლოო target browser QA, 2026-10-07
+
+ინტეგრირებულია რეალურ კონტრაქტზე მომუშავე ეკრანები და საბოლოო source polish. საერთო brand,
+Header/Footer და არსებული design-system baseline შენარჩუნებულია. მონაცემები და
+ლოკალური QA fixtures artboard-ის მაგალითებს შეიძლება განსხვავდებოდეს; ეს და
+ვიზუალური polish-ის სხვაობები თავისთავად backend-ის შეზღუდვა არ არის.
+ორკესტრატორის ანგარიშით, polish-ის შემდეგ target-ზე განმეორებითი real onboarding,
+deals და matching QA წარმატებულია. ყველა 15 გვერდი ვიზუალურად შედარებულია
+ორიგინალ `.shots`-თან 1200/390 სიგანეებზე. ეს არ ნიშნავს 1:1 pixel identity-ს;
+დაფიქსირებული განსხვავებები ქვემოთაა აღწერილი.
+
+### მარშრუტები და რეალური ქცევა
+
+- `/deals/view/?id=` — სერვერის ხუთი რეალური ეტაპი: `selected`, `discuss`,
+  `terms`, `progress`, `complete`; დამატებით `cancelled`. ეტაპს URL-ით ვერ ვირჩევთ.
+  `/requests/compare/?id=` იყენებს `compare_offers`-ის sealed შედეგს და სერვერის
+  `total_gel/best_price/fastest` ნიშნებს; არჩევა მიდის `select_offer_deal`-ზე.
+- `/matching/` — დამტკიცებული კომპანიის მოთხოვნების feed;
+  `/matching/?requestId=` — მხოლოდ ამ მოთხოვნის მფლობელის მომწოდებლები.
+  მონაცემები მოდის `list_matching`-ით, ქალაქის ფილტრითა და pagination-ით.
+  `/offers/new/?requestId=` — რეალური შეთავაზების შექმნა/რედაქტირება.
+- `/onboarding/?step=type|details|profile|provide|need|verify|review` — შვიდი ნაბიჯი
+  კომპანიისთვის. არსებული Auth-ის `client/company` role არჩევანი რჩება;
+  კომპანიის რეგისტრაციის/ელფოსტის დადასტურების შემდეგ redirect მიდის `type`-ზე.
+  `account_intent` მხოლოდ preference-ია და auth role-ს არ ცვლის.
+- store-ის საერთო `callRpc` და `mutateRpc` გამოყენებულია ახალი ფლოუებისთვის;
+  `mutateRpc` ჩაწერის შემდეგ snapshot-ს აახლებს. HTTP allowlist ახალი RPC-ებისთვის ჩართულია; საერთო HTTP error გზა
+  ინარჩუნებს MA კოდებს, store კი MA901–MA906-ს მომხმარებლის ტექსტებად გარდაქმნის. საჯარო profile projection
+  აღარ ითხოვს phone/email-ს; კონტაქტი ავტორიზებული API-ით იკითხება.
+
+შეთავაზების წაკითხვა მოიცავს `payment_terms`, `valid_until`, `commercial_terms`-ს:
+`offers?select=*` და ცალკე საკუთარი შეთავაზების წაკითხვა ინარჩუნებს არსებულ
+SELECT/RLS საზღვარს: ავტორი, მოთხოვნის მფლობელი და ადმინი; anonymous-ს
+SELECT არ აქვს. ახალი პირობები კონკურენტ შეთავაზებებს საჯაროდ არ ხდის.
+შენახვა ორსაფეხურიანია: `sendOffer` → `send_offer`, შემდეგ `set_offer_terms`.
+პირველი პასუხის `updated_at` გადადის `updatedAt`-ში უცვლელი სტრიქონით და RPC2-ს
+ეგზავნება `p_expected_updated_at`-ად — Date-ით დამრგვალების გარეშე.
+ნაწილობრივი წარმატებისას ინახება offer ID, ვერსია და დამატებითი პირობები;
+retry ხელახლა კითხულობს ჩანაწერს და მხოლოდ RPC2-ს იმეორებს, თუ ჯერ საჭიროა.
+უკვე შენახული იგივე პირობები აღარ მეორდება. stale/გაურკვეველი RPC1 პასუხი
+მოითხოვს ახალი მონაცემების წაკითხვასა და მომხმარებლის ხელახალ განხილვას,
+ავტომატური გადაწერის გარეშე. ფასი nullable რჩება `negotiable` რეჟიმში;
+`unit/total`, დღგ და მიწოდების ხარჯის ჩართვა ცალ-ცალკე სემანტიკაა.
+
+Deal-ის მუტაციები აგზავნის მიმდინარე `revision`-ს; შეცდომის შემდეგ ხელახალი
+წაკითხვა და review საჭიროა. პირობების შეცვლა ორივე თანხმობას აუქმებს;
+`progress` მოითხოვს ორივე დადასტურებას, `complete` — მხოლოდ მყიდველს.
+დასრულების შეფასება მყიდველის ერთჯერადი კერძო rating/review-ია, ჩანს მხარეებსა
+და ადმინთან და არ ცვლის საჯარო company_reviews-ს. კონტაქტის privacy და cancelled-ის
+შეზღუდვა კონტრაქტის მიხედვით რჩება; საჯარო ქეშიდან ნომერი არ გამოითვლება.
+
+Onboarding-ის `set_onboarding_details` სრული ჩანაცვლებაა: ყოველი შენახვის წინ
+იკითხება მიმდინარე `my_profile`, იცვლება მხოლოდ შესაბამისი ნაბიჯის ველები და
+დანარჩენი ინარჩუნებს წაკითხულ მნიშვნელობებს. გამოიყენება არსებული profile,
+logo/gallery და products API-ები; კატეგორიები მხოლოდ taxonomy-ის ზუსტი გასაღებებია.
+`verify/review` არ აგზავნის document submission/completion RPC-ს და არ ანიჭებს
+approval-ს; document status მხოლოდ წასაკითხია. პროფილი შესაბამის ნაბიჯებზე ინახება,
+review აჩვენებს შენახულ მონაცემებს და ანგარიშზე გადასვლას.
+
+Account-ის შეთავაზების რიგის არჩევა რეალურ დეტალებს ხსნის, მობილურზე — `Sheet`-ს;
+`chosen` პარტნიორის ჩატი იხსნება ავტორიზებულ conversation-ში და სრულ inbox-ში.
+მოთხოვნის ტექსტური draft ავტომატურად ინახება `sessionStorage`-ში იმავე tab-ისთვის,
+აღდგება დაბრუნების/ავტორიზაციის შემდეგ, აქვს 30-წუთიანი TTL და წარმატებული
+შექმნის შემდეგ იშლება. ფოტოები და credentials draft-ში არ ინახება.
+
+### 15 artboard: გვერდი → განსხვავება → მიზეზი
+
+ყველა 15 გვერდზე საერთო Header/Footer-ის ლოგო და მენიუ არსებული პროდუქტის
+baseline-ს მიჰყვება. რეალური fixture კონტენტი და ბარათების რაოდენობა გვერდების
+სიგრძეს ცვლის. ეს განსხვავებები და ყველა spacing backend-ის შეზღუდვად არ მიიჩნევა.
+ცხრილი აერთიანებს კონტრაქტის ქცევას და ორკესტრატორის ვიზუალური შედარების კონკრეტულ
+შედეგებს. კონტრაქტის საფუძველი: [CONTRACT.md](CONTRACT.md), განსაკუთრებით ახალი ფლოუები, Messaging,
+Company gallery და Marketplace completion.
+
+| გვერდი | განსხვავება | მიზეზი |
+|---|---|---|
+| deal-selected | პირველი ეტაპი რეალური `selected` ჩანაწერია | არჩევა ქმნის deal-ს; ეტაპი სერვერის მდგომარეობაა |
+| deal-discuss | prototype-ის inline negotiation card-ის ნაცვლად რეალური ჩატი და სტრუქტურირებული terms ცალ-ცალკეა; attachments-ის გარეშე | არსებული Messaging და deal terms სხვადასხვა მოქმედებაა; Messaging არის ტექსტური, deal attachments API არ არსებობს |
+| deal-terms | რედაქტირებადი პირობები და ორივე მხარის თანხმობა | revision/reset და სავალდებულო პირობების კონტრაქტი |
+| deal-progress | რეალური events; წარმოების გამოგონილი substeps/ფოტოები არ ჩანს | კონტრაქტში არის deal_events, არა წარმოების substeps/photo API |
+| deal-complete | ერთი კერძო rating/review, ოთხი საჯარო კრიტერიუმის ნაცვლად | `rate_deal`: მყიდველი, ერთხელ; საჯარო რეიტინგში არ შედის |
+| compare-offers | რეალური პირობები/სერვერის ნიშნები, fake PDF-ის გარეშე | PDF storage/download კონტრაქტი არ არსებობს |
+| matching | request feed და owner-only suppliers; save/bookmarks, fake counts/sort არ ემატება | `list_matching` მხარს უჭერს კატეგორია/ქალაქის score-ს და pagination-ს; აღნიშნული დამატებების API არ აქვს |
+| make-offer | რედაქტირებადი ტექსტური პირობები, nullable ფასი; unit/total, VAT და delivery ცალ-ცალკე | `send_offer` + `set_offer_terms`; ციტირებული ფასი არ გულისხმობს დაუდასტურებელ ხარჯს |
+| onboard-type | `account_intent` preference | auth role/უფლებებს არ ცვლის |
+| onboard-details | ახალი legal ველები არსებულ profile მონაცემებთან ერთად; დამატებითი ველები და შენახვის მოქმედება form height-ს ცვლის | სერვერზე შენახვადი `set_onboarding_details` და არსებული profile API; დუბლირებული იდენტობა არ იქმნება |
+| onboard-profile | გალერეის ფოტო, არა ცალკე cover; რეალური კომპანიის/ბრენდის სახელის ველი; მაქს. 8 tags; დამატებითი ველები და შენახვის მოქმედება form height-ს ცვლის | სერვერზე შენახვადი ველები, არსებული `company`/gallery და `valid_items`; ცალკე cover მოდელი არ არსებობს |
+| onboard-provide | პროდუქტი: `name/photoUrl/note`, მაქს. 12; არა active/tags/per-product category; დამატებითი ველები და შენახვის მოქმედება form height-ს ცვლის | სერვერზე შენახვადი `set_my_products`; კატეგორიები კომპანიის დონეზეა |
+| onboard-need | taxonomy-ის ზუსტი გასაღებები, მაქს. 34; ტექსტური items მაქს. 8; დამატებითი ველები და შენახვის მოქმედება form height-ს ცვლის | სერვერზე შენახვადი კატეგორიები/items: `set_matching_categories` და `valid_items`; ინტერესები მოთხოვნას არ ქმნის |
+| onboard-verify | რეალური საერთო document status; upload/submission-ის გარეშე | სტატუსს მხოლოდ admin ცვლის; ინდივიდუალური დოკუმენტების API არ არსებობს |
+| onboard-review | შენახული პროფილის შეჯამება და ანგარიშზე გადასვლა, fake approval-ის გარეშე | profile save არ ცვლის `verified`-ს; completion/approval RPC არ არსებობს |
+
+### დაფიქსირებული QA და გამეორების პირობები
+
+ქვემოთ მოცემულია root-ის მიერ მიღებული შედეგები: real browser suite-ები საბოლოო
+source polish-ის შემდეგ target-ზე განმეორდა. საბოლოო target-ზე TypeScript/lint/unit
+და default mocked onboarding-ის განმეორებაც წარმატებულია.
+DB regression და draft ინარჩუნებს ადრე დაფიქსირებულ შედეგებს.
+ამ დოკუმენტაციის სვლაში suite-ები ხელახლა არ გაშვებულა.
+
+| შემოწმება | დაფიქსირებული შედეგი |
+|---|---|
+| საბოლოო target TypeScript | `npx tsc --noEmit` PASS |
+| საბოლოო target სრული lint + design lint | `npm run lint` PASS: 0 errors, 29 არსებული img warnings; design checks PASS |
+| საბოლოო target unit | `npm test` — 18/18 PASS |
+| DB regression + ხუთი flow suite, ephemeral DB | 1,637 assertion PASS (1,570 + 67) |
+| საბოლოო target real matching/offer/account | 19 checks PASS |
+| საბოლოო target real deal/compare | 10 checks PASS, 33 views; `cleanup=true` |
+| საბოლოო target real onboarding | 9 checks PASS; 7 ნაბიჯი × 1200/390/1440 სიგანე; cleanup-ის შემდეგ fixture auth/profiles/products = 0 |
+| საბოლოო source-ზე default mocked onboarding | PASS; 0 page errors / unexpected external requests |
+| request draft | 9 სცენარი PASS |
+
+Default mocked onboarding-ის საბოლოო განმეორებამ მოიცვა raw profile, სრული
+ჩანაცვლება, reload/back/retry, შვიდივე ნაბიჯი 1200/390/1440 სიგანეებზე,
+guest/client/admin/blocked წვდომა, load failure/missing fields და
+registration → verify → complete_profile → onboarding გადასვლა — ყველა PASS.
+
+არსებული QA commands (`web/`-დან; ქვემოთ საიდუმლო მნიშვნელობები არ არის):
+
+```sh
+npx tsc --noEmit
+npm run lint
+npm test
+node qa/matching-offer-local.mjs
+node qa/deals-local.mjs
+node qa/onboarding-local.mjs --real-local
+node qa/onboarding-local.mjs
+node qa/request-draft-local.mjs
+```
+
+- `matching-offer-local.mjs` მოითხოვს წინასწარ მიწოდებულ `QA_LOCAL_DATABASE_URL`-ს:
+  host მხოლოდ `localhost/127.0.0.1`, ბაზის სახელი `meetany_preview_` + ციფრები.
+  საკუთარ dev/JWKS runtime-ს ქმნის; `QA_PORT` default 3203 (Auth: +10),
+  შვილ runtime-ში `DATABASE_URL` ცარიელია და გამოიყენება local DSN.
+- `deals-local.mjs` ელოდება უკვე გაშვებულ local Next-ს: `QA_ORIGIN` default
+  `http://127.0.0.1:3201`, `NEON_AUTH_BASE_URL` local fixture issuer-ის მისამართი
+  (სკრიპტის მაგალითში `http://127.0.0.1:4201`) და `MEETANY_LOCAL_DATABASE_URL`.
+  სამივე host loopback უნდა იყოს (`localhost/127.0.0.1`), origin/Auth host ერთნაირი,
+  ბაზის სახელი `meetany_preview_` + ციფრები და `DATABASE_URL` ცარიელი.
+  სკრიპტი `web/.env.local`-საც კითხულობს; production fallback დაუშვებელია.
+- `onboarding-local.mjs --real-local` (ან `QA_REAL_LOCAL=1`) თავად ქმნის runtime-ს;
+  `QA_LOCAL_DATABASE_URL` მხოლოდ სკრიპტში ზუსტად დასახელებულ local preview ბაზაზე
+  დაიშვება (`postgres/postgresql`, `localhost/127.0.0.1`), ან იყენებს მის local default-ს.
+  `QA_PORT` default 3248 (Auth: +1). შვილ runtime-ში `DATABASE_URL` და Blob token
+  ცარიელია; საჭიროა preview-ში არსებული photo origin. ეს რეჟიმი remote upload-ს
+  არ ადასტურებს და document upload-ს არ ქმნის.
+- mocked onboarding-ს სჭირდება local runtime, `QA_ORIGIN` default
+  `http://127.0.0.1:3028`, Auth — იმავე origin-ის `/__qa_auth`; DB პასუხები intercepted-ია.
+  `request-draft-local.mjs` ანალოგიურად იყენებს local runtime-ს (`QA_ORIGIN` default
+  `http://127.0.0.1:3216`, Auth `/__qa_auth`), mocked Auth/RPC-ს და ბლოკავს remote requests-ს.
+- Browser override პირველ სამ სკრიპტში არის `QA_BROWSER_PATH`, draft-ში — `CHROME_PATH`;
+  default ლოკალური Google Chrome-ია. DB regression-ის ბრძანება ზემოთ, ისტორიულ
+  QA ნაწილშია; ის დროებით ბაზას ქმნის და ასუფთავებს.
+
+არტეფაქტები ინახება gitignored `web/qa/shots/*`-ში. ჩვენი runtime fixtures ყველა
+წაშლილია. ლოკალური ბაზის საბოლოო დათვლაში public profiles=52, requests=24,
+offers=50 და private notifications=64, deals=0, events=0 საწყის რაოდენობებს ემთხვევა.
+Conversations=15 და messages=29, საწყისი 14/28-ის ნაცვლად: ერთი დამატებითი
+არასატესტო ჩატი და შეტყობინება ძველ Sept22/Sept29 პროფილებსა და Oct2 მოთხოვნას
+უკავშირდება (შექმნილია Oct7 14:37Z). ეს ცვლილება ჩვენს QA-ს ვერ მიეწერა და
+ხელუხლებლად შენარჩუნდა. ამიტომ მთელი DB-ის უცვლელად აღდგენა არ დასტურდება.
+Production DB-ზე ახალი apply ან deploy არ შესრულებულა.
+საბოლოო polish-ის target real browser რერანი ზემოთ დაფიქსირებული შედეგებით დასრულდა.
+Live Blob upload არ შემოწმებულა; დოკუმენტების upload/submission API არ დამატებულა.
