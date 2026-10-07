@@ -1,4 +1,7 @@
 "use client";
+import { MatchingFeed } from "./MatchingFeed";
+import { Sheet } from "../ui/Sheet";
+import styles from "./Matching.module.css";
 import { Button } from "../ui/Button";
 
 
@@ -25,7 +28,7 @@ import { CompanyBusinessPanel, CompanyDistributionPanel } from "./CompanyBusines
 import { Inbox } from "./Inbox";
 import { useMarketStore, type Store } from "../../lib/market-client";
 import { useConversationList, useUnreadMessageCount } from "../../lib/chat-client";
-import { categories, cities, groupOf } from "../../lib/categories";
+import { categories, cities } from "../../lib/categories";
 import { categoryOptions } from "./CategoryOptions";
 
 type AnyUser = {
@@ -323,7 +326,7 @@ function PasswordForm() {
   );
 }
 
-type RequestItem = { id: string; ownerId: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean; photo?: string | null; quantity?: number | null; unit?: string | null };
+type RequestItem = { chosenOfferId?: string | null; id: string; ownerId: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean; photo?: string | null; quantity?: number | null; unit?: string | null };
 type OfferItem = { id: string; companyUserId: string; requestId: string; status: string; createdAt: string; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
 type Tab = "overview" | "opportunities" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
 type NavItem = { key: Tab; label: string; icon: string; count?: number | null };
@@ -381,46 +384,46 @@ function MyRequests({ requests, store, me, now, seen }: { requests: RequestItem[
       const count = store.offerCount(request.id) ?? 0;
       const fresh = (store.visibleOffers(request.id, me) as OfferItem[]).filter(offer => offer.status === "sent" && (!seen[request.id] || Date.parse(offer.createdAt) > Date.parse(seen[request.id]))).length;
       const left = state === "open" ? store.daysLeft(request, now) : null;
-      const conversation = conversations?.items?.find(item => item.requestId === request.id);
+      const chosen = (store.visibleOffers(request.id, me) as OfferItem[]).find(offer => offer.id === request.chosenOfferId && offer.status === "chosen");
+      const conversation = conversations?.items?.find(item => item.requestId === request.id && item.companyId === chosen?.companyUserId);
       const canExtend = (state === "open" && left != null && left <= 7) || state === "expired" || state === "closed";
       return <li className="account-request-card" data-highlight={fresh > 0 || undefined} key={request.id}>
         <div className="account-item-heading"><RequestPhoto request={request}/><div><h2><Link href={requestHref(request.id)} title={request.title}>{request.title}</Link></h2><p>{[request.quantity != null ? `${request.quantity} ${store.units[request.unit || ""] || ""}` : categories[request.category], cities[request.city] || request.city].filter(Boolean).join(" · ")}</p></div></div>
         <Status tone={state === "open" ? "success" : state === "chosen" ? "dark" : "neutral"}>{store.stateLabels[state] || state}</Status>
-        <span className="account-request-count"><Icon name="inbox"/>{count} შეთავაზება{fresh ? <strong>+{fresh} ახალი</strong> : null}</span>
-        {count ? <Button variant="primary" href={requestHref(request.id)}>შეთავაზებების ნახვა</Button> : conversation ? <Button variant="secondary" onClick={() => openChat({ companyId: conversation.companyId, requestId: request.id, conversation })}><Icon name="message-square"/>ჩატი</Button> : canExtend ? <Button variant="secondary" loading={pending === request.id} disabled={!!pending} onClick={() => void extend(request.id)}>გაგრძელება</Button> : <Button variant="secondary" href={requestHref(request.id)}>მოთხოვნის ნახვა</Button>}
+        <Link className="account-link" href={`/matching/?requestId=${request.id}`}>მომწოდებლები</Link><span className="account-request-count"><Icon name="inbox"/>{count} შეთავაზება{fresh ? <strong>+{fresh} ახალი</strong> : null}</span>
+        {chosen && !me.blocked && !request.hidden ? <Button variant="secondary" onClick={() => openChat({ companyId: chosen.companyUserId, requestId: request.id, conversation })}><Icon name="message-square"/>ჩატი</Button> : count ? <Button variant="primary" href={requestHref(request.id)}>შეთავაზებების ნახვა</Button> : canExtend ? <Button variant="secondary" loading={pending === request.id} disabled={!!pending} onClick={() => void extend(request.id)}>გაგრძელება</Button> : <Button variant="secondary" href={requestHref(request.id)}>მოთხოვნის ნახვა</Button>}
       </li>;
     })}</ul> : <div className="account-empty-state"><p className="account-empty-state__title">{requests.length ? "ამ სტატუსით მოთხოვნა არ არის" : "მოთხოვნა ჯერ არ გაქვს"}</p><p className="account-empty">აღწერე, რა გჭირდება — კომპანიები შეთავაზებებს გამოგიგზავნიან.</p></div>}
   </section>;
 }
 function SentOffers({ offers, store, me }: { offers: OfferItem[]; store: Store; me: AnyUser }) {
   const [status, setStatus] = useState("all");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mobileId, setMobileId] = useState<string | null>(null);
   const visible = status === "all" ? offers : offers.filter(offer => offer.status === status);
-  const selected = visible.find(offer => offer.status === "chosen");
+  const selected = visible.find(offer => offer.id === selectedId) || visible.find(offer => offer.status === "chosen") || visible[0];
   const selectedRequest = selected ? store.getRequest(selected.requestId) as RequestItem | null : null;
   const buyer = selectedRequest ? store.userById(selectedRequest.ownerId) as AnyUser | null : null;
+  const canChat = selected?.status === "chosen" && selected.companyUserId === me.id && !me.blocked && selectedRequest && !selectedRequest.hidden && selectedRequest.chosenOfferId === selected.id;
+  const detail = selected ? <><h2>{selectedRequest?.title || "შეთავაზება"}</h2><Status tone={selected.status === "chosen" ? "dark" : selected.status === "sent" ? "warning" : "neutral"}>{offerLabel(selected.status)}</Status><dl><div><dt>ფასი</dt><dd>{amount(selected)}</dd></div>{selected.deliveryDays != null ? <div><dt>მიწოდება</dt><dd>{selected.deliveryDays} დღე</dd></div> : null}<div><dt>მიწოდების ხარჯი</dt><dd>{selected.deliveryIncluded ? "შედის" : "დასაზუსტებელია"}</dd></div>{selected.price != null ? <div><dt>დღგ</dt><dd>{selected.vatIncluded ? "შედის" : "არ შედის"}</dd></div> : null}</dl>{buyer ? <div className="account-buyer-card"><strong>{buyer.company || buyer.name}</strong><p>{cities[buyer.city] || buyer.city}</p></div> : null}<Link className="account-link" href={requestHref(selected.requestId)}>მოთხოვნის ნახვა</Link>{selected.status === "sent" && selectedRequest && store.requestState(selectedRequest) === "open" ? <Link className="account-link" href={`/offers/new/?requestId=${selected.requestId}`}>შეთავაზების რედაქტირება</Link> : null}{canChat ? <Button variant="primary" onClick={() => { setMobileId(null); openChat({ companyId: me.id, requestId: selected.requestId }); }}><Icon name="message-square"/>დეტალების განხილვა</Button> : null}</> : null;
   return <section className="account-records" aria-label="ჩემი შეთავაზებები">
-    <Filters label="შეთავაზების სტატუსი" value={status} onChange={setStatus} items={[{ key: "all", label: "ყველა", count: offers.length }, ...["sent", "chosen", "declined"].map(key => ({ key, label: offerLabel(key), count: offers.filter(offer => offer.status === key).length }))]}/>
+    <Filters label="შეთავაზების სტატუსი" value={status} onChange={value => { setStatus(value); setSelectedId(null); setMobileId(null); }} items={[{ key: "all", label: "ყველა", count: offers.length }, ...["sent", "chosen", "declined"].map(key => ({ key, label: offerLabel(key), count: offers.filter(offer => offer.status === key).length }))]}/>
     <div className={`account-offers-layout${selected ? " account-offers-layout--detail" : ""}`}>
       {visible.length ? <ul className="account-rows account-offer-list">{visible.map(offer => {
         const request = store.getRequest(offer.requestId) as RequestItem | null;
         const owner = request ? store.userById(request.ownerId) as AnyUser | null : null;
-        return <li className="account-offer-card" data-highlight={offer.status === "chosen" || undefined} key={offer.id}><RequestPhoto request={request}/><div className="account-offer-copy"><h2><Link href={requestHref(offer.requestId)} title={request?.title}>{request?.title || "მოთხოვნა"}</Link></h2><div className="account-offer-buyer"><p>{owner?.company || owner?.name || (request ? cities[request.city] : "")}</p><Status tone={offer.status === "chosen" ? "dark" : offer.status === "sent" ? "warning" : "neutral"}>{offerLabel(offer.status)}</Status></div><div className="account-offer-facts"><strong>{amount(offer)}</strong>{offer.deliveryDays != null ? <span><Icon name="truck"/>{offer.deliveryDays} დღე</span> : null}</div></div></li>;
+        return <li key={offer.id}><button type="button" className={`account-offer-card ${styles.offerRow}`} aria-pressed={selected?.id === offer.id} onClick={() => { setSelectedId(offer.id); if (window.matchMedia("(max-width:1023px)").matches) setMobileId(offer.id); }}><RequestPhoto request={request}/><span className="account-offer-copy"><strong className={styles.offerTitle}>{request?.title || "მოთხოვნა"}</strong><span className={`account-offer-buyer ${styles.offerBuyer}`}><span>{owner?.company || owner?.name || (request ? cities[request.city] : "")}</span><Status tone={offer.status === "chosen" ? "dark" : offer.status === "sent" ? "warning" : "neutral"}>{offerLabel(offer.status)}</Status></span><span className="account-offer-facts"><strong>{amount(offer)}</strong>{offer.deliveryDays != null ? <span><Icon name="truck"/>{offer.deliveryDays} დღე</span> : null}</span></span></button></li>;
       })}</ul> : <div className="account-empty-state"><p className="account-empty">{offers.length ? "ამ სტატუსით შეთავაზება არ არის." : "შეთავაზება ჯერ არ გაგიგზავნია."}</p></div>}
-      {selected ? <aside className="account-offer-detail" aria-label="არჩეული შეთავაზება"><h2>{selectedRequest?.title || "არჩეული შეთავაზება"}</h2><Status tone="dark">არჩეული</Status><dl><div><dt>ფასი</dt><dd>{amount(selected)}</dd></div>{selected.deliveryDays != null ? <div><dt>მიწოდება</dt><dd>{selected.deliveryDays} დღე</dd></div> : null}<div><dt>მიწოდების ხარჯი</dt><dd>{selected.deliveryIncluded ? "შედის" : "დასაზუსტებელია"}</dd></div>{selected.price != null ? <div><dt>დღგ</dt><dd>{selected.vatIncluded ? "შედის" : "არ შედის"}</dd></div> : null}</dl>{buyer ? <div className="account-buyer-card"><strong>{buyer.company || buyer.name}</strong><p>{cities[buyer.city] || buyer.city}</p></div> : null}{!me.blocked && selectedRequest ? <Button variant="primary" onClick={() => openChat({ companyId: me.id, requestId: selected.requestId })}><Icon name="message-square"/>დეტალების განხილვა</Button> : null}</aside> : null}
+      {selected ? <aside className="account-offer-detail" aria-label="შეთავაზების დეტალები">{detail}</aside> : null}
     </div>
+    <Sheet open={!!selected && mobileId === selected.id} onClose={() => setMobileId(null)} title="შეთავაზების დეტალები"><div className={styles.offerSheet}>{detail}</div></Sheet>
   </section>;
 }
 function CompanyWelcome({ me }: { me: AnyUser }) {
   const fields: [string, boolean][] = [["დასახელება", !!me.company?.trim()], ["ქალაქი", !!me.city], ["მიმართულება", !!me.industry], ["აღწერა", !!me.about?.trim()], ["ლოგო", !!me.logoUrl], ["მომსახურებები", !!me.offers?.length], ["მომსახურების ქალაქები", !!me.serviceCities?.length], ["გალერეა", !!me.gallery?.length]];
   const remaining = fields.filter(([, filled]) => !filled).map(([label]) => label);
   const completion = Math.round((fields.length - remaining.length) / fields.length * 100);
-  return <><section className="account-profile-status"><div><h2>დადასტურება <Status tone={me.blocked ? "neutral" : me.verified ? "success" : "warning"}>{me.blocked ? "დაბლოკილია" : me.verified ? "დადასტურებული" : "მიმდინარეობს"}</Status></h2><p>{me.verified ? "კომპანიის პროფილი დადასტურებულია." : "კომპანიის მონაცემებს ადმინისტრატორი ამოწმებს."}</p></div><div><div className="account-progress-heading"><h2>პროფილი · {completion}%</h2><Link href="/account/?tab=profile">{remaining.length ? "დასრულება" : "რედაქტირება"}</Link></div><progress aria-label="პროფილის სისრულე" value={completion} max={100}/><p>{remaining.length ? `დარჩა: ${remaining.join(", ")}` : "პროფილი სრულად შევსებულია"}</p></div></section><div className="account-quick-actions"><Button variant="primary" href="/requests/"><Icon name="search"/>მოთხოვნების ნახვა</Button><Button variant="secondary" href="/companies/"><Icon name="building-2"/>კომპანიები</Button><Button variant="secondary" href="/account/?tab=saved"><Icon name="bookmark"/>შენახული</Button><Button variant="secondary" href="/account/?tab=profile"><Icon name="user-round"/>პროფილი</Button></div></>;
-}
-function Opportunities({ requests, store, overview }: { requests: RequestItem[]; store: Store; overview: boolean }) {
-  return <section className="account-records"><div className="account-section__head"><h2 className="account-section__title">{overview ? "თქვენთვის" : "შესაბამისი მოთხოვნები"}</h2>{overview ? <Link className="account-link" href="/account/?tab=opportunities">ყველა</Link> : null}</div>{requests.length ? <ul className="account-recommendations">{(overview ? requests.slice(0, 4) : requests).map(request => {
-    const owner = store.userById(request.ownerId) as AnyUser | null;
-    return <li key={request.id}><RequestPhoto request={request}/><div><Status tone="success">ყიდვის მოთხოვნა</Status><h3><Link href={requestHref(request.id)} title={request.title}>{request.title}</Link></h3><p>{[owner?.company || owner?.name, cities[request.city] || request.city].filter(Boolean).join(" · ")}</p><Link className="account-link" href={requestHref(request.id)}>შეთავაზება</Link></div></li>;
-  })}</ul> : <p className="account-empty">შენი დარგით ღია მოთხოვნა ჯერ არ არის — შეგიძლია სხვა მიმართულებებიც ნახო.</p>}</section>;
+  return <><section className="account-profile-status"><div><h2>დადასტურება <Status tone={me.blocked ? "neutral" : me.verified ? "success" : "warning"}>{me.blocked ? "დაბლოკილია" : me.verified ? "დადასტურებული" : "მიმდინარეობს"}</Status></h2><p>{me.verified ? "კომპანიის პროფილი დადასტურებულია." : "კომპანიის მონაცემებს ადმინისტრატორი ამოწმებს."}</p></div><div><div className="account-progress-heading"><h2>პროფილი · {completion}%</h2><Link href="/account/?tab=profile">{remaining.length ? "დასრულება" : "რედაქტირება"}</Link></div><progress aria-label="პროფილის სისრულე" value={completion} max={100}/><p>{remaining.length ? `დარჩა: ${remaining.join(", ")}` : "პროფილი სრულად შევსებულია"}</p></div></section><div className="account-quick-actions"><Button variant="secondary" href="/matching/">შესაძლებლობები</Button><Button variant="secondary" href="/onboarding/">კომპანიის მონაცემები</Button><Button variant="primary" href="/requests/"><Icon name="search"/>მოთხოვნების ნახვა</Button><Button variant="secondary" href="/companies/"><Icon name="building-2"/>კომპანიები</Button><Button variant="secondary" href="/account/?tab=saved"><Icon name="bookmark"/>შენახული</Button><Button variant="secondary" href="/account/?tab=profile"><Icon name="user-round"/>პროფილი</Button></div></>;
 }
 export function AccountPageContent() {
   const { store, ready, available } = useMarketStore();
@@ -445,20 +448,19 @@ export function AccountPageContent() {
     if (!store || !me) return null;
     const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true }) as RequestItem[];
     if (me.role === "company") {
-      const matching = (store.listRequests({ category: groupOf[me.industry || ""] || me.industry }) as RequestItem[]).filter(request => request.ownerId !== me.id).sort((a, b) => Number(b.city === me.city) - Number(a.city === me.city));
-      return { matching, myOffers: store.myOffers(me) as OfferItem[], myRequests };
+      return { myOffers: store.myOffers(me) as OfferItem[], myRequests };
     }
-    return { matching: [] as RequestItem[], myOffers: [] as OfferItem[], myRequests };
+    return { myOffers: [] as OfferItem[], myRequests };
   }, [store, me]);
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
   if (!ready || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
   if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
   const isCompany = me.role === "company";
   const activeTab: Tab = !isCompany && ["overview", "opportunities", "offers", "business"].includes(tab) ? "requests" : tab;
-  const { myRequests = [], myOffers = [], matching = [] } = data || {};
+  const { myRequests = [], myOffers = [] } = data || {};
   const engagement = store.engagement();
   const tabs: NavItem[] = [
-    ...(isCompany ? [{ key: "overview" as Tab, label: "მიმოხილვა", icon: "layout-grid" }, { key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "search", count: matching.length }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send", count: myOffers.length }] : []),
+    ...(isCompany ? [{ key: "overview" as Tab, label: "მიმოხილვა", icon: "layout-grid" }, { key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "search" }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send", count: myOffers.length }] : []),
     { key: "requests", label: "ჩემი მოთხოვნები", icon: "clipboard-list", count: myRequests.length },
     { key: "saved", label: isCompany ? "შენახული" : "შენახული კომპანიები", icon: "bookmark", count: engagement?.status === "ready" ? engagement.savedIds.length : null },
     { key: "messages", label: "მესიჯები", icon: "message-square", count: unread },
@@ -469,9 +471,9 @@ export function AccountPageContent() {
   const buying = !isCompany || activeTab === "requests";
   const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : tabs.find(item => item.key === activeTab)?.label;
   return <div className="ma-page account-page"><AccountTabs tab={activeTab} items={tabs} company={isCompany}/><div className="account-main">
-    <header className="account-page-heading"><div><h1>{title}</h1><p>{activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : activeTab === "requests" ? "მართე მოთხოვნები და მიღებული შეთავაზებები." : activeTab === "offers" ? "თვალი ადევნე გაგზავნილ შეთავაზებებს." : "შენი ანგარიშის სამუშაო სივრცე."}</p></div>{activeTab !== "overview" ? <Button variant={buying ? "primary" : "secondary"} href={buying ? "/requests/new/" : "/requests/"}><Icon name={buying ? "plus" : "search"}/>{buying ? "ახალი მოთხოვნა" : "ახალი შესაძლებლობები"}</Button> : null}</header>
-    {activeTab === "overview" ? <><CompanyWelcome me={me}/><Opportunities requests={matching} store={store} overview/></> : null}
-    {activeTab === "opportunities" ? <Opportunities requests={matching} store={store} overview={false}/> : null}
+    <header className="account-page-heading"><div><h1>{title}</h1><p>{activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : activeTab === "requests" ? "მართე მოთხოვნები და მიღებული შეთავაზებები." : activeTab === "offers" ? "თვალი ადევნე გაგზავნილ შეთავაზებებს." : "შენი ანგარიშის სამუშაო სივრცე."}</p></div>{activeTab !== "overview" ? <Button variant={buying ? "primary" : "secondary"} href={buying ? "/requests/new/" : "/matching/"}><Icon name={buying ? "plus" : "search"}/>{buying ? "ახალი მოთხოვნა" : "ახალი შესაძლებლობები"}</Button> : null}</header>
+    {activeTab === "overview" ? <><CompanyWelcome me={me}/><MatchingFeed key={me.id} compact/></> : null}
+    {activeTab === "opportunities" ? <MatchingFeed key={me.id}/> : null}
     {activeTab === "requests" ? <MyRequests key={me.id} requests={myRequests} store={store} me={me} now={now} seen={seen}/> : null}
     {activeTab === "offers" ? <SentOffers key={me.id} offers={myOffers} store={store} me={me}/> : null}
     {activeTab === "saved" ? <div className="account-panel"><EngagementPanel kind="saved"/></div> : null}

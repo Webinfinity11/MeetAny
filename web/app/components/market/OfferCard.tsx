@@ -24,6 +24,10 @@ export type OfferCardData = {
   status: string;
   isNew: boolean;
   companyId?: string;
+  updatedAt?: string;
+  paymentTerms?: string | null;
+  validUntil?: string | null;
+  commercialTerms?: string[];
   feature?: BusinessFeature;
 };
 
@@ -64,6 +68,11 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTa
         <div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div>
       </dl>
       <p className="ma-ocard__body">{o.body}</p>
+      {o.paymentTerms || o.validUntil || o.commercialTerms?.length ? <dl className="offer-terms offer-terms--compact">
+        {o.paymentTerms ? <div><dt>გადახდის პირობები</dt><dd>{o.paymentTerms}</dd></div> : null}
+        {o.validUntil ? <div><dt>ძალაშია</dt><dd>{o.validUntil}</dd></div> : null}
+        {o.commercialTerms?.length ? <div><dt>კომერციული პირობები</dt><dd>{o.commercialTerms.join(" · ")}</dd></div> : null}
+      </dl> : null}
       <footer className="request-offer-actions">
         {messageTarget ? <MessageButton {...messageTarget} variant="ghost" /> : null}
         <Button variant="secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Button>
