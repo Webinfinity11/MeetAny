@@ -1,10 +1,17 @@
 import fs from 'node:fs';
 import { Pool } from '@neondatabase/serverless';
 // Deliberately pinned to auth-probe, which also serves production. Never print connection details.
-const migration=process.argv[2]||'contact-events';
+const args=process.argv.slice(2);
+const migration=args.find(arg=>!arg.startsWith('--'))||'contact-events';
 const dryRun=process.argv.includes('--dry-run');
 const inspect=process.argv.includes('--inspect');
 const plans={
+  'offer-terms': { file: '20261007-offer-terms', tables: [], routines: ['set_offer_terms(uuid,text,date,text[],timestamptz)', 'compare_offers(uuid)'] },
+  deals: { file: '20261007-deals', tables: ['deals', 'deal_events'], routines: ['select_offer_deal(uuid,timestamptz)', 'get_deal(uuid)', 'propose_deal_terms(uuid,integer,numeric,numeric,text,integer,date,text,text,text[])', 'advance_deal(uuid,text,integer)', 'confirm_deal_terms(uuid,integer)', 'rate_deal(uuid,integer,text,integer)'] },
+  'contact-visibility': { file: '20261007-contact-visibility', tables: [], routines: ['get_deal_contact(uuid)', 'contact_for_request(uuid)', 'log_contact_event(text,uuid,text,text)'] },
+  matching: { file: '20261007-matching', tables: [], routines: ['set_matching_categories(text[],text[])', 'list_matching(uuid,text,integer,integer)'] },
+  onboarding: { file: '20261007-onboarding', tables: [], routines: ['set_onboarding_details(text,text,integer,text[],text[],text,text,text,text,text,text[],text[])', 'admin_set_document_status(uuid,text)'] },
+ 'matching-fix':{file:'20261008-matching-fix',tables:[],routines:['list_matching(uuid,text,integer,integer)']},
  'admin-overview':{file:'20261002-admin-overview',tables:[],routines:['admin_overview','admin_stats']},
  'admin-management':{file:'20261002-admin-management',tables:['moderation_audit','company_reviews','business_audit','site_content'],routines:['admin_edit_profile','admin_edit_request','admin_company_settings','admin_manage_plan','save_company_review','site_content','admin_save_site_content','admin_business_audit']},
  'company-approval':{file:'20261002-company-approval',tables:[],routines:['list_companies','company_business_features','company_products','company_distribution_profiles','company_stats','company_reviews','send_offer']},
@@ -31,10 +38,13 @@ const plans={
  'company-gallery':{file:'20260930-company-gallery',tables:[],routines:['set_my_gallery','list_companies']},
  'admin-photos':{file:'20260930-admin-photos',tables:['moderation_audit'],routines:['admin_remove_company_photo','admin_list_audit_v2']},
 };
-let pool,client,transactionOpen=false;
+const flowOrder=['offer-terms','deals','contact-visibility','matching','onboarding','matching-fix'];
+let pool,client,transactionOpen=false,current=migration;
+const completed=[];
 try {
- if(!Object.hasOwn(plans,migration)) throw Object.assign(new Error(),{code:'UNKNOWN_MIGRATION'});
- const plan=plans[migration];
+ if(args.some(arg=>arg.startsWith('--')&&!['--dry-run','--inspect'].includes(arg))||args.filter(arg=>!arg.startsWith('--')).length>1) throw Object.assign(new Error(),{code:'INVALID_ARGUMENTS'});
+ if(migration!=='flows'&&!Object.hasOwn(plans,migration)) throw Object.assign(new Error(),{code:'UNKNOWN_MIGRATION'});
+ const selected=migration==='flows'?flowOrder:[migration];
  const envFile=new URL('../.env.local',import.meta.url);
  if(fs.existsSync(envFile)) for(const line of fs.readFileSync(envFile,'utf8').split(/\r?\n/)) {
   const m=/^([A-Z0-9_]+)\s*=\s*(.*?)\s*$/.exec(line);
@@ -42,7 +52,7 @@ try {
  }
  if(!/^ep-withered-glade-b54ts1g5(?:-pooler)?\./.test(new URL(process.env.DATABASE_URL).hostname))
   throw Object.assign(new Error(),{code:'WRONG_BRANCH'});
- pool=new Pool({connectionString:process.env.DATABASE_URL,max:1});
+ pool=new Pool({connectionString:process.env.DATABASE_URL,max:1,connectionTimeoutMillis:10000,statement_timeout:30000});
  client=await pool.connect();
  if(inspect){
   const {rows:[summary]}=await client.query(`select
@@ -52,20 +62,51 @@ try {
    (select count(*)::int from public.profiles where role='company' and blocked) blocked,
    (select count(*)::int from public.profiles where role='company' and verified and not blocked) approved_public,
    (select count(*)::int from public.profiles where role='company' and not verified and not blocked) pending_unblocked`);
-  const {rows:objects}=await client.query(`select name,exists(select 1 from information_schema.routines where routine_schema='public' and routine_name=name) present from unnest($1::text[]) name`,[plan.routines]);
-  console.log({datasourcePinned:true,migration,companies:summary,routines:objects});
+  for(const name of selected) {
+   const plan=plans[name];
+   const {rows:objects}=await client.query(`select name,case when position('(' in name)>0
+    then to_regprocedure('public.'||name) is not null else exists(select 1 from information_schema.routines where routine_schema='public' and routine_name=name) end present from unnest($1::text[]) name`,[plan.routines]);
+   const {rows:tables}=await client.query(`select name,to_regclass('meetany_private.'||name) is not null present from unnest($1::text[]) name`,[plan.tables]);
+   console.log({datasourcePinned:true,migration:name,companies:summary,routines:objects,tables});
+  }
+  const {rows:[privacy]}=await client.query(`select
+   has_column_privilege('anonymous','public.profiles','phone','SELECT') anonymous_phone,
+   has_column_privilege('authenticated','public.profiles','phone','SELECT') authenticated_phone,
+   has_column_privilege('anonymous','public.profiles','email','SELECT') anonymous_email,
+   has_column_privilege('authenticated','public.profiles','email','SELECT') authenticated_email`);
+  console.log({privacy});
   throw Object.assign(new Error(),{inspected:true});
  }
- const sql=fs.readFileSync(new URL(`../../db/migrations/${plan.file||`20260923-${migration}`}.sql`,import.meta.url),'utf8');
- // Check the entire migration before its final commit on this same connection.
- // A failed contract check rolls back normal applies as well as dry runs.
- if(!/\ncommit;\s*$/.test(sql)) throw Object.assign(new Error(),{code:'NO_FINAL_COMMIT'});
- transactionOpen=true;
- await client.query(sql.replace(/\ncommit;\s*$/,'\n'));
+ const scripts=selected.map(name=>{
+  const plan=plans[name];
+  const sql=fs.readFileSync(new URL(`../../db/migrations/${plan.file||`20260923-${name}`}.sql`,import.meta.url),'utf8');
+  if((sql.match(/^begin;$/gm)||[]).length!==1||(sql.match(/^commit;$/gm)||[]).length!==1||!/\ncommit;\s*$/.test(sql)) throw Object.assign(new Error(),{code:'INVALID_TRANSACTION_WRAPPER'});
+  return [name,sql.replace(/^begin;$/m,'').replace(/\ncommit;\s*$/,'\n')];
+ });
+ await client.query('begin');transactionOpen=true;
+ await client.query("set local lock_timeout='5s'");
+ await client.query("select pg_advisory_xact_lock(hashtextextended('meetany-production-migrations',0))");
+ for(const [migration,sql] of scripts) {
+ current=migration;
+ const plan=plans[migration];
+ await client.query(sql);
  const {rows}=await client.query(`select
- (select count(*)::int from information_schema.tables where table_schema='meetany_private' and table_name=any($1::text[])) tables,
- (select count(*)::int from information_schema.routines where routine_schema='public' and routine_name=any($2::text[])) routines`,[plan.tables,plan.routines]);
+ (select count(*)::int from unnest($1::text[]) name where to_regclass('meetany_private.'||name) is not null) tables,
+ (select count(*)::int from unnest($2::text[]) name where case when position('(' in name)>0 then to_regprocedure('public.'||name) is not null else exists(select 1 from information_schema.routines where routine_schema='public' and routine_name=name) end) routines`,[plan.tables,plan.routines]);
  if(rows[0].tables!==plan.tables.length||rows[0].routines!==plan.routines.length) throw Object.assign(new Error(),{code:'MISSING_OBJECTS'});
+ if(migration==='contact-visibility') {
+  const {rows:[privacy]}=await client.query(`select
+   not has_column_privilege('anonymous','public.profiles','phone','SELECT') and
+   not has_column_privilege('authenticated','public.profiles','phone','SELECT') and
+   not has_column_privilege('anonymous','public.profiles','email','SELECT') and
+   not has_column_privilege('authenticated','public.profiles','email','SELECT') and
+   has_column_privilege('anonymous','public.profiles','company','SELECT') ok`);
+  if(!privacy.ok) throw Object.assign(new Error(),{code:'BAD_CONTACT_PRIVACY'});
+ }
+ if(migration==='matching-fix') {
+  const {rows:[check]}=await client.query(`select prosrc not like '%not me.verified%' and prosrc like '%p.verified%' ok from pg_proc where oid='public.list_matching(uuid,text,integer,integer)'::regprocedure`);
+  if(!check.ok) throw Object.assign(new Error(),{code:'BAD_MATCHING_FIX'});
+ }
  if(migration==='request-alerts-default-on') {
   const {rows:[v]}=await client.query(`select
    to_regprocedure('meetany_private.default_request_alert_preferences(public.profiles)') is not null helper,
@@ -159,7 +200,17 @@ try {
    (select prosrc like '%adminRevision%' and prosrc like '%meetany_private.moderation_audit%' and prosrc like '%meetany_private.business_audit%' from pg_proc where oid='public.admin_stats()'::regprocedure) revision`);
   if(!v.bounded_admin||!v.guest_denied||!v.admin_rpc||!v.revision) throw Object.assign(new Error(),{code:'BAD_ADMIN_OVERVIEW_CONTRACT'});
  }
+ completed.push({migration,...rows[0]});
+ }
+ current='transaction';
  await client.query(dryRun?'rollback':'commit');transactionOpen=false;
- if(dryRun)console.log(`auth-probe: ${migration} dry-run ok, objects verified, rolled back`);else console.log(`auth-probe: ${migration}, ${rows[0].tables} tables and ${rows[0].routines} RPCs verified`);
-} catch(err) {if(transactionOpen&&client)await client.query('rollback').catch(()=>{});if(!err.inspected){console.error(err.code||'MIGRATION_FAILED');process.exitCode=1;}}
+ for(const result of completed) console.log({datasourcePinned:true,...result,result:dryRun?'dry-run ok, rolled back':'apply ok, committed'});
+} catch(err) {
+ let rollbackFailed=false;
+ if(transactionOpen&&client)try{await client.query('rollback');}catch{rollbackFailed=true;}
+ if(!err.inspected){
+  const code=/^[A-Z0-9_]{2,48}$/.test(err.code||'')?err.code:'MIGRATION_FAILED';
+  console.error({migration:current,code,rollback:transactionOpen?(rollbackFailed?'unconfirmed':'confirmed'):'not needed'});process.exitCode=1;
+ }
+}
 finally {client?.release();if(pool) await pool.end();}
