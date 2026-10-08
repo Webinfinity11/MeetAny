@@ -532,8 +532,10 @@
 /* A second site-wide palette. Geometry, typography, photos and logo stay shared.
    Neutral text uses the ink scale; actions and selected controls use brand roles. */
 :root[data-theme="blue"]{
-  --theme-primary:#1F3A5F;
-  --theme-accent:var(--theme-primary);
+  /* Logo colours (owner, 2026-10-08): the logo blue leads, the logo orange-coral warms
+     ratings, deadlines, VIP and accents; avatars carry the logo blue-to-coral sweep. */
+  --theme-primary:#2B66DE;
+  --theme-accent:#F2683A;
   --theme-ink:#1B2433;
   --theme-swatch:#171717;
   --action-strong:var(--blue-600);
@@ -542,26 +544,28 @@
   --active-text:var(--blue-700);
   --active-bg:var(--blue-50);
   --nav-selected-bg:var(--blue-50);
-  --brand-panel-bg:var(--blue-900);
+  --brand-panel-bg:#162A4F;
   --inverse-text-2:color-mix(in srgb,var(--white) 80%,var(--brand-panel-bg));
   --inverse-text-3:color-mix(in srgb,var(--white) 65%,var(--brand-panel-bg));
   --inverse-border:color-mix(in srgb,var(--white) 20%,var(--brand-panel-bg));
-  --message-sent-bg:var(--blue-700);
-  --avatar-bg:var(--blue-700);
-  --warning-50:var(--blue-50);
-  --warning-100:var(--blue-100);
-  --warning-600:var(--blue-700);
-  --warning-700:var(--blue-800);
+  --message-sent-bg:var(--blue-600);
+  --logo-sky:#3AA6F2;
+  --hero-pattern:linear-gradient(color-mix(in srgb,var(--theme-primary) 8%,transparent) var(--size-1), transparent var(--size-1)), linear-gradient(90deg, color-mix(in srgb,var(--theme-primary) 8%,transparent) var(--size-1), transparent var(--size-1)), radial-gradient(ellipse 55% 70% at 0% 0%, color-mix(in srgb,var(--logo-sky) 14%,transparent), transparent 70%), radial-gradient(ellipse 50% 70% at 100% 100%, color-mix(in srgb,var(--theme-accent) 12%,transparent), transparent 70%);
+  --avatar-bg:linear-gradient(135deg,var(--logo-sky) 0%,var(--theme-primary) 55%,var(--theme-accent) 100%);
+  --warning-50:var(--orange-50);
+  --warning-100:var(--orange-100);
+  --warning-600:var(--orange-500);
+  --warning-700:var(--orange-600);
   --btn-secondary-text:var(--blue-700);
   --btn-ghost-text:var(--blue-700);
   --btn-tint-bg:var(--blue-50);
   --btn-tint-hover:var(--blue-100);
   --btn-tint-text:var(--blue-700);
-  --accent-soft:var(--blue-50);
-  --accent-text:var(--blue-700);
-  --accent-line:var(--blue-200);
-  --tier-vip-border:var(--blue-200);
-  --tier-vip-text:var(--blue-700);
+  --accent-soft:var(--orange-50);
+  --accent-text:var(--orange-600);
+  --accent-line:var(--orange-300);
+  --tier-vip-border:var(--orange-300);
+  --tier-vip-text:var(--orange-600);
   --card-hover-border:var(--blue-200);
 }
 /* Breakpoints (min-width): 480 / 768 / 1024 / 1280. Mobile values are the defaults above for

@@ -145,7 +145,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-controls .ma-field__label .ma-field__opt{margin-left:0}
 .auth-controls .ma-field__help{margin:0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--ink-500)}
 .auth-controls :is(.ma-input,.ma-select){width:100%;min-width:0;height:var(--size-48);min-height:var(--size-48);border-color:var(--ink-300);border-radius:var(--size-10);font-size:var(--size-15)}
-.auth-controls .ma-btn--block{width:100%;height:var(--size-48);min-height:var(--size-48);background:var(--ink-950);border-color:var(--ink-950);color:var(--white);font-size:var(--size-15)}
+.auth-controls .ma-btn--block{width:100%;height:var(--size-48);min-height:var(--size-48);background:var(--action-strong);border-color:var(--action-strong);color:var(--white);font-size:var(--size-15)}
 .auth-controls .ma-btn--block:hover{background:var(--ink-800)}
 .auth-controls .auth-link{display:inline-flex;align-items:center;justify-self:start;min-height:var(--tap-min);padding:0;border:0;background:none;color:var(--ink-950);font:inherit;font-size:var(--fs-sm);font-weight:var(--fw-semibold);cursor:pointer;text-underline-offset:var(--size-2)}
 .auth-controls .auth-link:hover{color:var(--ink-950);text-decoration:underline}

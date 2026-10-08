@@ -35,7 +35,7 @@
 .home-wrap { width: calc(100% - 2 * var(--gutter)); max-width: var(--container); margin-inline: auto; }
 .home-hero { position: relative; z-index: 2; background: var(--ink-50); border-bottom: var(--size-1) solid var(--ink-200); padding-block: var(--size-40); }
 /* Navy theme: a faint blueprint grid behind the hero, fading towards the edges. */
-[data-theme="blue"] .home-hero { background-color: var(--ink-50); background-image: linear-gradient(color-mix(in srgb,var(--theme-primary) 7%,transparent) var(--size-1), transparent var(--size-1)), linear-gradient(90deg, color-mix(in srgb,var(--theme-primary) 7%,transparent) var(--size-1), transparent var(--size-1)); background-size: var(--size-32) var(--size-32); background-position: center top; }
+[data-theme="blue"] .home-hero { background-color: var(--ink-50); background-image: var(--hero-pattern); background-size: var(--size-32) var(--size-32), var(--size-32) var(--size-32), 100% 100%, 100% 100%; background-position: center top; }
 [data-theme="blue"] .home-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 80% at 50% 40%, transparent 40%, var(--ink-50) 100%); }
 .hero-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--size-48); }
 .hero-copy { position: relative; z-index: 2; min-width: 0; }
