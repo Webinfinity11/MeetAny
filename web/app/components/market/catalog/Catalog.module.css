@@ -68,3 +68,43 @@
 @media (min-width: 640px) and (max-width: 1023px) { .filterModal::before { content: ""; display: block; flex: none; align-self: center; width: var(--space-10); height: var(--space-1); border-radius: var(--radius-pill); background: var(--ink-200); } }
 .fullCard .urgent { background: var(--warning-100); color: var(--warning-700); }
 .fullCard .active { background: var(--ink-100); color: var(--ink-700); }
+
+/* Request facets share their markup between the sidebar and mobile sheet. */
+.requestFilters { display: grid; gap: var(--space-8); }
+.requestFilters h3 { margin: 0 0 var(--space-3); font-size: var(--size-14); color: var(--text); }
+.requestFilters ul { list-style: none; margin: 0; padding: 0; }
+.requestFilters li + li { margin-top: var(--size-2); }
+.requestFilters .categoryRow { display: flex; width: 100%; min-height: var(--size-40); height: auto; gap: var(--size-10); padding: var(--size-8) var(--size-10); border: 0; border-radius: var(--size-8); background: transparent; box-shadow: none; color: var(--text-2); font-size: var(--size-14); font-weight: var(--fw-regular); text-align: start; white-space: normal; }
+.categoryRow > span,.filterCheck > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.categoryRow > svg { width: var(--size-17); height: var(--size-17); flex: none; }
+.categoryRow small,.filterCheck small { flex: none; color: var(--text-3); font-size: var(--size-12); font-weight: var(--fw-regular); }
+.requestFilters .categoryRow:hover { background: var(--white); }
+.requestFilters .categoryRow[aria-pressed="true"] { background: var(--action-strong); color: var(--white); font-weight: var(--fw-semibold); }
+.categoryRow[aria-pressed="true"] small { color: var(--inverse-text-2); }
+.requestFilters .subcategories { margin: var(--space-1) 0 var(--space-2) var(--space-4); }
+.filterCheck { display: flex; align-items: center; gap: var(--size-10); min-height: var(--size-36); font-size: var(--size-14); color: var(--text-2); cursor: pointer; }
+.filterCheck input { accent-color: var(--action-strong); }
+.requestSearchBar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); background: var(--white); }
+.requestVerified { position: relative; display: flex; align-items: center; gap: var(--size-10); min-height: var(--tap-min); font-size: var(--size-13); color: var(--text-2); cursor: pointer; }
+.requestVerified input { position: absolute; opacity: 0; inset: 0; }
+.switchTrack { position: relative; flex: none; width: var(--size-40); height: var(--size-24); border-radius: var(--radius-pill); background: var(--ink-300); }
+.switchTrack::after { content: ""; position: absolute; top: var(--size-2); left: var(--size-2); width: var(--size-20); height: var(--size-20); border-radius: var(--radius-pill); background: var(--white); }
+.requestVerified input:checked + .switchTrack { background: var(--action-strong); }
+.requestVerified input:checked + .switchTrack::after { left: auto; right: var(--size-2); }
+.requestVerified input:focus-visible + .switchTrack { outline: var(--size-2) solid var(--action-strong); outline-offset: var(--size-3); }
+.requestFilters + .requestVerified { margin-top: var(--space-6); padding: var(--space-3); background: var(--ink-50); border-radius: var(--size-10); }
+.requestResults { margin-bottom: var(--space-4); }
+.requestResults :global(.catalog-results-bar) { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.requestResults :global(.catalog-count) { margin: 0; }
+.requestResults :global(.catalog-results-controls) { display: flex; width: auto; margin: 0; gap: var(--space-3); }
+.requestResults :global(.catalog-active-filters) { flex-basis: 100%; }
+.requestResults :global(.catalog-filter-toggle) { display: none; }
+@media (max-width: 1023px) {
+  .requestSearchBar { flex-direction: column; align-items: stretch; }
+  .requestSearchBar .search { flex-basis: auto; }
+  .requestResults :global(.catalog-filter-toggle) { display: inline-flex; }
+  .requestFilters .categoryRow,.filterCheck { min-height: var(--tap-min); }
+}
+@media (max-width: 639px) {
+  .requestResults :global(.catalog-results-controls) { width: 100%; justify-content: space-between; }
+}

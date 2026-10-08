@@ -10,13 +10,13 @@ import { Icon } from "../Icon";
 import { EmptyState } from "../ui/Structure";
 import { SkeletonGrid } from "./Skeletons";
 import { OpportunityCard } from "./OpportunityCard";
-import { CatalogFilters, majorCities } from "./catalog/CatalogFilters";
+import { majorCities } from "./catalog/CatalogFilters";
 import styles from "./catalog/Catalog.module.css";
 import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import type { RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
-import { categories, cities, currentCategory, groupNames } from "../../lib/categories";
+import { categories, cities, currentCategory, groupNames, categoryGroups, categoryKeys, groupOf } from "../../lib/categories";
 import { CatalogSearch } from "./CatalogSearch";
 import { CatalogHeader } from "./CatalogHeader";
 import { useFilters } from "../../lib/use-filters";
@@ -159,7 +159,55 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
   ];
   const clearFilters = () => setFilters({city: "", category: "", deadline: "", verified: "", q: ""});
 
-  const requestFilters = () => <CatalogFilters category={category} city={city} deadline={deadline} verified={verified} onChange={setFilters} />;
+  // Facet counts ignore their own selection, but retain the other active filters.
+  const facetRequests = ready && available ? list({ category: "", city: "" }).filter(r =>
+    !!now && store?.requestState(r, now) === "open" && (!verified || store?.userById(r.ownerId)?.verified)
+  ) : [];
+  const matchesCity = (r: MappedRequest, value: string) => !value || (value === "other"
+    ? !majorCities.includes(r.city)
+    : value.split(",").includes(r.city) || r.city === "georgia");
+  const matchesDeadline = (r: MappedRequest, value: string) => {
+    const days = store?.daysLeft(r, now) ?? 0;
+    return value === "7" ? days <= 7 : value === "30" ? days <= 30 : value === "later" ? days > 30 : true;
+  };
+  const matchesCategory = (r: MappedRequest, value: string) => !value || categoryKeys(value).includes(r.category);
+  const facetCount = (key: "category" | "city" | "deadline", value: string) => facetRequests.filter(r =>
+    matchesCategory(r, key === "category" ? value : category) &&
+    matchesCity(r, key === "city" ? value : city) &&
+    matchesDeadline(r, key === "deadline" ? value : deadline)
+  ).length;
+  const verifiedSwitch = () => <label className={styles.requestVerified}>
+    <input type="checkbox" role="switch" checked={verified} onChange={e => setFilters({ verified: e.target.checked ? "1" : "" })} />
+    <span className={styles.switchTrack} aria-hidden="true" /><span>მხოლოდ ვერიფიცირებული</span>
+  </label>;
+  const categoryRow = (id: string, label: string, icon: string, expanded?: boolean) =>
+    <Button variant="ghost" className={styles.categoryRow} aria-pressed={category === id} aria-expanded={expanded}
+      onClick={() => setFilters({ category: category === id ? "" : id })}>
+      <Icon name={icon} /><span>{label}</span><small>{facetCount("category", id)}</small>
+    </Button>;
+  const requestFilters = () => <div className={styles.requestFilters}>
+    <section><h3>კატეგორიები</h3><ul>
+      <li>{categoryRow("", "ყველა", "layout-grid")}</li>
+      {categoryGroups.map(group => {
+        const expanded = category === group.id || groupOf[category] === group.id;
+        const hasChildren = group.items.some(([id]) => id !== group.id);
+        return <li key={group.id}>
+          {categoryRow(group.id, group.short, group.icon, hasChildren ? expanded : undefined)}
+          {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
+            <li key={id}>{categoryRow(id, label, group.icon)}</li>
+          )}</ul>}
+        </li>;
+      })}
+    </ul></section>
+    <section><h3>ადგილმდებარეობა</h3><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
+      <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={city === id}
+        onChange={() => setFilters({ city: city === id ? "" : id })} /><span>{label}</span><small>{facetCount("city", id)}</small></label></li>
+    )}</ul></section>
+    <section><h3>ვადა</h3><ul>{[["7", "7 დღემდე"], ["30", "30 დღემდე"], ["later", "30 დღეზე მეტი"]].map(([id, label]) =>
+      <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={deadline === id}
+        onChange={() => setFilters({ deadline: deadline === id ? "" : id })} /><span>{label}</span><small>{facetCount("deadline", id)}</small></label></li>
+    )}</ul></section>
+  </div>;
 
   const countLabel = !available
     ? ""
@@ -174,14 +222,15 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         description="რეალური ბიზნეს მოთხოვნები — გაუგზავნე შეთავაზება იმათ, ვისაც შენი პროდუქტი სჭირდება."
 
       />
-        <div className="catalog-workspace">
-        <aside className="catalog-sidebar" aria-label="მოთხოვნების ფილტრები">{requestFilters()}</aside>
-        <div className="catalog-main" id="request-results">
-        <div className={styles.toolbar}><div className={styles.search}><form onSubmit={e => { e.preventDefault(); document.getElementById("request-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
+        <div className={styles.requestSearchBar}><div className={styles.search}><form onSubmit={e => { e.preventDefault(); document.getElementById("request-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
           <CatalogSearch id="query" label="ძიება" placeholder="მოძებნე პროდუქტი, მომსახურება, კომპანია ან კატეგორია"
             value={query} onChange={setQuery} mode="requests" resultIds={results.map(r => r.id)}
             onCategory={value => setFilters({ category: value, q: "" })} />
-        </form></div>
+        </form></div>{verifiedSwitch()}</div>
+        <div className="catalog-workspace">
+        <aside className="catalog-sidebar" aria-label="მოთხოვნების ფილტრები">{requestFilters()}</aside>
+        <div className="catalog-main" id="request-results">
+        <div className={styles.requestResults}>
         <ResultsBar
             count={countLabel}
             items={activeItems}
@@ -224,6 +273,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         </>}
       >
         {requestFilters()}
+        {verifiedSwitch()}
       </MobileFilterSheet>
       {formOpen && <RequestFormSheet open={formOpen} initialTitle={formTitle} initialCity={formCity} initialCategory={formCategory} onClose={() => setFormOpen(false)} />}
     </div>
