@@ -473,12 +473,13 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-location-details summary:focus-visible { outline: var(--size-2) solid var(--action); outline-offset: var(--size-3); border-radius: var(--size-4); }
 .account-location-details[open] summary { margin-bottom: var(--size-16); }
 
-.company-profile-sections { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-2); }
-.company-profile-sections a { display: flex; align-items: center; justify-content: center; min-height: var(--tap-min); padding: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--radius-control); color: var(--text-2); background: var(--white); font-size: var(--fs-sm); text-align: center; text-decoration: none; }
-.company-profile-sections a[aria-current] { color: var(--selected-text); background: var(--selected-bg); border-color: var(--blue-200); font-weight: var(--fw-semibold); }
+/* Same underline tabs as the matching page: one row, scrolls on narrow screens. */
+.company-profile-sections { display: flex; gap: var(--space-5); overflow-x: auto; scrollbar-width: none; border-bottom: var(--size-1) solid var(--ink-200); }
+.company-profile-sections a { flex: none; display: flex; align-items: center; min-height: var(--tap-min); padding: var(--space-2) 0; border-bottom: var(--size-2) solid transparent; margin-bottom: calc(var(--size-1) * -1); color: var(--ink-600); font-size: var(--fs-sm); white-space: nowrap; text-decoration: none; }
+.company-profile-sections a:hover { color: var(--ink-950); }
+.company-profile-sections a[aria-current] { color: var(--ink-950); border-bottom-color: var(--action-strong); font-weight: var(--fw-semibold); }
 .company-profile-sections a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .account-row--plain > .ma-btn { justify-self: start; }
-@media(min-width:768px) { .company-profile-sections { grid-template-columns: repeat(4,minmax(0,1fr)); } }
 
 .ma-proto .account-page .company-product--preview img { width: var(--size-160); height: var(--size-120); max-width: 100%; object-fit: cover; border-radius: var(--radius-control); }
 
@@ -559,7 +560,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 
 /* AccountShell and account artboards. Keep these rules scoped to account views. */
 .ma-proto:has(.account-page),.ma-proto:has(.auth-page){background:var(--ink-50)}
-.account-page{grid-template-columns:var(--size-220) minmax(0,1fr);gap:var(--space-8);padding-top:var(--space-6)}
+.account-page{grid-template-columns:var(--size-240) minmax(0,1fr);gap:var(--space-8);padding-top:var(--space-6)}
 .account-page .account-main{gap:var(--space-6)}
 .account-records{display:grid;gap:var(--space-4);min-width:0}
 .account-filter-chips{display:flex;gap:var(--space-2);overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--space-1)}
@@ -620,7 +621,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page :is(.ma-input,.ma-select,.ma-textarea){border-radius:var(--size-8);border-color:var(--ink-300);background:var(--white);font-size:var(--fs-body)}
 .account-page :is(.ma-input,.ma-select){min-height:var(--size-48)}
 .account-page .ma-field__label{font-size:var(--fs-sm);font-weight:var(--fw-semibold);color:var(--ink-950)}
-.account-page .company-profile-sections a[aria-current]{background:var(--nav-selected-bg);color:var(--active-text);border-color:var(--action-strong)}
 .account-page .business-plan,.account-page .business-setting,.account-page .business-panel{border-radius:var(--size-12)}
 .account-page .business-panel--plans>header{display:none}
 .account-page .business-panel:not(.business-panel--plans){padding:var(--space-5);border:var(--size-1) solid var(--ink-200);background:var(--white)}
@@ -639,13 +639,13 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .account-offer-buyer{flex-wrap:wrap}
  .account-main--profile>.account-section{padding:var(--space-4)}
 }
-.account-loading-shell{display:grid;grid-template-columns:var(--size-220) minmax(0,1fr);gap:var(--space-8)}
+.account-loading-shell{display:grid;grid-template-columns:var(--size-240) minmax(0,1fr);gap:var(--space-8)}
 .account-loading-shell>aside{display:grid;gap:var(--space-5);align-content:start}
 .account-loading-shell>div{display:grid;gap:var(--space-5);min-width:0}
 @media(max-width:1023px){.account-loading-shell{grid-template-columns:minmax(0,1fr)}.account-loading-shell>aside{display:none}}
 
 /* Shared shell navigation; messages use the full desktop width. */
-@media(min-width:1024px){.account-page.account-shell.account-shell{grid-template-columns:var(--size-200) minmax(0,1fr)}}
+@media(min-width:1024px){.account-page.account-shell.account-shell{grid-template-columns:var(--size-240) minmax(0,1fr)}}
 
 @media(min-width:1024px){
  .account-page.account-shell.account-shell--messages{grid-template-columns:minmax(0,1fr)}
