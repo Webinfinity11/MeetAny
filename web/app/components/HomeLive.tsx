@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { OpportunityCard, OpportunitySkeleton } from "./market/OpportunityCard";
+import styles from "./home/HomeSections.module.css";
 import { useMarketStore } from "../lib/market-client";
-import { categories, cities, currentCategory, units } from "../lib/categories";
 import { Icon } from "./Icon";
-import { Badge } from "./ui/Badge";
 import { RequestCatalogCover } from "./market/RequestCatalogCover";
 
 export type HomeRequest = {
@@ -37,30 +36,20 @@ export function HomeRequestPhoto({ request, live = false }: { request: HomeReque
 
 export function HomeRequests() {
   const { store, ready, available, requests } = useHomeFeed();
-  // The clock is only rendered after the store has hydrated, matching the catalog's 24h rule.
   const [now] = useState(() => Date.now());
   return <div className="home-opportunities" aria-busy={!ready}>
-    {!ready ? Array.from({ length: 5 }, (_, i) => <div className="home-opportunity" key={i} aria-hidden="true">
-      <div className="home-opportunity-photo ma-skel" /><div className="home-opportunity-body"><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line" /><span className="ma-skel home-company__line home-company__line--short" /></div>
-    </div>) : !requests.length ? <p className="home-empty">{available ? "ღია მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>
-      : requests.map(r => {
-        const days = store?.daysLeft(r, now) ?? 0;
-        const age = now - Date.parse(r.createdAt);
-        return <Link className="home-opportunity" href={`/requests/view/?id=${encodeURIComponent(r.id)}`} key={r.id}>
-          <div className="home-opportunity-visual">
-            <HomeRequestPhoto request={r} />
-            {age >= 0 && age < 86400000 ? <Badge className="home-opportunity-new" status="success">ახალი</Badge> : null}
-            <div className="home-opportunity-chips">
-              <span>{categories[currentCategory(r.category)] || r.category}</span>
-              <Badge status={days <= 5 ? "warning" : "neutral"}>{days <= 0 ? "დღეს იწურება" : `${days} დღე დარჩა`}</Badge>
-            </div>
-          </div>
-          <div className="home-opportunity-body">
-            <h3>{r.title}</h3>
-            <p><Icon name="map-pin" />{cities[r.city] || r.city}</p>
-            {r.quantity != null ? <p><Icon name="package" />{r.quantity} {r.unit ? units[r.unit] || r.unit : ""}</p> : null}
-          </div>
-        </Link>;
-      })}
+    {!ready ? Array.from({ length: 5 }, (_, i) => <OpportunitySkeleton key={i} />)
+      : !requests.length ? <p className="home-empty">{available ? "ღია მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>
+      : requests.map(r => <OpportunityCard key={r.id} compact request={{ ...r, daysLeft: store?.daysLeft(r, now) ?? 0, isNew: now >= Date.parse(r.createdAt) && now - Date.parse(r.createdAt) < 86400000 }} offers={store?.offerCount(r.id)} />)}
+  </div>;
+}
+
+export function HomeTrust() {
+  const { store, ready, available } = useMarketStore();
+  const loaded = ready && available && store;
+  return <div className={styles.trust}>
+    <span><Icon name="shield-check" /><span>{loaded ? <strong>{store.listCompanies().filter((c: { verified: boolean }) => c.verified).length.toLocaleString("ka-GE")} </strong> : "— "}ვერიფიცირებული კომპანია</span></span>
+    <span><Icon name="file-text" /><span>{loaded ? <strong>{store.listRequests({ state: "open" }).length.toLocaleString("ka-GE")} </strong> : "— "}აქტიური მოთხოვნა</span></span>
+    <span><Icon name="lock-keyhole" />კონტაქტი იხსნება არჩევის შემდეგ</span>
   </div>;
 }

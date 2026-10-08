@@ -18,7 +18,7 @@ export type OnboardProfile = {
 export const documentLabels = { not_submitted: 'დოკუმენტები არ არის წარდგენილი', pending: 'დოკუმენტები განხილვაშია', approved: 'დოკუმენტები დამტკიცებულია', rejected: 'დოკუმენტები უარყოფილია' };
 const detailKeys = ['account_intent', 'employee_band', 'founded_year', 'markets', 'languages', 'legal_name', 'registration_code', 'legal_form', 'contact_position', 'website', 'business_tags', 'certificates'] as const;
 const keysByStep: Partial<Record<OnboardStep, readonly (keyof OnboardProfile)[]>> = {
-  type: ['account_intent', 'provide_categories'],
+  type: ['account_intent'],
   details: ['legal_name', 'registration_code', 'founded_year', 'legal_form', 'employee_band', 'contact_position', 'website', 'markets', 'languages', 'city', 'address', 'name'],
   profile: ['company', 'about', 'industry', 'business_tags', 'certificates'],
   provide: ['provide_categories', 'offers'], need: ['need_categories', 'seeks'],
@@ -44,6 +44,7 @@ export async function readOnboard(store: Store) {
 }
 /** Read the current raw row before full replacements; only this step's edits override it. */
 export async function saveOnboardStep(store: Store, step: OnboardStep, draft: OnboardProfile, products: Product[]) {
+  if (step === 'provide' && draft.provide_categories.length > 5) throw new Error('აირჩიეთ მაქსიმუმ 5 მიწოდების კატეგორია.');
   const current = await readOnboardProfile(store);
   if (current.id !== draft.id) throw new Error('ანგარიში შეიცვალა. განაახლეთ გვერდი.');
   const merged = { ...current };
@@ -58,7 +59,7 @@ export async function saveOnboardStep(store: Store, step: OnboardStep, draft: On
     const result = await store.updateProfile(profileInput(merged));
     if (result?.id !== current.id) throw new Error('პროფილის შენახვა ვერ დადასტურდა.');
   }
-  if (['type', 'provide', 'need'].includes(step)) {
+  if (['provide', 'need'].includes(step)) {
     if ([...merged.provide_categories, ...merged.need_categories].some(key => !Object.hasOwn(categories, key))) throw new Error('აირჩიეთ კატეგორია სიიდან.');
     const result = await store.callRpc('set_matching_categories', { p_provide: merged.provide_categories, p_need: merged.need_categories });
     if (!Array.isArray(result?.provide) || !Array.isArray(result?.need)) throw new Error('კატეგორიების შენახვა ვერ დადასტურდა.');

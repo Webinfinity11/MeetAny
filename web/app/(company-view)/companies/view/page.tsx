@@ -3,8 +3,7 @@ import { connection } from "next/server";
 import { loadPublicSnapshot } from "../../../lib/public-snapshot";
 import { CompanyProfilePageContent } from "../../../components/market/CompanyProfilePageContent";
 
-// The public snapshot renders the profile — and whether it has a phone — on the server,
-// so "დარეკვა" is in the first paint instead of after a client fetch.
+// Use the same public snapshot for SSR and the first client render.
 export default async function CompanyViewPage() {
   await connection();
   const initial = await loadPublicSnapshot();

@@ -12,7 +12,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NotificationBell } from "./market/EngagementPanels";
 import { ChatUnreadLink } from "./market/ChatPopup";
-import { groupOf } from "../lib/categories";
+import styles from "./Header.module.css";
+const h = (classes: string) => classes.split(" ").map(name => styles[name] || name).join(" ");
 import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
 import { toast } from "./Toasts";
@@ -24,8 +25,8 @@ function readRoleHint(): string {
 
 // Design: black circle with initials; an uploaded company logo still shows when one exists (Avatar falls back on load errors).
 function HeaderAvatar({ name, logoUrl }: { name: string; logoUrl?: string | null }) {
-  return logoUrl ? <Avatar name={name} logoUrl={logoUrl} size={40} className="ma-header__avatar" />
-    : <span className="ma-avatar ma-header__avatar" aria-hidden="true" title={name}>{avatarInitials(name)}</span>;
+  return logoUrl ? <Avatar name={name} logoUrl={logoUrl} size={40} className={h("ma-header__avatar")} />
+    : <span className={h("ma-avatar ma-header__avatar")} aria-hidden="true" title={name}>{avatarInitials(name)}</span>;
 }
 
 export function Header() {
@@ -49,6 +50,19 @@ export function Header() {
   }, [liveRole]);
   const role = liveRole || hint;
   const pathname = usePathname();
+  useEffect(() => {
+    if (pathname !== "/requests/" || new URLSearchParams(location.search).get("focus") !== "search") return;
+    const focusSearch = () => {
+      const input = document.querySelector<HTMLInputElement>('main input[type="search"]');
+      if (!input) return false;
+      input.focus();
+      return true;
+    };
+    if (focusSearch()) return;
+    const observer = new MutationObserver(() => { if (focusSearch()) observer.disconnect(); });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [pathname]);
   const mobile = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
@@ -94,7 +108,7 @@ export function Header() {
   useEffect(() => {
     const close = (e: PointerEvent) => { if (!dropdown.current?.contains(e.target as Node)) setAccountOpen(false); };
     document.addEventListener("pointerdown", close);
-    const media = matchMedia("(min-width:1024px)");
+    const media = matchMedia("(min-width:768px)");
     const resize = () => { if (media.matches) mobile.current?.close(); };
     media.addEventListener("change", resize);
     return () => { document.removeEventListener("pointerdown", close); media.removeEventListener("change", resize); };
@@ -106,19 +120,20 @@ export function Header() {
     catch (err) { toast((err as {userMessage?: string}).userMessage || "გასვლა ვერ შესრულდა."); }
     finally { setPending(false); }
   }
-  const identity = me ? <div className="ma-menu__identity" role="presentation"><strong>{me.company || me.name}</strong>{me.company && me.company !== me.name ? <span>{me.name}</span> : null}</div> : null;
-  const brand = <Link className="ma-header__brand" href="/" aria-label="MeetAny — მთავარი"><Logo/></Link>;
-  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "შესაძლებლობები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={cls} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
+  const identity = me ? <div className={h("ma-menu__identity")} role="presentation"><strong>{me.company || me.name}</strong>{me.company && me.company !== me.name ? <span>{me.name}</span> : null}</div> : null;
+  const brand = <Link className={h("ma-header__brand")} href="/" aria-label="MeetAny — მთავარი"><Logo size={24}/></Link>;
+  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "შესაძლებლობები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={h(cls)} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
   const isCompany = role === "company";
-  const add = <Button variant="primary" className="ma-header__cta" aria-label={isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის განთავსება"} href={isCompany ? `/requests/?category=${encodeURIComponent(groupOf[me?.industry || ""] || me?.industry || "")}` : "/requests/new/"}><Icon name={isCompany ? "search" : "plus"}/><span className="ma-header__cta-label">{isCompany ? "მოთხოვნების ნახვა" : "მოთხოვნის განთავსება"}</span><span className="ma-header__cta-short" aria-hidden="true">{isCompany ? "მოთხოვნები" : "მოთხოვნა"}</span></Button>;
+  const add = <Button variant="primary" className={h("ma-header__cta")} aria-label="მოთხოვნის განთავსება" href="/requests/new/"><Icon name="plus"/><span className={h("ma-header__cta-label")}>მოთხოვნის განთავსება</span><span className={h("ma-header__cta-short")} aria-hidden="true">მოთხოვნა</span></Button>;
   return <>
-    <header className="ma-header"><div className="ma-header__inner ma-container">
-      {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
-      <div className="ma-header__actions">
+    <header className={h("ma-header")}><div className={h("ma-header__inner ma-container")}>
+      {brand}<nav className={h("ma-header__nav")} aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
+      <div className={h("ma-header__actions")}>
+        <Link className={h("ma-header__search")} href="/requests/?focus=search" onClick={event => { if (pathname === "/requests/") { const input = document.querySelector<HTMLInputElement>('main input[type="search"]'); if (input) { event.preventDefault(); input.focus(); } } }} aria-label="მოთხოვნების ძიება"><Icon name="search"/></Link>
         <ThemeToggle />
-        {role && role !== "guest" && !isAdmin ? <div className="ma-header__updates">{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className="ma-header__slot" aria-hidden="true" /><span className="ma-header__slot" aria-hidden="true" /></>}</div> : null}
-        {role === "guest" ? <Button variant="secondary" className="ma-header__login" href="/account/">შესვლა</Button> : null}{!isAdmin ? add : null}
-        {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
+        {role && role !== "guest" && !isAdmin ? <div className={h("ma-header__updates")}>{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className={h("ma-header__slot")} aria-hidden="true" /><span className={h("ma-header__slot")} aria-hidden="true" /></>}</div> : null}
+        {role === "guest" ? <Button variant="secondary" className={h("ma-header__login")} href="/account/">შესვლა</Button> : null}{!isAdmin && !isCompany ? add : null}
+        {me ? <div ref={dropdown} className={h("ma-menu ma-header__account")} onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
           if (e.key === "Escape") {e.preventDefault(); e.stopPropagation(); setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
             e.preventDefault();
@@ -129,24 +144,24 @@ export function Header() {
             items[next]?.focus();
           }
         }}>
-          <button className={`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`} title={accountLabel} aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}>{isAdmin ? <><Icon name="shield-check"/><span className="ma-menu__label">{accountLabel}</span><Icon name="chevron-down"/></> : <><HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/><span className="ma-menu__label">{me.company || me.name}</span></>}</button>
-          <div className="ma-menu__list" id="ma-account-menu" role="menu" hidden={!accountOpen}>
+          <button className={h(`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`)} title={accountLabel} aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}>{isAdmin ? <><Icon name="shield-check"/><span className={h("ma-menu__label")}>{accountLabel}</span><Icon name="chevron-down"/></> : <><HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/><span className={h("ma-menu__label")}>{me.company || me.name}</span><Icon name="chevron-down"/></>}</button>
+          <div className={h("ma-menu__list")} id="ma-account-menu" role="menu" hidden={!accountOpen}>
             {identity}
-            {desktopLinks.map(([icon, title, href]) => <Link key={href} className="ma-menu__item" role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
-            <button className="ma-menu__item ma-menu__item--danger" role="menuitem" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button>
+            {desktopLinks.map(([icon, title, href]) => <Link key={href} className={h("ma-menu__item")} role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
+            <button className={h("ma-menu__item ma-menu__item--danger")} role="menuitem" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button>
           </div>
-        </div> : role && role !== "guest" ? <div className="ma-menu ma-header__account">
+        </div> : role && role !== "guest" ? <div className={h("ma-menu ma-header__account")}>
           {/* Same trigger as the live menu, drawn from the remembered role until the session is known. */}
-          <button className={`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`} type="button" title={accountLabel} aria-label={accountLabel} aria-busy="true" tabIndex={-1}>{isAdmin ? <><Icon name="shield-check"/><span className="ma-menu__label">{accountLabel}</span><Icon name="chevron-down"/></> : <span className="ma-avatar ma-header__avatar" aria-hidden="true"><Icon name={role === "company" ? "building-2" : "user-round"}/></span>}</button>
+          <button className={h(`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`)} type="button" title={accountLabel} aria-label={accountLabel} aria-busy="true" tabIndex={-1}>{isAdmin ? <><Icon name="shield-check"/><span className={h("ma-menu__label")}>{accountLabel}</span><Icon name="chevron-down"/></> : <span className={h("ma-avatar ma-header__avatar")} aria-hidden="true"><Icon name={role === "company" ? "building-2" : "user-round"}/></span>}</button>
         </div> : null}
       </div>
-      <button ref={opener} className="ma-header__menu-btn" aria-label="მენიუ" aria-haspopup="dialog" aria-controls="ma-mnav" aria-expanded={menuOpen} onClick={() => {mobile.current?.showModal(); setMenuOpen(true);}}><Icon name="menu"/></button>
+      <button ref={opener} className={h("ma-header__menu-btn")} aria-label="მენიუ" aria-haspopup="dialog" aria-controls="ma-mnav" aria-expanded={menuOpen} onClick={() => {mobile.current?.showModal(); setMenuOpen(true);}}><Icon name="menu"/></button>
     </div></header>
-    <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className="ma-mnav" aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
-      <div className="ma-mnav__head">{brand}<button className="ma-mnav__close" aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
-      <div className="ma-mnav__body"><nav className="ma-mnav__group" aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
-        <div className="ma-mnav__group">{me ? <div className="ma-mnav__identity">{isAdmin ? <Icon name="shield-check"/> : <HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/>} {identity}</div> : null}{mobileLinks.map(([icon, title, href]) => <Link key={href} className="ma-mnav__link" href={href}><Icon name={icon}/>{title}</Link>)}</div>
-      </div>{me ? <div className="ma-mnav__foot"><Button variant="ghost" disabled={pending} onClick={logout}><Icon name="log-out"/>ანგარიშიდან გასვლა</Button></div> : !isAdmin ? <div className="ma-mnav__foot">{add}</div> : null}
+    <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className={h("ma-mnav")} aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
+      <div className={h("ma-mnav__head")}>{brand}<button className={h("ma-mnav__close")} aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
+      <div className={h("ma-mnav__body")}><nav className={h("ma-mnav__group")} aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
+        <div className={h("ma-mnav__group")}>{me ? <div className={h("ma-mnav__identity")}>{isAdmin ? <Icon name="shield-check"/> : <HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/>} {identity}</div> : null}{mobileLinks.map(([icon, title, href]) => <Link key={href} className={h("ma-mnav__link")} href={href}><Icon name={icon}/>{title}</Link>)}</div>
+      </div>{me ? <div className={h("ma-mnav__foot")}><Button variant="ghost" disabled={pending} onClick={logout}><Icon name="log-out"/>ანგარიშიდან გასვლა</Button></div> : !isAdmin ? <div className={h("ma-mnav__foot")}>{add}</div> : null}
     </dialog>
   </>;
 }

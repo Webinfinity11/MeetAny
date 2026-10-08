@@ -1,0 +1,70 @@
+.page { min-width: 0; }
+.page:global(.catalog-page) :global(.catalog-workspace) { grid-template-columns: var(--size-220) minmax(0, 1fr); }
+.page:global(.catalog-page) :global(.catalog-sidebar) { display: block; position: sticky; top: var(--size-96); max-height: calc(100dvh - var(--size-120)); overflow-y: auto; align-self: start; }
+.page:global(.catalog-page) :global(.catalog-header) { display: block; }
+.page:global(.catalog-page) :global(.catalog-search-area) { display: none; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+.search { flex: 1 1 var(--size-240); min-width: 0; }
+.page .toolbar :global(.catalog-results-bar) { display: contents; }
+.page .toolbar :global(.catalog-results-controls) { display: flex; width: auto; gap: var(--space-3); margin: 0; }
+.page .toolbar :global(.catalog-count) { order: 3; margin: 0; }
+.page .toolbar :global(.catalog-active-filters) { flex-basis: 100%; order: 4; }
+.page .toolbar :global(.catalog-sort) { margin: 0; }
+.page .toolbar :global(.catalog-sort > label) { display: none; }
+.page .toolbar :global(.catalog-filter-toggle) { display: none; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.grid > article { min-width: 0; }
+.grid > :not(article) { grid-column: 1 / -1; }
+.filters { display: grid; gap: var(--space-6); }
+.filters h3 { margin: 0 0 var(--space-3); font-size: var(--fs-sm); }
+.group { margin-top: var(--space-4); }
+.group h4 { margin: 0 0 var(--space-2); color: var(--ink-600); font-size: var(--fs-xs); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+.filters .choice { min-height: var(--tap-min); height: auto; white-space: normal; overflow-wrap: anywhere; text-align: start; font-size: var(--fs-xs); padding: var(--space-2) var(--space-3); }
+.choice[aria-pressed="true"] { background: var(--action-strong); border-color: var(--action-strong); color: var(--white); }
+.verified { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--tap-min); padding: var(--space-3); background: var(--ink-50); border-radius: var(--radius-md); font-size: var(--fs-sm); }
+.verified input { flex: none; width: var(--size-24); height: var(--size-24); accent-color: var(--action); }
+.pagination { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); margin-top: var(--space-8); }
+.pagination a { min-width: var(--tap-min); min-height: var(--tap-min); }
+.pagination [aria-current="page"] { background: var(--selected-bg); color: var(--selected-text); }
+.fullCard p { overflow-wrap: anywhere; }
+
+.company { position: relative; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); min-width: 0; }
+.company h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--fs-body); overflow-wrap: anywhere; }
+.company h3 a { color: inherit; text-decoration: none; }
+.company h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--card-radius); }
+.company h3 a:focus-visible::after { outline: var(--size-2) solid var(--action); }
+.company h3 svg { flex: none; color: var(--info-600); }
+.logo { width: var(--size-56); height: var(--size-56); object-fit: contain; display: grid; place-items: center; background: var(--ink-100); border-radius: var(--radius-md); }
+.company p { margin: 0; color: var(--ink-600); font-size: var(--fs-sm); overflow-wrap: anywhere; }
+.description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.services { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: 0; margin: 0; list-style: none; }
+.services li { background: var(--ink-100); border-radius: var(--radius-pill); padding: var(--space-1) var(--space-2); font-size: var(--fs-xs); overflow-wrap: anywhere; }
+.company > a { position: relative; z-index: 1; margin-top: auto; }
+@media (max-width: 1023px) {
+  .page:global(.catalog-page) :global(.catalog-workspace) { grid-template-columns: minmax(0, 1fr); }
+  .page:global(.catalog-page) :global(.catalog-sidebar) { display: none; }
+  .page .toolbar :global(.catalog-filter-toggle) { display: inline-flex; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .search { flex-basis: 100%; }
+  .page .toolbar :global(.catalog-results-controls) { width: 100%; flex-wrap: wrap; justify-content: space-between; }
+  .page .toolbar :global(.catalog-sort) { flex: 0 1 auto; min-width: 0; }
+}
+
+.fullCard :global(.ma-btn) { padding-inline: var(--space-2); font-size: var(--fs-xs); min-height: var(--tap-min); }
+
+.page:global(.catalog-page) :global(.view-switch button) { min-width: var(--tap-min); min-height: var(--tap-min); }
+.page:global(.catalog-page) :global(.catalog-title) { overflow-wrap: anywhere; }
+@media (min-width: 640px) and (max-width: 1023px) { .grid :global(.ma-skel-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.sheetActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); width: 100%; }
+.sheetActions :global(.ma-btn) { min-height: var(--tap-min); white-space: normal; padding-inline: var(--space-2); font-size: var(--fs-sm); }
+.filterModal .sheetActions > :global(.ma-btn) { order: 0; }
+@media (max-width: 1023px) { .filterModal.filterModal { width: 100%; max-height: 92dvh; margin: auto 0 0; border-radius: var(--size-20) var(--size-20) 0 0; } }
+@media (min-width: 640px) and (max-width: 1023px) { .filterModal::before { content: ""; display: block; flex: none; align-self: center; width: var(--space-10); height: var(--space-1); border-radius: var(--radius-pill); background: var(--ink-200); } }
+.fullCard .urgent { background: var(--warning-100); color: var(--warning-700); }
+.fullCard .active { background: var(--ink-100); color: var(--ink-700); }

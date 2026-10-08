@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { DiscoverySearch } from "../components/DiscoverySearch";
+import styles from "../components/home/HomeSections.module.css";
+import { HomeSections } from "../components/home/HomeSections";
 import { Icon } from "../components/Icon";
 import { Button } from "../components/ui/Button";
 import { HomeBusinessScene } from "../components/HomeBusinessScene";
-import { HomeRequests } from "../components/HomeLive";
+import { HomeRequests, HomeTrust } from "../components/HomeLive";
 
 export default function HomePage() {
   return <>
     <section className="home-hero" aria-labelledby="discovery-title">
       <div className="home-wrap hero-layout">
-        <div className="hero-copy">
+        <div className={`hero-copy ${styles.heroEnter}`}>
           <p className="hero-eyebrow">BUSINESSES CONNECT. OPPORTUNITIES GROW.</p>
           <h1 id="discovery-title">დაწერე, რა სჭირდება შენს ბიზნესს.</h1>
           <p className="hero-subtitle">მიიღე შეთავაზებები რეალური კომპანიებისგან.</p>
@@ -18,7 +19,7 @@ export default function HomePage() {
             <Button size="lg" href="/requests/new/"><Icon name="plus" />მოთხოვნის განთავსება</Button>
             <Button size="lg" variant="secondary" href="/requests/">შესაძლებლობების ნახვა</Button>
           </div>
-          <DiscoverySearch />
+          <HomeTrust />
         </div>
         <HomeBusinessScene />
       </div>
@@ -30,5 +31,6 @@ export default function HomePage() {
       </div>
       <HomeRequests />
     </section>
+    <HomeSections />
   </>;
 }

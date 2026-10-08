@@ -1,4 +1,5 @@
 "use client";
+import { ChatContext, ChatMessages } from "./messaging/ChatParts";
 import { Button } from "../ui/Button";
 
 
@@ -168,7 +169,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
   const name = conversation?.otherCompany || conversation?.otherName || peer?.company || peer?.name || "მიმოწერა";
   const isCompany = peer?.role === "company" || otherId === (conversation?.companyId || target.companyId);
   const requestId = conversation?.requestId || (conversation?.contextKey && conversation.contextKey !== "general" ? conversation.contextKey : null) || target.requestId;
-  const request = requestId ? store.getRequest(requestId) : null;
+  const [now] = useState(() => Date.now());
   useEffect(() => {
     if (atBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [messages]);
@@ -181,19 +182,20 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
       <button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" title="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button>
       <div className={styles.threadContext}>
         <button type="button" className="ma-chat__close" aria-label="ყველა მიმოწერა" title="ყველა მიმოწერა" onClick={onBack}><Icon name="message-square" /></button>
-        <span className="ma-chat__context">{request ? <Link href={`/requests/view/?id=${encodeURIComponent(request.id)}`} onClick={onClose} title={request.title}>{request.title}</Link> : requestId ? "მოთხოვნის შესახებ" : "პირადი მიმოწერა"}</span>
+
         {conversation ? <Link className="ma-chat__close" href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose} aria-label="მიმოწერის სრულად გახსნა" title="მიმოწერის სრულად გახსნა"><Icon name="layout-grid" /></Link> : null}
       </div>
     </header>
+    <ChatContext store={store} requestId={requestId} companyId={conversation?.companyId || target.companyId}/>
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
-      {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : messages.map(m => <div key={m.id} className={`ma-chat__message${m.senderId === owner ? " ma-chat__message--mine" : ""}`}><span className="ma-sr-only">{m.senderId === owner ? "შენ" : name}: </span><p>{m.body}</p><time dateTime={m.createdAt}>{chatDate(m.createdAt)}</time></div>)}
+      {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : <ChatMessages messages={messages} owner={owner} name={name} now={now}/>}
     </div>
     {failed ? <div className="ma-chat__retry"><span>განახლება ვერ მოხერხდა.</span><button className="ma-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
     <form className="ma-chat__composer" onSubmit={e => { e.preventDefault(); void send(); }}>
       <label className="ma-sr-only" htmlFor="ma-chat-body">შეტყობინება</label>
       <textarea ref={input} id="ma-chat-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერე შეტყობინება…" onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(); } }}/>
       {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
-      <div className="ma-chat__composer-foot"><Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><span className="ma-sr-only">{pending ? "იგზავნება…" : "გაგზავნა"}</span><Icon name="send"/></Button></div>
+      <div className="ma-chat__composer-foot"><Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button></div>
     </form>
   </dialog>;
 }

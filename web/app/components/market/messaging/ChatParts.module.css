@@ -1,0 +1,14 @@
+.message{align-self:flex-start;max-width:85%;min-width:0;overflow-wrap:anywhere}
+.message p{margin:0;padding:var(--space-3) var(--space-4);border:var(--size-1) solid var(--ink-150);border-radius:var(--size-12);border-top-left-radius:var(--size-4);background:var(--white);color:var(--ink-900);font-size:var(--fs-sm);line-height:var(--lh-body);white-space:pre-wrap}
+.message[data-mine]{align-self:flex-end}.message[data-mine] p{border-color:var(--message-sent-bg);border-top-left-radius:var(--size-12);border-top-right-radius:var(--size-4);background:var(--message-sent-bg);color:var(--white)}
+.message time{display:block;padding-top:var(--size-4);text-align:right;color:var(--ink-500);font-size:var(--fs-xs)}
+.day{margin:0;align-self:center;color:var(--ink-500);font-size:var(--fs-xs)}
+.context{flex:none;min-width:0;padding:var(--space-3) var(--space-4);border-bottom:var(--size-1) solid var(--border);background:var(--white);color:var(--text-2);font-size:var(--fs-xs);overflow-wrap:anywhere}
+.context strong{display:block;color:var(--text);font-size:var(--fs-sm)}
+.facts{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-1)}
+.status{padding:var(--size-2) var(--space-2);border-radius:var(--radius-pill);background:var(--info-100);color:var(--info-700);font-weight:var(--fw-semibold)}
+.context nav{display:flex;flex-wrap:wrap;gap:var(--space-3)}
+.context a{display:inline-flex;align-items:center;min-height:var(--tap-min);color:var(--action);font-weight:var(--fw-medium)}
+.empty{display:grid;justify-items:center;gap:var(--space-3);padding:var(--space-8) var(--space-5);text-align:center;border:var(--size-1) dashed var(--border-strong);border-radius:var(--radius-lg);background:var(--white)}
+.empty>span{display:grid;place-items:center;width:var(--size-48);height:var(--size-48);border-radius:var(--radius-pill);background:var(--bg-subtle);color:var(--text-3)}
+.empty h2{margin:0;font-size:var(--fs-h3)}.empty p{margin:0;max-width:var(--size-420);font-size:var(--fs-sm);color:var(--text-3)}

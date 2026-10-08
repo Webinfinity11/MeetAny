@@ -6,6 +6,7 @@ import { Button } from "../ui/Button";
 import { CustomSelect } from "../ui/CustomSelect";
 import { ProductCard, type ProductCardData } from "./ProductCard";
 import { ListSkeleton } from "./Skeletons";
+import styles from "./company/CompanyProfile.module.css";
 import { toast } from "../Toasts";
 export function CompanyProducts({companyId,edit=false,fallback=[]}:{companyId:string;edit?:boolean;fallback?:ProductCardData[]}) {
  const {store,ready}=useMarketStore();
@@ -18,7 +19,9 @@ export function CompanyProducts({companyId,edit=false,fallback=[]}:{companyId:st
  const loaded = resource.data || [];
  const products = [...loaded, ...fallback.filter(item => !loaded.some(product => product.name === item.name))];
  if(!products.length)return null;
- return <section className="company-detail-section"><h2>პროდუქტები და მომსახურება</h2><div className="company-product-grid">{products.map((product,i)=><ProductCard key={`${i}:${product.name}`} {...product}/>)}</div></section>;
+ return <section className="company-detail-section"><h2 className="detail-section-title">რას ვთავაზობთ</h2>
+ {products.some(product => product.photoUrl) ? <div className={styles.products}>{products.filter(product => product.photoUrl).map((product,i)=><ProductCard key={`${i}:${product.name}`} {...product}/>)}</div> : null}
+ <div className={styles.chips}>{products.filter(product => !product.photoUrl).map((product,i)=><span key={`${i}:${product.name}`}>{product.name}{product.note ? ` · ${product.note}` : ""}</span>)}</div></section>;
 }
 function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(items:ProductCardData[])=>void}) {
  const {store}=useMarketStore();const [items,setItems]=useState(initial),[pending,setPending]=useState(false),[error,setError]=useState(""),[saved,setSaved]=useState(false);

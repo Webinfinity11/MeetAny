@@ -14,13 +14,13 @@ export type Deal = {
   rating: number | null; review: string | null; rated_at: string | null;
   events?: { id: string; actor_id: string; action: string; revision: number; created_at: string }[];
 };
-export type DealContact = { id: string; name: string; company: string; phone: string | null; email: string | null };
+export type DealContact = { id: string; name: string; company: string; phone: string | null; email: string | null; contact_position?: string | null };
 export type ComparedOffer = {
   id: string; request_id: string; company_id: string; company: string; city: string; verified: boolean;
   price: number | null; price_type: string; total_gel: number | null; best_price: boolean; fastest: boolean;
   delivery_days: number | null; vat_included: boolean; delivery_included: boolean; body: string;
   status: string; eligible: boolean; valid_until: string | null; payment_terms: string | null;
-  commercial_terms: string[]; updated_at: string;
+  commercial_terms: string[]; updated_at: string; created_at?: string;
 };
 export type DealTermsInput = {
   p_total_price: number; p_quantity: number; p_unit: string; p_delivery_days: number;

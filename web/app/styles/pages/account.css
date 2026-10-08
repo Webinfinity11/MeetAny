@@ -6,18 +6,11 @@
 :is(.account-page,.auth-page) .ma-tab[aria-current="page"]{background:transparent;border:0;color:var(--text);font-weight:var(--fw-semibold)}
 :is(.account-page,.auth-page) .ma-tab[aria-current="page"]::after{background:var(--action)}
 .ma-proto :is(.account-page,.auth-page)>.r2-band{border-bottom:0;padding-bottom:var(--space-2);margin-bottom:0}
-.account-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-8);align-items:start}
 .account-profile{display:grid;gap:var(--space-4);align-content:start;min-width:0}
 .ma-proto .account-profile .ma-avatar{width:calc(var(--space-12) + var(--space-2));height:calc(var(--space-12) + var(--space-2));border-radius:var(--radius-md);background:var(--avatar-bg);color:var(--avatar-text);font-size:var(--fs-title);font-weight:var(--fw-semibold)}
 .ma-proto .account-page :is(.account-profile__name,.account-row__title){margin:0;font-size:var(--fs-title);line-height:var(--lh-title);font-weight:var(--fw-semibold);color:var(--text);font-feature-settings:var(--catalog-title-case);letter-spacing:normal;overflow-wrap:anywhere}
 .account-profile__role,.account-row__meta,.account-hint,.account-empty{max-width:none;margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);overflow-wrap:anywhere}
 .account-empty{font-size:var(--fs-body);line-height:var(--lh-body)}
-.account-kv{display:grid;margin:0}
-.account-kv>div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-3);padding-block:var(--space-2);border-top:var(--size-1) solid var(--border-subtle);font-size:var(--fs-sm);line-height:var(--lh-sm)}
-.account-kv>div:last-child{border-bottom:var(--size-1) solid var(--border-subtle)}
-.account-kv dt{color:var(--text-3)}
-.account-kv dd{margin:0;text-align:right;color:var(--text);overflow-wrap:anywhere}
-.account-profile__links{display:flex;flex-wrap:wrap;gap:0 var(--space-5);margin-top:calc(-1 * var(--space-2))}
 .account-main,.account-wide{display:grid;gap:var(--space-10);align-content:start;min-width:0}
 .account-section{display:grid;gap:var(--space-3);min-width:0}
 .account-page .account-section__title{margin:0;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-bold);color:var(--text)}
@@ -57,7 +50,6 @@
 .account-coords{margin:0;padding:0;border:0;min-width:0;gap:var(--space-2)}
 .account-coords__help{margin:0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
 @media(min-width:1024px){
- .account-layout{grid-template-columns:calc(var(--space-24) * 3 + var(--space-3)) minmax(0,1fr);gap:var(--space-10)}
  .account-contact>.ma-field:nth-child(2):last-child{grid-column:span 2}
  .account-coords .ma-form__row--2{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
@@ -178,12 +170,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .ma-proto .account-page>.r2-band{padding-top:var(--space-8);padding-bottom:var(--space-5)}
 .account-page .account-tabs{gap:var(--space-7);margin-bottom:var(--space-8)}
 .account-page .account-tabs .ma-tab{min-height:var(--size-52);padding-inline:var(--space-2)}
-.account-layout{gap:var(--space-8)}
 .account-profile{padding:var(--space-6);gap:var(--space-5);border:var(--size-1) solid var(--card-border);border-radius:var(--card-radius);background:var(--white);box-shadow:var(--card-shadow)}
-.account-profile__role{margin-top:var(--space-2);line-height:1.7}
-.account-kv>div{grid-template-columns:minmax(0,1fr);gap:var(--space-1);padding-block:var(--space-3)}
-.account-kv dd{text-align:left;line-height:1.7}
-.account-profile__links{display:grid;gap:var(--space-2);margin:0}
 .account-main{gap:var(--space-6)}
 .account-main>.account-section{padding:var(--space-8);gap:var(--space-5);border:var(--size-1) solid var(--card-border);border-radius:var(--card-radius);background:var(--white);box-shadow:var(--card-shadow)}
 .account-section__head{gap:var(--space-3) var(--space-5)}
@@ -191,7 +178,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-row__main{display:grid;gap:var(--space-2)}
 .account-row__meta,.account-empty{line-height:1.75}
 .account-empty-block{gap:var(--space-3);padding-block:var(--space-2)}
-@media(min-width:1024px){.account-layout{grid-template-columns:var(--size-280) minmax(0,1fr);gap:var(--space-8)}}
 @media(max-width:767px){
  .ma-proto .account-page>.r2-band{padding-top:var(--space-5);padding-bottom:var(--space-4)}
  .account-page .account-tabs{gap:var(--space-5);margin-bottom:var(--space-6)}
@@ -457,10 +443,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 }
 
 /* Overview without the duplicate profile card: one column, capped width */
-.account-layout--single {
-  grid-template-columns: minmax(0, 1fr) !important;
-  max-width: var(--size-960);
-}
 /* Rows: plain dividers, no rounded boxes */
 .account-page .account-row {
   border-radius: 0;
@@ -498,92 +480,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
   grid-column: 2;
   min-width: 0;
 }
-.account-nav {
-  grid-column: 1;
-  grid-row: 1 / span 20;
-  position: sticky;
-  top: calc(var(--header-h) + var(--space-6));
-  display: grid;
-  gap: var(--space-4);
-}
-.account-nav__who {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-width: 0;
-}
-.account-nav__who .ma-avatar {
-  width: var(--size-52);
-  height: var(--size-52);
-  border-radius: 50%;
-  flex: none;
-}
-.account-nav__who > div {
-  min-width: 0;
-}
-.account-nav__name {
-  margin: 0;
-  font-size: var(--fs-title);
-  line-height: var(--lh-title);
-  font-weight: var(--fw-bold);
-  overflow-wrap: anywhere;
-}
-.account-nav__role {
-  margin: 0;
-  font-size: var(--fs-sm);
-  color: var(--text-3);
-}
-.account-nav__public {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  color: var(--text-link);
-  text-decoration: none;
-}
-.account-nav__public .icon { width: var(--size-16); height: var(--size-16); }
-.account-nav__public:hover { text-decoration: underline; }
-.account-nav__list {
-  display: grid;
-  gap: var(--size-2);
-  padding-top: var(--space-4);
-  border-top: var(--size-1) solid var(--border-subtle);
-}
-.account-nav__list a {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-height: var(--size-44);
-  padding: 0 var(--space-3);
-  border-radius: var(--size-10);
-  color: var(--text-2);
-  font-size: var(--fs-body);
-  font-weight: var(--fw-medium);
-  text-decoration: none;
-  transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
-}
-.account-nav__list a .icon { width: var(--size-20); height: var(--size-20); flex: none; }
-.account-nav__list a:hover { background: var(--bg-subtle); color: var(--text); }
-.account-nav__list a[aria-current="page"] {
-  background: var(--selected-bg);
-  color: var(--selected-text);
-  font-weight: var(--fw-semibold);
-}
-.account-nav__count {
-  margin-left: auto;
-  min-width: var(--size-24);
-  padding: 0 var(--size-7);
-  border-radius: var(--size-999);
-  background: var(--bg-muted);
-  color: var(--text-2);
-  font-size: var(--fs-xs);
-  line-height: var(--size-22);
-  font-weight: var(--fw-semibold);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-.account-nav__count.is-alert { background: var(--action); color: var(--white); }
 
 /* The content column fills its width; cards no longer capped short of the page edge. */
 .account-page .account-layout--single,
@@ -612,22 +508,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
     padding-top: var(--space-6);
   }
   .account-page > :not(.account-nav) { grid-column: 1; }
-  .account-nav {
-    grid-row: auto;
-    position: static;
-    margin-bottom: var(--space-5);
-  }
-  .account-nav__list {
-    display: flex;
-    gap: var(--space-1);
-    margin: 0 calc(-1 * var(--gutter));
-    padding: var(--space-3) var(--gutter) var(--space-1);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .account-nav__list a { flex: none; font-size: var(--fs-sm); }
 }
-@media (prefers-reduced-motion: reduce) { .account-nav__list a { transition: none; } }
 
 /* Company gallery field: up to 8 photos, the first leads the public gallery and the catalog card. */
 .gallery-field__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-3)}
@@ -668,28 +549,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .ma-proto .account-page .company-product--preview img { width: var(--size-160); height: var(--size-120); max-width: 100%; object-fit: cover; border-radius: var(--radius-control); }
 
 /* A clear starting point, profile status and a useful next step. */
-.account-welcome { display: grid; gap: var(--space-5); min-width: 0; }
-.account-welcome__intro { display: grid; gap: var(--space-2); }
-.account-welcome__eyebrow { margin: 0; color: var(--text-3); font-size: var(--fs-sm); }
-.account-welcome__intro h1 { margin: 0; font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: var(--fw-bold); overflow-wrap: anywhere; }
-.account-welcome__intro > p:last-child { max-width: 64ch; margin: 0; font-size: var(--fs-body); color: var(--text-2); }
-.account-welcome__stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-3); }
-.account-welcome__stats a { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--space-2) var(--space-3); min-width: 0; padding: var(--space-4); border: var(--size-1) solid var(--card-border); border-radius: var(--radius-md); background: var(--white); color: var(--text); text-decoration: none; }
-.account-welcome__stats .icon { width: var(--size-20); height: var(--size-20); color: var(--action); }
-.account-welcome__stats strong { font-size: var(--fs-h2); line-height: var(--lh-h2); font-variant-numeric: tabular-nums; }
-.account-welcome__stats span { grid-column: 1 / -1; color: var(--text-2); font-size: var(--fs-sm); }
-.account-welcome__stats a:hover { border-color: var(--border-strong); background: var(--bg-subtle); }
-.account-welcome__stats a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-.account-next-step { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); border-radius: var(--radius-md); background: var(--bg-subtle); }
-.account-next-step > div { flex: 1; min-width: 0; }
-.account-next-step > .icon-tile { flex: none; width: var(--size-44); height: var(--size-44); }
-.account-next-step > .icon-tile .icon { width: var(--size-24); height: var(--size-24); color: var(--action); }
-.account-next-step strong { display: block; font-size: var(--fs-sm); }
-.account-next-step p { max-width: 65ch; margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--text-2); }
-.account-next-step > .ma-btn { flex: none; }
-.account-nav__verification { display: inline-flex; align-items: center; gap: var(--space-1); margin-top: var(--space-1); color: var(--text-3); font-size: var(--fs-xs); }
-.account-nav__verification[data-verified] { color: var(--text-link); }
-.account-nav__verification .icon { width: var(--size-14); height: var(--size-14); flex: none; }
 .account-wide > .inbox--empty { display: block; height: auto; min-height: 0; padding: var(--space-6); }
 .inbox-section-head { display: grid; gap: var(--space-1); padding-bottom: var(--space-4); border-bottom: var(--size-1) solid var(--border-subtle); }
 .inbox-section-head h1 { margin: 0; font-size: var(--fs-h2); line-height: var(--lh-h2); }
@@ -699,12 +558,6 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .inbox-empty-state .account-empty { max-width: 48ch; }
 .inbox-empty-state__tip { max-width: 45ch; margin: var(--space-3) 0 0; color: var(--text-3); font-size: var(--fs-xs); }
 @media(max-width:767px) {
- .account-welcome__stats { gap: var(--space-2); }
- .account-welcome__stats a { grid-template-columns: 1fr; gap: var(--space-1); padding: var(--space-3); }
- .account-welcome__stats span { font-size: var(--fs-xs); }
- .account-next-step { align-items: flex-start; flex-wrap: wrap; gap: var(--space-3); }
- .account-next-step > div { flex-basis: calc(100% - var(--size-56)); }
- .account-next-step > .ma-btn { margin-left: 0; max-width: 100%; white-space: normal; }
  .account-wide > .inbox--empty { padding: var(--space-4); }
  .inbox-empty-state { padding: var(--space-8) 0; }
  .inbox-empty-state > .ma-btn { width: 100%; white-space: normal; }
@@ -762,42 +615,18 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 @media(max-width:767px){.business-membership{flex-wrap:wrap}.business-panel--plans .business-plan{padding:var(--space-4)}}
 
 /* Sent offers: amount and decision stay visible beside the request. */
-.account-offers__head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-2)}
-.account-offers__total{color:var(--text-3);font-size:var(--fs-sm);line-height:var(--lh-sm);font-variant-numeric:tabular-nums}
-.account-offer-filters{display:flex;flex-wrap:wrap;gap:var(--space-1);padding-bottom:var(--space-2);border-bottom:var(--size-1) solid var(--border-subtle)}
-.account-offer-filters .ma-btn{min-height:var(--tap-min);padding-inline:var(--space-3);border-radius:var(--size-6);font-size:var(--fs-sm)}
-.account-offer-filters .ma-btn[aria-pressed=true]{color:var(--action);background:var(--selected-bg)}
 .account-page .account-offer{grid-template-columns:minmax(0,1fr) var(--size-144) var(--size-160);align-items:center;gap:var(--space-4);padding-block:var(--space-3)}
 .ma-proto .account-page .account-offer .account-row__title{font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold)}
 .account-offer .account-row__main{gap:var(--space-1)}
 .account-offer .account-row__meta{font-size:var(--fs-xs);line-height:var(--lh-xs)}
-.account-offer__terms{display:grid;gap:var(--space-half);font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3);font-variant-numeric:tabular-nums}
-.account-offer__terms strong{font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);color:var(--text);overflow-wrap:anywhere}
-.account-offer__actions{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-3);font-size:var(--fs-xs);line-height:var(--lh-xs)}
-.account-offer__actions .account-link{gap:var(--space-1);font-size:var(--fs-xs);line-height:var(--lh-xs);margin-block:0}
-.account-offer__actions .account-link svg{width:var(--size-14);height:var(--size-14)}
 .account-offer .account-status[data-tone=open]::before{background:var(--ink-300)}
-.account-offers__empty{display:grid;justify-items:start;gap:var(--space-3);padding-block:var(--space-4)}
 @media(max-width:1023.98px){.account-page .account-offer{grid-template-columns:minmax(0,1fr) var(--size-128) var(--size-144);gap:var(--space-3)}}
-@media(max-width:767.98px){.account-page .account-offer{grid-template-columns:minmax(0,1fr) auto;gap:var(--space-3);padding-block:var(--space-4)}.account-offer .account-row__main{grid-column:1/-1}.account-offer__actions{display:grid;justify-items:end;text-align:right;gap:var(--space-1)}.account-offer__actions .account-link{justify-self:end}.account-offer-filters .ma-btn{padding-inline:var(--space-2)}}
+@media(max-width:767.98px){.account-page .account-offer{grid-template-columns:minmax(0,1fr) auto;gap:var(--space-3);padding-block:var(--space-4)}.account-offer .account-row__main{grid-column:1/-1}}
 
 /* AccountShell and account artboards. Keep these rules scoped to account views. */
 .ma-proto:has(.account-page),.ma-proto:has(.auth-page){background:var(--ink-50)}
 .account-page{grid-template-columns:var(--size-220) minmax(0,1fr);gap:var(--space-8);padding-top:var(--space-6)}
 .account-page .account-main{gap:var(--space-6)}
-.account-page>.account-nav{grid-row:auto}
-.account-space{display:flex;gap:var(--space-1);padding:var(--space-1);border-radius:var(--size-10);background:var(--ink-150);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
-.account-space>a,.account-space>strong{flex:1;text-align:center;padding:var(--space-2);border-radius:var(--size-8);color:var(--ink-600);text-decoration:none}
-.account-space>a[aria-current],.account-space>strong{background:var(--nav-selected-bg);color:var(--active-text);box-shadow:var(--card-shadow)}
-.account-page .account-nav__list{border:0;padding-top:0}
-.account-page .account-nav__list a{font-size:var(--fs-sm);gap:var(--space-2);border-radius:var(--size-8)}
-.account-page .account-nav__list a[aria-current]{background:var(--nav-selected-bg);color:var(--active-text);box-shadow:var(--card-shadow);font-weight:var(--fw-bold)}
-.account-page .account-nav__count{min-width:0;padding:0;background:transparent;color:var(--ink-400);font-size:var(--fs-xs)}
-.account-page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-4);min-width:0}
-.account-page-heading>div{min-width:0}
-.account-page-heading h1{margin:0;font-size:var(--size-30);line-height:1.25;font-weight:var(--fw-bold);color:var(--ink-950);overflow-wrap:anywhere}
-.account-page-heading p{margin:var(--space-2) 0 0;color:var(--ink-600);font-size:var(--fs-body)}
-.account-page-heading>.ma-btn{flex:none}
 .account-records{display:grid;gap:var(--space-4);min-width:0}
 .account-filter-chips{display:flex;gap:var(--space-2);overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--space-1)}
 .account-filter-chips>.ma-btn{flex:none;min-height:var(--size-36);border-radius:var(--size-999);font-size:var(--fs-sm);white-space:nowrap}
@@ -865,16 +694,9 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 @media(min-width:1024px){.account-offers-layout--detail{grid-template-columns:minmax(0,1fr) var(--size-380)}}
 @media(max-width:1023px){
  .account-page{grid-template-columns:minmax(0,1fr);gap:var(--space-5)}
- .account-page>.account-nav{min-width:0;margin:0}
- .account-page .account-nav__list{gap:var(--space-5);margin:0;padding:0;border-bottom:var(--size-1) solid var(--ink-200)}
- .account-page .account-nav__list a{padding:var(--space-2) 0;border-radius:0;border-bottom:var(--size-2) solid transparent;white-space:nowrap}
- .account-page .account-nav__list a[aria-current]{border-bottom-color:var(--action-strong);background:transparent;box-shadow:none}
- .account-page .account-nav__list .icon,.account-page .account-nav__count{display:none}
  .account-offer-detail{display:none}
 }
 @media(max-width:767px){
- .account-page-heading{align-items:flex-start;flex-direction:column}
- .account-page-heading h1{font-size:var(--size-26)}
  .account-request-card{grid-template-columns:minmax(0,1fr);gap:var(--space-3)}
  .account-request-card>.ma-btn{width:100%}
  .account-profile-status,.account-recommendations{grid-template-columns:minmax(0,1fr)}

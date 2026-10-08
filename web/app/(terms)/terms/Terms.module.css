@@ -1,0 +1,15 @@
+.page { width: calc(100% - var(--gutter) * 2); max-width: var(--size-760); margin-inline: auto; padding-block: var(--size-48) var(--size-64); overflow-wrap: anywhere; }
+.page h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); margin: 0; }
+.lead { color: var(--text-2); margin-block: var(--size-16) var(--size-24); line-height: 1.7; }
+.contents { display: grid; gap: var(--size-4); padding: var(--size-20); background: var(--bg-subtle); border-radius: var(--card-radius); }
+.contents a { display: flex; align-items: center; min-height: var(--tap-min); color: var(--text-link); font-size: var(--size-14); }
+.page section { padding: var(--size-24); margin-top: var(--size-24); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); scroll-margin-top: var(--size-96); }
+.page h2 { font-size: var(--fs-h3); line-height: var(--lh-h3); margin: 0 0 var(--size-16); }
+.page section p, .page ul { margin: 0; color: var(--text-2); line-height: 1.7; }
+.page ul { padding-left: var(--size-20); }
+.page li + li { margin-top: var(--size-12); }
+.page a:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+@media (max-width: 639px) {
+  .page { padding-block: var(--size-32) var(--size-48); }
+  .page section, .contents { padding: var(--size-20); }
+}

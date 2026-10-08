@@ -127,3 +127,32 @@
 .navigation button[data-complete] > span { background: var(--success-50); border-color: var(--success-100); color: var(--success-700); }
 .navigation button > span svg { width: var(--space-4); height: var(--space-4); }
 .mobileProgress button[data-complete] span { background: var(--success-600); }
+
+.fieldError { display: block; color: var(--danger-700); margin-top: var(--space-2); }
+.page [aria-invalid=true] { border-color: var(--danger-700); }
+.optional summary, .mobilePreview summary { cursor: pointer; min-height: var(--space-control); padding: var(--space-3); font-weight: 600; }
+.optional, .mobilePreview { border: var(--space-hairline) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); }
+.optional .card { border: 0; }
+.mobilePreview { display: none; }
+.thumbnails { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.thumbnails img { width: var(--space-16); height: var(--space-12); border-radius: var(--radius-md); object-fit: cover; }
+.consent { display: flex; align-items: flex-start; gap: var(--space-3); min-height: var(--space-control); line-height: 1.6; }
+.consent input { flex: none; margin-top: var(--space-1); width: var(--space-5); height: var(--space-5); accent-color: var(--action); }
+.textButton { border: 0; background: none; padding: var(--space-2) 0; color: inherit; font: inherit; text-decoration: underline; min-height: var(--space-control); cursor: pointer; }
+.content, .preview { overflow-wrap: anywhere; }
+@media (min-width: 1024px) {
+  .columns { flex-wrap: nowrap; }
+  .content { flex-basis: 0; }
+  .aside { flex: 0 0 30%; }
+}
+@media (max-width: 1023px) {
+  .columns { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .desktopPreview { display: none; }
+  .mobilePreview { display: block; }
+  .mobilePreview .preview { border: 0; }
+  .actions { position: sticky; bottom: 0; z-index: 2; background: var(--ink-50); padding-bottom: max(var(--space-4), env(safe-area-inset-bottom)); }
+}
+@media (max-width: 639px) {
+  .header > div { flex-wrap: wrap; height: auto; min-height: var(--space-16); padding-block: var(--space-2); gap: var(--space-2); }
+  .saveHint { display: block; order: 4; flex-basis: 100%; font-size: var(--fs-xs); }
+}

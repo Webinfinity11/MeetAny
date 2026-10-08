@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { ProgressBar } from "../ProgressBar";
 
 type SkeletonProps = { compact?: boolean; label?: string };
@@ -63,4 +63,11 @@ export function ProfileSkeleton({ compact, label = "კომპანიის 
       <div className="ma-loading__panel"><Copy /><Line kind="btn" /><Line kind="btn" /></div>
     </div>
   </Frame>;
+}
+
+export function CardSkeleton() {
+  return <div className="ma-skel-card" aria-hidden="true"><div className="ma-skel ma-skel-card__photo" /><div className="ma-skel-card__body"><Line kind="title" /><Line kind="w40" /><Line kind="w60" /><div className="ma-skel-card__actions"><Line kind="btn" /><Line kind="btn" /></div></div></div>;
+}
+export function SkeletonGrid({ count = 3, columns = 3 }: { count?: number; columns?: number }) {
+  return <div className="ma-skel-grid" role="status" aria-busy="true" aria-label="იტვირთება" style={{ "--skeleton-columns": Math.max(1, columns) } as CSSProperties}>{Array.from({ length: count }, (_, index) => <CardSkeleton key={index} />)}</div>;
 }

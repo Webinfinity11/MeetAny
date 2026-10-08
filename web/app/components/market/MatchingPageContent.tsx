@@ -6,7 +6,7 @@ import { useMarketStore } from '../../lib/market-client';
 import { useUnreadMessageCount } from '../../lib/chat-client';
 import '../../styles/pages/account.css';
 import { MatchingFeed } from './MatchingFeed';
-import { validRequestId } from '../../lib/matching-client';
+import Link from 'next/link';
 import styles from './Matching.module.css';
 
 export function MatchingPageContent() {
@@ -24,5 +24,7 @@ export function MatchingPageContent() {
     { key: 'profile', label: company ? 'კომპანიის პროფილი' : 'პროფილი', icon: 'user-round' },
   ];
   const requestId = params.get('requestId') || undefined;
-  return <div className={`ma-page account-page ${styles.page}`}><AccountTabs tab="opportunities" items={items} company={company}/><div className={styles.main}><header><h1>{requestId ? 'შესაბამისი მომწოდებლები' : 'თქვენთვის შერჩეული'}</h1><p>{requestId ? 'კომპანიები ამ მოთხოვნის კატეგორიისა და ქალაქის მიხედვით.' : 'ღია მოთხოვნები თქვენი კომპანიის მიწოდების კატეგორიებით.'}</p></header>{requestId && !validRequestId(requestId) ? <p role="alert">მოთხოვნის მისამართი არასწორია.</p> : <MatchingFeed key={requestId || 'feed'} requestId={requestId}/>}</div></div>;
+  const request = requestId ? store?.getRequest(requestId) : null;
+  const ownRequest = request?.ownerId === me?.id ? request : null;
+  return <div className={`ma-page account-page ${styles.page}`}><AccountTabs tab="opportunities" items={items} company={company}/><div className={styles.main}><header><h1>{requestId ? (ownRequest ? `მომწოდებლები მოთხოვნისთვის: ${ownRequest.title}` : 'შესაბამისი მომწოდებლები') : 'შესაბამისი შესაძლებლობები'}</h1><p>{requestId ? 'კომპანიები ამ მოთხოვნის კატეგორიისა და ქალაქის მიხედვით.' : <>მოთხოვნები თქვენი კატეგორიებისა და ქალაქის მიხედვით. <Link href="/onboarding/?step=provide">პროფილის განახლება</Link></>}</p></header><MatchingFeed key={requestId || 'feed'} requestId={requestId}/></div></div>;
 }

@@ -7,7 +7,7 @@ import { ListSkeleton } from './Skeletons';
 import type { OfferCardData } from './OfferCard';
 import { useFieldErrors, type FieldErrors } from './fieldErrors';
 import { Button } from '../ui/Button';
-import { CustomSelect } from '../ui/CustomSelect';
+import { money } from '../../lib/deal-client';
 import { Icon } from '../Icon';
 import { toast } from '../Toasts';
 import styles from './MakeOffer.module.css';
@@ -16,9 +16,11 @@ type Values = { body: string; price: string; priceType: string; vatIncluded: boo
 type PendingTerms = { id: string; updatedAt: string; terms: OfferTerms };
 const valuesFrom = (o?: Partial<StoredOffer> | OfferCardData): Values => ({ body: o?.body || '', price: o?.price != null ? String(o.price) : '', priceType: o?.priceType || 'negotiable', vatIncluded: !!o?.vatIncluded, deliveryIncluded: !!o?.deliveryIncluded, deliveryDays: o?.deliveryDays != null ? String(o.deliveryDays) : '', paymentTerms: o?.paymentTerms || '', validUntil: o?.validUntil || '', commercialTerms: o?.commercialTerms?.join('\n') || '' });
 
-export function SendOfferForm({ requestId, existing, onDone, onCancel }: { requestId: string; existing?: OfferCardData; onDone: () => void; onCancel: () => void }) {
+export function SendOfferForm({ requestId, existing, onDone, onCancel, standalone = false }: { requestId: string; existing?: OfferCardData; standalone?: boolean; onDone: (editing: boolean) => void; onCancel: () => void }) {
   const { store, sessionReady } = useMarketStore();
   const [values, setValues] = useState<Values>(() => valuesFrom(existing));
+  const [customTerm, setCustomTerm] = useState('');
+  const [otherPayment, setOtherPayment] = useState(false);
   const [loaded, setLoaded] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
@@ -83,7 +85,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel }: { reque
     if (!store || busy.current || !key || loaded !== key || conflict || completed) return;
     const errors: FieldErrors = {};
     if (values.body.trim().length < 10 || values.body.length > 2000) errors['of-body'] = 'აღწერა უნდა შეიცავდეს 10–2000 სიმბოლოს.';
-    if (values.deliveryDays.trim() && (!Number.isInteger(Number(values.deliveryDays)) || Number(values.deliveryDays) < 0 || Number(values.deliveryDays) > 365)) errors['of-deliveryDays'] = 'მიუთითეთ 0–365 დღე.';
+    if (!values.deliveryDays.trim() || (!Number.isInteger(Number(values.deliveryDays)) || Number(values.deliveryDays) < 0 || Number(values.deliveryDays) > 365)) errors['of-deliveryDays'] = 'მიუთითეთ 0–365 დღე.';
     if (values.priceType !== 'negotiable' && (!/^\d+(?:[.,]\d{1,2})?$/.test(values.price.trim()) || Number(values.price.replace(',', '.')) <= 0 || Number(values.price.replace(',', '.')) > 1e9)) errors['of-price'] = 'მიუთითეთ დადებითი ფასი, მაქსიმუმ ორი ათწილადი ნიშნით.';
     const terms: OfferTerms = { paymentTerms: values.paymentTerms.trim() || null, validUntil: values.validUntil || null, commercialTerms: values.commercialTerms.split('\n').map(t => t.trim()).filter(Boolean) };
     if (values.paymentTerms.length > 500) errors['of-paymentTerms'] = 'მაქსიმუმ 500 სიმბოლო.';
@@ -111,8 +113,8 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel }: { reque
       setPartial(undefined); setCompleted(true);
       try { localStorage.removeItem(key); } catch {}
       await store.refresh();
-      toast(editing ? 'შეთავაზება განახლდა.' : 'შეთავაზება გაიგზავნა.');
-      onDone();
+      if (editing) toast({ title: 'შეთავაზება განახლდა', tone: 'success' });
+      onDone(editing);
     } catch (err) {
       const stale = /MA904/.test(String((err as Error)?.message) + String((err as { code?: string })?.code));
       if (stale) { setConflict(true); await readOwnOffer(store, requestId).catch(() => undefined); }
@@ -122,19 +124,27 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel }: { reque
     } finally { busy.current = false; setPending(false); }
   }
   if ((!key || loaded !== key) && !error) return <ListSkeleton compact kind="records" label="შეთავაზების პირობები იტვირთება…"/>;
-  return <form className={styles.form} onSubmit={submit} noValidate aria-label="შეთავაზების ფორმა">
-    <fieldset disabled={pending || !!partial || conflict || !key || loaded !== key || completed} className={styles.fields}>
-      <div className="ma-field"><label htmlFor="of-priceType">ფასი</label><CustomSelect id="of-priceType" value={values.priceType} onChange={e => change('priceType', e.target.value)}><option value="negotiable">შეთანხმებით</option><option value="total">ჯამური ფასი</option><option value="unit">ერთეულის ფასი</option></CustomSelect></div>
-      {values.priceType !== 'negotiable' ? <><div className="ma-field"><label htmlFor="of-price">თანხა ლარში (₾) *</label><input className="ma-input" inputMode="decimal" value={values.price} onChange={e => change('price', e.target.value)} {...v.control('of-price')}/>{v.message('of-price')}<small>ერთეულის ფასის შემთხვევაში აღწერაში მიუთითეთ ერთეული.</small></div><label className="ma-check"><input type="checkbox" checked={values.vatIncluded} onChange={e => change('vatIncluded', e.target.checked)}/>დღგ ფასში შედის</label></> : null}
-      <div className={styles.two}><div className="ma-field"><label htmlFor="of-deliveryDays">მიწოდება (დღე)</label><input className="ma-input" inputMode="numeric" value={values.deliveryDays} onChange={e => change('deliveryDays', e.target.value)} {...v.control('of-deliveryDays')}/>{v.message('of-deliveryDays')}</div><div className="ma-field"><label htmlFor="of-validUntil">შეთავაზება ძალაშია</label><input className="ma-input" type="date" value={values.validUntil} onChange={e => change('validUntil', e.target.value)} {...v.control('of-validUntil')}/>{v.message('of-validUntil')}</div></div>
-      <label className="ma-check"><input type="checkbox" checked={values.deliveryIncluded} onChange={e => change('deliveryIncluded', e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label>
-      <div className="ma-field"><label htmlFor="of-body">შეთავაზების აღწერა *</label><textarea className="ma-textarea" minLength={10} maxLength={2000} required value={values.body} onChange={e => change('body', e.target.value)} {...v.control('of-body')}/>{v.message('of-body')}<small>{values.body.length} / 2000</small></div>
-      <div className="ma-field"><label htmlFor="of-paymentTerms">გადახდის პირობები</label><textarea className="ma-textarea" maxLength={500} value={values.paymentTerms} placeholder="მაგ.: 50% წინასწარ, დარჩენილი მიწოდებისას" onChange={e => change('paymentTerms', e.target.value)} {...v.control('of-paymentTerms')}/>{v.message('of-paymentTerms')}</div>
-      <div className="ma-field"><label htmlFor="of-commercialTerms">კომერციული პირობები</label><textarea className="ma-textarea" value={values.commercialTerms} placeholder="თითო პირობა ახალ ხაზზე" onChange={e => change('commercialTerms', e.target.value)} {...v.control('of-commercialTerms')}/>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div>
+  const quantity = Number(store?.getRequest(requestId)?.quantity) || 0;
+  const price = Number(values.price.replace(',', '.'));
+  const total = values.priceType === 'negotiable' || !values.price || !Number.isFinite(price) ? null : values.priceType === 'unit' ? quantity > 0 ? price * quantity : null : price;
+  const selectedTerms = values.commercialTerms.split('\n').map(t => t.trim()).filter(Boolean);
+  const presets = ['ნიმუში წარმოებამდე', 'გარანტია', 'შეფუთვა შედის'];
+  const payments = ['წინასწარ', 'მიწოდებისას', '30%–70%'];
+  const toggleTerm = (term: string) => change('commercialTerms', (selectedTerms.includes(term) ? selectedTerms.filter(t => t !== term) : [...selectedTerms, term]).join('\n'));
+  const disabled = pending || !!partial || conflict || !key || loaded !== key || completed;
+  return <form className={`${styles.form} ${standalone ? styles.standalone : styles.embedded}`} onSubmit={submit} noValidate aria-label="შეთავაზების ფორმა">
+    <fieldset disabled={disabled} className={styles.fields}>
+      <section className={styles.formCard}><h2>ფასი</h2><div className={styles.chips} role="group" aria-label="ფასის ტიპი">{[['total', 'ჯამური'], ['unit', 'ერთეულის'], ['negotiable', 'შეთანხმებით']].map(([value, label]) => <Button key={value} variant={values.priceType === value ? 'primary' : 'secondary'} aria-pressed={values.priceType === value} onClick={() => change('priceType', value)}>{label}</Button>)}</div>
+      {values.priceType !== 'negotiable' ? <><div className="ma-field"><label htmlFor="of-price">თანხა ლარში (₾) *</label><input className="ma-input" inputMode="decimal" required value={values.price} onChange={e => change('price', e.target.value)} {...v.control('of-price')}/>{v.message('of-price')}{values.priceType === 'total' && quantity > 0 && total != null ? <small>ერთეულის ფასი: {money(total / quantity)}</small> : null}</div><label className="ma-check"><input type="checkbox" checked={values.vatIncluded} onChange={e => change('vatIncluded', e.target.checked)}/>დღგ ფასში შედის</label></> : null}</section>
+      <section className={styles.formCard}><h2>მიწოდება</h2><div className={styles.two}><div className="ma-field"><label htmlFor="of-deliveryDays">მიწოდება (დღე) *</label><input className="ma-input" inputMode="numeric" required value={values.deliveryDays} onChange={e => change('deliveryDays', e.target.value)} {...v.control('of-deliveryDays')}/>{v.message('of-deliveryDays')}</div><div className="ma-field"><label htmlFor="of-validUntil">შეთავაზება ძალაშია</label><input className="ma-input" type="date" value={values.validUntil} onChange={e => change('validUntil', e.target.value)} {...v.control('of-validUntil')}/>{v.message('of-validUntil')}</div></div><label className="ma-check"><input type="checkbox" checked={values.deliveryIncluded} onChange={e => change('deliveryIncluded', e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label></section>
+      <section className={styles.formCard}><h2>გადახდის პირობები</h2><div className={styles.chips} role="group" aria-label="გადახდის პირობები">{payments.map(term => <Button key={term} variant={values.paymentTerms === term && !otherPayment ? 'primary' : 'secondary'} aria-pressed={values.paymentTerms === term && !otherPayment} onClick={() => { change('paymentTerms', term); setOtherPayment(false); }}>{term}</Button>)}<Button variant={otherPayment || !!values.paymentTerms && !payments.includes(values.paymentTerms) ? 'primary' : 'secondary'} onClick={() => setOtherPayment(true)}>სხვა</Button></div>{otherPayment || !!values.paymentTerms && !payments.includes(values.paymentTerms) ? <div className="ma-field"><label htmlFor="of-paymentTerms">სხვა პირობები</label><input className="ma-input" maxLength={500} value={values.paymentTerms} onChange={e => change('paymentTerms', e.target.value)} {...v.control('of-paymentTerms')}/></div> : null}{v.message('of-paymentTerms')}</section>
+      <section className={styles.formCard}><h2>კომერციული პირობები</h2><div className={styles.chips} role="group" aria-label="კომერციული პირობები">{Array.from(new Set([...presets, ...selectedTerms])).map(term => <Button key={term} variant={selectedTerms.includes(term) ? 'primary' : 'secondary'} aria-pressed={selectedTerms.includes(term)} disabled={!selectedTerms.includes(term) && selectedTerms.length >= 8} onClick={() => toggleTerm(term)}>{term}</Button>)}</div><div className="ma-field"><label htmlFor="of-commercialTerms">საკუთარი პირობა</label><div className={styles.addTerm}><input className="ma-input" maxLength={120} value={customTerm} onChange={e => setCustomTerm(e.target.value)} {...v.control('of-commercialTerms')}/><Button variant="secondary" disabled={!customTerm.trim() || selectedTerms.length >= 8} onClick={() => { if (!selectedTerms.includes(customTerm.trim())) toggleTerm(customTerm.trim()); setCustomTerm(''); }}>დამატება</Button></div>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div></section>
+      <section className={styles.formCard}><h2>აღწერა</h2><div className="ma-field"><label htmlFor="of-body">შეთავაზების აღწერა *</label><textarea className="ma-textarea" minLength={10} maxLength={2000} required value={values.body} onChange={e => change('body', e.target.value)} {...v.control('of-body')}/>{v.message('of-body')}<small>{values.body.length}/2000 · რეკომენდებულია 500 სიმბოლომდე.</small></div></section>
     </fieldset>
+    <aside className={styles.offerSummary}><h2>თქვენი შეთავაზება</h2><strong>{values.priceType === 'unit' && !quantity && values.price && Number.isFinite(price) ? `${money(price)} / ერთეული` : money(total)}</strong><p>{values.deliveryDays ? `${values.deliveryDays} დღე` : 'მიწოდების ვადა მიუთითეთ'}</p>{values.paymentTerms ? <p>{values.paymentTerms}</p> : null}<p>{values.priceType !== 'negotiable' ? values.vatIncluded ? 'დღგ შედის · ' : 'დღგ არ შედის · ' : ''}{values.deliveryIncluded ? 'მიწოდება შედის' : 'მიწოდება დასაზუსტებელია'}</p><ul>{selectedTerms.map(term => <li key={term}>{term}</li>)}</ul>
     {error ? <div className={styles.notice} role="alert"><p>{error}</p>{conflict || partial || loaded !== key ? <Button variant="secondary" disabled={pending} onClick={() => void reload()}>ბოლო ვერსიის ჩატვირთვა</Button> : null}</div> : null}
     {completed ? <p role="status">შეთავაზება და პირობები შენახულია.</p> : null}
     <p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p>
-    <div className={styles.actions}><Button variant="secondary" disabled={pending} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={!key || loaded !== key || conflict || completed}>{partial ? 'პირობების შენახვის გამეორება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div>
+    <div className={styles.actions}><Button variant="secondary" disabled={pending} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={!key || loaded !== key || conflict || completed}>{partial ? 'პირობების შენახვის გამეორება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div></aside>
   </form>;
 }

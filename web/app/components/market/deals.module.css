@@ -9,7 +9,7 @@
 .header p{font-size:.9375rem;line-height:1.6;color:var(--ink-600);max-width:40rem}
 .header .context{font-size:.8125rem;color:var(--ink-500)}
 .actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
-.grid{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:flex-start;margin-top:1.25rem}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 21.25rem;gap:2rem;align-items:flex-start;margin-top:1.25rem}
 .main{flex:1 1 37.5rem;min-width:0;display:grid;gap:1.25rem}
 .aside{flex:1 1 20rem;max-width:23.75rem;min-width:0;display:grid;gap:1.25rem}
 .card{border:.0625rem solid var(--ink-200);border-radius:var(--card-radius);background:var(--white);padding:1.5rem;min-width:0;overflow-wrap:anywhere}
@@ -110,3 +110,39 @@
 .stars input{position:absolute;opacity:0;width:100%;height:100%;inset:0;cursor:pointer}
 .stars label:has(input:focus-visible){box-shadow:var(--focus-ring)}
 .form>button{justify-self:start}
+
+.report{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.5rem;border-top:.0625rem solid var(--ink-200);padding-top:1rem}
+.report button,.stars label,.contact a{min-height:2.75rem}
+.contact a{display:inline-flex;align-items:center}
+@media(max-width:63.99rem){.grid{grid-template-columns:minmax(0,1fr)}.aside{max-width:none}}
+
+.previous{display:block;margin-top:.375rem;font-size:.75rem;font-weight:400;color:var(--ink-500)}
+
+.cancelAction{justify-self:start;background:transparent;border-color:transparent;text-decoration:underline}
+.identity h2{display:flex;align-items:center;gap:.375rem;flex-wrap:wrap}
+.identity h2 svg{color:var(--success-600);flex-shrink:0}
+.contact>div+div{margin-top:1.25rem}
+.bubble{justify-self:start;border-bottom-left-radius:.25rem}
+.bubble[data-mine=true]{border-bottom-left-radius:.875rem;border-bottom-right-radius:.25rem}
+
+.issueChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-top:.5rem}
+.form .issueChoices label{display:flex;align-items:center;gap:.5rem;min-height:2.75rem;border:.0625rem solid var(--ink-200);border-radius:var(--field-radius);padding:.5rem .75rem;cursor:pointer}
+.issueChoices label:has(input:checked){border-color:var(--action-strong);background:var(--ink-50)}
+.form .issueChoices input{width:1rem;height:1rem;flex-shrink:0}
+.modalInfo{background:var(--ink-50);color:var(--ink-600);padding:.875rem;border-radius:var(--card-radius);font-size:.8125rem;line-height:1.6}
+.form .reviewCriterion{border-bottom:.0625rem solid var(--ink-150);padding-bottom:.5rem}
+.reviewCriterion legend{font-size:.875rem}
+.reviewStars{display:flex;justify-content:flex-end}
+.form .reviewStars label{position:relative;display:flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;color:var(--ink-300);cursor:pointer}
+.reviewStars input{position:absolute;inset:0;opacity:0;height:100%;cursor:pointer}
+.reviewStars label[data-filled=true]{color:var(--warning-600)}
+.reviewStars label[data-filled=true] svg{fill:currentColor}
+.reviewStars label:has(input:focus-visible){box-shadow:var(--focus-ring);border-radius:.25rem}
+@media(max-width:30rem){.issueChoices{grid-template-columns:minmax(0,1fr)}}
+
+.previous[data-changed=true]{color:var(--active-text);font-weight:600}
+.includeEditor{display:grid;gap:.5rem;min-width:0;font-size:.875rem}
+.includeEditor button{white-space:normal;overflow-wrap:anywhere}
+
+.termsModalGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:40rem){.termsModalGrid>label:nth-child(n+3),.termsModalGrid>.includeEditor{grid-column:1/-1}.form>.actions>button{flex:1 1 100%}}

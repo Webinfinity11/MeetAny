@@ -1,0 +1,43 @@
+.page { min-width: 0; overflow-wrap: anywhere; }
+.hero { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--space-5); padding: var(--space-6); border: var(--size-1) solid var(--border); border-radius: var(--radius-lg); background: var(--white); margin-block: var(--space-4) var(--space-5); }
+.avatar { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: var(--size-72); height: var(--size-72); overflow: hidden; border-radius: var(--radius-lg); background: var(--ink-950); color: var(--white); font-size: var(--fs-h2); font-weight: 700; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.identity { flex: 1; min-width: 0; }
+.name { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-h1); line-height: var(--lh-h1); margin: 0; }
+.verified { color: var(--text-link); flex-shrink: 0; display: inline-flex; }
+.actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.actions > button { min-height: var(--size-44); }
+.contactRule { display: flex; align-items: flex-start; gap: var(--space-2); flex-basis: 100%; margin: 0; color: var(--text-3); font-size: var(--fs-sm); }
+.contactRule svg { flex-shrink: 0; }
+.content, .main { display: grid; min-width: 0; gap: var(--space-5); }
+.main > section, .panel { min-width: 0; padding: var(--space-6); border: var(--size-1) solid var(--border); border-radius: var(--radius-lg); background: var(--white); }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); margin: 0; }
+.facts dt { color: var(--text-3); font-size: var(--fs-sm); margin-bottom: var(--space-2); }
+.facts dd { margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.chips:not(:empty) { margin-top: var(--space-4); }
+.chips span { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); background: var(--bg-subtle); font-size: var(--fs-sm); }
+.reviews { list-style: none; padding: 0; margin: 0; }
+.reviews li { padding-block: var(--space-4); border-top: var(--size-1) solid var(--border-subtle); }
+.reviews time { color: var(--text-3); font-size: var(--fs-sm); }
+.reviews p { white-space: pre-wrap; margin-bottom: 0; }
+.reviewHeading { display: flex; justify-content: space-between; gap: var(--space-3); }
+.rating { color: var(--text-2); }
+.similar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.similar > * { min-width: 0; }
+@media (max-width: 760px) {
+  .page { padding-bottom: calc(var(--size-96) + env(safe-area-inset-bottom)); }
+  /* column + wrap + flex-basis 100% would push the contact rule into a second column past the viewport. */
+  .hero { flex-direction: column; flex-wrap: nowrap; padding: var(--space-4); }
+  .contactRule { flex-basis: auto; }
+  .name { font-size: var(--fs-h2); line-height: var(--lh-h2); }
+  .actions { position: fixed; z-index: 30; bottom: 0; inset-inline: 0; padding: var(--space-3) var(--space-4); padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom)); background: var(--white); border-top: var(--size-1) solid var(--border); flex-wrap: nowrap; }
+  .actions > button, .actions > a { flex: 1; min-width: 0; }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .main > section, .panel { padding: var(--space-4); }
+  .similar { grid-template-columns: minmax(0, 1fr); }
+}
+
+.products { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+.products > article { min-width: 0; padding: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--radius-md); }
+@media (max-width: 760px) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

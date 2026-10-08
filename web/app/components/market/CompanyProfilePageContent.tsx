@@ -17,13 +17,15 @@ import { avatarInitials } from "./CompanyAvatar";
 import { CompanyGallery } from "./CompanyGallery";
 import { SimilarCompanies } from "./SimilarCompanies";
 import { SaveCompanyButton } from "./SaveCompanyButton";
-import { CallButton } from "./CallButton";
-import { MessageButton } from "./ChatPopup";
+import { CompanyActions } from "./company/CompanyActions";
+import { CompanyReviews } from "./company/CompanyReviews";
+import styles from "./company/CompanyProfile.module.css";
+
 import { ReportButton } from "./ReportButton";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
-import { sinceMonthLabel } from "../../lib/format";
-import { usePublicPhone } from "../../lib/phones";
+
+
 import { useCompanyDetail } from "../../lib/use-company-detail";
 export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, sessionReady, available } = useMarketStore(initial);
@@ -42,8 +44,6 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
     return { c, openRequests };
   }, [store, ready, available, id]);
 
-  // The snapshot/store already carries the public phone; the separate fetch is only a fallback.
-  const phone = usePublicPhone(store, data?.c.id);
 
   if (ready && (!available || detail.error)) return <div className="ma-page"><ServiceUnavailable /></div>;
 
@@ -68,34 +68,39 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   const products: ProductCardData[] = (c.offers || []).map((offer: string | ProductCardData) => typeof offer === "string" ? { name: offer } : offer);
   const pictured = products.filter(product => product.photoUrl);
 
-  const requestHref = (title: string) => `/requests/new/?${new URLSearchParams({ title, category: c.industry, city: c.city })}`;
+
   const gallery: string[] = c.gallery || [];
   const photos = [...gallery, ...pictured.map(p => p.photoUrl)]
     .filter((v, i, a): v is string => !!v && a.indexOf(v) === i);
-  const since = sinceMonthLabel(c.createdAt);
+  // A public timestamp must produce the same year in SSR and browser time zones.
+  const year = new Date(c.createdAt).getUTCFullYear();
+  const facts = [
+    ["მომსახურების ქალაქები", (c.serviceCities || []).map((id: string) => cities[id] || id).join(" · ")],
+    ["მისამართი", c.address],
+    ["რას ეძებს", (c.seeks || []).join(" · ")],
+  ].filter(([, value]) => value);
 
   return (
-    <div className="ma-page company-profile detail-page">
+    <div className={`ma-page company-profile detail-page ${styles.page}`}>
       <Link className="ma-back" href="/companies/"><Icon name="chevron-left" />კომპანიები</Link>
-      <header className="company-hero">
-        <span className="company-hero__thumb">{c.logoUrl ? <img src={c.logoUrl} alt="" /> : avatarInitials(name)}</span>
-        <div className="company-hero__text">
-          <h1 className="company-hero__name">{name}</h1>
-          <p className="company-hero__industry">{[categories[c.industry] || c.industry, cities[c.city] || c.city, since ? `საიტზე ${since}` : null].filter(Boolean).join(" · ")}</p>
+      <header className={styles.hero}>
+        <span className={styles.avatar}>{c.logoUrl ? <img src={c.logoUrl} alt="" /> : avatarInitials(name)}</span>
+        <div className={styles.identity}>
+          <h1 className={styles.name}>{name}{c.verified ? <span className={styles.verified} aria-label="ვერიფიცირებული კომპანია" title="ვერიფიცირებული კომპანია"><Icon name="badge-check" /></span> : null}</h1>
+          <p className="company-hero__industry">{[categories[c.industry] || c.industry, cities[c.city] || c.city, Number.isFinite(year) ? `საიტზე ${year} წლიდან` : null].filter(Boolean).join(" · ")}</p>
           {c.about?.startsWith("სადემო კომპანია.") ? <p className="company-demo-label">სადემო კომპანია · ინფორმაცია და კონტაქტები პრეზენტაციის მაგალითია.</p> : null}
         </div>
-        <div className="company-hero__actions">
-          {ownProfile ? <Button variant="primary" href="/account/?tab=profile">პროფილის რედაქტირება</Button> : <><Button variant="primary" href={requestHref("")}><Icon name="file-text"/>ფასის მოთხოვნა</Button><div className="company-hero__secondary">{phone ? <CallButton phone={phone} variant="secondary" contactId={c.id} source="company-profile"/> : null}<SaveCompanyButton id={c.id} icon/></div><MessageButton companyId={c.id}/></>}
+        <div className={styles.actions}>
+          {ownProfile ? <Button variant="primary" href="/account/?tab=profile">რედაქტირება</Button> : <><CompanyActions companyId={c.id} name={name}/><SaveCompanyButton id={c.id}/></>}
         </div>
+        <p className={styles.contactRule}><Icon name="lock-keyhole"/>ტელეფონი და ელფოსტა იხსნება მხოლოდ შეთავაზების არჩევის შემდეგ</p>
       </header>
-      <div className={`company-profile-layout${c.address ? "" : " company-profile-layout--full"}`}>
-      {c.address ? <aside className="company-contact-card" aria-labelledby="company-contact-heading"><h2 id="company-contact-heading" className="detail-section-title">დეტალები</h2><dl className="company-detail-facts"><div><dt>მისამართი</dt><dd>{c.address}</dd></div></dl></aside> : null}
-      <div className="company-profile-main">
-        {c.about || c.seeks?.length || c.serviceCities?.length ? <section aria-labelledby="company-about">
+      <div className={styles.content}>
+      {facts.length ? <section className={styles.panel} aria-label="კომპანიის დეტალები"><dl className={styles.facts}>{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section> : null}
+      <div className={styles.main}>
+        {c.about ? <section aria-labelledby="company-about">
           <h2 id="company-about" className="detail-section-title">ჩვენ შესახებ</h2>
-          {c.about ? <p className="company-profile-description">{c.about}</p> : null}
-          {c.seeks?.length ? <div className="company-profile-seeks"><h3>რას ეძებს კომპანია</h3><div className="company-profile-chips">{c.seeks.map((item: string) => <span key={item}>{item}</span>)}</div></div> : null}
-          {c.serviceCities?.length ? <div className="company-profile-coverage"><span>მომსახურების არეალი</span><div className="company-profile-chips">{c.serviceCities.map((id: string) => <span key={id}>{cities[id] || id}</span>)}</div></div> : null}
+          <p className="company-profile-description">{c.about}</p>
         </section> : null}
         <CompanyProducts companyId={c.id} fallback={products}/>
         {photos.length ? <section><h2 className="detail-section-title">გალერეა</h2><CompanyGallery photos={photos} name={name}/></section> : null}
@@ -108,6 +113,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
             </article>)}
           </div>
         </section> : null}
+        <CompanyReviews companyId={c.id}/>
         {!ownProfile && store?.currentUser()?.role !== "admin" ? <ReportButton kind="company" targetId={c.id} /> : null}
       </div>
 

@@ -19,11 +19,14 @@ export function OnboardField({ label, value, onChange, required, maxLength, type
   type?: string; options?: Record<string, string>; readOnly?: boolean; multiline?: boolean; min?: number; max?: number;
 }) {
   const id = useId();
-  const common = { id, value, required, onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => onChange?.(e.target.value) };
+  const [error, setError] = useState('');
+  const validation = (field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => field.validity.valid ? '' : field.validity.valueMissing ? 'შეავსეთ სავალდებულო ველი.' : field.validity.rangeUnderflow || field.validity.rangeOverflow ? 'მიუთითეთ წელი დასაშვებ დიაპაზონში.' : 'შეამოწმეთ ველის ფორმატი.';
+  const common = { id, value, required, 'aria-invalid': !!error, 'aria-describedby': error ? id + '-error' : undefined, onInvalid: (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { setError(''); onChange?.(e.target.value); } };
   return <div className={s.field}><label htmlFor={id}>{label}{required && <span> *</span>}</label>
     {options ? <select {...common}><option value="">აირჩიეთ</option>{Object.entries(options).map(([key, text]) => <option value={key} key={key}>{text}</option>)}</select>
       : multiline ? <textarea {...common} maxLength={maxLength} rows={3} readOnly={readOnly} />
       : <input {...common} type={type} maxLength={maxLength} readOnly={readOnly} min={min} max={max} />}
+    {error && <small id={id + '-error'} className={s.fieldError}>{error}</small>}
   </div>;
 }
 export function OnboardItems({ label, values, onChange, suggestions = [], checkboxes = false }: { label: string; values: string[]; onChange: (values: string[]) => void; suggestions?: string[]; checkboxes?: boolean }) {
@@ -42,10 +45,10 @@ export function OnboardItems({ label, values, onChange, suggestions = [], checkb
 }
 const featured = ['catering', 'food_fresh', 'beverages', 'packaging', 'wholesale', 'building_materials', 'software_web', 'textiles', 'freight', 'advertising', 'cleaning', 'other'];
 const shortLabels: Record<string, string> = { catering: 'HoReCa', food_fresh: 'საკვები', beverages: 'სასმელები', packaging: 'შეფუთვა', wholesale: 'საბითუმო', building_materials: 'მშენებლობა', software_web: 'IT', textiles: 'ტექსტილი', freight: 'ლოგისტიკა', advertising: 'მარკეტინგი', cleaning: 'დასუფთავება', other: 'სხვა' };
-export function OnboardCategories({ values, onChange, compact = false }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean }) {
+export function OnboardCategories({ values, onChange, compact = false, limit = 34 }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number }) {
   const [all, setAll] = useState(false);
   const keys = all ? Object.keys(categories) : [...new Set([...featured, ...values])];
-  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <button type="button" key={key} aria-label={categories[key as keyof typeof categories]} title={categories[key as keyof typeof categories]} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= 34} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
+  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <button type="button" key={key} aria-label={categories[key as keyof typeof categories]} title={categories[key as keyof typeof categories]} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
     <svg viewBox="0 0 24 24" aria-hidden="true"><use href={`/icons-categories.svg#${key}`} /></svg><span>{shortLabels[key] || categories[key as keyof typeof categories] || key}</span>{!compact && values.includes(key) && <Icon name="check" />}
   </button>)}</div><Button variant="ghost" onClick={() => setAll(!all)}>{all ? 'ნაკლები კატეგორია' : 'ყველა კატეგორია'}</Button></>;
 }

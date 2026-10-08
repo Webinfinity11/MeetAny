@@ -36,6 +36,17 @@ export function postedLabel(value: string, now: number): string | null {
   return days === 0 ? "დღეს" : days === 1 ? "გუშინ" : `${days} დღის წინ`;
 }
 
+// "2,000" / "1,250.5" — deterministic digit grouping for numbers that render on the server too.
+// toLocaleString("ka-GE") differs between Node's ICU and the browser (2000 vs 2,000) and breaks hydration.
+export function formatNumber(value: number, maxFractionDigits = 2): string {
+  if (!Number.isFinite(value)) return "";
+  const factor = 10 ** maxFractionDigits;
+  const rounded = Math.round(Math.abs(value) * factor) / factor;
+  const [whole, fraction = ""] = String(rounded).split(".");
+  const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `${value < 0 ? "-" : ""}${grouped}${fraction ? "." + fraction : ""}`;
+}
+
 // Keeps a street abbreviation with its number: "გორგილაძის ქ. 31" never breaks after "ქ.".
 export function addressLabel(value: string): string {
   return value.replace(/(ქ\.|გამზ\.|ჩიხი|შესახ\.)\s+(?=\d)/g, "$1 ");

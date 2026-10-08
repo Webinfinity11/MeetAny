@@ -1,8 +1,10 @@
+import styles from "./catalog/Catalog.module.css";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { BusinessMarks } from "./CompanyBusiness";
 import type { BusinessFeature } from "../../lib/business-client";
 import { SaveCompanyButton } from "./SaveCompanyButton";
+import Image from "next/image";
 import Link from "next/link";
 import { companyImage } from "./CompanyAvatar";
 import type { CSSProperties } from "react";
@@ -38,6 +40,14 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false }: { c: C
   const places = cityIds.slice(0, 2).map(id => cities[id] || id).join(", ") + (cityIds.length > 2 ? ` +${cityIds.length - 2}` : "");
   const image = companyImage(c.name, c.logoUrl, c.gallery);
   const entrance = entranceIndex != null && entranceIndex < 12;
+  if (catalog) return <article className={styles.company}>
+    {c.logoUrl ? <Image unoptimized className={styles.logo} src={c.logoUrl} alt="" width={56} height={56} loading="lazy" /> : <span className={styles.logo} aria-hidden="true">{c.name.slice(0, 2)}</span>}
+    <h3><Link href={href}>{c.name}</Link>{c.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
+    <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
+    {c.about && <p className={styles.description}>{c.about}</p>}
+    {c.offers.length > 0 && <ul className={styles.services}>{c.offers.slice(0, 2).map((offer, index) => <li key={index}>{offer}</li>)}{c.offers.length > 2 && <li>+{c.offers.length - 2}</li>}</ul>}
+    <Button variant="secondary" href={href}>პროფილი</Button>
+  </article>;
   return (
     <article className={`company-card${catalog ? " company-card--catalog" : ""}`} data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>
       <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">

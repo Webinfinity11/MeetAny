@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getMarketStore, useMarketStore } from '../../lib/market-client';
 import { onboardSteps, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+import { toast } from '../Toasts';
 import { Button } from '../ui/Button';
 import { Icon } from '../Icon';
 import { Logo } from '../Logo';
@@ -34,6 +35,8 @@ export function OnboardPage() {
   const role = user?.role as string | undefined;
   const blocked = !!user?.blocked;
   const [unsaved, setUnsaved] = useState(false);
+  const [savedAt, setSavedAt] = useState('');
+  const [accepted, setAccepted] = useState(false);
   const [model, setModel] = useState<Model | null>(null);
   const [persisted, setPersisted] = useState<Model | null>(null);
   const [error, setError] = useState(''), [notice, setNotice] = useState(''), [pending, setPending] = useState(false), [retry, setRetry] = useState(0);
@@ -56,17 +59,18 @@ export function OnboardPage() {
   const setProducts = (products: Product[]) => { dirty.current.add('provide'); setUnsaved(true); setNotice(''); setModel(previous => previous ? { ...previous, products } : previous); };
   async function save(destination?: OnboardStep | 'account' | 'home') {
     if (!model || !store || lock.current || !form.current?.reportValidity()) return;
+    if (step === 'review' && destination === 'account' && !accepted) { toast({ title: 'დაეთანხმეთ გამოყენების წესებს', tone: 'danger' }); return; }
     lock.current = true; setPending(true); setError(''); setNotice('');
     try {
       let result = model;
       const writes = onboardSteps.filter(value => dirty.current.has(value) || value === step);
       for (const target of writes) result = await saveOnboardStep(getMarketStore(), target, model.profile, model.products);
       setModel(result); setPersisted(result); dirty.current.clear(); setUnsaved(false);
-      setNotice(writes.some(value => value !== 'verify' && value !== 'review') ? 'ცვლილებები შენახულია.' : 'მონაცემები გადამოწმებულია.');
+      setSavedAt(new Date().toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit', hour12: false }));
       if (destination === 'home') router.push('/');
-      else if (destination === 'account') router.push('/account/?tab=profile');
+      else if (destination === 'account') { toast({ title: 'პროფილი შენახულია' }); router.push('/account/'); }
       else if (destination) router.push('/onboarding/?step=' + destination);
-    } catch (err) { setError(onboardError(err)); }
+    } catch (err) { const message = onboardError(err); setError(message); toast({ title: message, tone: 'danger' }); }
     finally { lock.current = false; setPending(false); }
   }
   async function upload(file: File, kind: 'logo' | 'gallery') {
@@ -88,10 +92,10 @@ export function OnboardPage() {
       const saved = await readOnboardProfile(source);
       setModel(previous => previous ? { ...previous, profile: { ...previous.profile, logo_url: saved.logo_url, gallery: saved.gallery } } : previous);
       setNotice('ფოტო შენახულია.');
-    } catch (err) { setError(onboardError(err)); }
+    } catch (err) { const message = onboardError(err); setError(message); toast({ title: message, tone: 'danger' }); }
     finally { lock.current = false; setPending(false); }
   }
-  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><span className={s.saveHint}>შეინახეთ ყოველი ნაბიჯი</span><ThemeToggle /><Button variant="ghost" href="/account/">გასვლა</Button></div></header>{content}</div>;
+  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><span className={s.saveHint}>ინახება ნაბიჯის შეცვლისას</span><ThemeToggle /><Button variant="ghost" href="/account/">გასვლა</Button></div></header>{content}</div>;
   if (!sessionReady) return <OnboardLoading />;
   if (!available) return shell(<main className={s.state}><h1>მონაცემები მიუწვდომელია</h1><Button onClick={() => { void store?.revalidate(); }}>ხელახლა ცდა</Button></main>);
   if (!actor) return shell(<main className={s.state}><h1>კომპანიის პროფილის შექმნა</h1><p>გააგრძელეთ თქვენი კომპანიის ანგარიშით.</p><Button href="/account/?tab=register&role=company&next=%2Fonboarding%2F">რეგისტრაცია</Button><Button variant="secondary" href="/account/?next=%2Fonboarding%2F">შესვლა</Button></main>);
@@ -102,7 +106,7 @@ export function OnboardPage() {
   const p = saved?.profile;
   const completed: Record<OnboardStep, boolean> = {
     type: !!p && ['buy', 'sell', 'both'].includes(p.account_intent),
-    details: !!(p?.legal_name?.trim() && p.registration_code?.trim() && p.legal_form?.trim() && p.name?.trim() && p.city),
+    details: !!(p?.legal_name?.trim() && p.registration_code?.trim() && p.legal_form?.trim() && p.founded_year && p.employee_band && p.name?.trim() && p.city),
     profile: !!(p?.company?.trim() && p.industry && p.about?.trim()),
     provide: !!p?.provide_categories.length && !!(p.offers.length || saved?.products.some(product => product.name.trim() && product.photoUrl)),
     need: !!p?.need_categories.length,
@@ -112,14 +116,14 @@ export function OnboardPage() {
   const isComplete = (key: OnboardStep, position: number) => position < index && completed[key];
   const go = (target: OnboardStep) => { void save(target); };
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><span className={s.saveHint}>{pending ? 'ინახება…' : unsaved ? 'შეუნახავი ცვლილებები' : 'შეინახეთ ყოველი ნაბიჯი'}</span><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><span className={s.saveHint} role="status">{pending ? 'ინახება…' : unsaved ? 'ინახება ნაბიჯის შეცვლისას' : savedAt ? 'შენახულია ' + savedAt : 'ინახება ნაბიჯის შეცვლისას'}</span><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
     <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{onboardSteps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key, i) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
       <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / 7</span></div><ol>{onboardSteps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
         <form ref={form} onSubmit={event => { event.preventDefault(); void save(index === 6 ? 'account' : onboardSteps[index + 1]); }}>
-          <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>
+          <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps key={step} accepted={accepted} setAccepted={setAccepted} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><div className={s.desktopPreview}><OnboardPreview profile={model.profile} products={model.products} step={step} /></div><details className={s.mobilePreview}><summary>პროფილის გადახედვა</summary><OnboardPreview profile={model.profile} products={model.products} step={step} /></details></aside>}</div></fieldset>
           {error && <p className={s.error} role="alert">{error} ცვლილებების შესანახად სცადეთ ხელახლა.</p>}{notice && <p className={s.notice} role="status">{notice}</p>}
-          <div className={s.actions}>{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(onboardSteps[index - 1])}>უკან</Button>}<Button variant="ghost" disabled={pending} onClick={() => { void save(); }}>შენახვა</Button><Button type="submit" loading={pending}>{index === 6 ? 'დასრულება' : 'შემდეგი'}</Button></div>
+          <div className={s.actions}>{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(onboardSteps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === 6 ? 'დასრულება' : 'შემდეგი'}</Button></div>
         </form>
       </main>
     </div>

@@ -42,10 +42,6 @@
 .dock{border-radius:var(--size-12);background:var(--white)}
 .dock :global(.ma-chat__head){background:var(--white);color:var(--ink-950);border-bottom:var(--size-1) solid var(--ink-200)}
 .dock :global(.ma-chat__messages){background:var(--ink-50);gap:var(--space-4)}
-.dock :global(.ma-chat__message){padding:0;border:0;background:transparent;box-shadow:none;max-width:85%}
-.dock :global(.ma-chat__message) p{margin:0;padding:var(--space-3) var(--space-4);border:var(--size-1) solid var(--ink-150);border-radius:var(--size-12);border-top-left-radius:var(--size-4);background:var(--white);color:var(--ink-900);font-size:var(--fs-sm)}
-.dock :global(.ma-chat__message--mine) p{background:var(--message-sent-bg);color:var(--white);border-color:var(--message-sent-bg);border-top-left-radius:var(--size-12);border-top-right-radius:var(--size-4)}
-.dock :global(.ma-chat__message) time{padding-top:var(--size-4);font-size:var(--size-11);color:var(--ink-500)}
 .dock :global(.ma-chat__composer){display:grid;grid-template-columns:minmax(0,1fr) var(--size-44);align-items:end;gap:var(--space-2);padding:var(--space-3);padding-bottom:max(var(--space-3),env(safe-area-inset-bottom));border-top:var(--size-1) solid var(--ink-200)}
 .dock :global(.ma-chat__composer) textarea{width:100%;min-width:0;height:var(--size-44);min-height:var(--size-44);max-height:var(--size-112);resize:none;border-radius:var(--size-8);padding:var(--space-3);font-size:var(--fs-sm)}
 .dock :global(.ma-chat__composer-foot){grid-column:2;grid-row:1;margin:0;padding:0}
@@ -54,3 +50,5 @@
 @media(max-width:767px){.dock{border-radius:0}}
 
 .dock :global(.ma-chat__head) h2{color:var(--ink-950)}
+.dock :global(.ma-chat__composer){grid-template-columns:minmax(0,1fr) auto}
+.dock :global(.ma-chat__composer-foot) button{width:auto;padding-inline:var(--space-3)}

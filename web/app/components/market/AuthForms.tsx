@@ -15,7 +15,7 @@ type Mode = "login" | "register" | "reset";
 import { safeNext } from "../../lib/auth-redirect";
 import { trackRegistration } from "../../lib/registration-telemetry";
 
-const WRONG_LOGIN = "ელფოსტა ან პაროლი არასწორია.";
+import { loginAccount } from "./request/loginAccount";
 
 // Password field with a text "show" toggle inside the control (44px hit area).
 export function PasswordInput({ value, onChange, autoComplete, disabled, field }: { value: string; onChange: (value: string) => void; autoComplete: string; disabled?: boolean; field: Record<string, unknown> }) {
@@ -39,7 +39,7 @@ function FormAlert({ error }: { error: string | null }) {
   );
 }
 
-function LoginForm({ onReset }: { onReset: () => void }) {
+export function LoginForm({ onReset, onSuccess }: { onReset: () => void; onSuccess?: () => void }) {
   const { store } = useMarketStore();
   const router = useRouter();
   const next = safeNext(useSearchParams().get("next"));
@@ -59,15 +59,14 @@ function LoginForm({ onReset }: { onReset: () => void }) {
     if (!v.check(errors, ["login-email", "login-password"])) return;
     setPending(true);
     try {
-      await store.login(email.trim(), password);
-      window.dispatchEvent(new Event("meetany:auth"));
-      if (store.currentUser()?.role === "admin") router.replace("/admin/");
+      await loginAccount(store, email, password);
+      if (onSuccess) onSuccess();
+      else if (store.currentUser()?.role === "admin") router.replace("/admin/");
       else if (next && store.currentUser()) router.push(next);
       else router.refresh();
     } catch (err) {
       const message = (err as { userMessage?: string })?.userMessage;
-      setError(message === "პაროლი არასწორია." ? WRONG_LOGIN : message || "შესვლა ვერ მოხერხდა.");
-      window.dispatchEvent(new Event("meetany:auth"));
+      setError(message || "შესვლა ვერ მოხერხდა.");
     } finally {
       setPending(false);
     }
