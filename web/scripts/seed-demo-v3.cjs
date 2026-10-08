@@ -223,6 +223,8 @@ function printPlan(snap) {
 async function fillProfiles(snap) {
   for(const [key,config] of Object.entries(companies)) {
     const p=snap.profiles.find(p=>p.id===id(key));
+    // send_offer refuses unverified companies (MA801); demo suppliers are approved by the admin.
+    if(!p.verified) await rpc('owner_admin','admin_set_verified',{p_user_id:p.id,p_verified:true});
     if(!p.provide_categories.length || !p.need_categories.length) await rpc(key,'set_matching_categories',{p_provide:p.provide_categories.length?p.provide_categories:config.provide,p_need:p.need_categories.length?p.need_categories:config.need});
     // The RPC replaces all fields: preserve existing values, including private legal details.
     const args={p_account_intent:p.account_intent,p_employee_band:p.employee_band||'8-50',p_founded_year:p.founded_year,p_markets:p.markets.length?p.markets:['საქართველო'],p_languages:p.languages.length?p.languages:['ქართული'],p_legal_name:p.legal_name,p_registration_code:p.registration_code,p_legal_form:p.legal_form,p_contact_position:p.contact_position||'შეკვეთების მენეჯერი',p_website:p.website,p_business_tags:p.business_tags.length?p.business_tags:config.tags,p_certificates:p.certificates};
@@ -260,7 +262,8 @@ async function seedDeal(r,rec) {
   const supplier=r.suppliers[0];
   let d=(await read(sql`select * from meetany_private.deals where request_id=${rec.id}::uuid`))[0];
   if(!d) {
-    const o=(await read(sql`select * from public.offers where id=${rec.offers[supplier].id}::uuid`))[0];
+    // Text keeps the microseconds; a JS Date would round them and trip MA904.
+    const o=(await read(sql`select id,updated_at::text updated_at from public.offers where id=${rec.offers[supplier].id}::uuid`))[0];
     d=await rpc(r.owner,'select_offer_deal',{p_offer_id:o.id,p_expected_updated_at:o.updated_at});
   }
   check(d.offer_id===rec.offers[supplier].id && d.stage!=='cancelled','გარიგება დაგეგმილ შეთავაზებას ან ეტაპს არ შეესაბამება');
@@ -275,6 +278,8 @@ async function seedDeal(r,rec) {
       const sender=i%2?supplier:r.owner;
       const existing=await read(sql`select * from meetany_private.messages where conversation_id=${c.id}::uuid and sender_id=${id(sender)}::uuid and body=${body}`);
       check(existing.length<=1,'ჩატში განმეორებული შეტყობინება აღმოჩნდა');
+      // send_message allows one message per sender and conversation every 2 seconds (MA506).
+      if(!existing[0]) await new Promise(done=>setTimeout(done,2200));
       const m=existing[0]||await rpc(sender,'send_message',{p_conversation_id:c.id,p_body:body});
       rec.messages[i]={id:m.id,sender:id(sender),bodyHash:digest(body)};save();
     }
