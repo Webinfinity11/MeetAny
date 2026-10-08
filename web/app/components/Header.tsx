@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "./ui/Button";
+import { ThemeToggle } from "./ThemeToggle";
 import { Logo } from "./Logo";
 import { Avatar, avatarInitials } from "./ui/Avatar";
 
@@ -114,6 +115,7 @@ export function Header() {
     <header className="ma-header"><div className="ma-header__inner ma-container">
       {brand}<nav className="ma-header__nav" aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className="ma-header__actions">
+        <ThemeToggle />
         {role && role !== "guest" && !isAdmin ? <div className="ma-header__updates">{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className="ma-header__slot" aria-hidden="true" /><span className="ma-header__slot" aria-hidden="true" /></>}</div> : null}
         {role === "guest" ? <Button variant="secondary" className="ma-header__login" href="/account/">შესვლა</Button> : null}{!isAdmin ? add : null}
         {me ? <div ref={dropdown} className="ma-menu ma-header__account" onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {

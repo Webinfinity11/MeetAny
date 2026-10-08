@@ -398,5 +398,5 @@
 .company-card--catalog .company-card__footer { margin-top: auto; padding: 0 var(--space-4) var(--space-4); }
 .company-card--catalog .company-card__initials { background: var(--ink-100); color: var(--ink-700); }
 
-.company-card--catalog .company-card__plan.ma-badge--dark { background: var(--ink-950); color: var(--white); box-shadow: none; }
+.company-card--catalog .company-card__plan.ma-badge--dark { background: var(--action-strong); color: var(--white); box-shadow: none; }
 .company-card--catalog .company-card__plan.ma-badge--neutral { background: var(--ink-100); color: var(--ink-700); box-shadow: none; }

@@ -9,9 +9,9 @@
 .navigation > p { font-size: var(--fs-xs); font-weight: 600; color: var(--ink-500); }
 .navigation ol { list-style: none; padding: 0; margin: var(--space-3) 0 0; }
 .navigation button { width: 100%; min-height: var(--space-control); display: flex; align-items: center; gap: var(--space-control-y); padding: var(--space-2) var(--space-control-y); border: 0; border-radius: var(--radius-md); background: transparent; text-align: left; color: var(--ink-500); font: inherit; font-size: var(--fs-meta); white-space: nowrap; cursor: pointer; }
-.navigation button[aria-current] { background: var(--white); box-shadow: var(--shadow-1); color: var(--ink-950); font-weight: 600; }
+.navigation button[aria-current] { background: var(--nav-selected-bg); box-shadow: var(--shadow-1); color: var(--active-text); font-weight: 600; }
 .navigation button > span { width: var(--space-6); height: var(--space-6); flex: none; display: grid; place-items: center; border: var(--space-hairline) solid var(--ink-300); border-radius: var(--radius-pill); font-size: var(--fs-xs); }
-.navigation button[aria-current] > span { color: var(--white); background: var(--ink-950); border-color: var(--ink-950); }
+.navigation button[aria-current] > span { color: var(--white); background: var(--action-strong); border-color: var(--action-strong); }
 .main { flex: 1 1 0; min-width: 0; }
 .main h1 { font-size: var(--size-28); line-height: 1.25; letter-spacing: -.025em; margin: 0; outline: none; }
 .lead { font-size: var(--fs-button); color: var(--ink-600); margin: var(--space-compact) 0 var(--space-6); line-height: 1.6; }
@@ -38,16 +38,16 @@
 .page :is(button, input, select, textarea, a):focus-visible { outline: var(--space-half) solid var(--info-600); outline-offset: var(--space-half); }
 .intentGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
 .intent { position: relative; padding: var(--space-5); border: var(--space-hairline) solid var(--ink-200); border-radius: var(--radius-lg); background: var(--white); cursor: pointer; }
-.intentSelected { border-color: var(--ink-950); box-shadow: 0 0 0 var(--space-hairline) var(--ink-950); }
-.intent input { position: absolute; right: var(--space-4); top: var(--space-4); width: var(--space-5); height: var(--space-5); accent-color: var(--ink-950); }
+.intentSelected { border-color: var(--action-strong); box-shadow: 0 0 0 var(--space-hairline) var(--action-strong); }
+.intent input { position: absolute; right: var(--space-4); top: var(--space-4); width: var(--space-5); height: var(--space-5); accent-color: var(--action); }
 .intentIcon { width: var(--space-control); height: var(--space-control); background: var(--ink-100); border-radius: var(--radius-lg); display: grid; place-items: center; }
-.intentSelected .intentIcon { background: var(--ink-950); color: var(--white); }
+.intentSelected .intentIcon { background: var(--action-strong); color: var(--white); }
 .intent strong { display: block; margin-top: var(--space-4); font-size: var(--fs-button); }
 .intent > span:last-child { display: block; margin-top: var(--space-1); color: var(--ink-600); font-size: var(--fs-meta); line-height: 1.55; }
 .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .chips button, .categoryGrid button { border: var(--space-hairline) solid var(--ink-200); background: var(--white); color: var(--ink-800); font: inherit; display: flex; align-items: center; justify-content: flex-start; gap: var(--space-compact); min-height: var(--space-control); padding: var(--space-2) var(--space-3); text-align: left; cursor: pointer; }
 .chips button { border-radius: var(--radius-pill); font-size: var(--fs-meta); }
-.chips .selected, .categoryGrid .selected { border-color: var(--ink-950); background: var(--ink-950); color: var(--white); }
+.chips .selected, .categoryGrid .selected { border-color: var(--action-strong); background: var(--action-strong); color: var(--white); }
 .categoryGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-control-y); }
 .categoryGrid button { border-radius: var(--radius-lg); }
 .chips svg, .categoryGrid svg { width: var(--space-4); height: var(--space-4); flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; }
@@ -60,7 +60,7 @@
 .identity > div { min-width: 0; }
 .identity strong, .identity small { display: block; overflow-wrap: anywhere; }
 .identity small { color: var(--ink-500); font-size: var(--fs-xs); }
-.avatar { width: var(--space-12); height: var(--space-12); display: grid; place-items: center; flex: none; overflow: hidden; border-radius: var(--radius-xl); background: var(--ink-950); color: var(--white); font-weight: 700; }
+.avatar { width: var(--space-12); height: var(--space-12); display: grid; place-items: center; flex: none; overflow: hidden; border-radius: var(--radius-xl); background: var(--avatar-bg); color: var(--white); font-weight: 700; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 .largeAvatar { width: var(--space-20); height: var(--space-20); }
 .tags { display: flex; flex-wrap: wrap; gap: var(--space-compact); margin-top: var(--space-3); }
@@ -113,7 +113,7 @@
   .mobileProgress li { flex: 1; }
   .mobileProgress button { width: 100%; height: var(--space-control); padding: 0; border: 0; background: none; cursor: pointer; }
   .mobileProgress button span { display: block; height: var(--space-compact); width: 100%; background: var(--ink-200); border-radius: var(--radius-pill); }
-  .mobileProgress button[aria-current] span { background: var(--ink-950); }
+  .mobileProgress button[aria-current] span { background: var(--action-strong); }
 }
 
 @media (max-width: 639px) { .categoryGrid button svg:last-child { display: none; } .optionalHint { display: none; } }
@@ -122,7 +122,7 @@
 .customAdd svg { width: var(--space-4); height: var(--space-4); }
 .checkboxes { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-6); row-gap: var(--space-3); }
 .checkboxes label { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 400; }
-.checkboxes input { width: var(--space-4); height: var(--space-4); margin: 0; accent-color: var(--ink-950); }
+.checkboxes input { width: var(--space-4); height: var(--space-4); margin: 0; accent-color: var(--action); }
 .navigation button[data-complete] { color: var(--success-700); }
 .navigation button[data-complete] > span { background: var(--success-50); border-color: var(--success-100); color: var(--success-700); }
 .navigation button > span svg { width: var(--space-4); height: var(--space-4); }

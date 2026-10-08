@@ -7,13 +7,14 @@ import { onboardSteps, onboardError, readOnboard, readOnboardProfile, saveOnboar
 import { Button } from '../ui/Button';
 import { Icon } from '../Icon';
 import { Logo } from '../Logo';
+import { ThemeToggle } from '../ThemeToggle';
 import { DetailSkeleton, ListSkeleton } from './Skeletons';
 import { OnboardPreview, OnboardSteps, stepLabels, titles, leads } from './OnboardSteps';
 import s from './onboarding.module.css';
 
 export function OnboardLoading() {
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><Button variant="ghost" href="/account/">გასვლა</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" href="/account/">გასვლა</Button></div></header>
     <div className={s.shell}>
       <aside className={s.navigation}><ListSkeleton compact kind="records" label="ნაბიჯები იტვირთება…" /></aside>
       <main className={s.main}><DetailSkeleton compact label="კომპანიის პროფილი იტვირთება…" /></main>
@@ -90,7 +91,7 @@ export function OnboardPage() {
     } catch (err) { setError(onboardError(err)); }
     finally { lock.current = false; setPending(false); }
   }
-  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><span className={s.saveHint}>შეინახეთ ყოველი ნაბიჯი</span><Button variant="ghost" href="/account/">გასვლა</Button></div></header>{content}</div>;
+  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><span className={s.saveHint}>შეინახეთ ყოველი ნაბიჯი</span><ThemeToggle /><Button variant="ghost" href="/account/">გასვლა</Button></div></header>{content}</div>;
   if (!sessionReady) return <OnboardLoading />;
   if (!available) return shell(<main className={s.state}><h1>მონაცემები მიუწვდომელია</h1><Button onClick={() => { void store?.revalidate(); }}>ხელახლა ცდა</Button></main>);
   if (!actor) return shell(<main className={s.state}><h1>კომპანიის პროფილის შექმნა</h1><p>გააგრძელეთ თქვენი კომპანიის ანგარიშით.</p><Button href="/account/?tab=register&role=company&next=%2Fonboarding%2F">რეგისტრაცია</Button><Button variant="secondary" href="/account/?next=%2Fonboarding%2F">შესვლა</Button></main>);
@@ -111,7 +112,7 @@ export function OnboardPage() {
   const isComplete = (key: OnboardStep, position: number) => position < index && completed[key];
   const go = (target: OnboardStep) => { void save(target); };
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><span className={s.saveHint}>{pending ? 'ინახება…' : unsaved ? 'შეუნახავი ცვლილებები' : 'შეინახეთ ყოველი ნაბიჯი'}</span><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><span className={s.saveHint}>{pending ? 'ინახება…' : unsaved ? 'შეუნახავი ცვლილებები' : 'შეინახეთ ყოველი ნაბიჯი'}</span><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
     <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{onboardSteps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key, i) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
       <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / 7</span></div><ol>{onboardSteps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>

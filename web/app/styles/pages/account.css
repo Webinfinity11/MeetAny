@@ -788,10 +788,10 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page>.account-nav{grid-row:auto}
 .account-space{display:flex;gap:var(--space-1);padding:var(--space-1);border-radius:var(--size-10);background:var(--ink-150);font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
 .account-space>a,.account-space>strong{flex:1;text-align:center;padding:var(--space-2);border-radius:var(--size-8);color:var(--ink-600);text-decoration:none}
-.account-space>a[aria-current],.account-space>strong{background:var(--white);color:var(--ink-950);box-shadow:var(--card-shadow)}
+.account-space>a[aria-current],.account-space>strong{background:var(--nav-selected-bg);color:var(--active-text);box-shadow:var(--card-shadow)}
 .account-page .account-nav__list{border:0;padding-top:0}
 .account-page .account-nav__list a{font-size:var(--fs-sm);gap:var(--space-2);border-radius:var(--size-8)}
-.account-page .account-nav__list a[aria-current]{background:var(--white);color:var(--ink-950);box-shadow:var(--card-shadow);font-weight:var(--fw-bold)}
+.account-page .account-nav__list a[aria-current]{background:var(--nav-selected-bg);color:var(--active-text);box-shadow:var(--card-shadow);font-weight:var(--fw-bold)}
 .account-page .account-nav__count{min-width:0;padding:0;background:transparent;color:var(--ink-400);font-size:var(--fs-xs)}
 .account-page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-4);min-width:0}
 .account-page-heading>div{min-width:0}
@@ -802,7 +802,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-filter-chips{display:flex;gap:var(--space-2);overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--space-1)}
 .account-filter-chips>.ma-btn{flex:none;min-height:var(--size-36);border-radius:var(--size-999);font-size:var(--fs-sm);white-space:nowrap}
 .account-filter-chips>.ma-btn span{color:var(--ink-400)}
-.account-filter-chips>.ma-btn[aria-pressed=true]{background:var(--ink-950);border-color:var(--ink-950);color:var(--white)}
+.account-filter-chips>.ma-btn[aria-pressed=true]{background:var(--action-strong);border-color:var(--action-strong);color:var(--white)}
 .account-page .account-rows{display:grid;gap:var(--space-3);border:0;min-width:0}
 .account-request-card,.account-offer-card,.account-offer-detail,.account-profile-status,.account-recommendations>li,.account-panel,.account-main--profile>.account-section{padding:var(--space-4);border:var(--size-1) solid var(--ink-200);border-radius:var(--size-12);background:var(--white);min-width:0}
 .account-request-card{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--space-3) var(--space-4);align-items:center}
@@ -820,7 +820,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page .account-status::before{display:none}
 .account-page .account-status[data-tone=success]{background:var(--success-100);color:var(--success-700)}
 .account-page .account-status[data-tone=warning]{background:var(--warning-100);color:var(--warning-700)}
-.account-page .account-status[data-tone=dark]{background:var(--ink-950);color:var(--white)}
+.account-page .account-status[data-tone=dark]{background:var(--action-strong);color:var(--white)}
 .account-request-count{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-1);font-size:var(--fs-xs);color:var(--ink-700)}
 .account-request-count>.icon,.account-offer-facts .icon{width:var(--size-16);height:var(--size-16);color:var(--ink-400);flex:none}
 .account-request-count strong{color:var(--success-700)}
@@ -857,7 +857,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page :is(.ma-input,.ma-select,.ma-textarea){border-radius:var(--size-8);border-color:var(--ink-300);background:var(--white);font-size:var(--fs-body)}
 .account-page :is(.ma-input,.ma-select){min-height:var(--size-48)}
 .account-page .ma-field__label{font-size:var(--fs-sm);font-weight:var(--fw-semibold);color:var(--ink-950)}
-.account-page .company-profile-sections a[aria-current]{background:var(--white);color:var(--ink-950);border-color:var(--ink-950)}
+.account-page .company-profile-sections a[aria-current]{background:var(--nav-selected-bg);color:var(--active-text);border-color:var(--action-strong)}
 .account-page .business-plan,.account-page .business-setting,.account-page .business-panel{border-radius:var(--size-12)}
 .account-page .business-panel--plans>header{display:none}
 .account-page .business-panel:not(.business-panel--plans){padding:var(--space-5);border:var(--size-1) solid var(--ink-200);background:var(--white)}
@@ -868,7 +868,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .account-page>.account-nav{min-width:0;margin:0}
  .account-page .account-nav__list{gap:var(--space-5);margin:0;padding:0;border-bottom:var(--size-1) solid var(--ink-200)}
  .account-page .account-nav__list a{padding:var(--space-2) 0;border-radius:0;border-bottom:var(--size-2) solid transparent;white-space:nowrap}
- .account-page .account-nav__list a[aria-current]{border-bottom-color:var(--ink-950);background:transparent;box-shadow:none}
+ .account-page .account-nav__list a[aria-current]{border-bottom-color:var(--action-strong);background:transparent;box-shadow:none}
  .account-page .account-nav__list .icon,.account-page .account-nav__count{display:none}
  .account-offer-detail{display:none}
 }

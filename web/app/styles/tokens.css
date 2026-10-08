@@ -65,7 +65,7 @@
   --ink-100:color-mix(in srgb,var(--theme-ink) 7%,#fff);
   --ink-50:color-mix(in srgb,var(--theme-ink) 3.5%,#fff);
   --white:var(--theme-surface);
-  /* Status colours — the only colour in the UI besides photos. */
+  /* Status colours remain semantic in both themes. Warnings use slate, never yellow. */
   --info-50:#EFF6FF;
   --info-100:#DBEAFE;
   --info-600:#2563EB;
@@ -74,10 +74,10 @@
   --success-100:#D1FAE5;
   --success-600:#16A34A;
   --success-700:#15803D;
-  --warning-50:#FFFBEB;
-  --warning-100:#FEF3C7;
-  --warning-600:#D97706;
-  --warning-700:#B45309;
+  --warning-50:#F1F5F9;
+  --warning-100:#E2E8F0;
+  --warning-600:#475569;
+  --warning-700:#334155;
   --danger-50:#FEF2F2;
   --danger-100:#FEE2E2;
   --danger-600:#DC2626;
@@ -419,6 +419,18 @@
   --border-input:var(--ink-400);
   --border-strong:var(--ink-300);
   --action-primary:var(--blue-600);
+  --action-strong:var(--ink-950);
+  --action-strong-hover:var(--ink-800);
+  --action-strong-press:var(--ink-900);
+  --active-text:var(--ink-950);
+  --active-bg:var(--ink-100);
+  --nav-selected-bg:var(--white);
+  --brand-panel-bg:var(--ink-950);
+  --inverse-text-2:var(--ink-400);
+  --inverse-text-3:var(--ink-500);
+  --inverse-border:var(--ink-800);
+  --message-sent-bg:var(--ink-950);
+  --theme-swatch:#2563EB;
   --action:var(--action-primary);
   --action-hover:var(--blue-700);
   --action-press:var(--blue-800);
@@ -464,9 +476,9 @@
   --btn-radius:8px;
   --btn-fs:var(--fs-button);
   --btn-weight:var(--fw-semibold);
-  --btn-primary-bg:var(--ink-950);
-  --btn-primary-hover:var(--ink-800);
-  --btn-primary-press:var(--ink-900);
+  --btn-primary-bg:var(--action-strong);
+  --btn-primary-hover:var(--action-strong-hover);
+  --btn-primary-press:var(--action-strong-press);
   --badge-py:2px;
   --badge-px:10px;
   --btn-primary-text:var(--white);
@@ -516,6 +528,41 @@
   --avatar-size-lg:56px;
   --sheet-radius:var(--radius-lg);
   --sheet-shadow:var(--shadow-4);
+}
+/* A second site-wide palette. Geometry, typography, photos and logo stay shared.
+   Neutral text uses the ink scale; actions and selected controls use brand roles. */
+:root[data-theme="blue"]{
+  --theme-primary:#2563EB;
+  --theme-accent:var(--theme-primary);
+  --theme-ink:#17243B;
+  --theme-swatch:#171717;
+  --action-strong:var(--blue-600);
+  --action-strong-hover:var(--blue-700);
+  --action-strong-press:var(--blue-800);
+  --active-text:var(--blue-700);
+  --active-bg:var(--blue-50);
+  --nav-selected-bg:var(--blue-50);
+  --brand-panel-bg:var(--blue-900);
+  --inverse-text-2:color-mix(in srgb,var(--white) 80%,var(--brand-panel-bg));
+  --inverse-text-3:color-mix(in srgb,var(--white) 65%,var(--brand-panel-bg));
+  --inverse-border:color-mix(in srgb,var(--white) 20%,var(--brand-panel-bg));
+  --message-sent-bg:var(--blue-700);
+  --avatar-bg:var(--blue-700);
+  --warning-50:var(--blue-50);
+  --warning-100:var(--blue-100);
+  --warning-600:var(--blue-700);
+  --warning-700:var(--blue-800);
+  --btn-secondary-text:var(--blue-700);
+  --btn-ghost-text:var(--blue-700);
+  --btn-tint-bg:var(--blue-50);
+  --btn-tint-hover:var(--blue-100);
+  --btn-tint-text:var(--blue-700);
+  --accent-soft:var(--blue-50);
+  --accent-text:var(--blue-700);
+  --accent-line:var(--blue-200);
+  --tier-vip-border:var(--blue-200);
+  --tier-vip-text:var(--blue-700);
+  --card-hover-border:var(--blue-200);
 }
 /* Breakpoints (min-width): 480 / 768 / 1024 / 1280. Mobile values are the defaults above for
    layout tokens; the type scale is desktop-first as in the source file. */
