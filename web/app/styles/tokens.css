@@ -532,9 +532,9 @@
 /* A second site-wide palette. Geometry, typography, photos and logo stay shared.
    Neutral text uses the ink scale; actions and selected controls use brand roles. */
 :root[data-theme="blue"]{
-  --theme-primary:#2563EB;
+  --theme-primary:#1F3A5F;
   --theme-accent:var(--theme-primary);
-  --theme-ink:#17243B;
+  --theme-ink:#1B2433;
   --theme-swatch:#171717;
   --action-strong:var(--blue-600);
   --action-strong-hover:var(--blue-700);

@@ -16,5 +16,5 @@ export const viewport = siteViewport;
 // One document for the marketplace: route changes preserve the authenticated store
 // instead of reloading HTML, session, catalogs and scripts at each group boundary.
 export default function RootLayout({ children }: { children: ReactNode }) {
-  return <html lang="ka" data-theme="classic" suppressHydrationWarning><head><script id="meetany-theme" dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body className="ma"><ThemeController /><NavigationProgress />{children}<Toasts /><ChatPopup /></body></html>;
+  return <html lang="ka" data-theme="blue" suppressHydrationWarning><head><script id="meetany-theme" dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body className="ma"><ThemeController /><NavigationProgress />{children}<Toasts /><ChatPopup /></body></html>;
 }

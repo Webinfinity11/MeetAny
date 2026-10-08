@@ -1,14 +1,15 @@
 // Both palettes share layout and component tokens; only the document theme changes.
+// Navy blue is the default (owner, 2026-10-08); black-and-white stays available from the toggle.
 export const THEME_STORAGE_KEY = "meetany.theme";
 export const THEME_CHANGE_EVENT = "meetany:theme-change";
-export const DEFAULT_THEME = "classic";
+export const DEFAULT_THEME = "blue";
 
 export function normalizeTheme(value) {
-  return value === "blue" ? "blue" : DEFAULT_THEME;
+  return value === "classic" ? "classic" : DEFAULT_THEME;
 }
 
 // Runs synchronously in <head>, before the first painted page and React hydration.
-export const themeBootstrap = `try{document.documentElement.dataset.theme=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)})==="blue"?"blue":"classic"}catch{}`;
+export const themeBootstrap = `try{document.documentElement.dataset.theme=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)})==="classic"?"classic":"blue"}catch{}`;
 
 export function readTheme() {
   return typeof document === "undefined" ? DEFAULT_THEME : normalizeTheme(document.documentElement.dataset.theme);
