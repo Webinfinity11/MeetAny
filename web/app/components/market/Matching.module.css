@@ -74,3 +74,30 @@
 .main h1{overflow-wrap:anywhere}
 @media(min-width:768px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:1024px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Full feed only: dashboard cards keep their existing layout. */
+.feedToolbar{display:flex;align-items:end;justify-content:space-between;gap:var(--space-3);border-bottom:var(--size-1) solid var(--ink-200);min-width:0;flex-wrap:wrap}
+.fullFeed .tabs{display:flex;border:0;min-width:0;gap:var(--space-5);overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.fullFeed .tabs>*{flex:none;background:transparent;border:0;border-bottom:var(--size-2) solid transparent;border-radius:0;padding:var(--space-3) 0;font:inherit;font-size:var(--fs-sm);cursor:pointer;text-decoration:none}
+.fullFeed .tabs [aria-current]{border-bottom-color:var(--ink-950);font-weight:var(--fw-semibold)}
+.feedControls{display:flex;align-items:center;gap:var(--space-3);padding-bottom:var(--space-2);min-width:0;font-size:var(--fs-eyebrow)}
+.feedControls :global(.ma-custom-select){width:auto;min-width:var(--size-120);border:0;background:transparent;font-size:var(--fs-eyebrow)}
+.fullFeed .columns{grid-template-columns:minmax(0,1fr) var(--size-300)}
+.fullFeed .symbol{width:calc(var(--size-200) / 2);height:var(--size-76);border-radius:var(--size-8)}
+.fullFeed .card{font:inherit;cursor:pointer;align-items:center}
+.fullFeed .card:focus-visible{outline:var(--size-2) solid var(--ink-950);outline-offset:var(--size-2)}
+.fullFeed .copy{gap:var(--space-1);font-size:var(--fs-eyebrow);color:var(--ink-600)}
+.fullFeed .copy strong{font-size:var(--fs-sm);font-weight:var(--fw-semibold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fullFeed .cardMeta{font-size:var(--fs-xs);color:var(--ink-500);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-top:var(--space-1)}
+.fullFeed .kind,.fullDetail .kind{font-size:var(--fs-xs);font-weight:var(--fw-semibold);padding:var(--space-half) var(--space-2);width:fit-content}
+.fullFeed .kind[data-tone=info],.fullDetail .kind[data-tone=info]{background:var(--info-100);color:var(--info-700)}
+.fullFeed .detail{display:grid;gap:var(--space-3);padding:var(--space-4);overflow:hidden}
+.fullFeed .detailPhoto,.fullDetail .detailPhoto{height:auto;aspect-ratio:16/10;display:grid;place-items:center}
+.fullFeed .detail h2,.fullDetail h2{font-size:var(--fs-body);font-weight:var(--fw-bold);margin:0}
+.facts{display:grid;gap:var(--space-2);list-style:none;padding:0;margin:0;font-size:var(--fs-eyebrow);color:var(--ink-700)}
+.facts li{display:flex;align-items:start;gap:var(--space-2)}
+.facts :global(.icon){flex:none;width:var(--size-14);height:var(--size-14);margin-top:var(--space-1);color:var(--ink-400)}
+.fullFeed .identity>span:last-child :global(.icon),.fullDetail .identity>span:last-child :global(.icon){width:var(--size-16);height:var(--size-16);color:var(--info-700)}
+@media(max-width:999px){.fullFeed .columns{grid-template-columns:minmax(0,1fr)}.fullFeed .detail{display:none}}
+
+@media(max-width:639px){.fullFeed .tabs{width:100%}.feedControls{width:100%;justify-content:space-between;flex-wrap:wrap}}

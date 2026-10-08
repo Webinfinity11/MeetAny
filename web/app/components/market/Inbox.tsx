@@ -17,7 +17,7 @@ import { trapDialogFocus } from "../ui/dialog-focus";
 
 type Me = { id: string; role: string };
 type Profile = { logoUrl?: string | null; role?: string; industry?: string; verified?: boolean } | null;
-const WIDE = "(min-width:1024px)";
+const WIDE = "(min-width:768px)";
 const DAY = 86400000;
 const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map(part => part[0]).join("").toLocaleUpperCase();
 function Avatar({ name }: { name: string }) { return <span className={styles.chatAvatar} aria-hidden="true">{initials(name)}</span>; }
@@ -100,8 +100,8 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
                   <span className={styles["inbox-row__name"]}>{d.name}{d.verified ? <span title="ვერიფიცირებული"><Icon name="badge-check"/></span> : null}{unread ? <span className="ma-sr-only">, წაუკითხავი</span> : null}</span>
                   <span className={styles.rowMeta}><time dateTime={c.lastMessageAt || c.createdAt}>{rowTime(c.lastMessageAt || c.createdAt, now)}</time>{unread ? <span className={styles.unreadCount}>{c.unreadCount}</span> : null}</span>
                 </span>
-                <span className={styles["inbox-row__preview"]}>{last ? `${last.senderId === me.id ? "შენ: " : ""}${last.body}` : "შეტყობინება ჯერ არ არის"}</span>
                 <span className={styles["inbox-row__context"]}>{d.context}</span>
+                <span className={styles["inbox-row__preview"]}>{last ? `${last.senderId === me.id ? "შენ: " : ""}${last.body}` : "შეტყობინება ჯერ არ არის"}</span>
               </span>
             </button>
           </li>;
@@ -118,6 +118,8 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   const [target] = useState(() => ({ companyId: conversation.companyId, conversation }));
   const { messages, loaded, failed, pending, sendError, send, retry } = useChatThread(store, target);
   const d = describe(store, me, conversation);
+  const request = d.requestId ? store.getRequest(d.requestId) : null;
+  const offer = request ? store.visibleOffers(request.id).find((item: { companyUserId: string }) => item.companyUserId === conversation.companyId) : null;
   // Public company phone only (same projection as the profile page); clients have none.
   const phone = usePublicPhone(store, d.isCompany ? d.otherId : undefined);
   const [body, setBody] = useState("");
@@ -151,12 +153,12 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
     {!wide ? <button ref={back} type="button" className={styles["inbox-back"]} onClick={onBack}><Icon name="chevron-left"/><span>უკან</span></button> : null}
       <Avatar name={d.name}/>
       <div className={styles["inbox-head__text"]}>
-        <h3 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h3>
+        <h3 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h3><p className={styles["inbox-head__context"]}>{d.context}{offer?.price != null ? ` · შეთავაზება ₾${Number(offer.price).toLocaleString("ka-GE")}` : ""}</p>
 
       </div>
+      {d.requestId ? <Button variant="secondary" size="sm" href={`/requests/view/?id=${encodeURIComponent(d.requestId)}`}>მოთხოვნა</Button> : null}
       {phone ? <a className={styles["inbox-call"]} href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} title={phone}><Icon name="phone"/></a> : null}
     </header>
-    <ChatContext store={store} requestId={d.requestId} companyId={conversation.companyId}/>
     <div className={styles["inbox-log"]} ref={log} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}
       onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }}>
       {!loaded ? <p className={styles["inbox-log__note"]} role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p>
@@ -168,10 +170,10 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
       <label className="ma-sr-only" htmlFor="inbox-body">შეტყობინება</label>
       <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერე შეტყობინება…"
         onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void submit(); } }}/>
-      <Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button>
+      <Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><Icon name="send"/><span className="ma-sr-only">{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button>
       {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
     </form>
   </div>;
-  // Below 1024 the open thread covers the page under the header, outside any transformed ancestor.
-  return sheet ? createPortal(pane, document.body) : pane;
+  // Below 768 the open thread covers the page under the header, outside any transformed ancestor.
+  return sheet ? createPortal(pane, document.body) : <>{pane}<aside className={styles.chatContext}><ChatContext store={store} requestId={d.requestId} companyId={conversation.companyId} expanded/></aside></>;
 }

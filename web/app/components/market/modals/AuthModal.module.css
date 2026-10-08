@@ -1,0 +1,6 @@
+.auth{padding:var(--size-28)}
+.registration{border-top:var(--size-1) solid var(--ink-150);padding-top:var(--space-5);margin-top:var(--space-2);text-align:center;font-size:var(--fs-sm);color:var(--ink-600)}
+.registration a{color:var(--ink-950);font-weight:var(--fw-semibold);text-decoration:underline;text-underline-offset:var(--size-2);line-height:var(--space-6)}
+.note{display:flex;align-items:flex-start;justify-content:center;gap:var(--size-6);margin:0;text-align:center;font-size:var(--fs-xs);line-height:var(--space-5);color:var(--ink-500)}
+.note svg{flex:none;width:var(--size-14);height:var(--size-14);margin-top:var(--size-2);color:var(--info-600)}
+@media(max-width:639px){.auth{padding-bottom:calc(var(--size-28) + env(safe-area-inset-bottom))}}

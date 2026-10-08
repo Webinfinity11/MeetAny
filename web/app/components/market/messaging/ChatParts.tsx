@@ -1,6 +1,9 @@
 "use client";
 import { Fragment } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "../../ui/Button";
+import { cities, units } from "../../../lib/categories";
 import type { Store } from "../../../lib/market-client";
 import type { Message } from "../../../lib/chat-client";
 import { Icon } from "../../Icon";
@@ -21,13 +24,17 @@ export function ChatMessages({ messages, owner, name, now }: { messages: Message
 export function MessagingEmpty({ title, children }: { title: string; children: React.ReactNode }) {
  return <div className={styles.empty}><span><Icon name="message-square"/></span><h2>{title}</h2><p>{children}</p></div>;
 }
-export function ChatContext({ store, requestId, companyId }: { store: Store; requestId?: string | null; companyId: string }) {
+export function ChatContext({ store, requestId, companyId, expanded = false }: { store: Store; requestId?: string | null; companyId: string; expanded?: boolean }) {
  const request = requestId ? store.getRequest(requestId) : null;
  const offer = request ? store.visibleOffers(request.id).find((item: { companyUserId: string }) => item.companyUserId === companyId) : null;
  const status = request ? store.requestState(request) : null;
  // Only link a deal when an actual notification identifies it and this is the chosen supplier.
  const notice = offer && request?.chosenOfferId === offer.id ? store.engagement()?.notifications?.items?.find((item: { request_id: string; deal_id?: string }) => item.request_id === requestId && item.deal_id) : null;
  if (!requestId) return <div className={styles.context}>პირადი მიმოწერა</div>;
+ if (expanded) return <div className={styles.expanded}>
+  <section><h2>მოთხოვნა</h2><div className={styles.requestCard}>{request?.photo ? <Image unoptimized src={request.photo} alt="" width={56} height={44}/> : null}<div><h3>{request?.title || "მოთხოვნის შესახებ"}</h3><p>{[request?.quantity != null ? `${request.quantity} ${units[request.unit] || ""}` : null, cities[request?.city] || request?.city].filter(Boolean).join(" · ")}</p></div></div>{status ? <span className={styles.status}>{store.stateLabels[status] || status}</span> : null}</section>
+  {offer ? <section><h2>{request?.ownerId === store.currentUser()?.id ? "მათი შეთავაზება" : "თქვენი შეთავაზება"}</h2><dl><div><dt>ფასი</dt><dd>{offer.price == null ? "შეთანხმებით" : `₾${Number(offer.price).toLocaleString("ka-GE")}`}</dd></div>{offer.deliveryDays != null ? <div><dt>მიწოდება</dt><dd>{offer.deliveryDays} დღე</dd></div> : null}{offer.validUntil ? <div><dt>ძალაშია</dt><dd>{new Date(offer.validUntil).toLocaleDateString("ka-GE")}</dd></div> : null}</dl><Button variant={request?.ownerId === store.currentUser()?.id ? "primary" : "secondary"} href={request?.ownerId === store.currentUser()?.id ? `/requests/compare/?id=${encodeURIComponent(requestId)}` : `/requests/view/?id=${encodeURIComponent(requestId)}`}>{request?.ownerId === store.currentUser()?.id ? "შეთავაზებების შედარება" : "შეთავაზების ნახვა"}</Button></section> : null}
+ </div>;
  return <section className={styles.context} aria-label="საუბრის კონტექსტი">
   <strong>{request?.title || "მოთხოვნის შესახებ"}</strong>
   <div className={styles.facts}>{offer ? <><span>{offer.price == null ? "ფასი შეთანხმებით" : `${Number(offer.price).toLocaleString("ka-GE")} ₾${offer.priceType === "unit" ? " / ერთეული" : ""}`}</span>{offer.deliveryDays != null ? <span>მიწოდება: {offer.deliveryDays} დღე</span> : null}</> : null}{status ? <span className={styles.status}>{store.stateLabels[status] || status}</span> : null}</div>

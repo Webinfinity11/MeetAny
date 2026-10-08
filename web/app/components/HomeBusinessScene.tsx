@@ -26,7 +26,7 @@ export function HomeBusinessScene() {
         <div className="hero-scene__column" aria-hidden="true"><div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{heroOffers.map(o => <HeroOffer key={o.company} offer={o} />)}</div>)}</div></div>
       </div>
       <div className={styles.flowChip} aria-hidden="true"><Icon name="file-text" /><div><strong>1 მოთხოვნა — 9 შეთავაზება</strong><p>საშუალოდ პირველი 48 საათში</p></div></div>
-      <button className="hero-scene__motion" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label={paused ? "ანიმაციის ჩართვა" : "ანიმაციის შეჩერება"}><Icon name={paused ? "play" : "pause"} /></button>
+      <button className={`hero-scene__motion ${styles.pause}`} type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label={paused ? "გაგრძელება" : "პაუზა"}><Icon name={paused ? "play" : "pause"} /></button>
     </div>
     <div className={styles.mobileScene} aria-busy={!ready}>{!ready ? <div className="home-live-skeleton ma-skel" /> : requests[0] ? <HeroRequest request={requests[0]} offers={store?.offerCount(requests[0].id) ?? 0} /> : empty}<div className={styles.mobileOffers} aria-hidden="true">{[heroOffers[0], heroOffers[3]].map(o => <HeroOffer key={o.company} offer={o} />)}</div></div>
   </>;

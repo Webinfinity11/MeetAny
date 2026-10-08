@@ -34,3 +34,23 @@
 .skeleton { height: var(--size-16); margin-bottom: var(--size-12); width: 85%; }
 @media (max-width:767px) { .compact { flex: 0 0 var(--size-260); scroll-snap-align: start; } }
 @media (prefers-reduced-motion:reduce) { .card { transition: none; } }
+
+.full .visual { aspect-ratio: 4 / 3; }
+.full h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.full .category { max-width: 100%; white-space: normal; font-size: var(--size-12); font-weight: var(--fw-medium); color: var(--ink-700); }
+.full .buyer { margin: var(--size-12) 0 0; font-weight: var(--fw-semibold); }
+.full .buyer > span { flex: none; width: var(--size-20); height: var(--size-20); font-size: var(--size-11); }
+.full .buyer > span[aria-label] { width: auto; height: auto; background: transparent; }
+.full .buyer svg { width: var(--size-14); height: var(--size-14); }
+.full .facts { gap: var(--size-6); }
+.full .facts li + li::before { content: "·"; margin-right: var(--size-2); }
+.full .warning { color: var(--danger-700); }
+.full .urgent { background: var(--danger-50); color: var(--danger-700); }
+.full .save { width: var(--size-32); height: var(--size-32); border-radius: var(--radius-circle); }
+.full .save svg { width: var(--size-16); height: var(--size-16); }
+@media (min-width: 640px) {
+  .full.horizontal { flex-direction: row; }
+  .horizontal .visual { flex: 0 0 var(--size-160); width: var(--size-160); aspect-ratio: auto; }
+  .horizontal .visual > img { position: absolute; inset: 0; }
+  .horizontal .body { min-width: 0; }
+}

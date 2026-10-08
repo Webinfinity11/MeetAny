@@ -3,9 +3,9 @@
 import { useRef, useState } from "react";
 import { trapDialogFocus } from "../ui/dialog-focus";
 import { Icon } from "../Icon";
+import styles from "./company/CompanyProfile.module.css";
 
-/** Compact company photos: one photo sits small beside the name (caller), two to five fill a short
- *  mosaic (one large + up to four small), more show a "+N" tile. Any tile opens a simple viewer. */
+/** Compact thumbnails; the final tile opens the remaining photos in the viewer. */
 export function CompanyGallery({ photos: all, name }: { photos: string[]; name: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
@@ -19,9 +19,9 @@ export function CompanyGallery({ photos: all, name }: { photos: string[]; name: 
   const step = (d: number) => setIndex(i => (i + d + photos.length) % photos.length);
   return (
     <>
-      <div className={`company-gallery company-gallery--${shown.length}`}>
+      <div className={styles.gallery}>
         {shown.map((src, i) => (
-          <button key={src + i} type="button" className="company-gallery__tile" onClick={() => open(i)} aria-label={`${name} — ფოტო ${i + 1} / ${photos.length}`}>
+          <button key={src + i} type="button" className={styles.galleryTile} onClick={() => open(i)} aria-label={`${name} — ფოტო ${i + 1} / ${photos.length}`}>
             <img src={src} alt="" loading={i ? "lazy" : "eager"} onError={() => setFailed(f => [...f, src])} />
             {i === shown.length - 1 && extra > 0 ? <span className="company-gallery__more">+{extra}</span> : null}
           </button>

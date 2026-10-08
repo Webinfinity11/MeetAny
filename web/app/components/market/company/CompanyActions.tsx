@@ -18,7 +18,7 @@ export function CompanyActions({ companyId, name }: { companyId: string; name: s
   if (me?.role === "admin" || me?.id === companyId) return null;
   const next = `/companies/view/?id=${encodeURIComponent(companyId)}`;
   const query = encodeURIComponent(next);
-  return <><Button variant="primary" disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => me ? openChat({ companyId }) : setOpen(true)}><Icon name="message-square"/>შეტყობინება</Button>
+  return <><Button variant="secondary" disabled={!ready || !sessionReady || !!me?.blocked} onClick={() => me ? openChat({ companyId }) : setOpen(true)}><Icon name="message-square"/>მესიჯი</Button>
     <Modal open={open} onClose={() => setOpen(false)} title="შედი, რომ მისწერო კომპანიას" lead={`${name} — შესვლის შემდეგ მიმოწერა გაიხსნება`} width={460}>
       {open ? <LoginForm onReset={() => router.push(`/account/?tab=reset&next=${query}`)} onSuccess={() => { setOpen(false); if (store?.currentUser() && !store.currentUser()?.blocked) openChat({ companyId }); }}/> : null}
       <p>ჯერ არ გაქვს ანგარიში? <Link href={`/account/?tab=register&role=company&next=${query}`}>კომპანიის რეგისტრაცია</Link></p>

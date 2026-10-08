@@ -1,4 +1,6 @@
 "use client";
+import "../../styles/pages/account.css";
+import { Icon } from "../Icon";
 import { Button } from "../ui/Button";
 
 
@@ -17,20 +19,21 @@ import { trackRegistration } from "../../lib/registration-telemetry";
 
 import { loginAccount } from "./request/loginAccount";
 
-// Password field with a text "show" toggle inside the control (44px hit area).
+// Password visibility toggle retains a 44px hit area and an accessible name.
 export function PasswordInput({ value, onChange, autoComplete, disabled, field }: { value: string; onChange: (value: string) => void; autoComplete: string; disabled?: boolean; field: Record<string, unknown> }) {
   const [shown, setShown] = useState(false);
   return (
-    <div className="auth-password">
+    <div className="auth-password auth-input-icon">
+      <Icon name="lock-keyhole" />
       <input className="ma-input" type={shown ? "text" : "password"} autoComplete={autoComplete} disabled={disabled} value={value} onChange={(e) => onChange(e.target.value)} {...field} />
-      <button type="button" className="auth-password__toggle" aria-pressed={shown} disabled={disabled} onClick={() => setShown((v) => !v)}>
-        {shown ? "დამალვა" : "ჩვენება"}
+      <button type="button" className="auth-password__toggle" aria-pressed={shown} aria-label={shown ? "პაროლის დამალვა" : "პაროლის ჩვენება"} disabled={disabled} onClick={() => setShown((v) => !v)}>
+        <Icon name={shown ? "eye-off" : "eye"} />
       </button>
     </div>
   );
 }
 
-// Server error above the submit button in a reserved line, so the button never moves.
+// Display server errors immediately above the submit button.
 function FormAlert({ error }: { error: string | null }) {
   return (
     <p className="ma-field__error auth-alert" role="alert">
@@ -73,23 +76,21 @@ export function LoginForm({ onReset, onSuccess }: { onReset: () => void; onSucce
   }
 
   return (
-    <form className="ma-form" onSubmit={submit} noValidate>
+    <form className="ma-form auth-controls" onSubmit={submit} noValidate>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor="login-email">
           ელფოსტა
         </label>
-        <input className="ma-input" autoComplete="username" type="email" inputMode="email" value={email} onChange={(e) => {setEmail(e.target.value); v.clear("login-email");}} {...v.control("login-email")} />
+        <div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" autoComplete="username" type="email" inputMode="email" value={email} onChange={(e) => {setEmail(e.target.value); v.clear("login-email");}} {...v.control("login-email")} /></div>
         {v.message("login-email")}
       </div>
       <div className="ma-field">
-        <div className="auth-label-row">
-          <label className="ma-field__label" htmlFor="login-password">
-            პაროლი
-          </label>
-          <button type="button" className="auth-link" onClick={onReset}>პაროლი დაგავიწყდა?</button>
-        </div>
+        <label className="ma-field__label" htmlFor="login-password">
+          პაროლი
+        </label>
         <PasswordInput autoComplete="current-password" value={password} onChange={(value) => {setPassword(value); v.clear("login-password");}} field={v.control("login-password")} />
         {v.message("login-password")}
+        <button type="button" className="auth-link auth-forgot" onClick={onReset}>დაგავიწყდათ?</button>
       </div>
       <div className="auth-submit">
         <FormAlert error={error} />
@@ -107,7 +108,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   const next = safeNext(useSearchParams().get("next"));
   const profileRequired = !!store?.needsProfile();
   const profile = store?.pendingProfile();
-  const [role, setRole] = useState(profile?.role || (initialRole === "company" ? "company" : "client"));
+  const [role] = useState(profile?.role || (initialRole === "company" ? "company" : "client"));
   const [name, setName] = useState(profile?.name || "");
   const [company, setCompany] = useState(profile?.company || "");
   const [phone, setPhone] = useState(profile?.phone || "+995 ");
@@ -153,36 +154,29 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     }
   }
 
+  const nameField = (
+    <div className="ma-field">
+      <label className="ma-field__label" htmlFor="reg-name">
+        {role === "company" ? "საკონტაქტო პირი (სახელი და გვარი) *" : "სახელი და გვარი *"}
+      </label>
+      <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={edit("reg-name", setName)} {...v.control("reg-name")} />
+      <div className="auth-field-message">{v.message("reg-name")}</div>
+    </div>
+  );
+  const companyField = (
+    <div className="ma-field">
+      <label className="ma-field__label" htmlFor="reg-company">
+        {role === "company" ? "კომპანიის დასახელება" : "კომპანია"}{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
+      </label>
+      <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
+      <div className="auth-field-message">{v.message("reg-company")}</div>
+    </div>
+  );
+
   return (
-    <form className="ma-form auth-register" onSubmit={submit} onChange={() => trackRegistration(role, "form_started")} noValidate>
-      <fieldset className="ma-field">
-        <legend className="ma-field__label">ვინ ხარ?</legend>
-        <div className="auth-roles">
-          <label className="auth-role">
-            <input type="radio" name="role" aria-label="მჭირდება მომსახურება ან პროდუქცია" aria-describedby="role-client-title" checked={role === "client"} onChange={() => setRole("client")} />
-            <span><strong id="role-client-title">კლიენტი</strong><span>მჭირდება მომსახურება ან პროდუქცია</span></span>
-          </label>
-          <label className="auth-role">
-            <input type="radio" name="role" aria-label="ვთავაზობ მომსახურებას ან პროდუქციას" aria-describedby="role-company-title" checked={role === "company"} onChange={() => setRole("company")} />
-            <span><strong id="role-company-title">კომპანია</strong><span>ვთავაზობ მომსახურებას ან პროდუქციას</span></span>
-          </label>
-        </div>
-      </fieldset>
+    <form className="ma-form auth-controls auth-register" onSubmit={submit} onChange={() => trackRegistration(role, "form_started")} noValidate>
       <div className="ma-form__row ma-form__row--2">
-        <div className="ma-field">
-          <label className="ma-field__label" htmlFor="reg-name">
-            სახელი და გვარი *
-          </label>
-          <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={edit("reg-name", setName)} {...v.control("reg-name")} />
-          <div className="auth-field-message">{v.message("reg-name")}</div>
-        </div>
-        <div className="ma-field">
-          <label className="ma-field__label" htmlFor="reg-company">
-            კომპანია{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
-          </label>
-          <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
-          <div className="auth-field-message">{v.message("reg-company")}</div>
-        </div>
+        {role === "company" ? <>{companyField}{nameField}</> : <>{nameField}{companyField}</>}
       </div>
       <div className="ma-form__row ma-form__row--2">
         <div className="ma-field">
@@ -190,13 +184,13 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
             მობილური ტელეფონი *
           </label>
           <input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={edit("reg-phone", setPhone)} {...v.control("reg-phone", v.errors["reg-phone"] ? undefined : "reg-phone-help")} />
-          <div className="auth-field-message">{v.message("reg-phone") || <p className="ma-field__help" id="reg-phone-help">ნომერი საჯაროდ გამოჩნდება</p>}</div>
+          <div className="auth-field-message">{v.message("reg-phone") || <p className="ma-field__help" id="reg-phone-help">ნომერი ჩანს მხოლოდ გარიგების მხარისთვის</p>}</div>
         </div>
         <div className="ma-field">
           <label className="ma-field__label" htmlFor="reg-email">
             ელფოსტა *
           </label>
-          <input className="ma-input" type="email" inputMode="email" autoComplete="email" disabled={profileRequired} maxLength={200} value={email} onChange={edit("reg-email", setEmail)} {...v.control("reg-email")} />
+          <div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" type="email" inputMode="email" autoComplete="email" disabled={profileRequired} maxLength={200} value={email} onChange={edit("reg-email", setEmail)} {...v.control("reg-email")} /></div>
           <div className="auth-field-message">{v.message("reg-email")}</div>
         </div>
       </div>
@@ -262,13 +256,16 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
     window.addEventListener("meetany:auth", update);
     return () => window.removeEventListener("meetany:auth", update);
   }, []);
-  const switchMode = (next: Mode) => {
+  const switchMode = (next: Mode, role?: "client" | "company") => {
     const url = new URL(window.location.href);
     if (next === "login") url.searchParams.delete("tab"); else url.searchParams.set("tab", next);
     if (next !== "register") url.searchParams.delete("role");
+    else url.searchParams.set("role", role || "client");
     window.history.pushState(null, "", url.pathname + url.search);
   };
-  const subtitle = mode === "register" ? "შექმენი ანგარიში და დაიწყე ბიზნესკავშირები." : mode === "reset" ? "მიიღე კოდი ელფოსტაზე და დააყენე ახალი პაროლი." : "კეთილი იყოს შენი დაბრუნება.";
+  const registrationRole = searchParams.get("role") || initialRole;
+  const isCompany = registrationRole === "company";
+  const subtitle = mode === "register" ? isCompany ? "ანგარიში იქმნება წუთში — დანარჩენს onboarding-ში შეავსებთ." : "რამდენიმე ველი — და მოთხოვნის განთავსება შეგიძლიათ." : mode === "reset" ? "მიიღე კოდი ელფოსტაზე და დააყენე ახალი პაროლი." : "კეთილი იყოს შენი დაბრუნება.";
   const page = (title: string, body: React.ReactNode, lead = subtitle) => (
     <div className="ma-page auth-page">
       <div className="auth-shell">
@@ -276,18 +273,24 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
           <h1 id="auth-title" className="auth-title">{title}</h1>
           <p className="auth-lead">{lead}</p>
           <div className="auth-form">{body}</div>
+          <p className="auth-note"><Icon name="shield-check" />ერთი ანგარიში — ყიდვაც და გაყიდვაც</p>
         </section>
       </div>
     </div>
   );
   if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანე ელფოსტაზე მიღებული კოდი.");
   if (store?.needsProfile()) return page("პროფილის დასრულება", <RegisterForm initialRole={initialRole}/>, "დარჩა რამდენიმე დეტალი.");
-  return page(mode === "register" ? "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : "შესვლა", <>
-    {mode !== "reset" ? <nav className="auth-switch" aria-label="შესვლა ან რეგისტრაცია">
-      <button type="button" aria-current={mode === "login" ? "page" : undefined} onClick={() => switchMode("login")}>შესვლა</button>
-      <button type="button" aria-current={mode === "register" ? "page" : undefined} onClick={() => switchMode("register")}>რეგისტრაცია</button>
-    </nav> : null}
-    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm key={initialRole} initialRole={initialRole} />}
+  return page(mode === "register" ? isCompany ? "კომპანიის რეგისტრაცია" : "კლიენტის რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : searchParams.get("next") ? "შედით, რომ გააგრძელოთ" : "შესვლა", <>
+    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm key={registrationRole} initialRole={registrationRole} />}
+    {mode !== "reset" && <div className="auth-registration">
+      {mode === "login" ? <>
+        <p>ჯერ არ გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("register", "company")}>კომპანიის რეგისტრაცია</button></p>
+        <p><button type="button" onClick={() => switchMode("register", "client")}>კლიენტის რეგისტრაცია</button></p>
+      </> : <>
+        <p>{isCompany ? "კლიენტი ხართ?" : "კომპანია ხართ?"} <button type="button" onClick={() => switchMode("register", isCompany ? "client" : "company")}>{isCompany ? "კლიენტის რეგისტრაცია" : "კომპანიის რეგისტრაცია"}</button></p>
+        <p>უკვე გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("login")}>შესვლა</button></p>
+      </>}
+    </div>}
   </>);
 }
 
@@ -317,10 +320,10 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
     } catch (err) {setError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
     finally {setPending(false);}
   }
-  return <form className="ma-form" onSubmit={submit} noValidate>
-    {!sent ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-email">ელფოსტა</label><input className="ma-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={e => {setEmail(e.target.value); v.clear("reset-email");}} {...v.control("reset-email")}/>{v.message("reset-email")}</div> : <>
+  return <form className="ma-form auth-controls" onSubmit={submit} noValidate>
+    {!sent ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-email">ელფოსტა</label><div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={e => {setEmail(e.target.value); v.clear("reset-email");}} {...v.control("reset-email")}/></div>{v.message("reset-email")}</div> : <>
       <p className="auth-hint">შეამოწმე ელფოსტა და შეიყვანე მიღებული კოდი.</p>
-      <div className="ma-field"><label className="ma-field__label" htmlFor="reset-code">კოდი</label><input className="ma-input" autoComplete="one-time-code" inputMode="numeric" value={code} onChange={e => {setCode(e.target.value); v.clear("reset-code");}} {...v.control("reset-code")}/>{v.message("reset-code")}</div>
+      <div className="ma-field"><label className="ma-field__label" htmlFor="reset-code">კოდი</label><div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" autoComplete="one-time-code" inputMode="numeric" value={code} onChange={e => {setCode(e.target.value); v.clear("reset-code");}} {...v.control("reset-code")}/></div>{v.message("reset-code")}</div>
       {!verification ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-password">ახალი პაროლი</label><PasswordInput autoComplete="new-password" value={password} onChange={value => {setPassword(value); v.clear("reset-password");}} field={v.control("reset-password")}/>{v.message("reset-password")}</div> : null}
       <button type="button" className="auth-link" disabled={pending} onClick={async () => {
         setPending(true); setError("");

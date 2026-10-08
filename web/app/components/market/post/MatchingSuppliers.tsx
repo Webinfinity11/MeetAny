@@ -27,3 +27,8 @@ export function MatchingSuppliers({ store, requestId }: { store: Store; requestI
     <div><Link href={`/companies/view/?id=${encodeURIComponent(item.id)}`}>{item.company}</Link><p>{cities[item.city] || item.city}{item.verified ? <Icon name="badge-check" /> : null}</p></div>
   </li>)}</ul><Link href={`/matching/?requestId=${encodeURIComponent(requestId)}`}>ყველა შესაბამისი მომწოდებელი</Link></>;
 }
+
+export function MatchingPreview({ store, category }: { store: Store; category: string }) {
+  const items: { id: string; company?: string }[] = category ? store.listCompanies({ industry: category }).filter((company: { id: string }) => company.id !== store.currentUser()?.id) : [];
+  return <div className={styles.matchingPreview}><p><strong>{items.length}</strong> შესაბამისი კომპანია</p><div className={styles.avatarRow}>{items.slice(0, 5).map(item => <span className={styles.avatar} key={item.id} title={item.company}>{item.company?.slice(0, 2)}</span>)}</div><p>ყველას ეცნობება გამოქვეყნებისთანავე</p></div>;
+}

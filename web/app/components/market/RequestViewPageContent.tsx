@@ -261,9 +261,9 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               <h1 className="detail-hero__title" tabIndex={-1}>{r.title}</h1>
             </header>
             <dl className="request-detail-facts">
-              <div><dt><Icon name="map-pin"/>ადგილი</dt><dd>{[cities[r.city] || r.city, r.addressNote ? addressLabel(r.addressNote) : null].filter(Boolean).join(" · ")}</dd></div>
               <div><dt><Icon name="package"/>რაოდენობა</dt><dd>{r.quantity != null ? `${r.quantity} ${units[r.unit] || r.unit || ""}` : "არ არის მითითებული"}</dd></div>
-              <div><dt><Icon name="calendar"/>საჭირო თარიღი</dt><dd>{r.neededBy ? dateLabel(r.neededBy) : "არ არის მითითებული"}</dd></div>
+              <div><dt><Icon name="map-pin"/>მიწოდება</dt><dd>{cities[r.city] || r.city}</dd></div>
+              <div><dt><Icon name="calendar"/>მიწოდების ვადა</dt><dd>{r.neededBy ? dateLabel(r.neededBy) : "არ არის მითითებული"}</dd></div>
               <div><dt><Icon name="clock"/>შეთავაზებების ბოლო ვადა</dt><dd>{dateLabel(r.expiresAt)}</dd></div>
             </dl>
             <div className="request-description-brief"><h2><Icon name="file-text"/>მოთხოვნის აღწერა</h2><div className="request-description-content">
@@ -279,7 +279,13 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             {r.neededBy && <div><dt>საჭირო თარიღი</dt><dd>{dateLabel(r.neededBy)}</dd></div>}
             {r.photo && <div><dt>ფოტო</dt><dd><a href={r.photo} target="_blank" rel="noopener noreferrer">მოთხოვნის ფოტოს ნახვა</a></dd></div>}
           </dl></section>
-          {r.photo ? <section className="detail-media-card"><h2 className="detail-section-title">ფაილები/ფოტოები</h2><figure className="detail-photo"><a href={r.photo} target="_blank" rel="noopener noreferrer"><img src={r.photo} alt="მოთხოვნის ფოტო"/></a></figure></section> : null}
+          {r.photo ? <section className="detail-media-card"><h2 className="detail-section-title">ფაილები</h2>
+            <a href={r.photo} target="_blank" rel="noopener noreferrer" download aria-label="ფოტოს ჩამოტვირთვა — მყიდველის მაგალითი" style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", padding: "var(--space-3)", border: "var(--size-1) solid var(--border)", borderRadius: "var(--radius-md)", color: "inherit" }}>
+              <img src={r.photo} alt="" width={110} height={70} style={{ width: 110, height: 70, flex: "none", objectFit: "cover", borderRadius: "var(--radius-sm)" }}/>
+              <span style={{ flex: 1, minWidth: 0 }}><strong style={{ display: "block", fontSize: "var(--size-13)" }}>ფოტო</strong><span style={{ fontSize: "var(--size-12)", color: "var(--ink-500)" }}>მყიდველის მაგალითი</span></span>
+              <svg className="icon" viewBox="0 0 24 24" aria-hidden="true" style={{ flex: "none", color: "var(--ink-500)" }}><path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5"/></svg>
+            </a>
+          </section> : null}
           {isOwner || me?.role === "admin" ? <section className="request-responses" id="request-responses" aria-labelledby="request-offers-title">{responsePanel}</section> : null}
 
           {actionError ? <p role="alert" className="ma-field__error">{actionError}</p> : null}
@@ -291,7 +297,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           {owner ? (
             <section className="request-author"><p className="detail-label">მყიდველი</p>
               <div className="request-author-identity"><span className="detail-buyer-avatar">{owner.logoUrl ? <img src={owner.logoUrl} alt=""/> : (owner.company || owner.name || "მყიდველი").slice(0, 2)}</span><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{cities[owner.city] || owner.city}</p>{owner.verified ? <Badge status="success"><Icon name="shield-check"/>ვერიფიცირებული</Badge> : null}</div></div>
-              {owner.role === "company" ? <Button variant="secondary" href={`/companies/view/?id=${encodeURIComponent(owner.id)}`}>კომპანიის პროფილი</Button> : null}
+              {owner.role === "company" ? <Button variant="secondary" style={{ width: "100%" }} href={`/companies/view/?id=${encodeURIComponent(owner.id)}`}>კომპანიის პროფილი</Button> : null}
             </section>
           ) : null}
           {me && !isOwner && me.role !== "admin" && me.role !== "company" ? responsePanel : null}
@@ -316,7 +322,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           : <Button variant="primary" onClick={() => setAuthOpen(true)}><Icon name="send"/>შეთავაზების გაგზავნა</Button>}
       </div> : null}
       {isOwner ? <div className="detail-actionbar"><Button variant="primary" href={compareHref(r.id)}>შეთავაზებების შედარება</Button></div> : null}
-      {similar.length > 0 && <section className={styles.similar}><h2>მსგავსი შესაძლებლობები</h2><div>{similar.map(item => <OpportunityCard key={item.id} request={item} compact />)}</div></section>}
+      {similar.length > 0 && <section className={styles.similar}><header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}><h2 style={{ margin: 0 }}>მსგავსი შესაძლებლობები</h2><Link href={`/requests/?category=${encodeURIComponent(r.category)}`} style={{ flexShrink: 0, fontSize: "var(--size-13)", fontWeight: "var(--fw-semibold)" }}>ყველას ნახვა</Link></header><div>{similar.map(item => <OpportunityCard key={item.id} request={item} compact />)}</div></section>}
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onSuccess={() => { const user = store?.currentUser(); if (user?.role === "company") router.push(user.verified ? offerHref : "/account/?tab=profile"); else if (user?.role === "admin") router.push("/admin/"); }} intent="offer" context={r.title} next={offerHref} />
       <ConfirmSheet
         id="request-confirm"

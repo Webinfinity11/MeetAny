@@ -18,26 +18,26 @@ export interface OpportunityRequest {
 }
 export interface OpportunityCardProps {
   request: OpportunityRequest; compact?: boolean; offers?: number;
-  buyer?: { name: string; verified: boolean }; onSave?: () => void; saved?: boolean; canOffer?: boolean;
+  buyer?: { name: string; verified: boolean }; onSave?: () => void; saved?: boolean; canOffer?: boolean; guest?: boolean; horizontal?: boolean;
 }
 
-export function OpportunityCard({ request: r, compact = false, offers, buyer, onSave, saved = false, canOffer = false }: OpportunityCardProps) {
+export function OpportunityCard({ request: r, compact = false, offers, buyer, onSave, saved = false, canOffer = false, guest = false, horizontal = false }: OpportunityCardProps) {
   const [failed, setFailed] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const category = categories[currentCategory(r.category)] || r.category;
   const deadline = `${Math.max(0, r.daysLeft)} დღე დარჩა`;
-  return <article className={`${styles.card} ${compact ? styles.compact : catalogStyles.fullCard}`} data-request-id={r.id}>
+  return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full} ${horizontal ? styles.horizontal : ""}`}`} data-request-id={r.id}>
     <div className={styles.visual}>
       {r.photo && failed !== r.photo ? <Image unoptimized src={r.photo} alt="" width={480} height={300} loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />}
-      {compact ? r.isNew && <span className={styles.new}>ახალი</span> : <span className={`${styles.new} ${r.isNew ? "" : r.daysLeft <= 5 ? catalogStyles.urgent : catalogStyles.active}`}>{r.isNew ? "ახალი" : r.daysLeft <= 5 ? "სასწრაფო" : "აქტიური"}</span>}
+      {compact ? r.isNew && <span className={styles.new}>ახალი</span> : (r.isNew || r.daysLeft <= 5) && <span className={`${styles.new} ${r.isNew ? "" : styles.urgent}`}>{r.isNew ? "ახალი" : "სასწრაფო"}</span>}
       {compact ? <div className={styles.chips}><span title={category}>{category}</span><span className={r.daysLeft <= 5 ? styles.warning : ""}>{deadline}</span></div>
-        : <><div className={styles.chips}><span title={category}>{category}</span></div>{onSave && <button type="button" className={styles.save} aria-label={saved ? "შენახვიდან წაშლა" : "მოთხოვნის შენახვა"} aria-pressed={saved} onClick={onSave}><Icon name="bookmark" /></button>}</>}
+        : <>{onSave && <button type="button" className={styles.save} aria-label={saved ? "შენახვიდან წაშლა" : "მოთხოვნის შენახვა"} aria-pressed={saved} onClick={onSave}><Icon name="bookmark" /></button>}</>}
     </div>
     <div className={styles.body}>
       <h3><Link className={styles.mainLink} href={href}>{r.title}</Link></h3>
-      {!compact && <>{r.body && <p className={`${styles.description} ${catalogStyles.description}`}>{r.body}</p>}{buyer && <p className={styles.buyer}><span>{buyer.name.slice(0, 1)}</span>{buyer.name}{buyer.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</p>}</>}
+      {!compact && <><span className={styles.category}>{category}</span>{buyer && <p className={styles.buyer}><span>{buyer.name.slice(0, 1)}</span>{buyer.name}{buyer.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</p>}</>}
       <ul className={styles.facts}><li><Icon name="map-pin" />{r.cityLabel || cities[r.city] || r.city}</li>{r.quantity != null && <li><Icon name="package" />{formatNumber(r.quantity)} {r.unit ? units[r.unit] || r.unit : ""}</li>}</ul>
-      {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div><div className={styles.actions}><Button variant="secondary" href={href}>დეტალები</Button>{canOffer && <Button href={`/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზება</Button>}</div></div>}
+      {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div><div className={styles.actions}><Button variant="secondary" href={href}>დეტალები</Button>{(canOffer || guest) && <Button href={guest ? `/account/?next=${encodeURIComponent(`/offers/new/?requestId=${encodeURIComponent(r.id)}`)}` : `/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზება</Button>}</div></div>}
     </div>
   </article>;
 }

@@ -25,7 +25,7 @@
 .how { border-top: var(--size-1) solid var(--ink-200); margin-top: var(--size-64); padding-block: var(--size-80); }
 .eyebrow { margin: 0 0 var(--size-8); color: var(--ink-500); font-size: var(--size-13); font-weight: var(--fw-semibold); }
 .how h2 { max-width: var(--size-640); font-size: var(--size-34); }
-.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--size-32); list-style: none; margin: var(--size-40) 0 0; padding: 0; }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; list-style: none; margin: var(--size-40) 0 0; padding: 0; }
 .stepHead { display: flex; align-items: center; gap: var(--size-12); }
 .stepIcon { display: grid; place-items: center; flex: none; width: var(--size-44); height: var(--size-44); border-radius: var(--size-12); background: var(--ink-100); }
 .steps li:first-child .stepIcon { background: var(--ink-950); color: var(--white); }
@@ -77,3 +77,8 @@
   .supplierActions > a { justify-content: center; }
 }
 @media (prefers-reduced-motion:reduce) { .heroEnter, .heroEnter, .how, .supplier { animation: none; } }
+
+.pause.pause { width: var(--size-32); height: var(--size-32); border-radius: var(--radius-pill); }
+
+@media (min-width: 1024px) { .steps li { padding-right: var(--size-32); } }
+@media (min-width: 640px) and (max-width: 767px) { .how { padding-block: var(--size-64); } }

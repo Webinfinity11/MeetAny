@@ -1,4 +1,7 @@
 
+import { dealDate } from "../../lib/deal-client";
+import { OfferDescription } from "./offer/OfferDescription";
+import flowStyles from "./offer/OfferFlow.module.css";
 import { Button } from "../ui/Button";
 import Link from "next/link";
 import { Icon } from "../Icon";
@@ -46,7 +49,7 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTa
           ? " ma-ocard--new"
           : "";
   return (
-    <article className={`ma-ocard${cls}`}>
+    <article className={`ma-ocard${cls} ${flowStyles.detailCard}`}>
       <header className="ma-ocard__head">
         <CompanyAvatar name={o.companyName} logoUrl={o.logoUrl} />
         <div className="ma-ocard__who">
@@ -65,19 +68,16 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTa
       <dl className="offer-terms offer-terms--compact">
         <div className="offer-terms__price"><dt>ფასი</dt><dd>{offerPrice(o)}{o.price!=null?<small>{o.vatIncluded?"დღგ ფასში შედის":"დღგ ფასში არ შედის"}</small>:null}</dd></div>
         <div><dt>მიწოდების ვადა</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div>
-        <div><dt>მიწოდების ხარჯი</dt><dd>{o.deliveryIncluded?"შედის":"დასაზუსტებელია"}</dd></div>
+        <div><dt>ძალაშია</dt><dd>{o.validUntil ? dealDate(o.validUntil) : "—"}</dd></div>
       </dl>
-      <p className="ma-ocard__body">{o.body}</p>
-      {o.paymentTerms || o.validUntil || o.commercialTerms?.length ? <dl className="offer-terms offer-terms--compact">
-        {o.paymentTerms ? <div><dt>გადახდის პირობები</dt><dd>{o.paymentTerms}</dd></div> : null}
-        {o.validUntil ? <div><dt>ძალაშია</dt><dd>{o.validUntil}</dd></div> : null}
-        {o.commercialTerms?.length ? <div><dt>კომერციული პირობები</dt><dd>{o.commercialTerms.join(" · ")}</dd></div> : null}
-      </dl> : null}
+      {o.commercialTerms?.length ? <div className={flowStyles.termsList}><span>მოიცავს</span><ul>{o.commercialTerms.map(term => <li key={term}><Icon name="check"/>{term}</li>)}</ul></div> : null}
+      {o.paymentTerms ? <p className={flowStyles.detailNote}>გადახდა: {o.paymentTerms}</p> : null}
+      <p className={flowStyles.detailNote}>მიწოდების ხარჯი: {o.deliveryIncluded ? "შედის" : "დასაზუსტებელია"}</p>
+      <OfferDescription body={o.body}/>
       <footer className="request-offer-actions">
-        {messageTarget ? <MessageButton {...messageTarget} variant="ghost" /> : null}
-        <Button variant="secondary" href={o.companyHref}><Icon name="building-2"/>კომპანიის ნახვა</Button>
+        {canChoose && o.status === "sent" ? <Button type="button" variant="primary" onClick={onChoose}><Icon name="check"/>არჩევა</Button> : null}
+        {messageTarget ? <MessageButton {...messageTarget} variant="secondary" /> : null}
         {canReport ? <ReportButton kind="offer" targetId={o.id} /> : null}
-        {canChoose && o.status === "sent" ? <Button type="button" variant="primary" onClick={onChoose}><Icon name="check"/>შეთავაზების არჩევა</Button> : null}
       </footer>
     </article>
   );

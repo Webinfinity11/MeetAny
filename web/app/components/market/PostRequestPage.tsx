@@ -11,9 +11,7 @@ import { useMarketStore, type PublicSnapshot, type Store } from "../../lib/marke
 import { categories, cities, currentCategory, units } from "../../lib/categories";
 import { clearRequestDraft, readRequestDraft, saveRequestDraft } from "../../lib/request-draft";
 import { categoryOptions } from "./CategoryOptions";
-import { toast } from "../Toasts";
-import { OpportunityCard } from "./OpportunityCard";
-import { MatchingSuppliers } from "./post/MatchingSuppliers";
+import { MatchingSuppliers, MatchingPreview } from "./post/MatchingSuppliers";
 import styles from "./post/Post.module.css";
 import { PhotoField } from "./PhotoField";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
@@ -38,10 +36,6 @@ function StepBar({ step }: { step: number }) {
 
 function FormCard({ title, optional, action, children }: { title: string; optional?: boolean; action?: ReactNode; children: ReactNode }) {
   return <section className="post-card"><header><h2>{title}{optional ? <span>არასავალდებულო</span> : null}</h2>{action}</header><div className="post-card__body">{children}</div></section>;
-}
-
-function Facts({ rows }: { rows: [string, string][] }) {
-  return <dl className="post-facts">{rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>;
 }
 
 export function PostRequestPage({ initial }: { initial?: PublicSnapshot }) {
@@ -79,12 +73,16 @@ function PostRequestForm({ store }: { store: Store }) {
   const previousStep = useRef(1);
   const v = useFieldErrors();
   const user = store.currentUser();
-  const city = cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
+  const city = otherCity ? cityChoice : cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
   const signedIn = !!user;
   useEffect(() => {
     // State is initialized from storage before the first save, including on auth remounts.
     if (published) return;
-    saveRequestDraft({ title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body });
+    const current = { title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body };
+    saveRequestDraft(current);
+    const saved = readRequestDraft();
+    const acknowledgement = window.setTimeout(() => setSavedAt(saved && Object.entries(current).every(([key, value]) => saved[key as keyof typeof current] === value) ? new Date().toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false }) : ""), 0);
+    return () => window.clearTimeout(acknowledgement);
   }, [title, category, city, addressNote, quantity, unit, neededBy, body, published]);
   useEffect(() => {
     // Prefills apply once: a later reload must restore edits, not the original URL text.
@@ -114,7 +112,7 @@ function PostRequestForm({ store }: { store: Store }) {
   const minDate = tomorrow.toISOString().slice(0, 10);
   const maxDate = store.maxNeededBy() as string;
   const expiry = new Date(`${today}T12:00:00Z`); expiry.setUTCDate(expiry.getUTCDate() + 14);
-  const matchingCount = category ? store.listCompanies({ industry: category }).filter((company: { id: string }) => company.id !== user?.id).length : 0;
+
 
   function go(next: number) {
     setError("");
@@ -168,26 +166,6 @@ function PostRequestForm({ store }: { store: Store }) {
   const edit = (part: number) => <Button variant="ghost" size="sm" onClick={() => go(part)}><Icon name="pencil" />შეცვლა<span className="ma-sr-only">: {steps[part - 1]}</span></Button>;
   const quantityLabel = quantity ? `${quantity} ${units[unit as keyof typeof units] || ""}` : "რაოდენობა";
 
-  function saveDraftManually() {
-    keepDraft();
-    // The shared helper tolerates disabled storage; verify before claiming success.
-    const saved = readRequestDraft();
-    if (!saved || saved.title !== title || saved.body !== body || saved.category !== category || saved.city !== city || saved.addressNote !== addressNote || saved.quantity !== quantity || saved.unit !== unit || saved.neededByText !== (neededBy ? dateLabel(neededBy) : "")) {
-      toast({ title: "მონახაზი ვერ შეინახა", sub: "ბრაუზერში შენახვა მიუწვდომელია. ფორმა ღია დატოვეთ.", tone: "warning" });
-      return;
-    }
-    const time = new Date().toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false });
-    setSavedAt(time);
-    toast({ title: "მონახაზი შენახულია", sub: `${time} · ამ ჩანართში, 30 წუთით. ფოტო ხელახლა ასატვირთია.`, tone: "success" });
-  }
-  async function copyLink() {
-    if (!published) return;
-    try {
-      await navigator.clipboard.writeText(new URL(`/requests/view/?id=${encodeURIComponent(published.id)}`, window.location.origin).href);
-      toast({ title: "ბმული დაკოპირებულია", tone: "success" });
-    } catch { toast({ title: "ბმული ვერ დაკოპირდა", sub: "გახსენით მოთხოვნა და დააკოპირეთ მისამართი.", tone: "warning" }); }
-  }
-
   return <div className={`post-page ${styles.page}`}>
     {!published ? <header className="post-heading"><h1 ref={heading} tabIndex={-1}>მოთხოვნის განთავსება</h1>{step === 1 ? <p>აღწერეთ, რა გჭირდებათ — მომწოდებლები შეთავაზებებს გამოგიგზავნიან.</p> : null}</header> : null}
     <StepBar step={step} />
@@ -195,15 +173,13 @@ function PostRequestForm({ store }: { store: Store }) {
       <section className="post-published">
         <span className="post-published__check"><Icon name="check" /></span>
         <div><h1 ref={heading} tabIndex={-1}>მოთხოვნა გამოქვეყნდა</h1><p>„{published.title}“ — მომწოდებლებს უკვე შეუძლიათ შეთავაზების გამოგზავნა.</p></div>
-        <div className="post-published__actions"><Button size="lg" href="/account/?tab=requests">ჩემი მოთხოვნები</Button><Button size="lg" variant="secondary" href={`/requests/view/?id=${encodeURIComponent(published.id)}`}>მოთხოვნის ნახვა</Button></div>
+        <div className="post-published__actions"><Button size="lg" href="/account/?tab=requests">ჩემი მოთხოვნები</Button><Button size="lg" variant="secondary" href={`/requests/view/?id=${encodeURIComponent(published.id)}`}>ნახვა</Button></div>
       </section>
       <div className="post-layout">
         <div className="post-content">
-          <FormCard title="მოთხოვნის ბმული"><div className={styles.link}><Link href={`/requests/view/?id=${encodeURIComponent(published.id)}`}>{published.title}</Link><Button variant="secondary" onClick={copyLink}>ბმულის კოპირება</Button></div></FormCard>
           <FormCard title="რა ხდება ახლა"><ol className={styles.timeline}>
             <li><Icon name="check" /><div><strong>მოთხოვნა გამოქვეყნდა</strong><time dateTime={published.createdAt}>{new Date(published.createdAt).toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false })}</time></div></li>
-            <li className={styles.future}><Icon name="bell" /><span>შეთავაზებები გამოჩნდება „ჩემი მოთხოვნები“-ში; შეტყობინებას ზარის ნიშნით მიიღებთ.</span></li>
-            <li className={styles.future}><Icon name="check" /><span>შედარება და არჩევა — მიღებული შეთავაზებებიდან აირჩიეთ სასურველი.</span></li>
+            {[['მომწოდებლებს ეცნობათ', 'შესაბამისი კომპანიები გაეცნობიან მოთხოვნას.'], ['პირველი შეთავაზებები', 'მიღებული შეთავაზებები გამოჩნდება თქვენს ანგარიშში.'], ['შედარება და არჩევა', 'შეადარეთ ფასი, ვადა და პირობები.']].map(([label, description]) => <li className={styles.future} key={label}><span className={styles.timelineCircle} aria-hidden="true"/><div><strong>{label}</strong><p>{description}</p></div></li>)}
           </ol></FormCard>
         </div>
         <aside className={styles.aside}><FormCard title="შესაბამისი მომწოდებლები"><MatchingSuppliers store={store} requestId={published.id} /></FormCard></aside>
@@ -217,7 +193,7 @@ function PostRequestForm({ store }: { store: Store }) {
               <FormCard title="რა გჭირდებათ">
                 <div className="post-fields post-fields--title">
                   <div className="ma-field"><label htmlFor="title">სათაური <span>*</span></label><input className="ma-input" required maxLength={120} placeholder="მაგ. 100 კომპლექტი თეთრეული" value={title} onChange={e => { setTitle(e.target.value); v.clear("title"); }} {...v.control("title")} />{v.message("title")}</div>
-                  <div className="ma-field"><label htmlFor="category">კატეგორია <span>*</span></label><CustomSelect required value={category} onChange={e => { setCategory(e.target.value); v.clear("category"); }} {...v.control("category")}><option value="" disabled>აირჩიე კატეგორია</option>{categoryOptions()}</CustomSelect>{v.message("category")}</div>
+                  <div className="ma-field"><label htmlFor="category">კატეგორია <span>*</span></label><div className={styles.iconField}><svg className="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13 11 22 2 13V2h11l9 9-2 2Z"/><circle cx="7" cy="7" r="1"/></svg><CustomSelect required value={category} onChange={e => { setCategory(e.target.value); v.clear("category"); }} {...v.control("category")}><option value="" disabled>აირჩიე კატეგორია</option>{categoryOptions()}</CustomSelect></div>{v.message("category")}</div>
                 </div>
                 <div className="ma-field"><label htmlFor="body">აღწერა <span>*</span><small>{body.length} / 2000</small></label><textarea className="ma-textarea" required maxLength={2000} placeholder="აღწერეთ, რა გჭირდებათ და მიუთითეთ მნიშვნელოვანი დეტალები" value={body} onChange={e => { setBody(e.target.value); v.clear("body"); }} {...v.control("body")} />{v.message("body")}<p className="ma-field__help">რეკომენდებულია მოკლე აღწერა, დაახლოებით 500 სიმბოლო.</p></div>
                 <div className="ma-field"><label htmlFor="quantity">რაოდენობა <span>*</span></label>
@@ -230,43 +206,39 @@ function PostRequestForm({ store }: { store: Store }) {
             </> : step === 2 ? <><FormCard title="მიწოდება">
               <div className="post-fields">
                 <div className="ma-field"><label id="city-label">ქალაქი / რეგიონი <span>*</span></label>
-                  <div className={styles.choices} role="radiogroup" aria-labelledby="city-label">
-                    {["tbilisi", "batumi", "kutaisi"].map(id => <label key={id}><input type="radio" name="city-choice" checked={!otherCity && city === id} onChange={() => { setCity(id); setOtherCity(false); v.clear("city"); }} />{cities[id]}</label>)}
-                    <label><input type="radio" name="city-choice" checked={otherCity || !["tbilisi", "batumi", "kutaisi"].includes(city)} onChange={() => setOtherCity(true)} />სხვა</label>
-                  </div>
-                  {otherCity || !["tbilisi", "batumi", "kutaisi"].includes(city) ? <CustomSelect aria-label="ქალაქი / რეგიონი" required value={city} onChange={e => { setCity(e.target.value); v.clear("city"); }} {...v.control("city")}>{Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</CustomSelect> : null}{v.message("city")}
+                  <div className={styles.iconField}><Icon name="map-pin"/><CustomSelect aria-labelledby="city-label" required value={otherCity || !["tbilisi", "batumi", "kutaisi"].includes(city) ? "other" : city} onChange={e => { const value = e.target.value; setOtherCity(value === "other"); setCity(value === "other" ? "" : value); v.clear("city"); }} {...v.control("city")}>
+                    {["tbilisi", "batumi", "kutaisi"].map(id => <option key={id} value={id}>{cities[id]}</option>)}<option value="other">სხვა</option>
+                  </CustomSelect></div>
+                  {otherCity || !["tbilisi", "batumi", "kutaisi"].includes(city) ? <><input className="ma-input" aria-label="სხვა ქალაქი / რეგიონი" list="post-cities" value={cities[cityChoice] || cityChoice} onChange={e => { setCity(Object.entries(cities).find(([, label]) => label === e.target.value)?.[0] || e.target.value); v.clear("city"); }}/><datalist id="post-cities">{Object.values(cities).map(label => <option key={label} value={label}/>)}</datalist></> : null}{v.message("city")}
                 </div>
                 <div className="ma-field"><label htmlFor="addressNote">მისამართი <small>არასავალდებულო</small></label><input className="ma-input" id="addressNote" maxLength={120} placeholder="რაიონი / ორიენტირი" value={addressNote} onChange={e => setAddressNote(e.target.value)} /></div>
                 <div className="ma-field"><label htmlFor="neededBy">სასურველი თარიღი <span>*</span></label><input className="ma-input" required type="date" min={minDate} max={maxDate} value={neededBy} onChange={e => { setNeededBy(e.target.value); v.clear("neededBy"); }} {...v.control("neededBy")} />{v.message("neededBy")}</div>
               </div>
             </FormCard><p className={styles.note}>ბიუჯეტსა და გადახდის პირობებს შეთავაზებებში მიიღებთ.</p></> : <>
-              <FormCard title="რა გჭირდებათ" action={edit(1)}>
-                {preview ? <Image unoptimized width={104} height={72} className="post-review-photo" src={preview} alt="მოთხოვნის ფოტო" /> : null}
-                <Facts rows={[["სათაური", title], ["კატეგორია", categories[category as keyof typeof categories] || "—"], ["აღწერა", body], ["რაოდენობა", quantityLabel]]} />
-              </FormCard>
-              <FormCard title="მიწოდება" action={edit(2)}><Facts rows={[["ქალაქი / რეგიონი", cities[city as keyof typeof cities]], ...(addressNote.trim() ? [["მისამართი", addressNote] as [string, string]] : []), ["სასურველი თარიღი", dateLabel(neededBy)]]} /></FormCard>
-              <FormCard title="შეთავაზებების მიღების ვადა"><Facts rows={[["ბოლო თარიღი", dateLabel(expiry.toISOString().slice(0, 10))]]} /><p className="ma-field__help">გამოქვეყნებიდან 14 დღე. გაგრძელება 7 დღით შეგეძლებათ; ვადა მაქსიმუმ გაგრძელების დღიდან 21 დღემდე გადაიწევს.</p></FormCard>
+              <section className="post-card"><div className={styles.reviewOverview}>{preview ? <Image unoptimized width={96} height={72} src={preview} alt="მოთხოვნის ფოტო"/> : <span className={styles.reviewPlaceholder}><Icon name="image"/></span>}<div><h2>{title}</h2><span className={styles.category}>{categories[category]}</span></div>{edit(1)}</div><p className={styles.description}>{body}</p></section>
+              <FormCard title="მოთხოვნის დეტალები"><dl className={styles.reviewRows}>{[
+                ['რაოდენობა', quantityLabel, 1], ['ქალაქი / მისამართი', [cities[city], addressNote].filter(Boolean).join(', '), 2], ['სასურველი თარიღი', dateLabel(neededBy), 2],
+              ].map(([label, value, part]) => <div key={label}><dt>{label}</dt><dd>{value}</dd><dd>{edit(Number(part))}</dd></div>)}<div><dt>შეთავაზებების ბოლო ვადა</dt><dd>{dateLabel(expiry.toISOString().slice(0, 10))}<small>გამოქვეყნებიდან 14 დღე</small></dd></div></dl></FormCard>
             </>}
           </div>
           <aside className={styles.aside}>{step === 1 ? <div className={styles.preview}>
             <p><Icon name="eye" />ასე დაინახავს მომწოდებელი</p>
-            <div className={styles.previewCard} inert><OpportunityCard compact request={{ id: "preview", title: title.trim() || "მოთხოვნის სათაური", category: category || "კატეგორია", city, photo: preview, quantity: quantity.trim() && Number.isFinite(Number(quantity.replace(/\s+/g, "").replace(",", "."))) ? Number(quantity.replace(/\s+/g, "").replace(",", ".")) : null, unit, daysLeft: 14 }} /></div>
-          </div> : step === 2 ? <FormCard title="მიწოდების შესახებ"><ul className={styles.list}>
+            <article className={styles.previewCard}>{preview ? <Image unoptimized width={360} height={180} src={preview} alt="მოთხოვნის ფოტო"/> : <div className={styles.previewPhoto}><Icon name="image"/></div>}<div><h2>{title.trim() || "მოთხოვნის სათაური"}</h2><span className={styles.category}>{categories[category] || "კატეგორია"}</span><p>{user?.company || user?.name || "მყიდველი"} · {cities[city] || city}</p><p>{quantityLabel}</p><strong>ბიუჯეტი — მოლაპარაკებით</strong></div></article>
+          </div> : step === 2 ? <div className={styles.deliveryInfo}><Icon name="info"/><FormCard title="მიწოდების შესახებ"><ul className={styles.list}>
             <li>მომწოდებელი ხედავს ქალაქს, მისამართსა და სასურველ თარიღს.</li>
             <li>საკონტაქტო ინფორმაცია შეთავაზების არჩევის შემდეგ გაიხსნება.</li>
             <li>მომწოდებელს შეუძლია სხვა ვადა შემოგთავაზოთ — პირობებს შეადარებთ.</li>
-          </ul></FormCard> : <FormCard title="რა მოხდება შემდეგ">
-            {matchingCount > 0 ? <p>≈{matchingCount} შესაბამისი კომპანია</p> : null}
-            <ol className={styles.list}><li>მომწოდებლები ხედავენ თქვენს მოთხოვნას.</li><li>შეთავაზებები გამოჩნდება ანგარიშში და შეტყობინებით გეცნობებათ.</li><li>შეადარებთ პირობებს და აირჩევთ მომწოდებელს.</li></ol>
-          </FormCard>}</aside>
+          </ul></FormCard></div> : <><FormCard title="მომწოდებლები, ვინც მიიღებს"><MatchingPreview store={store} category={category}/></FormCard><FormCard title="რა მოხდება შემდეგ">
+            <ol className={styles.numbered}><li>მომწოდებლები ხედავენ თქვენს მოთხოვნას.</li><li>შეთავაზებები გამოჩნდება ანგარიშში და შეტყობინებით გეცნობებათ.</li><li>შეადარებთ პირობებს და აირჩევთ მომწოდებელს.</li></ol>
+          </FormCard></>}</aside>
         </fieldset>
       </form>
       <div className="post-actions">
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
-        <p className={styles.saved}>{savedAt ? `ხელით შენახულია · ${savedAt}; ცვლილებები ავტომატურად ინახება.` : "ტექსტური მონახაზი ავტომატურად ინახება ამ ჩანართში 30 წუთით; ფოტო არ ინახება."}</p>
-        <div>{step > 1 ? <Button variant="ghost" size="lg" disabled={pending} onClick={() => go(step - 1)}>უკან</Button> : null}
-          <Button variant="secondary" size="lg" disabled={pending} onClick={saveDraftManually}><span className={styles.long}>მონახაზის შენახვა</span><span className={styles.short}>მონახაზი</span></Button>
-          {step === 3 && !signedIn ? <Button size="lg" className="post-actions__next" href={`/account/?next=${next}`} onClick={keepDraft}><span className={styles.long}>შესვლა და გაგრძელება</span><span className={styles.short}>შესვლა</span></Button> : <Button size="lg" className="post-actions__next" type="submit" form="post-request-form" loading={pending}>{pending ? "იგზავნება…" : step < 3 ? "შემდეგი" : "გამოქვეყნება"}</Button>}
+        <p className={styles.saved}>{savedAt ? `ავტომატურად ინახება · ${savedAt}` : "ავტომატური შენახვა მიუწვდომელია"}</p>
+        <div>{step > 1 ? <Button variant="secondary" size="lg" disabled={pending} onClick={() => go(step - 1)}>უკან</Button> : null}
+
+          {step === 3 && !signedIn ? <Button size="lg" className="post-actions__next" href={`/account/?next=${next}`} onClick={keepDraft}><span className={styles.long}>შესვლა და გაგრძელება</span><span className={styles.short}>შესვლა</span></Button> : <Button size="lg" className="post-actions__next" type="submit" form="post-request-form" loading={pending}>{pending ? "იგზავნება…" : <><span className={styles.long}>{step === 1 ? "შემდეგი: მიწოდება" : step === 2 ? "შემდეგი: გადახედვა" : "მოთხოვნის გამოქვეყნება"}</span><span className={styles.short}>{step < 3 ? "შემდეგი" : "გამოქვეყნება"}</span></>}</Button>}
         </div>
       </div>
     </>}

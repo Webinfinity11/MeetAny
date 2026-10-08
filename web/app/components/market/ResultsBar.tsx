@@ -43,7 +43,7 @@ export function ResultsBar({
   utility,
   sort,
 }: {
-  count?: string;
+  count?: React.ReactNode;
   items: ActiveFilterItem[];
   onRemove: (key: string) => void;
   onClear: () => void;
