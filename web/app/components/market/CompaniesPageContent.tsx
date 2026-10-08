@@ -132,7 +132,10 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   ];
   const clearFilters = () => filters.set({industry: "", city: "", office: "", verified: "", q: "", type: "", coverage: "", plan: "", sort: "", channels: "", product: "", warehouse: "", transport: "", cold: ""});
   const setFilters = (values: Record<string, string>) => filters.set("city" in values ? { ...values, office: "" } : values);
-  const body = <CatalogFilters companies category={industry} city={city} verified={verified} onChange={setFilters} />;
+  const count = (key: "category" | "city", value: string) =>
+    (ready && available ? list(key === "category" ? { industry: value } : { city: value === "other" ? "" : value }) : [])
+      .filter(c => key !== "city" || value !== "other" || !majorCities.includes(c.city)).length;
+  const body = <CatalogFilters companies category={industry} city={city} verified={verified} count={count} onChange={setFilters} />;
   const mapped: MapCompany[] = rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat!, lng: c.lng! }));
   const unmapped = rows.filter(c => c.lat == null || c.lng == null);
   return <div className={`ma-page companies-catalog catalog-page ${styles.page}`}>

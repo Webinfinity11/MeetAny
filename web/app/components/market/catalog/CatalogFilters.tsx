@@ -1,21 +1,46 @@
 "use client";
-import { categoryGroups, cities } from "../../../lib/categories";
+import { categoryGroups, cities, groupOf } from "../../../lib/categories";
 import { Button } from "../../ui/Button";
+import { DuoIcon } from "../../ui/DuoIcon";
+import { Icon } from "../../Icon";
 import styles from "./Catalog.module.css";
 
 export const majorCities = ["tbilisi", "batumi", "kutaisi"];
-export function CatalogFilters({ category, city, deadline, verified, companies = false, onChange }: {
-  category: string; city: string; deadline?: string; verified: boolean; companies?: boolean;
+// Same row list as the opportunities sidebar: groups with icons and counts, the chosen group
+// expands into its subcategories; cities are checkboxes.
+export function CatalogFilters({ category, city, verified, companies = false, count, onChange }: {
+  category: string; city: string; verified: boolean; companies?: boolean;
+  count?: (key: "category" | "city", value: string) => number;
   onChange: (values: Record<string, string>) => void;
 }) {
   const categoryKey = companies ? "industry" : "category";
-  return <div className={styles.filters}>
-    <section><h3>{companies ? "დარგი" : "კატეგორია"}</h3>
-      <Button variant="secondary" className={styles.choice} aria-pressed={!category} onClick={() => onChange({ [categoryKey]: "" })}>ყველა</Button>
-      {categoryGroups.map(group => <div className={styles.group} key={group.id}><h4>{group.short}</h4><div className={styles.chips}>{group.items.map(([id, label]) => <Button key={id} variant="secondary" className={styles.choice} aria-pressed={category === id} onClick={() => onChange({ [categoryKey]: category === id ? "" : id })}>{label}</Button>)}</div></div>)}
-    </section>
-    <section><h3>ლოკაცია</h3><div className={styles.choices}>{[["", "ყველა"], ...majorCities.map(id => [id, cities[id]]), ["other", "სხვა"]].map(([id, label]) => <Button key={id} variant="secondary" className={styles.choice} aria-pressed={city === id} onClick={() => onChange({ city: id })}>{label}</Button>)}</div></section>
-    {!companies && <section><h3>ვადა</h3><div className={styles.choices}>{["7", "30"].map(value => <Button key={value} variant="secondary" className={styles.choice} aria-pressed={deadline === value} onClick={() => onChange({ deadline: deadline === value ? "" : value })}>{value} დღემდე</Button>)}</div></section>}
-    <label className={styles.verified}><span>{companies ? "მხოლოდ ვერიფიცირებული" : "მხოლოდ ვერიფიცირებული მყიდველი"}</span><input type="checkbox" role="switch" checked={verified} onChange={e => onChange({ verified: e.target.checked ? "1" : "" })} /></label>
+  const row = (id: string, label: string, icon: string, expanded?: boolean) =>
+    <Button variant="ghost" className={styles.categoryRow} aria-pressed={category === id} aria-expanded={expanded}
+      onClick={() => onChange({ [categoryKey]: category === id ? "" : id })}>
+      {!id ? <Icon name={icon} /> : <DuoIcon family="category" name={categoryGroups.find(g => g.id === id)?.items[0]?.[0] || id} size={15} />}
+      <span>{label}</span>{count && <small>{count("category", id)}</small>}
+    </Button>;
+  return <div className={styles.requestFilters}>
+    <section><h3>{companies ? "დარგები" : "კატეგორიები"}</h3><ul>
+      <li>{row("", "ყველა", "layout-grid")}</li>
+      {categoryGroups.map(group => {
+        const expanded = category === group.id || groupOf[category] === group.id;
+        const hasChildren = group.items.some(([id]) => id !== group.id);
+        return <li key={group.id}>
+          {row(group.id, group.short, group.icon, hasChildren ? expanded : undefined)}
+          {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
+            <li key={id}>{row(id, label, group.icon)}</li>
+          )}</ul>}
+        </li>;
+      })}
+    </ul></section>
+    <section><h3>ადგილმდებარეობა</h3><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
+      <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={city === id}
+        onChange={() => onChange({ city: city === id ? "" : id })} /><span>{label}</span>{count && <small>{count("city", id)}</small>}</label></li>
+    )}</ul></section>
+    <label className={styles.requestVerified}>
+      <input type="checkbox" role="switch" checked={verified} onChange={e => onChange({ verified: e.target.checked ? "1" : "" })} />
+      <span className={styles.switchTrack} aria-hidden="true" /><span>მხოლოდ ვერიფიცირებული</span>
+    </label>
   </div>;
 }
