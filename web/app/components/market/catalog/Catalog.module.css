@@ -42,7 +42,8 @@
 .company h3 > span { display: flex; flex: none; }
 .companyIdentity { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
 .companySummary { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
-.logo { width: var(--size-56); height: var(--size-56); object-fit: contain; display: grid; place-items: center; background: var(--ink-100); border-radius: var(--radius-md); }
+/* One square, one radius for every company mark: photos fill it, the initials avatar sits in the same box. */
+.logo { width: var(--size-56); height: var(--size-56); min-width: var(--size-56); aspect-ratio: 1; object-fit: cover; display: grid; place-items: center; overflow: hidden; background: var(--ink-100); border-radius: var(--radius-md); }
 .companyIdentity .logo { flex: none; }
 .company p { margin: 0; color: var(--ink-600); font-size: var(--fs-sm); overflow-wrap: anywhere; }
 .description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
