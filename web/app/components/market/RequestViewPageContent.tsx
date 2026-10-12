@@ -30,7 +30,8 @@ import { useCompanyFeatures } from "../../lib/business-client";
 import { categories, cities, units } from "../../lib/categories";
 import { AuthModal } from "./modals/AuthModal";
 import { Badge } from "../ui/Badge";
-import { OpportunityCard, type OpportunityRequest } from "./OpportunityCard";
+import { OpportunityCard, budgetLabel, type OpportunityRequest } from "./OpportunityCard";
+import { SaveRequestButton } from "./SaveRequestButton";
 import styles from "./request/RequestDetail.module.css";
 import { addressLabel, dateLabel, postedLabel } from "../../lib/format";
 
@@ -265,6 +266,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <dl className="request-detail-facts">
               <div><dt><Icon name="package"/>რაოდენობა</dt><dd>{r.quantity != null ? `${r.quantity} ${units[r.unit] || r.unit || ""}` : "არ არის მითითებული"}</dd></div>
               <div><dt><Icon name="map-pin"/>მიწოდება</dt><dd>{cities[r.city] || r.city}</dd></div>
+              <div><dt><Icon name="wallet"/>ბიუჯეტი</dt><dd>{budgetLabel(r) || "შეთანხმებით"}</dd></div>
               <div><dt><Icon name="calendar"/>მიწოდების ვადა</dt><dd>{r.neededBy ? dateLabel(r.neededBy) : "არ არის მითითებული"}</dd></div>
               <div><dt><Icon name="clock"/>შეთავაზებების ბოლო ვადა</dt><dd>{dateLabel(r.expiresAt)}</dd></div>
             </dl>
@@ -314,6 +316,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             </div></details>
           </section> : null}
           <Button variant="ghost" onClick={async () => { try { await navigator.clipboard.writeText(shareUrl); toast({ title: "ბმული დაკოპირდა.", tone: "success" }); } catch { setActionError("ბმული ვერ დაკოპირდა."); } }}><Icon name="copy"/>გაზიარება</Button>
+          {!isOwner ? <SaveRequestButton id={r.id} /> : null}
           {!isOwner && me?.role !== "admin" ? <ReportButton kind="request" targetId={r.id} /> : null}
         </aside>
         {!isOwner && me?.role === "company" && (myOffer || !me.verified || closed) ? <div className="request-company-response">{responsePanel}</div> : null}

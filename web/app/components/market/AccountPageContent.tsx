@@ -6,6 +6,7 @@ import { Icon } from "../Icon";
 import { MatchingFeed } from "./MatchingFeed";
 import { AccountSkeleton } from "./Skeletons";
 import { EngagementPanel } from "./EngagementPanels";
+import { SavedRequests } from "./SavedRequests";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 import { AuthForms } from "./AuthForms";
 import { Inbox } from "./Inbox";
@@ -52,26 +53,31 @@ export function AccountPageContent() {
   if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
   const isCompany = me.role === "company";
   const requestedSpace = searchParams.get("space");
-  const space = !isCompany || tab === "requests" || (requestedSpace === "buy" && !["offers", "opportunities", "overview"].includes(rawTab)) ? "buy" : "sell";
-  const activeTab: Tab = !rawTab && space === "buy" ? "requests" : !isCompany && ["overview", "opportunities", "offers", "business"].includes(tab) ? "requests" : tab;
   const { myRequests = [], myOffers = [] } = data || {};
+  // Account intent decides which spaces exist: buyers only buy; sellers see Buying once they have requests (or ask for it).
+  const intent = (me as { accountIntent?: "buy" | "sell" | "both" }).accountIntent ?? "both";
+  const buyOnly = !isCompany || intent === "buy";
+  const buyOpen = intent !== "sell" || myRequests.length > 0 || requestedSpace === "buy";
+  const space = buyOnly || (buyOpen && (tab === "requests" || (requestedSpace === "buy" && !["offers", "opportunities", "overview"].includes(rawTab)))) ? "buy" : "sell";
+  const outOfSpace = buyOnly && ["overview", "opportunities", "offers"].includes(tab) || !isCompany && tab === "business";
+  const activeTab: Tab = !rawTab && space === "buy" || outOfSpace ? "requests" : space === "sell" && tab === "requests" ? "overview" : tab;
   const engagement = store.engagement();
   const tabs: NavItem[] = [
     ...(space === "sell" ? [{ key: "overview" as Tab, label: "მიმოხილვა", icon: "layout-grid" }, { key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "inbox" }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send", count: myOffers.length }] : [{ key: "requests" as Tab, label: "ჩემი მოთხოვნები", icon: "file-text", count: myRequests.length }]),
     { key: "deals", label: "გარიგებები", icon: "handshake" },
     { key: "messages", label: "მესიჯები", icon: "message-square", count: unread },
     { key: "notifications", label: "შეტყობინებები", icon: "bell", count: engagement?.status === "ready" ? engagement.unread : null },
-    { key: "saved", label: "შენახული კომპანიები", icon: "bookmark" },
+    { key: "saved", label: "შენახული", icon: "bookmark" },
     { key: "profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: isCompany ? "building-2" : "user-round" },
   ];
   const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : activeTab === "saved" ? "შენახული" : activeTab === "business" ? "კომპანიის პროფილი" : tabs.find(item => item.key === activeTab)?.label || "ანგარიში";
-  return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} title={title} lead={activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : undefined} action={activeTab === "requests" ? <Button href="/requests/new/"><Icon name="plus"/>ახალი მოთხოვნა</Button> : activeTab === "offers" ? <Button variant="secondary" href="/matching/"><Icon name="search"/>ახალი შესაძლებლობები</Button> : undefined}>
+  return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} switcher={isCompany && intent !== "buy" && buyOpen} title={title} lead={activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : undefined} action={activeTab === "requests" ? <Button href="/requests/new/"><Icon name="plus"/>ახალი მოთხოვნა</Button> : activeTab === "offers" ? <Button variant="secondary" href="/matching/"><Icon name="search"/>ახალი შესაძლებლობები</Button> : undefined}>
     {activeTab === "deals" ? <MyDeals key={me.id} store={store} actor={me.id}/> : null}
     {activeTab === "overview" ? <Dashboard me={me}/> : null}
     {activeTab === "opportunities" ? <MatchingFeed key={me.id}/> : null}
     {activeTab === "requests" ? <MyRequests key={me.id} requests={myRequests} store={store} me={me} now={now} seen={seen}/> : null}
     {activeTab === "offers" ? <MyOffers key={me.id} offers={myOffers} store={store} me={me}/> : null}
-    {activeTab === "saved" ? <div className="account-panel"><EngagementPanel kind="saved"/></div> : null}
+    {activeTab === "saved" ? <div className="account-panel"><SavedRequests key={me.id}/><EngagementPanel kind="saved"/></div> : null}
     {activeTab === "notifications" ? <div id="alerts" className="account-panel account-alerts"><EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"}/></div> : null}
     {activeTab === "messages" ? <div className="account-wide"><Inbox key={me.id} store={store} me={me}/></div> : null}
     {activeTab === "business" ? <div className="account-main--profile"><CompanyProfileNav active="business"/><CompanyBusinessPanel key={me.id} owner={me.id}/></div> : null}

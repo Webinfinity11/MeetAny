@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Store } from "../../../lib/market-client";
-import { listMatching, type MatchingItem } from "../../../lib/matching-client";
+import { countMatchingSuppliers, listMatching, type MatchingItem } from "../../../lib/matching-client";
 import { cities } from "../../../lib/categories";
 import { EmptyState } from "../../ui/Structure";
 import { Icon } from "../../Icon";
@@ -15,20 +15,31 @@ export function MatchingSuppliers({ store, requestId }: { store: Store; requestI
   const callRpc = store.callRpc;
   useEffect(() => {
     let active = true;
-    void listMatching({ callRpc }, requestId, "", 0).then(rows => {
+    void listMatching({ callRpc }, requestId, "", 0, 100).then(rows => {
       if (active) setItems(rows);
     }).catch(() => { if (active) { setFailed(true); setItems([]); } });
     return () => { active = false; };
   }, [callRpc, requestId]);
   if (!items) return <p role="status">მომწოდებლები იტვირთება…</p>;
-  if (!items.length) return <EmptyState icon="users" text={failed ? "შესაბამისი მომწოდებლების სია ამჟამად მიუწვდომელია. მოთხოვნა გამოქვეყნებულია." : "შესაბამისი მომწოდებლები ჯერ არ გამოჩენილან. მოთხოვნა ხელმისაწვდომია კატალოგში."} />;
-  return <><ul className={styles.suppliers}>{items.map(item => <li key={item.id}>
+  if (!items.length) return <EmptyState icon="users" text={failed ? "შესაბამისი მომწოდებლების სია ამჟამად მიუწვდომელია. მოთხოვნა გამოქვეყნებულია." : "ვერიფიცირებული მომწოდებელი ჯერ არ არის; მოთხოვნა კატალოგში მაინც გამოჩნდება."} />;
+  return <><p>მოთხოვნა გაეგზავნა <strong>{items.length}</strong> ვერიფიცირებულ მომწოდებელს</p><ul className={styles.suppliers}>{items.map(item => <li key={item.id}>
     <span className={styles.avatar} aria-hidden="true">{item.company?.slice(0, 1)}</span>
     <div><Link href={`/companies/view/?id=${encodeURIComponent(item.id)}`}>{item.company}</Link><p>{cities[item.city] || item.city}{item.verified ? <Icon name="badge-check" /> : null}</p></div>
   </li>)}</ul><Link href={`/matching/?requestId=${encodeURIComponent(requestId)}`}>ყველა შესაბამისი მომწოდებელი</Link></>;
 }
 
 export function MatchingPreview({ store, category }: { store: Store; category: string }) {
-  const items: { id: string; company?: string }[] = category ? store.listCompanies({ industry: category }).filter((company: { id: string }) => company.id !== store.currentUser()?.id) : [];
-  return <div className={styles.matchingPreview}><p>ამ კატეგორიაში <strong>{items.length}</strong> კომპანიაა</p><div className={styles.avatarRow}>{items.slice(0, 5).map(item => <span className={styles.avatar} key={item.id} title={item.company}>{item.company?.slice(0, 2)}</span>)}</div><p>გამოქვეყნების შემდეგ ნახავთ შესაბამის მომწოდებლებს.</p></div>;
+  const [counted, setCounted] = useState<{ category: string; count: number | null } | null>(null);
+  const callRpc = store.callRpc;
+  useEffect(() => {
+    if (!category) return;
+    let active = true;
+    countMatchingSuppliers({ callRpc }, category).then(count => { if (active) setCounted({ category, count }); }, () => { if (active) setCounted({ category, count: null }); });
+    return () => { active = false; };
+  }, [callRpc, category]);
+  if (!category) return <div className={styles.matchingPreview}><p>აირჩიეთ კატეგორია — ვაჩვენებთ, რამდენ მომწოდებელს ეცნობება.</p></div>;
+  if (counted?.category !== category) return <div className={styles.matchingPreview} role="status"><p>ითვლება…</p></div>;
+  if (counted.count === null) return <div className={styles.matchingPreview}><p>მომწოდებლების რაოდენობა ამჟამად მიუწვდომელია. მოთხოვნა მაინც გამოქვეყნდება.</p></div>;
+  if (!counted.count) return <div className={styles.matchingPreview}><p>ვერიფიცირებული მომწოდებელი ჯერ არ არის; მოთხოვნა კატალოგში მაინც გამოჩნდება.</p></div>;
+  return <div className={styles.matchingPreview}><p>ამ კატეგორიაში <strong>{counted.count}</strong> ვერიფიცირებული მომწოდებელი ემთხვევა</p><p>გამოქვეყნებისას მათ ეცნობებათ.</p></div>;
 }

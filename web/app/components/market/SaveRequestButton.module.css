@@ -1,0 +1,4 @@
+.save { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--tap-min); padding-inline: var(--space-3); border: var(--size-1) solid transparent; border-radius: var(--radius-control); background: transparent; color: var(--text-2); font: inherit; font-size: var(--fs-sm); cursor: pointer; }
+.save svg { width: var(--size-18); height: var(--size-18); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.save:hover, .save[aria-pressed="true"] { color: var(--blue-600); background: var(--blue-50); }
+.save:disabled { opacity: .5; cursor: wait; }

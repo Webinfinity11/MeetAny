@@ -47,6 +47,10 @@
 .rating { display: flex; flex-wrap: wrap; align-items: center; gap: var(--size-6); color: var(--ink-500); font-size: var(--size-14); margin: var(--space-4) 0 0; }
 .rating strong { color: var(--ink-950); }
 .rating svg { width: var(--size-16); height: var(--size-16); color: var(--warning-600); }
+.dealStats { display: flex; flex-wrap: wrap; align-items: center; gap: var(--size-6); color: var(--ink-500); font-size: var(--size-14); margin: var(--space-2) 0 0; }
+.dealStats strong { color: var(--ink-950); }
+.dealStats svg { width: var(--size-16); height: var(--size-16); color: var(--ink-500); }
+.dealStatsSkeleton { display: block; width: var(--size-160); height: var(--size-16); margin: var(--space-3) 0 0; border-radius: var(--radius-sm); background: var(--ink-100); }
 .report { margin-top: var(--space-5); font-size: var(--size-12); }
 .similar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
 .similar > * { min-width: 0; }

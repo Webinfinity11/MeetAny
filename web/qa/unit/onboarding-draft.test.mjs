@@ -9,7 +9,7 @@ const source = ts.transpileModule(readFileSync(new URL('../../app/lib/onboarding
 }).outputText;
 const context = { exports: {}, require: () => ({ categories: {} }) };
 vm.runInNewContext(source, context);
-const { onboardWrites, retainOnboardDraft } = context.exports;
+const { onboardWrites, retainOnboardDraft, stepsFor } = context.exports;
 
 test('returning to an unfinished later step does not submit its invalid hidden draft', () => {
   assert.deepEqual([...onboardWrites('type', ['details', 'profile'])], ['type']);
@@ -32,4 +32,17 @@ test('saving an earlier step keeps later legal, profile and product drafts', () 
   assert.equal(result.profile.verified, true);
   assert.equal(saved.profile.registration_code, '123');
   assert.equal(retainOnboardDraft(saved, draft, []).products, saved.products);
+});
+
+test('the onboarding steps follow the account intent', () => {
+  assert.deepEqual([...stepsFor('buy')], ['type', 'details', 'profile', 'need', 'verify', 'review']);
+  assert.deepEqual([...stepsFor('sell')], ['type', 'details', 'profile', 'provide', 'verify', 'review']);
+  assert.deepEqual([...stepsFor('both')], ['type', 'details', 'profile', 'provide', 'need', 'verify', 'review']);
+  assert.equal(stepsFor(undefined).length, 7);
+});
+
+test('writes only cover the steps of the current intent', () => {
+  const steps = stepsFor('buy');
+  assert.deepEqual([...onboardWrites('need', ['details', 'provide', 'need'], false, steps)], ['details', 'need']);
+  assert.deepEqual([...onboardWrites('type', ['provide', 'need'], true, steps)], ['type', 'need']);
 });

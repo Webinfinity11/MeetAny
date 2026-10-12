@@ -12,7 +12,8 @@ import { CustomSelect } from "../ui/CustomSelect";
 import { Icon } from "../Icon";
 import { useMarketStore, type PublicSnapshot, type Store } from "../../lib/market-client";
 import { categories, categoryIcon, cities, currentCategory, units } from "../../lib/categories";
-import { clearRequestDraft, hasRequestDraftContent, readRequestDraft, saveRequestDraft } from "../../lib/request-draft";
+import { clearRequestDraft, deleteServerDraft, hasRequestDraftContent, loadServerDraft, readRequestDraft, readRequestDraftAt, saveRequestDraft, saveServerDraft, type RequestDraft } from "../../lib/request-draft";
+import { toast } from "../Toasts";
 import { categoryOptions } from "./CategoryOptions";
 import { MatchingSuppliers, MatchingPreview } from "./post/MatchingSuppliers";
 import styles from "./post/Post.module.css";
@@ -25,6 +26,7 @@ const detailFields = ["title", "category", "body", "quantity"];
 const deliveryFields = ["city", "neededBy"];
 const dateLabel = (iso: string) => iso ? iso.split("-").reverse().join(".") : "—";
 const draftDate = (value: string) => /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.split(".").reverse().join("-") : "";
+const furthestFor = (draft: RequestDraft | null) => draft && draft.title.trim().length > 0 && draft.body.trim().length >= 10 && Object.hasOwn(categories, draft.category) && Number(draft.quantity.replace(",", ".")) > 0 ? (draftDate(draft.neededByText) ? 3 : 2) : 1;
 
 function StepBar({ step }: { step: number }) {
   return <nav className="post-steps" aria-label="მოთხოვნის განთავსების ნაბიჯები">
@@ -52,6 +54,7 @@ export function PostRequestPage({ initial }: { initial?: PublicSnapshot }) {
 function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus: "loading" | "error" | "profile" | "ready" }) {
   const params = useSearchParams();
   const [draft] = useState(() => readRequestDraft());
+  const [sessionAt] = useState(() => draft ? readRequestDraftAt() : 0);
   const initialCategory = currentCategory(params.get("category") || "");
   const [title, setTitle] = useState(params.has("title") ? (params.get("title") || "").slice(0, 120) : draft?.title || "");
   const [category, setCategory] = useState(params.has("category") ? (Object.hasOwn(categories, initialCategory) ? initialCategory : "") : draft?.category || "");
@@ -84,13 +87,55 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     observer.observe(element);
     return () => observer.disconnect();
   }, [published]);
-  const [furthest, setFurthest] = useState(()=>draft&&draft.title.trim().length>0&&draft.body.trim().length>=10&&Object.hasOwn(categories,draft.category)&&Number(draft.quantity.replace(",","."))>0?(draftDate(draft.neededByText)?3:2):1);
+  const [furthest, setFurthest] = useState(() => furthestFor(draft));
   const heading = useRef<HTMLHeadingElement>(null);
   const previousStep = useRef(1);
   const v = useFieldErrors();
   const user = store.currentUser();
   const city = otherCity ? cityChoice : cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
   const signedIn = sessionStatus === "ready" && !!user;
+  const current: RequestDraft = { title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body, preferences, attachmentDraft };
+  const hasContent = hasRequestDraftContent(current);
+  const latest = useRef({ hasContent });
+  useEffect(() => { latest.current = { hasContent }; });
+  const [serverReady, setServerReady] = useState(false);
+  const [savingDraft, setSavingDraft] = useState(false);
+  const serverQueue = useRef<Promise<unknown>>(Promise.resolve());
+  const queueServer = <T,>(job: () => Promise<T>) => { const run = serverQueue.current.then(job, job); serverQueue.current = run.catch(() => undefined); return run; };
+  useEffect(() => {
+    // The server draft fills the form once, when it is newer than this tab's copy (or this tab has none).
+    if (!signedIn) return;
+    let cancelled = false;
+    loadServerDraft(store).then(server => {
+      if (cancelled) return;
+      setServerReady(true);
+      if (!server) return;
+      const serverAt = server.updatedAt ? Date.parse(server.updatedAt) : 0;
+      if (draft ? !(serverAt > sessionAt) : latest.current.hasContent) return;
+      setTitle(server.title); setCategory(server.category); setPreferences(server.preferences || {}); setBody(server.body);
+      setQuantity(server.quantity); setUnit(server.unit); setCity(server.city); setAddressNote(server.addressNote);
+      setNeededBy(draftDate(server.neededByText)); setFurthest(furthestFor(server));
+    }).catch(() => undefined);
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signedIn, store]);
+  useEffect(() => {
+    if (!signedIn || !serverReady || published || !hasContent) return;
+    const timer = window.setTimeout(() => { void queueServer(() => saveServerDraft(store, current)).catch(() => undefined); }, 3000);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signedIn, serverReady, published, hasContent, title, category, city, addressNote, quantity, unit, neededBy, body, preferences, attachmentDraft]);
+  async function saveAsDraft() {
+    if (savingDraft || !signedIn) return;
+    setSavingDraft(true);
+    try {
+      await queueServer(() => saveServerDraft(store, current));
+      saveRequestDraft(current);
+      setSavedAt(new Date().toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false }));
+      toast("მონახაზი შენახულია");
+    } catch (err) { toast((err as { userMessage?: string })?.userMessage || "მონახაზი ვერ შეინახა. სცადე თავიდან."); }
+    finally { setSavingDraft(false); }
+  }
   useEffect(() => {
     // State is initialized from storage before the first save, including on auth remounts.
     if (published) return;
@@ -173,6 +218,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     try {
       const created = await store.createRequest({ title, category, city, addressNote: addressNote.trim() || null, quantity, unit, neededBy, body, photo,preferences,attachmentDraft });
       clearRequestDraft();
+      void queueServer(() => deleteServerDraft(store)).catch(() => undefined);
       try{sessionStorage.removeItem(fileDraftKey);}catch{}
       setPublished({ id: created.id, title: created.title, createdAt: created.createdAt });
       go(4);
@@ -252,6 +298,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
         {savedAt || hasRequestDraftContent({ title, category, city, addressNote, quantity, unit, neededByText: neededBy, body }) ? <p className={styles.saved}>{savedAt ? `შენახულია · ${savedAt}` : "ავტომატური შენახვა მიუწვდომელია"}</p> : null}
         <div className="post-actions__buttons">{step > 1 ? <Button variant="secondary" size="lg" disabled={pending||fileBusy} onClick={() => go(step - 1)}>უკან</Button> : null}
+          {signedIn ? <Button variant="secondary" size="lg" disabled={pending||fileBusy||!hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}>მონახაზად შენახვა</Button> : null}
 
           {step === 3 && !signedIn && (sessionStatus === "ready" || sessionStatus === "profile") ? <Button size="lg" className="post-actions__next" href={`/account/?next=${next}`} onClick={keepDraft}>{sessionStatus === "profile" ? "პროფილის დასრულება" : "შესვლა და გაგრძელება"}</Button> : <Button size="lg" className="post-actions__next" type="submit" form="post-request-form" disabled={fileBusy || (step === 3 && sessionStatus !== "ready")} loading={pending}>{pending ? "იგზავნება…" : <><span className={styles.long}>{step === 1 ? "შემდეგი: მიწოდება" : step === 2 ? "შემდეგი: გადახედვა" : sessionStatus === "loading" ? "ანგარიში მოწმდება…" : "მოთხოვნის გამოქვეყნება"}</span><span className={styles.short}>{step < 3 ? "შემდეგი" : sessionStatus === "loading" ? "მოწმდება…" : "გამოქვეყნება"}</span></>}</Button>}
         </div>

@@ -57,3 +57,35 @@ test('specification and budget-only drafts survive navigation without legacy tex
  api.saveRequestDraft({...empty,preferences:{budgetType:'negotiable',flexibility:0}});
  assert.equal(api.readRequestDraft(),null);
 });
+function mockStore(responses = {}) {
+ const calls = [];
+ return { calls, callRpc: async (name, args) => { calls.push([name, args]); if (responses[name] instanceof Error) throw responses[name]; return responses[name] ?? null; } };
+}
+test('server draft: load normalizes the row and ignores empty drafts', async () => {
+ const { api } = setup();
+ assert.equal(await api.loadServerDraft(mockStore()), null);
+ assert.equal(await api.loadServerDraft(mockStore({ my_request_draft: { data: { city: 'batumi' }, updatedAt: '2026-10-13T10:00:00Z' } })), null);
+ const store = mockStore({ my_request_draft: { data: { title: 'მაგიდები', quantity: '5', preferences: { specification: 'მუხა' } }, updatedAt: '2026-10-13T10:00:00Z' } });
+ const draft = JSON.parse(JSON.stringify(await api.loadServerDraft(store)));
+ assert.deepEqual(draft, { title: 'მაგიდები', category: '', city: 'tbilisi', addressNote: '', quantity: '5', unit: 'pcs', neededByText: '', body: '', updatedAt: '2026-10-13T10:00:00Z', preferences: { specification: 'მუხა' } });
+ assert.deepEqual(JSON.parse(JSON.stringify(store.calls)), [['my_request_draft', {}]]);
+});
+test('server draft: save sends only allowed keys and returns updatedAt; delete calls the rpc', async () => {
+ const { api } = setup();
+ const store = mockStore({ save_request_draft: { data: {}, updatedAt: '2026-10-13T11:00:00Z' } });
+ const at = await api.saveServerDraft(store, { ...empty, title: 'მაგიდები', updatedAt: 'x', extra: 1 });
+ assert.equal(at, '2026-10-13T11:00:00Z');
+ const sent = store.calls[0][1].p_data;
+ assert.deepEqual(Object.keys(sent).sort(), ['addressNote', 'body', 'category', 'city', 'neededByText', 'quantity', 'title', 'unit']);
+ await api.deleteServerDraft(store);
+ assert.equal(store.calls[1][0], 'delete_request_draft');
+ await assert.rejects(api.saveServerDraft(mockStore({ save_request_draft: new Error('boom') }), empty), /boom/);
+});
+test('readRequestDraftAt returns the session save time or 0', () => {
+ const { api, data } = setup();
+ assert.equal(api.readRequestDraftAt(), 0);
+ api.saveRequestDraft({ ...empty, title: 'მაგიდები' });
+ assert.ok(api.readRequestDraftAt() > 0);
+ data.clear();
+ assert.equal(api.readRequestDraftAt(), 0);
+});

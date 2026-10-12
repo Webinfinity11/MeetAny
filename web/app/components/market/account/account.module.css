@@ -132,3 +132,12 @@
 @media(max-width:767px){
   .shell :global(.account-item-heading h2),.matchCopy h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow-wrap:anywhere}
 }
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(var(--size-160,10rem),1fr));gap:var(--space-3);list-style:none;margin:0;padding:0}
+.stat{display:grid;gap:var(--space-1);padding:var(--space-4);border:var(--size-1) solid var(--ink-200);border-radius:var(--card-radius);background:var(--white);color:inherit;text-decoration:none}
+.stat strong{font-size:var(--fs-xl,1.5rem);line-height:1.1}
+.stat span{font-size:var(--fs-sm);color:var(--ink-600)}
+.stat[data-attention="true"]{border-color:var(--warning-600,var(--ink-400))}
+.setup{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-4);padding:var(--space-4);border:var(--size-1) solid var(--warning-600,var(--ink-400));border-radius:var(--card-radius);background:var(--white)}
+.setup>div{flex:1;min-width:0}
+.setup h2{margin:0;font-size:var(--fs-button)}
+.setup p{margin:var(--space-1) 0 0;font-size:var(--fs-sm);color:var(--ink-600)}

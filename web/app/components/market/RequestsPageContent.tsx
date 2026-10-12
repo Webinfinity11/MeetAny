@@ -11,6 +11,7 @@ import { Icon } from "../Icon";
 import { EmptyState } from "../ui/Structure";
 import { SkeletonGrid } from "./Skeletons";
 import { OpportunityCard } from "./OpportunityCard";
+import { useRequestSaving } from "./SaveRequestButton";
 import { majorCities } from "./catalog/CatalogFilters";
 import styles from "./catalog/Catalog.module.css";
 import { ResultsBar } from "./ResultsBar";
@@ -40,12 +41,25 @@ type MappedRequest = {
   ownerId: string;
   createdAt: string;
   photo: string | null;
+  budgetType?: "range" | "exact" | null;
+  budgetMin?: number | null;
+  budgetMax?: number | null;
 };
+
+const budgetOptions: [string, string][] = [["1000", "₾1,000-მდე"], ["5000", "₾1,000–5,000"], ["20000", "₾5,000–20,000"], ["more", "₾20,000+"]];
+// The effective budget is the upper bound of a range or the exact amount; requests without a public budget never match.
+function matchesBudget(r: MappedRequest, value: string) {
+  if (!value) return true;
+  const amount = r.budgetMax ?? r.budgetMin;
+  if (amount == null) return false;
+  return value === "1000" ? amount <= 1000 : value === "5000" ? amount > 1000 && amount <= 5000 : value === "20000" ? amount > 5000 && amount <= 20000 : value === "more" ? amount > 20000 : true;
+}
 
 export function RequestsPageContent({ autoOpenNew = false, initial, initialNow = 0 }: { autoOpenNew?: boolean; initial?: PublicSnapshot; initialNow?: number }) {
   const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
+  const saving = useRequestSaving();
   const setFilters = (values: Record<string, string>) => filters.set({ page: "", ...values });
   const verified = filters.get("verified") === "1";
   const city = filters.get("city"), category = currentCategory(filters.get("category")), query = filters.get("q"), sort = filters.get("sort", "newest");
@@ -92,13 +106,15 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
   );
 
   const deadline = filters.get("deadline");
+  const budget = filters.get("budget");
   const results = useMemo(() => (ready && available ? list({}).filter(r => {
     if (!now || store?.requestState(r, now) !== "open") return false;
     const days = store?.daysLeft(r, now) ?? 0;
     if (city === "other" && majorCities.includes(r.city)) return false;
     if (verified && !store?.userById(r.ownerId)?.verified) return false;
+    if (!matchesBudget(r, budget)) return false;
     return deadline === "7" ? days <= 7 : deadline === "30" ? days <= 30 : deadline === "later" ? days > 30 : true;
-  }) : []), [ready, available, list, store, deadline, city, verified, now]);
+  }) : []), [ready, available, list, store, deadline, budget, city, verified, now]);
   const sorted = useMemo(() => {
     const arr = [...results];
     // Whole days tie often; the exact deadline breaks the tie so "ending soon" really is in order.
@@ -107,7 +123,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     return arr;
   }, [results, sort, store]);
 
-  const rows: (RequestRowData & { ownerVerified: boolean })[] = useMemo(() => {
+  const rows: (RequestRowData & { ownerVerified: boolean; budgetType: MappedRequest["budgetType"]; budgetMin: number | null; budgetMax: number | null })[] = useMemo(() => {
     if (!store) return [];
     const me = store.currentUser() as { id: string; role: string; verified?: boolean } | null;
     return sorted.map((r) => {
@@ -141,6 +157,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         neededBy: full.neededBy,
         ownerName,
         ownerVerified: !!owner?.verified,
+        budgetType: r.budgetType ?? null,
+        budgetMin: r.budgetMin ?? null,
+        budgetMax: r.budgetMax ?? null,
         state,
         daysLeft,
         isOwn,
@@ -163,10 +182,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
   const activeItems = [
     ...(verified ? [{ key: "verified", label: "ვერიფიცირებული მყიდველი" }] : []),
     ...(deadline ? [{key: "deadline", label: deadline === "7" ? "7 დღემდე" : deadline === "30" ? "30 დღემდე" : "30 დღეზე მეტი"}] : []),
+    ...(budget ? [{key: "budget", label: budgetOptions.find(([id]) => id === budget)?.[1] || budget}] : []),
     ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: city === "other" ? "სხვა" : cities[city] || city}] : []),
   ];
-  const clearFilters = () => setFilters({city: "", category: "", deadline: "", verified: "", q: ""});
+  const clearFilters = () => setFilters({city: "", category: "", deadline: "", budget: "", verified: "", q: ""});
 
   // Facet counts ignore their own selection, but retain the other active filters.
   const facetRequests = ready && available ? list({ category: "", city: "" }).filter(r =>
@@ -180,10 +200,11 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     return value === "7" ? days <= 7 : value === "30" ? days <= 30 : value === "later" ? days > 30 : true;
   };
   const matchesCategory = (r: MappedRequest, value: string) => !value || categoryKeys(value).includes(r.category);
-  const facetCount = (key: "category" | "city" | "deadline", value: string) => facetRequests.filter(r =>
+  const facetCount = (key: "category" | "city" | "deadline" | "budget", value: string) => facetRequests.filter(r =>
     matchesCategory(r, key === "category" ? value : category) &&
     matchesCity(r, key === "city" ? value : city) &&
-    matchesDeadline(r, key === "deadline" ? value : deadline)
+    matchesDeadline(r, key === "deadline" ? value : deadline) &&
+    matchesBudget(r, key === "budget" ? value : budget)
   ).length;
   const verifiedSwitch = () => <label className={styles.requestVerified}>
     <input type="checkbox" role="switch" checked={verified} onChange={e => setFilters({ verified: e.target.checked ? "1" : "" })} />
@@ -215,6 +236,10 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     <section><h3>ვადა</h3><ul>{[["7", "7 დღემდე"], ["30", "30 დღემდე"], ["later", "30 დღეზე მეტი"]].map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-deadline" : undefined} checked={deadline === id}
         onChange={() => setFilters({ deadline: deadline === id ? "" : id })} /><span>{label}</span><small>{facetCount("deadline", id)}</small></label></li>
+    )}</ul></section>
+    <section><h3>ბიუჯეტი</h3><ul>{budgetOptions.map(([id, label]) =>
+      <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-budget" : undefined} checked={budget === id}
+        onChange={() => setFilters({ budget: budget === id ? "" : id })} /><span>{label}</span><small>{facetCount("budget", id)}</small></label></li>
     )}</ul></section>
   </div>;
 
@@ -265,7 +290,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
                       <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="სცადე სხვა კატეგორია ან ქალაქი." action={<Button variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>} />
                     )
                   : <>
-                      {rows.slice((page - 1) * 12, page * 12).map(r => <OpportunityCard key={r.id} request={r} horizontal={view === "list"} guest={!store?.currentUser()} offers={r.offerCount} buyer={{ name: r.ownerName, verified: r.ownerVerified }} canOffer={r.canOffer && !r.ownOfferStatus} />)}
+                      {rows.slice((page - 1) * 12, page * 12).map(r => <OpportunityCard key={r.id} request={r} onSave={r.isOwn ? undefined : () => saving.toggle(r.id)} saved={saving.isSaved(r.id)} horizontal={view === "list"} guest={!store?.currentUser()} offers={r.offerCount} buyer={{ name: r.ownerName, verified: r.ownerVerified }} canOffer={r.canOffer && !r.ownOfferStatus} />)}
                     </>}
           </div>
         </section>
@@ -286,6 +311,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         {requestFilters(true)}
         {verifiedSwitch()}
       </MobileFilterSheet>
+      {saving.authModal}
       {formOpen && <RequestFormSheet open={formOpen} initialTitle={formTitle} initialCity={formCity} initialCategory={formCategory} onClose={() => setFormOpen(false)} />}
     </div>
   );

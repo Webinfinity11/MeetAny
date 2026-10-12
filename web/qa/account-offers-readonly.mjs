@@ -25,7 +25,7 @@ try{
     check(await row.locator('.account-offer__actions a').getAttribute('href')===`/requests/view/?id=${offer.request_id}`,'Detail action opens same request');
     if(offer.delivery_days!=null)check((await row.locator('.account-offer__terms').innerText()).includes(`მიწოდება: ${offer.delivery_days} დღე`),'Actual lead time');
   }
-  for(const [status,label] of [['sent','გაგზავნილი'],['chosen','არჩეული'],['declined','არ აირჩიეს']]){
+  for(const [status,label] of [['sent','გაგზავნილი'],['chosen','არჩეული'],['declined','არ შეირჩა']]){
     await page.getByRole('group',{name:'შეთავაზების სტატუსი',exact:true}).getByRole('button',{name:label,exact:true}).click();
     const expected=offers.filter(o=>o.status===status).length;
     check(await page.locator('.account-offer').count()===expected,'Status filter uses actual data');

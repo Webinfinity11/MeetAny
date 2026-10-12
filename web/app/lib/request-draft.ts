@@ -26,3 +26,40 @@ export function readRequestDraft(): RequestDraft | null {
 export function clearRequestDraft() {
   try { sessionStorage.removeItem(key); } catch { /* Storage may be disabled. */ }
 }
+
+// Signed-in accounts also keep one draft on the server (public.save_request_draft). It has no expiry.
+export type ServerDraft = RequestDraft & { updatedAt?: string };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DraftStore = Record<string, any>; // market Store: only callRpc(name, args) is used
+const textFields = ["title", "category", "city", "addressNote", "quantity", "unit", "neededByText", "body"] as const;
+export function readRequestDraftAt(): number {
+  try {
+    const at = JSON.parse(sessionStorage.getItem(key) || "null")?.at;
+    return typeof at === "number" ? at : 0;
+  } catch { return 0; }
+}
+export async function loadServerDraft(store: DraftStore): Promise<ServerDraft | null> {
+  const row = await store.callRpc("my_request_draft", {}) as { data?: Record<string, unknown>; updatedAt?: string } | null;
+  const data = row?.data;
+  if (!data || typeof data !== "object") return null;
+  const text = (field: string, fallback = "") => typeof data[field] === "string" ? data[field] as string : fallback;
+  const draft: ServerDraft = {
+    title: text("title"), category: text("category"), city: text("city", "tbilisi"), addressNote: text("addressNote"),
+    quantity: text("quantity"), unit: text("unit", "pcs"), neededByText: text("neededByText"), body: text("body"),
+    updatedAt: typeof row.updatedAt === "string" ? row.updatedAt : undefined,
+  };
+  if (data.preferences && typeof data.preferences === "object") draft.preferences = data.preferences as RequestDraft["preferences"];
+  if (typeof data.attachmentDraft === "string") draft.attachmentDraft = data.attachmentDraft;
+  return hasRequestDraftContent(draft) ? draft : null;
+}
+export async function saveServerDraft(store: DraftStore, draft: RequestDraft): Promise<string | undefined> {
+  const data: Record<string, unknown> = {};
+  for (const field of textFields) data[field] = draft[field];
+  if (draft.preferences) data.preferences = draft.preferences;
+  if (draft.attachmentDraft) data.attachmentDraft = draft.attachmentDraft;
+  const row = await store.callRpc("save_request_draft", { p_data: data }) as { updatedAt?: string } | null;
+  return row?.updatedAt;
+}
+export async function deleteServerDraft(store: DraftStore) {
+  await store.callRpc("delete_request_draft", {});
+}

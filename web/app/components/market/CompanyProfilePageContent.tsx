@@ -14,7 +14,7 @@ import { CompanyProducts } from "./CompanyProducts";
 import { type ProductCardData } from "./ProductCard";
 import { CompanyGallery } from "./CompanyGallery";
 import { CompanyActions } from "./company/CompanyActions";
-import { CompanyReviews, useCompanyReviews } from "./company/CompanyReviews";
+import { CompanyReviews, useCompanyReviews, useCompanyStats } from "./company/CompanyReviews";
 import styles from "./company/CompanyProfile.module.css";
 
 import { ReportButton } from "./ReportButton";
@@ -29,6 +29,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   const id = searchParams.get("id") || "";
   const detail = useCompanyDetail(store, sessionReady, available, id);
   const reviews = useCompanyReviews(id);
+  const stats = useCompanyStats(id);
 
   const data = useMemo(() => {
     if (!store || !ready || !available || !id) return null;
@@ -85,6 +86,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
           <h1 className={styles.name}>{name}</h1>
           <p className={styles.meta}>{[categories[c.industry] || c.industry, cities[c.city] || c.city].filter(Boolean).join(" · ")}</p>
           {reviews.data && reviews.data.total > 0 ? <p className={styles.rating}><Icon name="star"/><strong>{reviews.data.rating ?? "—"}</strong><span>· {reviews.data.total} შეფასება</span></p> : null}
+          {stats.error ? null : stats.data ? <p className={styles.dealStats}><Icon name="handshake"/><strong>{stats.data.completedDeals}</strong><span>დასრულებული გარიგება</span></p> : <span className={styles.dealStatsSkeleton} aria-hidden="true"/>}
           {c.about?.startsWith("სადემო კომპანია.") ? <p className="company-demo-label">სადემო კომპანია · ინფორმაცია და კონტაქტები პრეზენტაციის მაგალითია.</p> : null}
         </div>
         <div className={styles.actions}>

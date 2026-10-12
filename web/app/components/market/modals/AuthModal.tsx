@@ -9,7 +9,7 @@ import styles from "./AuthModal.module.css";
 
 export function AuthModal({ open, onClose, onSuccess, intent, context, next }: {
   open: boolean; onClose: () => void; onSuccess: () => void;
-  intent: "offer" | "save" | "post"; context: string; next: string;
+  intent: "offer" | "save" | "save-request" | "post"; context: string; next: string;
 }) {
   const router = useRouter();
   const historyId = useId();
@@ -25,7 +25,7 @@ export function AuthModal({ open, onClose, onSuccess, intent, context, next }: {
       if (window.history.state?.meetanyAuthModal === historyId) window.history.replaceState(previousState, "");
     };
   }, [open, historyId]);
-  const title = intent === "save" ? "შედით, რომ შეინახოთ კომპანია" : intent === "post" ? "შედით, რომ განათავსოთ მოთხოვნა" : "შედით, რომ გაგზავნოთ შეთავაზება";
+  const title = intent === "save" ? "შედით, რომ შეინახოთ კომპანია" : intent === "save-request" ? "შედით, რომ შეინახოთ მოთხოვნა" : intent === "post" ? "შედით, რომ განათავსოთ მოთხოვნა" : "შედით, რომ გაგზავნოთ შეთავაზება";
   const query = encodeURIComponent(next);
   return <Modal className={styles.auth} open={open} onClose={onClose} title={title} lead={`${context} — შესვლის შემდეგ მოქმედება გაგრძელდება`} width={460}>
     {open && <LoginForm onReset={() => router.push(`/account/?tab=reset&next=${query}`)} onSuccess={() => { onClose(); onSuccess(); }} />}

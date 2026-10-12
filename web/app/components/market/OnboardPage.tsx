@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getMarketStore, useMarketStore } from '../../lib/market-client';
-import { onboardSteps, onboardWrites, retainOnboardDraft, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+import { stepsFor, onboardWrites, retainOnboardDraft, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
 import { toast } from '../Toasts';
 import { Button } from '../ui/Button';
 import { Icon } from '../Icon';
@@ -28,8 +28,6 @@ export function OnboardPage() {
   const { store, sessionReady, available } = useMarketStore();
   const router = useRouter(), params = useSearchParams();
   const candidate = params.get('step');
-  const step: OnboardStep = onboardSteps.find(value => value === candidate) || 'type';
-  const index = onboardSteps.indexOf(step);
   const user = sessionReady ? store?.currentUser() : null;
   const actor = user?.id as string | undefined;
   const role = user?.role as string | undefined;
@@ -37,6 +35,11 @@ export function OnboardPage() {
   const [savedAt, setSavedAt] = useState('');
   const [model, setModel] = useState<Model | null>(null);
   const [persisted, setPersisted] = useState<Model | null>(null);
+  // The step list follows the intent being edited, so choosing one on "type" reshapes it at once.
+  const steps = stepsFor(model?.profile.account_intent ?? persisted?.profile.account_intent);
+  const step: OnboardStep = steps.find(value => value === candidate) || 'type';
+  const index = steps.indexOf(step);
+  const last = steps.length - 1;
   const [error, setError] = useState(''), [notice, setNotice] = useState(''), [pending, setPending] = useState(false), [retry, setRetry] = useState(0);
   const [errorStep, setErrorStep] = useState<OnboardStep | null>(null);
   const dirty = useRef(new Set<OnboardStep>()), lock = useRef(false);
@@ -62,7 +65,7 @@ export function OnboardPage() {
     let writeTarget = step;
     try {
       let result = model;
-      const writes = onboardWrites(step, dirty.current, destination === 'account' || destination === 'home');
+      const writes = onboardWrites(step, dirty.current, destination === 'account' || destination === 'home', steps);
       for (const target of writes) {
         writeTarget = target;
         result = await saveOnboardStep(getMarketStore(), target, model.profile, model.products);
@@ -84,7 +87,7 @@ export function OnboardPage() {
         }
       }
       if(step==='review'&&destination==='account')await store.mutateRpc('complete_onboarding',{});
-      const remaining = [...dirty.current].filter(value => !writes.includes(value));
+      const remaining = [...dirty.current].filter(value => !writes.includes(value) && steps.includes(value));
       setModel(retainOnboardDraft(result, model, remaining)); setPersisted(result);
       dirty.current = new Set(remaining);
       setSavedAt(remaining.length ? '' : new Date().toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit', hour12: false }));
@@ -130,8 +133,8 @@ export function OnboardPage() {
     type: !!p && ['buy', 'sell', 'both'].includes(p.account_intent),
     details: !!(p?.legal_name?.trim() && p.registration_code?.trim() && p.legal_form?.trim() && p.founded_year && p.employee_band && p.name?.trim() && p.city),
     profile: !!(p?.company?.trim() && p.industry && p.about?.trim()),
-    provide: !!p?.provide_categories.length && !!(p.offers.length || saved?.products.some(product => product.name.trim() && product.photoUrl)),
-    need: !!p?.need_categories.length,
+    provide: p?.account_intent === 'buy' || (!!p?.provide_categories.length && !!(p.offers.length || saved?.products.some(product => product.name.trim() && product.photoUrl))),
+    need: p?.account_intent === 'sell' || !!p?.need_categories.length,
     verify: !!p&&['pending','approved'].includes(p.verification_documents_status),
     review: !!p?.onboarding_completed_at,
   };
@@ -140,7 +143,7 @@ export function OnboardPage() {
     if(pending)return;
     // Backward navigation keeps the draft in this mounted page. Required fields
     // must block progression, but must not trap the user on an unfinished step.
-    if (onboardSteps.indexOf(target) < index) {
+    if (steps.indexOf(target) < index) {
       setError(''); setErrorStep(null); setNotice(''); router.push('/onboarding/?step=' + target);
       return;
     }
@@ -148,13 +151,13 @@ export function OnboardPage() {
   };
   return <div className={s.page}>
     <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
-    <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{onboardSteps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key, i) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
-      <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / 7</span></div><ol>{onboardSteps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
+    <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key, i) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
+      <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
-        <form ref={form} onSubmit={event => { event.preventDefault(); void save(index === 6 ? 'account' : onboardSteps[index + 1]); }}>
+        <form ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1]); }}>
           <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>
           {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შესწორება</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
-          <div className={s.actions}><span className={s.autosave} role="status">{pending ? 'ინახება…' : savedAt ? 'შენახულია ' + savedAt : ''}</span>{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(onboardSteps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === 6 ? 'დასრულება' : step === 'verify' ? 'გადახედვა' : 'შემდეგი'}</Button></div>
+          <div className={s.actions}><span className={s.autosave} role="status">{pending ? 'ინახება…' : savedAt ? 'შენახულია ' + savedAt : ''}</span>{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(steps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === last ? 'დასრულება' : step === 'verify' ? 'გადახედვა' : 'შემდეგი'}</Button></div>
         </form>
       </main>
     </div>

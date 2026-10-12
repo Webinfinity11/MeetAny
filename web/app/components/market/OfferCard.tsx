@@ -60,7 +60,7 @@ export function OfferCard({ store,o, onChoose, canChoose, canReport = false, mes
               {o.companyName}
             </Link>
             {o.status === "chosen" ? <span className="ma-badge ma-badge--success">არჩეულია</span> : null}
-            {o.status === "declined" ? <span className="ma-badge ma-badge--neutral">არ აირჩიეს</span> : null}
+            {o.status === "declined" ? <span className="ma-badge ma-badge--neutral">არ შეირჩა</span> : null}
             {o.isNew && o.status === "sent" ? <span className="ma-badge ma-badge--success">ახალი</span> : null}
           </div>
           <BusinessMarks feature={o.feature} />

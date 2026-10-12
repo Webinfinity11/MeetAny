@@ -14,7 +14,7 @@ export function ChooseOfferSheet({ open, companyName, pending, error, onConfirm,
     <ConfirmSheet id="choose" open={open} title="შეთავაზების არჩევა" confirmLabel="შეთავაზების არჩევა" pendingLabel="ირჩევა…" pending={pending} error={error} onConfirm={onConfirm} onCancel={onCancel}>
       <p>
         არჩევის შემდეგ <b>{companyName}</b>-ს გაეზიარება შენი საკონტაქტო ინფორმაცია.
-        მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს, დანარჩენ შეთავაზებებს მიენიჭება სტატუსი „არ აირჩიეს“.
+        მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს, დანარჩენ შეთავაზებებს მიენიჭება სტატუსი „არ შეირჩა“.
         საბოლოო პირობებს კომპანიასთან შეათანხმებ.
       </p>
     </ConfirmSheet>

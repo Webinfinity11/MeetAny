@@ -7,7 +7,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { OnboardIcon as Icon } from './OnboardFields';
 import { categories, cities } from '../../lib/categories';
-import { type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+import { intents, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
 import { OnboardCard as Card, OnboardField as Field, OnboardItems as Items, OnboardCategories as Categories } from './OnboardFields';
 import s from './onboarding.module.css';
 
@@ -22,7 +22,6 @@ export const leads: Record<OnboardStep, string> = {
   verify: 'ვერიფიკაციას ადმინისტრატორი კომპანიის მონაცემების შემოწმების შემდეგ ადასტურებს.',
   review: 'შეამოწმეთ შენახული მონაცემები. დასრულების შემდეგ თქვენს ანგარიშზე გადახვალთ.',
 };
-export const intents = { buy: 'მომწოდებლების პოვნა', sell: 'კლიენტების პოვნა', both: 'ორივე' };
 const intentTags = (p: OnboardProfile) => p.account_intent === 'both' ? ['ყიდვა', 'გაყიდვა'] : [p.account_intent === 'buy' ? 'ყიდვა' : 'გაყიდვა'];
 const categoryNames = (keys: string[]) => keys.map(key => categories[key as keyof typeof categories] || key);
 const tags = (values: string[]) => <div className={s.tags}>{[...new Set(values)].map(value => <span key={value}>{value}</span>)}</div>;
@@ -31,7 +30,7 @@ const verificationLabel = (p: OnboardProfile) => p.verified ? 'ვერიფ�
 export function OnboardPreview({ profile: p, products, step }: { profile: OnboardProfile; products: Product[]; step: OnboardStep }) {
   return <section className={s.preview}><div className={s.identity}>
     <span className={s.avatar}>{p.logo_url ? <Image unoptimized loading="eager" width={48} height={48} src={p.logo_url} alt="კომპანიის ლოგო" /> : p.company.slice(0, 2)}</span><div><strong>{p.company}</strong><small>{categories[p.industry as keyof typeof categories]} · {cities[p.city]}</small></div>
-  </div>{tags([...intentTags(p), ...categoryNames(p.provide_categories), ...(step === 'profile' ? p.business_tags : [])])}
+  </div>{tags([...intentTags(p), ...(p.account_intent !== 'buy' ? categoryNames(p.provide_categories) : []), ...(step === 'profile' ? p.business_tags : [])])}
   {step === 'provide' && tags([`${products.length} პროდუქტი · ${p.offers.length} მომსახურება`])}
   {step === 'need' && tags(categoryNames(p.need_categories).map(name => `ყიდულობთ: ${name}`))}
   {step === 'profile' && p.about && <p className={s.previewAbout}>{p.about}</p>}
@@ -53,7 +52,7 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
   const fileInput = (kind: 'logo' | 'gallery' | 'cover', label: string) => <label className={s.file}><Icon name="upload" />{label}<input aria-label={label} type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={e => { const file = e.target.files?.[0]; e.target.value = ''; if (file) void upload(file, kind); }} /></label>;
   if (step === 'type') return <>
     <div className={s.intentGrid}>{(['buy', 'sell', 'both'] as const).map((key, i) => <label key={key} className={`${s.intent} ${p.account_intent === key ? s.intentSelected : ''}`}><input type="radio" name="intent" value={key} checked={p.account_intent === key} onChange={() => patch({ account_intent: key })} /><span className={s.intentCheck} aria-hidden="true">{p.account_intent === key && <Icon name="check" />}</span><span className={s.intentIcon}><Icon name={['shopping-cart', 'store', 'handshake'][i]} /></span><strong>{intents[key]}</strong><span>{['განათავსეთ მოთხოვნები და მიიღეთ შეთავაზებები', 'ნახეთ მოთხოვნები და გაგზავნეთ შეთავაზებები', 'ყიდვა და გაყიდვა ერთი ანგარიშით'][i]}</span></label>)}</div>
-    <Card title="ძირითადი დარგები" hint={`${p.provide_categories.length} / 5`}><Categories compact limit={5} values={p.provide_categories} onChange={provide_categories => patch({ provide_categories })} /></Card>
+    {p.account_intent !== 'buy' && <Card title="ძირითადი დარგები" hint={`${p.provide_categories.length} / 5`}><Categories compact limit={5} values={p.provide_categories} onChange={provide_categories => patch({ provide_categories })} /></Card>}
   </>;
   if (step === 'details') return <>
     <Card title="იურიდიული ინფორმაცია"><div className={s.two}><Field label="იურიდიული სახელი" required value={p.legal_name || ''} maxLength={200} onChange={legal_name => patch({ legal_name: legal_name || null })} /><Field label="საიდენტიფიკაციო კოდი" icon="hash" required value={p.registration_code || ''} maxLength={40} onChange={registration_code => patch({ registration_code: registration_code || null })} /></div><div className={s.two}>
@@ -89,12 +88,12 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
     <p className={s.muted}><Icon name="lock-keyhole" />საჯაროდ ჩანს მხოლოდ ადმინისტრატორის მიერ დადასტურებული ვერიფიკაციის ნიშანი.</p>
   </>;
   const rows: [OnboardStep, string, string, ReactNode][] = [
-    ['type', 'handshake', 'ტიპი', tags([...intentTags(p), ...categoryNames(p.provide_categories)])],
+    ['type', 'handshake', 'ტიპი', tags([...intentTags(p), ...(p.account_intent !== 'buy' ? categoryNames(p.provide_categories) : [])])],
     ['details', 'building-2', 'კომპანია', <p key="company">{[p.legal_name || p.company, p.registration_code, cities[p.city]].filter(Boolean).join(' · ')}</p>],
     ['profile', 'file-text', 'ბიზნეს-პროფილი', <div key="profile"><p className={s.ellipsis}>{p.about}</p>{tags([...p.business_tags, ...p.certificates])}</div>],
     ['provide', 'store', 'გთავაზობთ', <div key="products" className={s.thumbnails}>{products.filter(product => product.photoUrl).map((product, index) => <Image key={index} unoptimized width={40} height={32} src={product.photoUrl} alt={product.name} />)}<span>{products.length} პროდუქტი · {p.offers.length} მომსახურება</span></div>],
     ['need', 'shopping-cart', 'ყიდულობთ', tags([...categoryNames(p.need_categories), ...p.seeks])],
     ['verify', 'shield-check', 'ვერიფიკაცია', <Badge key="verification" status={p.verified ? 'success' : 'neutral'}>{verificationLabel(p)}</Badge>],
-  ];
+  ].filter(([key]) => key === 'provide' ? p.account_intent !== 'buy' : key === 'need' ? p.account_intent !== 'sell' : true) as [OnboardStep, string, string, ReactNode][];
   return <><section className={s.review}><ul>{rows.map(([key, icon, title, content]) => <li key={key}><span className={s.reviewIcon}><Icon name={icon} /></span><div><strong>{title}</strong>{content}</div><Button variant="ghost" aria-label={`${title} — შეცვლა`} onClick={() => go(key)}><Icon name="pencil" /><span className={s.editLabel}>შეცვლა</span></Button></li>)}</ul></section></>;
 }

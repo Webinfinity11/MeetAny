@@ -16,6 +16,14 @@ export interface OpportunityRequest {
   id: string; title: string; category: string; city: string; cityLabel?: string;
   photo: string | null; quantity: number | null; unit: string | null;
   body?: string; daysLeft: number; isNew?: boolean;
+  budgetType?: "range" | "exact" | null; budgetMin?: number | null; budgetMax?: number | null;
+}
+/** Public budget text: range "₾1,000–1,800", exact "₾25,000", otherwise null (no public budget). */
+export function budgetLabel(r: Pick<OpportunityRequest, "budgetType" | "budgetMin" | "budgetMax">): string | null {
+  if (r.budgetMin == null) return null;
+  if (r.budgetType === "range" && r.budgetMax != null) return `₾${formatNumber(r.budgetMin)}–${formatNumber(r.budgetMax)}`;
+  if (r.budgetType === "exact") return `₾${formatNumber(r.budgetMin)}`;
+  return null;
 }
 export interface OpportunityCardProps {
   request: OpportunityRequest; compact?: boolean; offers?: number;
@@ -26,6 +34,7 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
   const [failed, setFailed] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const category = categories[currentCategory(r.category)] || r.category;
+  const budget = budgetLabel(r);
   const deadline = `${Math.max(0, r.daysLeft)} დღე დარჩა`;
   return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full} ${horizontal ? styles.horizontal : ""}`}`} data-request-id={r.id}>
     <div className={styles.visual}>
@@ -37,7 +46,7 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
     <div className={styles.body}>
       <h3><Link className={styles.mainLink} href={href}>{r.title}</Link></h3>
       {!compact && <><span className={styles.category}>{category}</span>{buyer && <p className={styles.buyer}><span>{buyer.name.slice(0, 1)}</span>{buyer.name}{buyer.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</p>}</>}
-      <ul className={styles.facts}><li><Icon name="map-pin" />{r.cityLabel || cities[r.city] || r.city}</li>{r.quantity != null && <li><Icon name="package" />{formatNumber(r.quantity)} {r.unit ? units[r.unit] || r.unit : ""}</li>}</ul>
+      <ul className={styles.facts}><li><Icon name="map-pin" />{r.cityLabel || cities[r.city] || r.city}</li>{r.quantity != null && <li><Icon name="package" />{formatNumber(r.quantity)} {r.unit ? units[r.unit] || r.unit : ""}</li>}{budget && <li><Icon name="wallet" />{budget}</li>}</ul>
       {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div><div className={styles.actions}><Button variant="secondary" href={href}>დეტალები</Button>{(canOffer || guest) && <Button href={guest ? `/account/?next=${encodeURIComponent(`/offers/new/?requestId=${encodeURIComponent(r.id)}`)}` : `/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზება</Button>}</div></div>}
     </div>
   </article>;

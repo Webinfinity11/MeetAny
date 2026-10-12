@@ -223,9 +223,9 @@ try {
       await company.locator('.ma-ocard').getByText('არჩეულია',{exact:true}).waitFor();
       if(phase==='after') {
         const t=Date.now();
-        assert(await elapsed(`${width}: კომპანიის არარჩეული სტატუსი`,t,()=>other.locator('.ma-ocard').getByText('არ აირჩიეს',{exact:true}).isVisible()));
+        assert(await elapsed(`${width}: კომპანიის არარჩეული სტატუსი`,t,()=>other.locator('.ma-ocard').getByText('არ შეირჩა',{exact:true}).isVisible()));
       } else await other.reload();
-      await other.locator('.ma-ocard').getByText('არ აირჩიეს',{exact:true}).waitFor();
+      await other.locator('.ma-ocard').getByText('არ შეირჩა',{exact:true}).waitFor();
       await shot(company,`${width}-company-chosen`);await shot(other,`${width}-company-declined`);
     });
     await check(`${width} ჩატი და 25 წამში ბეიჯი`,async()=>{

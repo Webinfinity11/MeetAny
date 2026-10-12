@@ -16,6 +16,13 @@ export function useCompanyReviews(companyId: string) {
   const load = useCallback(() => read!(companyId) as Promise<Reviews>, [read, companyId]);
   return useBusinessResource<Reviews>(companyId && sessionReady && available && read ? load : undefined, companyId);
 }
+export type CompanyStats = { completedDeals: number; completedAsBuyer: number };
+export function useCompanyStats(companyId: string) {
+  const { store, sessionReady, available } = useMarketStore();
+  const read = store?.callRpc;
+  const load = useCallback(() => read!("company_public_stats", { p_company_id: companyId }) as Promise<CompanyStats>, [read, companyId]);
+  return useBusinessResource<CompanyStats>(companyId && sessionReady && available && read ? load : undefined, companyId);
+}
 export function CompanyReviews({ resource }: { resource: ReturnType<typeof useCompanyReviews> }) {
   return <section aria-labelledby="company-reviews">
     <div className={styles.sectionHeading}><h2 id="company-reviews" className="detail-section-title">შეფასებები</h2><span>მხოლოდ დასრულებული გარიგებებიდან</span></div>

@@ -68,8 +68,6 @@
 .aside { display: grid; gap: var(--space-4); }
 .matchingPreview { display: grid; gap: var(--space-3); font-size: var(--fs-meta); color: var(--ink-600); }
 .matchingPreview strong { font-size: var(--size-28); font-weight: var(--fw-bold); color: var(--ink-950); }
-.avatarRow { display: flex; padding-left: var(--space-2); }
-.avatarRow .avatar { margin-left: calc(-1 * var(--space-2)); border-radius: var(--radius-pill); border: var(--size-2) solid var(--white); background: var(--ink-950); color: var(--white); font-size: var(--fs-xs); }
 .timelineCircle { width: var(--size-36); height: var(--size-36); border: var(--size-1) dashed var(--ink-300); border-radius: var(--radius-pill); flex: none; }
 .timeline p { font-size: var(--fs-xs); color: var(--ink-500); margin-top: var(--space-1); }
 .page :global(.post-actions__inner) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }

@@ -3,6 +3,12 @@ import { categories } from './categories';
 
 export const onboardSteps = ['type', 'details', 'profile', 'provide', 'need', 'verify', 'review'] as const;
 export type OnboardStep = typeof onboardSteps[number];
+export type AccountIntent = 'buy' | 'sell' | 'both';
+export const intents: Record<AccountIntent, string> = { buy: 'მომწოდებლების პოვნა', sell: 'კლიენტების პოვნა', both: 'ორივე' };
+/** Buyers skip "provide", sellers skip "need"; both keep every step. */
+export function stepsFor(intent?: AccountIntent | string | null): readonly OnboardStep[] {
+  return onboardSteps.filter(step => step === 'provide' ? intent !== 'buy' : step === 'need' ? intent !== 'sell' : true);
+}
 export type Product = { name: string; photoUrl: string; note: string };
 export type OnboardProfile = {
   onboarding_completed_at?:string|null;
@@ -26,9 +32,9 @@ const keysByStep: Partial<Record<OnboardStep, readonly (keyof OnboardProfile)[]>
   verify: ['certificates'],
 };
 type OnboardModel = { profile: OnboardProfile; products: Product[] };
-export function onboardWrites(step: OnboardStep, dirty: Iterable<OnboardStep>, leaving = false) {
+export function onboardWrites(step: OnboardStep, dirty: Iterable<OnboardStep>, leaving = false, steps: readonly OnboardStep[] = onboardSteps) {
   const changed = new Set(dirty);
-  return onboardSteps.filter((value, index) => (leaving || index <= onboardSteps.indexOf(step)) && (changed.has(value) || value === step));
+  return steps.filter((value, index) => (leaving || index <= steps.indexOf(step)) && (changed.has(value) || value === step));
 }
 /** Keep later, unfinished drafts when earlier steps refresh their saved data. */
 export function retainOnboardDraft(saved: OnboardModel, draft: OnboardModel, steps: readonly OnboardStep[]): OnboardModel {

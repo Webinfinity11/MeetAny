@@ -175,7 +175,7 @@ export function createMarketStore({initial=null,background=true}={}){
  let dataRevision=0;
  const requestLoads=new Map();
  const companyLoads=new Map();
- let engagement={owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
+ let engagement={owner:null,status:'idle',savedIds:[],savedRequestIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
  let engagementTask=null,engagementRevision=0,engagementCapabilities=null;
  // A failed refresh keeps the previous data on screen; the flags say so, and mutations toast it.
  let dataStale=false,engagementStale=false;
@@ -195,8 +195,8 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  async function refreshEngagement(pre){
   const actor=currentUser()?.id;
-  if(!actor||currentUser()?.blocked){engagement={...engagement,owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}};emit();return;}
-  if(engagement.owner!==actor)engagement={owner:actor,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
+  if(!actor||currentUser()?.blocked){engagement={...engagement,owner:null,status:'idle',savedIds:[],savedRequestIds:[],unread:0,notifications:{items:[],nextCursor:null}};emit();return;}
+  if(engagement.owner!==actor)engagement={owner:actor,status:'idle',savedIds:[],savedRequestIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
   if(engagementTask?.actor===actor)return engagementTask.promise;
   const revision=engagementRevision;
   if(pre&&(pre.actor!==actor||pre.revision!==revision))pre=null;
@@ -229,6 +229,13 @@ export function createMarketStore({initial=null,background=true}={}){
   await rpc('set_saved_company',{p_company_id:id,p_saved:saved});
   if(actor===currentUser()?.id){engagement={...engagement,savedIds:saved?[...new Set([...engagement.savedIds,id])]:engagement.savedIds.filter(x=>x!==id)};emit();}
  }
+ async function setSavedRequest(id,saved){
+  const actor=requireUser().id;
+  engagementRevision++;
+  await rpc('set_saved_request',{p_request_id:id,p_saved:saved});
+  if(actor===currentUser()?.id){const ids=engagement.savedRequestIds||[];engagement={...engagement,savedRequestIds:saved?[...new Set([...ids,id])]:ids.filter(x=>x!==id)};emit();}
+  if(engagementTask)await engagementTask.promise;await refreshEngagement();
+ }
  async function markNotificationRead(id){
   requireUser();engagementRevision++;await rpc('mark_notification_read',{p_id:id});if(engagementTask)await engagementTask.promise;await refreshEngagement();warnStale(engagementStale);
  }
@@ -245,13 +252,15 @@ export function createMarketStore({initial=null,background=true}={}){
  function emit(){listeners.forEach(fn=>{try{fn();}catch(err){console.error(err);}});}
 
  const mapUser=p=>p&&({id:p.id,role:p.role,name:p.name,company:p.company,email:p.email,phone:p.phone,city:p.city,address:p.address||null,lat:p.lat??null,lng:p.lng??null,industry:p.industry||undefined,verified:!!p.verified,verifiedAt:p.verified&&p.verified_at||null,blocked:!!p.blocked,blockedReason:p.blocked&&p.blocked_reason||null,createdAt:p.created_at,
-  about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[],logoUrl:p.logo_url||null,gallery:Array.isArray(p.gallery)?p.gallery.filter(Boolean):[]});
+  about:p.about||'',offers:Array.isArray(p.offers)?p.offers:[],seeks:Array.isArray(p.seeks)?p.seeks:[],serviceCities:Array.isArray(p.service_cities)?p.service_cities:[],logoUrl:p.logo_url||null,gallery:Array.isArray(p.gallery)?p.gallery.filter(Boolean):[],
+  accountIntent:p.account_intent||'both',onboardingCompletedAt:p.onboarding_completed_at||null,verificationDocumentsStatus:p.verification_documents_status||'not_submitted'});
  const mapRequest=r=>({id:r.id,ownerId:r.owner_id,title:r.title,body:r.body,category:r.category,city:r.city,addressNote:r.address_note||null,photo:r.photo_url||null,
-  quantity:r.quantity==null?null:Number(r.quantity),unit:r.quantity!=null&&Object.hasOwn(units,r.unit)?r.unit:null,neededBy:r.needed_by?String(r.needed_by).slice(0,10):null,status:r.status,hidden:!!r.hidden,hiddenReason:r.hidden&&r.hidden_reason||null,chosenOfferId:r.chosen_offer_id||null,createdAt:r.created_at,expiresAt:r.expires_at});
+  quantity:r.quantity==null?null:Number(r.quantity),unit:r.quantity!=null&&Object.hasOwn(units,r.unit)?r.unit:null,neededBy:r.needed_by?String(r.needed_by).slice(0,10):null,status:r.status,hidden:!!r.hidden,hiddenReason:r.hidden&&r.hidden_reason||null,chosenOfferId:r.chosen_offer_id||null,createdAt:r.created_at,expiresAt:r.expires_at,
+  budgetType:r.budget_type||null,budgetMin:r.budget_min==null?null:Number(r.budget_min),budgetMax:r.budget_max==null?null:Number(r.budget_max)});
  const mapOffer=o=>({id:o.id,requestId:o.request_id,companyUserId:o.company_id,body:o.body,price:o.price==null?null:Number(o.price),
   priceType:Object.hasOwn(priceTypes,o.price_type)?o.price_type:(o.price==null?'negotiable':'total'),vatIncluded:!!o.vat_included,
   paymentTerms:o.payment_terms||null,validUntil:o.valid_until||null,commercialTerms:Array.isArray(o.commercial_terms)?o.commercial_terms:[],
-  deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,createdAt:o.created_at,updatedAt:o.updated_at});
+  deliveryDays:o.delivery_days==null?null:Number(o.delivery_days),deliveryIncluded:!!o.delivery_included,status:o.status,viewedAt:o.viewed_at||null,createdAt:o.created_at,updatedAt:o.updated_at});
  const chunks=(list,size)=>{const out=[];for(let i=0;i<list.length;i+=size)out.push(list.slice(i,i+size));return out;};
  const compareCompanies=(a,b)=>Number(b.verified)-Number(a.verified)||Date.parse(b.createdAt)-Date.parse(a.createdAt)||a.id.localeCompare(b.id);
  // Contact (phone) is no longer a public column (migration 20261007-contact-visibility): it is read through
@@ -351,7 +360,7 @@ export function createMarketStore({initial=null,background=true}={}){
   if(JSON.stringify(cache)!==JSON.stringify(next)){cache=next;dataRevision++;}
   engagementCapabilities=data.capabilities;
   if(me&&!me.blocked&&data.engagement){engagement={...data.engagement,owner:me.id,status:'ready',emailDelivery:data.capabilities.emailDelivery};engagementStale=false;}
-  else engagement={...engagement,owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}};
+  else engagement={...engagement,owner:null,status:'idle',savedIds:[],savedRequestIds:[],unread:0,notifications:{items:[],nextCursor:null}};
   if(pendingSaveIntent())await refreshEngagement();
  }
 
@@ -551,7 +560,7 @@ export function createMarketStore({initial=null,background=true}={}){
 
  function clearCallerCache(){
   cache={me:null,requests:[],offers:[],counts:{},profiles:{},contacts:{},users:null,stats:null,companies:[],companyStats:{}};
-  engagement={owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
+  engagement={owner:null,status:'idle',savedIds:[],savedRequestIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
   dataRevision++;engagementRevision++;
  }
  async function logout(){
@@ -590,7 +599,8 @@ export function createMarketStore({initial=null,background=true}={}){
    if(state==='done'&&!['chosen','closed','expired'].includes(s))return false;
    if(category&&!expandCategories(category).includes(r.category))return false;
    if(city&&!city.split(',').includes(r.city)&&r.city!=='georgia')return false;
-   const text=(r.title+' '+r.body+' '+categories[r.category]+' '+cities[r.city]).toLocaleLowerCase();
+   const o=userById(r.ownerId);
+   const text=(r.title+' '+r.body+' '+categories[r.category]+' '+cities[r.city]+' '+(o?.company||o?.name||'')).toLocaleLowerCase();
    return terms.every(t=>text.includes(t));
   }).sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
  }
@@ -963,9 +973,10 @@ export function createMarketStore({initial=null,background=true}={}){
   setMyDistribution:args=>mutate('set_my_distribution',args),
   companyBusinessFeatures,companyReviews,myCompanyReviewTargets,saveCompanyReview,myBusinessSettings,setCompanyDistributor,requestCompanyPlan,cancelCompanyPlanRequest,adminBusinessQueue,adminModerateReview,adminResolvePlan,
   reportContent,adminListReports,adminResolveReport,
-  engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}},
-  refreshEngagement,setSavedCompany,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
+  engagement:()=>engagement.owner===currentUser()?.id?engagement:{status:'idle',savedIds:[],savedRequestIds:[],unread:0,notifications:{items:[],nextCursor:null}},
+  refreshEngagement,setSavedCompany,setSavedRequest,markNotificationRead,setNotificationEmail,setRequestAlertPreferences,
   listSavedCompanies:cursor=>rpc('list_saved_companies',{p_cursor:cursor||null}),
+  listSavedRequests:cursor=>rpc('list_saved_requests',{p_cursor:cursor||null}),
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
   // Generic entry points for the new flows (deals, comparison, matching, onboarding): callRpc reads,
   // mutateRpc writes and then refreshes the public snapshot. Errors carry MAxxx userMessage texts.

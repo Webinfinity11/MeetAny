@@ -21,7 +21,7 @@ type Saved = { company_id: string; company: string; city: string; industry: stri
 type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
 // Store statuses: idle (not loaded yet) → ready | unavailable (feature off) | error (request failed).
 const failed = (status?: string) => status === "unavailable" || status === "error";
-const label = (kind: string) => kind === "request_match" ? "შესაბამისი მოთხოვნა" : kind === "offer_chosen" ? "შეთავაზება აირჩიეს" : kind === "offer_received" ? "ახალი შეთავაზება" : "შეტყობინება";
+const label = (kind: string) => kind === "request_match" ? "შესაბამისი მოთხოვნა" : kind === "offer_chosen" ? "შეთავაზება აირჩიეს" : kind === "offer_received" ? "ახალი შეთავაზება" : kind === "offer_declined" ? "შეთავაზება არ შეირჩა" : "შეტყობინება";
 const date = (value: string, withTime = true) => {
  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {timeZone: withTime ? "Asia/Tbilisi" : "UTC",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date(value)).map(p => [p.type,p.value]));
  return `${parts.day}.${parts.month}.${parts.year}${withTime ? `, ${parts.hour}:${parts.minute}` : ""}`;
@@ -33,7 +33,7 @@ function relative(value: string, now: number) {
  const days = Math.round((tbilisiDay(now) - tbilisiDay(value)) / 86400000);
  return days <= 0 ? `დღეს ${clock(value)}` : days === 1 ? `გუშინ ${clock(value)}` : days < 7 ? `${days} დღის წინ` : date(value, false);
 }
-const noticeType = (n: Notice) => n.deal_id ? "deal" : n.kind === "offer_received" || n.kind === "offer_chosen" ? "offers" : "system";
+const noticeType = (n: Notice) => n.deal_id ? "deal" : n.kind === "offer_received" || n.kind === "offer_chosen" || n.kind === "offer_declined" ? "offers" : "system";
 const noticeTypes = { offers: "შეთავაზებები", messages: "მესიჯები", deal: "გარიგებები", system: "სისტემა" };
 const noticeLabel = (n: Notice) => {
  const stage = ({ selected: "მომწოდებლის არჩევა", discuss: "დეტალების განხილვა", progress: "შესრულება", complete: "დასრულდა", cancelled: "გაუქმდა" } as Record<string, string>)[n.deal_action || ""];

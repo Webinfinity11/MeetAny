@@ -165,3 +165,16 @@ test('route detail cache reuses a completed session, while explicit reads stay f
  const reads=f.calls.length;await store.ensureRequest(uuid(1105));
  assert(f.calls.length>reads,'explicit read bypasses the route cache');
 });
+
+test('listRequests finds a request by its owner name and mapRequest carries the public budget', async t => {
+  const f = fixture(t), store = createMarketStore({ background: false });
+  Object.assign(f.requests[1], { budget_type: 'range', budget_min: '1000.00', budget_max: '1800.00' });
+  Object.assign(f.requests[2], { budget_type: 'exact', budget_min: '25000.00', budget_max: null });
+  await store.refresh();
+  const owned = store.listRequests({ q: 'owner', state: '' });
+  assert.deepEqual(owned.map(r => r.id), [uuid(1)], 'only the request owned by company "Owner" matches its name');
+  assert.equal(store.listRequests({ q: 'no such company', state: '' }).length, 0);
+  assert.deepEqual(store.getRequest(uuid(2)) && ['budgetType', 'budgetMin', 'budgetMax'].map(k => store.getRequest(uuid(2))[k]), ['range', 1000, 1800]);
+  assert.deepEqual(['budgetType', 'budgetMin', 'budgetMax'].map(k => store.getRequest(uuid(3))[k]), ['exact', 25000, null]);
+  assert.deepEqual(['budgetType', 'budgetMin', 'budgetMax'].map(k => store.getRequest(uuid(4))[k]), [null, null, null]);
+});

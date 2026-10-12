@@ -25,14 +25,17 @@ export type AnyUser = {
   address?: string | null;
   lat?: number | null;
   lng?: number | null;
+  accountIntent?: "buy" | "sell" | "both";
+  onboardingCompletedAt?: string | null;
+  verificationDocumentsStatus?: "not_submitted" | "pending" | "approved" | "rejected";
 };
 
 export type RequestItem = { chosenOfferId?: string | null; id: string; ownerId: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean; photo?: string | null; quantity?: number | null; unit?: string | null };
-export type OfferItem = { id: string; companyUserId: string; requestId: string; status: string; createdAt: string; updatedAt?: string; paymentTerms?: string | null; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
+export type OfferItem = { id: string; companyUserId: string; requestId: string; status: string; createdAt: string; updatedAt?: string; viewedAt?: string | null; paymentTerms?: string | null; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
 export type Tab = "deals" | "overview" | "opportunities" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
 export type NavItem = { key: Tab; label: string; icon: string; count?: number | null; href?: string };
 export const requestHref = (id: string) => `/requests/view/?id=${encodeURIComponent(id)}`;
-export const offerLabel = (status: string) => status === "chosen" ? "არჩეული" : status === "declined" ? "არ შეირჩა" : "მოლოდინში";
+export const offerLabel = (status: string, viewedAt?: string | null) => status === "chosen" ? "არჩეული" : status === "declined" ? "არ შეირჩა" : viewedAt ? "ნანახია" : "მოლოდინში";
 export const amount = (offer: OfferItem) => offer.price == null || offer.priceType === "negotiable" ? "შეთანხმებით" : `${new Intl.NumberFormat("ka-GE", { maximumFractionDigits: 2 }).format(offer.price)} ₾${offer.priceType === "unit" ? " / ერთეული" : ""}`;
 export function readSeen(): Record<string, string> {
   if (typeof window === "undefined") return {};

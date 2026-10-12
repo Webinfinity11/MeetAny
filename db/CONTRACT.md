@@ -865,3 +865,26 @@ Production-ზე apply არ შესრულებულა; ახალ�
 ორივე გაშვებაში ხუთივე შედეგი **ok**. rollback-ისა და apply-ის ეფექტები ცალკე
 კატალოგისა და უფლებების წაკითხვით დადასტურდა. SQL კონტრაქტი და ზემოთ ჩამოთვლილი
 კლიენტის ჩართვის წინაპირობები უცვლელია; მიგრაცია თავისთავად ახალ UI ფლოუს არ აერთებს.
+
+### 2026-10-13 — ბრიფის აკლებული ფუნქციები
+
+მიგრაციები (ერთმანეთისგან დამოუკიდებელი, თითოეული ორჯერ გასაშვები; production-ზე ამ რიგით):
+`20261013-company-deal-stats.sql`, `20261013-public-budget-saved-requests.sql`,
+`20261013-offer-status-dashboard.sql`, `20261013-matching-intent.sql`, `20261013-request-drafts.sql`.
+ტესტები `db/tests/run.sh`-ის ბოლოშია (`company_deal_stats_tests.sql`, `public_budget_saved_requests_tests.sql`,
+`offer_status_dashboard_tests.sql`, `matching_intent_tests.sql`, `request_drafts_tests.sql`).
+
+| ეკრანი | RPC და ზუსტი არგუმენტები | შედეგი / წვდომა |
+|---|---|---|
+| კომპანიის პროფილი | `company_public_stats(p_company_id uuid)` | JSON `{completedDeals, completedAsBuyer}`; anonymous + authenticated; არა-company/დაბლოკილი/არარსებული → ნულები |
+| მოთხოვნის ბარათი / დეტალი / ფილტრი | სვეტები `requests.budget_type ('range'/'exact'/null)`, `budget_min`, `budget_max` | საჯარო; ივსება `set_request_preferences`-ით მხოლოდ როცა `budgetPrivate` არ არის; private ბიუჯეტი null რჩება |
+| მოთხოვნის შენახვა | `set_saved_request(p_request_id uuid, p_saved boolean)` | boolean; authenticated; დამალული/არარსებული → MA106, საკუთარი → MA902, დაბლოკილი → MA002 |
+| ანგარიში → შენახული | `list_saved_requests(p_cursor jsonb default null)` | JSON `{items:[{created_at,request_id,title,category,city,budget_type,budget_min,budget_max,expires_at,owner_company,state}], nextCursor}`; 25 გვერდზე |
+| engagement | `engagement_state()` | + `savedRequestIds`; `unread` ითვლის `offer_declined`-საც |
+| მოთხოვნის დეტალი (ავტორი) | `mark_request_offers_viewed(p_request_id uuid)` | integer; მხოლოდ ავტორი (სხვა → MA901); `offers.viewed_at` ივსება `sent` შეთავაზებებზე; შინაარსის რედაქტირება ნიშანს ასუფთავებს (trigger `reset_offer_viewed`) |
+| შეტყობინებები | `notifications.kind` + `offer_declined` | `notify_offer()` არჩევისას ყველა სხვა შეთავაზების კომპანიას უგზავნის; ელფოსტა არ იგზავნება |
+| გარიგებები / ჩემი მოთხოვნები / დაფა | `list_my_deals()` | JSON მასივი: deal + `request_title` + `latest_at`; მხოლოდ მხარეები; დაფა/სტატუსები ამით იკითხება, არა შეტყობინებებით |
+| მოთხოვნის ფორმა, ნაბიჯი 3 | `count_matching_suppliers(p_category text, p_city text default null)` | integer; anonymous + authenticated; verified, არადაბლოკილი კომპანიები `provide_categories`-ით (გამომძახებელი გამორიცხულია); `p_city` იგნორირდება; არასწორი კატეგორია → MA902 |
+| ალერტები | `meetany_private.default_request_alert_preferences(p)` | ნაგულისხმევი: კატეგორიები = `provide_categories` (ცარიელზე `[industry]`), ქალაქები = `['georgia']`, ჩართული მხოლოდ verified კომპანიას; ხელით შენახული პარამეტრი უპირატესია |
+| ანგარიშის გაუმჯობესება | `become_company(p_company text, p_industry text, p_account_intent text)` | `public.profiles`; `buy/sell/both`, სხვა → MA902; 2-არგუმენტიანი ვერსია `'both'`-ს იძახებს |
+| მოთხოვნის ფორმა / ჩემი მოთხოვნები | `save_request_draft(p_data jsonb)`, `my_request_draft()`, `delete_request_draft()` | ერთი მონახაზი თითო მომხმარებელზე (`meetany_private.request_drafts`); authenticated; დაშვებული გასაღებები: title, category, city, addressNote, quantity, unit, neededByText, body, preferences, attachmentDraft; ≤16 kB |

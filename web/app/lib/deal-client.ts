@@ -18,6 +18,7 @@ export type Deal = {
   issues?: {id:string;actor_id:string;reason:string;body:string;status:'open'|'resolved';resolution?:string;created_at:string}[];
   events?: { id: string; actor_id: string; action: string; revision: number; created_at: string }[];
 };
+export type MyDeal = Deal & { request_title: string; latest_at: string };
 export type DealContact = { id: string; name: string; company: string; phone: string | null; email: string | null; contact_position?: string | null };
 export type ComparedOffer = {
   id: string; request_id: string; company_id: string; company: string; city: string; verified: boolean;
@@ -47,6 +48,13 @@ export const dealDate = (value?: string | null) => {
   return `${parts.day} ${months[Number(parts.month) - 1]}`;
 };
 export const selectOfferDeal = (store: Store, id: string, updatedAt: string | null): Promise<Deal> => store.mutateRpc("select_offer_deal", { p_offer_id: id, p_expected_updated_at: updatedAt });
+
+/** Every deal the actor takes part in, newest activity first. */
+export const listMyDeals = async (store: Store): Promise<MyDeal[]> => {
+  const items = await store.callRpc("list_my_deals");
+  if (!Array.isArray(items)) throw new Error("Invalid deal list");
+  return items;
+};
 
 /** Results belong to the actor and route. Refreshing after a write never silently retries it. */
 export function useDeal(store: Store, id: string, actor: string) {

@@ -44,7 +44,7 @@ export function RequestAlertSettings({ initial, emailDelivery, profile }: { init
   finally {setPending(false);}
  }
  return <form className={styles.alertSettings} onSubmit={save} aria-label="ახალი მოთხოვნების შეტყობინებები">
-  <div><h2 className="ma-h3">ახალი მოთხოვნები შენი დარგიდან</h2><p className={styles.meta}>შესაბამის ახალ მოთხოვნაზე ზარის ნიშნით შეგატყობინებთ.</p></div>
+  <div><h2 className="ma-h3">ახალი მოთხოვნები შენი კატეგორიებიდან</h2><p className={styles.meta}>ნაგულისხმევად ისევე, როგორც მომწოდებლები ირჩევა: ვერიფიცირებული კომპანია, რომლის „რას სთავაზობთ“ კატეგორიაც მოთხოვნას ემთხვევა (ყველა ქალაქი). ახალ შესაბამის მოთხოვნაზე ზარის ნიშნით შეგატყობინებთ.</p></div>
   <label className={styles.alertChoice}><input type="checkbox" checked={draft.enabled} disabled={pending} onChange={e => {change({enabled:e.target.checked});setEditing(e.target.checked);}}/> ახალ მოთხოვნებზე შემატყობინე</label>
   {draft.enabled && !editing ? <div className={styles.alertSummary}><p>{summary(draft.categories)}<br/>{draft.cities.map(key => cities[key]).join(" · ")}</p><Button type="button" variant="secondary" onClick={() => setEditing(true)}>პარამეტრების შეცვლა</Button></div> : null}
   {draft.enabled && editing ? <>
