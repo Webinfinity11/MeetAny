@@ -149,12 +149,12 @@ export function RequestFormSheet({
     setError(null);
     const errors: FieldErrors = {};
     const t = title.trim(), b = body.trim();
-    if (!t) errors.title = "მიუთითე სათაური";
-    if (!category) errors.category = "აირჩიე კატეგორია";
-    if (!city) errors.city = "აირჩიე ქალაქი";
-    if (b.length < 10) errors.body = b ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე, რა გჭირდება";
+    if (!t) errors.title = "მიუთითეთ სათაური";
+    if (!category) errors.category = "აირჩიეთ კატეგორია";
+    if (!city) errors.city = "აირჩიეთ ქალაქი";
+    if (b.length < 10) errors.body = b ? "აღწერა მინიმუმ 10 სიმბოლო უნდა იყოს" : "აღწერეთ, რა გჭირდებათ";
     const neededBy = neededByText.trim() ? textToIso(neededByText) : "";
-    if (neededBy === null) errors.neededBy = "მიუთითე თარიღი დღ.თთ.წწწწ ფორმატით";
+    if (neededBy === null) errors.neededBy = "მიუთითეთ თარიღი დღ.თთ.წწწწ ფორმატით";
     else if (neededBy && neededBy !== existing?.neededBy && tomorrow && neededBy < tomorrow) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
     else if (neededBy && neededBy !== existing?.neededBy && max && neededBy > max) errors.neededBy = `თარიღი არაუგვიანეს ${isoToText(max)}`;
     if (!v.check(errors, ["title", "category", "city", "body", "neededBy"])) return;
@@ -186,7 +186,7 @@ export function RequestFormSheet({
       setPhoto(null);
       ref.current?.close();
     } catch (err) {
-      setError((err as { userMessage?: string })?.userMessage || "რაღაც ვერ შესრულდა. სცადე თავიდან.");
+      setError((err as { userMessage?: string })?.userMessage || "მოთხოვნა ვერ შეინახა. სცადეთ ხელახლა.");
     } finally {
       setPending(false);
     }
@@ -220,10 +220,10 @@ export function RequestFormSheet({
             <span className="ma-skel ma-skel--line" />
           </div>
         ) : <>
-        {!signedIn ? <div className="request-form__guest"><Icon name="info" /><p>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედი ანგარიშში</Link> ან <Link onClick={keepDraft} href={`/account/?tab=register&next=${next}`}>დარეგისტრირდი</Link>. შევსებული ტექსტი შენარჩუნდება.</p></div> : null}
+        {!signedIn ? <div className="request-form__guest"><Icon name="info" /><p>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედით ანგარიშში</Link> ან <Link onClick={keepDraft} href={`/account/?tab=register&next=${next}`}>დარეგისტრირდით</Link>. შევსებული ტექსტი შენარჩუნდება.</p></div> : null}
         <form className="ma-form" id="new-request-form" onSubmit={submit} noValidate onChange={() => {dirty.current = true;}}>
           <section className="request-form__group" aria-labelledby="request-group-main">
-            <h3 className="request-form__group-title" id="request-group-main">რა გჭირდება</h3>
+            <h3 className="request-form__group-title" id="request-group-main">რა გჭირდებათ</h3>
             <div className="request-form__grid">
               <div className="ma-field request-form__wide">
                 <label className="ma-field__label" htmlFor="title">
@@ -246,7 +246,7 @@ export function RequestFormSheet({
                 </label>
                 <CustomSelect className="ma-select" value={category} onChange={(e) => {setCategory(e.target.value); v.clear("category");}} {...v.control("category")}>
                   <option value="" disabled>
-                    აირჩიე კატეგორია
+                    აირჩიეთ კატეგორია
                   </option>
                   {categoryOptions()}
                 </CustomSelect>
@@ -271,7 +271,7 @@ export function RequestFormSheet({
                 </label>
                 <textarea
                   className="ma-textarea"
-                  placeholder="რა გჭირდება, რამდენი, როდისთვის და სად"
+                  placeholder="რა გჭირდებათ, რამდენი, როდისთვის და სად"
                   maxLength={2000}
                   value={body}
                   onChange={(e) => {setBody(e.target.value); v.clear("body");}}

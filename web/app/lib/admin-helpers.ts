@@ -1,4 +1,32 @@
 // Shared helpers for the admin panel.
+import { dateLabel, money } from "./format";
+
+/** "8 ოქტომბერი 2026 · 14:08" in Tbilisi time — the one date-time format of the admin. */
+export function adminDateTime(value: string) {
+  const time = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(value));
+  return `${dateLabel(value)} · ${time}`;
+}
+
+/** "1 920 ₾" (lib/format money); no amount is "შეთანხმებით". */
+export const adminMoney = (value: number | string | null | undefined) =>
+  money(value == null || value === "" ? null : Number(value));
+
+/** Verification has one term and four states, read from the documents status (and the verified flag). */
+export const verificationLabels: Record<string, string> = {
+  not_submitted: "დოკუმენტები არ არის", pending: "განსახილველი", approved: "ვერიფიცირებული", rejected: "დაბრუნებული",
+};
+type CompanyState = { role?: string; verified?: boolean; blocked?: boolean; verification_documents_status?: string | null };
+export function companyStatus(u: CompanyState): { label: string; tone: "success" | "warning" | "danger" | "neutral" | "info" } {
+  if (u.blocked) return { label: "დაბლოკილი", tone: "danger" };
+  if (u.role !== "company") return { label: "აქტიური", tone: "info" };
+  if (u.verified) return { label: verificationLabels.approved, tone: "success" };
+  const docs = u.verification_documents_status || "not_submitted";
+  return docs === "pending" ? { label: verificationLabels.pending, tone: "warning" }
+    : docs === "rejected" ? { label: verificationLabels.rejected, tone: "neutral" }
+    : { label: verificationLabels.not_submitted, tone: "neutral" };
+}
+
+export const accountIntentLabels: Record<string, string> = { buy: "ყიდულობს", sell: "ყიდის", both: "ყიდულობს და ყიდის" };
 
 type Person = { name?: string | null; company?: string | null; email?: string | null };
 

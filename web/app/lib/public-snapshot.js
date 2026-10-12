@@ -19,12 +19,25 @@ select json_build_object(
      where id in (select owner_id from r union select id from c)) t)
 ) as j`;
 
+// Home page counters (migration 20261012-home-stats). Optional: a database without the function
+// yet still serves the snapshot; the home page then simply hides the counters.
+/** @returns {Promise<{openRequests: number, verifiedCompanies: number, offersSent: number, completedDeals: number} | null>} */
+async function readHomeStats(db) {
+  await db.query('savepoint home_stats');
+  try { return (await db.query('select public.home_stats() as s')).rows[0].s; }
+  catch (err) {
+    if (!err.code) throw err;
+    await db.query('rollback to savepoint home_stats');
+    return null;
+  }
+}
+
 async function readPublicSnapshot() {
   try {
-    const { requests, companies, companyStats, counts, profiles } = await asCaller({ role: 'anonymous' },
-      async db => (await db.query(SNAPSHOT_SQL)).rows[0].j);
+    const { requests, companies, companyStats, counts, profiles, homeStats } = await asCaller({ role: 'anonymous' },
+      async db => ({ ...(await db.query(SNAPSHOT_SQL)).rows[0].j, homeStats: await readHomeStats(db) }));
     const phones = Object.fromEntries(profiles.map(p => [p.id, p.phone]));
-    return { requests, companies: companies.map(c => ({ ...c, phone: phones[c.id] ?? null })), companyStats, counts, profiles };
+    return { requests, companies: companies.map(c => ({ ...c, phone: phones[c.id] ?? null })), companyStats, counts, profiles, homeStats };
   } catch (err) {
     // Preserve the existing client retry/unavailable UI during database outages.
     console.error('Public snapshot failed:', err.code || 'database error');

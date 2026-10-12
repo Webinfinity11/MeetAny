@@ -1,0 +1,4 @@
+/* Light, quiet stand-in: the category's own icon (not a shared stock photo) on the brand's subtle tint. */
+.cover { position: absolute; inset: 0; display: grid; place-items: center; background: var(--action-subtle); color: var(--action); }
+.cover[data-tone="2"], .cover[data-tone="4"], .cover[data-tone="6"] { background: var(--ink-50); color: var(--text-2); }
+.cover :global(.duo-icon) { width: clamp(var(--size-24), 26%, var(--size-56)); height: auto; aspect-ratio: 1; stroke-width: 1.5; }

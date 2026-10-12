@@ -115,7 +115,6 @@
 .chatSearch input{width:100%;min-width:0;height:var(--size-24);border:0;background:transparent;color:var(--ink-950);font:inherit;font-size:var(--fs-sm);outline:none}.chatSearch:focus-within{outline:var(--size-2) solid var(--info-600)}
 .inbox-row{display:flex;align-items:flex-start;gap:var(--space-3);width:100%;padding:var(--space-3) var(--space-4);border:0;border-bottom:var(--size-1) solid var(--ink-150);background:var(--white);text-align:left;font:inherit;cursor:pointer}
 .inbox-row:hover,.inbox-row[aria-current="true"]{background:var(--ink-50)}
-.chatAvatar{display:inline-flex;justify-content:center;align-items:center;width:var(--size-40);height:var(--size-40);flex:none;border-radius:var(--size-8);background:var(--avatar-bg);color:var(--avatar-text);font-size:var(--fs-xs);font-weight:var(--fw-bold)}
 .inbox-row__text{display:grid;gap:var(--size-2);min-width:0;flex:1}.inbox-row__top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);min-width:0}
 .inbox-row__name{font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--ink-950)}
 .inbox-row__name,.inbox-row__preview,.inbox-row__context{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -130,7 +129,6 @@
 .inbox-log{display:flex;flex:1;flex-direction:column;gap:var(--space-4);min-height:0;padding:var(--space-5);overflow-y:auto;overscroll-behavior:contain;background:var(--ink-50)}
 .inbox-compose{display:grid;grid-template-columns:minmax(0,1fr) var(--size-44);align-items:end;gap:var(--space-2);padding:var(--space-3);border-top:var(--size-1) solid var(--ink-200);background:var(--white)}
 .inbox-compose :global(.ma-textarea){width:100%;min-width:0;min-height:var(--size-44);max-height:var(--size-112);height:var(--size-44);resize:none;border-radius:var(--size-8);padding:var(--space-3);font-size:var(--fs-sm)}
-.inbox-compose :global(.ma-btn){width:var(--size-44);height:var(--size-44);min-width:0;padding:0;border-radius:var(--btn-radius);background:var(--action-strong);color:var(--white)}
 .inbox-compose :global(.ma-field__error){grid-column:1/-1}
 .inbox-log__note,.inbox-note{margin:auto;padding:var(--space-5);font-size:var(--fs-sm);color:var(--ink-600);text-align:center}.inbox-retry{padding:var(--space-2);font-size:var(--fs-sm)}
 .chatContext{overflow-y:auto;min-width:0;border-left:var(--size-1) solid var(--ink-200)}.chatContext section{padding:var(--space-5);border-bottom:var(--size-1) solid var(--ink-150)}
@@ -152,7 +150,6 @@
 .rowMeta{display:flex;align-items:center;gap:var(--space-2)}
 .inbox-row__name :global(.icon){display:inline;width:var(--size-14);height:var(--size-14);margin-left:var(--space-1);color:var(--info-700)}
 .inbox-compose{grid-template-columns:minmax(0,1fr) auto}
-.inbox-compose :global(.ma-btn){width:auto;padding-inline:var(--space-3)}
 .inbox-back{display:flex;width:auto;min-width:var(--tap-min);height:var(--tap-min);gap:var(--space-1);font-size:var(--fs-xs)}
 .inbox-call,.bellButton{min-width:var(--tap-min);min-height:var(--tap-min)}
 .filters button{min-height:var(--tap-min)}
@@ -175,9 +172,9 @@
 .inbox-row__name{font-weight:var(--fw-semibold)}
 .inbox-row__preview{font-size:var(--fs-eyebrow)}
 .inbox-row__context{margin-top:0}
-.unreadCount,.chatAvatar{background:var(--ink-950)}
-.inbox-compose{grid-template-columns:minmax(0,1fr) var(--size-44)}
-.inbox-compose :global(.ma-btn){width:var(--size-44);height:var(--size-44);padding:0;background:var(--ink-950)}
+.unreadCount{background:var(--action)}
+/* One send button for the inbox and the chat popup: the shared primary Button, icon and label. */
+.inbox-compose :global(.ma-btn){min-height:var(--size-44)}
 .chatContext{display:none}
 @container account-inbox (min-width:1100px){.inbox{grid-template-columns:var(--size-280) minmax(0,1fr) var(--size-260)}.chatContext{display:block}}
 @media(max-width:767px){.inbox{display:block;height:auto}.inbox-head>:global(.ma-btn){display:none}}
@@ -232,3 +229,13 @@
 @media(min-width:64rem) {
  .noticeCard { max-height: var(--size-560); overflow-y: auto; overscroll-behavior: contain; }
 }
+
+/* Account sections: one heading row with its action; notification filters share the row with "mark all read". */
+.sectionHead{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);min-width:0;flex-wrap:wrap}
+.sectionHead>:global(.account-section__title){margin:0}
+.notificationHead{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}
+.notificationHead>.filters{flex:1 1 auto;min-width:0}
+.notificationHead>:global(.ma-btn){flex:none}
+.savedRow>:global(.ma-btn){position:relative;z-index:2;flex:none}
+@media(max-width:767px){.notificationHead>:global(.ma-btn){width:100%}}
+.noticeButton{width:100%;border:0;background:transparent;font:inherit;color:inherit;text-align:left;cursor:pointer}

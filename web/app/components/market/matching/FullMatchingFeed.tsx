@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Badge } from '../../ui/Badge';
 import { Sheet } from '../../ui/Sheet';
 import { Icon } from '../../Icon';
-import { CompanyAvatar } from '../CompanyAvatar';
+import { CompanyAvatar, companyImage } from '../CompanyAvatar';
 import { SaveCompanyButton } from '../SaveCompanyButton';
 import { categories, categoryPhoto, currentCategory, units, cities } from '../../../lib/categories';
 import { dateLabel, postedLabel } from '../../../lib/format';
@@ -16,14 +16,21 @@ import { flowError, listMatching, matchingPageSize, validRequestId, type Matchin
 import { Button } from '../../ui/Button';
 import { CustomSelect } from '../../ui/CustomSelect';
 import { EmptyState } from '../../ui/Structure';
+import { Notice } from '../../ui/Notice';
 import { ListSkeleton } from '../Skeletons';
 import styles from '../Matching.module.css';
 
 type FeedItem = MatchingItem & { kind: 'request' | 'supplier' };
-type FeedKind = 'recommended' | 'requests' | 'suppliers';
+export type FeedKind = 'recommended' | 'requests' | 'suppliers';
 const itemKey = (item: FeedItem) => `${item.kind}:${item.id}`;
 
-export function FullMatchingFeed({ requestId, compact = false, onCount }: { requestId?: string; compact?: boolean; onCount?: (count: number) => void }) {
+/** Feed picture; a missing or failed one falls back to the company avatar instead of a broken image. */
+function FeedPhoto({ src, name, width, height }: { src?: string; name: string; width: number; height: number }) {
+  const [failed, setFailed] = useState<string>();
+  return src && src !== failed ? <Image unoptimized src={src} alt="" width={width} height={height} onError={() => setFailed(src)}/> : <CompanyAvatar name={name} size="xl"/>;
+}
+
+export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: { requestId?: string; compact?: boolean; kind?: FeedKind; onCount?: (count: number) => void }) {
   const { store, ready, sessionReady, available } = useMarketStore();
   const me = sessionReady ? store?.currentUser() : null;
   const target = requestId && validRequestId(requestId) ? store?.getRequest(requestId) : null;
@@ -31,7 +38,7 @@ export function FullMatchingFeed({ requestId, compact = false, onCount }: { requ
   const closed = own && (target.hidden || store?.requestState(target) !== 'open');
   const allowed = !closed && ready && !!me && !me.blocked && me.role !== 'admin' && (!requestId || own);
   const [city, setCity] = useState('');
-  const [tab, setTab] = useState<FeedKind>(requestId ? 'suppliers' : 'recommended');
+  const [tab, setTab] = useState<FeedKind>(requestId ? 'suppliers' : kind || 'recommended');
   const [sort, setSort] = useState('recommended');
   const [now] = useState(() => Date.now());
   const [selected, setSelected] = useState<string>();
@@ -80,16 +87,20 @@ export function FullMatchingFeed({ requestId, compact = false, onCount }: { requ
   });
   const active = items.find(item => itemKey(item) === selected) || items[0];
   const title = (item: FeedItem) => (supplier(item) ? item.company || item.title : item.title) || 'შესაძლებლობა';
-  const photo = (item: FeedItem): string | undefined => supplier(item) ? ownerFor(item)?.logoUrl : requestFor(item)?.photo || `/assets/photos/${categoryPhoto[currentCategory(item.category || 'other')] || 'workshop-banner.jpg'}`;
+  const photo = (item: FeedItem): string | undefined => supplier(item) ? companyImage(title(item), ownerFor(item)?.logoUrl, ownerFor(item)?.gallery) || undefined : requestFor(item)?.photo || `/assets/photos/${categoryPhoto[currentCategory(item.category || 'other')] || 'workshop-banner.jpg'}`;
+  // A company without any picture shows its avatar, never an empty grey box.
+  const visual = (item: FeedItem, width: number, height: number) => <FeedPhoto src={photo(item)} name={title(item)} width={width} height={height}/>;
   const description = (item: FeedItem): string | undefined => supplier(item) ? ownerFor(item)?.about : requestFor(item)?.body;
   const badge = (item: FeedItem) => <Badge className={styles.kind} status={supplier(item) ? 'info' : 'success'}>{supplier(item) ? 'მომწოდებელი' : 'ყიდვის მოთხოვნა'}</Badge>;
   const viewHref = (item: FeedItem) => `/${supplier(item) ? 'companies' : 'requests'}/view/?id=${encodeURIComponent(item.id)}`;
   const actionHref = (item: FeedItem) => supplier(item) ? viewHref(item) : me.role === 'company' ? (me.verified ? `/offers/new/?requestId=${encodeURIComponent(item.id)}` : '/onboarding/?step=verify') : '/account/?tab=profile#company-upgrade';
-  const actionLabel = (item: FeedItem) => supplier(item) ? 'კომპანიის ნახვა' : me.role !== 'company' ? 'კომპანიის პროფილის შექმნა' : me.verified ? 'შეთავაზების გაგზავნა' : 'კომპანიის დადასტურება';
+  const actionLabel = (item: FeedItem) => supplier(item) ? 'კომპანიის ნახვა' : me.role !== 'company' ? 'კომპანიის პროფილის შექმნა' : me.verified ? 'შეთავაზების გაგზავნა' : 'ვერიფიკაციის გავლა';
+  // A supplier card names the company in its title; the line under it says what it does and where.
+  const meta = (item: FeedItem) => (supplier(item) ? [categories[item.industry || item.category || ''], cities[item.city] || item.city] : [item.company || ownerFor(item)?.company || ownerFor(item)?.name, cities[item.city] || item.city, createdFor(item) ? postedLabel(createdFor(item), now) : null]).filter(Boolean).join(' · ');
   const request = active ? requestFor(active) : null;
   const identity = active ? ownerFor(active) : null;
   const detail = active ? <>
-    <div className={styles.detailPhoto}>{photo(active) ? <Image unoptimized src={photo(active)!} alt="" width={300} height={188}/> : <Icon name="building-2"/>}</div>
+    <div className={styles.detailPhoto}>{visual(active, 300, 188)}</div>
     {badge(active)}<h2>{title(active)}</h2>
     <ul className={styles.facts}>
       {request?.quantity != null && <li><Icon name="package"/>{request.quantity} {units[request.unit]}</li>}
@@ -108,13 +119,14 @@ export function FullMatchingFeed({ requestId, compact = false, onCount }: { requ
       <nav className={styles.tabs} style={{ maxWidth: "100%" }} aria-label="შესაძლებლობები">{(requestId ? [['suppliers', 'მომწოდებლები']] : [['recommended', 'რეკომენდებული'], ['requests', 'ყიდვის მოთხოვნები'], ['suppliers', 'მომწოდებლები']]).map(([value, text]) => <Button variant="ghost" key={value} aria-current={tab === value ? 'page' : undefined} onClick={() => { setTab(value as FeedKind); setSort('recommended'); reset(); }}>{text}</Button>)}</nav>
       <div className={styles.feedControls} style={{ flexWrap: "wrap" }}><label className={catalogStyles.requestVerified}><input type="checkbox" role="switch" checked={verified} onChange={event => setVerified(event.target.checked)}/><span className={catalogStyles.switchTrack} aria-hidden="true"/><span>ვერიფიცირებული</span></label><CustomSelect aria-label="ქალაქი" value={city} onChange={event => { setCity(event.target.value); reset(); }}><option value="">ყველა ქალაქი</option>{Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</CustomSelect><CustomSelect aria-label="დალაგება" value={sort} onChange={event => setSort(event.target.value)}><option value="recommended">შესაბამისობით</option><option value="newest">უახლესი</option>{tab === 'requests' && !requestId && <option value="deadline">ვადა ახლოს</option>}</CustomSelect></div>
     </div>}
-    {current?.error && <EmptyState title="სია ვერ ჩაიტვირთა" text={current.error} action={<Button variant="secondary" onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button>}/>}
+    {current?.error && <Notice tone="error" action={<Button variant="secondary" size="sm" onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button>}>სია ვერ ჩაიტვირთა. {current.error}</Notice>}
+    {!compact && !loading && me.role === 'company' && tab === 'recommended' && !!items.length && items.every(supplier) ? <Notice action={<Button variant="secondary" size="sm" href="/onboarding/?step=provide">მიწოდების მითითება</Button>}>მოთხოვნები რეკომენდებულში გამოჩნდება, როცა მიუთითებთ, რას აწვდით.</Notice> : null}
     {!!items.length && (compact ? <ul className={accountStyles.matchGrid}>{items.slice(0, 4).map(item => <li key={itemKey(item)} className={accountStyles.matchCard}>
-      <span className={accountStyles.matchPhoto}>{photo(item) ? <Image unoptimized src={photo(item)!} alt="" width={80} height={80}/> : <Icon name="building-2"/>}</span><div className={accountStyles.matchCopy}>{badge(item)}<h3><Link className={accountStyles.cardLink} href={viewHref(item)}>{title(item)}</Link></h3><p>{[item.company, cities[item.city] || item.city].filter(Boolean).join(' · ')}</p><div className={accountStyles.matchFooter}><span><Icon name="sparkles"/>{categories[item.category || item.industry || ''] || 'თქვენი პროფილის მიხედვით'}</span><Link href={actionHref(item)}>{supplier(item) ? 'ნახვა' : me.role === 'company' && me.verified ? 'შეთავაზება' : 'პროფილი'}</Link></div></div>
+      <span className={accountStyles.matchPhoto}>{visual(item, 80, 80)}</span><div className={accountStyles.matchCopy}>{badge(item)}<h3><Link className={accountStyles.cardLink} href={viewHref(item)}>{title(item)}</Link></h3><p>{meta(item)}</p><div className={accountStyles.matchFooter}><span><Icon name="sparkles"/>{categories[item.category || item.industry || ''] || 'თქვენი პროფილის მიხედვით'}</span><Link href={actionHref(item)}>{actionLabel(item)}</Link></div></div>
     </li>)}</ul> : <div className={styles.columns}><ul className={styles.list}>{items.map(item => <li key={itemKey(item)}><Button variant="ghost" className={styles.card} aria-pressed={itemKey(item) === (active && itemKey(active))} onClick={() => { setSelected(itemKey(item)); if (matchMedia('(max-width:999px)').matches) setMobileOpen(true); }}>
-      <span className={styles.symbol}>{photo(item) ? <Image unoptimized src={photo(item)!} alt="" width={100} height={76}/> : <Icon name="building-2"/>}</span><span className={styles.copy}>{badge(item)}<strong>{title(item)}</strong>{description(item) && <span className={styles.excerpt}>{description(item)}</span>}<span className={styles.cardMeta}>{[item.company || ownerFor(item)?.company || ownerFor(item)?.name, cities[item.city] || item.city, createdFor(item) ? postedLabel(createdFor(item), now) : null].filter(Boolean).join(' · ')}</span></span>
+      <span className={styles.symbol}>{visual(item, 100, 76)}</span><span className={styles.copy}>{badge(item)}<strong>{title(item)}</strong>{description(item) && <span className={styles.excerpt}>{description(item)}</span>}<span className={styles.cardMeta}>{meta(item)}</span></span>
     </Button></li>)}</ul><aside className={styles.detail} aria-label="შესაძლებლობის დეტალი">{detail}</aside></div>)}
-    {loading ? <ListSkeleton compact label="შესაძლებლობები იტვირთება…"/> : !current?.error && !items.length && <EmptyState icon="search" title="შესაბამისი შედეგები ჯერ არაა" text={verified ? 'ჩატვირთულ შედეგებში ვერიფიცირებული კომპანია ვერ მოიძებნა.' : 'შეავსეთ ინტერესები და საქმიანობის კატეგორიები ან შეცვალეთ ქალაქი.'} action={city ? <Button variant="secondary" onClick={() => { setCity(''); reset(); }}>ქალაქის გასუფთავება</Button> : <Button variant="secondary" href={me.role === 'company' ? '/onboarding/?step=type' : '/account/?tab=profile'}>პროფილის შევსება</Button>}/>}
+    {loading ? <ListSkeleton compact label="შესაძლებლობები იტვირთება…"/> : !current?.error && !items.length && <EmptyState icon="search" title="შესაბამისი შედეგები ჯერ არ არის" text={verified ? 'ჩატვირთულ შედეგებში ვერიფიცირებული კომპანია ვერ მოიძებნა.' : 'შეავსეთ ინტერესები და საქმიანობის კატეგორიები ან შეცვალეთ ქალაქი.'} action={city ? <Button variant="secondary" onClick={() => { setCity(''); reset(); }}>ქალაქის გასუფთავება</Button> : <Button variant="secondary" href={me.role === 'company' ? '/onboarding/?step=type' : '/account/?tab=profile'}>პროფილის შევსება</Button>}/>}
     {!compact && current?.more && !current.error && offset + matchingPageSize <= 10000 && <Button variant="secondary" disabled={loading} onClick={() => setOffset(value => value + matchingPageSize)}>მეტის ჩატვირთვა</Button>}
     {!compact && <Sheet open={mobileOpen && !!active} onClose={() => setMobileOpen(false)} title={active ? title(active) : 'შესაძლებლობა'}><div className={`${styles.sheetDetail} ${styles.fullDetail}`}>{detail}</div></Sheet>}
   </section>;

@@ -1,7 +1,7 @@
 "use client";
 import { attachmentDraft as createAttachmentDraft } from "../../lib/attachment-draft";
 import { FileAttachments } from "./FileAttachments";
-import { RequestPreferenceFields, RequestPreferenceSummary, preferenceError, type RequestPreferences } from "./RequestPreferences";
+import { RequestPreferenceFields, RequestPreferenceSummary, preferenceError, preferenceRows, type RequestPreferences } from "./RequestPreferences";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -14,6 +14,7 @@ import { useMarketStore, type PublicSnapshot, type Store } from "../../lib/marke
 import { categories, categoryIcon, cities, currentCategory, units } from "../../lib/categories";
 import { clearRequestDraft, deleteServerDraft, hasRequestDraftContent, loadServerDraft, readRequestDraft, readRequestDraftAt, saveRequestDraft, saveServerDraft, type RequestDraft } from "../../lib/request-draft";
 import { toast } from "../Toasts";
+import { dateShort, dateTime } from "../../lib/format";
 import { categoryOptions } from "./CategoryOptions";
 import { MatchingSuppliers, MatchingPreview } from "./post/MatchingSuppliers";
 import styles from "./post/Post.module.css";
@@ -21,21 +22,23 @@ import { PostRequestSkeleton } from "./post/PostRequestSkeleton";
 import { PhotoField } from "./PhotoField";
 import { useFieldErrors, type FieldErrors } from "./fieldErrors";
 
-const steps = ["დეტალები", "მიწოდება", "გადახედვა", "გამოქვეყნდა"];
+const steps = ["დეტალები", "მიწოდება", "გადახედვა"];
 const detailFields = ["title", "category", "body", "quantity"];
 const deliveryFields = ["city", "neededBy"];
-const dateLabel = (iso: string) => iso ? iso.split("-").reverse().join(".") : "—";
+// Drafts keep the date as dd.mm.yyyy text; people read it as "8 ოქტ. 2026".
+const draftText = (iso: string) => iso ? iso.split("-").reverse().join(".") : "";
+const dateLabel = (iso: string) => dateShort(iso) || "—";
 const draftDate = (value: string) => /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.split(".").reverse().join("-") : "";
 const furthestFor = (draft: RequestDraft | null) => draft && draft.title.trim().length > 0 && draft.body.trim().length >= 10 && Object.hasOwn(categories, draft.category) && Number(draft.quantity.replace(",", ".")) > 0 ? (draftDate(draft.neededByText) ? 3 : 2) : 1;
 
 function StepBar({ step }: { step: number }) {
   return <nav className="post-steps" aria-label="მოთხოვნის განთავსების ნაბიჯები">
     <div className="post-steps__mobile" aria-hidden="true">
-      <div><strong>{steps[step - 1]}</strong><span>ნაბიჯი {step} / 4</span></div>
-      <div className="post-steps__progress">{steps.map((name, i) => <span key={name} className={(i + 1 < step || step === 4) ? "is-done" : i + 1 === step ? "is-current" : ""} />)}</div>
+      <div><strong>{steps[step - 1]}</strong><span>ნაბიჯი {step} / {steps.length}</span></div>
+      <div className="post-steps__progress">{steps.map((name, i) => <span key={name} className={i + 1 < step ? "is-done" : i + 1 === step ? "is-current" : ""} />)}</div>
     </div>
-    <ol>{steps.map((name, i) => <li key={name} className={(i + 1 < step || step === 4) ? "is-done" : i + 1 === step ? "is-current" : ""} aria-current={i + 1 === step ? "step" : undefined}>
-      <span className="post-steps__circle">{(i + 1 < step || step === 4) ? <Icon name="check" /> : i + 1}</span><span>{name}</span>{i < 3 ? <span className="post-steps__line" /> : null}
+    <ol>{steps.map((name, i) => <li key={name} className={i + 1 < step ? "is-done" : i + 1 === step ? "is-current" : ""} aria-current={i + 1 === step ? "step" : undefined}>
+      <span className="post-steps__circle">{i + 1 < step ? <Icon name="check" /> : i + 1}</span><span>{name}</span>{i < steps.length - 1 ? <span className="post-steps__line" /> : null}
     </li>)}</ol>
   </nav>;
 }
@@ -69,7 +72,9 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const [addressNote, setAddressNote] = useState(draft?.addressNote || "");
   const [neededBy, setNeededBy] = useState(draftDate(draft?.neededByText || ""));
   const [otherCity, setOtherCity] = useState(false);
-  const [savedAt, setSavedAt] = useState("");
+  // "server" only after save_request_draft succeeded; "browser" is this tab's sessionStorage copy.
+  const [saved, setSaved] = useState<{ where: "server" | "browser"; at: string } | null>(null);
+  const clock = () => new Date().toLocaleTimeString("ka-GE", { timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false });
   const [photo, setPhoto] = useState<File | null>(null);
   const [pending, setPending] = useState(false);
   const submitting = useRef(false);
@@ -88,13 +93,14 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     return () => observer.disconnect();
   }, [published]);
   const [furthest, setFurthest] = useState(() => furthestFor(draft));
+  const [draftFiles, setDraftFiles] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const previousStep = useRef(1);
   const v = useFieldErrors();
   const user = store.currentUser();
   const city = otherCity ? cityChoice : cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
   const signedIn = sessionStatus === "ready" && !!user;
-  const current: RequestDraft = { title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body, preferences, attachmentDraft };
+  const current: RequestDraft = { title, category, city, addressNote, quantity, unit, neededByText: draftText(neededBy), body, preferences, attachmentDraft };
   const hasContent = hasRequestDraftContent(current);
   const latest = useRef({ hasContent });
   useEffect(() => { latest.current = { hasContent }; });
@@ -121,7 +127,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   }, [signedIn, store]);
   useEffect(() => {
     if (!signedIn || !serverReady || published || !hasContent) return;
-    const timer = window.setTimeout(() => { void queueServer(() => saveServerDraft(store, current)).catch(() => undefined); }, 3000);
+    const timer = window.setTimeout(() => { void queueServer(() => saveServerDraft(store, current)).then(() => setSaved({ where: "server", at: clock() }), () => undefined); }, 3000);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedIn, serverReady, published, hasContent, title, category, city, addressNote, quantity, unit, neededBy, body, preferences, attachmentDraft]);
@@ -131,18 +137,19 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     try {
       await queueServer(() => saveServerDraft(store, current));
       saveRequestDraft(current);
-      setSavedAt(new Date().toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false }));
-      toast("მონახაზი შენახულია");
-    } catch (err) { toast((err as { userMessage?: string })?.userMessage || "მონახაზი ვერ შეინახა. სცადე თავიდან."); }
+      setSaved({ where: "server", at: clock() });
+      toast({ title: "მონახაზი შენახულია", sub: "მონახაზი ინახება თქვენს ანგარიშში.", tone: "success" });
+    } catch (err) { toast({ title: "მონახაზი ვერ შეინახა", sub: (err as { userMessage?: string })?.userMessage || "ტექსტი ამ ბრაუზერში შენარჩუნდა. სცადეთ ხელახლა.", tone: "danger" }); }
     finally { setSavingDraft(false); }
   }
   useEffect(() => {
     // State is initialized from storage before the first save, including on auth remounts.
     if (published) return;
-    const current = { title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body,preferences,attachmentDraft };
+    const current = { title, category, city, addressNote, quantity, unit, neededByText: draftText(neededBy), body,preferences,attachmentDraft };
     saveRequestDraft(current);
-    const saved = readRequestDraft();
-    const acknowledgement = window.setTimeout(() => setSavedAt(saved && Object.entries(current).every(([key, value]) => JSON.stringify(saved[key as keyof typeof current]) === JSON.stringify(value)) ? new Date().toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false }) : ""), 0);
+    const stored = readRequestDraft();
+    // A change makes the last server copy stale until the next autosave: until then only this browser holds it.
+    const acknowledgement = window.setTimeout(() => setSaved(stored && Object.entries(current).every(([key, value]) => JSON.stringify(stored[key as keyof typeof current]) === JSON.stringify(value)) ? { where: "browser", at: clock() } : null), 0);
     return () => window.clearTimeout(acknowledgement);
   }, [title, category, city, addressNote, quantity, unit, neededBy, body, published,preferences,attachmentDraft]);
   useEffect(() => {
@@ -154,11 +161,11 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     }
   }, []);
   const requestedStep = Number(params.get("step") || 1);
-  const step = published ? 4 : Math.min(furthest, [1, 2, 3].includes(requestedStep) ? requestedStep : 1);
+  const step = published ? 3 : Math.min(furthest, [1, 2, 3].includes(requestedStep) ? requestedStep : 1);
   const preview = useMemo(() => photo ? URL.createObjectURL(photo) : null, [photo]);
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
   useEffect(() => {
-    if (requestedStep !== step) {
+    if (!published && requestedStep !== step) {
       const url = new URL(window.location.href); url.searchParams.set("step", String(step));
       window.history.replaceState(null, "", url);
     }
@@ -167,7 +174,14 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       heading.current?.scrollIntoView({ block: "start" });
       previousStep.current = step;
     }
-  }, [step, requestedStep]);
+  }, [step, requestedStep, published]);
+  useEffect(() => {
+    // The review lists files only when there are some; an empty files card says nothing.
+    if (step !== 3 || !signedIn || published) return;
+    let active = true;
+    void store.listAttachments("request_draft", attachmentDraft).then((items: unknown[]) => { if (active) setDraftFiles(items.length); }, () => { if (active) setDraftFiles(0); });
+    return () => { active = false; };
+  }, [step, signedIn, published, store, attachmentDraft]);
   const today = store.todayDate() as string;
   const tomorrow = new Date(`${today}T12:00:00Z`); tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
   const minDate = tomorrow.toISOString().slice(0, 10);
@@ -183,16 +197,17 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   function errorsFor(part: number): FieldErrors {
     const errors: FieldErrors = {};
     if (part === 1) {
-      if (!title.trim()) errors.title = "მიუთითე სათაური";
-      if (!Object.hasOwn(categories, category)) errors.category = "აირჩიე კატეგორია";
-      if (body.trim().length < 10) errors.body = body.trim() ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე, რა გჭირდება";
+      if (!title.trim()) errors.title = "მიუთითეთ სათაური";
+      if (!Object.hasOwn(categories, category)) errors.category = "აირჩიეთ კატეგორია";
+      if (body.trim().length < 10) errors.body = body.trim() ? "აღწერა მინიმუმ 10 სიმბოლო უნდა იყოს" : "აღწერეთ, რა გჭირდებათ";
       const n = Number(quantity.trim().replace(/\s+/g, "").replace(",", "."));
-      if (!quantity.trim() || !Number.isFinite(n) || n <= 0 || n > 1e9 || Math.round(n * 1000) <= 0) errors.quantity = "მიუთითე რაოდენობა 0-ზე მეტი და არაუმეტეს 1 000 000 000";
+      if (!quantity.trim() || !Number.isFinite(n) || n <= 0 || Math.round(n * 1000) <= 0) errors.quantity = "მიუთითეთ რაოდენობა";
+      else if (n > 1e9) errors.quantity = "რაოდენობა ძალიან დიდია";
     } else {
-      if (!Object.hasOwn(cities, city)) errors.city = "აირჩიე ქალაქი";
-      if (!neededBy) errors.neededBy = "მიუთითე სასურველი თარიღი";
+      if (!Object.hasOwn(cities, city)) errors.city = "აირჩიეთ ქალაქი";
+      if (!neededBy) errors.neededBy = "აირჩიეთ სასურველი თარიღი";
       else if (neededBy < minDate) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
-      else if (neededBy > maxDate) errors.neededBy = `თარიღი არაუგვიანეს ${dateLabel(maxDate)}`;
+      else if (neededBy > maxDate) errors.neededBy = `აირჩიეთ თარიღი ${dateLabel(maxDate)}-მდე`;
     }
     return errors;
   }
@@ -221,36 +236,36 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       void queueServer(() => deleteServerDraft(store)).catch(() => undefined);
       try{sessionStorage.removeItem(fileDraftKey);}catch{}
       setPublished({ id: created.id, title: created.title, createdAt: created.createdAt });
-      go(4);
+      window.scrollTo({ top: 0 });
     } catch (err) {
-      setError((err as { userMessage?: string })?.userMessage || "რაღაც ვერ შესრულდა. სცადე თავიდან.");
+      setError((err as { userMessage?: string })?.userMessage || "მოთხოვნა ვერ გამოქვეყნდა. სცადეთ ხელახლა.");
     } finally { submitting.current = false; setPending(false); }
   }
   const next = encodeURIComponent(`/requests/new/?${new URLSearchParams({ title, category, city, draft: "1" })}`);
-  const keepDraft = () => saveRequestDraft({ title, category, city, addressNote, quantity, unit, neededByText: neededBy ? dateLabel(neededBy) : "", body,preferences,attachmentDraft });
+  const keepDraft = () => saveRequestDraft({ title, category, city, addressNote, quantity, unit, neededByText: draftText(neededBy), body,preferences,attachmentDraft });
   const edit = (part: number) => <Button variant="ghost" size="sm" onClick={() => go(part)}><Icon name="pencil" />შეცვლა<span className="ma-sr-only">: {steps[part - 1]}</span></Button>;
   const quantityLabel = quantity ? `${quantity} ${units[unit as keyof typeof units] || ""}` : "რაოდენობა";
 
   return <div className={`post-page ${styles.page}`} style={{ '--post-actions-height': `${published ? 0 : actionsHeight}px` } as CSSProperties}>
     {!published ? <header className="post-heading"><h1 ref={heading} tabIndex={-1}>მოთხოვნის განთავსება</h1></header> : null}
-    <StepBar step={step} />
+    {!published ? <StepBar step={step} /> : null}
     {published ? <>
       <section className="post-published">
         <span className="post-published__check"><Icon name="check" /></span>
         <div><h1 ref={heading} tabIndex={-1}>მოთხოვნა გამოქვეყნდა</h1><p>„{published.title}“ — მომწოდებლებს უკვე შეუძლიათ შეთავაზების გამოგზავნა.</p></div>
-        <div className="post-published__actions"><Button size="lg" href="/account/?tab=requests">ჩემი მოთხოვნები</Button><Button size="lg" variant="secondary" href={`/requests/view/?id=${encodeURIComponent(published.id)}`}>ნახვა</Button></div>
+        <div className="post-published__actions"><Button size="lg" href={`/requests/view/?id=${encodeURIComponent(published.id)}`}>მოთხოვნის ნახვა</Button><Button size="lg" variant="secondary" href="/account/?tab=requests">ჩემი მოთხოვნები</Button></div>
       </section>
       <div className="post-layout">
         <div className="post-content">
           <FormCard title="რა ხდება ახლა"><ol className={styles.timeline}>
-            <li><Icon name="check" /><div><strong>მოთხოვნა გამოქვეყნდა</strong><time dateTime={published.createdAt}>{new Date(published.createdAt).toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit", hour12: false })}</time></div></li>
+            <li><Icon name="check" /><div><strong>მოთხოვნა გამოქვეყნდა</strong><time dateTime={published.createdAt}>{dateTime(published.createdAt)}</time></div></li>
             {[['მომწოდებლებს ეცნობათ', 'შესაბამისი კომპანიები გაეცნობიან მოთხოვნას.'], ['პირველი შეთავაზებები', 'მიღებული შეთავაზებები გამოჩნდება თქვენს ანგარიშში.'], ['შედარება და არჩევა', 'შეადარეთ ფასი, ვადა და პირობები.']].map(([label, description]) => <li className={styles.future} key={label}><span className={styles.timelineCircle} aria-hidden="true"/><div><strong>{label}</strong><p>{description}</p></div></li>)}
           </ol></FormCard>
         </div>
         <aside className={styles.aside}><FormCard title="შესაბამისი მომწოდებლები"><MatchingSuppliers store={store} requestId={published.id} /></FormCard></aside>
       </div>
     </> : <>
-      {sessionStatus === "loading" ? <p className="post-guest" role="status"><Icon name="info" /><span>ანგარიში მოწმდება. შეგიძლია შეავსო მოთხოვნა.</span></p> : sessionStatus === "error" ? <div className={styles.connectionNotice} role="status"><p>კავშირი ვერ დამყარდა. შევსებული ტექსტი შენარჩუნდება.</p><Button variant="secondary" size="sm" loading={retrying} onClick={async () => { setRetrying(true); try { await store.refresh(); } finally { setRetrying(false); } }}>ხელახლა ცდა</Button></div> : sessionStatus === "profile" ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>დაასრულე პროფილი</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : !signedIn ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედი ანგარიშში</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : null}
+      {sessionStatus === "loading" ? <p className="post-guest" role="status"><Icon name="info" /><span>ანგარიში მოწმდება. მოთხოვნის შევსება ამასობაში შეგიძლიათ.</span></p> : sessionStatus === "error" ? <div className={styles.connectionNotice} role="status"><p>კავშირი ვერ დამყარდა. შევსებული ტექსტი შენარჩუნდება.</p><Button variant="secondary" size="sm" loading={retrying} onClick={async () => { setRetrying(true); try { await store.refresh(); } finally { setRetrying(false); } }}>ხელახლა ცდა</Button></div> : sessionStatus === "profile" ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>დაასრულეთ პროფილი</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : !signedIn ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედით ანგარიშში</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : null}
       <form id="post-request-form" noValidate onSubmit={submit} aria-busy={pending}>
         <fieldset disabled={pending} className="post-layout">
           <div className="post-content">
@@ -258,7 +273,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
               <FormCard title="რა გჭირდებათ">
                 <div className="post-fields post-fields--title">
                   <div className="ma-field"><label htmlFor="title">სათაური <span>*</span></label><input className="ma-input" required maxLength={120} placeholder="მაგ. 100 კომპლექტი თეთრეული" value={title} onChange={e => { setTitle(e.target.value); v.clear("title"); }} {...v.control("title")} />{v.message("title")}</div>
-                  <div className="ma-field"><label htmlFor="category">კატეგორია <span>*</span></label><div className={styles.iconField}><Icon name={categoryIcon[category] || "layout-grid"}/><CustomSelect required value={category} onChange={e => { setCategory(e.target.value); v.clear("category"); }} {...v.control("category")}><option value="" disabled>აირჩიე კატეგორია</option>{categoryOptions()}</CustomSelect></div>{v.message("category")}</div>
+                  <div className="ma-field"><label htmlFor="category">კატეგორია <span>*</span></label><div className={styles.iconField}><Icon name={categoryIcon[category] || "layout-grid"}/><CustomSelect required value={category} onChange={e => { setCategory(e.target.value); v.clear("category"); }} {...v.control("category")}><option value="" disabled>აირჩიეთ კატეგორია</option>{categoryOptions()}</CustomSelect></div>{v.message("category")}</div>
                 </div>
                 <div className="ma-field"><label htmlFor="body">აღწერა <span>*</span><small>{body.length} / 2000</small></label><textarea className="ma-textarea" required maxLength={2000} placeholder="აღწერეთ, რა გჭირდებათ და მიუთითეთ მნიშვნელოვანი დეტალები" value={body} onChange={e => { setBody(e.target.value); v.clear("body"); }} {...v.control("body")} />{v.message("body")}</div>
                 <div className="ma-field"><label htmlFor="quantity">რაოდენობა <span>*</span></label>
@@ -284,21 +299,21 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
               <section className="post-card"><div className={styles.reviewOverview}>{preview ? <Image unoptimized width={96} height={72} src={preview} alt="მოთხოვნის ფოტო"/> : <span className={styles.reviewPlaceholder}><Icon name="image"/></span>}<div><h2>{title}</h2><span className={styles.category}>{categories[category]}</span></div>{edit(1)}</div><p className={styles.description}>{body}</p></section>
               <FormCard title="მოთხოვნის დეტალები"><dl className={styles.reviewRows}>{[
                 ['რაოდენობა', quantityLabel, 1], ['ქალაქი / მისამართი', [cities[city], addressNote].filter(Boolean).join(', '), 2], ['სასურველი თარიღი', dateLabel(neededBy), 2],
-              ].map(([label, value, part]) => <div key={label}><dt>{label}</dt><dd>{value}</dd><dd>{edit(Number(part))}</dd></div>)}<div><dt>შეთავაზებების ბოლო ვადა</dt><dd>{dateLabel(expiry.toISOString().slice(0, 10))}<small>გამოქვეყნებიდან 14 დღე</small></dd></div></dl></FormCard>
+              ].map(([label, value, part]) => <div key={label}><dt>{label}</dt><dd>{value}</dd><dd>{edit(Number(part))}</dd></div>)}<div><dt>შეთავაზებების ბოლო ვადა</dt><dd>{dateLabel(expiry.toISOString().slice(0, 10))}<small>გამოქვეყნებიდან 14 დღე</small></dd><dd/></div></dl></FormCard>
             </>}
-            {step===3?<FormCard title="დამატებითი პირობები"><RequestPreferenceSummary value={preferences}/></FormCard>:null}
-            {step===3&&signedIn?<FormCard title="ფაილები"><FileAttachments store={store} kind="request_draft" showTitle={false} target={attachmentDraft}/></FormCard>:null}
+            {step===3&&preferenceRows(preferences).length?<FormCard title="დამატებითი პირობები"><RequestPreferenceSummary value={preferences}/></FormCard>:null}
+            {step===3&&signedIn&&draftFiles?<FormCard title="ფაილები"><FileAttachments store={store} kind="request_draft" showTitle={false} target={attachmentDraft}/></FormCard>:null}
           </div>
           <aside className={styles.aside}>{step < 3 ? <div className={styles.preview} aria-label="მოთხოვნის წინასწარი ნახვა">
-            <article className={styles.previewCard}>{preview ? <Image unoptimized width={360} height={180} src={preview} alt="მოთხოვნის ფოტო"/> : null}<div><h2>{title.trim() || "მოთხოვნის სათაური"}</h2><span className={styles.category}>{categories[category] || "კატეგორია"}</span><p>{user?.company || user?.name || "მყიდველი"} · {cities[city] || city}</p><p>{quantityLabel}</p>{step === 2 && neededBy ? <p>{dateLabel(neededBy)}</p> : null}</div></article>
+            <article className={styles.previewCard}>{preview ? <Image unoptimized width={360} height={180} src={preview} alt="მოთხოვნის ფოტო"/> : <span className={styles.previewPhoto} aria-hidden="true"><Icon name={categoryIcon[category] || "image"}/></span>}<div><h2>{title.trim() || "მოთხოვნის სათაური"}</h2><span className={styles.category}>{categories[category] || "კატეგორია"}</span><p>{user?.company || user?.name || "მყიდველი"} · {cities[city] || city}</p><p>{quantityLabel}</p>{step === 2 && neededBy ? <p>{dateLabel(neededBy)}</p> : null}</div></article>
           </div> : <FormCard title="შესაბამისი მომწოდებლები"><MatchingPreview store={store} category={category}/></FormCard>}</aside>
         </fieldset>
       </form>
       <div className="post-actions" ref={actions}><div className="post-actions__inner">
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
-        {savedAt || hasRequestDraftContent({ title, category, city, addressNote, quantity, unit, neededByText: neededBy, body }) ? <p className={styles.saved}>{savedAt ? `შენახულია · ${savedAt}` : "ავტომატური შენახვა მიუწვდომელია"}</p> : null}
-        <div className="post-actions__buttons">{step > 1 ? <Button variant="secondary" size="lg" disabled={pending||fileBusy} onClick={() => go(step - 1)}>უკან</Button> : null}
-          {signedIn ? <Button variant="secondary" size="lg" disabled={pending||fileBusy||!hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}>მონახაზად შენახვა</Button> : null}
+        {saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `შენახულია · ${saved.at}` : `შენახულია ამ ბრაუზერში · ${saved.at}`}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null}
+        <div className="post-actions__buttons">{step > 1 ? <Button variant="secondary" size="lg" className={styles.backButton} aria-label="უკან" title="უკან" disabled={pending||fileBusy} onClick={() => go(step - 1)}><Icon name="arrow-left"/><span className={styles.long}>უკან</span></Button> : null}
+          {signedIn ? <Button variant="secondary" size="lg" disabled={pending||fileBusy||!hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}><span className={styles.long}>მონახაზად შენახვა</span><span className={styles.short}>მონახაზი</span></Button> : null}
 
           {step === 3 && !signedIn && (sessionStatus === "ready" || sessionStatus === "profile") ? <Button size="lg" className="post-actions__next" href={`/account/?next=${next}`} onClick={keepDraft}>{sessionStatus === "profile" ? "პროფილის დასრულება" : "შესვლა და გაგრძელება"}</Button> : <Button size="lg" className="post-actions__next" type="submit" form="post-request-form" disabled={fileBusy || (step === 3 && sessionStatus !== "ready")} loading={pending}>{pending ? "იგზავნება…" : <><span className={styles.long}>{step === 1 ? "შემდეგი: მიწოდება" : step === 2 ? "შემდეგი: გადახედვა" : sessionStatus === "loading" ? "ანგარიში მოწმდება…" : "მოთხოვნის გამოქვეყნება"}</span><span className={styles.short}>{step < 3 ? "შემდეგი" : sessionStatus === "loading" ? "მოწმდება…" : "გამოქვეყნება"}</span></>}</Button>}
         </div>

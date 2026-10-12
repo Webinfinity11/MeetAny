@@ -1,6 +1,6 @@
 // Categories (11 groups, 33 keys and "other") live in categories-data.js so market-store.js and node tests can share them.
 export {
-  categories, categoryGroups, categoryIcon, categoryPhoto, categoryKind, groupOf, groupNames,
+  categories, categoryGroups, categoryIcon, categoryPhoto, categoryKind, groupOf, groupNames, featuredCategories,
   legacyCategory, categoryKeys, expandCategories, currentCategory,
 } from "./categories-data.js";
 

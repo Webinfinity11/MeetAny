@@ -46,12 +46,13 @@ export function CompaniesMap({ companies, compact = false }: { companies: MapCom
       m.attributionControl.setPrefix(false);
       // The compact profile map is too small for 44px zoom buttons; pinch/double-click still zoom.
       if (!compact) L.control.zoom({ position: "bottomright" }).addTo(m);
-      // OpenStreetMap's own tiles: keyless, fine for this traffic under its usage policy (attribution
-      // required). Switch the URL to a keyed provider (MapTiler/Stadia) if traffic grows.
+      // Esri's light-grey canvas without labels: keyless, and no Russian/Armenian/Turkish place names
+      // under a Georgian interface (OSM's own tiles print each country's local script; CARTO now needs a
+      // key). Company names come from our markers. Switch to a keyed provider if traffic grows.
       let hasVisibleTiles = false;
-      const basemap = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      const basemap = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 16,
+        attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       });
       // Library initialization is not proof that the basemap has arrived. Show the tile status until
       // the initial tile batch settles; if it fails, leave markers usable with a notice.
@@ -135,7 +136,7 @@ export function CompaniesMap({ companies, compact = false }: { companies: MapCom
     <div className={`companies-map${compact ? " companies-map--compact" : ""}`}>
       <div ref={host} className="companies-map__canvas" role="region" aria-busy={!failed && (!ready || tiles === "loading")} aria-label={compact ? "კომპანიის მდებარეობა რუკაზე" : "კომპანიები რუკაზე"} />
       {!ready && !failed ? <div className="companies-map__loading" role="status">რუკა იტვირთება…</div> : null}
-      {failed ? <div className="companies-map__loading" role="alert">რუკა ვერ ჩაიტვირთა. სცადე გვერდის განახლება.</div> : null}
+      {failed ? <div className="companies-map__loading" role="alert">რუკა ვერ ჩაიტვირთა. სცადეთ გვერდის განახლება.</div> : null}
       {ready && !failed && tiles !== "ready" ? <div className="companies-map__tile-status" role="status">{tiles === "loading" ? "რუკა იტვირთება…" : "რუკის ფონი ვერ ჩაიტვირთა. მდებარეობა მონიშნულია."}</div> : null}
     </div>
   );

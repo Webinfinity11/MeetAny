@@ -12,15 +12,16 @@ import { AuthForms } from "./AuthForms";
 import { Inbox } from "./Inbox";
 import { CompanyBusinessPanel } from "./CompanyBusiness";
 import { useMarketStore } from "../../lib/market-client";
-import { useUnreadMessageCount } from "../../lib/chat-client";
 import { AccountShell } from "./account/AccountShell";
-export { AccountTabs } from "./account/AccountShell";
 import { Dashboard } from "./account/Dashboard";
 import { MyRequests } from "./account/MyRequests";
 import { MyOffers } from "./account/MyOffers";
 import { MyDeals } from "./account/MyDeals";
 import { CompanyProfile, CompanyProfileNav, ProfileForm, PasswordForm } from "./account/Profile";
-import { readSeen, type AnyUser, type RequestItem, type OfferItem, type Tab, type NavItem } from "./account/shared";
+import { CompanyUpgrade } from "./account/CompanyUpgrade";
+import { useAccountNav } from "./account/nav";
+import { Notice } from "../ui/Notice";
+import { readSeen, type AnyUser, type RequestItem, type OfferItem, type Tab } from "./account/shared";
 export function AccountPageContent() {
   const { store, ready, sessionReady, available } = useMarketStore();
   const searchParams = useSearchParams();
@@ -30,7 +31,6 @@ export function AccountPageContent() {
   const [seen] = useState(readSeen);
   const [now] = useState(() => Date.now());
   const me = ready && available ? store?.currentUser() as AnyUser | null : null;
-  const unread = useUnreadMessageCount(store, me?.id, !!me && !me.blocked && me.role !== "admin");
   useEffect(() => { if (me?.role === "admin") router.replace("/admin/"); }, [me?.role, router]);
   useEffect(() => {
     if (!me?.id) return;
@@ -48,39 +48,32 @@ export function AccountPageContent() {
     }
     return { myOffers: [] as OfferItem[], myRequests };
   }, [store, me]);
-  if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
-  if (!ready || !sessionReady || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
-  if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
-  const isCompany = me.role === "company";
+  const isCompany = me?.role === "company";
   const requestedSpace = searchParams.get("space");
   const { myRequests = [], myOffers = [] } = data || {};
   // Account intent decides which spaces exist: buyers only buy; sellers see Buying once they have requests (or ask for it).
-  const intent = (me as { accountIntent?: "buy" | "sell" | "both" }).accountIntent ?? "both";
+  const intent = (me as { accountIntent?: "buy" | "sell" | "both" } | null)?.accountIntent ?? "both";
   const buyOnly = !isCompany || intent === "buy";
   const buyOpen = intent !== "sell" || myRequests.length > 0 || requestedSpace === "buy";
-  const space = buyOnly || (buyOpen && (tab === "requests" || (requestedSpace === "buy" && !["offers", "opportunities", "overview"].includes(rawTab)))) ? "buy" : "sell";
-  const outOfSpace = buyOnly && ["overview", "opportunities", "offers"].includes(tab) || !isCompany && tab === "business";
-  const activeTab: Tab = !rawTab && space === "buy" || outOfSpace ? "requests" : space === "sell" && tab === "requests" ? "overview" : tab;
-  const engagement = store.engagement();
-  const tabs: NavItem[] = [
-    ...(space === "sell" ? [{ key: "overview" as Tab, label: "მიმოხილვა", icon: "layout-grid" }, { key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "inbox" }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send", count: myOffers.length }] : [{ key: "requests" as Tab, label: "ჩემი მოთხოვნები", icon: "file-text", count: myRequests.length }]),
-    { key: "deals", label: "გარიგებები", icon: "handshake" },
-    { key: "messages", label: "მესიჯები", icon: "message-square", count: unread },
-    { key: "notifications", label: "შეტყობინებები", icon: "bell", count: engagement?.status === "ready" ? engagement.unread : null },
-    { key: "saved", label: "შენახული", icon: "bookmark" },
-    { key: "profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: isCompany ? "building-2" : "user-round" },
-  ];
-  const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : activeTab === "saved" ? "შენახული" : activeTab === "business" ? "კომპანიის პროფილი" : tabs.find(item => item.key === activeTab)?.label || "ანგარიში";
-  return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} switcher={isCompany && intent !== "buy" && buyOpen} title={title} lead={activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : undefined} action={activeTab === "requests" ? <Button href="/requests/new/"><Icon name="plus"/>ახალი მოთხოვნა</Button> : activeTab === "offers" ? <Button variant="secondary" href="/matching/"><Icon name="search"/>ახალი შესაძლებლობები</Button> : undefined}>
-    {activeTab === "deals" ? <MyDeals key={me.id} store={store} actor={me.id}/> : null}
-    {activeTab === "overview" ? <Dashboard me={me}/> : null}
+  const space = buyOnly || (buyOpen && (tab === "requests" || (requestedSpace === "buy" && !["offers", "opportunities"].includes(rawTab)))) ? "buy" : "sell";
+  const tabs = useAccountNav(store, me, space);
+  if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
+  if (!ready || !sessionReady || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
+  if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
+  // Selling sections do not exist for a buyer; their links land on the dashboard.
+  const outOfSpace = buyOnly && ["opportunities", "offers"].includes(tab) || !isCompany && tab === "business";
+  const activeTab: Tab = outOfSpace ? "overview" : space === "sell" && tab === "requests" ? "overview" : tab;
+  const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : activeTab === "business" ? "პარამეტრები" : tabs.find(item => item.key === activeTab)?.label || "ანგარიში";
+  return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} switcher={isCompany && intent !== "buy" && buyOpen} title={title} action={activeTab === "requests" ? <Button variant="secondary" href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button> : activeTab === "offers" ? <Button variant="secondary" href="/matching/"><Icon name="search"/>შესაძლებლობების ნახვა</Button> : undefined}>
+    {activeTab === "deals" ? <MyDeals key={me.id} store={store} actor={me.id} space={space}/> : null}
+    {activeTab === "overview" ? <Dashboard me={me} space={space}/> : null}
     {activeTab === "opportunities" ? <MatchingFeed key={me.id}/> : null}
     {activeTab === "requests" ? <MyRequests key={me.id} requests={myRequests} store={store} me={me} now={now} seen={seen}/> : null}
     {activeTab === "offers" ? <MyOffers key={me.id} offers={myOffers} store={store} me={me}/> : null}
-    {activeTab === "saved" ? <div className="account-panel"><SavedRequests key={me.id}/><EngagementPanel kind="saved"/></div> : null}
+    {activeTab === "saved" ? <div className="account-panel account-saved">{space === "sell" ? <><SavedRequests key={me.id}/><EngagementPanel kind="saved"/></> : <><EngagementPanel kind="saved"/><SavedRequests key={me.id}/></>}</div> : null}
     {activeTab === "notifications" ? <div id="alerts" className="account-panel account-alerts"><EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"}/></div> : null}
-    {activeTab === "messages" ? <div className="account-wide"><Inbox key={me.id} store={store} me={me}/></div> : null}
+    {activeTab === "messages" ? <div className="account-wide"><Inbox key={me.id} store={store} me={me} space={space}/></div> : null}
     {activeTab === "business" ? <div className="account-main--profile"><CompanyProfileNav active="business"/><CompanyBusinessPanel key={me.id} owner={me.id}/></div> : null}
-    {activeTab === "profile" ? <div className="account-main--profile">{me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}{isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"}/> : <><ProfileForm me={me}/><PasswordForm key={me.id}/></>}</div> : null}
+    {activeTab === "profile" ? <div className="account-main--profile">{me.blocked ? <Notice tone="warning">ანგარიში დაბლოკილია.</Notice> : null}{isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"}/> : <><ProfileForm me={me}/><CompanyUpgrade user={me}/><PasswordForm key={me.id}/></>}</div> : null}
   </AccountShell>;
 }

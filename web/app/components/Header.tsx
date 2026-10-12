@@ -5,7 +5,7 @@ import { Logo } from "./Logo";
 import { Avatar, avatarInitials } from "./ui/Avatar";
 
 
-import { trapDialogFocus } from "./ui/dialog-focus";
+import { closeDialogWithMotion, trapDialogFocus } from "./ui/dialog-focus";
 
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
@@ -16,7 +16,7 @@ import styles from "./Header.module.css";
 const h = (classes: string) => classes.split(" ").map(name => styles[name] || name).join(" ");
 import { Icon } from "./Icon";
 import { useMarketStore } from "../lib/market-client";
-import { toast } from "./Toasts";
+import { toast, toastError } from "./Toasts";
 
 const subscribeNothing = () => () => {};
 function readRoleHint(): string {
@@ -76,32 +76,28 @@ export function Header() {
   // Messages and notifications live once, as the badged icons in the header bar (visible at every width).
   const links = !me && sessionUnknown ? [["user-round", "ანგარიში", "/account/"]] : !me && store?.hasSession() ? [["user-round", "პროფილის დასრულება", "/account/"]] : !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company&entry=header"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
+    // One account menu per role, the same in the dropdown and the drawer (Request → Offer → Deal).
     : me.role === "company" ? [
-      ["search", "შესაბამისი მოთხოვნები", "/account/?tab=opportunities"],
+      ["layout-grid", "დაფა", "/account/"],
+      ["inbox", "შესაძლებლობები", "/account/?tab=opportunities"],
       ["send", "ჩემი შეთავაზებები", "/account/?tab=offers"],
-      ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
-      ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-      ["eye", "ხილვადობის პაკეტები", "/account/?tab=business"],
-      ["building-2", "კომპანიის პროფილი", "/account/?tab=profile"],
-      ["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`],
+      ["handshake", "გარიგებები", "/account/?tab=deals"],
+      ["bookmark", "შენახული", "/account/?tab=saved"],
+      ["settings", "პარამეტრები", "/account/?tab=profile"],
     ] : [
+      ["layout-grid", "დაფა", "/account/"],
       ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
-      ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-      ["user-round", "პროფილი", "/account/?tab=profile"],
+      ["handshake", "გარიგებები", "/account/?tab=deals"],
+      ["bookmark", "შენახული", "/account/?tab=saved"],
+      ["settings", "პარამეტრები", "/account/?tab=profile"],
     ];
-  // The account sidebar already exposes the working sections; don't repeat it in this menu.
-  const desktopLinks = me && !isAdmin && pathname.startsWith("/account")
-    ? [["settings", "ანგარიშის პარამეტრები", "/account/?tab=profile"],
-      ...(me.role === "company" ? [["external-link", "საჯარო პროფილი", `/companies/view/?id=${me.id}`]] : [])]
-    : links;
-  // The drawer is a route chooser, not a second copy of the account sidebar.
-  const mobileLinks = !me ? links : isAdmin ? links : [
-    [isCompanyRole(me.role) ? "building-2" : "clipboard-list", isCompanyRole(me.role) ? "ჩემი კომპანია" : "ჩემი მოთხოვნები", "/account/"],
+  // The drawer adds messages and notifications: below 360px their header icons give way to it.
+  const mobileLinks = !me || isAdmin ? links : [...links.slice(0, -1),
     ["message-square", "მიმოწერები", "/account/?tab=messages"],
     ["bell", "შეტყობინებები", "/account/?tab=notifications"],
-    ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
-    ["settings", "პროფილის პარამეტრები", "/account/?tab=profile"],
+    links[links.length - 1],
   ];
+  const closeMenu = () => { if (mobile.current) closeDialogWithMotion(mobile.current); };
   useLayoutEffect(() => {
     if (!accountOpen || !focusEdge.current) return;
     const items = dropdown.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
@@ -119,15 +115,17 @@ export function Header() {
   async function logout() {
     if (pending) return;
     setPending(true);
-    try { await store?.logout(); setAccountOpen(false); mobile.current?.close(); toast("ანგარიშიდან გამოხვედი."); }
-    catch (err) { toast((err as {userMessage?: string}).userMessage || "გასვლა ვერ შესრულდა."); }
+    try { await store?.logout(); setAccountOpen(false); closeMenu(); toast("ანგარიშიდან გახვედით."); }
+    catch (err) { toastError((err as {userMessage?: string}).userMessage || "გასვლა ვერ შესრულდა."); }
     finally { setPending(false); }
   }
   const identity = me ? <div className={h("ma-menu__identity")} role="presentation"><strong>{me.company || me.name}</strong>{me.company && me.company !== me.name ? <span>{me.name}</span> : null}</div> : null;
   const brand = <Link className={h("ma-header__brand")} href="/" aria-label="MeetAny — მთავარი"><Logo size={24}/></Link>;
-  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "შესაძლებლობები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={h(cls)} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
+  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "მოთხოვნები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={h(cls)} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
   const isCompany = role === "company";
   const add = <Button variant="primary" className={h("ma-header__cta")} aria-label="მოთხოვნის განთავსება" href="/requests/new/"><Icon name="plus"/><span className={h("ma-header__cta-label")}>მოთხოვნის განთავსება</span><span className={h("ma-header__cta-short")} aria-hidden="true">მოთხოვნა</span></Button>;
+  // The drawer has the full width: the whole label, never the short "მოთხოვნა".
+  const addFull = <Button variant="primary" className={h("ma-header__cta")} href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button>;
   return <>
     <header className={h("ma-header")}><div className={h("ma-header__inner ma-container")}>
       {brand}<nav className={h("ma-header__nav")} aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
@@ -150,7 +148,7 @@ export function Header() {
           <button className={h(`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`)} title={accountLabel} aria-label={accountLabel} aria-haspopup="menu" aria-controls="ma-account-menu" aria-expanded={accountOpen} onClick={() => setAccountOpen(!accountOpen)}>{isAdmin ? <><Icon name="shield-check"/><span className={h("ma-menu__label")}>{accountLabel}</span><Icon name="chevron-down"/></> : <><HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/><span className={h("ma-menu__label")}>{me.company || me.name}</span><Icon name="chevron-down"/></>}</button>
           <div className={h("ma-menu__list")} id="ma-account-menu" role="menu" hidden={!accountOpen}>
             {identity}
-            {desktopLinks.map(([icon, title, href]) => <Link key={href} className={h("ma-menu__item")} role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
+            {links.map(([icon, title, href]) => <Link key={href} className={h("ma-menu__item")} role="menuitem" href={href} onClick={() => setAccountOpen(false)}><Icon name={icon}/>{title}</Link>)}
             <button className={h("ma-menu__item ma-menu__item--danger")} role="menuitem" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</button>
           </div>
         </div> : role && role !== "guest" ? <div className={h("ma-menu ma-header__account")}>
@@ -160,11 +158,11 @@ export function Header() {
       </div>
       <button ref={opener} className={h("ma-header__menu-btn")} aria-label="მენიუ" aria-haspopup="dialog" aria-controls="ma-mnav" aria-expanded={menuOpen} onClick={() => {mobile.current?.showModal(); setMenuOpen(true);}}><Icon name="menu"/></button>
     </div></header>
-    <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className={h("ma-mnav")} aria-label="მენიუ" onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) mobile.current?.close();}}>
-      <div className={h("ma-mnav__head")}>{brand}<button className={h("ma-mnav__close")} aria-label="მენიუს დახურვა" onClick={() => mobile.current?.close()}><Icon name="x"/></button></div>
+    <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className={h("ma-mnav")} aria-label="მენიუ" onCancel={e => {e.preventDefault(); closeMenu();}} onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) closeMenu();}}>
+      <div className={h("ma-mnav__head")}>{brand}<button className={h("ma-mnav__close")} aria-label="მენიუს დახურვა" onClick={closeMenu}><Icon name="x"/></button></div>
       <div className={h("ma-mnav__body")}><nav className={h("ma-mnav__group")} aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
         <div className={h("ma-mnav__group")}>{me ? <div className={h("ma-mnav__identity")}>{isAdmin ? <Icon name="shield-check"/> : <HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/>} {identity}</div> : null}{mobileLinks.map(([icon, title, href]) => <Link key={href} className={h("ma-mnav__link")} href={href}><Icon name={icon}/>{title}</Link>)}</div>
-      </div>{me ? <div className={h("ma-mnav__foot")}><Button variant="ghost" disabled={pending} onClick={logout}><Icon name="log-out"/>ანგარიშიდან გასვლა</Button></div> : !isAdmin ? <div className={h("ma-mnav__foot")}>{add}</div> : null}
+      </div>{me ? <div className={h("ma-mnav__foot")}>{!isAdmin && !isCompanyRole(me.role) ? addFull : null}<Button variant="ghost" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</Button></div> : !isAdmin ? <div className={h("ma-mnav__foot")}>{addFull}</div> : null}
     </dialog>
   </>;
 }

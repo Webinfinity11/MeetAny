@@ -1,18 +1,18 @@
 // One vocabulary for admin navigation, page titles and presentation links.
+// Visibility plans and the demo guide are outside the MVP: their RPCs and tables stay, the admin hides them.
 export const adminSections = {
   overview: { label: "მიმოხილვა", icon: "layout-grid", description: "პლატფორმის აქტივობა და შემდეგი მოქმედებები" },
-  requests: { label: "მოთხოვნები", icon: "clipboard-list", description: "გამოქვეყნებული მოთხოვნები, მათი სტატუსები და ხილვადობის მართვა" },
-  companies: { label: "კომპანიები", icon: "building-2", description: "კომპანიების პროფილები, დამტკიცება და ხილვადობის პაკეტები" },
-  content: { label: "საიტის შიგთავსი", icon: "image", description: "მთავარი გვერდის ტექსტები და ფოტოები" },
-  users: { label: "მომხმარებლები", icon: "users", description: "ყველა ანგარიში და წვდომის მართვა" },
+  requests: { label: "მოთხოვნები", icon: "clipboard-list", description: "გამოქვეყნებული მოთხოვნები, მათი სტატუსები და ხილვადობა" },
+  companies: { label: "კომპანიები", icon: "building-2", description: "კომპანიების პროფილები და ვერიფიკაცია" },
+  deals: { label: "გარიგებები", icon: "handshake", description: "გარიგებების ეტაპები, პრობლემები და მათი მართვა" },
   offers: { label: "შეთავაზებები", icon: "inbox", description: "კომპანიების პასუხები მოთხოვნებზე და მათი სტატუსები" },
+  users: { label: "მომხმარებლები", icon: "users", description: "ყველა ანგარიში და წვდომის მართვა" },
   reports: { label: "საჩივრები", icon: "flag", description: "მომხმარებლების საჩივრების განხილვა და დარღვევებზე რეაგირება" },
-  reviews: { label: "შეფასებები", icon: "star", description: "გამოქვეყნებული შეფასებების მართვა" },
-  plans: { label: "ხილვადობის პაკეტები", icon: "building-2", description: "Premium / VIP განაცხადები და აქტივაციის ვადები" },
-  photos: { label: "ფოტოების შემოწმება", icon: "image", description: "კომპანიების ატვირთული ლოგოებისა და გალერეის ფოტოების მართვა" },
-  audit: { label: "მოქმედებების ისტორია", icon: "clock", description: "ვინ, როდის და რა შეცვალა ადმინისტრირებისას" },
-  contacts: { label: "დაკავშირების სტატისტიკა", icon: "phone", description: "ნომრის ნახვები, დარეკვის ღილაკზე დაჭერები და ახალი მიმოწერები" },
-  demo: { label: "სადემო გზამკვლევი", icon: "clipboard-list", description: "მზა სცენარები და განმარტებები კლიენტისთვის MeetAny-ის წარსადგენად" },
+  reviews: { label: "შეფასებები", icon: "star", description: "შეფასებები ქვეყნდება ავტომატურად; საჭიროებისას დამალეთ მიზეზით." },
+  content: { label: "საიტის შიგთავსი", icon: "image", description: "მთავარი გვერდის ტექსტები და ფოტოები" },
+  contacts: { label: "კონტაქტები", icon: "phone", description: "ნომრის ნახვები, დარეკვები და ახალი მიმოწერები" },
+  photos: { label: "ფოტოები", icon: "image", description: "კომპანიების ატვირთული ლოგოები და გალერეის ფოტოები" },
+  audit: { label: "ისტორია", icon: "clock", description: "ვინ, როდის და რა შეცვალა ადმინისტრირებისას" },
 } as const;
 
 export type AdminSection = keyof typeof adminSections;

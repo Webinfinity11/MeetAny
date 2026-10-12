@@ -72,10 +72,11 @@
 
 /* Live columns reserve the same height before and after public data arrives. */
 .hero-scene { position: relative; min-width: 0; padding-bottom: var(--size-44); }
-.home-live-headings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); margin-bottom: var(--size-12); color: var(--ink-500); font-size: var(--size-12); font-weight: var(--fw-semibold); }
+.home-live-headings { padding-inline: var(--size-12); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); margin-bottom: var(--size-12); color: var(--ink-500); font-size: var(--size-12); font-weight: var(--fw-semibold); }
 .home-live-headings span { display: flex; align-items: center; gap: var(--size-6); }
 .home-live-headings .icon { width: var(--size-14); height: var(--size-14); flex: none; }
-.hero-scene__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); height: var(--size-400); overflow: hidden; mask-image:none; }
+.hero-scene__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); height: var(--size-400); overflow: hidden; mask-image:none; padding-inline: var(--size-12); border: var(--size-1) solid var(--ink-200); border-radius: var(--radius-xl); background: var(--ink-100); }
+/* The live columns scroll inside a framed window, so cards meet its edge instead of being cut mid-air. */
 .hero-scene__column { min-width: 0; }
 .hero-scene__track { animation: hero-photo-descend 64s linear infinite; }
 .hero-scene__column:nth-child(2) .hero-scene__track { animation-duration: 52s; animation-delay: -14s; }

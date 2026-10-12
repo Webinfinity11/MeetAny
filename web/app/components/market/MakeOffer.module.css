@@ -49,3 +49,14 @@
 .summary .notice svg { flex: none; color: var(--warning-700); }
 .summary .notice p { font-size: var(--fs-xs); color: var(--ink-500); }
 @media(min-width:64rem) { .layout { display: grid; grid-template-columns: minmax(0,1fr) var(--size-300); align-items: start; } .summary { order: 0; position: sticky; top: var(--size-88); } }
+
+/* Unverified company: current status and the next step, before the action. */
+.verification { display: grid; gap: var(--space-3); margin: var(--space-4) 0 var(--space-5); padding: var(--space-4); border: var(--space-hairline) solid var(--border); border-radius: var(--card-radius); background: var(--ink-50); font-size: var(--fs-sm); }
+.verification > div { display: grid; grid-template-columns: var(--size-128) minmax(0,1fr); gap: var(--space-3); }
+.verification dt { color: var(--ink-500); }
+.verification dd { margin: 0; font-weight: var(--fw-semibold); }
+.verification > div + div dd { font-weight: var(--fw-regular); color: var(--ink-700); }
+@media(max-width:29.99rem) { .verification > div { grid-template-columns: minmax(0,1fr); gap: var(--space-1); } }
+/* Offers received so far is a plain fact, not a warning. */
+.offerCount { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-4) var(--space-5); border: var(--space-hairline) solid var(--border); border-radius: var(--card-radius); background: var(--white); font-size: var(--fs-sm); color: var(--ink-700); }
+.offerCount svg { flex: none; color: var(--ink-500); }

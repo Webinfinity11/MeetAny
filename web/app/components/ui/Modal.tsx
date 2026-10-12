@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, type CSSProperties, type ReactNode } from "react";
 import { Icon } from "../Icon";
-import { trapDialogFocus } from "./dialog-focus";
+import { closeDialogWithMotion, trapDialogFocus } from "./dialog-focus";
 import styles from "./Modal.module.css";
 
 export type ModalTone = "neutral" | "success" | "warning" | "danger" | "info";
@@ -17,18 +17,26 @@ export function Modal({ open, onClose, title, lead, icon, tone = "neutral", widt
   const generatedId = useId();
   const titleId = `${id || generatedId}-title`;
   const leadId = `${id || generatedId}-lead`;
+  const cancelClose = useRef<(() => void) | null>(null);
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) {
-      opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      dialog.showModal();
-    } else if (!open && dialog.open) {
-      dialog.close();
-      if (opener.current?.isConnected) opener.current.focus();
+    if (open) {
+      cancelClose.current?.();
+      cancelClose.current = null;
+      if (!dialog.open) {
+        opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        dialog.showModal();
+      }
+    } else if (dialog.open && !cancelClose.current) {
+      // Leave animation (--motion-overlay-out), then close and hand focus back to the opener.
+      cancelClose.current = closeDialogWithMotion(dialog, () => {
+        cancelClose.current = null;
+        if (opener.current?.isConnected) opener.current.focus();
+      });
     }
   }, [open]);
-  useEffect(() => () => { if (opener.current?.isConnected) opener.current.focus(); }, []);
+  useEffect(() => () => { cancelClose.current?.(); if (opener.current?.isConnected) opener.current.focus(); }, []);
   return <dialog id={id} ref={ref} className={`${styles.modal} ${className}`.trim()} data-tone={tone}
     style={width ? { "--modal-width": `${width}px` } as CSSProperties : undefined}
     aria-labelledby={titleId} aria-describedby={lead ? leadId : undefined} tabIndex={-1}

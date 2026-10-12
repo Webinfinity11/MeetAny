@@ -9,7 +9,7 @@ import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
   title: "მოთხოვნა — MeetAny",
-  description: "განცხადება და შეთავაზებები MeetAny-ზე.",
+  description: "ბიზნესის მოთხოვნა და კომპანიების შეთავაზებები MeetAny-ზე.",
   icons: siteIcons,
 };
 

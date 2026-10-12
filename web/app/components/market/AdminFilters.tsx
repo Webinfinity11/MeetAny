@@ -1,23 +1,26 @@
 import { CustomSelect } from "../ui/CustomSelect";
 import styles from "./admin.module.css";
 
+const states: Record<string, [string, string][]> = {
+  requests: [["open", "ღია"], ["chosen", "მომწოდებელი არჩეულია"], ["closed", "დახურული"], ["expired", "ვადაგასული"], ["hidden", "დამალული"]],
+  offers: [["sent", "გაგზავნილი"], ["chosen", "არჩეული"], ["declined", "არ შეირჩა"], ["expired", "ვადაგასული"]],
+  companies: [["pending", "განსახილველი"], ["verified", "ვერიფიცირებული"], ["returned", "დაბრუნებული"], ["no_documents", "დოკუმენტები არ არის"], ["unverified", "ყველა ვერიფიკაციის გარეშე"], ["blocked", "დაბლოკილი"]],
+  users: [["active", "აქტიური"], ["blocked", "დაბლოკილი"], ["unverified", "კომპანია ვერიფიკაციის გარეშე"]],
+};
+const placeholders: Record<string, string> = { requests: "სათაური, ავტორი ან ID", offers: "კომპანია, მოთხოვნა ან ID", companies: "სახელი, ელფოსტა, ნომერი", users: "სახელი, ელფოსტა, ნომერი" };
+
 export function AdminFilters({ tab, query, status, role, lockRole = false, onChange }: {
-  tab: "requests" | "users" | "offers"; query: string; status: string; role: string; lockRole?: boolean;
+  tab: "requests" | "users" | "companies" | "offers"; query: string; status: string; role: string; lockRole?: boolean;
   onChange: (key: string, value: string) => void;
 }) {
-  const states = tab === "requests"
-    ? [["open", "ღია"], ["chosen", "არჩეული"], ["closed", "დახურული"], ["expired", "ვადაგასული"], ["hidden", "დამალული"]]
-    : tab === "offers" ? [["sent", "გაგზავნილი"], ["chosen", "არჩეული"], ["declined", "უარყოფილი"]]
-    : [["unverified", "დასადასტურებელი კომპანია"], ["active", "აქტიური"], ["blocked", "დაბლოკილი"], ["verified", "დადასტურებული კომპანია"]];
   return <div className={styles.filters} role="search" aria-label="ადმინისტრირების ჩანაწერების ძიება">
     <div className={styles.search}><label htmlFor="admin-search">ძიება</label><input id="admin-search" className="ma-input" type="search" value={query} maxLength={200}
-      placeholder={tab === "requests" ? "მოთხოვნა, ავტორი ან ID" : tab === "offers" ? "შეთავაზება, კომპანია ან მოთხოვნა" : "სახელი, კომპანია, ელფოსტა ან ნომერი"}
-      onChange={event => onChange("q", event.target.value)} /></div>
+      placeholder={placeholders[tab]} onChange={event => onChange("q", event.target.value)} /></div>
     {tab === "users" && !lockRole ? <div><label htmlFor="admin-role">როლი</label><CustomSelect id="admin-role" className="ma-select" value={role} onChange={event => onChange("role", event.target.value)}>
       <option value="">ყველა როლი</option><option value="client">კლიენტი</option><option value="company">კომპანია</option><option value="admin">ადმინისტრატორი</option>
     </CustomSelect></div> : null}
-    <div><label htmlFor="admin-status">სტატუსი</label><CustomSelect id="admin-status" className="ma-select" value={status} onChange={event => onChange("status", event.target.value)}>
-      <option value="">ყველა სტატუსი</option>{states.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+    <div><label htmlFor="admin-status">{tab === "companies" ? "ვერიფიკაცია" : "სტატუსი"}</label><CustomSelect id="admin-status" className="ma-select" value={status} onChange={event => onChange("status", event.target.value)}>
+      <option value="">ყველა სტატუსი</option>{states[tab].map(([value, label]) => <option key={value} value={value}>{label}</option>)}
     </CustomSelect></div>
   </div>;
 }

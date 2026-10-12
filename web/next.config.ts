@@ -16,7 +16,7 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://tile.openstreetmap.org",
+  "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://tile.openstreetmap.org https://server.arcgisonline.com",
   "font-src 'self'",
   `connect-src 'self' ${authOrigins.join(" ")} https://vercel.com/api/blob/ https://*.blob.vercel-storage.com${isDev ? " ws: wss:" : ""}`,
   "object-src 'none'",
@@ -38,6 +38,14 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_NEON_AUTH_BASE_URL: authBaseUrl },
   poweredByHeader: false,
+  // Uploaded photos are full-size Blob originals (up to 1.4 MB PNG shown at 356 px). Serve them
+  // resized as WebP through /_next/image (same origin, so CSP img-src 'self' covers it).
+  // Blob URLs carry a random suffix per upload, so a long cache never shows a stale photo.
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com", pathname: "/**" }],
+    qualities: [75],
+    minimumCacheTTL: 2678400,
+  },
   // A shared root retains the browser session across route groups; unknown URLs use the global fallback.
   experimental: {
     globalNotFound: true,

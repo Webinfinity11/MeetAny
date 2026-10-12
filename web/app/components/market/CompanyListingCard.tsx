@@ -1,5 +1,7 @@
 import styles from "./catalog/Catalog.module.css";
+import { optimizable } from "../../lib/image";
 import { Badge } from "../ui/Badge";
+import { Avatar } from "../ui/Avatar";
 import { Button } from "../ui/Button";
 import { BusinessMarks } from "./CompanyBusiness";
 import type { BusinessFeature } from "../../lib/business-client";
@@ -11,6 +13,7 @@ import type { CSSProperties } from "react";
 import { CallButton } from "./CallButton";
 import { categories, cities } from "../../lib/categories";
 import { Icon } from "../Icon";
+import { avatarInitials } from "../../lib/avatar-initials";
 
 export type CompanyListingData = {
   id: string;
@@ -43,7 +46,7 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
   const entrance = entranceIndex != null && entranceIndex < 12;
   if (catalog) return <article className={`${styles.company}${catalogLayout === "list" ? ` ${styles.companyRow}` : ""}`}>
     <header className={styles.companyIdentity}>
-      {image ? <Image unoptimized className={styles.logo} src={image} alt="" width={56} height={56} loading="lazy" /> : <span className={styles.logo} aria-hidden="true"><Icon name="building-2"/></span>}
+      {image ? <Image unoptimized={!optimizable(image)} className={styles.logo} src={image} alt="" width={56} height={56} loading="lazy" /> : <Avatar name={c.name} size={56} className={styles.logo} />}
       <div className={styles.companyDetails}>
         <h3><Link href={href}>{c.name}</Link>{c.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
         <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
@@ -54,12 +57,12 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
       {description && <p className={styles.description}>{description}</p>}
       {c.offers.length > 0 && <ul className={styles.services} aria-label="მომსახურება">{c.offers.slice(0, 2).map((offer, index) => <li key={index}>{offer}</li>)}{c.offers.length > 2 && <li>+{c.offers.length - 2}</li>}</ul>}
     </div>
-    <Button variant="secondary" href={href}>პროფილი</Button>
+    <Button variant="secondary" href={href}>პროფილის ნახვა</Button>
   </article>;
   return (
     <article className={`company-card${catalog ? " company-card--catalog" : ""}`} data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>
       <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">
-        {image ? <img src={image} alt="" loading="lazy" width={480} height={360} /> : <span className="company-card__initials">{catalog ? c.name.slice(0, 2) : <Icon name="building-2" />}</span>}
+        {image ? <Image src={image} alt="" loading="lazy" width={480} height={360} sizes="(max-width: 720px) 100vw, 480px" unoptimized={!optimizable(image)} /> : <span className="company-card__initials">{catalog ? avatarInitials(c.name) : <Icon name="building-2" />}</span>}
       </Link>
       {c.feature?.plan && catalog ? <Badge className="company-card__plan" status={c.feature.plan === "vip" ? "dark" : "neutral"}>{c.feature.plan === "vip" ? "VIP" : "Premium"}</Badge> : c.feature?.plan ? <span className="company-card__plan" data-plan={c.feature.plan}>{c.feature.plan === "vip" ? "VIP" : "Premium"}</span> : null}
       <div className="company-card__save"><SaveCompanyButton id={c.id} icon /></div>
@@ -72,7 +75,7 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
         {!catalog && places ? <p className="company-card__places"><Icon name="map-pin" />{places}</p> : null}
         {c.offers.length ? <ul className="company-card__services" aria-label="მომსახურება">{c.offers.slice(0, catalog ? 2 : 1).map((offer, index) => <li key={`${offer}-${index}`}>{offer}</li>)}{c.offers.length > (catalog ? 2 : 1) ? <li className="company-card__more">+{c.offers.length - (catalog ? 2 : 1)}</li> : null}</ul> : null}
       </div>
-      {catalog || c.phone ? <div className={`company-card__footer${catalog ? " catalog-card-actions" : ""}`}>{catalog ? <Button variant="secondary" href={href}>პროფილი</Button> : null}{c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}</div> : null}
+      {catalog || c.phone ? <div className={`company-card__footer${catalog ? " catalog-card-actions" : ""}`}>{catalog ? <Button variant="secondary" href={href}>პროფილის ნახვა</Button> : null}{c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}</div> : null}
     </article>
   );
 }

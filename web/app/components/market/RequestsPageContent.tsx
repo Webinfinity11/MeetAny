@@ -25,13 +25,6 @@ import { useFilters } from "../../lib/use-filters";
 import { postedLabel } from "../../lib/format";
 import { RequestFormSheet } from "./RequestFormSheet";
 
-const mobileCategoryNames: Record<string, string> = {
-  food: "საკვები", construction: "მშენებლობა", interior: "ავეჯი და ტექსტილი",
-  production: "წარმოება", logistics: "ლოგისტიკა", trade: "ვაჭრობა", facility: "მოვლა",
-  it: "IT", marketing: "მარკეტინგი", business: "ბიზნეს-სერვისი", finance: "ფინანსები",
-  tourism: "ტურიზმი", other: "სხვა",
-};
-
 type MappedRequest = {
   id: string;
   title: string;
@@ -206,30 +199,32 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     matchesDeadline(r, key === "deadline" ? value : deadline) &&
     matchesBudget(r, key === "budget" ? value : budget)
   ).length;
+  const showBudget = !!budget || budgetOptions.some(([id]) => facetCount("budget", id) > 0);
   const verifiedSwitch = () => <label className={styles.requestVerified}>
     <input type="checkbox" role="switch" checked={verified} onChange={e => setFilters({ verified: e.target.checked ? "1" : "" })} />
     <span className={styles.switchTrack} aria-hidden="true" /><span>მხოლოდ ვერიფიცირებული</span>
   </label>;
-  const categoryRow = (id: string, label: string, icon: string, expanded?: boolean, title?: string) =>
-    <Button variant="ghost" className={styles.categoryRow} title={title} aria-pressed={category === id} aria-expanded={expanded}
+  const categoryRow = (id: string, label: string, icon: string, expanded?: boolean) =>
+    <Button variant="ghost" className={styles.categoryRow} aria-pressed={category === id} aria-expanded={expanded}
       onClick={() => setFilters({ category: category === id ? "" : id })}>
       {!id ? <Icon name={icon} /> : <DuoIcon family="category" name={categoryGroups.find(g => g.id === id)?.items[0]?.[0] || id} size={15} />}<span>{label}</span><small>{facetCount("category", id)}</small>
     </Button>;
   const requestFilters = (mobile = false) => <div className={`${styles.requestFilters} ${mobile ? styles.mobileRequestFilters : ""}`}>
-    <section><h3>{mobile ? "კატეგორია" : "კატეგორიები"}</h3><ul>
+    <section><h3>კატეგორიები</h3><ul>
       <li>{categoryRow("", "ყველა", "layout-grid")}</li>
       {categoryGroups.map(group => {
         const expanded = category === group.id || groupOf[category] === group.id;
         const hasChildren = group.items.some(([id]) => id !== group.id);
         return <li key={group.id}>
-          {categoryRow(group.id, mobile ? mobileCategoryNames[group.id] || group.short : group.short, group.icon, hasChildren ? expanded : undefined, mobile ? group.name : undefined)}
+          {/* One label everywhere (sidebar, sheet, chips): the group's full name. */}
+          {categoryRow(group.id, group.name, group.icon, hasChildren ? expanded : undefined)}
           {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
             <li key={id}>{categoryRow(id, label, group.icon)}</li>
           )}</ul>}
         </li>;
       })}
     </ul></section>
-    <section><h3>{mobile ? "ლოკაცია" : "ადგილმდებარეობა"}</h3><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
+    <section><h3>ადგილმდებარეობა</h3><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={city === id}
         onChange={() => setFilters({ city: city === id ? "" : id })} /><span>{label}</span><small>{facetCount("city", id)}</small></label></li>
     )}</ul></section>
@@ -237,27 +232,28 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
       <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-deadline" : undefined} checked={deadline === id}
         onChange={() => setFilters({ deadline: deadline === id ? "" : id })} /><span>{label}</span><small>{facetCount("deadline", id)}</small></label></li>
     )}</ul></section>
-    <section><h3>ბიუჯეტი</h3><ul>{budgetOptions.map(([id, label]) =>
+    {/* No request with a public budget: the facet would only offer zeros. */}
+    {showBudget ? <section><h3>ბიუჯეტი</h3><ul>{budgetOptions.map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-budget" : undefined} checked={budget === id}
         onChange={() => setFilters({ budget: budget === id ? "" : id })} /><span>{label}</span><small>{facetCount("budget", id)}</small></label></li>
-    )}</ul></section>
+    )}</ul></section> : null}
   </div>;
 
   const countLabel = !available
     ? ""
     : !ready
       ? ""
-      : <>ნაპოვნია <strong>{rows.length}</strong> შესაძლებლობა</>;
+      : <>ნაპოვნია <strong>{rows.length}</strong> მოთხოვნა</>;
 
   return (
     <div className={`ma-page requests-catalog catalog-page request-board ${styles.page}`}>
       <CatalogHeader
-        title="ბიზნეს შესაძლებლობები"
-        description="რეალური ბიზნეს მოთხოვნები — გაუგზავნე შეთავაზება იმათ, ვისაც შენი პროდუქტი სჭირდება."
+        title="ღია მოთხოვნები"
+        description="ბიზნესების რეალური საჭიროებები — გაუგზავნეთ შეთავაზება მათ, ვისაც თქვენი პროდუქტი ან მომსახურება სჭირდება."
 
       />
         <div className={styles.requestSearchBar}><div className={styles.search}><form onSubmit={e => { e.preventDefault(); document.getElementById("request-results")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-          <CatalogSearch id="query" label="ძიება" placeholder="მოძებნე პროდუქტი, მომსახურება, კომპანია ან კატეგორია"
+          <CatalogSearch id="query" label="ძიება" placeholder="მოძებნეთ პროდუქტი, მომსახურება, კომპანია ან კატეგორია"
             value={query} onChange={setQuery} mode="requests" resultIds={results.map(r => r.id)}
             onCategory={value => setFilters({ category: value, q: "" })} />
         </form></div>{verifiedSwitch()}</div>
@@ -271,7 +267,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
             items={activeItems}
             onRemove={key => setFilters({[key]: ""})}
             onClear={clearFilters}
-            filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრები <span className={styles.filterCount}>{activeItems.length}</span></Button>}
+            filterButton={<Button type="button" variant="secondary" className="catalog-filter-toggle" ref={filterButtonRef} aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრები{activeItems.length ? <span className={styles.filterCount}>{activeItems.length}</span> : null}</Button>}
             sort={{value: sort, onChange: setSort, options: [
               {value: "newest", label: "უახლესი"},
               {value: "expiring", label: "მალე იწურება"},
@@ -287,7 +283,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
                 ? <SkeletonGrid count={6} />
                 : rows.length === 0
                   ? (
-                      <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="სცადე სხვა კატეგორია ან ქალაქი." action={<Button variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>} />
+                      query
+                        ? <EmptyState icon="search" title={`„${query}“-ზე ვერაფერი მოიძებნა`} text="სცადეთ სხვა სიტყვა." action={<Button variant="secondary" onClick={() => setQuery("")}>ძიების გასუფთავება</Button>} />
+                        : <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="სცადეთ სხვა კატეგორია ან ქალაქი." action={<Button variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>} />
                     )
                   : <>
                       {rows.slice((page - 1) * 12, page * 12).map(r => <OpportunityCard key={r.id} request={r} onSave={r.isOwn ? undefined : () => saving.toggle(r.id)} saved={saving.isSaved(r.id)} horizontal={view === "list"} guest={!store?.currentUser()} offers={r.offerCount} buyer={{ name: r.ownerName, verified: r.ownerVerified }} canOffer={r.canOffer && !r.ownOfferStatus} />)}

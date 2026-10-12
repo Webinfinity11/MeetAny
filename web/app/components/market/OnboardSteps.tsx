@@ -3,38 +3,43 @@ import { useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import type { Store } from '../../lib/market-client';
 import { VerificationDocuments } from './VerificationDocuments';
+import { Avatar } from '../ui/Avatar';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { OnboardIcon as Icon } from './OnboardFields';
 import { categories, cities } from '../../lib/categories';
-import { intents, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+import { intents, verificationLabel, verificationState, verificationTone, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+import { avatarInitials } from '../../lib/avatar-initials';
 import { OnboardCard as Card, OnboardField as Field, OnboardItems as Items, OnboardCategories as Categories } from './OnboardFields';
 import s from './onboarding.module.css';
 
 export const stepLabels: Record<OnboardStep, string> = { type: 'ანგარიშის ტიპი', details: 'კომპანიის მონაცემები', profile: 'ბიზნეს-პროფილი', provide: 'რას სთავაზობთ', need: 'რას ყიდულობთ', verify: 'ვერიფიკაცია', review: 'გადახედვა' };
 export const titles: Record<OnboardStep, string> = { type: 'როგორ გამოიყენებთ MeetAny-ს?', details: 'კომპანიის მონაცემები', profile: 'ბიზნეს-პროფილი', provide: 'რას სთავაზობთ ბაზარს', need: 'რას ყიდულობთ ხშირად', verify: 'ვერიფიკაცია', review: 'გადახედვა და დასრულება' };
 export const leads: Record<OnboardStep, string> = {
-  type: 'ერთი კომპანიის ანგარიშით შეგიძლიათ იყიდოთ, გაყიდოთ ან ორივე. ნებისმიერ დროს შეცვლით.',
+  type: 'ერთი კომპანიის ანგარიშით შეგიძლიათ იყიდოთ, გაყიდოთ ან ორივე. არჩევანის შეცვლა შეგიძლიათ ნებისმიერ დროს.',
   details: 'გამოიყენება ვერიფიკაციისთვის. საკონტაქტო მონაცემები საჯაროდ არ ჩანს.',
   profile: 'ეს ნაწილი ყველას უჩანს. ტეგებით MeetAny შესაბამის მოთხოვნებსა და პარტნიორებს გიპოვით.',
   provide: 'დაამატეთ პროდუქტები და მომსახურებები — მყიდველები ამით გიპოვიან. ფასი აქ არ საჭიროა, ის შეთავაზებაში იწერება.',
-  need: 'აირჩიეთ კატეგორიები — შესაბამისი მომწოდებლები გიპოვიან და რეკომენდაციებს მიიღებთ.',
-  verify: 'ვერიფიკაციას ადმინისტრატორი კომპანიის მონაცემების შემოწმების შემდეგ ადასტურებს.',
+  need: 'აირჩიეთ, რას ყიდულობთ ხშირად — რეკომენდაციებში ამ კატეგორიების მომწოდებლებს ნახავთ.',
+  verify: 'ვერიფიცირებულ კომპანიას შეუძლია შეთავაზებების გაგზავნა, მის პროფილზე კი ვერიფიკაციის ნიშანი ჩანს.',
   review: 'შეამოწმეთ შენახული მონაცემები. დასრულების შემდეგ თქვენს ანგარიშზე გადახვალთ.',
 };
 const intentTags = (p: OnboardProfile) => p.account_intent === 'both' ? ['ყიდვა', 'გაყიდვა'] : [p.account_intent === 'buy' ? 'ყიდვა' : 'გაყიდვა'];
 const categoryNames = (keys: string[]) => keys.map(key => categories[key as keyof typeof categories] || key);
 const tags = (values: string[]) => <div className={s.tags}>{[...new Set(values)].map(value => <span key={value}>{value}</span>)}</div>;
+const verificationBadge = (p: OnboardProfile) => <Badge status={verificationTone(p.verification_documents_status, p.verified)}>{verificationLabel(p.verification_documents_status, p.verified)}</Badge>;
+const sameName = (a: string, b: string) => a.trim().toLocaleLowerCase('ka') === b.trim().toLocaleLowerCase('ka');
+// "3 პროდუქტი · 2 მომსახურება"; a zero part is left out, never shown as "0 …".
+const itemsSummary = (products: number, services: number) => [products ? `${products} პროდუქტი` : '', services ? `${services} მომსახურება` : ''].filter(Boolean).join(' · ');
 const certificateOptions = ['ISO სერტიფიკატი', 'HACCP', 'სურსათის უვნებლობა', 'ლიცენზია'];
-const verificationLabel = (p: OnboardProfile) => p.verified ? 'ვერიფიცირებული' : p.verification_documents_status === 'pending' ? 'განხილვაშია' : 'არ არის ვერიფიცირებული';
 export function OnboardPreview({ profile: p, products, step }: { profile: OnboardProfile; products: Product[]; step: OnboardStep }) {
   return <section className={s.preview}><div className={s.identity}>
-    <span className={s.avatar}>{p.logo_url ? <Image unoptimized loading="eager" width={48} height={48} src={p.logo_url} alt="კომპანიის ლოგო" /> : p.company.slice(0, 2)}</span><div><strong>{p.company}</strong><small>{categories[p.industry as keyof typeof categories]} · {cities[p.city]}</small></div>
+    <Avatar name={p.company} logoUrl={p.logo_url} size={48} /><div><strong>{p.company}</strong><small>{[categories[p.industry as keyof typeof categories], cities[p.city]].filter(Boolean).join(' · ')}</small></div>
   </div>{tags([...intentTags(p), ...(p.account_intent !== 'buy' ? categoryNames(p.provide_categories) : []), ...(step === 'profile' ? p.business_tags : [])])}
-  {step === 'provide' && tags([`${products.length} პროდუქტი · ${p.offers.length} მომსახურება`])}
+  {step === 'provide' && itemsSummary(products.length, p.offers.length) && tags([itemsSummary(products.length, p.offers.length)])}
   {step === 'need' && tags(categoryNames(p.need_categories).map(name => `ყიდულობთ: ${name}`))}
   {step === 'profile' && p.about && <p className={s.previewAbout}>{p.about}</p>}
-  <div className={s.verificationHint}>{(p.verified || step === 'verify') && <Badge status={p.verified ? 'success' : 'neutral'}>{verificationLabel(p)}</Badge>}</div></section>;
+  {(p.verified || step === 'verify') && <div className={s.verificationHint}>{verificationBadge(p)}</div>}</section>;
 }
 type Props = { store:Store; onBusy:(busy:boolean)=>void; step: OnboardStep; profile: OnboardProfile; patch: (patch: Partial<OnboardProfile>) => void; products: Product[]; setProducts: (p: Product[]) => void; upload: (file: File, kind: 'logo' | 'gallery' | 'cover') => Promise<string | undefined>; go: (step: OnboardStep) => void };
 export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, setProducts, upload, go }: Props) {
@@ -42,9 +47,12 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
   const [photoPicker, setPhotoPicker] = useState<number | null>(null);
   const [serviceEditor, setServiceEditor] = useState<number | null>(null);
   const [serviceText, setServiceText] = useState('');
+  // A product and a service are one item each: the same name is not entered twice, in either list.
+  const serviceTaken = (value: string) => products.some(product => sameName(product.name, value)) || p.offers.some((offer, i) => i !== serviceEditor && sameName(offer, value));
+  const productTaken = (index: number, value: string) => !!value.trim() && (products.some((product, i) => i !== index && sameName(product.name, value)) || p.offers.some(offer => sameName(offer, value)));
   const saveService = () => {
     const value = serviceText.trim();
-    if (!value || (p.offers.includes(value) && p.offers[serviceEditor ?? -1] !== value)) return;
+    if (!value || serviceTaken(value)) return;
     patch({ offers: serviceEditor === p.offers.length ? [...p.offers, value] : p.offers.map((item, i) => i === serviceEditor ? value : item) });
     setServiceEditor(null); setServiceText('');
   };
@@ -52,7 +60,7 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
   const fileInput = (kind: 'logo' | 'gallery' | 'cover', label: string) => <label className={s.file}><Icon name="upload" />{label}<input aria-label={label} type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={e => { const file = e.target.files?.[0]; e.target.value = ''; if (file) void upload(file, kind); }} /></label>;
   if (step === 'type') return <>
     <div className={s.intentGrid}>{(['buy', 'sell', 'both'] as const).map((key, i) => <label key={key} className={`${s.intent} ${p.account_intent === key ? s.intentSelected : ''}`}><input type="radio" name="intent" value={key} checked={p.account_intent === key} onChange={() => patch({ account_intent: key })} /><span className={s.intentCheck} aria-hidden="true">{p.account_intent === key && <Icon name="check" />}</span><span className={s.intentIcon}><Icon name={['shopping-cart', 'store', 'handshake'][i]} /></span><strong>{intents[key]}</strong><span>{['განათავსეთ მოთხოვნები და მიიღეთ შეთავაზებები', 'ნახეთ მოთხოვნები და გაგზავნეთ შეთავაზებები', 'ყიდვა და გაყიდვა ერთი ანგარიშით'][i]}</span></label>)}</div>
-    {p.account_intent !== 'buy' && <Card title="ძირითადი დარგები" hint={`${p.provide_categories.length} / 5`}><Categories compact limit={5} values={p.provide_categories} onChange={provide_categories => patch({ provide_categories })} /></Card>}
+    {p.account_intent !== 'buy' && <Card title="რას აწვდით" hint={`${p.provide_categories.length} / 5`}><Categories compact limit={5} values={p.provide_categories} onChange={provide_categories => patch({ provide_categories })} /></Card>}
   </>;
   if (step === 'details') return <>
     <Card title="იურიდიული ინფორმაცია"><div className={s.two}><Field label="იურიდიული სახელი" required value={p.legal_name || ''} maxLength={200} onChange={legal_name => patch({ legal_name: legal_name || null })} /><Field label="საიდენტიფიკაციო კოდი" icon="hash" required value={p.registration_code || ''} maxLength={40} onChange={registration_code => patch({ registration_code: registration_code || null })} /></div><div className={s.two}>
@@ -65,35 +73,34 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
     <details className={s.optional}><summary>დამატებითი</summary><Card title="საქმიანობის არეალი"><Items label="ბაზრები" values={p.markets} onChange={markets => patch({ markets })} /><Items label="ენები" values={p.languages} onChange={languages => patch({ languages })} /></Card></details>
   </>;
   if (step === 'profile') return <>
-    <Card title="ვინ ხართ"><div className={s.profileMedia}><div className={s.coverFrame}>{p.gallery?.[0] ? <Image unoptimized loading="eager" width={640} height={200} className={s.cover} src={p.gallery[0]} alt="კომპანიის ქავერი" /> : <div className={s.coverPlaceholder}><Icon name="image" /></div>}<div className={s.coverAction}>{fileInput('cover', 'ქავერის შეცვლა')}</div></div><div className={s.logoAction}><span className={`${s.avatar} ${s.largeAvatar}`}>{p.logo_url ? <Image unoptimized loading="eager" width={72} height={72} src={p.logo_url} alt="კომპანიის ლოგო" /> : p.company.slice(0, 2)}</span>{fileInput('logo', 'ლოგო')}</div></div>
-      <Field label="მოკლე აღწერა" hint={`${p.about.length} / 500`} multiline required value={p.about || ''} maxLength={500} onChange={about => patch({ about })} /></Card>
+    <Card title="ვინ ხართ"><div className={s.profileMedia}><div className={s.coverFrame}>{p.gallery?.[0] ? <Image unoptimized loading="eager" width={640} height={200} className={s.cover} src={p.gallery[0]} alt="კომპანიის ფონური ფოტო" /> : <div className={s.coverPlaceholder}><Icon name="image" /></div>}<div className={s.coverAction}>{fileInput('cover', p.gallery?.[0] ? 'ფონური ფოტოს შეცვლა' : 'ფონური ფოტოს დამატება')}</div></div><div className={s.logoAction}><span className={`${s.avatar} ${s.largeAvatar}`}>{p.logo_url ? <Image unoptimized loading="eager" width={72} height={72} src={p.logo_url} alt="კომპანიის ლოგო" /> : avatarInitials(p.company)}</span>{fileInput('logo', p.logo_url ? 'ლოგოს შეცვლა' : 'ლოგოს დამატება')}</div></div>
+      <Field label="კომპანიის შესახებ" hint={`${p.about.length} / 500`} multiline required value={p.about || ''} maxLength={500} onChange={about => patch({ about })} /></Card>
     <Card title="დარგი და ტეგები"><Field label="ძირითადი დარგი" required value={p.industry} options={categories} onChange={industry => patch({ industry })} /><Items label="ტეგები" values={p.business_tags} suggestions={['HoReCa', 'დისტრიბუცია', 'იმპორტი', 'წარმოება', 'კეითერინგი']} onChange={business_tags => patch({ business_tags })} /></Card>
     <Card title="სერტიფიკატები" hint="არასავალდებულო"><Items label="სერტიფიკატები" values={p.certificates} suggestions={certificateOptions} onChange={certificates => patch({ certificates })} /></Card>
   </>;
-  if (step === 'need') return <><Card title="კატეგორიები" hint={`არჩეულია ${p.need_categories.length}`}><Categories values={p.need_categories} onChange={need_categories => patch({ need_categories })} /></Card><Card title="კონკრეტული ერთეულები" hint="არასავალდებულო"><Items rows label="რას ეძებთ" values={p.seeks || []} onChange={seeks => patch({ seeks })} /></Card><p className={s.muted}><Icon name="info" />ეს არ არის მოთხოვნა — ეხმარება შესაბამისობას</p></>;
+  if (step === 'need') return <><Card title="რას ყიდულობთ" hint={p.need_categories.length ? `არჩეულია ${p.need_categories.length}` : undefined}><Categories values={p.need_categories} onChange={need_categories => patch({ need_categories })} /></Card><Card title="კონკრეტული ერთეულები" hint="არასავალდებულო"><Items rows label="რას ეძებთ" values={p.seeks || []} onChange={seeks => patch({ seeks })} /></Card><p className={s.muted}><Icon name="info" />ეს არ არის მოთხოვნა — არჩევანი დაგეხმარებათ შესაბამისი მომწოდებლების პოვნაში.</p></>;
   if (step === 'provide') return <Card title="პროდუქტები და მომსახურებები">
     {products.map((item, index) => index === expanded ? <div className={s.productEditor} key={index}>
       <div><button type="button" className={s.photoBox} aria-label={`${item.name || 'პროდუქტი'} — ფოტოს არჩევა`} aria-expanded={photoPicker === index} onClick={() => setPhotoPicker(photoPicker === index ? null : index)}>{item.photoUrl ? <Image unoptimized width={96} height={96} src={item.photoUrl} alt={item.name || 'პროდუქტის ფოტო'} /> : <Icon name="upload" />}</button>
       {photoPicker === index && <div className={s.photoPicker} role="group" aria-label="ფოტო გალერეიდან">{p.gallery.map((url, i) => <button type="button" key={url} aria-label={`ფოტო ${i + 1}`} aria-pressed={item.photoUrl === url} onClick={() => { updateProduct(index, { photoUrl: url }); setPhotoPicker(null); }}><Image unoptimized width={48} height={48} src={url} alt="" /></button>)}<label className={s.file}><Icon name="upload" />ატვირთვა<input type="file" aria-label="პროდუქტის ფოტოს ატვირთვა" accept="image/jpeg,image/png,image/webp,image/gif" onChange={async e => { const file = e.target.files?.[0]; e.target.value = ''; if (file) { const url = await upload(file, 'gallery'); if (url) { updateProduct(index, { photoUrl: url }); setPhotoPicker(null); } } }} /></label></div>}</div>
-      <div className={s.stack}><Field label="სახელი" required value={item.name} maxLength={80} onChange={name => updateProduct(index, { name })} /><Field label="მოკლე აღწერა" multiline value={item.note || ''} maxLength={200} onChange={note => updateProduct(index, { note })} /><Button variant="ghost" onClick={() => { setProducts(products.filter((_, i) => i !== index)); setExpanded(0); }}><Icon name="trash-2" />წაშლა</Button></div>
+      <div className={s.stack}><Field label="სახელი" required value={item.name} maxLength={80} invalid={productTaken(index, item.name) ? 'ეს სახელი უკვე დამატებულია.' : ''} onChange={name => updateProduct(index, { name })} /><Field label="მოკლე აღწერა" multiline value={item.note || ''} maxLength={200} onChange={note => updateProduct(index, { note })} /><Button variant="ghost" onClick={() => { setProducts(products.filter((_, i) => i !== index)); setExpanded(0); }}><Icon name="trash-2" />წაშლა</Button></div>
     </div> : <div className={s.productRow} key={index}>{item.photoUrl ? <Image unoptimized width={48} height={48} src={item.photoUrl} alt="" /> : <span className={s.reviewIcon}><Icon name="package" /></span>}<div><strong>{item.name}</strong><p>{item.note}</p></div><Button variant="ghost" aria-label={`${item.name} — შეცვლა`} onClick={() => setExpanded(index)}><Icon name="pencil" /></Button><Button variant="ghost" aria-label={`${item.name} — წაშლა`} onClick={() => { setProducts(products.filter((_, i) => i !== index)); setExpanded(0); }}><Icon name="trash-2" /></Button></div>)}
     {p.offers.map((name, i) => <div className={s.productRow} key={`service-${i}`}><span className={s.reviewIcon}><Icon name="handshake" /></span><div><strong>{name}</strong><p>მომსახურება</p></div><Button variant="ghost" aria-label={`${name} — შეცვლა`} onClick={() => { setServiceEditor(i); setServiceText(name); }}><Icon name="pencil" /></Button><Button variant="ghost" aria-label={`${name} — წაშლა`} onClick={() => { patch({ offers: p.offers.filter((_, index) => index !== i) }); setServiceEditor(null); }}><Icon name="trash-2" /></Button></div>)}
-    {serviceEditor !== null && <div className={s.stack}><Field label="მომსახურების სახელი" value={serviceText} maxLength={120} onChange={setServiceText} /><div className={s.addItem}><Button variant="secondary" disabled={!serviceText.trim()} onClick={saveService}>დამატება</Button><Button variant="ghost" onClick={() => setServiceEditor(null)}>გაუქმება</Button></div></div>}
-    <Button variant="secondary" className={s.addProduct} disabled={products.length >= 12} onClick={() => { setExpanded(products.length); setProducts([...products, { name: '', note: '', photoUrl: p.gallery[0] || '' }]); }}><Icon name="plus" />პროდუქტის დამატება</Button>
-    <Button variant="ghost" className={s.addProduct} disabled={p.offers.length >= 8 || serviceEditor !== null} onClick={() => { setServiceEditor(p.offers.length); setServiceText(''); }}><Icon name="plus" />მომსახურების დამატება</Button>
+    {serviceEditor !== null && <div className={s.stack}><Field label="მომსახურების სახელი" value={serviceText} maxLength={120} invalid={serviceText.trim() && serviceTaken(serviceText) ? 'ეს სახელი უკვე დამატებულია.' : ''} onChange={setServiceText} /><div className={s.addItem}><Button variant="secondary" disabled={!serviceText.trim() || serviceTaken(serviceText)} onClick={saveService}>{serviceEditor === p.offers.length ? 'დამატება' : 'შენახვა'}</Button><Button variant="ghost" onClick={() => setServiceEditor(null)}>გაუქმება</Button></div></div>}
+    <div className={s.addRow}><Button variant="secondary" disabled={products.length >= 12} onClick={() => { setExpanded(products.length); setProducts([...products, { name: '', note: '', photoUrl: p.gallery[0] || '' }]); }}><Icon name="plus" />პროდუქტის დამატება</Button>
+    <Button variant="secondary" disabled={p.offers.length >= 8 || serviceEditor !== null} onClick={() => { setServiceEditor(p.offers.length); setServiceText(''); }}><Icon name="plus" />მომსახურების დამატება</Button></div>
   </Card>;
   if (step === 'verify') return <>
-    <Card title="ვერიფიკაციის მონაცემები"><VerificationDocuments store={store} id={p.id} status={p.verification_documents_status} verified={p.verified} onStatus={verification_documents_status=>patch({verification_documents_status:verification_documents_status as OnboardProfile['verification_documents_status']})} onBusy={onBusy}/>{!p.logo_url?<Button variant="secondary" onClick={()=>go('profile')}>ლოგოს დამატება</Button>:null}</Card>
-    <Card title="დამატებითი" hint="არასავალდებულო"><Items label="სერტიფიკატები" values={p.certificates} suggestions={certificateOptions} onChange={certificates => patch({ certificates })} /></Card>
+    <Card title="ვერიფიკაციის დოკუმენტები"><VerificationDocuments store={store} id={p.id} status={p.verification_documents_status} verified={p.verified} note={p.verification_note} onStatus={verification_documents_status=>patch({verification_documents_status:verification_documents_status as OnboardProfile['verification_documents_status']})} onBusy={onBusy}/>{!p.logo_url && ['none', 'returned'].includes(verificationState(p.verification_documents_status, p.verified)) ? <Button variant="secondary" onClick={() => go('profile')}>ლოგოს დამატება</Button> : null}</Card>
     <p className={s.muted}><Icon name="lock-keyhole" />საჯაროდ ჩანს მხოლოდ ადმინისტრატორის მიერ დადასტურებული ვერიფიკაციის ნიშანი.</p>
   </>;
   const rows: [OnboardStep, string, string, ReactNode][] = [
     ['type', 'handshake', 'ტიპი', tags([...intentTags(p), ...(p.account_intent !== 'buy' ? categoryNames(p.provide_categories) : [])])],
     ['details', 'building-2', 'კომპანია', <p key="company">{[p.legal_name || p.company, p.registration_code, cities[p.city]].filter(Boolean).join(' · ')}</p>],
     ['profile', 'file-text', 'ბიზნეს-პროფილი', <div key="profile"><p className={s.ellipsis}>{p.about}</p>{tags([...p.business_tags, ...p.certificates])}</div>],
-    ['provide', 'store', 'გთავაზობთ', <div key="products" className={s.thumbnails}>{products.filter(product => product.photoUrl).map((product, index) => <Image key={index} unoptimized width={40} height={32} src={product.photoUrl} alt={product.name} />)}<span>{products.length} პროდუქტი · {p.offers.length} მომსახურება</span></div>],
+    ['provide', 'store', 'გთავაზობთ', <div key="products" className={s.thumbnails}>{products.filter(product => product.photoUrl).map((product, index) => <Image key={index} unoptimized width={40} height={32} src={product.photoUrl} alt={product.name} />)}<span>{itemsSummary(products.length, p.offers.length) || 'ჯერ არ არის დამატებული'}</span></div>],
     ['need', 'shopping-cart', 'ყიდულობთ', tags([...categoryNames(p.need_categories), ...p.seeks])],
-    ['verify', 'shield-check', 'ვერიფიკაცია', <Badge key="verification" status={p.verified ? 'success' : 'neutral'}>{verificationLabel(p)}</Badge>],
+    ['verify', 'shield-check', 'ვერიფიკაცია', <p key="verification">{verificationBadge(p)}</p>],
   ].filter(([key]) => key === 'provide' ? p.account_intent !== 'buy' : key === 'need' ? p.account_intent !== 'sell' : true) as [OnboardStep, string, string, ReactNode][];
   return <><section className={s.review}><ul>{rows.map(([key, icon, title, content]) => <li key={key}><span className={s.reviewIcon}><Icon name={icon} /></span><div><strong>{title}</strong>{content}</div><Button variant="ghost" aria-label={`${title} — შეცვლა`} onClick={() => go(key)}><Icon name="pencil" /><span className={s.editLabel}>შეცვლა</span></Button></li>)}</ul></section></>;
 }

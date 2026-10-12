@@ -1,0 +1,1179 @@
+[
+  {
+    "name": "home-guest",
+    "url": "/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"ღია მოთხოვნა\" 102x17",
+      "A. \"ვერიფიცირებული კომპანია\" 194x17",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"კოლხეთის ტვირთი\" 171x26",
+      "A. \"სტუდია ვები\" 109x26",
+      "A. \"როგორ მუშაობს\" 122x18",
+      "A. \"წესების\" 59x18"
+    ],
+    "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+    "h1": [
+      "რა სჭირდება თქვენს ბიზნესს?"
+    ],
+    "extra": {
+      "themeBefore": "blue",
+      "themeAfter": "classic",
+      "footer": "ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესები აგზავნიან შეთავაზებებს.\n\nმყიდველებისთვის\nმოთხოვნის განთავსება\nკომპანიები\nმომწოდებლებისთვის\nღია მოთხოვნები\nკომპანიის რეგისტრაცია\nვერიფიკაცია\nინფორმაცია\nროგორ მუშაობს\nწესები და კონფიდენციალურობა\n© 2026 MeetAny · საქართველო\nბიზნესებს შორის კავშირისთვის",
+      "footerLinks": [
+        "/",
+        "/requests/new/",
+        "/companies/",
+        "/requests/",
+        "/account/?tab=register&role=company",
+        "/how-it-works/#trust-title",
+        "/how-it-works/",
+        "/terms/"
+      ],
+      "headerLinks": [
+        "MeetAny — მთავარი /",
+        "მოთხოვნები /requests/",
+        "კომპანიები /companies/",
+        "როგორ მუშაობს /how-it-works/",
+        "მოთხოვნების ძიება /requests/?focus=search",
+        "შესვლა /account/",
+        "მოთხოვნის განთავსება /requests/new/",
+        "მთის ბაღი /companies/view/?id=85509946-985a-409d-86ad-26c87c185546",
+        "რბილი სივრცე /companies/view/?id=3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+        "ხის ხაზი /companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+        "ახალი ხედი /companies/view/?id=ff0def53-f3f9-43a5-8121-aade9a8e9cab",
+        "კოლხეთის ტვირთი /companies/view/?id=f7b2fa99-7d1f-4428-a5e1-fe399ea138f4",
+        "სტუდია ვები /companies/view/?id=a5e8fc96-994d-4a70-9191-ad8a699898f9"
+      ]
+    }
+  },
+  {
+    "name": "requests-guest",
+    "url": "/requests/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "BUTTON. \"ბადე\" 36x36",
+      "BUTTON. \"სია\" 36x36",
+      "SELECT.ma-custom-select__native \"უახლესი\nმალე იწურება\" 1x1",
+      "BUTTON.OpportunityCard-module__Aqb6ea__save \"მოთხოვნის შენახვა\" 32x32",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"10 კომპაქტური ხის მაგიდა 70×70\" 261x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"მჭირდება 101 კომპიუტერი HP\" 238x18"
+    ],
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "requests-search-guest",
+    "url": "/requests/?q=%E1%83%95%E1%83%94%E1%83%91",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "BUTTON. \"ბადე\" 36x36",
+      "BUTTON. \"სია\" 36x36",
+      "SELECT.ma-custom-select__native \"უახლესი\nმალე იწურება\" 1x1",
+      "BUTTON.OpportunityCard-module__Aqb6ea__save \"მოთხოვნის შენახვა\" 32x32"
+    ],
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "requests-empty-guest",
+    "url": "/requests/?q=zzzz",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "BUTTON. \"ბადე\" 36x36",
+      "BUTTON. \"სია\" 36x36",
+      "SELECT.ma-custom-select__native \"უახლესი\nმალე იწურება\" 1x1"
+    ],
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "request-view-guest",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"მოთხოვნები\" 83x26",
+      "A. \"ავეჯი\" 35x26",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"10 კომპაქტური ხის მაგიდა 70×70\" 261x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"3 დივანი კლიენტების მოსაცდელში\" 289x18"
+    ],
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\nშეთავაზების გაგზავნა\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "offerCta": "შეთავაზების გაგზავნა",
+      "afterOfferUrl": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+      "modal": "შედით, რომ გაგზავნოთ შეთავაზება\n\nკაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — შესვლის შემდეგ მოქმედება გაგრძელდება\n\nელფოსტა\nპაროლი\nდაგავიწყდათ?\nშესვლა\nჯერ არ გაქვთ ანგარიში? ანგარიშის შექმნა\n\nერთი ანგარიში — ყიდვაც და გაყიდვაც",
+      "modalHasPassword": true
+    }
+  },
+  {
+    "name": "companies-guest",
+    "url": "/companies/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "SELECT.ma-custom-select__native \"რეკომენდებული\nუახლესი\nყველაზე \" 1x1",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"კოლხეთის ტვირთი\" 171x26",
+      "A. \"სტუდია ვები\" 109x26"
+    ],
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ],
+    "extra": {
+      "map": 0
+    }
+  },
+  {
+    "name": "company-view-guest",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ],
+    "extra": {
+      "mapOrTabs": [
+        "შედით, რომ გაგზავნოთ შეთავაზება",
+        "კომპანიის შესახებ",
+        "პროდუქტები და მომსახურებები",
+        "კაფის ხის მაგიდა 70×70",
+        "სავაჭრო თარო",
+        "პროდუქტი",
+        "გალერეა",
+        "შეფასებები",
+        "დეტალები"
+      ]
+    }
+  },
+  {
+    "name": "how-guest",
+    "url": "/how-it-works/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "როგორ მუშაობს — MeetAny",
+    "h1": [
+      "როგორ მუშაობს MeetAny"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "terms-guest",
+    "url": "/terms/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"Solar Icon Set\" 100x19",
+      "A. \"Tabler Icons\" 87x19",
+      "A. \"Lucide\" 47x19",
+      "A. \"Unsplash\" 67x19"
+    ],
+    "title": "წესები და კონფიდენციალურობა — MeetAny",
+    "h1": [
+      "წესები და კონფიდენციალურობა"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "ideas-guest",
+    "url": "/ideas/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"შეფუთვა მცირე ბრენდებისთვის\" 332x23",
+      "A. \"სამუშაო სივრცეების მოვლა\" 291x23",
+      "A. \"პროდუქტის ფოტო და კონტენტი\" 331x23"
+    ],
+    "title": "ბიზნესიდეები — MeetAny",
+    "h1": [
+      "რას დაიწყებ შემდეგ?"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "idea-guest",
+    "url": "/ideas/office-supply/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "ოფისების რეგულარული მომარაგება — MeetAny",
+    "h1": [
+      "ოფისების რეგულარული მომარაგება"
+    ],
+    "extra": {}
+  },
+  {
+    "note": "account-guest-guest 1440: პაროლის ფორმა — კადრი არ გადაღებულა"
+  },
+  {
+    "name": "account-guest-guest",
+    "url": "/account/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "BUTTON.auth-link auth-forgot \"დაგავიწყდათ?\" 95x26",
+      "BUTTON. \"რეგისტრაცია\" 95x26"
+    ],
+    "title": "ჩემი ანგარიში — MeetAny",
+    "h1": [
+      "შესვლა"
+    ],
+    "extra": {
+      "form": [
+        "LABEL:ელფოსტა",
+        "INPUT:email",
+        "LABEL:პაროლი",
+        "INPUT:password",
+        "BUTTON:button",
+        "BUTTON:დაგავიწყდათ?",
+        "BUTTON:შესვლა"
+      ],
+      "tabs": [
+        "დაგავიწყდათ?",
+        "შესვლა",
+        "რეგისტრაცია"
+      ]
+    }
+  },
+  {
+    "name": "request-nope-guest",
+    "url": "/requests/view?id=nope",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "მოთხოვნა ვერ მოიძებნა — MeetAny",
+    "h1": [],
+    "extra": {}
+  },
+  {
+    "name": "company-nope-guest",
+    "url": "/companies/view?id=nope",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "კომპანია ვერ მოიძებნა — MeetAny",
+    "h1": [],
+    "extra": {}
+  },
+  {
+    "name": "404-guest",
+    "url": "/nope",
+    "width": 1440,
+    "status": 404,
+    "loadWait": "ok",
+    "errors": [
+      "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "failed": [
+      "404 /nope"
+    ],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "გვერდი ვერ მოიძებნა — MeetAny",
+    "h1": [
+      "გვერდი ვერ მოიძებნა"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "home-guest",
+    "url": "/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"ღია მოთხოვნა\" 95x15",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"სტუდია ვები\" 109x26",
+      "A. \"როგორ მუშაობს\" 122x18",
+      "A. \"წესების\" 59x18"
+    ],
+    "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+    "h1": [
+      "რა სჭირდება თქვენს ბიზნესს?"
+    ],
+    "extra": {
+      "mnav": "მოთხოვნები\nკომპანიები\nროგორ მუშაობს\nშესვლა\nკომპანიის რეგისტრაცია\nმოთხოვნის განთავსება"
+    }
+  },
+  {
+    "name": "requests-guest",
+    "url": "/requests/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "BUTTON.OpportunityCard-module__Aqb6ea__save \"მოთხოვნის შენახვა\" 32x32",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"სეზონური ბოსტნეული კვირაში სამ\" 318x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"10 კომპაქტური ხის მაგიდა 70×70\" 261x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"მჭირდება 101 კომპიუტერი HP\" 238x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"3 დივანი კლიენტების მოსაცდელში\" 289x18"
+    ],
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {
+      "sheet": "ფილტრები\nკატეგორიები\nყველა\nსაკვები და სასმელი\nმშენებლობა და რემონტი\nავეჯი, ინვენტარი და ტექსტილი\nწარმოება და შეფუთვა\nტრანსპორტი და ლოგისტიკა\nვაჭრობა და მომარაგება\nობიექტის მომსახურება\nIT და ციფრული\nმარკეტინგი და რეკლამა\nბიზნეს-მომსახურება\nფინანსური სერვისები\nტურიზმი და სტუმარმასპინძლობა\nსხვა\nადგილმდებარეობა\nთბილისი\nბათუმი\nქუთაისი\nსხვა რეგიონები\nვადა\n7 დღემდე\n30 დღემდე\n30 დღეზე მეტი\nმხოლოდ ვერიფიცირებული\nგასუფთავება\n8 შედეგის ნახვა"
+    }
+  },
+  {
+    "name": "requests-search-guest",
+    "url": "/requests/?q=%E1%83%95%E1%83%94%E1%83%91",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "BUTTON.OpportunityCard-module__Aqb6ea__save \"მოთხოვნის შენახვა\" 32x32"
+    ],
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "requests-empty-guest",
+    "url": "/requests/?q=zzzz",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18"
+    ],
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "request-view-guest",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"მოთხოვნები\" 83x26",
+      "A. \"ავეჯი\" 35x26",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"10 კომპაქტური ხის მაგიდა 70×70\" 261x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"3 დივანი კლიენტების მოსაცდელში\" 289x18"
+    ],
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "bar": [
+        "detail-actionbar: შეთავაზების გაგზავნა"
+      ],
+      "offerCta": "შეთავაზების გაგზავნა",
+      "afterOfferUrl": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+      "modal": "შედით, რომ გაგზავნოთ შეთავაზება\n\nკაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — შესვლის შემდეგ მოქმედება გაგრძელდება\n\nელფოსტა\nპაროლი\nდაგავიწყდათ?\nშესვლა\nჯერ არ გაქვთ ანგარიში? ანგარიშის შექმნა\n\nერთი ანგარიში — ყიდვაც და გაყიდვაც",
+      "modalHasPassword": true
+    }
+  },
+  {
+    "name": "companies-guest",
+    "url": "/companies/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "SELECT.ma-custom-select__native \"რეკომენდებული\nუახლესი\nყველაზე \" 1x1",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"კოლხეთის ტვირთი\" 171x26",
+      "A. \"სტუდია ვები\" 109x26"
+    ],
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ],
+    "extra": {
+      "map": 0
+    }
+  },
+  {
+    "name": "company-view-guest",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ],
+    "extra": {
+      "mapOrTabs": [
+        "შედით, რომ გაგზავნოთ შეთავაზება",
+        "კომპანიის შესახებ",
+        "პროდუქტები და მომსახურებები",
+        "კაფის ხის მაგიდა 70×70",
+        "სავაჭრო თარო",
+        "პროდუქტი",
+        "გალერეა",
+        "შეფასებები",
+        "დეტალები"
+      ]
+    }
+  },
+  {
+    "name": "how-guest",
+    "url": "/how-it-works/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "როგორ მუშაობს — MeetAny",
+    "h1": [
+      "როგორ მუშაობს MeetAny"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "terms-guest",
+    "url": "/terms/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"Solar Icon Set\" 100x19",
+      "A. \"Tabler Icons\" 87x19",
+      "A. \"Lucide\" 47x19",
+      "A. \"Unsplash\" 67x19"
+    ],
+    "title": "წესები და კონფიდენციალურობა — MeetAny",
+    "h1": [
+      "წესები და კონფიდენციალურობა"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "ideas-guest",
+    "url": "/ideas/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"სამუშაო სივრცეების მოვლა\" 291x23"
+    ],
+    "title": "ბიზნესიდეები — MeetAny",
+    "h1": [
+      "რას დაიწყებ შემდეგ?"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "idea-guest",
+    "url": "/ideas/office-supply/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "ოფისების რეგულარული მომარაგება — MeetAny",
+    "h1": [
+      "ოფისების რეგულარული მომარაგება"
+    ],
+    "extra": {}
+  },
+  {
+    "note": "account-guest-guest 390: პაროლის ფორმა — კადრი არ გადაღებულა"
+  },
+  {
+    "name": "account-guest-guest",
+    "url": "/account/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "BUTTON.auth-link auth-forgot \"დაგავიწყდათ?\" 95x26",
+      "BUTTON. \"რეგისტრაცია\" 95x26"
+    ],
+    "title": "ჩემი ანგარიში — MeetAny",
+    "h1": [
+      "შესვლა"
+    ],
+    "extra": {
+      "form": [
+        "LABEL:ელფოსტა",
+        "INPUT:email",
+        "LABEL:პაროლი",
+        "INPUT:password",
+        "BUTTON:button",
+        "BUTTON:დაგავიწყდათ?",
+        "BUTTON:შესვლა"
+      ],
+      "tabs": [
+        "დაგავიწყდათ?",
+        "შესვლა",
+        "რეგისტრაცია"
+      ]
+    }
+  },
+  {
+    "name": "request-nope-guest",
+    "url": "/requests/view?id=nope",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "მოთხოვნა ვერ მოიძებნა — MeetAny",
+    "h1": [],
+    "extra": {}
+  },
+  {
+    "name": "company-nope-guest",
+    "url": "/companies/view?id=nope",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "კომპანია ვერ მოიძებნა — MeetAny",
+    "h1": [],
+    "extra": {}
+  },
+  {
+    "name": "404-guest",
+    "url": "/nope",
+    "width": 390,
+    "status": 404,
+    "loadWait": "ok",
+    "errors": [
+      "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "failed": [
+      "404 /nope"
+    ],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "გვერდი ვერ მოიძებნა — MeetAny",
+    "h1": [
+      "გვერდი ვერ მოიძებნა"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "checks",
+    "width": 390,
+    "extra": {
+      "bar": {
+        "top": 775,
+        "viewport": 844,
+        "inViewport": true,
+        "transformedAncestors": []
+      },
+      "map": {
+        "leaflet": 1,
+        "clusters": 2
+      }
+    }
+  },
+  {
+    "name": "home-user",
+    "url": "/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"ღია მოთხოვნა\" 102x17",
+      "A. \"ვერიფიცირებული კომპანია\" 194x17",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"კოლხეთის ტვირთი\" 171x26",
+      "A. \"სტუდია ვები\" 109x26",
+      "A. \"როგორ მუშაობს\" 122x18",
+      "A. \"წესების\" 59x18"
+    ],
+    "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+    "h1": [
+      "რა სჭირდება თქვენს ბიზნესს?"
+    ],
+    "extra": {
+      "menu": "სატესტო მომხმარებელი\nდაფა\nჩემი მოთხოვნები\nგარიგებები\nშენახული\nპარამეტრები\nგასვლა"
+    }
+  },
+  {
+    "name": "request-view-user",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"მოთხოვნები\" 83x26",
+      "A. \"ავეჯი\" 35x26",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"10 კომპაქტური ხის მაგიდა 70×70\" 261x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"3 დივანი კლიენტების მოსაცდელში\" 289x18"
+    ],
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nშეთავაზებებს კომპანიები აგზავნიან\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nთქვენც გჭირდებათ მსგავსი?\n\nმოთხოვნის განთავსება\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "asideButtons": [
+        {
+          "text": "მოთხოვნის განთავსება",
+          "cls": "ma-btn ma-btn--secondary detail-aside__primary",
+          "color": "color(srgb 0.134902 0.32 0.696471)",
+          "bg": "rgb(255, 255, 255)",
+          "border": "color(srgb 0.749647 0.759529 0.776) 1px",
+          "font": "15px 600 \"case\"",
+          "transform": "none",
+          "justify": "center",
+          "align": "center",
+          "x": 945,
+          "w": 350,
+          "h": 44
+        },
+        {
+          "text": "გაზიარება",
+          "cls": "ma-btn ma-btn--ghost ma-btn--sm",
+          "color": "color(srgb 0.134902 0.32 0.696471)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0) 1px",
+          "font": "15px 600 \"case\"",
+          "transform": "none",
+          "justify": "center",
+          "align": "center",
+          "x": 920,
+          "w": 134,
+          "h": 44
+        },
+        {
+          "text": "შენახვა",
+          "cls": "ma-btn ma-btn--ghost ma-btn--sm",
+          "color": "color(srgb 0.134902 0.32 0.696471)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0) 1px",
+          "font": "15px 600 \"case\"",
+          "transform": "none",
+          "justify": "center",
+          "align": "center",
+          "x": 1062,
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "Modal-module__AITaea__close",
+          "color": "color(srgb 0.418824 0.441765 0.48)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "color(srgb 0.418824 0.441765 0.48) 0px",
+          "font": "16px 400 normal",
+          "transform": "none",
+          "justify": "normal",
+          "align": "center",
+          "x": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "text": "ანგარიშის შექმნა",
+          "cls": "",
+          "color": "color(srgb 0.0847059 0.112941 0.16)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "color(srgb 0.0847059 0.112941 0.16) 0px",
+          "font": "14px 600 normal",
+          "transform": "none",
+          "justify": "normal",
+          "align": "center",
+          "x": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "text": "დარღვევის შეტყობინება",
+          "cls": "detail-link report-link",
+          "color": "color(srgb 0.374118 0.398824 0.44)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "color(srgb 0.374118 0.398824 0.44) 0px",
+          "font": "12px 500 normal",
+          "transform": "none",
+          "justify": "normal",
+          "align": "center",
+          "x": 920,
+          "w": 172,
+          "h": 44
+        }
+      ]
+    }
+  },
+  {
+    "name": "companies-user",
+    "url": "/companies/",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "INPUT. \"\" 18x18",
+      "SELECT.ma-custom-select__native \"რეკომენდებული\nუახლესი\nყველაზე \" 1x1",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"კოლხეთის ტვირთი\" 171x26",
+      "A. \"სტუდია ვები\" 109x26"
+    ],
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "company-view-user",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 1440,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "home-user",
+    "url": "/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"ღია მოთხოვნა\" 95x15",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"სტუდია ვები\" 109x26",
+      "A. \"როგორ მუშაობს\" 122x18",
+      "A. \"წესების\" 59x18"
+    ],
+    "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+    "h1": [
+      "რა სჭირდება თქვენს ბიზნესს?"
+    ],
+    "extra": {
+      "mnav": "მოთხოვნები\nკომპანიები\nროგორ მუშაობს\nსმ\nსატესტო მომხმარებელი\nდაფა\nჩემი მოთხოვნები\nგარიგებები\nშენახული\nმიმოწერები\nშეტყობინებები\nპარამეტრები\nმოთხოვნის განთავსება\nგასვლა"
+    }
+  },
+  {
+    "name": "request-view-user",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "A. \"მოთხოვნები\" 83x26",
+      "A. \"ავეჯი\" 35x26",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"10 კომპაქტური ხის მაგიდა 70×70\" 261x18",
+      "A.OpportunityCard-module__Aqb6ea__mainLink \"3 დივანი კლიენტების მოსაცდელში\" 289x18"
+    ],
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nშეთავაზებებს კომპანიები აგზავნიან\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nთქვენც გჭირდებათ მსგავსი?\n\nმოთხოვნის განთავსება\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "asideButtons": [
+        {
+          "text": "მოთხოვნის განთავსება",
+          "cls": "ma-btn ma-btn--secondary detail-aside__primary",
+          "color": "color(srgb 0.134902 0.32 0.696471)",
+          "bg": "rgb(255, 255, 255)",
+          "border": "color(srgb 0.749647 0.759529 0.776) 1px",
+          "font": "15px 600 \"case\"",
+          "transform": "none",
+          "justify": "center",
+          "align": "center",
+          "x": 37,
+          "w": 316,
+          "h": 44
+        },
+        {
+          "text": "გაზიარება",
+          "cls": "ma-btn ma-btn--ghost ma-btn--sm",
+          "color": "color(srgb 0.134902 0.32 0.696471)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0) 1px",
+          "font": "15px 600 \"case\"",
+          "transform": "none",
+          "justify": "center",
+          "align": "center",
+          "x": 16,
+          "w": 140,
+          "h": 44
+        },
+        {
+          "text": "შენახვა",
+          "cls": "ma-btn ma-btn--ghost ma-btn--sm",
+          "color": "color(srgb 0.134902 0.32 0.696471)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0) 1px",
+          "font": "15px 600 \"case\"",
+          "transform": "none",
+          "justify": "center",
+          "align": "center",
+          "x": 164,
+          "w": 118,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "Modal-module__AITaea__close",
+          "color": "color(srgb 0.418824 0.441765 0.48)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "color(srgb 0.418824 0.441765 0.48) 0px",
+          "font": "16px 400 normal",
+          "transform": "none",
+          "justify": "normal",
+          "align": "center",
+          "x": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "text": "ანგარიშის შექმნა",
+          "cls": "",
+          "color": "color(srgb 0.0847059 0.112941 0.16)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "color(srgb 0.0847059 0.112941 0.16) 0px",
+          "font": "14px 600 normal",
+          "transform": "none",
+          "justify": "normal",
+          "align": "center",
+          "x": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "text": "დარღვევის შეტყობინება",
+          "cls": "detail-link report-link",
+          "color": "color(srgb 0.374118 0.398824 0.44)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "color(srgb 0.374118 0.398824 0.44) 0px",
+          "font": "12px 500 normal",
+          "transform": "none",
+          "justify": "normal",
+          "align": "center",
+          "x": 16,
+          "w": 172,
+          "h": 44
+        }
+      ]
+    }
+  },
+  {
+    "name": "companies-user",
+    "url": "/companies/",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [
+      "SELECT.ma-custom-select__native \"რეკომენდებული\nუახლესი\nყველაზე \" 1x1",
+      "A. \"ხის ხაზი\" 75x26",
+      "A. \"რბილი სივრცე\" 128x26",
+      "A. \"მთის ბაღი\" 92x26",
+      "A. \"ახალი ხედი\" 104x26",
+      "A. \"კოლხეთის ტვირთი\" 171x26",
+      "A. \"სტუდია ვები\" 109x26"
+    ],
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ],
+    "extra": {}
+  },
+  {
+    "name": "company-view-user",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 390,
+    "status": 200,
+    "loadWait": "ok",
+    "errors": [],
+    "failed": [],
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": false,
+    "wide": [],
+    "small": [],
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ],
+    "extra": {}
+  }
+]

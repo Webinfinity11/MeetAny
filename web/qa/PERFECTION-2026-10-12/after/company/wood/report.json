@@ -1,0 +1,199 @@
+{
+  "origin": "http://localhost:3309",
+  "account": "demo-wood@meetany.ge",
+  "blocked": [],
+  "pages": [
+    {
+      "name": "onboarding-type",
+      "width": 1440,
+      "url": "/onboarding/?step=type",
+      "h1": "როგორ გამოიყენებთ MeetAny-ს?",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-type",
+      "width": 390,
+      "url": "/onboarding/?step=type",
+      "h1": "როგორ გამოიყენებთ MeetAny-ს?",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-details",
+      "width": 1440,
+      "url": "/onboarding/?step=details",
+      "h1": "კომპანიის მონაცემები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-details",
+      "width": 390,
+      "url": "/onboarding/?step=details",
+      "h1": "კომპანიის მონაცემები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-profile",
+      "width": 1440,
+      "url": "/onboarding/?step=profile",
+      "h1": "ბიზნეს-პროფილი",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-profile",
+      "width": 390,
+      "url": "/onboarding/?step=profile",
+      "h1": "ბიზნეს-პროფილი",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-provide",
+      "width": 1440,
+      "url": "/onboarding/?step=provide",
+      "h1": "რას სთავაზობთ ბაზარს",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-provide",
+      "width": 390,
+      "url": "/onboarding/?step=provide",
+      "h1": "რას სთავაზობთ ბაზარს",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-need",
+      "width": 1440,
+      "url": "/onboarding/?step=need",
+      "h1": "რას ყიდულობთ ხშირად",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-need",
+      "width": 390,
+      "url": "/onboarding/?step=need",
+      "h1": "რას ყიდულობთ ხშირად",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-verify",
+      "width": 1440,
+      "url": "/onboarding/?step=verify",
+      "h1": "ვერიფიკაცია",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-verify",
+      "width": 390,
+      "url": "/onboarding/?step=verify",
+      "h1": "ვერიფიკაცია",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-review",
+      "width": 1440,
+      "url": "/onboarding/?step=review",
+      "h1": "გადახედვა და დასრულება",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-review",
+      "width": 390,
+      "url": "/onboarding/?step=review",
+      "h1": "გადახედვა და დასრულება",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-type-all",
+      "width": 1440,
+      "url": "/onboarding/?step=type",
+      "h1": "როგორ გამოიყენებთ MeetAny-ს?",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "onboarding-type-all",
+      "width": 390,
+      "url": "/onboarding/?step=type",
+      "h1": "როგორ გამოიყენებთ MeetAny-ს?",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "verification",
+      "width": 1440,
+      "url": "/onboarding/?step=verify",
+      "h1": "ვერიფიკაცია",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "verification",
+      "width": 390,
+      "url": "/onboarding/?step=verify",
+      "h1": "ვერიფიკაცია",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "products",
+      "width": 1440,
+      "url": "/account/?tab=profile&section=products",
+      "h1": "პარამეტრები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "products",
+      "width": 390,
+      "url": "/account/?tab=profile&section=products",
+      "h1": "პარამეტრები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "distribution",
+      "width": 1440,
+      "url": "/account/?tab=profile&section=distribution",
+      "h1": "პარამეტრები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "distribution",
+      "width": 390,
+      "url": "/account/?tab=profile&section=distribution",
+      "h1": "პარამეტრები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "business",
+      "width": 1440,
+      "url": "/account/?tab=business",
+      "h1": "პარამეტრები",
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "name": "business",
+      "width": 390,
+      "url": "/account/?tab=business",
+      "h1": "პარამეტრები",
+      "overflow": 0,
+      "errors": []
+    }
+  ]
+}

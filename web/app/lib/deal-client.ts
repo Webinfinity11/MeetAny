@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Store } from "./market-client";
+import { dateShort, money } from "./format";
 
 export type DealStage = "selected" | "discuss" | "terms" | "progress" | "complete" | "cancelled";
 export type Deal = {
@@ -38,16 +39,59 @@ export const flowCode = (error: unknown) => {
   const e = error as { code?: string; message?: string };
   return e?.code || e?.message?.match(/MA\d{3}/)?.[0];
 };
-export const dealError = (error: unknown) => flowCode(error) === "MA901" ? "გარიგება ვერ მოიძებნა ან მასზე წვდომა არ გაქვს." : (error as { userMessage?: string })?.userMessage || "მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.";
-export const staleReview = "პირობები შეიცვალა. განახლებული მონაცემები გადაამოწმე და შემდეგ ხელახლა დაადასტურე მოქმედება.";
-export const money = (value: number | null | undefined) => value == null ? "შეთანხმებით" : `₾${new Intl.NumberFormat("ka-GE", { maximumFractionDigits: 2 }).format(value)}`;
-export const dealDate = (value?: string | null) => {
-  if (!value) return "დასაზუსტებელია";
-  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tbilisi", day: "numeric", month: "numeric" }).formatToParts(new Date(value)).map(p => [p.type, p.value]));
-  const months = ["იანვ.", "თებ.", "მარტი", "აპრ.", "მაისი", "ივნ.", "ივლ.", "აგვ.", "სექტ.", "ოქტ.", "ნოემ.", "დეკ."];
-  return `${parts.day} ${months[Number(parts.month) - 1]}`;
-};
+export const dealError = (error: unknown) => flowCode(error) === "MA901" ? "გარიგება ვერ მოიძებნა ან მასზე წვდომა არ გაქვთ." : (error as { userMessage?: string })?.userMessage || "მონაცემები ვერ ჩაიტვირთა. სცადეთ ხელახლა.";
+export const staleReview = "პირობები შეიცვალა. გადაამოწმეთ განახლებული მონაცემები და შემდეგ ხელახლა დაადასტურეთ მოქმედება.";
+export const dealStageLabel = (stage?: DealStage | string | null) => ({ selected: "მომწოდებელი არჩეულია", discuss: "დეტალების განხილვა", terms: "პირობების დადასტურება", progress: "შესრულება მიმდინარეობს", complete: "დასრულებული", cancelled: "გაუქმებული" } as Record<string, string>)[stage || ""] || "";
+/** Offer status in the database is sent | chosen | declined; the pending/viewed/selected/not_selected names map to the same labels. */
+export const offerStatusLabel = (status?: string | null) => ({ sent: "მოლოდინში", pending: "მოლოდინში", viewed: "ნანახია", chosen: "არჩეული", selected: "არჩეული", declined: "არ შეირჩა", not_selected: "არ შეირჩა" } as Record<string, string>)[status || ""] || "";
+export { money };
+export const dealDate = (value?: string | null) => dateShort(value) || "დასაზუსტებელია";
 export const selectOfferDeal = (store: Store, id: string, updatedAt: string | null): Promise<Deal> => store.mutateRpc("select_offer_deal", { p_offer_id: id, p_expected_updated_at: updatedAt });
+
+/** Supplier progress, in order. The first step is the deal entering progress; the rest are supplier updates. */
+export const progressSteps = [
+  { key: "confirmed", label: "შეკვეთა დადასტურდა" },
+  { key: "started", label: "წარმოება დაიწყო" },
+  { key: "producing", label: "მზადდება" },
+  { key: "ready", label: "მზადაა გასაგზავნად" },
+  { key: "delivered", label: "მიწოდებულია" },
+] as const;
+export const progressStatusLabel = (status?: string | null) => progressSteps.find(step => step.key === status)?.label || "";
+/** Each step's date, or null while it has not happened. Later updates also complete the steps before them. */
+export function progressTimeline(deal: Deal) {
+  const reached: (string | null)[] = progressSteps.map((step, i) => i === 0 ? deal.progress_at : (deal.updates || []).filter(u => u.status === step.key).map(u => u.created_at).sort()[0] || null);
+  // A completed deal was delivered: the buyer confirmed receipt even if the supplier skipped the last updates.
+  if (deal.stage === "complete" && !reached[reached.length - 1]) reached[reached.length - 1] = deal.complete_at;
+  for (let i = reached.length - 2; i >= 0; i--) if (!reached[i] && reached[i + 1]) reached[i] = reached[i + 1];
+  return progressSteps.map((step, i) => ({ ...step, at: reached[i] }));
+}
+
+/** The deal's current terms with gaps filled from the chosen offer and request; missing lists what still needs agreeing. */
+export function currentDealTerms(deal: Deal, fallback: { totalPrice?: number | null; place?: string | null } = {}) {
+  const terms: DealTermsInput = {
+    p_total_price: Number(deal.total_price ?? fallback.totalPrice ?? NaN), p_quantity: Number(deal.quantity ?? NaN), p_unit: deal.unit || "",
+    p_delivery_days: Number(deal.delivery_days ?? NaN), p_delivery_date: deal.delivery_date, p_delivery_place: (deal.delivery_place || fallback.place || "").trim(),
+    p_payment_terms: (deal.payment_terms || "").trim(), p_includes: deal.includes || [],
+  };
+  const missing = [
+    !(terms.p_total_price > 0) ? "ფასი" : "", !(terms.p_quantity > 0) || !terms.p_unit ? "რაოდენობა" : "",
+    !Number.isInteger(terms.p_delivery_days) ? "მიწოდების ვადა" : "", !terms.p_delivery_place ? "მიწოდების ადგილი" : "", !terms.p_payment_terms ? "გადახდის პირობები" : "",
+  ].filter(Boolean);
+  return { terms, missing };
+}
+
+/** The deal recorded for one of the actor's requests, found by reading only. undefined while loading, null when none exists. */
+export function useRequestDeal(store: Store | null | undefined, requestId: string, enabled: boolean) {
+  const [found, setFound] = useState<{ key: string; id: string | null }>();
+  const key = enabled && store && requestId ? requestId : "";
+  useEffect(() => {
+    if (!key || !store) return;
+    let active = true;
+    void listMyDeals(store).then(items => { if (active) setFound({ key, id: items.find(d => d.request_id === key)?.id || null }); }, () => { if (active) setFound({ key, id: null }); });
+    return () => { active = false; };
+  }, [store, key]);
+  return !key ? null : found?.key === key ? found.id : undefined;
+}
 
 /** Every deal the actor takes part in, newest activity first. */
 export const listMyDeals = async (store: Store): Promise<MyDeal[]> => {
@@ -66,15 +110,18 @@ export function useDeal(store: Store, id: string, actor: string) {
   const [notice, setNotice] = useState("");
   const flight = useRef(false);
   const alive = useRef(true);
+  // Chained writes (agree, then confirm) must use the revision the previous write produced, not the one rendered.
+  const latest = useRef<Deal | undefined>(undefined);
   const reload = useCallback(async () => {
     const deal: Deal = await call("get_deal", { p_deal_id: id });
+    latest.current = deal;
     if (alive.current) setState({ deal });
     return deal;
   }, [call, id]);
   useEffect(() => {
     alive.current = true;
     let active = true;
-    void call("get_deal", { p_deal_id: id }).then((deal: Deal) => { if (active) setState({ deal }); }, (error: unknown) => { if (active) setState({ error: dealError(error), denied: flowCode(error) === "MA901" }); });
+    void call("get_deal", { p_deal_id: id }).then((deal: Deal) => { if (active) { latest.current = deal; setState({ deal }); } }, (error: unknown) => { if (active) setState({ error: dealError(error), denied: flowCode(error) === "MA901" }); });
     return () => { active = false; alive.current = false; };
   }, [call, id, actor]);
   async function refresh() {
@@ -85,10 +132,11 @@ export function useDeal(store: Store, id: string, actor: string) {
     finally { flight.current = false; if (alive.current) setPending(false); }
   }
   async function write(name: string, args: Record<string, unknown> = {}) {
-    if (flight.current || !state.deal || review) return false;
+    const deal = latest.current || state.deal;
+    if (flight.current || !deal || review) return false;
     flight.current = true; setPending(true); setNotice("");
     try {
-      await mutate(name, { ...args, p_deal_id: id, p_expected_revision: state.deal.revision });
+      await mutate(name, { ...args, p_deal_id: id, p_expected_revision: deal.revision });
       await reload();
       return true;
     } catch (error) {

@@ -1,22 +1,18 @@
 "use client";
 
-import { ConfirmSheet } from "../ui/ConfirmSheet";
+import { SelectOfferModal, type SelectableOffer } from "./modals/SelectOfferModal";
 
-export function ChooseOfferSheet({ open, companyName, pending, error, onConfirm, onCancel }: {
+/** The request page's entry to the shared offer-choice confirmation. Pass `offer` for the price and delivery line. */
+export function ChooseOfferSheet({ open, companyName, offer, request, othersCount, pending, error, onConfirm, onCancel }: {
   open: boolean;
   companyName: string;
+  offer?: Omit<SelectableOffer, "company">;
+  request?: { title: string };
+  othersCount?: number;
   pending: boolean;
   error?: string | null;
   onConfirm: () => void;
   onCancel: () => void;
 }) {
-  return (
-    <ConfirmSheet id="choose" open={open} title="შეთავაზების არჩევა" confirmLabel="შეთავაზების არჩევა" pendingLabel="ირჩევა…" pending={pending} error={error} onConfirm={onConfirm} onCancel={onCancel}>
-      <p>
-        არჩევის შემდეგ <b>{companyName}</b>-ს გაეზიარება შენი საკონტაქტო ინფორმაცია.
-        მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს, დანარჩენ შეთავაზებებს მიენიჭება სტატუსი „არ შეირჩა“.
-        საბოლოო პირობებს კომპანიასთან შეათანხმებ.
-      </p>
-    </ConfirmSheet>
-  );
+  return <SelectOfferModal offer={open ? { ...offer, company: companyName } : null} request={request} othersCount={othersCount} pending={pending} error={error} onConfirm={onConfirm} onClose={onCancel}/>;
 }

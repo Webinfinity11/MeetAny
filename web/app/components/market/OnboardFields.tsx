@@ -1,9 +1,9 @@
 'use client';
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Button } from '../ui/Button';
 import { CustomSelect } from '../ui/CustomSelect';
 import { Icon } from '../Icon';
-import { categories } from '../../lib/categories';
+import { categories, featuredCategories } from '../../lib/categories';
 import s from './onboarding.module.css';
 
 // Lucide shopping-cart from the artboard source; absent from the shared sprite.
@@ -16,20 +16,24 @@ export function OnboardIcon({ name }: { name: string }) {
 export function OnboardCard({ title, children, hint }: { title: string; children: ReactNode; hint?: string }) {
   return <section className={s.card}><div className={s.cardHeading}><h2>{title}</h2>{hint && <span className={hint === 'არასავალდებულო' ? s.optionalHint : undefined}>{hint}</span>}</div><div className={s.stack}>{children}</div></section>;
 }
-export function OnboardField({ label, value, onChange, required, maxLength, type = 'text', options, readOnly, multiline, min, max, icon, hint }: {
+/** `invalid` is a form-level rule (e.g. a duplicate name): it blocks submit like any other validity error. */
+export function OnboardField({ label, value, onChange, required, maxLength, type = 'text', options, readOnly, multiline, min, max, icon, hint, invalid = '' }: {
   label: string; value: string; onChange?: (value: string) => void; required?: boolean; maxLength?: number;
-  type?: string; options?: Record<string, string>; readOnly?: boolean; multiline?: boolean; min?: number; max?: number; icon?: string; hint?: string;
+  type?: string; options?: Record<string, string>; readOnly?: boolean; multiline?: boolean; min?: number; max?: number; icon?: string; hint?: string; invalid?: string;
 }) {
   const id = useId();
   const [error, setError] = useState('');
-  const validation = (field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => field.validity.valid ? '' : field.validity.valueMissing ? 'შეავსეთ სავალდებულო ველი.' : field.validity.rangeUnderflow || field.validity.rangeOverflow ? 'მიუთითეთ წელი დასაშვებ დიაპაზონში.' : 'შეამოწმეთ ველის ფორმატი.';
-  const common = { id, value, required, 'aria-invalid': !!error, 'aria-describedby': error ? id + '-error' : undefined, onInvalid: (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { setError(''); onChange?.(e.target.value); } };
+  const input = useRef<HTMLInputElement>(null);
+  useEffect(() => { input.current?.setCustomValidity(invalid); }, [invalid]);
+  const validation = (field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => field.validity.valid ? '' : field.validity.customError ? field.validationMessage : field.validity.valueMissing ? 'შეავსეთ სავალდებულო ველი.' : field.validity.rangeUnderflow || field.validity.rangeOverflow ? 'მიუთითეთ წელი დასაშვებ დიაპაზონში.' : 'შეამოწმეთ ველის ფორმატი.';
+  const shown = error || invalid;
+  const common = { id, value, required, 'aria-invalid': !!shown, 'aria-describedby': shown ? id + '-error' : undefined, onInvalid: (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { setError(''); onChange?.(e.target.value); } };
   return <div className={s.field}><label htmlFor={id}>{label}{required && <span> *</span>}{hint && <small>{hint}</small>}</label>
     <div className={icon ? s.inputIcon : s.inputControl}>{icon && <OnboardIcon name={icon} />}
     {options ? <CustomSelect {...common}><option value="">აირჩიეთ</option>{Object.entries(options).map(([key, text]) => <option value={key} key={key}>{text}</option>)}</CustomSelect>
       : multiline ? <textarea {...common} maxLength={maxLength} rows={3} readOnly={readOnly} />
-      : <input {...common} type={type} maxLength={maxLength} readOnly={readOnly} min={min} max={max} />}</div>
-    {error && <small id={id + '-error'} className={s.fieldError}>{error}</small>}
+      : <input {...common} ref={input} type={type} maxLength={maxLength} readOnly={readOnly} min={min} max={max} />}</div>
+    {shown && <small id={id + '-error'} className={s.fieldError}>{shown}</small>}
   </div>;
 }
 export function OnboardItems({ label, values, onChange, suggestions = [], checkboxes = false, rows = false }: { label: string; values: string[]; onChange: (values: string[]) => void; suggestions?: string[]; checkboxes?: boolean; rows?: boolean }) {
@@ -46,12 +50,14 @@ export function OnboardItems({ label, values, onChange, suggestions = [], checkb
     {adding && text.trim() && <small>ჩანაწერის შესანახად დააჭირეთ „დამატებას“.</small>}
   </div>;
 }
-const featured = ['catering', 'food_fresh', 'beverages', 'packaging', 'wholesale', 'building_materials', 'software_web', 'textiles', 'freight', 'advertising', 'cleaning', 'other'];
-const shortLabels: Record<string, string> = { catering: 'HoReCa', food_fresh: 'საკვები', beverages: 'სასმელები', packaging: 'შეფუთვა', wholesale: 'საბითუმო', building_materials: 'მშენებლობა', software_web: 'IT', textiles: 'ტექსტილი', freight: 'ლოგისტიკა', advertising: 'მარკეტინგი', cleaning: 'დასუფთავება', equipment: 'აღჭურვილობა', renovation: 'რემონტი', office_household: 'საოფისე', other: 'სხვა' };
+/** Steps 1 (what you supply) and 5 (what you buy) pick from the same list with the same names:
+ *  the featured categories first, every other one under "all categories". */
 export function OnboardCategories({ values, onChange, compact = false, limit = 34 }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number }) {
-  const need = ['food_fresh', 'packaging', 'catering', 'equipment', 'software_web', 'renovation', 'textiles', 'cleaning', 'freight', 'advertising', 'office_household', 'other'];
-  const keys = [...new Set([...(compact ? featured : need), ...values])];
-  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <Button variant={values.includes(key)?"primary":"secondary"} key={key} aria-label={categories[key as keyof typeof categories]} title={categories[key as keyof typeof categories]} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><use href={`/icons-categories.svg#${key}`} /></svg><span>{shortLabels[key] || categories[key as keyof typeof categories] || key}</span>{!compact && values.includes(key) && <Icon name="check" />}
-  </Button>)}</div></>;
+  const [all, setAll] = useState(false);
+  const keys = all ? Object.keys(categories) : [...new Set([...featuredCategories, ...values])];
+  const label = (key: string) => categories[key as keyof typeof categories] || key;
+  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <Button variant={values.includes(key)?"primary":"secondary"} key={key} title={label(key)} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href={`/icons-categories.svg#${key}`} /></svg><span>{label(key)}</span>{!compact && values.includes(key) && <Icon name="check" />}
+  </Button>)}</div>
+  <Button variant="ghost" size="sm" className={s.allCategories} aria-expanded={all} onClick={() => setAll(!all)}><Icon name={all ? 'chevron-up' : 'chevron-down'} />{all ? 'მხოლოდ ძირითადი კატეგორიები' : `ყველა კატეგორია (${Object.keys(categories).length})`}</Button></>;
 }

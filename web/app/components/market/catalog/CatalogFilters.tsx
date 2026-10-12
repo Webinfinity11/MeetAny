@@ -6,8 +6,8 @@ import { Icon } from "../../Icon";
 import styles from "./Catalog.module.css";
 
 export const majorCities = ["tbilisi", "batumi", "kutaisi"];
-// Same row list as the opportunities sidebar: groups with icons and counts, the chosen group
-// expands into its subcategories; cities are checkboxes.
+// Same row list as the requests sidebar: groups (by their full name, as everywhere) with icons and counts,
+// the chosen group expands into its subcategories; cities are checkboxes.
 export function CatalogFilters({ category, city, verified, companies = false, count, onChange }: {
   category: string; city: string; verified: boolean; companies?: boolean;
   count?: (key: "category" | "city", value: string) => number;
@@ -21,13 +21,13 @@ export function CatalogFilters({ category, city, verified, companies = false, co
       <span>{label}</span>{count && <small>{count("category", id)}</small>}
     </Button>;
   return <div className={styles.requestFilters}>
-    <section><h3>{companies ? "დარგები" : "კატეგორიები"}</h3><ul>
+    <section><h3>კატეგორიები</h3><ul>
       <li>{row("", "ყველა", "layout-grid")}</li>
       {categoryGroups.map(group => {
         const expanded = category === group.id || groupOf[category] === group.id;
         const hasChildren = group.items.some(([id]) => id !== group.id);
         return <li key={group.id}>
-          {row(group.id, group.short, group.icon, hasChildren ? expanded : undefined)}
+          {row(group.id, group.name, group.icon, hasChildren ? expanded : undefined)}
           {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
             <li key={id}>{row(id, label, group.icon)}</li>
           )}</ul>}

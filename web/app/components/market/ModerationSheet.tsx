@@ -5,46 +5,58 @@ import { Button } from "../ui/Button";
 import { useEffect, useRef } from "react";
 import styles from "./admin.module.css";
 
+/** A choice made together with the reason, e.g. the new deal stage or the issue outcome. */
+export type ModerationChoice = { label: string; options: [string, string][]; value?: string };
+
+/** What each action does, said once, in the admin's words. */
+export const moderationActions: Record<string, { title: string; confirm: string; consequence: string; reason?: boolean; destructive?: boolean }> = {
+  "reportHide.request": { title: "საჩივრის დაკმაყოფილება · მოთხოვნის დამალვა", confirm: "მოთხოვნის დამალვა", reason: true, destructive: true, consequence: "მოთხოვნა საჯარო სიიდან დაიმალება, ამ მოთხოვნის ყველა ახალი საჩივარი დამუშავებულად მოინიშნება და ავტორებს შეტყობინება გაეგზავნებათ." },
+  "reportHide.offer": { title: "საჩივრის დაკმაყოფილება · შეთავაზების წაშლა", confirm: "სამუდამოდ წაშლა", reason: true, destructive: true, consequence: "შეთავაზება სამუდამოდ წაიშლება, მისი ყველა ახალი საჩივარი დამუშავებულად მოინიშნება და ავტორებს შეტყობინება გაეგზავნებათ." },
+  "reportHide.company": { title: "საჩივრის დაკმაყოფილება · კომპანიის დაბლოკვა", confirm: "კომპანიის დაბლოკვა", reason: true, destructive: true, consequence: "კომპანია დაიბლოკება, მისი ყველა ახალი საჩივარი დამუშავებულად მოინიშნება და ავტორებს შეტყობინება გაეგზავნებათ. განბლოკვა მოგვიანებით შესაძლებელია." },
+  reportReject: { title: "საჩივრის უარყოფა", confirm: "საჩივრის უარყოფა", reason: true, consequence: "საჩივარი დაიხურება, შინაარსი უცვლელი დარჩება. ავტორს შეტყობინება გაეგზავნება." },
+  removePhoto: { title: "ფოტოს წაშლა", confirm: "ფოტოს წაშლა", reason: true, destructive: true, consequence: "ფოტო კომპანიის პროფილიდან და საცავიდან სამუდამოდ წაიშლება. მიზეზი ისტორიაში შეინახება." },
+  hide: { title: "მოთხოვნის დამალვა", confirm: "დამალვა", reason: true, destructive: true, consequence: "მოთხოვნა საჯარო სიიდან დაიმალება. მისი გამოჩენა მოგვიანებით შესაძლებელია." },
+  unhide: { title: "მოთხოვნის გამოჩენა", confirm: "გამოჩენა", consequence: "მოთხოვნა კვლავ გამოჩნდება საჯაროდ, მისი მიმდინარე სტატუსის შესაბამისად." },
+  delete: { title: "მოთხოვნის წაშლა", confirm: "სამუდამოდ წაშლა", destructive: true, consequence: "მოთხოვნა და მასზე მიღებული ყველა შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. დროებით მოსაშორებლად გამოიყენეთ დამალვა." },
+  deleteOffer: { title: "შეთავაზების წაშლა", confirm: "სამუდამოდ წაშლა", destructive: true, consequence: "შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. მიზეზი ისტორიაში შეინახება." },
+  block: { title: "ანგარიშის დაბლოკვა", confirm: "დაბლოკვა", reason: true, destructive: true, consequence: "ანგარიში ვეღარ შეასრულებს მოქმედებებს პლატფორმაზე. განბლოკვა მოგვიანებით შესაძლებელია." },
+  unblock: { title: "ანგარიშის განბლოკვა", confirm: "განბლოკვა", consequence: "ანგარიშს პლატფორმაზე მოქმედებების შესრულება კვლავ შეეძლება." },
+  verify: { title: "კომპანიის ვერიფიკაცია", confirm: "ვერიფიცირება", consequence: "თუ კომპანია დაბლოკილი არ არის, საჯარო კატალოგში გამოჩნდება და შეთავაზებების გაგზავნას შეძლებს. დოკუმენტების სტატუსი „ვერიფიცირებული“ გახდება და კომპანიას შეტყობინება გაეგზავნება." },
+  unverify: { title: "ვერიფიკაციის მოხსნა", confirm: "ვერიფიკაციის მოხსნა", reason: true, destructive: true, consequence: "კომპანია კატალოგიდან დაიმალება და ახალ შეთავაზებებს ვეღარ გაგზავნის. დოკუმენტები შესწორებისთვის დაუბრუნდება; მიზეზს კომპანია დაინახავს." },
+  approveDocs: { title: "დოკუმენტების დადასტურება", confirm: "ვერიფიცირება", consequence: "კომპანია ვერიფიცირებული გახდება და შეტყობინებას მიიღებს." },
+  returnDocs: { title: "დოკუმენტების დაბრუნება", confirm: "დოკუმენტების დაბრუნება", reason: true, destructive: true, consequence: "დოკუმენტები შესწორებისთვის დაუბრუნდება. მიზეზს კომპანია დაინახავს და ხელახლა გამოგზავნის." },
+  hideReview: { title: "შეფასების დამალვა", confirm: "შეფასების დამალვა", reason: true, destructive: true, consequence: "შეფასება კომპანიის პროფილიდან დაიმალება. აღდგენა მოგვიანებით შესაძლებელია." },
+  publishReview: { title: "შეფასების აღდგენა", confirm: "შეფასების აღდგენა", consequence: "შეფასება კვლავ გამოჩნდება კომპანიის პროფილზე." },
+  dealStage: { title: "გარიგების ეტაპის შეცვლა", confirm: "ეტაპის შეცვლა", reason: true, consequence: "ეტაპი ორივე მხარისთვის შეიცვლება და ისინი შეტყობინებას მიიღებენ. მიზეზი ისტორიაში შეინახება." },
+  dealCancel: { title: "გარიგების გაუქმება", confirm: "გარიგების გაუქმება", reason: true, destructive: true, consequence: "გარიგება გაუქმდება ორივე მხარისთვის და ისინი შეტყობინებას მიიღებენ. გაუქმებული გარიგება აღარ გაგრძელდება." },
+  resolveIssue: { title: "პრობლემის განხილვის დასრულება", confirm: "განხილვის დასრულება", reason: true, consequence: "შედეგი და კომენტარი ორივე მხარეს გამოუჩნდება. „გარიგება გაუქმდა“ გარიგებასაც გააუქმებს." },
+};
+
 export function ModerationSheet({
   open,
-  title,
   subject,
   action,
   pending,
   requireDeleteReason = false,
   error,
+  choice,
   onConfirm,
   onCancel,
 }: {
   open: boolean;
-  title: string;
   subject: string;
   action: string;
   pending: boolean;
   requireDeleteReason?: boolean;
   error?: string | null;
-  onConfirm: (reason: string) => void;
+  choice?: ModerationChoice;
+  onConfirm: (reason: string, choice?: string) => void;
   onCancel: () => void;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const form = useRef<HTMLFormElement>(null);
-  const needsReason = action.startsWith("report") || action === "hide" || action === "block" || action === "removePhoto" || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
-  const destructive = action.startsWith("reportHide") || ["hide", "block", "delete", "deleteOffer", "unverify", "removePhoto"].includes(action);
-  const consequences: Record<string, string> = {
-    "reportHide.request": "მოთხოვნა საჯარო სიიდან დაიმალება და ამ მოთხოვნის ყველა ახალი საჩივარი დამუშავებულად მოინიშნება.",
-    "reportHide.offer": "შეთავაზება სამუდამოდ წაიშლება და მისი ყველა ახალი საჩივარი დამუშავებულად მოინიშნება.",
-    "reportHide.company": "კომპანია დაიბლოკება და მისი ყველა ახალი საჩივარი დამუშავებულად მოინიშნება. განბლოკვა მოგვიანებით შესაძლებელია.",
-    reportReject: "საჩივარი დაიხურება, შინაარსი უცვლელი დარჩება.",
-    removePhoto: "ფოტო კომპანიის პროფილიდან და საცავიდან სამუდამოდ წაიშლება. მიზეზი მოქმედებების ჟურნალში შეინახება.",
-    hide: "მოთხოვნა საჯარო სიიდან დაიმალება. მისი გამოჩენა მოგვიანებით შესაძლებელია.",
-    unhide: "მოთხოვნა კვლავ გამოჩნდება საჯაროდ, მისი მიმდინარე სტატუსის შესაბამისად.",
-    delete: "მოთხოვნა და მასზე მიღებული ყველა შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. დროებით მოსაშორებლად გამოიყენე დამალვა.",
-    deleteOffer: "შეთავაზება სამუდამოდ წაიშლება. ამ მოქმედების გაუქმება შეუძლებელია. მიზეზი მოქმედებების ჟურნალში შეინახება.",
-    block: "მომხმარებელი ვეღარ შეასრულებს მოქმედებებს პლატფორმაზე. განბლოკვა მოგვიანებით შესაძლებელია.",
-    unblock: "მომხმარებელს პლატფორმაზე მოქმედებების შესრულება კვლავ შეეძლება.",
-    verify: "თუ კომპანია დაბლოკილი არ არის, დადასტურების შემდეგ საჯარო კატალოგში გამოჩნდება და მოთხოვნებზე შეთავაზებების გაგზავნას შეძლებს. დაბლოკვის სტატუსი უცვლელი დარჩება.",
-    unverify: "კომპანია საჯარო კატალოგიდან დაიმალება და ახალი შეთავაზებების გაგზავნას ვეღარ შეძლებს. არსებული მოთხოვნები და შეთავაზებები შეინახება.",
-  };
+  const meta = moderationActions[action];
+  const needsReason = !!meta?.reason || (requireDeleteReason && ["delete", "deleteOffer"].includes(action));
   const opener = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -76,27 +88,31 @@ export function ModerationSheet({
       <form className={styles.moderationForm} ref={form} onSubmit={event => {
         event.preventDefault();
         if (pending) return;
-        const reason = String(new FormData(event.currentTarget).get("reason") || "").trim();
+        const data = new FormData(event.currentTarget);
+        const reason = String(data.get("reason") || "").trim();
         const input = event.currentTarget.elements.namedItem("reason") as HTMLTextAreaElement | null;
-        if (needsReason && reason.length < 3) { input?.setCustomValidity("მიზეზი უნდა შეიცავდეს მინიმუმ 3 სიმბოლოს."); input?.reportValidity(); return; }
-        onConfirm(reason);
+        if (needsReason && reason.length < 3) { input?.setCustomValidity("მიუთითეთ მიზეზი — მინიმუმ 3 სიმბოლო."); input?.reportValidity(); return; }
+        onConfirm(reason, choice ? String(data.get("choice") || "") : undefined);
       }}>
       <header className="ma-sheet__header">
         <h2 id="moderation-title" className="ma-sheet__title">
-          მოქმედების დადასტურება
+          {meta?.title || "მოქმედება"}
         </h2>
         <button type="button" disabled={pending} className="ma-sheet__close" aria-label="დახურვა" onClick={() => ref.current?.close()}>
           ✕
         </button>
       </header>
       <div className="ma-sheet__body">
-        <p>
-          {title}: <b>{subject}</b>
-        </p>
-        <p className={styles.consequence}>{consequences[action]}</p>
+        <p className={styles.subject}>{subject}</p>
+        {meta?.consequence ? <p className={styles.consequence}>{meta.consequence}</p> : null}
+        {choice ? <div className={styles.reason}><label htmlFor="moderation-choice">{choice.label}</label>
+          <select id="moderation-choice" className="ma-select" name="choice" required defaultValue={choice.value || choice.options[0]?.[0]} disabled={pending}>
+            {choice.options.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+          </select>
+        </div> : null}
         {needsReason ? <div className={styles.reason}><label htmlFor="moderation-reason">მიზეზი</label>
-          <textarea id="moderation-reason" className="ma-input" name="reason" required minLength={3} maxLength={500} disabled={pending} onInvalid={event => event.currentTarget.setCustomValidity("მიზეზი უნდა შეიცავდეს 3–500 სიმბოლოს.")} onInput={event => event.currentTarget.setCustomValidity("")} aria-describedby="moderation-reason-note" />
-          <span id="moderation-reason-note">3–500 სიმბოლო. მიუთითე კონკრეტული მიზეზი, პირადი მონაცემების გარეშე.</span>
+          <textarea id="moderation-reason" className="ma-input" name="reason" required minLength={3} maxLength={500} disabled={pending} onInvalid={event => event.currentTarget.setCustomValidity("მიუთითეთ მიზეზი — 3–500 სიმბოლო.")} onInput={event => event.currentTarget.setCustomValidity("")} aria-describedby="moderation-reason-note" />
+          <span id="moderation-reason-note">3–500 სიმბოლო. მიუთითეთ კონკრეტული მიზეზი, პირადი მონაცემების გარეშე.</span>
         </div> : null}
         {error ? (
           <p className="ma-field__error" role="alert">
@@ -105,11 +121,11 @@ export function ModerationSheet({
         ) : null}
       </div>
       <footer className="ma-sheet__footer">
-        <Button variant={destructive ? "danger" : "primary"} type="submit" disabled={pending}>
-          {pending ? "ინახება…" : ["delete", "deleteOffer", "reportHide.offer"].includes(action) ? "სამუდამოდ წაშლა" : "დადასტურება"}
+        <Button variant={meta?.destructive ? "danger" : "primary"} type="submit" disabled={pending}>
+          {pending ? "ინახება…" : meta?.confirm || "შესრულება"}
         </Button>
         <Button variant="secondary" type="button" disabled={pending} onClick={() => ref.current?.close()}>
-          გაუქმება
+          დაბრუნება
         </Button>
       </footer>
       </form>

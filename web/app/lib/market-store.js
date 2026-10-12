@@ -4,6 +4,7 @@ import { normalizeMobilePhone as normalizePhone } from './mobile-phone.js';
 import { toast } from '../components/Toasts';
 import { readAllRows } from './read-all-rows.js';
 import { withReadTimeout } from './read-timeout.js';
+import { SESSION_HINT_KEY } from './auth-session-preload.js';
 import { categories, categoryKind, expandCategories } from './categories-data.js';
 import { isInternalTestAccount, isInternalTestRequest } from './catalog-visibility.js';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
@@ -19,47 +20,47 @@ export function createMarketStore({initial=null,background=true}={}){
  const QUANTITY_MAX=1e9,DELIVERY_DAYS_MAX=365,NEEDED_BY_YEARS=2;
 
  const UNAVAILABLE='სერვისი დროებით მიუწვდომელია';
- const GENERIC='რაღაც ვერ შესრულდა. სცადე თავიდან.';
- const CHECK_EMAIL='შეამოწმე ელფოსტა';
+ const GENERIC='რაღაც ვერ შესრულდა. სცადეთ ხელახლა.';
+ const CHECK_EMAIL='შეამოწმეთ ელფოსტა';
  const STALE='მონაცემები ვერ განახლდა. გვერდზე შეიძლება ძველი ინფორმაცია ჩანდეს.';
  const MSG={
-  MA801:'შეთავაზების გაგზავნას კომპანიის დადასტურება სჭირდება. განაცხადი ადმინთან უკვე გაგზავნილია.',
-   MA622:'დაამატე მაქსიმუმ 12 პროდუქტი: სახელი 2–80 სიმბოლო, აღწერა 200-მდე და ფოტო შენი გალერეიდან.',
-   MA621:'მიუთითე მინიმუმ ერთი რეგიონი და არხი. გადაამოწმე ველების ზომა და მნიშვნელობები.',
-  MA601:'აირჩიე 1–5 ქულა და დაწერე 20–1500 სიმბოლო.',MA602:'შეფასება შესაძლებელია გარიგების დასრულების შემდეგ.',MA603:'მიუთითე მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლე სია.',
+  MA801:'შეთავაზების გაგზავნას კომპანიის ვერიფიკაცია სჭირდება.',
+   MA622:'დაამატეთ მაქსიმუმ 12 პროდუქტი: სახელი 2–80 სიმბოლო, აღწერა 200-მდე და ფოტო თქვენი გალერეიდან.',
+   MA621:'მიუთითეთ მინიმუმ ერთი რეგიონი და არხი. გადაამოწმეთ ველების ზომა და მნიშვნელობები.',
+  MA601:'აირჩიეთ 1–5 ქულა და დაწერეთ 20–1500 სიმბოლო.',MA602:'შეფასება შესაძლებელია გარიგების დასრულების შემდეგ.',MA603:'მიუთითეთ მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლეთ სია.',
   // New flows (CONTRACT.md 2026-10-07): deals, comparison, contact, matching, onboarding.
-  MA901:'ეს ჩანაწერი ვერ მოიძებნა ან შენთვის მიუწვდომელია.',MA902:'გადაამოწმე ველები: ზომა, კატეგორია ან სტატუსი არასწორია.',
-  MA903:'ეს მოქმედება ამ ეტაპზე დაუშვებელია.',MA904:'მონაცემები განახლდა. გვერდი ხელახლა წაიკითხე და სცადე თავიდან.',
-  MA905:'პირობებს ჯერ ორივე მხარე უნდა ადასტურებდეს.',MA906:'დასრულების დადასტურება მხოლოდ მყიდველს შეუძლია.',
-  MA701:'აირჩიე მიზეზი. „სხვა“ მიზეზისთვის დაწერე 3–500 სიმბოლო.',MA702:'ეს გვერდი ვეღარ მოიძებნა ან მისი შეტყობინება შეუძლებელია.',MA703:'საკუთარ გვერდზე შეტყობინებას ვერ გააგზავნი.',
-  MA704:'ამაზე უკვე შეგვატყობინე. შეტყობინებას განვიხილავთ.',MA705:'დღეში შეიძლება 10 შეტყობინება. სცადე ხვალ.',MA706:'საჩივარი უკვე დამუშავებულია. განაახლე სია.',
-  MA001:'ამისთვის შედი ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისთვისაა.',
-  MA101:'მიუთითე სათაური.',MA102:'აღწერე საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიე კატეგორია.',MA104:'აირჩიე ქალაქი.',
-  MA105:'ერთდროულად შეიძლება 5 ღია განცხადება. დახურე ძველი და სცადე თავიდან.',MA106:'განცხადება ვერ მოიძებნა.',MA107:'ეს განცხადება შენ არ გეკუთვნის.',
-  MA108:'არჩეული ან დამალული განცხადება ვერ გაგრძელდება.',MA109:'ატვირთე მხოლოდ სურათი.',
-  MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიე რაოდენობის ერთეული.',MA113:'აირჩიე დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
+  MA901:'ეს ჩანაწერი ვერ მოიძებნა ან თქვენთვის მიუწვდომელია.',MA902:'გადაამოწმეთ ველები: ზომა, კატეგორია ან სტატუსი არასწორია.',
+  MA903:'ეს მოქმედება ამ ეტაპზე დაუშვებელია.',MA904:'მონაცემები განახლდა. გადახედეთ გვერდს და სცადეთ ხელახლა.',
+  MA905:'პირობები ჯერ ორივე მხარემ უნდა დაადასტუროს.',MA906:'დასრულების დადასტურება მხოლოდ მყიდველს შეუძლია.',
+  MA701:'აირჩიეთ მიზეზი. „სხვა“ მიზეზისთვის დაწერეთ 3–500 სიმბოლო.',MA702:'ეს გვერდი ვეღარ მოიძებნა ან მასზე შეტყობინება შეუძლებელია.',MA703:'საკუთარ გვერდზე შეტყობინებას ვერ გაგზავნით.',
+  MA704:'ამაზე უკვე შეგვატყობინეთ. შეტყობინებას განვიხილავთ.',MA705:'დღეში შეიძლება 10 შეტყობინება. სცადეთ ხვალ.',MA706:'საჩივარი უკვე დამუშავებულია. განაახლეთ სია.',
+  MA001:'ამისთვის შედით ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისტრატორს შეუძლია.',
+  MA101:'მიუთითეთ სათაური.',MA102:'აღწერეთ საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიეთ კატეგორია.',MA104:'აირჩიეთ ქალაქი.',
+  MA105:'ერთდროულად შეიძლება 5 ღია მოთხოვნა. დახურეთ ძველი და სცადეთ ხელახლა.',MA106:'მოთხოვნა ვერ მოიძებნა.',MA107:'ეს მოთხოვნა თქვენ არ გეკუთვნით.',
+  MA108:'არჩეული ან დამალული მოთხოვნა ვერ გაგრძელდება.',MA109:'ატვირთეთ მხოლოდ სურათი.',
+  MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიეთ რაოდენობის ერთეული.',MA113:'აირჩიეთ დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
   MA114:'მისამართი ან რაიონი უნდა შეიცავდეს მაქსიმუმ 120 სიმბოლოს.',
   MA115:'ლოგო უნდა იყოს JPG, PNG, WEBP ან GIF სურათი, მაქსიმუმ 2 მბ.',
   MA305:'ფოტო ამ პროფილზე ვეღარ მოიძებნა — შესაძლოა უკვე წაიშალა.',
   MA116:'გალერეაში შეიძლება 8-მდე ფოტო: JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ.',
   MA412:'მისამართი უნდა შეიცავდეს მაქსიმუმ 200 სიმბოლოს.',
-  MA413:'მიუთითე ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
-  MA110:'განცხადებას ვეღარ შეცვლი: მასზე უკვე მოვიდა შეთავაზება ან მომწოდებელი არჩეულია.',
-  MA201:'შეთავაზების გაგზავნა შეუძლია მხოლოდ კომპანიის ანგარიშს.',MA202:'საკუთარ განცხადებაზე შეთავაზებას ვერ გააგზავნი.',MA203:'განცხადება აღარ იღებს შეთავაზებებს.',
-  MA204:'აღწერე შეთავაზება მინიმუმ 10 სიმბოლოთი.',MA205:'ფასი უნდა იყოს დადებითი რიცხვი.',MA206:'შეთავაზება ვერ მოიძებნა.',MA207:'არჩეული შეთავაზება ვერ გაუქმდება.',
-  MA208:'ამ განცხადებაზე არჩევა აღარ შეიძლება.',MA209:GENERIC,
-  MA210:'აირჩიე ფასის ტიპი.',MA211:'„შეთანხმებით“ შეთავაზებაში ფასი არ მიეთითება.',MA212:'მიუთითე ფასი ან აირჩიე „შეთანხმებით“.',MA213:'მიწოდების ვადა უნდა იყოს 0-დან 365 დღემდე.',
- MA301:'საკუთარ ანგარიშს ვერ დაბლოკავ.',MA302:'მომხმარებელი ვერ მოიძებნა.',MA303:'დადასტურება შეიძლება მხოლოდ კომპანიისთვის.',MA304:'მიზეზი უნდა იყოს 3-დან 500 სიმბოლომდე.',
-  MA401:'მიუთითე სახელი და გვარი.',MA402:'მიუთითე კომპანიის დასახელება.',MA403:'მიუთითე სწორი ელფოსტა.',MA404:'მიუთითე მობილურის ნომერი ფორმატით: +995 5XX XXX XXX.',
-  MA405:'ეს ტელეფონის ნომერი უკვე გამოყენებულია.',MA407:'აირჩიე საქმიანობის მიმართულება.',MA408:CHECK_EMAIL,
-  MA501:'მიმოწერა ვერ მოიძებნა ან მასზე წვდომა არ გაქვს.',MA502:'კომპანია მიუწვდომელია.',MA503:'საკუთარ თავს ვერ მისწერ.',
+  MA413:'მიუთითეთ ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
+  MA110:'მოთხოვნას ვეღარ შეცვლით: მასზე უკვე მოვიდა შეთავაზება ან მომწოდებელი არჩეულია.',
+  MA201:'შეთავაზების გაგზავნა შეუძლია მხოლოდ კომპანიის ანგარიშს.',MA202:'საკუთარ მოთხოვნაზე შეთავაზებას ვერ გაგზავნით.',MA203:'მოთხოვნა აღარ იღებს შეთავაზებებს.',
+  MA204:'აღწერეთ შეთავაზება მინიმუმ 10 სიმბოლოთი.',MA205:'ფასი უნდა იყოს დადებითი რიცხვი.',MA206:'შეთავაზება ვერ მოიძებნა.',MA207:'არჩეული შეთავაზება ვერ გაუქმდება.',
+  MA208:'ამ მოთხოვნაზე არჩევა აღარ შეიძლება.',MA209:GENERIC,
+  MA210:'აირჩიეთ ფასის ტიპი.',MA211:'„შეთანხმებით“ შეთავაზებაში ფასი არ მიეთითება.',MA212:'მიუთითეთ ფასი ან აირჩიეთ „შეთანხმებით“.',MA213:'მიწოდების ვადა უნდა იყოს 0-დან 365 დღემდე.',
+ MA301:'საკუთარ ანგარიშს ვერ დაბლოკავთ.',MA302:'მომხმარებელი ვერ მოიძებნა.',MA303:'ვერიფიკაცია შეიძლება მხოლოდ კომპანიისთვის.',MA304:'მიზეზი უნდა იყოს 3-დან 500 სიმბოლომდე.',
+  MA401:'მიუთითეთ სახელი და გვარი.',MA402:'მიუთითეთ კომპანიის დასახელება.',MA403:'მიუთითეთ სწორი ელფოსტა.',MA404:'მიუთითეთ მობილურის ნომერი ფორმატით: +995 5XX XXX XXX.',
+  MA405:'ეს ტელეფონის ნომერი უკვე გამოყენებულია.',MA407:'აირჩიეთ საქმიანობის დარგი.',MA408:CHECK_EMAIL,
+  MA501:'მიმოწერა ვერ მოიძებნა ან მასზე წვდომა არ გაქვთ.',MA502:'კომპანია მიუწვდომელია.',MA503:'საკუთარ თავს ვერ მისწერთ.',
   MA504:'ამ მოთხოვნაზე მიმოწერის დაწყება შეუძლებელია.',MA505:'შეტყობინება უნდა შეიცავდეს 1–2000 სიმბოლოს.',
-  MA506:'შეტყობინებებს ძალიან სწრაფად აგზავნი. ცოტა ხანში სცადე თავიდან.',MA507:'მიმოწერის მონაწილეებისა და კონტექსტის შეცვლა შეუძლებელია.',
+  MA506:'შეტყობინებებს ძალიან სწრაფად აგზავნით. ცოტა ხანში სცადეთ ხელახლა.',MA507:'მიმოწერის მონაწილეებისა და კონტექსტის შეცვლა შეუძლებელია.',
   MA410:'კომპანიის აღწერა მაქსიმუმ 1000 სიმბოლოა.',MA411:'ჩამონათვალში შეიძლება 8 პუნქტამდე, თითო 120 სიმბოლომდე.'
  };
  const PASSWORD_MIN=8,PASSWORD_SHORT='პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან.',TERMS='რეგისტრაციისთვის საჭიროა წესებზე თანხმობა.';
- const EMAIL_EXISTS='ამ ელფოსტით ანგარიში უკვე არსებობს. შედი ანგარიშში.',WRONG_LOGIN='პაროლი არასწორია.',BLOCKED_LOGIN='ანგარიში დაბლოკილია. დაუკავშირდი MeetAny-ს გუნდს.';
- const WRONG_CODE='კოდი არასწორია ან ვადაგასულია. სცადე თავიდან ან მოითხოვე ახალი კოდი.';
+ const EMAIL_EXISTS='ამ ელფოსტით ანგარიში უკვე არსებობს. შედით ანგარიშში.',WRONG_LOGIN='პაროლი არასწორია.',BLOCKED_LOGIN='ანგარიში დაბლოკილია. დაუკავშირდით MeetAny-ს გუნდს.';
+ const WRONG_CODE='კოდი არასწორია ან ვადაგასულია. სცადეთ ხელახლა ან მოითხოვეთ ახალი კოდი.';
 
  const userError=(message,code,cause)=>{const e=new Error(message);e.userMessage=message;if(code)e.code=code;if(cause)e.cause=cause;return e;};
  const fail=(message,code)=>{throw userError(message,code);};
@@ -95,7 +96,18 @@ export function createMarketStore({initial=null,background=true}={}){
   else{userJwt=null;userExp=0;authUser=null;}
   if(previous&&previous!==authUser?.id)clearCallerCache();
  }
- let sessionPreloadUsed=false;
+ let sessionPreloadUsed=false,bootstrapPreloadUsed=false;
+ // The layout's preload script fetched /bootstrap right after the session read. Use it once, and
+ // only for the same caller and token as this load; anything else reads /bootstrap again.
+ async function preloadedBootstrap(actor){
+  if(bootstrapPreloadUsed||typeof window==='undefined')return null;
+  bootstrapPreloadUsed=true;
+  const task=window.__meetanyBootstrapPreload;delete window.__meetanyBootstrapPreload;
+  const pre=task&&await withReadTimeout(()=>task).catch(()=>null);
+  if(!pre?.data||pre.sub!==actor||(actor&&pre.jwt!==userJwt))return null;
+  return pre.data;
+ }
+ function rememberSession(signedIn){try{if(signedIn)localStorage.setItem(SESSION_HINT_KEY,'1');else localStorage.removeItem(SESSION_HINT_KEY);}catch{}}
  async function authFetch(path,body){
   if(path==='/get-session'&&!sessionPreloadUsed&&typeof window!=='undefined'&&window.__meetanySessionPreload){
    sessionPreloadUsed=true;
@@ -119,7 +131,7 @@ export function createMarketStore({initial=null,background=true}={}){
  // Asks Neon Auth for a fresh user JWT (needs the session cookie). No session -> signed out.
  async function loadUserJwt(fresh=false){
   if(authInFlight&&!fresh)return userJwt;
-  if(fresh){authRevision++;userJwtTask=null;sessionPreloadUsed=true;if(typeof window!=='undefined')delete window.__meetanySessionPreload;}
+  if(fresh){authRevision++;userJwtTask=null;sessionPreloadUsed=true;bootstrapPreloadUsed=true;if(typeof window!=='undefined'){delete window.__meetanySessionPreload;delete window.__meetanyBootstrapPreload;}}
   if(userJwtTask)return userJwtTask;
   const revision=authRevision;
   const task=(async()=>{
@@ -179,7 +191,7 @@ export function createMarketStore({initial=null,background=true}={}){
  let engagementTask=null,engagementRevision=0,engagementCapabilities=null;
  // A failed refresh keeps the previous data on screen; the flags say so, and mutations toast it.
  let dataStale=false,engagementStale=false;
- const warnStale=stale=>{if(stale&&typeof window!=='undefined')toast(STALE);};
+ const warnStale=stale=>{if(stale&&typeof window!=='undefined')toast({title:STALE,tone:'warning'});};
  function pendingSaveIntent(){
   let intent=null;
   try{intent=JSON.parse(sessionStorage.getItem('meetany.saveIntent')||'null');}catch{}
@@ -342,12 +354,17 @@ export function createMarketStore({initial=null,background=true}={}){
  // Bootstrap all caller-scoped data in one network/database transaction.
  async function load(){
   if(!userJwt||Date.now()>=userExp-60e3)await loadUserJwt();
+  let wrote=false;
   if(!authInFlight&&authUser&&pendingMatches()&&hasPendingDetails()){
+   wrote=true;
    try{await completeProfile(pending);profileError=null;}catch(err){profileError=err.userMessage||GENERIC;}
   }
   const revision=authRevision,actor=authUser?.id||null;
+  if(!authInFlight)rememberSession(!!actor);
   let data;
-  try{data=await db('/bootstrap');}
+  // A profile written just above must be read back, not taken from the earlier preload.
+  const pre=await preloadedBootstrap(actor);
+  try{data=!wrote&&pre||await db('/bootstrap');}
   catch(err){if(err.code==='PGRST205')return loadLegacy();throw err;}
   if(revision!==authRevision||actor!==(authUser?.id||null))return;
   const me=mapUser(data.me),companies=data.companies.map(mapUser).sort(compareCompanies);
@@ -543,7 +560,7 @@ export function createMarketStore({initial=null,background=true}={}){
  async function changePassword(currentPassword,newPassword){
   client();
   const current=String(currentPassword||''),password=String(newPassword||'');
-  if(!current)fail('მიუთითე მიმდინარე პაროლი.');
+  if(!current)fail('მიუთითეთ მიმდინარე პაროლი.');
   if(password.length<PASSWORD_MIN)fail(PASSWORD_SHORT);
   if(password.length>128)fail('პაროლი მაქსიმუმ 128 სიმბოლოა.');
   try{await authFetch('/change-password',{currentPassword:current,newPassword:password,revokeOtherSessions:true});}
@@ -914,6 +931,31 @@ export function createMarketStore({initial=null,background=true}={}){
  const markRead=id=>rpc('mark_read',{p_conversation_id:id}).then(data=>({marked:Number(data.marked),readAt:data.read_at}));
  const unreadMessageCount=()=>rpc('unread_message_count').then(Number);
 
+ /* ---------- attachments ---------- */
+ // File lists requested in the same tick (one per offer card) share one list_attachments_many
+ // read. A target missing from its answer (not readable) or a server without the batch RPC
+ // falls back to list_attachments, so errors and results stay exactly per target.
+ const attachmentBatches=new Map();let attachmentsBatch=true;
+ const listAttachment=(kind,target)=>rpc('list_attachments',{p_kind:kind,p_target:target});
+ function listAttachments(kind,target){
+  if(!attachmentsBatch)return listAttachment(kind,target);
+  return new Promise((resolve,reject)=>{
+   let batch=attachmentBatches.get(kind);
+   if(!batch){batch=new Map();attachmentBatches.set(kind,batch);setTimeout(()=>flushAttachments(kind,batch),0);}
+   if(!batch.has(target))batch.set(target,[]);
+   batch.get(target).push({resolve,reject});
+  });
+ }
+ function flushAttachments(kind,batch){
+  attachmentBatches.delete(kind);
+  const settle=(target,read)=>read.then(v=>batch.get(target).forEach(p=>p.resolve(v)),e=>batch.get(target).forEach(p=>p.reject(e)));
+  const targets=[...batch.keys()];
+  if(targets.length===1||!attachmentsBatch){targets.forEach(t=>settle(t,listAttachment(kind,t)));return;}
+  for(const part of chunks(targets,50))rpc('list_attachments_many',{p_kind:kind,p_targets:part}).then(
+   map=>part.forEach(t=>settle(t,map&&Object.hasOwn(map,t)?Promise.resolve(map[t]):listAttachment(kind,t))),
+   err=>{if(err?.code==='PGRST202')attachmentsBatch=false;part.forEach(t=>settle(t,listAttachment(kind,t)));});
+ }
+
  /* ---------- business directory, reviews and company plans ---------- */
  const companyBusinessFeatures=()=>rpc('company_business_features');
  const companyReviews=(id,offset=0)=>rpc('company_reviews',{p_company_id:id,p_offset:offset});
@@ -980,7 +1022,7 @@ export function createMarketStore({initial=null,background=true}={}){
   listNotifications:cursor=>rpc('list_notifications',{p_cursor:cursor||null}),
   // Generic entry points for the new flows (deals, comparison, matching, onboarding): callRpc reads,
   // mutateRpc writes and then refreshes the public snapshot. Errors carry MAxxx userMessage texts.
-  callRpc:(name,args={})=>rpc(name,args),
+  callRpc:(name,args={})=>rpc(name,args),listAttachments,
   authenticatedFetch:async (path,options={})=>{if(!/^\/api\/files(?:\?|$)/.test(path))throw new Error('Invalid file endpoint');const headers=new Headers(options.headers);headers.set('Authorization','Bearer '+await token());let response=await fetch(path,{...options,headers});if(response.status===401){userExp=0;await loadUserJwt();headers.set('Authorization','Bearer '+await token());response=await fetch(path,{...options,headers});}return response;},
   mutateRpc:(name,args={})=>mutate(name,args),
   seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isSessionReady:()=>sessionReady,sessionLoadError:()=>sessionLoadError,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,

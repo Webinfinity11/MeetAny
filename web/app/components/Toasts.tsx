@@ -4,6 +4,8 @@ import { Icon } from "./Icon";
 import styles from "./Toasts.module.css";
 export type ToastMessage = { title: string; sub?: string; tone?: "success" | "info" | "warning" | "danger"; action?: { label: string; onClick: () => void } };
 export function toast(message: string | ToastMessage) { window.dispatchEvent(new CustomEvent("meetany:toast", { detail: typeof message === "string" ? { title: message, tone: "success" } : message })); }
+/** Error toast: danger tone and its own icon — a failure never shows the success check. */
+export function toastError(message: string, sub?: string) { toast({ title: message, sub, tone: "danger" }); }
 type Item = ToastMessage & { id: number };
 function ToastItem({ item, dismiss }: { item: Item; dismiss: (id: number) => void }) {
   const remaining = useRef(5000);
@@ -21,7 +23,7 @@ function ToastItem({ item, dismiss }: { item: Item; dismiss: (id: number) => voi
   }, [dismiss, item.id]);
   useEffect(() => { resume(); return () => { if (timer.current !== null) { clearTimeout(timer.current); timer.current = null; } }; }, [resume]);
   const tone = item.tone || "success";
-  return <div className={styles.toast} data-tone={tone} onMouseEnter={() => { hovered.current = true; pause(); }} onMouseLeave={() => { hovered.current = false; resume(); }}
+  return <div className={styles.toast} data-tone={tone} role={tone === "danger" ? "alert" : undefined} onMouseEnter={() => { hovered.current = true; pause(); }} onMouseLeave={() => { hovered.current = false; resume(); }}
     onFocus={() => { focused.current = true; pause(); }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) { focused.current = false; resume(); } }}>
     <Icon name={{ success: "circle-check", info: "info", warning: "triangle-alert", danger: "circle-alert" }[tone]} className={styles.icon} />
     <div className={styles.copy}><p className={styles.title}>{item.title}</p>{item.sub ? <p className={styles.sub}>{item.sub}</p> : null}</div>

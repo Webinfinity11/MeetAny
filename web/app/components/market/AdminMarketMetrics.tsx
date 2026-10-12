@@ -17,7 +17,7 @@ export function AdminMarketMetrics({store}:{store:Store}) {
   {resource.error?<AdminState error title="ანალიტიკა ვერ ჩაიტვირთა" text={resource.error} onRetry={resource.reload}/>:!data?<ListSkeleton compact kind="records"/>:<>
    <div className={styles.metricStrip}>
     <div className={styles.metric}><span>უპასუხო ღია მოთხოვნები</span><strong className={styles.kpiValue}>{data.withoutOffers}</strong><small>ამჟამად ღია · ხილული მოთხოვნები აქტიური ავტორებით</small></div>
-    <div className={styles.metric}><span>პირველ შეთავაზებამდე საშუალო დრო</span><strong className={styles.kpiValue}>{data.averageFirstOfferHours===null?'—':`${data.averageFirstOfferHours} სთ`}</strong><small>მთელი პერიოდი · შეთავაზების მქონე მოთხოვნები</small></div>
+    <div className={styles.metric}><span>პირველ შეთავაზებამდე საშუალო დრო</span><strong className={styles.kpiValue}>{data.averageFirstOfferHours===null?'—':`${data.averageFirstOfferHours} საათი`}</strong><small>მთელი პერიოდი · შეთავაზების მქონე მოთხოვნები</small></div>
     <div className={styles.metric}><span>მომწოდებლის არჩევის წილი</span><strong className={styles.kpiValue}>{data.chosenShare===null?'—':`${data.chosenShare}%`}</strong><small>{data.chosen} არჩევა / {data.completed} დასრულებული ან ვადაგასული მოთხოვნა · მთელი პერიოდი</small></div>
    </div>
    <p className={styles.note}>მომწოდებლის არჩევა გადახდილ ან მიწოდებულ შეკვეთას არ ნიშნავს.</p>

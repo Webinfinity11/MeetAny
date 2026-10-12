@@ -23,12 +23,10 @@
 .locationDetails > summary small { font-size: var(--fs-xs); color: var(--success-700); }
 .locationDetails :global(.profile-location-picker) { margin: 0; padding: 0 var(--space-3) var(--space-3); }
 .locationDetails :global(.profile-location-heading) { display: none; }
-.toolbar { position: sticky; top: calc(var(--header-h) + var(--space-2)); z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-2) var(--space-3); padding: var(--space-3); border: var(--size-1) solid var(--ink-200); border-radius: var(--field-radius); background: var(--white); box-shadow: var(--card-shadow); }
-.toolbar > :global(.account-section__title) { font-size: var(--fs-title); line-height: var(--lh-title); }
-.toolbar > :global(p) { grid-column: 1 / -1; margin: 0; }
+.heading { display: grid; gap: var(--space-1); min-width: 0; }
+.heading > :global(.account-section__title) { font-size: var(--fs-title); line-height: var(--lh-title); }
+.profileForm :global(.account-form-actions) { padding-top: var(--space-5); border-top: var(--size-1) solid var(--ink-150); }
 @media (max-width: 1023px) { .media { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 639px) {
-  .toolbar { padding: var(--space-2); }
-  .toolbar > :global(.account-section__title) { font-size: var(--fs-body); line-height: var(--lh-body); }
   .locationDetails > summary { flex-wrap: wrap; }
 }

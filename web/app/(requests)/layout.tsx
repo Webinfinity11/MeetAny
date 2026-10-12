@@ -8,8 +8,8 @@ import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
-  title: "მოთხოვნები — MeetAny",
-  description: "ბიზნესის საჭიროებები: დადე განცხადება და მიიღე კომპანიების შეთავაზებები.",
+  title: "ღია მოთხოვნები — MeetAny",
+  description: "ბიზნესების ღია მოთხოვნები: გაუგზავნეთ შეთავაზება ან განათავსეთ საკუთარი მოთხოვნა და მიიღეთ კომპანიების შეთავაზებები.",
   icons: siteIcons,
 };
 

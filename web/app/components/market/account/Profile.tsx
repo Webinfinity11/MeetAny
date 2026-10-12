@@ -17,11 +17,10 @@ import { useMarketStore } from "../../../lib/market-client";
 import { cities } from "../../../lib/categories";
 import { categoryOptions } from "../CategoryOptions";
 import type { AnyUser } from "./shared";
-import { CompanyUpgrade } from "./CompanyUpgrade";
 import styles from "./ProfileForm.module.css";
 const profileSections = { details: "მონაცემები და ფოტოები", products: "პროდუქტები", distribution: "დისტრიბუცია", security: "პაროლი" };
 export function CompanyProfileNav({active}:{active:string}) {
- return <nav className="company-profile-sections" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}<Link href="/account/?tab=business" aria-current={active==="business"?"page":undefined}>ხილვადობის პაკეტები</Link></nav>;
+ return <nav className="company-profile-sections" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}</nav>;
 }
 export function CompanyProfile({me,section}:{me:AnyUser;section:string}) {
  const active=Object.hasOwn(profileSections,section)?section:"details";
@@ -69,15 +68,15 @@ export function ProfileForm({ me }: { me: AnyUser }) {
     e.preventDefault();
     if (!store || pending) return;
     const errors: FieldErrors = {};
-    if (name.trim().length < 2) errors.name = "მიუთითე სახელი და გვარი";
-    if (isCompany && company.trim().length < 2) errors.company = "მიუთითე კომპანიის დასახელება";
+    if (name.trim().length < 2) errors.name = "მიუთითეთ სახელი და გვარი";
+    if (isCompany && company.trim().length < 2) errors.company = "მიუთითეთ კომპანიის დასახელება";
     const latValue = isCompany ? parseCoord(lat) : null;
     const lngValue = isCompany ? parseCoord(lng) : null;
-    if (latValue !== null && !(latValue >= -90 && latValue <= 90)) errors.lat = "განედი უნდა იყოს რიცხვი −90-დან 90-მდე";
-    if (lngValue !== null && !(lngValue >= -180 && lngValue <= 180)) errors.lng = "გრძედი უნდა იყოს რიცხვი −180-დან 180-მდე";
+    if (latValue !== null && !(latValue >= -90 && latValue <= 90)) errors.lat = "განედი რიცხვია −90-დან 90-მდე";
+    if (lngValue !== null && !(lngValue >= -180 && lngValue <= 180)) errors.lng = "გრძედი რიცხვია −180-დან 180-მდე";
     if (!errors.lat && !errors.lng) {
-      if (latValue === null && lngValue !== null) errors.lat = "მიუთითე განედიც — ან წაშალე ორივე";
-      if (lngValue === null && latValue !== null) errors.lng = "მიუთითე გრძედიც — ან წაშალე ორივე";
+      if (latValue === null && lngValue !== null) errors.lat = "მიუთითეთ განედიც ან წაშალეთ ორივე";
+      if (lngValue === null && latValue !== null) errors.lng = "მიუთითეთ გრძედიც ან წაშალეთ ორივე";
     }
     if ((errors.lat || errors.lng) && coordinateDetails.current) coordinateDetails.current.open=true;
     if (!v.check(errors, ["name", "company", "lat", "lng"])) return;
@@ -115,13 +114,10 @@ export function ProfileForm({ me }: { me: AnyUser }) {
 
   return (
     <section className={`account-section ${styles.profileForm}`}>
-      <div className={styles.toolbar}>
+      <div className={styles.heading}>
         <h2 className="account-section__title">{isCompany ? "მონაცემები და ფოტოები" : "პირადი მონაცემები"}</h2>
-        <Button variant="primary" type="submit" form="account-profile-form" loading={pending}>შენახვა</Button>
-        {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
-        {saved ? <p className="account-save-feedback" role="status"><Icon name="check"/>ცვლილებები შენახულია.</p> : null}
+        <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს თქვენს მოთხოვნებზე."}</p>
       </div>
-      <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
       <form id="account-profile-form" className="ma-form" onSubmit={submit} onChange={() => setSaved(false)} noValidate>
         <fieldset className="account-form-group" disabled={pending}>
           {isCompany ? <legend>ძირითადი</legend> : null}
@@ -146,7 +142,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
           {isCompany ? (
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="industry">
-                მიმართულება *
+                დარგი *
               </label>
               <CustomSelect className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
                 {categoryOptions()}
@@ -204,7 +200,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
                 მისამართი <span className="ma-field__opt">არასავალდებულო</span>
               </label>
               <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
-              <p className="ma-field__help" id="address-help">ჩანს პროფილზე „მიმართულება“ ბმულით</p>
+              <p className="ma-field__help" id="address-help">ჩანს საჯარო პროფილზე ბმულით „მისამართი რუკაზე“.</p>
             </div>
             <details className={styles.locationDetails} onToggle={e => setMapOpen(e.currentTarget.open)}><summary><Icon name="map-pin"/><span>მდებარეობა რუკაზე</span>{lat && lng ? <small>მონიშნულია</small> : null}<Icon name="chevron-down"/></summary>
             {mapOpen ? <LocationPicker city={city} disabled={pending} value={Number.isFinite(parseCoord(lat))&&Number.isFinite(parseCoord(lng))&&Math.abs(parseCoord(lat)!)<=90&&Math.abs(parseCoord(lng)!)<=180?{lat:parseCoord(lat)!,lng:parseCoord(lng)!}:null} onChange={point=>{setLat(point?String(point.lat):"");setLng(point?String(point.lng):"");v.clear("lat");v.clear("lng");setSaved(false);}}/> : null}
@@ -227,17 +223,20 @@ export function ProfileForm({ me }: { me: AnyUser }) {
                   {v.message("lng")}
                 </div>
               </div>
-              <p className="account-coords__help" id="coords-help">ზუსტი კოორდინატების მითითება რუკაზე მონიშვნის ნაცვლადაც შეგიძლია.</p>
+              <p className="account-coords__help" id="coords-help">რუკაზე მონიშვნის ნაცვლად ზუსტი კოორდინატებიც შეგიძლიათ მიუთითოთ.</p>
             </fieldset>
             </details>
           </fieldset>
           </>
         ) : null}
-        {isCompany ? <div className="account-form-links">
-          <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link>
-        </div> : null}
+        {/* Save sits after the last field, where the form ends. */}
+        <div className="account-form-actions">
+          <Button variant="primary" type="submit" loading={pending}>ცვლილებების შენახვა</Button>
+          {isCompany ? <Button variant="ghost" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="external-link"/>საჯარო პროფილის ნახვა</Button> : null}
+          {saved ? <p className="account-save-feedback" role="status"><Icon name="check"/>ცვლილებები შენახულია.</p> : null}
+        </div>
+        {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
       </form>
-      <CompanyUpgrade user={me}/>
     </section>
   );
 }
@@ -255,10 +254,10 @@ export function PasswordForm() {
     if (!store || pending) return;
     setError(null);
     const errors: FieldErrors = {};
-    if (!current) errors["password-current"] = "მიუთითე მიმდინარე პაროლი";
-    if (password.length < 8) errors["password-new"] = "მინიმუმ 8 სიმბოლო";
-    if (password.length > 128) errors["password-new"] = "მაქსიმუმ 128 სიმბოლო";
-    if (!repeat) errors["password-repeat"] = "გაიმეორე ახალი პაროლი";
+    if (!current) errors["password-current"] = "მიუთითეთ მიმდინარე პაროლი";
+    if (password.length < 8) errors["password-new"] = "პაროლი მოკლეა";
+    if (password.length > 128) errors["password-new"] = "პაროლი გრძელია";
+    if (!repeat) errors["password-repeat"] = "შეიყვანეთ პაროლი ხელახლა";
     else if (repeat !== password) errors["password-repeat"] = "პაროლები არ ემთხვევა";
     if (!v.check(errors, ["password-current", "password-new", "password-repeat"])) return;
     setPending(true);
@@ -281,12 +280,12 @@ export function PasswordForm() {
             <div className="auth-field-message">{v.message("password-current")}</div>
           </div>
           <div className="ma-field">
-            <label className="ma-field__label" htmlFor="password-new">ახალი პაროლი <span className="ma-field__opt">მინიმუმ 8 სიმბოლო</span></label>
+            <label className="ma-field__label" htmlFor="password-new">ახალი პაროლი <span className="ma-field__opt">8–128 სიმბოლო</span></label>
             <PasswordInput autoComplete="new-password" disabled={pending} value={password} onChange={value => {setPassword(value); v.clear("password-new"); v.clear("password-repeat");}} field={{...v.control("password-new"), maxLength: 128}} />
             <div className="auth-field-message">{v.message("password-new")}</div>
           </div>
           <div className="ma-field">
-            <label className="ma-field__label" htmlFor="password-repeat">გაიმეორე ახალი პაროლი</label>
+            <label className="ma-field__label" htmlFor="password-repeat">ახალი პაროლი ხელახლა</label>
             <PasswordInput autoComplete="new-password" disabled={pending} value={repeat} onChange={value => {setRepeat(value); v.clear("password-repeat");}} field={{...v.control("password-repeat"), maxLength: 128}} />
             <div className="auth-field-message">{v.message("password-repeat")}</div>
           </div>

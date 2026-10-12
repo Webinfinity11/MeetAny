@@ -1,0 +1,483 @@
+{
+  "base": "http://localhost:3309",
+  "at": "2026-10-12T11:19:30.706Z",
+  "cls": [
+    {
+      "name": "home",
+      "width": 390,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests",
+      "width": 390,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests (soft nav)",
+      "width": 390,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "request-view",
+      "width": 390,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account",
+      "width": 390,
+      "role": "client",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests",
+      "width": 390,
+      "role": "client",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account (soft nav)",
+      "width": 390,
+      "role": "client",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account",
+      "width": 390,
+      "role": "company",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests",
+      "width": 390,
+      "role": "company",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account (soft nav)",
+      "width": 390,
+      "role": "company",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "home",
+      "width": 360,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests",
+      "width": 360,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests (soft nav)",
+      "width": 360,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "request-view",
+      "width": 360,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account",
+      "width": 360,
+      "role": "client",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests",
+      "width": 360,
+      "role": "client",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account (soft nav)",
+      "width": 360,
+      "role": "client",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account",
+      "width": 360,
+      "role": "company",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "requests",
+      "width": 360,
+      "role": "company",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "account (soft nav)",
+      "width": 360,
+      "role": "company",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "/requests/ (throttled)",
+      "width": 390,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "/requests/ (throttled)",
+      "width": 360,
+      "role": "guest",
+      "cls": 0,
+      "shifts": []
+    },
+    {
+      "name": "/account/ (throttled)",
+      "width": 390,
+      "role": "client",
+      "cls": 0.0079,
+      "shifts": [
+        {
+          "v": 0.003,
+          "t": 3481,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions",
+            "ma-logo__wordmark"
+          ]
+        },
+        {
+          "v": 0.0025,
+          "t": 3519,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        },
+        {
+          "v": 0.0025,
+          "t": 3538,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "/account/ (throttled)",
+      "width": 360,
+      "role": "client",
+      "cls": 0.0099,
+      "shifts": [
+        {
+          "v": 0.0037,
+          "t": 3628,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions",
+            "ma-logo__wordmark"
+          ]
+        },
+        {
+          "v": 0.0031,
+          "t": 3668,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        },
+        {
+          "v": 0.0031,
+          "t": 3712,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "/account/ (throttled)",
+      "width": 390,
+      "role": "company",
+      "cls": 0.0049,
+      "shifts": [
+        {
+          "v": 0.0012,
+          "t": 3469,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions",
+            "ma-logo__wordmark"
+          ]
+        },
+        {
+          "v": 0.0018,
+          "t": 3514,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        },
+        {
+          "v": 0.0018,
+          "t": 3528,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        },
+        {
+          "v": 0,
+          "t": 4212,
+          "src": [
+            "ma-badge ma-badge--success account-module___JGDBW_"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "/account/ (throttled)",
+      "width": 360,
+      "role": "company",
+      "cls": 0.0638,
+      "shifts": [
+        {
+          "v": 0.0011,
+          "t": 3448,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions",
+            "ma-logo__wordmark"
+          ]
+        },
+        {
+          "v": 0.0023,
+          "t": 3462,
+          "src": [
+            "Header-module__9fWxfa__ma-header__actions"
+          ]
+        },
+        {
+          "v": 0.0604,
+          "t": 4203,
+          "src": [
+            "account-module___JGDBW__stats",
+            "",
+            "",
+            "ma-badge ma-badge--success account-module___JGDBW_",
+            "ma-btn ma-btn--primary"
+          ]
+        }
+      ]
+    }
+  ],
+  "scroll": [
+    {
+      "width": 390,
+      "before": 900,
+      "at": 1988,
+      "detailTop": 0,
+      "after": 1988,
+      "restored": true
+    },
+    {
+      "width": 360,
+      "before": 900,
+      "at": 1952,
+      "detailTop": 0,
+      "after": 1952,
+      "restored": true
+    }
+  ],
+  "motion": [
+    {
+      "what": "drawer open",
+      "width": 390,
+      "duration": "0.22s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Header-module__9fWxfa__mnav-in"
+    },
+    {
+      "what": "drawer close",
+      "width": 390,
+      "duration": "0.16s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Header-module__9fWxfa__mnav-out",
+      "open": true
+    },
+    {
+      "what": "filter sheet open",
+      "width": 390,
+      "duration": "0.22s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Modal-module__AITaea__sheet-in"
+    },
+    {
+      "what": "filter sheet close",
+      "width": 390,
+      "duration": "0.16s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Modal-module__AITaea__sheet-out"
+    },
+    {
+      "what": "drawer open",
+      "width": 360,
+      "duration": "0.22s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Header-module__9fWxfa__mnav-in"
+    },
+    {
+      "what": "drawer close",
+      "width": 360,
+      "duration": "0.16s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Header-module__9fWxfa__mnav-out",
+      "open": true
+    },
+    {
+      "what": "filter sheet open",
+      "width": 360,
+      "duration": "0.22s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Modal-module__AITaea__sheet-in"
+    },
+    {
+      "what": "filter sheet close",
+      "width": 360,
+      "duration": "0.16s",
+      "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "name": "Modal-module__AITaea__sheet-out"
+    }
+  ],
+  "toast": [
+    {
+      "width": 390,
+      "toastBottom": 118,
+      "barTop": 775,
+      "overlap": false,
+      "icon": "/icons.svg#circle-alert"
+    },
+    {
+      "width": 360,
+      "toastBottom": 118,
+      "barTop": 711,
+      "overlap": false,
+      "icon": "/icons.svg#circle-alert"
+    }
+  ],
+  "notes": [
+    {
+      "width": 390,
+      "drawerClosedFocus": "მენიუ"
+    },
+    {
+      "width": 390,
+      "sheet": {
+        "top": 84,
+        "bottom": 844,
+        "vh": 844,
+        "pad": "20px",
+        "btns": [
+          {
+            "t": "გასუფთავება",
+            "w": 350,
+            "y": 780
+          },
+          {
+            "t": "1 შედეგის ნახვა",
+            "w": 350,
+            "y": 726
+          }
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "notFound": {
+        "theme": "blue",
+        "body": "ma",
+        "margin": "0px",
+        "font": "FiraGO, \"Noto Sans Georgian\", system-ui,"
+      }
+    },
+    {
+      "width": 390,
+      "role": "client",
+      "drawer": "მოთხოვნები\nკომპანიები\nროგორ მუშაობს\nსმ\nსატესტო მომხმარებელი\nდაფა\nჩემი მოთხოვნები\nგარიგებები\nშენახული\nმიმოწერები\nშეტყობინებები\nპარამეტრები\nმოთხოვნის განთავსება\nგასვლა"
+    },
+    {
+      "width": 390,
+      "role": "company",
+      "drawer": "მოთხოვნები\nკომპანიები\nროგორ მუშაობს\nსატესტო კომპანია\nდაფა\nშესაძლებლობები\nჩემი შეთავაზებები\nგარიგებები\nშენახული\nმიმოწერები\nშეტყობინებები\nპარამეტრები\nგასვლა"
+    },
+    {
+      "width": 360,
+      "drawerClosedFocus": "მენიუ"
+    },
+    {
+      "width": 360,
+      "sheet": {
+        "top": 78,
+        "bottom": 780,
+        "vh": 780,
+        "pad": "20px",
+        "btns": [
+          {
+            "t": "გასუფთავება",
+            "w": 320,
+            "y": 716
+          },
+          {
+            "t": "1 შედეგის ნახვა",
+            "w": 320,
+            "y": 662
+          }
+        ]
+      }
+    },
+    {
+      "width": 360,
+      "notFound": {
+        "theme": "blue",
+        "body": "ma",
+        "margin": "0px",
+        "font": "FiraGO, \"Noto Sans Georgian\", system-ui,"
+      }
+    },
+    {
+      "width": 360,
+      "role": "client",
+      "drawer": "მოთხოვნები\nკომპანიები\nროგორ მუშაობს\nსმ\nსატესტო მომხმარებელი\nდაფა\nჩემი მოთხოვნები\nგარიგებები\nშენახული\nმიმოწერები\nშეტყობინებები\nპარამეტრები\nმოთხოვნის განთავსება\nგასვლა"
+    },
+    {
+      "width": 360,
+      "role": "company",
+      "drawer": "მოთხოვნები\nკომპანიები\nროგორ მუშაობს\nსატესტო კომპანია\nდაფა\nშესაძლებლობები\nჩემი შეთავაზებები\nგარიგებები\nშენახული\nმიმოწერები\nშეტყობინებები\nპარამეტრები\nგასვლა"
+    },
+    {
+      "role": "client",
+      "menu": "სატესტო მომხმარებელიდაფაჩემი მოთხოვნებიგარიგებებიშენახულიპარამეტრებიგასვლა"
+    },
+    {
+      "role": "company",
+      "menu": "სატესტო კომპანია\nდაფა\nშესაძლებლობები\nჩემი შეთავაზებები\nგარიგებები\nშენახული\nპარამეტრები\nგასვლა"
+    }
+  ]
+}

@@ -38,10 +38,10 @@ export default function UIPage() {
     </div>)}</div>
     <h2>ცარიელი ეკრანები</h2>
     <div className="ui-preview-grid">
-    <EmptyState icon="inbox" title="შეთავაზებები ჯერ არაა" text="მოთხოვნა 15 მომწოდებელს ეცნობა. პირველი შეთავაზებები ჩვეულებრივ 24 საათში მოდის." action={<Button variant="secondary" onClick={() => setModal("info")}>მოთხოვნის ნახვა</Button>} />
+    <EmptyState icon="inbox" title="შეთავაზებები ჯერ არ არის" text="მოთხოვნა 15 მომწოდებელს ეცნობა. პირველი შეთავაზებები ჩვეულებრივ 24 საათში მოდის." action={<Button variant="secondary" onClick={() => setModal("info")}>მოთხოვნის ნახვა</Button>} />
     <EmptyState icon="file-text" title="მოთხოვნები არ გაქვთ" text="აღწერეთ, რა გჭირდებათ — შესაბამისი კომპანიები შეთავაზებებს გამოგიგზავნიან." action={<Button onClick={() => setModal("neutral")}>მოთხოვნის განთავსება</Button>} />
     <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="შეცვალეთ ფილტრები ან ძიების სიტყვა. „ჭიქები“-ს ნაცვლად სცადეთ „შეფუთვა“." action={<Button variant="secondary" onClick={() => toast("ფილტრები გასუფთავდა")}>ფილტრების გასუფთავება</Button>} />
-    <EmptyState icon="message-square" title="მესიჯები ჯერ არაა" text="ჩატი იხსნება, როცა შეთავაზებას გაგზავნით ან მიიღებთ." />
+    <EmptyState icon="message-square" title="შეტყობინებები ჯერ არ არის" text="ჩატი იხსნება, როცა შეთავაზებას გაგზავნით ან მიიღებთ." />
     </div>
     <h2>ჩატვირთვა</h2><SkeletonGrid count={3} columns={3} />
     <h2>ღილაკები</h2>

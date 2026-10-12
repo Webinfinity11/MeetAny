@@ -881,6 +881,9 @@
 .report-link:hover{color:var(--text-2)}
 .request-offer-actions .report-link{margin-right:auto}
 .company-contact-card .report-link,.request-detail-aside>.report-link{justify-self:start}
+/* Request detail aside: share, save and report as one list of small ghost buttons, icons in one column.
+   Three labels do not fit one row of the aside at 390 or 1440, so they stack at every width. */
+.request-secondary-actions{display:grid;justify-items:start;gap:var(--space-1);min-width:0}
 .report-reasons{display:grid;gap:0;margin:0;padding:0;border:0;min-width:0}
 .report-reasons legend{margin-bottom:var(--space-1)}
 .report-reasons .ma-check{min-height:var(--size-40);padding-block:var(--space-1);font-size:var(--size-14)}
@@ -982,3 +985,23 @@ body:has(.detail-page) { background: var(--ink-50); }
 @media (max-width:1023px) {
  .request-workspace .detail-actionbar { display: flex; }
 }
+
+/* Facts: as many columns as there are facts (empty ones are not rendered), never an orphan cell. */
+.request-workspace .request-detail-facts { grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-160)), 1fr)); }
+@media (min-width:1024px) { .request-workspace .request-detail-facts { grid-template-columns: repeat(auto-fit, minmax(var(--size-160), 1fr)); } }
+@media (max-width:767px) {
+ .request-workspace .request-detail-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ .request-workspace .request-detail-facts > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+.request-workspace .request-detail-facts dd { overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.request-summary-facts dd.request-summary-facts__date { margin-top: var(--space-half); font-size: var(--size-12); font-weight: var(--fw-regular); color: var(--text-3); }
+.request-photo-file { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-4); padding: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--radius-md); color: inherit; text-decoration: none; }
+.request-photo-file img { flex: none; width: var(--size-112); height: var(--size-70); object-fit: cover; border-radius: var(--radius-sm); }
+.request-photo-file > span { display: grid; flex: 1; min-width: 0; gap: var(--space-half); }
+.request-photo-file strong { font-size: var(--size-13); }
+.request-photo-file small { font-size: var(--size-12); color: var(--text-3); }
+.request-photo-file > .icon { flex: none; color: var(--text-3); }
+/* Quiet actions under the aside: share and save in one row of equal ghost buttons; the report link below. */
+.request-secondary-actions { display: grid; justify-items: start; gap: var(--space-1); }
+.request-secondary-actions__row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.report-link { min-height: var(--tap-min); }

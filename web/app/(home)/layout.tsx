@@ -10,8 +10,8 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
 export const metadata: Metadata = {
-  title: "MeetAny — იპოვე შენი ბიზნესპარტნიორი",
-  description: "აღწერე ბიზნესსაჭიროება, აღმოაჩინე შესაბამისი კომპანია და დაიწყე საქმიანი კავშირი.",
+  title: "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+  description: "ერთი მოთხოვნა — რამდენიმე შეთავაზება. აღწერეთ საჭიროება და შეადარეთ ვერიფიცირებული კომპანიების შეთავაზებები.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },

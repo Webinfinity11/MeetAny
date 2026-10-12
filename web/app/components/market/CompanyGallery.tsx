@@ -1,5 +1,7 @@
 "use client";
 
+import { optimizable } from "../../lib/image";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { trapDialogFocus } from "../ui/dialog-focus";
 import { Icon } from "../Icon";
@@ -22,13 +24,13 @@ export function CompanyGallery({ photos: all, name }: { photos: string[]; name: 
       <div className={styles.gallery}>
         {shown.map((src, i) => (
           <button key={src + i} type="button" className={styles.galleryTile} onClick={() => open(i)} aria-label={`${name} — ფოტო ${i + 1} / ${photos.length}`}>
-            <img src={src} alt="" loading={i ? "lazy" : "eager"} onError={() => setFailed(f => [...f, src])} />
+            <Image src={src} alt="" width={640} height={480} sizes="(max-width: 720px) 100vw, 640px" unoptimized={!optimizable(src)} loading={i ? "lazy" : "eager"} onError={() => setFailed(f => [...f, src])} />
             {i === shown.length - 1 && extra > 0 ? <span className="company-gallery__more">+{extra}</span> : null}
           </button>
         ))}
       </div>
       <dialog ref={dialog} className="company-viewer" aria-label={`${name} — ფოტოები`} onKeyDown={e => { trapDialogFocus(e); if (e.key === "ArrowRight") step(1); if (e.key === "ArrowLeft") step(-1); }} onClick={e => { if (e.target === dialog.current) dialog.current?.close(); }}>
-        <img src={photos[index]} alt={`${name} — ფოტო ${index + 1}`} />
+        <Image src={photos[index]} alt={`${name} — ფოტო ${index + 1}`} width={1600} height={1200} sizes="100vw" unoptimized={!optimizable(photos[index])} />
         <p className="company-viewer__count">{index + 1} / {photos.length}</p>
         <button type="button" className="company-viewer__close" aria-label="დახურვა" onClick={() => dialog.current?.close()}><Icon name="x" /></button>
         <button type="button" className="company-viewer__nav company-viewer__nav--prev" aria-label="წინა" onClick={() => step(-1)}><Icon name="chevron-left" /></button>

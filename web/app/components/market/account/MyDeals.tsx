@@ -2,12 +2,15 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/Button";
 import Link from "next/link";
+import { Icon } from "../../Icon";
 import type { Store } from "../../../lib/market-client";
-import { listMyDeals, dealHref, dealDate, dealActionLabel, type MyDeal } from "../../../lib/deal-client";
+import { listMyDeals, dealHref, dealDate, dealStageLabel, type MyDeal } from "../../../lib/deal-client";
 import { Status } from "./shared";
 import styles from "./account.module.css";
 import { EmptyState } from "../../ui/Structure";
 import { ListSkeleton } from "../Skeletons";
+import { Notice } from "../../ui/Notice";
+import type { Space } from "./nav";
 /** The actor's deals from list_my_deals: both buyer and supplier, newest activity first. */
 export function useAccountDeals(store: Store, actor: string) {
   const [result, setResult] = useState<{ actor: string; items: MyDeal[]; error?: string }>();
@@ -22,11 +25,15 @@ export function useAccountDeals(store: Store, actor: string) {
 }
 function DealRow({ store, actor, deal }: { store: Store; actor: string; deal: MyDeal }) {
   const partner = store.userById(deal.buyer_id === actor ? deal.supplier_id : deal.buyer_id);
-  return <li className={styles.deal}><div><h2><Link className={styles.cardLink} href={dealHref(deal.id)}>{deal.request_title || "გარიგება"}</Link></h2><p>{deal.buyer_id === actor ? "მომწოდებელი" : "მყიდველი"}: {partner?.company || partner?.name || "პარტნიორი"}</p></div><Status tone={deal.stage === "complete" ? "success" : "neutral"}>{dealActionLabel(deal.stage)}</Status><time dateTime={deal.latest_at}>{dealDate(deal.latest_at)}</time><Button variant="secondary" href={dealHref(deal.id)}>გარიგება</Button></li>;
+  return <li className={styles.deal}><div><h2><Link className={styles.cardLink} href={dealHref(deal.id)}>{deal.request_title || "გარიგება"}</Link></h2><p>{deal.buyer_id === actor ? "მომწოდებელი" : "მყიდველი"}: {partner?.company || partner?.name || "პარტნიორი"}</p></div><Status tone={deal.stage === "complete" ? "success" : deal.stage === "cancelled" ? "muted" : "info"}>{dealStageLabel(deal.stage)}</Status><time dateTime={deal.latest_at}>{dealDate(deal.latest_at)}</time><Button variant="secondary" href={dealHref(deal.id)}>გარიგების გახსნა</Button></li>;
 }
-export function MyDeals({ store, actor }: { store: Store; actor: string }) {
+export function MyDeals({ store, actor, space }: { store: Store; actor: string; space: Space }) {
   const result = useAccountDeals(store, actor);
   if (!result) return <ListSkeleton compact label="გარიგებები იტვირთება…"/>;
-  if (result.error) return <EmptyState role="alert" icon="circle-alert" title="გარიგებები ვერ ჩაიტვირთა" text="სცადეთ ხელახლა." action={<Button variant="secondary" onClick={result.reload}>ხელახლა ცდა</Button>}/>;
-  return result.items.length ? <ul className={styles.deals}>{result.items.map(deal => <DealRow key={deal.id} store={store} actor={actor} deal={deal}/>)}</ul> : <EmptyState icon="handshake" title="გარიგებები ჯერ არ გაქვთ" text="მომწოდებლის არჩევის შემდეგ შეთანხმება და შესრულების ეტაპები აქ გამოჩნდება." action={<Button variant="secondary" href="/account/?space=buy&tab=requests">ჩემი მოთხოვნები</Button>}/>;
+  if (result.error) return <Notice tone="error" action={<Button variant="secondary" size="sm" onClick={result.reload}>ხელახლა ცდა</Button>}>გარიგებები ვერ ჩაიტვირთა.</Notice>;
+  if (result.items.length) return <ul className={styles.deals}>{result.items.map(deal => <DealRow key={deal.id} store={store} actor={actor} deal={deal}/>)}</ul>;
+  // The empty list speaks the language of the space: a seller waits to be chosen, a buyer chooses.
+  return space === "sell"
+    ? <EmptyState icon="handshake" title="გარიგებები ჯერ არ გაქვთ" text="როცა კლიენტი თქვენს შეთავაზებას აირჩევს, შეთანხმება და შესრულების ეტაპები აქ გამოჩნდება." action={<Button variant="secondary" href="/matching/"><Icon name="inbox"/>შესაძლებლობების ნახვა</Button>}/>
+    : <EmptyState icon="handshake" title="გარიგებები ჯერ არ გაქვთ" text="როცა შეთავაზებას აირჩევთ, შეთანხმება და შესრულების ეტაპები აქ გამოჩნდება." action={<Button variant="secondary" href="/account/?space=buy&tab=requests"><Icon name="file-text"/>მოთხოვნების ნახვა</Button>}/>;
 }

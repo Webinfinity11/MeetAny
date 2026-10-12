@@ -3,12 +3,11 @@ import { Button } from "../ui/Button";
 
 
 import { useCallback, useState } from "react";
-import Link from "next/link";
 import type { Store } from "../../lib/market-client";
 import { useBusinessResource } from "../../lib/business-client";
 import { dateLabel } from "../../lib/format";
 import { CustomSelect } from "../ui/CustomSelect";
-import { AdminDealIssues } from "./AdminDealIssues";
+import type { AdminTarget } from "./AdminDetail";
 import { AdminState } from "./AdminState";
 import { ListSkeleton } from "./Skeletons";
 import styles from "./admin.module.css";
@@ -32,28 +31,26 @@ const PAGE = 20;
 
 export const reportTargetLabel = (r: AdminReport) =>
   r.target_kind === "offer" ? `${r.target_label || "კომპანია"}${r.context_label ? ` · ${r.context_label}` : ""}` : r.target_label || `${kinds[r.target_kind]} · #${r.target_id.slice(0, 8)}`;
-const targetHref = (r: AdminReport) => r.target_kind === "company" ? `/companies/view/?id=${r.target_id}`
-  : `/requests/view/?id=${r.target_kind === "offer" ? r.context_id : r.target_id}`;
+const targetDetail = (r: AdminReport): AdminTarget => ({ kind: r.target_kind === "company" ? "user" : r.target_kind, id: r.target_id });
 
 /** Reports queue: new or handled, newest first, 20 per page. */
-export function AdminReports({ store, status, revision, onStatus, onAction, onCount }: {
+export function AdminReports({ store, status, revision, onStatus, onAction, onCount, onOpen }: {
   store: Store; status: "new" | "handled"; revision: number;
-  onStatus: (status: string) => void; onAction: (action: ReportAction) => void; onCount: (count: number) => void;
+  onStatus: (status: string) => void; onAction: (action: ReportAction) => void; onCount: (count: number) => void; onOpen: (target: AdminTarget) => void;
 }) {
   const [offset, setOffset] = useState(0);
   const load = useCallback(() => store.adminListReports(status, offset).then((page: Page) => { onCount(Number(page.newCount) || 0); return page; }), [store, status, offset, onCount]);
   const resource = useBusinessResource<Page>(load, `${status}:${offset}:${revision}`);
   const page = resource.data;
   return <>
-    <AdminDealIssues store={store}/>
     <div className={styles.filters}>
-      <div><label htmlFor="admin-report-status">სტატუსი</label><CustomSelect id="admin-report-status" className="ma-select" value={status} onChange={event => { setOffset(0); onStatus(event.target.value); }}>
+      <div className={styles.narrowFilter}><label htmlFor="admin-report-status">სტატუსი</label><CustomSelect id="admin-report-status" className="ma-select" value={status} onChange={event => { setOffset(0); onStatus(event.target.value); }}>
         <option value="new">ახალი</option><option value="handled">დამუშავებული</option>
       </CustomSelect></div>
     </div>
     {resource.error ? <AdminState error title="საჩივრები ვერ ჩაიტვირთა" text={resource.error} onRetry={resource.reload} />
       : !page ? <ListSkeleton compact kind="records" label="საჩივრები იტვირთება…" />
-      : !page.items.length ? <AdminState title={status === "new" ? "ახალი საჩივრები არ არის" : "დამუშავებული საჩივრები ჯერ არ არის"} text={status === "new" ? "მომხმარებლების შეტყობინებები აქ გამოჩნდება." : undefined} onFirst={offset ? () => setOffset(0) : undefined} />
+      : !page.items.length ? <AdminState title={status === "new" ? "ახალი საჩივრები არ არის" : "დამუშავებული საჩივრები ჯერ არ არის"} text={status === "new" ? "ახალი საჩივრები აქ გამოჩნდება." : undefined} onFirst={offset ? () => setOffset(0) : undefined} />
       : <>
         <p className={styles.count} role="status">{page.total} საჩივარი</p>
         <div className="ma-table-wrap"><table className="ma-table">
@@ -61,17 +58,17 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
           <thead><tr>{["საჩივარი", "მიზეზი", "ავტორი", "თარიღი", status === "new" ? "მოქმედება" : "შედეგი"].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead>
           <tbody>{page.items.map(r => <tr key={r.id}>
             <td data-label="საჩივარი">
-              {r.target_exists ? <Link className="ma-link" href={targetHref(r)} target="_blank">{reportTargetLabel(r)}</Link> : reportTargetLabel(r)}
+              {r.target_exists ? <button type="button" className={styles.rowLink} onClick={() => onOpen(targetDetail(r))}>{reportTargetLabel(r)}</button> : reportTargetLabel(r)}
               <small>{kinds[r.target_kind]}{!r.target_exists ? " · წაშლილია" : r.target_removed ? (r.target_kind === "company" ? " · დაბლოკილია" : " · დამალულია") : ""} · სულ {r.target_reports} საჩივარი{r.target_new > 1 && r.status === "new" ? `, ${r.target_new} ახალი` : ""}</small>
             </td>
             <td data-label="მიზეზი"><span className={`ma-badge ma-badge--${r.reason === "other" ? "neutral" : "warning"}`}>{reportReasons[r.reason]}</span>{r.body ? <p className={styles.excerpt}>{r.body}</p> : null}</td>
             <td data-label="ავტორი">{r.reporter_name || `მომხმარებელი · #${r.reporter_id.slice(0, 8)}`}{r.reporter_email ? <small>{r.reporter_email}</small> : null}</td>
-            <td data-label="თარიღი"><time dateTime={r.created_at}>{dateLabel(r.created_at)}</time></td>
+            <td data-label="თარიღი"><time dateTime={r.created_at} className={styles.nowrap}>{dateLabel(r.created_at)}</time></td>
             {r.status === "new" ? <td data-label="მოქმედება"><div className="ma-proto-tableactions">
               <Button type="button" variant="danger-quiet" disabled={r.target_kind === "offer" && r.offer_status === "chosen"}
                 aria-describedby={r.target_kind === "offer" && r.offer_status === "chosen" ? `report-locked-${r.id}` : undefined}
-                onClick={() => onAction({ report: r, action: "reportHide", label: reportTargetLabel(r) })}>{hideLabels[r.target_kind]}</Button>
-              <Button type="button" variant="secondary" onClick={() => onAction({ report: r, action: "reportReject", label: reportTargetLabel(r) })}>უარყოფა</Button>
+                onClick={() => onAction({ report: r, action: "reportHide", label: reportTargetLabel(r) })}>{hideLabels[r.target_kind]}…</Button>
+              <Button type="button" variant="secondary" onClick={() => onAction({ report: r, action: "reportReject", label: reportTargetLabel(r) })}>უარყოფა…</Button>
             </div>{r.target_kind === "offer" && r.offer_status === "chosen" ? <small id={`report-locked-${r.id}`}>არჩეული შეთავაზება არ იშლება.</small> : null}</td>
               : <td data-label="შედეგი"><span className={`ma-badge ma-badge--${r.resolution === "hidden" ? "success" : "neutral"}`}>{r.resolution === "hidden" ? "ზომა მიღებულია" : "უარყოფილია"}</span>
                 {r.resolution_reason ? <small>მიზეზი: {r.resolution_reason}</small> : null}

@@ -20,11 +20,11 @@ export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;o
   await store!.setMyDistribution({p_regions:value.regions,p_categories:value.categories,p_channels:value.channels,p_brands:brands.split(/[,\n]/).map(s=>s.trim()).filter(Boolean),p_warehouse:value.warehouse,p_transport:value.transport,p_cold_chain:value.coldChain,p_min_order:value.minOrder,p_exclusive:value.exclusive});
   toast("დისტრიბუციის პროფილი შენახულია.");setSaved(true);onSaved();
  }catch(err){setError(businessError(err));}finally{setPending(false);}}}>
- <h3>დისტრიბუციის პროფილი</h3>
- {choices("regions","მომსახურების რეგიონები · აირჩიე მინიმუმ ერთი",cities,40)}
+ <h3>მიწოდების პირობები</h3>
+ {choices("regions","მომსახურების რეგიონები · აირჩიეთ მინიმუმ ერთი",cities,40)}
  {choices("categories","პროდუქტის კატეგორიები · მაქსიმუმ 6",categories,6)}
- {choices("channels","გაყიდვის არხები · აირჩიე მინიმუმ ერთი",distributionChannels,8)}
- <label className="ma-field">ბრენდები<textarea className="ma-textarea" value={brands} maxLength={1620} disabled={pending} onChange={e=>setBrands(e.target.value)}/><small>გამოყავი მძიმით. მაქსიმუმ 20 ბრენდი, თითო 80 სიმბოლო.</small></label>
+ {choices("channels","გაყიდვის არხები · აირჩიეთ მინიმუმ ერთი",distributionChannels,8)}
+ <label className="ma-field">ბრენდები<textarea className="ma-textarea" value={brands} maxLength={1620} disabled={pending} onChange={e=>setBrands(e.target.value)}/><small>გამოყავით მძიმით. მაქსიმუმ 20 ბრენდი, თითო 80 სიმბოლო.</small></label>
  <div className="ma-form-grid">{([['warehouse','საწყობი',warehouses],['transport','ტრანსპორტი',transports]] as const).map(([key,label,options])=><label className="ma-field" key={key}>{label}<CustomSelect className="ma-select" value={value[key]} disabled={pending} onChange={e=>patch({[key]:e.target.value})}>{Object.entries(options).map(([id,text])=><option value={id} key={id}>{text}</option>)}</CustomSelect></label>)}</div>
  <label className="ma-field">მინიმალური შეკვეთა<input className="ma-input" value={value.minOrder} maxLength={80} disabled={pending} onChange={e=>patch({minOrder:e.target.value})}/></label>
  <label className="ma-check"><input type="checkbox" checked={value.coldChain} disabled={pending} onChange={e=>patch({coldChain:e.target.checked})}/>გაცივებული / გაყინული მიწოდება</label>

@@ -8,6 +8,7 @@ import { Icon } from "../../Icon";
 import { avatarInitials } from "../CompanyAvatar";
 import styles from "./CompanyProfile.module.css";
 import { ListSkeleton } from "../Skeletons";
+import { dateShort } from "../../../lib/format";
 
 type Reviews = { total: number; rating: number | null; items: { id: string; author: string; rating: number; body: string; updated_at: string }[] };
 export function useCompanyReviews(companyId: string) {
@@ -26,12 +27,12 @@ export function useCompanyStats(companyId: string) {
 export function CompanyReviews({ resource }: { resource: ReturnType<typeof useCompanyReviews> }) {
   return <section aria-labelledby="company-reviews">
     <div className={styles.sectionHeading}><h2 id="company-reviews" className="detail-section-title">შეფასებები</h2><span>მხოლოდ დასრულებული გარიგებებიდან</span></div>
-    {resource.error ? <EmptyState role="alert" icon="circle-alert" title="შეფასებები ვერ ჩაიტვირთა" text="სცადეთ ხელახლა." action={<Button variant="secondary" onClick={resource.reload}>ხელახლა ცდა</Button>}/> : !resource.data ? <ListSkeleton compact label="შეფასებები იტვირთება…"/> : resource.data.total === 0 ? <EmptyState icon="star" title="შეფასებები ჯერ არაა" text="შეფასებები დასრულებული გარიგებების შემდეგ გამოჩნდება."/> :
+    {resource.error ? <EmptyState role="alert" icon="circle-alert" title="შეფასებები ვერ ჩაიტვირთა" text="სცადეთ ხელახლა." action={<Button variant="secondary" onClick={resource.reload}>ხელახლა ცდა</Button>}/> : !resource.data ? <ListSkeleton compact label="შეფასებები იტვირთება…"/> : resource.data.total === 0 ? <EmptyState icon="star" title="შეფასებები ჯერ არ არის" text="შეფასებები დასრულებული გარიგებების შემდეგ გამოჩნდება."/> :
       <ul className={styles.reviews}>{resource.data.items.slice(0, 3).map(review => <li key={review.id}>
         <span className={styles.reviewAvatar}>{avatarInitials(review.author)}</span>
         <div className={styles.reviewCopy}>
           <div className={styles.reviewHeading}><strong>{review.author}</strong><span className={styles.stars} role="img" aria-label={`${review.rating} ქულა 5-დან`}>{Array.from({ length: 5 }, (_, i) => <Icon key={i} name="star" className={i < review.rating ? styles.filledStar : undefined}/>)}</span></div>
-          <time dateTime={review.updated_at}>{new Date(review.updated_at).toLocaleDateString("ka-GE", { timeZone: "UTC" })}</time>
+          <time dateTime={review.updated_at}>{dateShort(review.updated_at)}</time>
           <p>{review.body}</p>
         </div>
       </li>)}</ul>}

@@ -11,7 +11,7 @@ import { Footer } from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "როგორ მუშაობს — MeetAny",
-  description: "როგორ იპოვო მომწოდებელი ან მიიღო შეკვეთები MeetAny-ზე: ნაბიჯები მყიდველისა და კომპანიისთვის, ნდობა და ხშირი კითხვები.",
+  description: "როგორ იპოვოთ მომწოდებელი ან მიიღოთ შეკვეთები MeetAny-ზე: ნაბიჯები მყიდველისა და კომპანიისთვის, ნდობა და ხშირი კითხვები.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },

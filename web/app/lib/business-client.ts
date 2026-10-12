@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import type { Store } from "./market-client";
 
+/** Visibility plans (Premium/VIP) are outside the MVP: the plan block and the plan badge stay hidden while false.
+ *  The RPCs and tables remain; the admin side hides them too. */
+export const plansEnabled = false;
 export type BusinessFeature = {id:string;distributor:boolean;plan:"premium"|"vip"|null;rating:number|null;reviewCount:number};
-export const businessError = (err: unknown) => (err as { userMessage?: string })?.userMessage || "ინფორმაცია ვერ ჩაიტვირთა. სცადე ხელახლა.";
+export const businessError = (err: unknown) => (err as { userMessage?: string })?.userMessage || "ინფორმაცია ვერ ჩაიტვირთა. სცადეთ ხელახლა.";
 /** Keys bind results to their route/owner; an old response never paints a different company's data. */
 export function useBusinessResource<T>(load: (()=>Promise<T>)|undefined, key: string, refreshSignal?: number) {
  const [revision,setRevision]=useState(0);

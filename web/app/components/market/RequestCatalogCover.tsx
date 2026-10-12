@@ -1,6 +1,17 @@
-import { categoryPhoto, currentCategory } from "../../lib/categories";
+import { DuoIcon } from "../ui/DuoIcon";
+import { categoryGroups, currentCategory, groupOf } from "../../lib/categories";
+import styles from "./RequestCatalogCover.module.css";
 
-/** Category photograph used only when a request has no usable uploaded photo. */
+/** Stand-in for a request without a usable photo: the category's line icon on a soft tone of its group, so
+ *  different needs never share one stock photo. Fills its (positioned) parent; `category` is the only input,
+ *  which also lets a form preview keep a stable photo slot before a photo is chosen. */
 export function RequestCatalogCover({ category }: { category: string }) {
-  return <img src={`/assets/photos/${categoryPhoto[currentCategory(category)] || "workshop-banner.jpg"}`} alt="" width={480} height={240} loading="lazy" />;
+  const key = currentCategory(category);
+  const groupId: string = groupOf[key] || (categoryGroups.some(g => g.id === key) ? key : "other");
+  const index = categoryGroups.findIndex(g => g.id === groupId);
+  const group = categoryGroups[index];
+  const icon = group?.items.some(([id]) => id === key) ? key : group?.items[0]?.[0] || "other";
+  return <span className={styles.cover} data-tone={(Math.max(index, 0) % 6) + 1} aria-hidden="true">
+    <DuoIcon family="category" name={icon} size={40} />
+  </span>;
 }

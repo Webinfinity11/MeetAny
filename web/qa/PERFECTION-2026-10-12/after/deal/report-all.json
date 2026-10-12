@@ -1,0 +1,420 @@
+{
+  "base": "http://localhost:3309",
+  "at": "2026-10-12T11:56:18.556Z",
+  "pages": [
+    {
+      "name": "post-step1-errors-1440",
+      "url": "/requests/new/?step=1",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-step1-1440",
+      "url": "/requests/new/?step=1",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-step2-1440",
+      "url": "/requests/new/?step=2",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-step3-1440",
+      "url": "/requests/new/?step=3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-published-1440",
+      "url": "/requests/new/?step=3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნა გამოქვეყნდა",
+      "errors": []
+    },
+    {
+      "name": "post-published-390",
+      "url": "/requests/new/?step=3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნა გამოქვეყნდა",
+      "errors": []
+    },
+    {
+      "name": "post-step1-errors-390",
+      "url": "/requests/new/?step=1",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-step1-390",
+      "url": "/requests/new/?step=1",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-step2-390",
+      "url": "/requests/new/?step=2",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "post-step3-390",
+      "url": "/requests/new/?step=3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მოთხოვნის განთავსება",
+      "errors": []
+    },
+    {
+      "name": "offer-new-1440",
+      "url": "/offers/new/?requestId=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების გაგზავნა",
+      "errors": []
+    },
+    {
+      "name": "offer-new-390",
+      "url": "/offers/new/?requestId=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების გაგზავნა",
+      "errors": []
+    },
+    {
+      "name": "offer-new-validation-1440",
+      "url": "/offers/new/?requestId=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების გაგზავნა",
+      "errors": []
+    },
+    {
+      "name": "modal-offer-sent-1440",
+      "url": "/offers/new/?requestId=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების რედაქტირება",
+      "errors": []
+    },
+    {
+      "name": "compare-1440",
+      "url": "/requests/compare/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "compare-390",
+      "url": "/requests/compare/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "modal-select-offer-1440",
+      "url": "/requests/compare/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "modal-select-offer-390",
+      "url": "/requests/compare/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "deal-selected-buyer-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მომწოდებელი არჩეულია",
+      "errors": []
+    },
+    {
+      "name": "deal-selected-buyer-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მომწოდებელი არჩეულია",
+      "errors": []
+    },
+    {
+      "name": "compare-chosen-1440",
+      "url": "/requests/compare/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "compare-chosen-390",
+      "url": "/requests/compare/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-buyer-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-buyer-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-new-terms-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-agree-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-cancel-deal-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-new-terms-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-agree-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-cancel-deal-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-supplier-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-supplier-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-buyer-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-buyer-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-supplier-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-supplier-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "modal-terms-change-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-supplier-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-supplier-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-buyer-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-buyer-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "modal-issue-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "modal-complete-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-buyer-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-buyer-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "modal-review-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "modal-review-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-supplier-1440",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-supplier-390",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-denied-1440",
+      "url": "/deals/view/?id=63d76320-70a5-4cf2-bd5a-dc4aa424a3bc",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)"
+      ]
+    },
+    {
+      "name": "deal-denied-390",
+      "url": "/deals/view/?id=63d76320-70a5-4cf2-bd5a-dc4aa424a3bc",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)"
+      ]
+    }
+  ]
+}

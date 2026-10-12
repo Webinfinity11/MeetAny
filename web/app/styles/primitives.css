@@ -93,6 +93,13 @@
 .ma-alert{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-1) var(--space-3);align-items:start;padding:var(--space-3) var(--space-4);border:var(--size-1) solid var(--blue-100);border-radius:var(--radius-md);background:var(--blue-50);color:var(--text);font-size:var(--fs-sm);line-height:var(--lh-sm)}
 .ma-alert>.icon{margin-top:var(--space-hairline);color:var(--blue-700)}
 @media (min-width:768px){.ma-alert:has(.ma-alert__action){grid-template-columns:auto minmax(0,1fr) auto;align-items:center}}
+.ma-notice{--notice-tone:var(--info-700);--notice-bg:var(--info-50);--notice-bd:var(--info-100);display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-2) var(--space-3);align-items:start;padding:var(--space-3) var(--space-4);border:var(--size-1) solid var(--notice-bd);border-radius:var(--radius-md);background:var(--notice-bg);color:var(--text);font-size:var(--fs-sm);line-height:var(--lh-sm)}
+.ma-notice--warning{--notice-tone:var(--warning-700);--notice-bg:var(--warning-50);--notice-bd:var(--warning-100)}
+.ma-notice--error{--notice-tone:var(--danger-700);--notice-bg:var(--danger-50);--notice-bd:var(--danger-100)}
+.ma-notice>.icon{width:var(--icon-md);height:var(--icon-md);color:var(--notice-tone)}
+.ma-notice__body{min-width:0;overflow-wrap:anywhere;align-self:center}
+.ma-notice__action{grid-column:2;justify-self:start}
+@media (min-width:768px){.ma-notice:has(.ma-notice__action){grid-template-columns:auto minmax(0,1fr) auto;align-items:center}.ma-notice__action{grid-column:auto}}
 .ma-sheet{width:min(var(--size-520),calc(100vw - var(--size-32)));max-width:none;max-height:min(88dvh,var(--size-760));margin:auto;padding:0;border:0;border-radius:var(--radius-xl);background:var(--white);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);box-shadow:var(--shadow-4);overflow:hidden;overscroll-behavior:contain}
 .ma-sheet[open]{display:flex;flex-direction:column;animation:ma-modal-in var(--dur) var(--ease) both}
 .ma-sheet::backdrop{background:var(--scrim);animation:ma-appear var(--dur) var(--ease) both}
@@ -189,3 +196,15 @@
 .ma-skel-card__actions .ma-skel{width:100%;height:var(--space-10)}
 .ma-skel-card .ma-skel--w40,.ma-skel-card .ma-skel--w60{height:var(--space-3)}
 @media(max-width:639px){.ma-skel-grid{grid-template-columns:minmax(0,1fr)}}
+/* Horizontal chips/tabs/filters row (shared by screen streams): scrolls instead of wrapping off-screen, snaps per item, and fades
+   items only inside the edge padding — at rest nothing is faded; once scrolled, content slides out under the fade. */
+.ma-scroll-row{--scroll-row-fade:var(--gutter);display:flex;gap:var(--space-2);min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:var(--scroll-row-fade);padding-block:var(--space-1);padding-inline:var(--scroll-row-fade);scrollbar-width:none;-webkit-mask-image:var(--mask-fade-start),var(--mask-solid),var(--mask-fade-end);mask-image:var(--mask-fade-start),var(--mask-solid),var(--mask-fade-end);-webkit-mask-size:var(--scroll-row-fade) 100%,calc(100% - 2 * var(--scroll-row-fade)) 100%,var(--scroll-row-fade) 100%;mask-size:var(--scroll-row-fade) 100%,calc(100% - 2 * var(--scroll-row-fade)) 100%,var(--scroll-row-fade) 100%;-webkit-mask-position:left,center,right;mask-position:left,center,right;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.ma-scroll-row::-webkit-scrollbar{display:none}
+.ma-scroll-row>*{flex:none;scroll-snap-align:start}
+/* Bleed to the screen edge: the fade sits in the page gutter. */
+.ma-scroll-row--bleed{margin-inline:calc(-1 * var(--gutter))}
+/* Sticky submit bar for forms: stays above the bottom edge, the home indicator and (via --keyboard-inset) the on-screen keyboard.
+   Phones: buttons full width, primary first. */
+.ma-form-bar{position:sticky;bottom:var(--keyboard-inset,0);z-index:var(--z-sticky);display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:var(--space-2);margin-top:var(--space-6);padding:var(--space-3) 0 calc(var(--space-3) + env(safe-area-inset-bottom));border-top:var(--size-1) solid var(--border-subtle);background:color-mix(in srgb,var(--white) 94%,transparent);-webkit-backdrop-filter:blur(var(--size-12));backdrop-filter:blur(var(--size-12))}
+.ma-form-bar__note{margin-right:auto;color:var(--text-3);font-size:var(--fs-sm);line-height:var(--lh-sm)}
+@media(max-width:639.98px){.ma-form-bar{flex-direction:column;align-items:stretch;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter)}.ma-form-bar>.ma-btn{width:100%}.ma-form-bar>:is(.ma-btn--primary,.ma-btn--danger){order:-1}.ma-form-bar__note{margin:0;text-align:center}}

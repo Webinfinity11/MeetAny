@@ -16,7 +16,7 @@ type Props = {
 };
 
 /** A compact disclosure of native checkboxes; selections remain ordinary string arrays. */
-export function CompactMultiSelect({ id, label, options, value, onChange, exclusiveValue, disabled = false, placeholder = "აირჩიე ქალაქები" }: Props) {
+export function CompactMultiSelect({ id, label, options, value, onChange, exclusiveValue, disabled = false, placeholder = "აირჩიეთ ქალაქები" }: Props) {
   const generated = useId(), controlId = id || generated, panelId = `${controlId}-options`;
   const trigger = useRef<HTMLButtonElement>(null), panel = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);

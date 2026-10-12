@@ -1,0 +1,534 @@
+[
+  {
+    "name": "home-guest",
+    "url": "/",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+    "h1": [
+      "რა სჭირდება თქვენს ბიზნესს?"
+    ]
+  },
+  {
+    "name": "requests-guest",
+    "url": "/requests/",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "requests-empty-guest",
+    "url": "/requests/?q=zzzz",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "request-view-guest",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\nშეთავაზების გაგზავნა\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @146,269 241w",
+        "მიწოდება: თბილისი @387,269 241w",
+        "ბიუჯეტი: შეთანხმებით @629,269 241w"
+      ],
+      "bar": null
+    }
+  },
+  {
+    "name": "companies-guest",
+    "url": "/companies/",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ]
+  },
+  {
+    "name": "companies-map-guest",
+    "url": "/companies/?view=map",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ]
+  },
+  {
+    "name": "company-view-guest",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ],
+    "extra": {
+      "report": [
+        "CompanyProfile-module__2shn0W__report"
+      ]
+    }
+  },
+  {
+    "name": "terms-guest",
+    "url": "/terms/",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "წესები და კონფიდენციალურობა — MeetAny",
+    "h1": [
+      "წესები და კონფიდენციალურობა"
+    ]
+  },
+  {
+    "name": "request-nope-guest",
+    "url": "/requests/view/?id=nope",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "მოთხოვნა ვერ მოიძებნა — MeetAny",
+    "h1": []
+  },
+  {
+    "name": "company-nope-guest",
+    "url": "/companies/view/?id=nope",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანია ვერ მოიძებნა — MeetAny",
+    "h1": []
+  },
+  {
+    "name": "404-guest",
+    "url": "/nope",
+    "width": 1440,
+    "status": 404,
+    "errors": [
+      "404 /nope",
+      "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "overflow": false,
+    "title": "გვერდი ვერ მოიძებნა — MeetAny",
+    "h1": [
+      "გვერდი ვერ მოიძებნა"
+    ]
+  },
+  {
+    "name": "home-guest",
+    "url": "/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+    "h1": [
+      "რა სჭირდება თქვენს ბიზნესს?"
+    ]
+  },
+  {
+    "name": "requests-guest",
+    "url": "/requests/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ],
+    "extra": {
+      "sheet": "ფილტრები\nკატეგორიები\nყველა\nსაკვები და სასმელი\nმშენებლობა და რემონტი\nავეჯი, ინვენტარი და ტექსტილი\nწარმოება და შეფუთვა\nტრანსპორტი და ლოგისტიკა\nვაჭრობა და მომარაგება\nობიექტის მომსახურება\nIT და ციფრული\nმარკეტინგი და რეკლამა\nბიზნეს-მომსახურება\nფინანსური სერვისები\nტურიზმი და სტუმარმასპინძლობა\nსხვა\nადგილმდებარეობა\nთბილისი\nბათუმი\nქუთაისი\nსხვა რეგიონები\nვადა\n7 დღემდე\n30 დღემდე\n30 დღეზე მეტი\nმხოლოდ ვერიფიცირებული\nგასუფთავება\n8 შედეგის ნახვა"
+    }
+  },
+  {
+    "name": "requests-empty-guest",
+    "url": "/requests/?q=zzzz",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "request-view-guest",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @38,345 157w",
+        "მიწოდება: თბილისი @195,345 157w",
+        "ბიუჯეტი: შეთანხმებით @38,427 314w"
+      ],
+      "bar": {
+        "top": 775,
+        "bottom": 844,
+        "viewport": 844,
+        "text": "შეთავაზების გაგზავნა"
+      }
+    }
+  },
+  {
+    "name": "companies-guest",
+    "url": "/companies/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ]
+  },
+  {
+    "name": "companies-map-guest",
+    "url": "/companies/?view=map",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ]
+  },
+  {
+    "name": "company-view-guest",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ],
+    "extra": {
+      "report": [
+        "CompanyProfile-module__2shn0W__report"
+      ]
+    }
+  },
+  {
+    "name": "terms-guest",
+    "url": "/terms/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "წესები და კონფიდენციალურობა — MeetAny",
+    "h1": [
+      "წესები და კონფიდენციალურობა"
+    ]
+  },
+  {
+    "name": "request-nope-guest",
+    "url": "/requests/view/?id=nope",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "მოთხოვნა ვერ მოიძებნა — MeetAny",
+    "h1": []
+  },
+  {
+    "name": "company-nope-guest",
+    "url": "/companies/view/?id=nope",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანია ვერ მოიძებნა — MeetAny",
+    "h1": []
+  },
+  {
+    "name": "404-guest",
+    "url": "/nope",
+    "width": 390,
+    "status": 404,
+    "errors": [
+      "404 /nope",
+      "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "overflow": false,
+    "title": "გვერდი ვერ მოიძებნა — MeetAny",
+    "h1": [
+      "გვერდი ვერ მოიძებნა"
+    ]
+  },
+  {
+    "name": "request-view-owner_user",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nშეთავაზებებს კომპანიები აგზავნიან\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nთქვენც გჭირდებათ მსგავსი?\n\nმოთხოვნის განთავსება\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @146,269 241w",
+        "მიწოდება: თბილისი @387,269 241w",
+        "ბიუჯეტი: შეთანხმებით @629,269 241w"
+      ],
+      "bar": null
+    }
+  },
+  {
+    "name": "request-own-owner_user",
+    "url": "/requests/view/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "QA გარიგება — მუხის მაგიდები — MeetAny",
+    "h1": [
+      "QA გარიგება — მუხის მაგიდები"
+    ],
+    "extra": {
+      "aside": "სტატუსი\nმომწოდებელი არჩეულია\nშეთავაზებები\n1 მიღებულია\nშეთავაზებების შედარება\nმოთხოვნის მართვა\n\nმომწოდებელი არჩეულია\n\nსხვა მოქმედებები\nგაზიარება",
+      "facts": [
+        "რაოდენობა: 6 ცალი @146,269 181w",
+        "მიწოდება: თბილისი @327,269 181w",
+        "ბიუჯეტი: შეთანხმებით @508,269 181w",
+        "მიწოდების ვადა: 1 ნოემბერი 2026 @689,269 181w"
+      ],
+      "bar": null
+    }
+  },
+  {
+    "name": "companies-owner_user",
+    "url": "/companies/",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ]
+  },
+  {
+    "name": "company-view-owner_user",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ]
+  },
+  {
+    "name": "request-view-owner_user",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nშეთავაზებებს კომპანიები აგზავნიან\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nთქვენც გჭირდებათ მსგავსი?\n\nმოთხოვნის განთავსება\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @38,345 157w",
+        "მიწოდება: თბილისი @195,345 157w",
+        "ბიუჯეტი: შეთანხმებით @38,427 314w"
+      ],
+      "bar": null
+    }
+  },
+  {
+    "name": "request-own-owner_user",
+    "url": "/requests/view/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "QA გარიგება — მუხის მაგიდები — MeetAny",
+    "h1": [
+      "QA გარიგება — მუხის მაგიდები"
+    ],
+    "extra": {
+      "aside": "სტატუსი\nმომწოდებელი არჩეულია\nშეთავაზებები\n1 მიღებულია\nმოთხოვნის მართვა\n\nმომწოდებელი არჩეულია\n\nსხვა მოქმედებები\nგაზიარება",
+      "facts": [
+        "რაოდენობა: 6 ცალი @38,310 157w",
+        "მიწოდება: თბილისი @195,310 157w",
+        "ბიუჯეტი: შეთანხმებით @38,392 157w",
+        "მიწოდების ვადა: 1 ნოემბერი 2026 @195,392 157w"
+      ],
+      "bar": {
+        "top": 775,
+        "bottom": 844,
+        "viewport": 844,
+        "text": "შეთავაზებების შედარება"
+      }
+    }
+  },
+  {
+    "name": "companies-owner_user",
+    "url": "/companies/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კომპანიები — MeetAny",
+    "h1": [
+      "კომპანიები"
+    ]
+  },
+  {
+    "name": "company-view-owner_user",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ]
+  },
+  {
+    "name": "request-view-owner_company",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\nშეთავაზების გაგზავნა\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @146,269 241w",
+        "მიწოდება: თბილისი @387,269 241w",
+        "ბიუჯეტი: შეთანხმებით @629,269 241w"
+      ],
+      "bar": null
+    }
+  },
+  {
+    "name": "requests-owner_company",
+    "url": "/requests/",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "company-view-owner_company",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 1440,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ]
+  },
+  {
+    "name": "request-view-owner_company",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @38,345 157w",
+        "მიწოდება: თბილისი @195,345 157w",
+        "ბიუჯეტი: შეთანხმებით @38,427 314w"
+      ],
+      "bar": {
+        "top": 775,
+        "bottom": 844,
+        "viewport": 844,
+        "text": "შეთავაზების გაგზავნა"
+      }
+    }
+  },
+  {
+    "name": "requests-owner_company",
+    "url": "/requests/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "company-view-owner_company",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ]
+  }
+]

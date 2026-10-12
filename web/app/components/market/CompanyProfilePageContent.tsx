@@ -1,4 +1,6 @@
 "use client";
+import { optimizable } from "../../lib/image";
+import Image from "next/image";
 import { Button } from "../ui/Button";
 
 
@@ -6,7 +8,7 @@ import { ProfileSkeleton } from "./Skeletons";
 
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
@@ -23,13 +25,18 @@ import { categories, cities } from "../../lib/categories";
 
 
 import { useCompanyDetail } from "../../lib/use-company-detail";
+import { isUuid } from "../../lib/ids";
+import { EmptyState } from "../ui/Structure";
+import { companyImage } from "./CompanyAvatar";
 export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, sessionReady, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
+  const validId = isUuid(id);
   const detail = useCompanyDetail(store, sessionReady, available, id);
-  const reviews = useCompanyReviews(id);
-  const stats = useCompanyStats(id);
+  // A malformed id never reaches the API (it would only answer 400).
+  const reviews = useCompanyReviews(validId ? id : "");
+  const stats = useCompanyStats(validId ? id : "");
 
   const data = useMemo(() => {
     if (!store || !ready || !available || !id) return null;
@@ -42,27 +49,31 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
   }, [store, ready, available, id]);
 
 
-  if (ready && (!available || detail.error)) return <div className="ma-page"><ServiceUnavailable /></div>;
+  const notFound = !validId || (ready && available && !detail.error && sessionReady && !detail.loading && !data);
+  const pageName = data ? data.c.company || data.c.name : "";
+  const pageTitle = pageName ? `${pageName} — MeetAny` : notFound ? "კომპანია ვერ მოიძებნა — MeetAny" : "";
+  useEffect(() => { if (pageTitle) document.title = pageTitle; }, [pageTitle]);
 
-  if (!ready || (!data && (!sessionReady || detail.loading))) return <ProfileSkeleton />;
-  if (!data) {
+  if (notFound) {
     return (
       <div className="ma-page">
-        <div className="ma-empty">
-          <h2 className="ma-empty__title">კომპანია ვერ მოიძებნა</h2>
-          <Button variant="secondary" href="/companies/">
-            კომპანიების კატალოგზე დაბრუნება
-          </Button>
-        </div>
+        <EmptyState icon="search" title="კომპანია ვერ მოიძებნა" text="შესაძლოა პროფილი წაიშალა ან დროებით დამალულია." action={<Button variant="secondary" href="/companies/">ყველა კომპანია</Button>} />
       </div>
     );
   }
+  if (ready && (!available || detail.error)) return <div className="ma-page"><ServiceUnavailable /></div>;
+
+  if (!ready || !data) return <ProfileSkeleton />;
 
   const { c, openRequests } = data;
   const ownProfile = store?.currentUser()?.id === c.id;
   const name = c.company || c.name;
   // Current offers are strings; structured products can be rendered once the public contract supplies them.
   const products: ProductCardData[] = (c.offers || []).map((offer: string | ProductCardData) => typeof offer === "string" ? { name: offer } : offer);
+  // Same picture as the company's catalog card, so the profile never shows an empty logo box when the card has one.
+  const logo = companyImage(name, c.logoUrl, c.gallery);
+  // The demo notice is shown once, as the label under the name; the description starts with the company itself.
+  const about = String(c.about || "").replace(/^სადემო კომპანია\. ინფორმაცია და ფოტოები საილუსტრაციოა\.\s*/, "");
   const pictured = products.filter(product => product.photoUrl);
 
 
@@ -75,17 +86,19 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
     ["ყიდულობს", (c.seeks || []).join(" · ")],
   ].filter(([, value]) => value);
 
+  // Reporting is the quiet last line of the details panel (or of the page when there is no panel).
+  const report = !ownProfile && store?.currentUser()?.role !== "admin" ? <ReportButton kind="company" targetId={c.id} /> : null;
   return (
     <div className={`ma-page company-profile detail-page ${styles.page}`}>
       <Link className="ma-back" href="/companies/"><Icon name="chevron-left" />კომპანიები</Link>
       <header className={styles.hero}>
-        <span className={styles.avatar}>{c.logoUrl ? <img src={c.logoUrl} alt="" /> : <Icon name="building-2"/>}
+        <span className={styles.avatar}>{logo ? <Image src={logo} alt="" width={160} height={160} unoptimized={!optimizable(logo)} /> : <Icon name="building-2"/>}
           {c.verified ? <span className={styles.verified} role="img" aria-label="ვერიფიცირებული კომპანია"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 14.4 4l3.1-.3.9 3 2.7 1.6-1 3 1 3-2.7 1.6-.9 3-3.1-.3L12 22l-2.4-2-3.1.3-.9-3L2.9 15.7l1-3-1-3 2.7-1.6.9-3 3.1.3L12 2Z"/><path className={styles.verifiedCheck} d="m8.5 12.2 2.3 2.3 4.7-4.9"/></svg></span> : null}
         </span>
         <div className={styles.identity}>
           <h1 className={styles.name}>{name}</h1>
           <p className={styles.meta}>{[categories[c.industry] || c.industry, cities[c.city] || c.city].filter(Boolean).join(" · ")}</p>
-          {reviews.data && reviews.data.total > 0 ? <p className={styles.rating}><Icon name="star"/><strong>{reviews.data.rating ?? "—"}</strong><span>· {reviews.data.total} შეფასება</span></p> : null}
+          {reviews.data && reviews.data.total > 0 ? <p className={styles.rating}><Icon name="star" className={styles.filledStar}/><strong>{reviews.data.rating ?? "—"}</strong><span>· {reviews.data.total} შეფასება</span></p> : null}
           {stats.error ? null : stats.data ? <p className={styles.dealStats}><Icon name="handshake"/><strong>{stats.data.completedDeals}</strong><span>დასრულებული გარიგება</span></p> : <span className={styles.dealStatsSkeleton} aria-hidden="true"/>}
           {c.about?.startsWith("სადემო კომპანია.") ? <p className="company-demo-label">სადემო კომპანია · ინფორმაცია და კონტაქტები პრეზენტაციის მაგალითია.</p> : null}
         </div>
@@ -95,9 +108,9 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       </header>
       <div className={`${styles.content} ${facts.length ? "" : styles.contentFull}`}>
       <div className={styles.main}>
-        {c.about || products.length ? <section aria-labelledby="company-about">
-          <h2 id="company-about" className="detail-section-title">ჩვენ შესახებ</h2>
-          {c.about ? <p className="company-profile-description">{c.about}</p> : null}
+        {about || products.length ? <section aria-labelledby="company-about">
+          <h2 id="company-about" className="detail-section-title">კომპანიის შესახებ</h2>
+          {about ? <p className="company-profile-description">{about}</p> : null}
           <div className={styles.chips}>{products.map((product, i) => <span key={`${i}:${product.name}`}>{product.name}</span>)}</div>
         </section> : null}
         <CompanyProducts companyId={c.id} fallback={products}/>
@@ -114,9 +127,9 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         <CompanyReviews resource={reviews}/>
       </div>
 
-      {facts.length ? <aside className={styles.sidebar}><section className={styles.panel}><h2 className="detail-section-title">დეტალები</h2><dl className={styles.facts}>{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section></aside> : null}
+      {facts.length ? <aside className={styles.sidebar}><section className={styles.panel}><h2 className="detail-section-title">დეტალები</h2><dl className={styles.facts}>{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>{report ? <div className={styles.report}>{report}</div> : null}</section></aside> : null}
       </div>
-      {!ownProfile && store?.currentUser()?.role !== "admin" ? <div className={styles.report}><ReportButton kind="company" targetId={c.id} /></div> : null}
+      {!facts.length && report ? <div className={styles.report}>{report}</div> : null}
     </div>
   );
 }

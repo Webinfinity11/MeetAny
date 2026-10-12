@@ -1,0 +1,106 @@
+[
+  {
+    "name": "request-view-owner_company",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 1440,
+    "status": 200,
+    "errors": [
+      "403 /_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2Fd53baf36-958f-4700-8b0d-74502a895635%2",
+      "console: Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    ],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\nშეთავაზების გაგზავნა\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @146,269 241w",
+        "მიწოდება: თბილისი @387,269 241w",
+        "ბიუჯეტი: შეთანხმებით @629,269 241w"
+      ],
+      "bar": null
+    }
+  },
+  {
+    "name": "requests-owner_company",
+    "url": "/requests/",
+    "width": 1440,
+    "status": 200,
+    "errors": [
+      "403 /_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2Fd53baf36-958f-4700-8b0d-74502a895635%2",
+      "console: Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    ],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "company-view-owner_company",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 1440,
+    "status": 200,
+    "errors": [
+      "403 /_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2Fd53baf36-958f-4700-8b0d-74502a895635%2",
+      "console: Failed to load resource: the server responded with a status of 403 (Forbidden)"
+    ],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ]
+  },
+  {
+    "name": "request-view-owner_company",
+    "url": "/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით — MeetAny",
+    "h1": [
+      "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+    ],
+    "extra": {
+      "aside": "მიღება სრულდება\n4 დღეში\n16 ოქტ. 2026\nშეთავაზებები\nჯერ არ არის\n\nმყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ\n\nმყიდველი\n\nსლ\nსასტუმრო „ლეგენდა“\n\nბათუმი\n\nგაზიარება\nშენახვა\nდარღვევის შეტყობინება",
+      "facts": [
+        "რაოდენობა: 4 ცალი @38,345 157w",
+        "მიწოდება: თბილისი @195,345 157w",
+        "ბიუჯეტი: შეთანხმებით @38,427 314w"
+      ],
+      "bar": {
+        "top": 775,
+        "bottom": 844,
+        "viewport": 844,
+        "text": "შეთავაზების გაგზავნა"
+      }
+    }
+  },
+  {
+    "name": "requests-owner_company",
+    "url": "/requests/",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ღია მოთხოვნები — MeetAny",
+    "h1": [
+      "ღია მოთხოვნები"
+    ]
+  },
+  {
+    "name": "company-view-owner_company",
+    "url": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "width": 390,
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "title": "ხის ხაზი — MeetAny",
+    "h1": [
+      "ხის ხაზი"
+    ]
+  }
+]

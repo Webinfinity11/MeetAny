@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { optimizable } from "../../lib/image";
 import { useSiteContent } from "../../lib/site-content";
 
 /** Companies header collage: slowly drifting photo columns at both edges, fading toward the search;
@@ -39,13 +41,13 @@ export function CompanyCatalogCover() {
         <div key={index} className={`catalog-collage__col catalog-collage__col--${index + 1}${index % 2 ? " catalog-collage__col--even" : ""}`}>
           {/* The list is rendered twice so the drift loops without a jump. */}
           <div className="catalog-collage__track">
-            {[...photos, ...photos].map((name, i) => <img key={i} src={photo(name)} alt="" width={160} height={200} decoding="async" />)}
+            {[...photos, ...photos].map((name, i) => <Image key={i} src={photo(name)} alt="" width={160} height={200} loading="eager" unoptimized={!optimizable(photo(name))} />)}
           </div>
         </div>
       ))}
       <div className="catalog-collage__strip">
         <div className="catalog-collage__strip-track">
-          {[...strip, ...strip].map((name, i) => <img key={i} src={photo(name)} alt="" width={96} height={72} loading="lazy" decoding="async" />)}
+          {[...strip, ...strip].map((name, i) => <Image key={i} src={photo(name)} alt="" width={96} height={72} loading="lazy" unoptimized={!optimizable(photo(name))} />)}
         </div>
       </div>
     </div>

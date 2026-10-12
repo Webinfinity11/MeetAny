@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { cities } from "../../../lib/categories";
 import { loadPublicSnapshot } from "../../../lib/public-snapshot";
 import { RequestViewPageContent } from "../../../components/market/RequestViewPageContent";
+import { isUuid } from "../../../lib/ids";
 
 type Props = { searchParams: Promise<{ id?: string | string[] }> };
 
@@ -20,6 +21,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const raw = (await searchParams).id;
   const id = Array.isArray(raw) ? raw[0] : raw;
   if (!id) return {};
+  if (!isUuid(id)) return { title: "მოთხოვნა ვერ მოიძებნა — MeetAny", robots: { index: false } };
   const snapshot = await loadPublicSnapshot();
   const r = (snapshot?.requests as SnapshotRequest[] | undefined)?.find(item => item.id === id);
   if (!r) return {};

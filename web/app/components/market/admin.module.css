@@ -361,3 +361,89 @@
 @media(max-width:479px) {
  .filters > div, .filters .search { flex-basis: 100%; }
 }
+
+/* ---------- Perfection round (ADM-V01…V19) ---------- */
+/* Words never break mid-word in table cells; only ids, e-mails and long links may wrap anywhere. */
+.workspace :global(.ma-table) :is(th,td) { overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.workspace :global(.ma-table) td :is(a[href^="mailto:"], .wrapAny) { overflow-wrap: anywhere; }
+.nowrap { white-space: nowrap; }
+.colWide { width: 34%; }
+.colDate { width: var(--size-140); }
+.colAction { width: var(--size-160); }
+.auditTable .colWide { width: 26%; }
+.offersTable :global(.ma-btn), .dealsTable :global(.ma-btn), .reviewsTable :global(.ma-btn) { white-space: nowrap; }
+.mobileOnly { display: none; }
+.warningText.warningText { color: var(--warning-700); }
+.stars { white-space: nowrap; color: var(--text); font-variant-numeric: tabular-nums; }
+.narrowFilter.narrowFilter { flex: 0 1 var(--size-240); max-width: var(--size-240); }
+.subject { margin: 0; font-weight: var(--fw-semibold); overflow-wrap: anywhere; }
+
+/* Sidebar: one line per section. */
+.navigation a > span { overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mobileNavigationHint { display: none; }
+
+/* Detail drawer: links, facts, a danger zone kept apart from the everyday actions. */
+.externalLink { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--size-24); color: var(--text-link); font-size: var(--fs-xs); text-decoration: none; }
+.externalLink:hover { text-decoration: underline; }
+.externalLink svg { width: var(--size-14); height: var(--size-14); }
+.factRow { display: contents; }
+.detailFacts { grid-template-columns: minmax(var(--size-120), max-content) minmax(0, 1fr); }
+.detailFacts dt { overflow-wrap: normal; }
+.detailList h4 { flex-wrap: wrap; }
+.detailList h4 :global(.ma-btn) { margin-left: auto; }
+.detailList h4 small { font-size: var(--fs-xs); font-weight: var(--fw-regular); color: var(--text-3); }
+.listTitle { font-size: var(--fs-sm); }
+.listText { margin: 0; font-size: var(--fs-sm); color: var(--text-2); white-space: pre-line; overflow-wrap: anywhere; }
+.detailActions > :global(.ma-btn--primary) { grid-column: 1; }
+.dangerZone { grid-column: 1 / -1; display: grid; gap: var(--space-1); margin-top: var(--space-2); padding-top: var(--space-3); border-top: var(--size-1) solid var(--border-subtle); }
+.dangerZone small { font-size: var(--fs-xs); color: var(--text-3); }
+.timeline { display: grid; margin: 0; padding: 0; list-style: none; }
+.timeline li { display: grid; gap: var(--size-2); padding: var(--space-2) 0 var(--space-2) var(--space-4); border-left: var(--size-2) solid var(--border-subtle); font-size: var(--fs-sm); }
+.timeline small { font-size: var(--fs-xs); color: var(--text-3); }
+
+/* Verification: status, facts, files and the decisions in one row. */
+.verification { display: grid; gap: var(--space-3); padding: var(--space-4); border: var(--size-1) solid var(--border-subtle); border-radius: var(--radius-lg); }
+.verification > header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.verification h4 { margin: 0; font-size: var(--fs-sm); font-feature-settings: normal; }
+.inlineActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.inlineActions :global(.ma-select) { flex: 1 1 var(--size-160); min-width: 0; }
+.inlineForm { display: grid; gap: var(--space-3); font-size: var(--fs-sm); }
+.inlineForm > label, .inlineGrid > label { display: grid; gap: var(--space-1); font-weight: var(--fw-medium); }
+.inlineGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--size-120), 1fr)); gap: var(--space-3); }
+.checkLine { display: flex; align-items: center; gap: var(--space-2); min-height: var(--tap-min); }
+
+/* Deal issues. */
+.issueList { display: grid; margin: 0; padding: 0; list-style: none; }
+.issue { display: grid; gap: var(--space-1); padding: var(--space-3) 0; border-top: var(--size-1) solid var(--border-subtle); }
+.issue:first-child { border-top: 0; padding-top: 0; }
+.issueHead { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); }
+.issue small { font-size: var(--fs-xs); color: var(--text-3); }
+
+/* Photos that fail to load say so. */
+.photoMissing { display: grid; place-content: center; gap: var(--space-1); height: 100%; padding: var(--space-3); color: var(--text-3); font-size: var(--fs-sm); text-align: center; }
+.photoMissing small { color: var(--text-link); font-size: var(--fs-xs); }
+.photoMeta :global(.ma-badge) { vertical-align: middle; }
+
+@media(max-width:1023px) {
+  .mobileNavigationHint { display: inline; margin-left: auto; font-size: var(--fs-xs); color: var(--text-3); }
+  .mobileNavigation > .mobileNavigationHint + svg { margin-left: 0; }
+}
+
+/* Phones: compact cards — title, one meta line, status, action; labels only where a value needs one. */
+@media(max-width:767px) {
+  .workspace :global(.ma-table) td::before { display: none; }
+  .mobileOnly { display: inline; color: var(--text-3); }
+  .workspace .compactUsers td[data-label="კონტაქტი"], .workspace .compactUsers td[data-label="საქმიანობა"] { display: none; }
+  .workspace .compactUsers td[data-label="როლი"] { flex-basis: auto; display: block; color: var(--text-3); font-size: var(--fs-xs); }
+  .workspace .compactUsers tr { gap: var(--space-2) var(--space-3); }
+  .workspace :is(.offersTable,.dealsTable,.reviewsTable,.auditTable) td { grid-column: 1 / -1; }
+  .workspace :is(.offersTable,.dealsTable,.reviewsTable) td:is([data-label="სტატუსი"],[data-label="ეტაპი"]) { grid-column: 1; }
+  .workspace :is(.offersTable,.dealsTable,.reviewsTable) td[data-label="მოქმედება"] { grid-column: 2; justify-self: end; align-self: end; }
+  .workspace :is(.offersTable,.dealsTable) td[data-label="თარიღი"], .workspace .dealsTable td[data-label="განახლდა"] { display: none; }
+  .workspace .reviewsTable td:is([data-label="ქულა"],[data-label="თარიღი"]) { grid-column: auto; }
+  .narrowFilter.narrowFilter { flex-basis: 100%; max-width: none; }
+  .detailFacts { grid-template-columns: minmax(var(--size-112), max-content) minmax(0, 1fr); }
+}
+/* User-written titles in the drawer stay in regular letters; action buttons in lists never wrap. */
+.detailHead h3 { font-feature-settings: normal; letter-spacing: normal; }
+.workspace :global(.ma-table) td[data-label="მოქმედება"] :global(.ma-btn) { white-space: nowrap; }

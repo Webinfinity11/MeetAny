@@ -888,3 +888,29 @@ Production-ზე apply არ შესრულებულა; ახალ�
 | ალერტები | `meetany_private.default_request_alert_preferences(p)` | ნაგულისხმევი: კატეგორიები = `provide_categories` (ცარიელზე `[industry]`), ქალაქები = `['georgia']`, ჩართული მხოლოდ verified კომპანიას; ხელით შენახული პარამეტრი უპირატესია |
 | ანგარიშის გაუმჯობესება | `become_company(p_company text, p_industry text, p_account_intent text)` | `public.profiles`; `buy/sell/both`, სხვა → MA902; 2-არგუმენტიანი ვერსია `'both'`-ს იძახებს |
 | მოთხოვნის ფორმა / ჩემი მოთხოვნები | `save_request_draft(p_data jsonb)`, `my_request_draft()`, `delete_request_draft()` | ერთი მონახაზი თითო მომხმარებელზე (`meetany_private.request_drafts`); authenticated; დაშვებული გასაღებები: title, category, city, addressNote, quantity, unit, neededByText, body, preferences, attachmentDraft; ≤16 kB |
+
+## ადმინის მართვა v2 (2026-10-12, `20261012-admin-management.sql`)
+
+ერთი მიგრაცია, ორჯერ გასაშვები; ტესტი `db/tests/admin_management_v2_tests.sql` (`run.sh`-ის ბოლოს). ყველა ფუნქცია `meetany_private.require_admin()`-ით (არა-ადმინი → MA003), ყველა ჩაწერა — `moderation_audit`-ში.
+სქემა: `profiles.verification_note` (3–500); `deal_issues.outcome` (`resolved`/`rejected`/`cancelled`); `notifications.detail jsonb`, `notifications.request_id` nullable, ახალი kind-ები `verification_reviewed`, `report_resolved` (`request_id` და `offer_id` null); `moderation_audit` + action-ები `company.verification_review`, `request.preferences`, `deal.stage`, `deal.issue_resolve` და target `deal`.
+შენიშვნა: `admin_search_users` და `admin_search_offers` ძველი ხელმოწერა იშლება და ახალი ემატება (ერთი სახელი — ერთი ფუნქცია, named-call ორაზროვანი რომ არ გახდეს); `schema.sql`-ის ხელახლა გაშვება ამ მიგრაციის შემდეგ ძველ ხელმოწერას დააბრუნებს — მიგრაცია მერე ისევ უნდა გაეშვას.
+
+| ეკრანი | RPC და ზუსტი არგუმენტები | შედეგი / წესები |
+|---|---|---|
+| ადმინი → გარიგებები | `admin_list_deals(p_stage text default null, p_query text default null, p_cursor jsonb default null, p_limit integer default 25)` | `{items, hasMore, nextCursor, filteredTotal, stageCounts, asOf}`; ძიება: deal/request/offer/მხარეების id, სათაური, მხარეების სახელი; row: stage, request_title, buyer_name, supplier_name, total_price, offer_price, open_issue, issues, updated_at |
+| გარიგების დეტალი | `admin_set_deal_stage(p_deal uuid, p_stage text, p_reason text)` | deal jsonb; მიზეზი 3–500 (MA304); complete/cancelled საბოლოოა, იგივე ეტაპი → MA903; ღია პრობლემა → MA308; progress/complete ორივე დადასტურების გარეშე → MA905; `deal_event` (მხარეებს შეტყობინება) + audit `deal.stage` |
+| გარიგების პრობლემა | `admin_resolve_deal_issue(p_issue_id uuid, p_resolution text, p_outcome text)` | outcome `resolved`/`rejected`/`cancelled` (სხვა → MA902); `cancelled` გარიგებასაც აუქმებს (complete-ზე → MA903); audit `deal.issue_resolve`; 2-არგუმენტიანი ვერსია = `resolved` |
+| პრობლემების სია | `admin_deal_issues()` | + `outcome`, `stage`, `actor_name`, `actor_side` (buyer/supplier), `resolver_name`; ღია ზემოთ |
+| ვერიფიკაცია | `admin_set_verified(p_user_id uuid, p_verified boolean, p_reason text)` | unverify-ს მიზეზი სჭირდება (MA304); verify → დოკ. სტატუსი `approved`; unverify → `rejected` (თუ არასდროს გაგზავნილა — `not_submitted`) + `verification_note`; კომპანიას `verification_reviewed`; 2-არგუმენტიანი ვერსია იგივე სინქრონით, მიზეზის გარეშე |
+| ვერიფიკაციის დოკუმენტები | `review_verification(p_profile_id uuid, p_status text, p_note text)` | მხოლოდ `pending`-ზე (MA903); `rejected` მიზეზით (MA304); ცალკე audit `company.verification_review` + verify/unverify; 2-არგუმენტიანი ვერსია უარყოფას აღარ უშვებს მიზეზის გარეშე |
+| ვერიფიკაციის ჩანაწერი | `verification_record(p_profile_id uuid)` | + `legal_form`, `note` |
+| კომპანიები/მომხმარებლები | `admin_search_users(p_q, p_role, p_blocked, p_verified, p_cursor, p_limit, p_doc_status text default null)` | `p_doc_status`: not_submitted/pending/approved/rejected (მხოლოდ კომპანიები); სხვა → 22023 |
+| ანგარიშის რედაქტირება | `admin_edit_profile(p_id, p_patch)` | allowlist + `legal_name, registration_code, legal_form, website, founded_year, employee_band, contact_position, account_intent` (ცარიელი → null; შემოწმება სვეტის check-ით) |
+| მოთხოვნის წაშლა | `admin_delete_request_v2(p_request_id, p_reason)` | გარიგებიანი მოთხოვნა → MA305, ცვლილების გარეშე |
+| მოთხოვნის ბიუჯეტი/პირობები | `admin_set_request_preferences(p_request_id uuid, p_preferences jsonb)` | იგივე წესები, რაც `set_request_preferences` (არასწორი → MA902), ნებისმიერ სტატუსზე; `requests.budget_*` სინქრონი; audit `request.preferences` (old/new) |
+| შეთავაზებები | `admin_search_offers(p_q, p_status, p_cursor, p_limit, p_expired boolean default null)` | `p_expired`: `valid_until` < დღეს; row + `expired`, `deal_id`; ძიება + request_id, company_id |
+| შეფასებები | `admin_list_reviews(p_status text default null, p_source text default null, p_q text default null, p_offset integer default 0)` | `{total, items}` 20-20; source `deal`/`manual`; row + company, author, request_title, deal_id, scores, would_again |
+| საჩივრები | `admin_resolve_report(...)` | + ავტორ(ებ)ს `report_resolved` შეტყობინება (detail: title, resolution, kind) |
+| ისტორია | `admin_list_audit_v2(...)` | ახალი action-ები და target `deal` ფილტრში; row + `target_role`; deal-ის სახელი = მოთხოვნის სათაური |
+| შეტყობინებები | `list_notifications()`, `engagement_state()` | left join მოთხოვნაზე: request-ის გარეშე შეტყობინება ჩანს, `title` = `detail->>'title'`, row + `detail` |
+| საიტის დიზაინი | `admin_save_site_design` | მხოლოდ allowlist-ში დაემატა (UI არ აქვს) |

@@ -41,5 +41,5 @@ export function MatchingPreview({ store, category }: { store: Store; category: s
   if (counted?.category !== category) return <div className={styles.matchingPreview} role="status"><p>ითვლება…</p></div>;
   if (counted.count === null) return <div className={styles.matchingPreview}><p>მომწოდებლების რაოდენობა ამჟამად მიუწვდომელია. მოთხოვნა მაინც გამოქვეყნდება.</p></div>;
   if (!counted.count) return <div className={styles.matchingPreview}><p>ვერიფიცირებული მომწოდებელი ჯერ არ არის; მოთხოვნა კატალოგში მაინც გამოჩნდება.</p></div>;
-  return <div className={styles.matchingPreview}><p>ამ კატეგორიაში <strong>{counted.count}</strong> ვერიფიცირებული მომწოდებელი ემთხვევა</p><p>გამოქვეყნებისას მათ ეცნობებათ.</p></div>;
+  return <div className={styles.matchingPreview}><p><strong>{counted.count}</strong>ვერიფიცირებული მომწოდებელი ემთხვევა ამ კატეგორიას</p><p>გამოქვეყნებისას მათ ეცნობებათ.</p></div>;
 }

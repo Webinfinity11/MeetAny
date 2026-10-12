@@ -1,0 +1,718 @@
+MeetAny MVP - IT redesign brief                                                          Slide 01
+
+
+
+
+                                  MVP-ის ძირითადი პრინციპი
+
+                                   • ამოვიღოთ ყველაფერი, რაც არ ემსახურება
+                                   Request → Offer → Select → Deal flow-ს.
+
+                                   • დროებით არ გვჭირდება Business Ideas,
+                                   VIP/Premium ranking და ზედმეტი directory
+                                   ფუნქციები.
+
+                                   • მთავარი მესიჯი: ბიზნესი წერს რა სჭირდება
+                                   და სხვა ბიზნესები აგზავნიან შეთავაზებებს.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 02
+
+
+
+
+                                  Homepage
+
+                                  • პირველ ეკრანზე უნდა გამოჩნდეს ერთი
+                                  მთავარი ქმედება: მოთხოვნის განთავსება.
+
+                                  • მენიუ იყოს მარტივი: Opportunities,
+                                  Companies, How it works.
+
+                                  • Hero copy უნდა ახსნიდეს: ერთი მოთხოვნა -
+                                  რამდენიმე ბიზნეს შეთავაზება.
+
+                                  • ქვემოთ ვაჩვენოთ ბოლო რეალური
+                                  შესაძლებლობები, არა ზედმეტი კატეგორიების
+                                  სია.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 03
+
+
+
+
+                                  Opportunities / Requests
+                                  List
+
+                                   • Supplier ხედავს მოთხოვნებს როგორც
+                                   კომერციულ შესაძლებლობებს.
+
+                                   • ბარათზე აუცილებელია: რა სჭირდება, ვინ
+                                   სთხოვს, ლოკაცია, რაოდენობა, ბიუჯეტი, ვადა
+                                   და შეთავაზებების რაოდენობა.
+
+                                   • ფილტრები MVP-ში საკმარისია: category,
+                                   location, budget, deadline, verified only.
+
+                                   • ტელეფონი/ელფოსტა ამ ეტაპზე არ უნდა
+                                   ჩანდეს.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 04
+
+
+
+
+                                  Opportunities - შავ-თეთრი
+                                  MVP ვერსია
+
+                                   • დავტოვოთ სუფთა grid/list გამოცდილება და
+                                   მაქსიმალურად მცირე ვიზუალური ხმაური.
+
+                                   • Search უნდა მუშაობდეს პროდუქტზე,
+                                   სერვისზე, კომპანიაზე და კატეგორიაზე.
+
+                                   • CTA თითო card-ზე: View Details / Make
+                                   Offer flow-ისკენ გადასვლა.
+
+                                   • ფერები მხოლოდ სტატუსებისთვის,
+                                   ძირითადი UI შავ-თეთრი.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 05
+
+
+
+
+                                  Request Details
+
+                                   • ეს არ უნდა იყოს e-commerce product page;
+                                   ეს არის B2B მოთხოვნის სამუშაო გვერდი.
+
+                                   • მარცხნივ: სათაური, key facts, აღწერა,
+                                   ტექნიკური მოთხოვნები, ფაილები.
+
+                                   • მარჯვნივ: Make an Offer, Save, deadline,
+                                   offer count, verified buyer card.
+
+                                   • Contact details იხსნება მხოლოდ
+                                   supplier-ის არჩევის შემდეგ.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 06
+
+
+
+
+                                  Make an Offer
+
+                                   • Supplier ავსებს მხოლოდ Buyer-ის
+                                   გადაწყვეტილებისთვის საჭირო ველებს.
+
+                                   • ველები: total price, delivery time, offer
+                                   valid until, short description, commercial
+                                   terms, files, notes.
+
+                                   • მარჯვნივ უნდა ჩანდეს request summary და
+                                   buyer info, რომ supplier-მა იცოდეს რას
+                                   პასუხობს.
+
+                                   • Submit შემდეგ offer გადადის
+                                   Pending/Viewed/Selected status flow-ში.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 07
+
+
+
+
+                                  Compare Offers
+
+                                  • Buyer ერთ ეკრანზე ადარებს ყველა
+                                  შეთავაზებას.
+
+                                  • შედარების ძირითადი სვეტები: Supplier,
+                                  price, unit price, delivery time, validity,
+                                  includes, files.
+
+                                  • მთავარი CTA: Select Offer; დამატებით:
+                                  Message და View Proposal.
+
+                                  • პირველ ვერსიაში ფილტრები იყოს
+                                  მინიმალური: price, delivery, verified, sort.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 08
+
+
+
+
+                                  Offer Selected / Contact
+                                  Unlocked
+
+                                   • Buyer-ის არჩევის შემდეგ იხსნება
+                                   supplier-ის საკონტაქტო ინფორმაცია და ჩატი.
+
+                                   • სხვა offers გადავიდეს Not Selected
+                                   სტატუსში, request აღარ იყოს ღია ახალი
+                                   offers-ისთვის.
+
+                                   • ეკრანზე ჩანს selected offer, contact person,
+                                   phone/email, PDF და next steps.
+
+                                   • ეს არის contact-gating-ის მთავარი
+                                   წერტილი marketplace bypass-ის
+                                   შესამცირებლად.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 09
+
+
+
+
+                                  Discuss Details
+
+                                   • ეს არის მოლაპარაკების სივრცე selected
+                                   supplier-თან.
+
+                                   • ჩატში უნდა ჩანდეს deal context და updated
+                                   proposal card.
+
+                                   • მხარეებს შეუძლიათ შეცვალონ ფასი, ვადა,
+                                   payment terms და included services.
+
+                                   • CTA: Accept / Request Changes / Propose
+                                   New Terms.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 10
+
+
+
+
+                                  Agree on Terms
+
+                                  • ორივე მხარე ადასტურებს საბოლოო
+                                  პირობებს.
+
+                                  • Deal summary უნდა შეიცავდეს final price,
+                                  quantity, delivery, location, payment terms,
+                                  includes და files.
+
+                                  • ეს არ არის იურიდიული ხელშეკრულება; ეს
+                                  არის MeetAny Deal Record.
+
+                                  • ორივე confirmation-ის შემდეგ სტატუსი
+                                  გადადის In Progress-ზე.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 11
+
+
+
+
+                                  In Progress
+
+                                   • შეთანხმების შემდეგ buyer აკვირდება
+                                   შესრულების პროცესს.
+
+                                   • Timeline: order confirmed, production
+                                   started, in production, ready for delivery,
+                                   delivered.
+
+                                   • Supplier-ს შეუძლია progress update და
+                                   ფოტოების დამატება.
+
+                                   • Final agreement ყოველთვის ხილული
+                                   რჩება, რომ პირობები არ დაიკარგოს chat-ში.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 12
+
+
+
+
+                                  Complete Deal
+
+                                  • Supplier აღნიშნავს delivered-ს, Buyer
+                                  ადასტურებს completion-ს ან აჭერს Report an
+                                  Issue-ს.
+
+                                  • Completion შემდეგ request გადადის
+                                  Completed სტატუსში.
+
+                                  • Review უნდა დაიშვას მხოლოდ რეალურად
+                                  დასრულებულ deal-ზე.
+
+                                  • Completed deals მომავალში გახდება
+                                  reputation და ranking-ის საფუძველი.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 13
+
+
+
+
+                                  Buyer Dashboard / My
+                                  Requests
+
+                                   • Buyer ერთ სივრცეში მართავს ყველა
+                                   request-ს.
+
+                                   • სტატუსები: Active, Reviewing Offers,
+                                   Supplier Selected, Completed, Draft.
+
+                                   • თითო request row აჩვენებს offer count-ს,
+                                   status-ს, supplier-ს და next action-ს.
+
+                                   • მთავარი CTA: Post a New Request.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 14
+
+
+
+
+                                  Supplier Dashboard / My
+                                  Offers
+
+                                   • Supplier ხედავს ყველა გაგზავნილ offer-ს
+                                   როგორც mini CRM-ს.
+
+                                   • სტატუსები: Pending, Viewed, Selected, Not
+                                   Selected.
+
+                                   • Offer detail panel აჩვენებს price, delivery,
+                                   payment terms, buyer info და next steps.
+
+                                   • Contact info სრულად იხსნება მხოლოდ
+                                   selected offer-ის შემდეგ.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 15
+
+
+
+
+                                  Public Company Profile
+
+                                   • Buyer აქ ამოწმებს supplier-ის სანდოობას.
+
+                                   • Profile-ში იყოს: logo, verification, industry,
+                                   location, about, products/services, reviews,
+                                   completed deals.
+
+                                   • Contact არ უნდა იყოს ღია ყველასთვის; CTA
+                                   იყოს Send Message ან Request a Quote
+                                   platform-ის შიგნით.
+
+                                   • Reviews უნდა მოდიოდეს მხოლოდ
+                                   completed deals-დან.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 16
+
+
+
+
+                                  Post a Request - Details &
+                                  Requirements
+
+                                   • Request creation იყოს 4 ნაბიჯად, არა ერთი
+                                   გრძელი ფორმა.
+
+                                   • პირველი ეტაპი აგროვებს title, category,
+                                   short description, quantity, specs, files და
+                                   preferences.
+
+                                   • Live preview აჩვენებს როგორ დაინახავს
+                                   მოთხოვნას supplier.
+
+                                   • Save as Draft აუცილებელია.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 17
+
+
+
+
+                                  Post a Request - Delivery
+                                  & Budget
+
+                                   • აქ დგინდება delivery location, date,
+                                   flexibility, budget range და payment terms.
+
+                                   • Budget range მნიშვნელოვნად ზრდის
+                                   relevant offers-ის ხარისხს.
+
+                                   • Supplier-ს უნდა შეეძლოს ალტერნატიული
+                                   ფასი/ვადა/პირობა შესთავაზოს.
+
+                                   • Detailed preferences optional უნდა იყოს,
+                                   რომ ფორმა არ დამძიმდეს.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 18
+
+
+
+
+                                  Post a Request - Review &
+                                  Publish
+
+                                   • Buyer საბოლოოდ ამოწმებს ყველა სექციას
+                                   და საჭიროების შემთხვევაში Edit-ით ბრუნდება
+                                   კონკრეტულ ნაწილზე.
+
+                                   • Supplier matching preview აჩვენებს
+                                   რამდენი verified supplier ემთხვევა
+                                   მოთხოვნას.
+
+                                   • Publish Request იწყებს matching-ს,
+                                   notifications-ს და offers-ის მიღებას.
+
+                                   • ეს არის conversion-ის ბოლო ეკრანი.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 19
+
+
+
+
+                                  Request Published /
+                                  Matching Started
+
+                                   • Publish-ის შემდეგ user ხედავს
+                                   confirmation-ს და matching progress-ს.
+
+                                   • უნდა გამოჩნდეს რამდენ supplier-ს
+                                   გაეგზავნა მოთხოვნა და ვინ არის matched.
+
+                                   • Recent activity აჩვენებს: request
+                                   published, suppliers matched, request
+                                   viewed, offer received.
+
+                                   • მიზანია buyer-მ იგრძნოს, რომ MeetAny
+                                   უკვე მუშაობს მისთვის.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 20
+
+
+
+
+                                  Notifications / Activity
+                                  Center
+
+                                   • ყველა მნიშვნელოვანი update ერთ
+                                   ადგილას: offers, messages, matches, views,
+                                   status changes.
+
+                                   • Notification-ის გახსნისას detail panel
+                                   მარჯვნივ აჩვენებს მოქმედ ინფორმაციას.
+
+                                   • Quick actions: View Offer, Send Message,
+                                   View Request, Open Deal.
+
+                                   • ეს არის action center და არა მხოლოდ alert
+                                   list.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 21
+
+
+
+
+                                  Messages / Chat Center
+
+                                   • ჩატი ყოველთვის დაკავშირებული უნდა იყოს
+                                   კონკრეტულ request/offer/deal-თან.
+
+                                   • Conversation list-ში ჩანს კომპანია, ბოლო
+                                   message, unread count და deal context.
+
+                                   • მარჯვნივ მუდმივად ჩანს request summary,
+                                   offer summary და shared files.
+
+                                   • MVP-ში საკმარისია text + attachments;
+                                   voice/video არ არის საჭირო.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 22
+
+
+
+
+                                  Company Registration -
+                                  Flexible Account
+
+                                   • არ შევქმნათ ცალკე Buyer და Supplier
+                                   accounts.
+
+                                   • ერთი Company Account უნდა შეძლებდეს
+                                   buying-საც და selling-საც.
+
+                                   • Registration-ში არჩევანი იყოს: Find
+                                   suppliers, Find customers, Both.
+
+                                   • შემდეგ dashboard-ში მომხმარებელს ექნება
+                                   Buying და Selling სამუშაო სივრცეები.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 23
+
+
+
+
+                                  Company Details
+
+                                  • აქ გროვდება იურიდიული და საკონტაქტო
+                                  ინფორმაცია verification-ისთვის.
+
+                                  • ველები: legal name, tax ID, established
+                                  year, company type, employees, official
+                                  email, phone, location, contact person.
+
+                                  • Private contact details საჯაროდ არ უნდა
+                                  გამოჩნდეს ავტომატურად.
+
+                                  • Tax ID გამოიყენება verification-ისთვის.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 24
+
+
+
+
+                                  Business Profile
+
+                                   • კომპანია ქმნის საჯარო ბიზნეს იდენტობას.
+
+                                   • ველები: logo, cover, description, primary
+                                   industry, additional industries, tags,
+                                   capabilities, certifications.
+
+                                   • Tags აუცილებელია matching
+                                   engine-ისთვის.
+
+                                   • ფორმა არ უნდა გადაიტვირთოს - მიზანია
+                                   MeetAny-მ გაიგოს ვინ არის კომპანია.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 25
+
+
+
+
+                                  What You Provide
+
+                                  • კომპანია ამატებს პროდუქტებსა და
+                                  სერვისებს, რასაც სთავაზობს ბაზარს.
+
+                                  • თითო item-ზე: name, category, short
+                                  description, tags, photos, active/inactive.
+
+                                  • ფასები ამ ეტაპზე არ მოვთხოვოთ; ფასი
+                                  კონკრეტულ offer-ში იწერება.
+
+                                  • ეს მონაცემები გამოიყენება supplier
+                                  matching-ში.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 26
+
+
+
+
+                                  What You Need
+
+                                  • კომპანია უთითებს რას ყიდულობს ან რა
+                                  კატეგორიებში ეძებს suppliers-ს.
+
+                                  • Buying categories შეიძლება იყოს ზოგადი;
+                                  specific buying items optional.
+
+                                  • Buying interests არ არის active request -
+                                  request ცალკე იქმნება.
+
+                                  • ეს ეხმარება recommended suppliers-ს და
+                                  future matching-ს.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 27
+
+
+
+
+                                  Verification
+
+                                   • კომპანია ტვირთავს დოკუმენტებს Verified
+                                   Company badge-ისთვის.
+
+                                   • სავალდებულო MVP-ში: registration
+                                   certificate, tax ID/tax certificate, company
+                                   logo.
+
+                                   • Optional: ISO, HACCP, licenses და სხვა
+                                   certifications.
+
+                                   • დოკუმენტები private-ია; საჯაროდ ჩანს
+                                   მხოლოდ verification result.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 28
+
+
+
+
+                                  Review & Complete
+
+                                  • ბოლო ეტაპზე user ამოწმებს account type,
+                                  company details, business profile, products,
+                                  needs და documents.
+
+                                  • ყოველ section-ს აქვს Edit, რომ შეცვლა
+                                  progress-ის დაკარგვის გარეშე მოხდეს.
+
+                                  • Submit for Verification-ის შემდეგ status
+                                  ხდება Verification Pending.
+
+                                  • User უნდა გადავიდეს dashboard-ზე და არა
+                                  waiting screen-ზე.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                         Slide 29
+
+
+
+
+                                  Personalized Company
+                                  Dashboard
+
+                                  • Onboarding-ის შემდეგ dashboard უნდა
+                                  აჩვენებდეს verification status-ს და profile
+                                  completion-ს.
+
+                                  • Recommended for You აერთიანებს buying
+                                  requests-ს და selling opportunities-ს.
+
+                                  • Quick actions: Post Request, Send Offer,
+                                  Search Companies, Save Opportunity.
+
+                                  • მიზანია user-მა დაუყოვნებლივ დაიწყოს
+                                  marketplace-ის გამოყენება.
+
+
+
+
+                                  IT task: implement this screen as part of MVP flow.
+MeetAny MVP - IT redesign brief                                                          Slide 30
+
+
+
+
+                                  Matching Opportunities
+
+                                   • ეს არის პერსონალიზებული opportunities
+                                   feed კომპანიის პროფილის მიხედვით.
+
+                                   • tabs: Recommended, Buying Requests,
+                                   Supplier Opportunities/Recommended
+                                   Suppliers.
+
+                                   • Opportunity card აჩვენებს key
+                                   requirements, company info, tags და CTA-ს.
+
+                                   • მთავარი action: Send an Offer ან Save
+                                   Opportunity.
+
+
+
+
+                                   IT task: implement this screen as part of MVP flow.
+

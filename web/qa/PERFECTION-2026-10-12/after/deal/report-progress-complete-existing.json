@@ -1,0 +1,124 @@
+{
+  "base": "http://localhost:3307",
+  "at": "2026-10-12T10:57:05.885Z",
+  "pages": [
+    {
+      "name": "deal-progress-supplier-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-supplier-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-buyer-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-progress-buyer-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "modal-issue-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "modal-complete-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შესრულება მიმდინარეობს",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-buyer-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-buyer-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "modal-review-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "modal-review-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-supplier-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-supplier-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-denied-1440",
+      "url": "/deals/view/?id=63d76320-70a5-4cf2-bd5a-dc4aa424a3bc",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)"
+      ]
+    },
+    {
+      "name": "deal-denied-390",
+      "url": "/deals/view/?id=63d76320-70a5-4cf2-bd5a-dc4aa424a3bc",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+        "console: Failed to load resource: the server responded with a status of 400 (Bad Request)"
+      ]
+    }
+  ]
+}

@@ -99,10 +99,11 @@ body:has(.ma-loading) .ma-navigation-progress{display:none}
 .ma-tab[aria-selected="true"],.ma-tab[aria-current="page"]{color:var(--text)}
 .ma-tab[aria-selected="true"]::after,.ma-tab[aria-current="page"]::after{background:var(--action)}
 @media (max-width:767.98px){
-  .ma-tabs{gap:var(--space-2);border-bottom:0;margin-inline:calc(-1 * var(--gutter));padding:var(--space-half) var(--gutter) var(--space-1)}
+  .ma-tabs{gap:var(--space-2);border-bottom:0;margin-inline:calc(-1 * var(--gutter));padding:var(--space-half) var(--gutter) var(--space-1);scroll-snap-type:x proximity;scroll-padding-inline:var(--gutter);-webkit-mask-image:var(--mask-fade-start),var(--mask-solid),var(--mask-fade-end);mask-image:var(--mask-fade-start),var(--mask-solid),var(--mask-fade-end);-webkit-mask-size:var(--gutter) 100%,calc(100% - 2 * var(--gutter)) 100%,var(--gutter) 100%;mask-size:var(--gutter) 100%,calc(100% - 2 * var(--gutter)) 100%,var(--gutter) 100%;-webkit-mask-position:left,center,right;mask-position:left,center,right;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+  .ma-tab{scroll-snap-align:start}
   .ma-tab{min-height:var(--tap-min);padding:0 var(--space-4);border:var(--size-1) solid var(--border);border-radius:var(--radius-pill);background:var(--white);color:var(--text-2);font-size:var(--fs-sm)}
   .ma-tab::after{display:none}
-  .ma-tab[aria-selected="true"],.ma-tab[aria-current="page"]{background:var(--ink-900);border-color:var(--ink-900);color:var(--white)}
+  .ma-tab[aria-selected="true"],.ma-tab[aria-current="page"]{background:var(--action-strong);border-color:var(--action-strong);color:var(--white)}
 }
 /* Original PNG logo: the symbol takes --logo-h (28px by default), the wordmark keeps its 22/28 proportion. */
 .ma-logo{display:inline-flex;align-items:center;gap:var(--space-2);line-height:var(--lh-solid)}
@@ -130,7 +131,8 @@ html:has(.ma-sheet[open]){overflow:hidden}
 .ma [hidden]{display:none!important}
 @keyframes ma-rise{from{opacity:0;transform:translateY(var(--size-8))}to{opacity:1;transform:none}}
 @keyframes ma-content-in{from{opacity:.72;transform:translateY(var(--size-4))}to{opacity:1;transform:none}}
-.ma-main>.ma-container>:not(.ma-loading):not(.post-page):not(:has(.ma-loading)){animation:ma-content-in var(--motion-base) var(--motion-ease) both}
+/* backwards, not both: a held transform would make position:fixed bars (e.g. .detail-actionbar) stick to the content instead of the viewport. */
+.ma-main>.ma-container>:not(.ma-loading):not(.post-page):not(:has(.ma-loading)){animation:ma-content-in var(--motion-base) var(--motion-ease) backwards}
 @media(prefers-reduced-motion:reduce){.ma-main>.ma-container>*{animation:none!important}}
 .ma-ocard{transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur-fast) var(--ease)}
 @media (hover:hover){

@@ -1,4 +1,6 @@
 "use client";
+import { optimizable } from "../lib/image";
+import Image from "next/image";
 import { Button } from "./ui/Button";
 
 
@@ -45,7 +47,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
       {value ? <button type="button" className="catalog-search__clear" aria-label="ძიების გასუფთავება" onClick={() => { onChange(""); setActive(-1); setOpen(true); input.current?.focus(); }}><Icon name="x" /></button> : null}
     </div>
     {open && value.trim() && !suggestions.length && emptyHref ? <div className="search-suggestions search-suggestions--empty" role="status">
-      <p className="search-suggestions__none"><strong>„{value.trim()}“ ვერ მოიძებნა</strong><span>აღწერე, რა გჭირდება, და კომპანიები თავად დაგიკავშირდებიან.</span></p>
+      <p className="search-suggestions__none"><strong>„{value.trim()}“ ვერ მოიძებნა</strong><span>აღწერეთ, რა გჭირდებათ, და კომპანიები თავად დაგიკავშირდებიან.</span></p>
       <Button variant="primary" size="sm" href={emptyHref} onMouseDown={e => e.preventDefault()}>მოთხოვნის გამოქვეყნება</Button>
     </div> : null}
     <div className="search-suggestions" hidden={!open || !suggestions.length}>
@@ -57,7 +59,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
             className={`search-suggestion search-suggestion--${s.kind}`} onMouseDown={e => e.preventDefault()} onPointerMove={() => setActive(index)} onClick={() => pick(index)}>
             {s.kind === "category"
               ? <span className="search-suggestion__category-icon"><DuoIcon family="category" name={s.category} size={18} /></span>
-              : s.image ? <img className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={36} height={36} />
+              : s.image ? <Image className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={36} height={36} unoptimized={!optimizable(s.image)} />
               : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? <DuoIcon name="building-2" size={20} /> : <DuoIcon name="file-text" size={20} />}</span>}
             <span><strong><Highlight text={s.label} query={value} /></strong><small>{s.detail}</small></span>
           </button></Fragment>;

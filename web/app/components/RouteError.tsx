@@ -12,9 +12,9 @@ export function RouteError({ error, retry }: { error: Error & { digest?: string 
   }, [error]);
 
   return (
-    <StatusPage eyebrow="შეცდომა" title="გვერდი ვერ ჩაიტვირთა" text="რაღაც არ გამოვიდა — სცადე თავიდან ან დაბრუნდი მთავარზე.">
+    <StatusPage eyebrow="შეცდომა" title="გვერდი ვერ ჩაიტვირთა" text="სცადეთ ხელახლა ან დაბრუნდით მთავარ გვერდზე.">
       <Button onClick={() => retry()}>
-        სცადე თავიდან
+        ხელახლა ცდა
       </Button>
       <Button variant="secondary" href="/">
         მთავარზე დაბრუნება

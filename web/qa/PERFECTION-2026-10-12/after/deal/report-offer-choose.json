@@ -1,0 +1,102 @@
+{
+  "base": "http://localhost:3307",
+  "at": "2026-10-12T10:55:06.966Z",
+  "pages": [
+    {
+      "name": "offer-new-1440",
+      "url": "/offers/new/?requestId=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების გაგზავნა",
+      "errors": []
+    },
+    {
+      "name": "offer-new-390",
+      "url": "/offers/new/?requestId=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების გაგზავნა",
+      "errors": []
+    },
+    {
+      "name": "offer-new-validation-1440",
+      "url": "/offers/new/?requestId=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების გაგზავნა",
+      "errors": []
+    },
+    {
+      "name": "modal-offer-sent-1440",
+      "url": "/offers/new/?requestId=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "შეთავაზების რედაქტირება",
+      "errors": []
+    },
+    {
+      "name": "compare-1440",
+      "url": "/requests/compare/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "compare-390",
+      "url": "/requests/compare/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "modal-select-offer-1440",
+      "url": "/requests/compare/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "modal-select-offer-390",
+      "url": "/requests/compare/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "deal-selected-buyer-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მომწოდებელი არჩეულია",
+      "errors": []
+    },
+    {
+      "name": "deal-selected-buyer-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "მომწოდებელი არჩეულია",
+      "errors": []
+    },
+    {
+      "name": "compare-chosen-1440",
+      "url": "/requests/compare/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    },
+    {
+      "name": "compare-chosen-390",
+      "url": "/requests/compare/?id=297c34a0-8b65-4086-8862-8f58021a2ad3",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "QA გარიგება — მუხის მაგიდები",
+      "errors": []
+    }
+  ]
+}

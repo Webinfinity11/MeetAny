@@ -23,7 +23,8 @@ const questions: Record<ReportKind, string> = {
 };
 const TEXT_MAX = 500;
 
-/** Quiet „შეატყობინე“ action: guests go to sign-in first, users pick a reason in a small sheet. */
+/** „დარღვევის შეტყობინება“: one quiet text link everywhere (request aside, company page, offer card).
+ *  Guests go to sign-in first; users pick a reason in a small sheet. */
 export function ReportButton({ kind, targetId }: { kind: ReportKind; targetId: string }) {
   const { store } = useMarketStore();
   const router = useRouter();
@@ -43,7 +44,7 @@ export function ReportButton({ kind, targetId }: { kind: ReportKind; targetId: s
     button.current?.focus();
   }
   return <>
-    <button ref={button} type="button" className="detail-link report-link" onClick={start}><Icon name="flag" />შეატყობინე</button>
+    <button ref={button} type="button" className="detail-link report-link" onClick={start}><Icon name="flag" />დარღვევის შეტყობინება</button>
     {open ? <ReportSheet kind={kind} targetId={targetId} onClose={close} /> : null}
   </>;
 }
@@ -60,8 +61,8 @@ function ReportSheet({ kind, targetId, onClose }: { kind: ReportKind; targetId: 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (!store || pending) return;
-    if (!reason) { setError("აირჩიე მიზეზი."); return; }
-    if (needsText && text.trim().length < 3) { setError("„სხვა მიზეზისთვის“ მოკლედ აღწერე პრობლემა."); return; }
+    if (!reason) { setError("აირჩიეთ მიზეზი."); return; }
+    if (needsText && text.trim().length < 3) { setError("მოკლედ აღწერეთ პრობლემა."); return; }
     setPending(true);
     setError(null);
     try {
@@ -69,15 +70,15 @@ function ReportSheet({ kind, targetId, onClose }: { kind: ReportKind; targetId: 
       toast("მადლობა. შეტყობინებას გუნდი განიხილავს.");
       onClose();
     } catch (err) {
-      setError((err as { userMessage?: string })?.userMessage || "შეტყობინება ვერ გაიგზავნა. სცადე თავიდან.");
+      setError((err as { userMessage?: string })?.userMessage || "შეტყობინება ვერ გაიგზავნა. სცადეთ ხელახლა.");
     } finally {
       setPending(false);
     }
   }
 
-  return <Sheet open className="report-sheet" onClose={() => { if (!pending) onClose(); }} title="შეტყობინება"
+  return <Sheet open className="report-sheet" onClose={() => { if (!pending) onClose(); }} title="დარღვევის შეტყობინება"
     footer={<>
-      <Button type="button" variant="secondary" disabled={pending} onClick={onClose}>გაუქმება</Button>
+      <Button type="button" variant="secondary" disabled={pending} onClick={onClose}>დახურვა</Button>
       <Button type="submit" form={formId} variant="primary" disabled={pending}>{pending ? "იგზავნება…" : "გაგზავნა"}</Button>
     </>}>
     <form id={formId} className="ma-form" onSubmit={submit} noValidate>

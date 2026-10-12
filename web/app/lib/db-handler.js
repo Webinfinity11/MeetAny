@@ -39,6 +39,12 @@ const RPCS = new Set([
   // Brief features (migrations 20261013-*): deal counts, saved requests, viewed offers, deals list, matching count, drafts.
   'company_public_stats', 'list_saved_requests', 'set_saved_request', 'mark_request_offers_viewed', 'list_my_deals',
   'count_matching_suppliers', 'my_request_draft', 'save_request_draft', 'delete_request_draft',
+  // Performance (migration 20261012-perf-attachments-batch): one file-list read for many offers.
+  'list_attachments_many',
+  // Home page counters (migration 20261012-home-stats).
+  'home_stats',
+  // Admin management v2 (migration 20261012-admin-management): deals, budget, reviews list; site design save.
+  'admin_list_deals', 'admin_set_deal_stage', 'admin_set_request_preferences', 'admin_list_reviews', 'admin_save_site_design',
 ]);
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
@@ -54,6 +60,8 @@ const PUBLIC_WRITES = new Set([
   'admin_resolve_report',
   // Selecting an offer closes the request publicly; onboarding changes public company fields.
   'select_offer_deal', 'set_onboarding_details', 'set_matching_categories',
+  // Admin: the public budget and company deal counts.
+  'admin_set_request_preferences', 'admin_set_deal_stage', 'admin_resolve_deal_issue', 'admin_set_document_status',
 ]);
 
 const MAX_BODY = 64 * 1024;

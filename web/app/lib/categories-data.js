@@ -78,6 +78,10 @@ export const categoryIcon = Object.fromEntries(categoryGroups.flatMap(g => g.ite
 const leafPhoto = { textiles: "hotel-linen.jpg", legal: "legal-office.jpg" };
 export const categoryPhoto = Object.fromEntries(categoryGroups.flatMap(g => g.items.map(([key]) => [key, leafPhoto[key] || g.photo])));
 
+// The categories offered first wherever a company picks what it supplies or buys (onboarding steps 1 and 5);
+// the rest open under "all categories". One construction entry: renovation; materials live in the full list.
+export const featuredCategories = ["food_fresh", "beverages", "catering", "packaging", "wholesale", "equipment", "renovation", "software_web", "advertising", "freight", "cleaning", "other"];
+
 // Old 13 keys -> new category. Same mapping as db/migrations/20260929-categories.sql.
 export const legacyCategory = {
   furniture: "furniture", construction: "renovation", textiles: "textiles", food: "food_fresh",

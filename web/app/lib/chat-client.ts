@@ -4,7 +4,7 @@
 // read-marking and sending model, so both views always agree on unread state.
 import { useEffect, useRef, useState } from "react";
 import type { Store } from "./market-client";
-import { toast } from "../components/Toasts";
+import { toastError } from "../components/Toasts";
 
 export type Message = { id: string; senderId: string; body: string; createdAt: string; readAt?: string | null };
 export type Conversation = {
@@ -15,7 +15,7 @@ export type Conversation = {
 export type ChatTarget = { companyId: string; requestId?: string; conversation?: Conversation };
 
 export const chatChanged = () => window.dispatchEvent(new Event("meetany:chat-changed"));
-export const chatErrorText = (err: unknown) => (err as { userMessage?: string })?.userMessage || "მიმოწერა ვერ ჩაიტვირთა. სცადე ხელახლა.";
+export const chatErrorText = (err: unknown) => (err as { userMessage?: string })?.userMessage || "მიმოწერა ვერ ჩაიტვირთა. სცადეთ ხელახლა.";
 
 type Feed = { unread: number | null; list: { items?: Conversation[]; error?: string } | null };
 type Source = {
@@ -58,7 +58,7 @@ function feed(owner: string): Source {
         const error = chatErrorText(err);
         // Keep the open thread mounted on background failures so its draft survives.
         if (src.listSubs) src.state = { ...src.state, list: { ...src.state.list, error } };
-        if (!failed) toast(error);
+        if (!failed) toastError(error);
         failed = true;
       } finally { busy = false; readingList = false; }
       titleCount(src.state.unread);
@@ -164,7 +164,7 @@ export function useChatThread(store: Store, target: ChatTarget, enabled = true) 
         if (unread && !document.hidden) { const result = await markRead(id); unread = false; if (active && result.marked) chatChanged(); }
         hadError = false;
       } catch (err) {
-        if (active) { setFailed(true); if (!hadError) toast(chatErrorText(err)); hadError = true; }
+        if (active) { setFailed(true); if (!hadError) toastError(chatErrorText(err)); hadError = true; }
       } finally { busy = false; }
     };
     // Fast while the conversation is live (activity in the last 2 minutes), slower when it is quiet.
@@ -186,7 +186,7 @@ export function useChatThread(store: Store, target: ChatTarget, enabled = true) 
       onStored?.(); merge([message]); activity.current = Date.now(); chatChanged();
       return true;
     } catch (err) {
-      if (alive.current) { const error = (err as { userMessage?: string })?.userMessage || "შეტყობინება ვერ გაიგზავნა. სცადე ხელახლა."; setSendError(error); toast(error); }
+      if (alive.current) { const error = (err as { userMessage?: string })?.userMessage || "შეტყობინება ვერ გაიგზავნა. სცადეთ ხელახლა."; setSendError(error); toastError(error); }
       return false;
     } finally { sending.current = false; if (alive.current) setPending(false); }
   }

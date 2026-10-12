@@ -1,5 +1,6 @@
 "use client";
 
+import { optimizable } from "../../lib/image";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +10,7 @@ import { Icon } from "../Icon";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { RequestCatalogCover } from "./RequestCatalogCover";
+import { avatarInitials } from "../../lib/avatar-initials";
 import catalogStyles from "./catalog/Catalog.module.css";
 import styles from "./OpportunityCard.module.css";
 
@@ -38,16 +40,16 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
   const deadline = `${Math.max(0, r.daysLeft)} დღე დარჩა`;
   return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full} ${horizontal ? styles.horizontal : ""}`}`} data-request-id={r.id}>
     <div className={styles.visual}>
-      {r.photo && failed !== r.photo ? <Image unoptimized src={r.photo} alt="" width={480} height={300} loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />}
+      {r.photo && failed !== r.photo ? <Image unoptimized={!optimizable(r.photo)} src={r.photo} alt="" width={480} height={300} sizes="(max-width: 720px) 100vw, 480px" loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />}
       {compact ? r.isNew && <Badge status="success" className={styles.new}>ახალი</Badge> : (r.isNew || r.daysLeft <= 5) && <Badge status={r.isNew ? "success" : "warning"} className={styles.new}>{r.isNew ? "ახალი" : "სასწრაფო"}</Badge>}
       {compact ? <div className={styles.chips}><span title={category}>{category}</span><span className={r.daysLeft <= 5 ? styles.warning : ""}>{deadline}</span></div>
-        : <>{onSave && <button type="button" className={styles.save} aria-label={saved ? "შენახვიდან წაშლა" : "მოთხოვნის შენახვა"} aria-pressed={saved} onClick={onSave}><Icon name="bookmark" /></button>}</>}
+        : <>{onSave && <button type="button" className={styles.save} aria-label={saved ? "შენახვის გაუქმება" : "მოთხოვნის შენახვა"} aria-pressed={saved} onClick={onSave}><Icon name="bookmark" /></button>}</>}
     </div>
     <div className={styles.body}>
       <h3><Link className={styles.mainLink} href={href}>{r.title}</Link></h3>
-      {!compact && <><span className={styles.category}>{category}</span>{buyer && <p className={styles.buyer}><span>{buyer.name.slice(0, 1)}</span>{buyer.name}{buyer.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</p>}</>}
+      {!compact && <><span className={styles.category}>{category}</span>{buyer && <p className={styles.buyer}><span aria-hidden="true">{avatarInitials(buyer.name)}</span>{buyer.name}{buyer.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</p>}</>}
       <ul className={styles.facts}><li><Icon name="map-pin" />{r.cityLabel || cities[r.city] || r.city}</li>{r.quantity != null && <li><Icon name="package" />{formatNumber(r.quantity)} {r.unit ? units[r.unit] || r.unit : ""}</li>}{budget && <li><Icon name="wallet" />{budget}</li>}</ul>
-      {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div><div className={styles.actions}><Button variant="secondary" href={href}>დეტალები</Button>{(canOffer || guest) && <Button href={guest ? `/account/?next=${encodeURIComponent(`/offers/new/?requestId=${encodeURIComponent(r.id)}`)}` : `/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზება</Button>}</div></div>}
+      {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div><div className={styles.actions}>{canOffer || guest ? <Button href={guest ? `/account/?next=${encodeURIComponent(`/offers/new/?requestId=${encodeURIComponent(r.id)}`)}` : `/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზების გაგზავნა</Button> : <Button variant="secondary" href={href}>მოთხოვნის ნახვა</Button>}</div></div>}
     </div>
   </article>;
 }

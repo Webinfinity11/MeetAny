@@ -1,8 +1,8 @@
 .fields { display:grid; gap:var(--space-5); min-width:0; }
 .fields fieldset { border:0; padding:0; min-width:0; display:grid; gap:var(--space-5); }
 .two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-4); align-items:start; }
-.checks { display:grid; gap:var(--space-3); }
-.checks legend { margin-bottom:var(--space-3); }
+.checks { display:grid; gap:var(--space-3); min-width:0; margin:0; padding:0; border:0; }
+.checks legend { padding:0; margin-bottom:var(--space-3); }
 .record { display:grid; gap:var(--space-4); min-width:0; }
 .record header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-3); }
 .record h2 { font-size:var(--fs-lg); }

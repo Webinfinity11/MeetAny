@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Store } from "./market-client";
+import { isUuid } from "./ids";
 
 export function useRequestDetail(store: Store | undefined, ready: boolean, available: boolean, id: string) {
   const [result, setResult] = useState<{ key: string; error: boolean } | null>(null);
@@ -11,7 +12,7 @@ export function useRequestDetail(store: Store | undefined, ready: boolean, avail
   const ensure = store?.ensureRequest;
   const marked = useRef(new Set<string>());
   useEffect(() => {
-    if (!ready || !available || !ensure) return;
+    if (!ready || !available || !ensure || !isUuid(id)) return;
     let cancelled = false;
     ensure(id, {cached: true}).then(async () => {
       if (cancelled) return;
@@ -29,5 +30,5 @@ export function useRequestDetail(store: Store | undefined, ready: boolean, avail
     }, () => { if (!cancelled) setResult({ key, error: true }); });
     return () => { cancelled = true; };
   }, [ready, available, ensure, store, id, key]);
-  return { loading: ready && available && result?.key !== key, error: result?.key === key && result.error };
+  return { loading: ready && available && isUuid(id) && result?.key !== key, error: result?.key === key && result.error };
 }

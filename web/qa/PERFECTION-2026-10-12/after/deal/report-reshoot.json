@@ -1,0 +1,38 @@
+{
+  "base": "http://localhost:3307",
+  "at": "2026-10-12T10:59:10.843Z",
+  "pages": [
+    {
+      "name": "deal-complete-buyer-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-buyer-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-supplier-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    },
+    {
+      "name": "deal-complete-supplier-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დასრულებული",
+      "errors": []
+    }
+  ]
+}

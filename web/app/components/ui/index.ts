@@ -5,3 +5,5 @@ export { Avatar, avatarInitials, avatarTone, type AvatarProps } from "./Avatar";
 export { ListRow, Section, EmptyState, type ListRowProps, type SectionProps, type EmptyStateProps } from "./Structure";
 export { Sheet, type SheetProps } from "./Sheet";
 export { Modal, type ModalProps, type ModalTone } from "./Modal";
+export { Notice, type NoticeProps, type NoticeTone } from "./Notice";
+export { ConfirmSheet } from "./ConfirmSheet";

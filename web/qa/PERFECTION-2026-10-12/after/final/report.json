@@ -1,0 +1,83 @@
+{
+  "base": "http://localhost:3309",
+  "at": "2026-10-12T11:59:13.891Z",
+  "state": {
+    "requestId": "ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+    "dealId": "43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3"
+  },
+  "pages": [
+    {
+      "file": "deal-buyer-1440.png",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "deal-supplier-1440.png",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "request-owner-chosen-buyer-1440.png",
+      "url": "/requests/view/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "account-buyer-1440.png",
+      "url": "/account/",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "deal-buyer-390.png",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "deal-supplier-390.png",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "request-owner-chosen-buyer-390.png",
+      "url": "/requests/view/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "account-buyer-390.png",
+      "url": "/account/",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "deal-buyer-360.png",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "deal-supplier-360.png",
+      "url": "/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "request-owner-chosen-buyer-360.png",
+      "url": "/requests/view/?id=ab15b155-12ae-4e2f-b16d-07816ebbbfab",
+      "console": [],
+      "overflow": 0
+    },
+    {
+      "file": "account-buyer-360.png",
+      "url": "/account/",
+      "console": [],
+      "overflow": 0
+    }
+  ],
+  "blocked": []
+}

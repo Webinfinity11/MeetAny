@@ -77,7 +77,6 @@
 .productRow img { width: var(--space-16); height: var(--space-12); border-radius: var(--radius-md); object-fit: cover; }
 .productRow > div { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .productRow p { color: var(--ink-500); font-size: var(--fs-xs); }
-.addProduct { width: 100%; border-style: dashed; }
 .documentStatus { display: flex; gap: var(--space-3); align-items: center; font-weight: 600; }
 .docRow { display: flex; align-items: center; gap: var(--space-control-roomy); padding: var(--space-control-roomy); border: var(--space-hairline) solid var(--ink-200); border-radius: var(--radius-lg); }
 .docRow > div { flex: 1; min-width: 0; }
@@ -262,3 +261,19 @@
  .two > .field label,.three > .field label { margin-bottom: var(--space-2); }
  .page .inputIcon :global(.ma-custom-select) { padding-left: var(--space-10); }
 }
+
+/* Verification: one status line (badge + hint) and the admin record rows in VerificationDocuments. */
+.verificationStatus { display: grid; justify-items: start; gap: var(--space-2); }
+.verificationStatus p { margin: 0; color: var(--ink-600); font-size: var(--fs-meta); line-height: 1.6; }
+.recordRows.recordRows > div { grid-template-columns: minmax(10rem, auto) 1fr; }
+.recordRows dt { overflow-wrap: normal; hyphens: manual; }
+.verificationActions.verificationActions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+@media (max-width: 520px) { .recordRows.recordRows > div { grid-template-columns: minmax(0, 1fr); } .verificationActions.verificationActions > * { flex: 1 1 100%; } }
+.allCategories { justify-self: start; margin-top: var(--space-2); }
+.review li > div > strong { display: block; }
+/* Full category names (one list for steps 1 and 5): as many columns as fit, words never split. */
+.categoryGrid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); }
+.categoryGrid button span { overflow-wrap: normal; hyphens: manual; }
+/* Product and service adds: one variant, one row; full width each on a phone. */
+.addRow { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+@media (max-width: 639px) { .addRow > * { flex: 1 1 100%; } }

@@ -9,6 +9,8 @@ import { RequestPhoto, Status, requestHref, offerLabel, type RequestItem, type O
 import { useAccountDeals } from "./MyDeals";
 import { dealHref, dealDate, money } from "../../../lib/deal-client";
 import { Sheet } from "../../ui/Sheet";
+import { EmptyState } from "../../ui/Structure";
+import { CompanyAvatar } from "../CompanyAvatar";
 import styles from "./account.module.css";
 
 // "viewed" is a sent offer the buyer has opened; it is a filter of its own next to the stored statuses.
@@ -21,7 +23,8 @@ function offerPrice(offer: OfferItem, request: RequestItem | null) {
   const unit = offer.priceType === "unit" ? offer.price : quantity != null && quantity > 0 ? offer.price / quantity : null;
   return { total: `${money(total)}${offer.priceType === "unit" && !(quantity != null && quantity > 0) ? " / ერთეული" : ""}`, unit };
 }
-const contactNote = "არჩეულამდე მყიდველის კონტაქტი დაფარულია — პასუხი ჩატით ან შეთავაზების განახლებით.";
+// Shown only until the offer is chosen; after that the contact itself is on the card.
+const contactNote = "არჩევამდე მყიდველის კონტაქტი დაფარულია — დაუკავშირდით მიმოწერით ან განაახლეთ შეთავაზება.";
 export function MyOffers({ offers, store, me }: { offers: OfferItem[]; store: Store; me: AnyUser }) {
   const deals = useAccountDeals(store, me.id);
   const [status, setStatus] = useState("all");
@@ -40,10 +43,10 @@ export function MyOffers({ offers, store, me }: { offers: OfferItem[]; store: St
     <header><h2 title={selectedRequest?.title}>{selectedRequest?.title || "შეთავაზება"}</h2><Status tone={offerTone(selected)}>{offerLabel(selected.status, selected.viewedAt)}</Status></header>
     <dl>
       <div><Icon name="wallet"/><dt>ფასი</dt><dd>{price?.total}{price?.unit != null ? <small>{money(price.unit)} / {store.units[selectedRequest?.unit || ""] || "ერთეული"}</small> : null}</dd></div>
-      <div><Icon name="truck"/><dt>მიწოდება</dt><dd>{selected.deliveryDays != null ? `${selected.deliveryDays} დღე` : "დასაზუსტებელია"}{selectedDeal?.delivery_date ? <> · {dealDate(selectedDeal.delivery_date)}</> : null}</dd></div>
-      <div><Icon name="receipt"/><dt>გადახდა</dt><dd>{selected.paymentTerms || "დასაზუსტებელია"}</dd></div>
+      {selected.deliveryDays != null || selectedDeal?.delivery_date ? <div><Icon name="truck"/><dt>მიწოდება</dt><dd>{[selected.deliveryDays != null ? `${selected.deliveryDays} დღე` : null, selectedDeal?.delivery_date ? dealDate(selectedDeal.delivery_date) : null].filter(Boolean).join(" · ")}</dd></div> : null}
+      {selected.paymentTerms ? <div><Icon name="receipt"/><dt>გადახდა</dt><dd>{selected.paymentTerms}</dd></div> : null}
     </dl>
-    <div className={styles.buyer}><span className={styles.buyerAvatar} aria-hidden="true">{buyerName.trim().split(/\s+/).slice(0, 2).map((word: string) => word[0]).join("").toUpperCase()}</span><div><strong>{buyerName}</strong><p>{isChosen && contact?.phone ? <>{contact.name ? `${contact.name} · ` : ""}<a href={`tel:${contact.phone}`}>{contact.phone}</a></> : cities[buyer?.city || selectedRequest?.city || ""] || buyer?.city || selectedRequest?.city}</p></div></div>
+    <div className={styles.buyer}><CompanyAvatar name={buyerName} logoUrl={buyer?.logoUrl}/><div><strong>{buyerName}</strong><p>{isChosen && contact?.phone ? <>{contact.name ? `${contact.name} · ` : ""}<a href={`tel:${contact.phone}`}>{contact.phone}</a></> : cities[buyer?.city || selectedRequest?.city || ""] || buyer?.city || selectedRequest?.city}</p></div></div>
     {isChosen ? <p className={styles.contactOpen}><Icon name="lock-keyhole"/>კონტაქტი გაიხსნა არჩევის შემდეგ</p> : null}
     <Button href={selectedDeal ? dealHref(selectedDeal.id) : requestHref(selected.requestId)}><Icon name="message-square"/>დეტალების განხილვა</Button>
   </div> : null;
@@ -53,14 +56,14 @@ export function MyOffers({ offers, store, me }: { offers: OfferItem[]; store: St
       {visible.length ? <ul className="account-rows account-offer-list">{visible.map(offer => {
         const request = store.getRequest(offer.requestId) as RequestItem | null;
         const owner = request ? store.userById(request.ownerId) as AnyUser | null : null;
-        const activity = offer.status === "chosen" ? `აირჩია · ${dealDate(offer.updatedAt || offer.createdAt)}` : offer.status === "sent" && offer.viewedAt ? `ნანახია · ${dealDate(offer.viewedAt)}` : `გაიგზავნა · ${dealDate(offer.createdAt)}`;
+        const activity = offer.status === "chosen" ? `არჩეულია · ${dealDate(offer.updatedAt || offer.createdAt)}` : offer.status === "sent" && offer.viewedAt ? `ნანახია · ${dealDate(offer.viewedAt)}` : `გაიგზავნა · ${dealDate(offer.createdAt)}`;
         return <li key={offer.id}><button type="button" className="account-offer-card" aria-pressed={selected?.id === offer.id} onClick={() => { setSelectedId(offer.id); if (window.matchMedia("(max-width:1023px)").matches) setMobileId(offer.id); }}>
           <RequestPhoto request={request}/><span className="account-offer-copy"><strong title={request?.title}>{request?.title || "მოთხოვნა"}</strong><span className="account-offer-buyer">{owner?.company || owner?.name || "მყიდველი"}</span><span className="account-offer-facts"><strong>{offerPrice(offer, request).total}</strong>{offer.deliveryDays != null ? <> · {offer.deliveryDays} დღე</> : null}<span className="account-offer-activity" title={activity}> · {activity}</span></span></span>
           <Status tone={offerTone(offer)}>{offerLabel(offer.status, offer.viewedAt)}</Status>
         </button></li>;
-      })}</ul> : <div className="account-empty-state"><p className="account-empty">{offers.length ? "ამ სტატუსით შეთავაზება არ არის." : "შეთავაზება ჯერ არ გაგიგზავნია."}</p></div>}
-      {selected ? <aside className={styles.offerAside} aria-label="შეთავაზების დეტალები"><section className={styles.offerDetail}>{detail}</section><p className={styles.contactNote}>{contactNote}</p></aside> : null}
+      })}</ul> : offers.length ? <EmptyState icon="send" text="ამ სტატუსით შეთავაზება არ არის." action={<Button variant="secondary" onClick={() => setStatus("all")}>ყველა შეთავაზების ნახვა</Button>}/> : <EmptyState icon="send" title="შეთავაზებები ჯერ არ გაგიგზავნიათ" text="შეარჩიეთ თქვენთვის შესაფერისი მოთხოვნა და გაუგზავნეთ შეთავაზება." action={<Button href="/matching/"><Icon name="inbox"/>შესაძლებლობების ნახვა</Button>}/>}
+      {selected ? <aside className={styles.offerAside} aria-label="შეთავაზების დეტალები"><section className={styles.offerDetail}>{detail}</section>{isChosen ? null : <p className={styles.contactNote}>{contactNote}</p>}</aside> : null}
     </div>
-    <Sheet open={!!selected && mobileId === selected.id} onClose={() => setMobileId(null)} title="შეთავაზების დეტალები">{detail}<p className={styles.contactNote}>{contactNote}</p></Sheet>
+    <Sheet open={!!selected && mobileId === selected.id} onClose={() => setMobileId(null)} title="შეთავაზების დეტალები">{detail}{isChosen ? null : <p className={styles.contactNote}>{contactNote}</p>}</Sheet>
   </section>;
 }

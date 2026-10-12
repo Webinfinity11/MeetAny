@@ -34,7 +34,7 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
       setError("ფოტო მაქსიმუმ 5 MB უნდა იყოს."); onChange(null); return;
     }
     if (!ALLOWED.includes(next.type)) {
-      setError("აირჩიე JPG, PNG, WEBP ან GIF სურათი.");
+      setError("აირჩიეთ JPG, PNG, WEBP ან GIF სურათი.");
       onChange(null);
       return;
     }
@@ -63,7 +63,7 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
       </label>
     </div>
     <p className="post-hint">ერთი ფოტო · JPG, PNG, WEBP ან GIF · მაქსიმუმ 5 მბ</p>
-    {broken || error ? <p className="ma-field__error" role="alert">{error || "სურათი ვერ გაიხსნა. აირჩიე სხვა ფოტო."}</p> : null}
+    {broken || error ? <p className="ma-field__error" role="alert">{error || "სურათი ვერ გაიხსნა. აირჩიეთ სხვა ფოტო."}</p> : null}
   </div>;
 
   return (
@@ -85,7 +85,7 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
         }}
       >
         <Icon name="upload" />
-        <span>{file ? file.name : "აირჩიე ფოტო ან ჩააგდე აქ"}</span>
+        <span>{file ? file.name : "აირჩიეთ ფოტო ან ჩააგდეთ აქ"}</span>
         <input
           ref={inputRef}
           type="file"
@@ -105,7 +105,7 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
           </Button>
         </div>
       ) : null}
-      {broken ? <p className="ma-field__error" role="alert">სურათი ვერ გაიხსნა. აირჩიე სხვა ფოტო.</p> : null}
+      {broken ? <p className="ma-field__error" role="alert">სურათი ვერ გაიხსნა. აირჩიეთ სხვა ფოტო.</p> : null}
       {error ? (
         <p className="ma-field__error" role="alert">
           {error}

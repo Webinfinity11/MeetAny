@@ -20,9 +20,9 @@ export default function GlobalError({ error, retry }: { error: Error & { digest?
       <body className={styles.bare}>
         <title>შეცდომა — MeetAny</title>
         <main>
-          <StatusPage eyebrow="შეცდომა" title="საიტი ვერ ჩაიტვირთა" text="რაღაც არ გამოვიდა — სცადე თავიდან ან დაბრუნდი მთავარზე.">
+          <StatusPage eyebrow="შეცდომა" title="საიტი ვერ ჩაიტვირთა" text="რაღაც ვერ შესრულდა. სცადეთ ხელახლა ან დაბრუნდით მთავარზე.">
             <Button onClick={() => retry()}>
-              სცადე თავიდან
+              ხელახლა ცდა
             </Button>
             <Button variant="secondary" href="/">
               მთავარზე დაბრუნება

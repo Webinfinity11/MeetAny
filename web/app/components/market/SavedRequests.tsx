@@ -3,14 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { Button } from "../ui/Button";
-import { EmptyState } from "../ui/Structure";
-import { toast } from "../Toasts";
+import { toast, toastError } from "../Toasts";
 import { ListSkeleton } from "./Skeletons";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities, currentCategory } from "../../lib/categories";
-import { dateLabel } from "../../lib/format";
+import { dateShort } from "../../lib/format";
+import { EmptyState } from "../ui/Structure";
+import { Notice } from "../ui/Notice";
 import { budgetLabel } from "./OpportunityCard";
 import styles from "./SavedRequests.module.css";
+import eng from "./engagement.module.css";
 
 type Cursor = Record<string, unknown> | null;
 type SavedRequest = {
@@ -57,34 +59,35 @@ export function SavedRequests() {
  async function remove(id: string) {
   if (!store || removing) return;
   setRemoving(id);
-  try { await store.setSavedRequest(id, false); setItems(prev => prev && prev.filter(i => i.request_id !== id)); toast("მოთხოვნა შენახულებიდან ამოიშალა."); }
-  catch (err) { toast((err as { userMessage?: string }).userMessage || "წაშლა ვერ შესრულდა."); }
+  try { await store.setSavedRequest(id, false); setItems(prev => prev && prev.filter(i => i.request_id !== id)); toast("მოთხოვნა შენახულიდან ამოიშალა."); }
+  catch (err) { toastError((err as { userMessage?: string }).userMessage || "წაშლა ვერ შესრულდა."); }
   finally { setRemoving(null); }
  }
 
  const labels = (store?.stateLabels || {}) as Record<string, string>;
- return <section className={styles.section} aria-labelledby="saved-requests-title">
-  <h2 className="account-section__title" id="saved-requests-title">შენახული მოთხოვნები</h2>
+ // Same row, remove action, empty and error states as "saved companies" on the same tab.
+ return <section className={`${eng.stack} ${styles.section}`} aria-labelledby="saved-requests-title">
+  <div className={eng.sectionHead}><h2 className="account-section__title" id="saved-requests-title">შენახული მოთხოვნები</h2>{items?.length ? <Button variant="ghost" size="sm" href="/requests/"><Icon name="search"/>მოთხოვნების ძიება</Button> : null}</div>
   {state?.status !== "ready" || (!items && !error) ? <ListSkeleton compact label="შენახული მოთხოვნები იტვირთება…" />
-   : error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={() => void load(null, false)}>ხელახლა ცდა</Button></div>
-   : !items?.length ? <EmptyState icon="bookmark" title="შენახული მოთხოვნები ჯერ არ გაქვს" text="მონიშნე საინტერესო მოთხოვნები და აქ მარტივად დაუბრუნდი." action={<Button variant="secondary" href="/requests/">მოთხოვნების ნახვა</Button>} />
+   : error ? <Notice tone="error" action={<Button type="button" variant="secondary" size="sm" onClick={() => void load(null, false)}>ხელახლა ცდა</Button>}>სია ვერ ჩაიტვირთა.</Notice>
+   : !items?.length ? <EmptyState icon="bookmark" title="შენახული მოთხოვნები ჯერ არ გაქვთ" text="მონიშნეთ საინტერესო მოთხოვნები და აქ მარტივად დაუბრუნდებით." action={<Button variant="secondary" href="/requests/"><Icon name="search"/>მოთხოვნების ძიება</Button>}/>
    : <>
-    <div className={styles.list}>{items.map(r => {
+    {items.map(r => {
      const budget = budgetLabel({ budgetType: r.budget_type, budgetMin: r.budget_min, budgetMax: r.budget_max });
-     return <article className={`${styles.row} ${r.state === "open" ? "" : styles.muted}`} key={r.request_id}>
+     return <article className={`${eng.savedRow} ${r.state === "open" ? "" : styles.muted}`} key={r.request_id}>
       <div>
-       <h3 className="account-row__title"><Link className={styles.title} href={`/requests/view/?id=${encodeURIComponent(r.request_id)}`}>{r.title}</Link></h3>
+       <h3 className="account-row__title"><Link className={eng.savedLink} href={`/requests/view/?id=${encodeURIComponent(r.request_id)}`}>{r.title}</Link></h3>
        <ul className={styles.meta}>
         <li>{categories[currentCategory(r.category)] || r.category}</li>
         <li><Icon name="map-pin" />{cities[r.city] || r.city}</li>
         {budget && <li><Icon name="wallet" />{budget}</li>}
-        <li><Icon name="calendar" />{dateLabel(r.expires_at)}</li>
+        <li><Icon name="calendar" />{dateShort(r.expires_at)}</li>
         <li>{labels[r.state] || r.state}</li>
        </ul>
       </div>
-      <Button type="button" variant="secondary" size="sm" disabled={removing === r.request_id} onClick={() => void remove(r.request_id)}><Icon name="trash-2" />წაშლა</Button>
+      <Button variant="ghost" size="sm" loading={removing === r.request_id} disabled={!!removing} aria-label={`${r.title} — შენახულიდან ამოშლა`} onClick={() => void remove(r.request_id)}><Icon name="trash-2"/>ამოშლა</Button>
      </article>;
-    })}</div>
+    })}
     {next ? <Button type="button" variant="secondary" className={styles.more} disabled={loading} onClick={() => void load(next, true)}>{loading ? "იტვირთება…" : "მეტის ჩატვირთვა"}</Button> : null}
    </>}
  </section>;

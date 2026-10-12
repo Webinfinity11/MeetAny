@@ -55,7 +55,7 @@ export function AdminActivityChart({title,rows,previousTotal}:{title:string;rows
    {active!==null&&rows[active]?<output id={`${id}-tip`} className={styles.tip} data-edge={active<rows.length*.22?"start":active>rows.length*.78?"end":undefined} style={{left:`${(active+.5)/rows.length*100}%`}}><span>{dayLabel(rows[active].day)}</span><strong>{rows[active].count}</strong></output>:null}
   </div>
   <div className={styles.axis} aria-hidden="true"><span>{rows[0]?dayLabel(rows[0].day):"—"}</span>{rows.length>7?<span>{dayLabel(rows[Math.floor(rows.length/2)].day)}</span>:null}<span>{rows.at(-1)?dayLabel(rows.at(-1)!.day):"—"}</span></div>
-  <div className={styles.chartSummary}><span>საშ. დღეში <strong>{average}</strong></span><span>{total===0?"აქტივობა არ არის":<>პიკური დღე <strong>{peak}</strong></>}</span></div>
+  <div className={styles.chartSummary}><span>საშუალოდ დღეში <strong>{average}</strong></span><span>{total===0?"აქტივობა არ არის":<>პიკური დღე <strong>{peak}</strong></>}</span></div>
   <div className="ma-sr-only"><table><caption>{title} — დღიური რაოდენობა</caption><tbody>{rows.map(row=><tr key={row.day}><th scope="row">{dayLabel(row.day)}</th><td>{row.count}</td></tr>)}</tbody></table></div>
  </figure>;
 }

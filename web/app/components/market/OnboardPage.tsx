@@ -69,8 +69,8 @@ export function OnboardPage() {
       for (const target of writes) {
         writeTarget = target;
         result = await saveOnboardStep(getMarketStore(), target, model.profile, model.products);
-        // Categories moved to type; certificates are also editable on verify.
-        // Use existing RPCs without saving unrelated product/profile drafts.
+        // Supplied categories are chosen on type; save them with the existing RPC
+        // without saving unrelated product/profile drafts.
         if (target === 'type' && dirty.current.has('type')) {
           if (model.profile.provide_categories.length > 5) throw new Error('აირჩიეთ მაქსიმუმ 5 დარგი.');
           const source = getMarketStore();
@@ -79,11 +79,6 @@ export function OnboardPage() {
           const categories = await source.callRpc('set_matching_categories', { p_provide: model.profile.provide_categories, p_need: current.need_categories });
           if (!Array.isArray(categories?.provide) || !Array.isArray(categories?.need)) throw new Error('კატეგორიების შენახვა ვერ დადასტურდა.');
           result = await readOnboard(source);
-        }
-        if (target === 'verify' && dirty.current.has('verify')) {
-          const current = await readOnboardProfile(getMarketStore());
-          if (current.id !== model.profile.id) throw new Error('ანგარიში შეიცვალა. განაახლეთ გვერდი.');
-          result = await saveOnboardStep(getMarketStore(), 'profile', { ...current, certificates: model.profile.certificates }, result.products);
         }
       }
       if(step==='review'&&destination==='account')await store.mutateRpc('complete_onboarding',{});
@@ -133,12 +128,14 @@ export function OnboardPage() {
     type: !!p && ['buy', 'sell', 'both'].includes(p.account_intent),
     details: !!(p?.legal_name?.trim() && p.registration_code?.trim() && p.legal_form?.trim() && p.founded_year && p.employee_band && p.name?.trim() && p.city),
     profile: !!(p?.company?.trim() && p.industry && p.about?.trim()),
-    provide: p?.account_intent === 'buy' || (!!p?.provide_categories.length && !!(p.offers.length || saved?.products.some(product => product.name.trim() && product.photoUrl))),
-    need: p?.account_intent === 'sell' || !!p?.need_categories.length,
+    // Steps 4–5 are done once something is saved there; products need no photo to count.
+    provide: p?.account_intent === 'buy' || !!(p?.offers.length || saved?.products.some(product => product.name.trim())),
+    need: p?.account_intent === 'sell' || !!(p?.need_categories.length || p?.seeks.length),
     verify: !!p&&['pending','approved'].includes(p.verification_documents_status),
     review: !!p?.onboarding_completed_at,
   };
-  const isComplete = (key: OnboardStep, position: number) => position < index && completed[key];
+  // ✓ marks every step with saved data, before or after the current one; the current step shows its number.
+  const isComplete = (key: OnboardStep) => key !== step && completed[key];
   const go = (target: OnboardStep) => {
     if(pending)return;
     // Backward navigation keeps the draft in this mounted page. Required fields
@@ -151,8 +148,8 @@ export function OnboardPage() {
   };
   return <div className={s.page}>
     <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
-    <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key, i) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
-      <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key, i) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
+    <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
+      <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
         <form ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1]); }}>
           <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>

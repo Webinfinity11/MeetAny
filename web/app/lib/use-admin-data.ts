@@ -12,13 +12,25 @@ export type AdminPage = {
   asOf: string;
 };
 
-export function adminErrorMessage(err: unknown, fallback = "ჩანაწერები ვერ ჩაიტვირთა. სცადე ხელახლა.") {
-  const error = err as { code?: string; userMessage?: string };
-  if (error?.code === "MA002") return "ანგარიში დაბლოკილია. ადმინისტრირების მოქმედებები მიუწვდომელია.";
-  if (error?.code === "MA003") return "ადმინისტრატორის უფლება აღარ გაქვს. გადაამოწმე, რომ სწორი ანგარიშით ხარ შესული.";
-  if (error?.code === "MA207") return "არჩეული შეთავაზება არ იშლება. გამოიყენე მოთხოვნის დამალვა ან წაშლა, ან კომპანიის დაბლოკვა.";
-  if (error?.code === "MA304") return "მიუთითე წაშლის მიზეზი — 3–500 სიმბოლო.";
-  return error?.userMessage || fallback;
+const adminCode = (err: unknown) => {
+  const error = err as { code?: string; cause?: { message?: string; hint?: string } };
+  if (/^MA\d{3}$/.test(error?.code || "")) return error.code;
+  return /^MA\d{3}$/.test(error?.cause?.hint || "") ? error.cause!.hint : (/^(MA\d{3})\b/.exec(error?.cause?.message || "") || [])[1];
+};
+
+export function adminErrorMessage(err: unknown, fallback = "ჩანაწერები ვერ ჩაიტვირთა. სცადეთ ხელახლა.") {
+  const code = adminCode(err);
+  if (code === "MA002") return "ანგარიში დაბლოკილია. ადმინისტრირების მოქმედებები მიუწვდომელია.";
+  if (code === "MA003") return "ადმინისტრატორის უფლება აღარ გაქვთ. გადაამოწმეთ, სწორი ანგარიშით ხართ თუ არა შესული.";
+  if (code === "MA207") return "არჩეული შეთავაზება არ იშლება. შეგიძლიათ მოთხოვნის დამალვა ან კომპანიის დაბლოკვა.";
+  if (code === "MA304") return "მიუთითეთ მიზეზი — 3–500 სიმბოლო.";
+  if (code === "MA305") return "მოთხოვნას გარიგება აქვს და არ იშლება. გამოიყენეთ დამალვა ან გააუქმეთ გარიგება.";
+  if (code === "MA308") return "გარიგებას ღია პრობლემა აქვს. ჯერ დაასრულეთ მისი განხილვა.";
+  if (code === "MA903") return "ეს მოქმედება ამ ეტაპზე დაუშვებელია. განაახლეთ მონაცემები.";
+  if (code === "MA905") return "ამ ეტაპისთვის ორივე მხარეს პირობები უნდა ჰქონდეს დადასტურებული.";
+  if (code === "MA902") return "მონაცემები არასწორია. გადაამოწმეთ ველები.";
+  const text = (err as { userMessage?: string })?.userMessage;
+  return text && !/სცადე |გადაამოწმე |წაიკითხე /.test(text) ? text : fallback;
 }
 
 type Result = { key: string; page: AdminPage | null; error: string | null };
@@ -46,9 +58,9 @@ async function auditLabels(store: Store, items: Record<string, unknown>[]) {
   }));
   return labels;
 }
-export function useAdminData({ store, enabled, tab, query, status, role, cursor }: {
+export function useAdminData({ store, enabled, tab, query, status, role, cursor, action = "", target = "" }: {
   store: Store | undefined; enabled: boolean; tab: "requests" | "users" | "offers" | "audit";
-  query: string; status: string; role: string; cursor: string;
+  query: string; status: string; role: string; cursor: string; action?: string; target?: string;
 }) {
   const [revision, setRevision] = useState(0);
   const [result, setResult] = useState<Result | null>(null);
@@ -57,7 +69,7 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
   const supported = enabled && (tab === "offers" ? version >= 2 && typeof store?.adminSearchOffers === "function" : version >= 1);
   const latestStore = useRef(store);
   useEffect(() => { latestStore.current = store; }, [store]);
-  const key = JSON.stringify([tab, query, status, role, cursor, version, store?.currentUser()?.id]);
+  const key = JSON.stringify([tab, query, status, role, cursor, action, target, version, store?.currentUser()?.id]);
   const fetchKey = JSON.stringify([key, revision, store?.dataRevision()]);
   const reload = useCallback(() => setRevision(value => value + 1), []);
   useEffect(() => {
@@ -70,8 +82,8 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
         const pagination = { p_cursor, p_limit: 25 };
         const raw = await (tab === "requests" ? store.adminSearchRequests({ ...pagination, p_q: query || null, p_state: status || null })
           : tab === "users" ? store.adminSearchUsers({ ...pagination, p_q: query || null, ...adminUserFilterParams(status, role) })
-          : tab === "offers" ? store.adminSearchOffers({ ...pagination, p_q: query || null, p_status: status || null })
-          : store.adminListAudit(pagination));
+          : tab === "offers" ? store.adminSearchOffers({ ...pagination, p_q: query || null, ...(status === "expired" ? { p_expired: true } : { p_status: status || null }) })
+          : store.adminListAudit(version >= 2 ? { ...pagination, p_action: action || null, p_target_type: target || null } : pagination));
         // v2 audit rows carry names from the server; v1 rows are named here.
         const named = raw.items.some((r: Record<string, unknown>) => "actor_name" in r);
         const labels = tab === "audit" && !named ? await auditLabels(store, raw.items) : null;
@@ -89,7 +101,7 @@ export function useAdminData({ store, enabled, tab, query, status, role, cursor 
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
-  }, [supported, key, fetchKey, tab, query, status, role, cursor]);
+  }, [supported, key, fetchKey, tab, query, status, role, cursor, action, target, version]);
   const current = result?.key === key ? result : null;
   const mode: "legacy" | "loading" | "ready" | "error" = !supported ? "legacy" : !current ? "loading" : current.page ? "ready" : "error";
   return { mode, page: current?.page || null, error: current?.error || null, reload };
@@ -137,7 +149,7 @@ export function useAdminContacts({ store, kind, target, period, cursor }: {
           return { key, filterKey, page, stats, messageStats, error: null, rows: append ? [...previous.rows, ...page.items] : page.items };
         });
       } catch (err) {
-        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, messageStats: null, error: adminErrorMessage(err, "კონტაქტების ჩატვირთვა ვერ მოხერხდა.") });
+        if (!cancelled) setResult({ key, filterKey, page: null, rows: [], stats: null, messageStats: null, error: adminErrorMessage(err, "კონტაქტები ვერ ჩაიტვირთა. სცადეთ ხელახლა.") });
       }
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };

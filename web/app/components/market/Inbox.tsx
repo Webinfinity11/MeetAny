@@ -4,7 +4,11 @@ import { Button } from "../ui/Button";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChatContext, ChatMessages, MessagingEmpty } from "./messaging/ChatParts";
+import { ChatContext, ChatMessages } from "./messaging/ChatParts";
+import { CompanyAvatar } from "./CompanyAvatar";
+import { EmptyState } from "../ui/Structure";
+import { Notice } from "../ui/Notice";
+import { dateShort, money } from "../../lib/format";
 import { SharedFiles } from "./messaging/SharedFiles";
 import styles from "./engagement.module.css";
 import { useSearchParams } from "next/navigation";
@@ -20,17 +24,14 @@ type Me = { id: string; role: string };
 type Profile = { logoUrl?: string | null; role?: string; industry?: string; verified?: boolean } | null;
 const WIDE = "(min-width:768px)";
 const DAY = 86400000;
-const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map(part => part[0]).join("").toLocaleUpperCase();
-function Avatar({ name }: { name: string }) { return <span className={styles.chatAvatar} aria-hidden="true">{initials(name)}</span>; }
 
 // Calendar days and clock times in Tbilisi, whatever the viewer's zone.
 const dayKey = (value: string | number) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tbilisi", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(value));
 const clock = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(value));
 const daysAgo = (value: string, now: number) => Math.round((Date.parse(dayKey(now)) - Date.parse(dayKey(value))) / DAY);
-const dotted = (value: string) => dayKey(value).split("-").reverse().join(".");
 function rowTime(value: string, now: number) {
   const days = daysAgo(value, now);
-  return days <= 0 ? clock(value) : days === 1 ? "გუშინ" : days < 7 ? `${days} დღის წინ` : dotted(value);
+  return days <= 0 ? clock(value) : days === 1 ? "გუშინ" : days < 7 ? `${days} დღის წინ` : dateShort(dayKey(value));
 }
 
 function useWide() {
@@ -58,7 +59,7 @@ function describe(store: Store, me: Me, c: Conversation) {
   return { otherId, name, logoUrl: profile?.logoUrl, verified: profile?.verified, context, isCompany, requestId, requestFound: !!request };
 }
 
-export function Inbox({ store, me }: { store: Store; me: Me }) {
+export function Inbox({ store, me, space = "buy" }: { store: Store; me: Me; space?: "buy" | "sell" }) {
   const { current, retry } = useConversationList(store, me.id);
   const wide = useWide();
   const params = useSearchParams();
@@ -82,8 +83,10 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
   };
 
   if (!current) return <div role="status" aria-busy="true" className={styles.emptyState}>მიმოწერები იტვირთება…</div>;
-  if (current.error && !items) return <div role="alert" className={styles.emptyState}><p>{current.error}</p><Button onClick={retry}>ხელახლა ცდა</Button></div>;
-  if (!items?.length) return <MessagingEmpty title="მესიჯები ჯერ არაა">ჩატი იხსნება, როცა შეთავაზებას გაგზავნით ან მიიღებთ.</MessagingEmpty>;
+  if (current.error && !items) return <Notice tone="error" action={<Button variant="secondary" size="sm" onClick={retry}>ხელახლა ცდა</Button>}>{current.error}</Notice>;
+  if (!items?.length) return space === "sell"
+    ? <EmptyState icon="message-square" title="მიმოწერები ჯერ არ არის" text="საუბარი იწყება, როცა შეთავაზებას გაგზავნით ან კლიენტი მოგწერთ." action={<Button variant="secondary" href="/matching/"><Icon name="inbox"/>შესაძლებლობების ნახვა</Button>}/>
+    : <EmptyState icon="message-square" title="მიმოწერები ჯერ არ არის" text="საუბარი იწყება, როცა კომპანიას მისწერთ ან შეთავაზებას მიიღებთ." action={<Button variant="secondary" href="/companies/"><Icon name="search"/>კომპანიების ძიება</Button>}/>;
 
   return <section className={styles.inboxRoot}><div className={styles["inbox"]} data-view={active && !wide ? "thread" : "list"} aria-label="მიმოწერები">
     <div className={styles["inbox-list"]} data-conversations>
@@ -95,14 +98,14 @@ export function Inbox({ store, me }: { store: Store; me: Me }) {
           const unread = c.unreadCount > 0;
           return <li key={c.id} data-id={c.id} data-context={d.requestId ? "request" : "general"}>
             <button type="button" className={styles["inbox-row"]} aria-current={c.id === active?.id ? "true" : undefined} data-unread={unread || undefined} onClick={event => { opener.current = event.currentTarget; setSelection({ query, id: c.id }); }}>
-              <Avatar name={d.name}/>
+              <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
               <span className={styles["inbox-row__text"]}>
                 <span className={styles["inbox-row__top"]}>
                   <span className={styles["inbox-row__name"]}>{d.name}{d.verified ? <span title="ვერიფიცირებული"><Icon name="badge-check"/></span> : null}{unread ? <span className="ma-sr-only">, წაუკითხავი</span> : null}</span>
                   <span className={styles.rowMeta}><time dateTime={c.lastMessageAt || c.createdAt}>{rowTime(c.lastMessageAt || c.createdAt, now)}</time>{unread ? <span className={styles.unreadCount}>{c.unreadCount}</span> : null}</span>
                 </span>
                 <span className={styles["inbox-row__context"]}>{d.context}</span>
-                <span className={styles["inbox-row__preview"]}>{last ? `${last.senderId === me.id ? "შენ: " : ""}${last.body}` : "შეტყობინება ჯერ არ არის"}</span>
+                <span className={styles["inbox-row__preview"]}>{last ? `${last.senderId === me.id ? "თქვენ: " : ""}${last.body}` : "შეტყობინება ჯერ არ არის"}</span>
               </span>
             </button>
           </li>;
@@ -152,27 +155,27 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   const pane = <div ref={paneRef} className={`${styles["inbox-thread"]} ${sheet ? styles["inbox-thread--sheet"] : ""}`} role={sheet ? "dialog" : undefined} aria-modal={sheet ? true : undefined} aria-label={sheet ? d.name : undefined} tabIndex={sheet ? -1 : undefined} onKeyDown={event => { if (!sheet) return; trapDialogFocus(event); if (event.key === "Escape") { event.preventDefault(); onBack(); } }}>
     <header className={styles["inbox-head"]}>
     {!wide ? <button ref={back} type="button" className={styles["inbox-back"]} onClick={onBack}><Icon name="chevron-left"/><span>უკან</span></button> : null}
-      <Avatar name={d.name}/>
+      <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
       <div className={styles["inbox-head__text"]}>
-        <h3 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h3><p className={styles["inbox-head__context"]}>{d.context}{offer?.price != null ? ` · შეთავაზება ₾${Number(offer.price).toLocaleString("ka-GE")}` : ""}</p>
+        <h3 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h3><p className={styles["inbox-head__context"]}>{d.context}{offer?.price != null ? ` · შეთავაზება: ${money(Number(offer.price))}` : ""}</p>
 
       </div>
-      {d.requestId ? <Button variant="secondary" size="sm" href={`/requests/view/?id=${encodeURIComponent(d.requestId)}`}>მოთხოვნა</Button> : null}
+      {d.requestId ? <Button variant="secondary" size="sm" href={`/requests/view/?id=${encodeURIComponent(d.requestId)}`}>მოთხოვნის ნახვა</Button> : null}
       {phone ? <a className={styles["inbox-call"]} href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} title={phone}><Icon name="phone"/></a> : null}
     </header>
     <div className={styles["inbox-log"]} ref={log} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}
       onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }}>
       {!loaded ? <p className={styles["inbox-log__note"]} role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p>
-        : !messages.length ? <p className={styles["inbox-log__note"]}>შეტყობინება ჯერ არ არის. დაწერე პირველი.</p>
+        : !messages.length ? <p className={styles["inbox-log__note"]}>შეტყობინება ჯერ არ არის. დაწერეთ პირველი.</p>
         : <ChatMessages messages={messages} owner={me.id} name={d.name} now={now}/>}
     </div>
     {failed && loaded ? <div className={styles["inbox-retry"]} role="alert"><span>განახლება ვერ მოხერხდა.</span><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
     <SharedFiles store={store} target={conversation.id}/>
     <form className={styles["inbox-compose"]} onSubmit={e => { e.preventDefault(); void submit(); }}>
       <label className="ma-sr-only" htmlFor="inbox-body">შეტყობინება</label>
-      <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერე შეტყობინება…"
+      <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერეთ შეტყობინება…"
         onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void submit(); } }}/>
-      <Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><Icon name="send"/><span className="ma-sr-only">{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button>
+      <Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><Icon name="send"/><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button>
       {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
     </form>
   </div>;

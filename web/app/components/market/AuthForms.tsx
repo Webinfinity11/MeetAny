@@ -58,8 +58,8 @@ export function LoginForm({ onReset, onSuccess }: { onReset: () => void; onSucce
     if (!store || pending) return;
     setError(null);
     const errors: FieldErrors = {};
-    if (!isEmail(email)) errors["login-email"] = "ჩაწერე სწორი ელფოსტა";
-    if (!password) errors["login-password"] = "მიუთითე პაროლი";
+    if (!isEmail(email)) errors["login-email"] = "ჩაწერეთ სწორი ელფოსტა";
+    if (!password) errors["login-password"] = "მიუთითეთ პაროლი";
     if (!v.check(errors, ["login-email", "login-password"])) return;
     setPending(true);
     try {
@@ -130,13 +130,13 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     trackRegistration(role, "form_started");
     setError(null);
     const errors: FieldErrors = {};
-    if (name.trim().length < 2) errors["reg-name"] = "მიუთითე სახელი და გვარი";
-    if (role === "company" && company.trim().length < 2) errors["reg-company"] = "მიუთითე დასახელება";
-    if (!normalizeMobilePhone(phone)) errors["reg-phone"] = "ჩაწერე მობილურის ნომერი";
-    if (!profileRequired && !isEmail(email)) errors["reg-email"] = "ჩაწერე სწორი ელფოსტა";
-    if (role === "company" && !industry) errors["reg-industry"] = "აირჩიე მიმართულება";
-    if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "მინიმუმ 8 სიმბოლო" : "მიუთითე პაროლი";
-    if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმე წესებს";
+    if (name.trim().length < 2) errors["reg-name"] = "მიუთითეთ სახელი და გვარი";
+    if (role === "company" && company.trim().length < 2) errors["reg-company"] = "მიუთითეთ დასახელება";
+    if (!normalizeMobilePhone(phone)) errors["reg-phone"] = "ჩაწერეთ მობილურის ნომერი";
+    if (!profileRequired && !isEmail(email)) errors["reg-email"] = "ჩაწერეთ სწორი ელფოსტა";
+    if (role === "company" && !industry) errors["reg-industry"] = "აირჩიეთ მიმართულება";
+    if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "მინიმუმ 8 სიმბოლო" : "მიუთითეთ პაროლი";
+    if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმეთ წესებს";
     if (!v.check(errors, [...(role === "company" ? ["reg-company", "reg-name"] : ["reg-name", "reg-company"]), "reg-phone", "reg-email", "reg-industry", "reg-password", "reg-terms"])) return;
     trackRegistration(role, "form_submitted");
     setPending(true);
@@ -223,7 +223,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
             </label>
             <div><CustomSelect className="ma-select" value={industry} onChange={edit("reg-industry", setIndustry)} {...v.control("reg-industry")}>
               <option value="" disabled>
-                აირჩიე
+                აირჩიეთ
               </option>
               {categoryOptions()}
             </CustomSelect></div>
@@ -276,7 +276,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   };
   const registrationRole = searchParams.get("role") || initialRole;
   const isCompany = registrationRole === "company";
-  const subtitle = mode === "register" ? isCompany ? "შექმენით ანგარიში, შემდეგ შეავსეთ კომპანიის პროფილი." : "რამდენიმე ველი — და მოთხოვნის განთავსება შეგიძლიათ." : mode === "reset" ? "მიიღე კოდი ელფოსტაზე და დააყენე ახალი პაროლი." : "კეთილი იყოს შენი დაბრუნება.";
+  const subtitle = mode === "register" ? isCompany ? "შექმენით ანგარიში, შემდეგ შეავსეთ კომპანიის პროფილი." : "რამდენიმე ველი — და მოთხოვნის განთავსება შეგიძლიათ." : mode === "reset" ? "მიიღეთ კოდი ელფოსტაზე და დააყენეთ ახალი პაროლი." : "კეთილი იყოს თქვენი დაბრუნება.";
   const page = (title: string, body: React.ReactNode, lead = subtitle) => (
     <div className={`ma-page auth-page${(mode === "register" && !store?.pendingEmail()) || store?.needsProfile() ? " auth-page--register" : ""}`}>
       <div className="auth-shell">
@@ -288,7 +288,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
       </div>
     </div>
   );
-  if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანე ელფოსტაზე მიღებული კოდი.");
+  if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანეთ ელფოსტაზე მიღებული კოდი.");
   if (store?.needsProfile()) return page("რეგისტრაციის დასრულება", <RegisterForm key={store.pendingProfile()?.email || "complete"} initialRole={initialRole}/>, "შეამოწმეთ მონაცემები და დაასრულეთ რეგისტრაცია.");
   return page(mode === "register" ? isCompany ? "კომპანიის პროფილის შექმნა" : "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : searchParams.get("next") ? "შედით, რომ გააგრძელოთ" : "შესვლა", <>
     {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm key={registrationRole} initialRole={registrationRole} />}
@@ -316,9 +316,9 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
   async function submit(e: React.FormEvent) {
     e.preventDefault(); if (!store || pending) return;
     const errors: FieldErrors = {};
-    if (!sent && !isEmail(email)) errors["reset-email"] = "ჩაწერე სწორი ელფოსტა";
-    if (sent && !code.trim()) errors["reset-code"] = "ჩაწერე ელფოსტით მიღებული კოდი";
-    if (sent && !verification && password.length < 8) errors["reset-password"] = password ? "პაროლი მინიმუმ 8 სიმბოლოა" : "მიუთითე ახალი პაროლი";
+    if (!sent && !isEmail(email)) errors["reset-email"] = "ჩაწერეთ სწორი ელფოსტა";
+    if (sent && !code.trim()) errors["reset-code"] = "ჩაწერეთ ელფოსტით მიღებული კოდი";
+    if (sent && !verification && password.length < 8) errors["reset-password"] = password ? "პაროლი მინიმუმ 8 სიმბოლოა" : "მიუთითეთ ახალი პაროლი";
     if (!v.check(errors, ["reset-email", "reset-code", "reset-password"])) return;
     setPending(true); setError("");
     try {
@@ -330,7 +330,7 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
   }
   return <form className="ma-form auth-controls" onSubmit={submit} noValidate>
     {!sent ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-email">ელფოსტა</label><div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={e => {setEmail(e.target.value); v.clear("reset-email");}} {...v.control("reset-email")}/></div>{v.message("reset-email")}</div> : <>
-      <p className="auth-hint">შეამოწმე ელფოსტა და შეიყვანე მიღებული კოდი.</p>
+      <p className="auth-hint">შეამოწმეთ ელფოსტა და შეიყვანეთ მიღებული კოდი.</p>
       <div className="ma-field"><label className="ma-field__label" htmlFor="reset-code">კოდი</label><div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" autoComplete="one-time-code" inputMode="numeric" value={code} onChange={e => {setCode(e.target.value); v.clear("reset-code");}} {...v.control("reset-code")}/></div>{v.message("reset-code")}</div>
       {!verification ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-password">ახალი პაროლი</label><PasswordInput autoComplete="new-password" value={password} onChange={value => {setPassword(value); v.clear("reset-password");}} field={v.control("reset-password")}/>{v.message("reset-password")}</div> : null}
       <button type="button" className="auth-link" disabled={pending} onClick={async () => {

@@ -43,7 +43,7 @@
 .reviewHeading strong { font-weight: var(--fw-semibold); }
 .stars { display: inline-flex; flex: none; color: var(--warning-600); }
 .stars svg { width: var(--size-14); height: var(--size-14); }
-.stars .filledStar { fill: currentColor; }
+.stars .filledStar, .rating .filledStar { fill: currentColor; }
 .rating { display: flex; flex-wrap: wrap; align-items: center; gap: var(--size-6); color: var(--ink-500); font-size: var(--size-14); margin: var(--space-4) 0 0; }
 .rating strong { color: var(--ink-950); }
 .rating svg { width: var(--size-16); height: var(--size-16); color: var(--warning-600); }
@@ -52,9 +52,10 @@
 .dealStats svg { width: var(--size-16); height: var(--size-16); color: var(--ink-500); }
 .dealStatsSkeleton { display: block; width: var(--size-160); height: var(--size-16); margin: var(--space-3) 0 0; border-radius: var(--radius-sm); background: var(--ink-100); }
 .report { margin-top: var(--space-5); font-size: var(--size-12); }
+.panel .report { margin-top: var(--space-3); padding-top: var(--space-2); border-top: var(--size-1) solid var(--border-subtle); }
 .similar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
 .similar > * { min-width: 0; }
-.products { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-160)), 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
+.products { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
 .products > article { min-width: 0; overflow: hidden; border: var(--size-1) solid var(--border); border-radius: var(--radius-md); }
 .products > article:hover { border-color: var(--card-hover-border); }
 .productTile { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; width: 100%; height: 100%; padding: 0; border: 0; background: var(--white); color: inherit; font: inherit; text-align: left; cursor: pointer; }

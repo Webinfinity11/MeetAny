@@ -2,14 +2,19 @@ import { Icon } from "../Icon";
 import { Badge } from "../ui/Badge";
 import styles from "./HomeSections.module.css";
 
+// Schematic offers: no company names or prices, so they never read as real figures next to the live counters.
 export const heroOffers = [
-  { company: "CleanPro", initials: "CP", request: "ოფისის დასუფთავება", price: "₾950 / თვე", delivery: "1 ოქტომბრიდან", status: "new" },
-  { company: "Studio Forma", initials: "SF", request: "ბრენდის იდენტობა", price: "₾2,100", delivery: "3 კვირაში", status: "viewed" },
-  { company: "BuildLine", initials: "BL", request: "საოფისე რემონტი", price: "₾21,500", delivery: "6 კვირაში", status: "selected" },
-  { company: "Spotless Georgia", initials: "SG", request: "ოფისის დასუფთავება", price: "₾1,080 / თვე", delivery: "ხვალიდან", status: "new" },
-  { company: "StaffHub", initials: "SH", request: "სეზონური პერსონალი", price: "₾9,600 / 2 თვე", delivery: "5 დღეში", status: "viewed" },
+  { id: "a", price: 72, delivery: "ხვალიდან", status: "new" },
+  { id: "b", price: 54, delivery: "3 კვირაში", status: "viewed" },
+  { id: "c", price: 86, delivery: "5 დღეში", status: "selected" },
+  { id: "d", price: 64, delivery: "1 კვირაში", status: "new" },
+  { id: "e", price: 46, delivery: "2 კვირაში", status: "viewed" },
 ] as const;
 // Illustration only: private offers are never requested or exposed by this component.
 export function HeroOffer({ offer: o }: { offer: typeof heroOffers[number] }) {
-  return <article className={styles.offer} aria-hidden="true"><div className={styles.offerCompany}><span className="home-live-initials">{o.initials}</span><div><strong>{o.company}<Icon name="badge-check" /></strong><p>{o.request}</p></div></div><div className={styles.offerPrice}><div><p>შეთავაზება</p><strong>{o.price}</strong></div><Badge status={o.status === "new" ? "success" : "info"}>{o.status === "new" ? "ახალი" : o.status === "viewed" ? "ნანახი" : "არჩეული"}</Badge></div><p className={styles.delivery}><Icon name="clock" />მიწოდება {o.delivery}</p></article>;
+  return <article className={styles.offer} aria-hidden="true">
+    <div className={styles.offerCompany}><span className="home-live-initials">{o.id.toUpperCase()}</span><div><strong>მომწოდებელი {o.id.toUpperCase()}<Icon name="badge-check" /></strong><p>ვერიფიცირებული კომპანია</p></div></div>
+    <div className={styles.offerPrice}><div className={styles.offerBar}><p>ფასი</p><span style={{ width: `${o.price}%` }} /></div><Badge status={o.status === "selected" ? "success" : o.status === "new" ? "info" : "neutral"}>{o.status === "new" ? "ახალი" : o.status === "viewed" ? "ნანახია" : "არჩეული"}</Badge></div>
+    <p className={styles.delivery}><Icon name="clock" />მიწოდება {o.delivery}</p>
+  </article>;
 }

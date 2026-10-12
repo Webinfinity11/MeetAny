@@ -67,7 +67,8 @@
 .reviewRows small { display: block; color: var(--ink-500); font-size: var(--fs-xs); }
 .aside { display: grid; gap: var(--space-4); }
 .matchingPreview { display: grid; gap: var(--space-3); font-size: var(--fs-meta); color: var(--ink-600); }
-.matchingPreview strong { font-size: var(--size-28); font-weight: var(--fw-bold); color: var(--ink-950); }
+/* The count reads as a stat: its own line above the sentence, not a large word inside it. */
+.matchingPreview strong { display: block; font-size: var(--size-28); line-height: 1.1; font-weight: var(--fw-bold); color: var(--ink-950); }
 .timelineCircle { width: var(--size-36); height: var(--size-36); border: var(--size-1) dashed var(--ink-300); border-radius: var(--radius-pill); flex: none; }
 .timeline p { font-size: var(--fs-xs); color: var(--ink-500); margin-top: var(--space-1); }
 .page :global(.post-actions__inner) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
@@ -104,3 +105,9 @@
 .quantity > :global(.ma-select) { flex: none; width: auto; min-width: var(--size-96); padding-right: var(--space-10); }
 .quantity:has([aria-invalid="true"]):focus-within { outline-color: var(--danger-600); }
 .iconField > svg { width: var(--size-20); height: var(--size-20); }
+
+/* The preview keeps its photo slot, so adding a photo does not make the card jump. */
+.previewCard > .previewPhoto { display: grid; place-items: center; width: 100%; height: var(--size-180); background: var(--ink-100); color: var(--ink-400); }
+.previewCard > .previewPhoto svg { width: var(--size-32); height: var(--size-32); }
+/* Back is an icon on phones: the bar holds at most two labelled buttons. */
+@media (max-width: 39.99rem) { .page .backButton { flex: none; width: var(--tap-min); padding-inline: 0; } }

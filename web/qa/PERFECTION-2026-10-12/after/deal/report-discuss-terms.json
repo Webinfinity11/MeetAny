@@ -1,0 +1,126 @@
+{
+  "base": "http://localhost:3307",
+  "at": "2026-10-12T10:55:59.875Z",
+  "pages": [
+    {
+      "name": "deal-discuss-buyer-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-buyer-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-new-terms-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-agree-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-cancel-deal-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-new-terms-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-agree-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "modal-cancel-deal-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-supplier-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-discuss-supplier-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "დეტალების განხილვა",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-buyer-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-buyer-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-supplier-1440",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "deal-terms-supplier-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    },
+    {
+      "name": "modal-terms-change-390",
+      "url": "/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed",
+      "docOverflow": 0,
+      "over": [],
+      "h1": "პირობების დადასტურება",
+      "errors": []
+    }
+  ]
+}

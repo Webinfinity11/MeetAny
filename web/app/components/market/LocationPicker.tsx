@@ -43,7 +43,7 @@ export function LocationPicker({city,value,disabled=false,onChange}:{city:string
    pin.on("dragend",()=>{const at=pin.getLatLng();latest.current.onChange({lat:Number(at.lat.toFixed(6)),lng:Number(at.lng.toFixed(6))});});
    pin.on("add",()=>{
     const element=pin.getElement();if(!element)return;
-    element.setAttribute("aria-label","კომპანიის მდებარეობა. ისრებით შეცვალე წერტილი.");
+    element.setAttribute("aria-label","კომპანიის მდებარეობა. ისრებით შეცვალეთ წერტილი.");
     element.addEventListener("keydown",event=>{
      if(latest.current.disabled||!["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(event.key))return;
      event.preventDefault();event.stopPropagation();
@@ -61,7 +61,7 @@ export function LocationPicker({city,value,disabled=false,onChange}:{city:string
   <div className="profile-location-heading"><span className="ma-field__label">მდებარეობა რუკაზე</span>{value?<span className="profile-location-state" role="status"><Icon name="check"/>მონიშნულია</span>:null}</div>
   <div className="companies-map profile-location-map"><div ref={host} className="companies-map__canvas" role="region" aria-label="კომპანიის მდებარეობის არჩევა" aria-describedby="location-picker-help" aria-busy={!failed&&(!ready||tileState==="loading")}/>
    {!ready&&!failed?<div className="companies-map__loading" role="status">რუკა იტვირთება…</div>:null}
-   {failed?<div className="companies-map__loading" role="alert">რუკა ვერ ჩაიტვირთა. შეგიძლია კოორდინატები მიუთითო.</div>:null}
+   {failed?<div className="companies-map__loading" role="alert">რუკა ვერ ჩაიტვირთა. შეგიძლიათ კოორდინატები მიუთითოთ.</div>:null}
    {ready&&tileState!=="ready"?<div className="companies-map__tile-status" role="status">{tileState==="loading"?"რუკა იტვირთება…":"რუკის ფონი ვერ ჩაიტვირთა."}</div>:null}
   </div>
   <div className="profile-location-actions"><Button variant="secondary" disabled={!ready||disabled} aria-label={value?"მარკერის რუკის ცენტრში გადატანა":"რუკის ცენტრში მონიშვნა"} onClick={()=>{const at=map.current!.getCenter();onChange({lat:Number(at.lat.toFixed(6)),lng:Number(at.lng.toFixed(6))});requestAnimationFrame(()=>marker.current?.getElement()?.focus());}}><Icon name="map-pin"/>{value?"ცენტრში":"მონიშვნა"}</Button>{value?<Button variant="ghost" disabled={disabled} aria-label="მდებარეობის წერტილის წაშლა" onClick={()=>onChange(null)}>წაშლა</Button>:null}</div>

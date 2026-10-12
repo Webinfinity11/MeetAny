@@ -149,6 +149,7 @@
   --tap-min:44px;
   --icon-sm:16px;
   --icon:20px;
+  --icon-md:20px;
   --icon-lg:24px;
   --icon-stroke:var(--theme-icon-stroke);
   --icon-btn:18px;
@@ -168,6 +169,14 @@
   --motion-enter:200ms;
   --motion-stagger:40ms;
   --motion-pulse:2400ms;
+  /* Overlays (Modal, Sheet, ConfirmSheet, filter sheet, mobile drawer): one easing, enter/leave inside 150–250ms. */
+  --motion-overlay-in:220ms;
+  --motion-overlay-out:160ms;
+  --motion-overlay-ease:var(--motion-ease);
+  /* Edge-fade masks for horizontal scroll rows (.ma-scroll-row, phone .ma-tabs): start fade · solid · end fade. */
+  --mask-fade-start:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'%3E%3ClinearGradient id='g'%3E%3Cstop offset='0' stop-opacity='0'/%3E%3Cstop offset='1' stop-opacity='1'/%3E%3C/linearGradient%3E%3Crect width='1' height='1' fill='url(%23g)'/%3E%3C/svg%3E");
+  --mask-solid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'%3E%3Crect width='1' height='1'/%3E%3C/svg%3E");
+  --mask-fade-end:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'%3E%3ClinearGradient id='g'%3E%3Cstop offset='0' stop-opacity='1'/%3E%3Cstop offset='1' stop-opacity='0'/%3E%3C/linearGradient%3E%3Crect width='1' height='1' fill='url(%23g)'/%3E%3C/svg%3E");
   --shadow-hover:var(--shadow-2);
   --ease:cubic-bezier(.2,.7,.2,1);
   --dur-fast:120ms;
@@ -576,4 +585,4 @@
 @media (min-width:768px){:root{--card-pad:20px;--header-h:64px;--gutter:24px}}
 @media (min-width:1024px){:root{--section-gap:80px}}
 @media (min-width:1280px){:root{--gutter:32px}}
-@media (prefers-reduced-motion:reduce){:root{--dur-fast:0ms;--dur:0ms;--dur-slow:0ms}}
+@media (prefers-reduced-motion:reduce){:root{--dur-fast:0ms;--dur:0ms;--dur-slow:0ms;--motion-overlay-in:1ms;--motion-overlay-out:1ms}}

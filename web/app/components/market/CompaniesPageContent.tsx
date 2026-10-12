@@ -145,9 +145,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{body}</aside>
       <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
         <div className={styles.toolbar}>
-          <div className={styles.search}><CatalogSearch id="company-query" label="ძიება" placeholder="მოძებნე კომპანია ან მომსახურება" value={query} onChange={q => filters.set({ q })} mode="companies" resultIds={rows.map(c => c.id)} onCategory={industry => filters.set({ industry, q: "" })} /></div>
+          <div className={styles.search}><CatalogSearch id="company-query" label="ძიება" placeholder="მოძებნეთ კომპანია ან მომსახურება" value={query} onChange={q => filters.set({ q })} mode="companies" resultIds={rows.map(c => c.id)} onCategory={industry => filters.set({ industry, q: "" })} /></div>
           <ResultsBar count={ready && available ? `ნაპოვნია ${rows.length} კომპანია` : ""} items={activeItems} onRemove={key => setFilters({ [key]: "" })} onClear={clearFilters}
-            filterButton={<Button variant="secondary" className="catalog-filter-toggle" aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length ? ` (${activeItems.length})` : ""}</Button>}
+            filterButton={<Button variant="secondary" className="catalog-filter-toggle" aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრები{activeItems.length ? <span className={styles.filterCount}>{activeItems.length}</span> : null}</Button>}
             sort={{ value: sort, onChange: sort => filters.set({ sort }), options: [{ value: "recommended", label: "რეკომენდებული" }, { value: "newest", label: "უახლესი" }, { value: "active", label: "ყველაზე აქტიური" }] }}
             utility={<div className={`view-switch ${styles.companyViewSwitch}`} role="group" aria-label="ხედი">{([
               { value: "list", label: "სია", icon: "list-filter" },
@@ -157,7 +157,9 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         </div>
         <div className={`${styles.grid}${view === "list" ? ` ${styles.companyList}` : ""}`}>
           {!available ? <ServiceUnavailable /> : !ready ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : type === "distributors" && (business.error || distribution.error) ? <BusinessError error={business.error || distribution.error!} retry={() => { business.reload(); distribution.reload(); }} /> : type === "distributors" && (business.loading || distribution.loading) ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : !rows.length
-            ? <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="სცადე სხვა დარგი ან ქალაქი." action={<Button variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>} />
+            ? query
+              ? <EmptyState icon="search" title={`„${query}“-ზე ვერაფერი მოიძებნა`} text="სცადეთ სხვა სიტყვა." action={<Button variant="secondary" onClick={() => filters.set({ q: "" })}>ძიების გასუფთავება</Button>} />
+              : <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="სცადეთ სხვა კატეგორია ან ქალაქი." action={<Button variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>} />
             : view === "map" ? <div className="companies-map-view"><CompaniesMap companies={mapped} />{unmapped.length > 0 && <p className="companies-map__unmapped">რუკაზე არ ჩანს ({unmapped.length}), მისამართი არ აქვს მითითებული: {unmapped.map((c, index) => <span key={c.id}>{index ? ", " : ""}<Link href={`/companies/view/?id=${encodeURIComponent(c.id)}`}>{c.name}</Link></span>)}</p>}</div>
             : rows.map(c => <CompanyListingCard key={c.id} catalog catalogLayout={view} c={c} />)}
         </div>

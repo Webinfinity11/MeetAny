@@ -1,0 +1,47 @@
+{
+ "/": {
+  "document": 27,
+  "stylesheet": 79,
+  "other": 5,
+  "image": 363,
+  "script": 257,
+  "font": 159,
+  "fetch": 104
+ },
+ "/requests/": {
+  "document": 30,
+  "stylesheet": 86,
+  "image": 741,
+  "other": 9,
+  "script": 268,
+  "font": 159,
+  "fetch": 101
+ },
+ "/requests/view/?id=3c6c7198-9e2c-4950-9dfb-f32a1545ec26": {
+  "image": 55,
+  "stylesheet": 96,
+  "document": 26,
+  "other": 6,
+  "font": 159,
+  "script": 280,
+  "fetch": 96
+ },
+ "/companies/": {
+  "document": 29,
+  "image": 57,
+  "stylesheet": 86,
+  "script": 266,
+  "other": 9,
+  "font": 159,
+  "fetch": 112
+ },
+ "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e": {
+  "image": 151,
+  "stylesheet": 88,
+  "document": 26,
+  "other": 5,
+  "script": 259,
+  "font": 159,
+  "fetch": 106
+ }
+}

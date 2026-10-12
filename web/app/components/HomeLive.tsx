@@ -1,8 +1,10 @@
 "use client";
 
+import { optimizable } from "../lib/image";
+import Image from "next/image";
 import { useState } from "react";
 import { OpportunityCard, OpportunitySkeleton } from "./market/OpportunityCard";
-import { useMarketStore } from "../lib/market-client";
+import { useMarketStore, type PublicSnapshot } from "../lib/market-client";
 import { RequestCatalogCover } from "./market/RequestCatalogCover";
 
 export type HomeRequest = {
@@ -12,8 +14,8 @@ export type HomeRequest = {
 export type HomeCompany = { id: string; company: string; industry: string; city: string; createdAt: string };
 
 /** Both home sections use the existing public store; no extra data fetch or invented counts. */
-export function useHomeFeed() {
-  const { store, ready, available } = useMarketStore();
+export function useHomeFeed(initial?: PublicSnapshot) {
+  const { store, ready, available } = useMarketStore(initial);
   const requests: HomeRequest[] = ready && available && store
     ? [...(store.listRequests({ state: "open" }) as HomeRequest[])].filter(r => !/ტესტ|test|e2e/i.test(r.title))
       .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 5) : [];
@@ -27,14 +29,15 @@ export function HomeRequestPhoto({ request, live = false }: { request: HomeReque
   const [failed, setFailed] = useState<string | null>(null);
   return <div className={live ? "home-live-photo" : "home-opportunity-photo"}>
     {request.photo && failed !== request.photo
-      ? <img src={request.photo} alt="" width={480} height={300} loading="lazy" onError={() => setFailed(request.photo)} />
+      ? <Image src={request.photo} alt="" width={480} height={300} sizes="(max-width: 720px) 100vw, 480px" unoptimized={!optimizable(request.photo)} loading="lazy" onError={() => setFailed(request.photo)} />
       : <RequestCatalogCover category={request.category} />}
   </div>;
 }
 
-export function HomeRequests() {
-  const { store, ready, available, requests } = useHomeFeed();
-  const [now] = useState(() => Date.now());
+export function HomeRequests({ initial, initialNow }: { initial?: PublicSnapshot; initialNow?: number }) {
+  const { store, ready, available, requests } = useHomeFeed(initial);
+  // The server clock renders the deadlines in the HTML; hydration must reuse it.
+  const [now] = useState(() => initialNow ?? Date.now());
   return <div className="home-opportunities" aria-busy={!ready}>
     {!ready ? Array.from({ length: 5 }, (_, i) => <OpportunitySkeleton key={i} />)
       : !requests.length ? <p className="home-empty">{available ? "ღია მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>

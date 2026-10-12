@@ -1,0 +1,964 @@
+{
+ "origin": "https://www.meetany.ge",
+ "at": "2026-10-12T09:18:28.186Z",
+ "runs": 3,
+ "signedIn": false,
+ "pages": {
+  "home/desktop": {
+   "path": "/",
+   "profile": "desktop",
+   "ttfb": 210,
+   "fcp": 744,
+   "lcp": 744,
+   "ready": 1920,
+   "load": 1382,
+   "requests": 70,
+   "jsFiles": 18,
+   "jsTransferKB": 252.1,
+   "jsDecodedKB": 805.7,
+   "htmlKB": 47.9,
+   "imgFiles": 9,
+   "imgKB": 703,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 727,
+     "end": 1322,
+     "ms": 595,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1323,
+     "end": 1687,
+     "ms": 364,
+     "kb": 74.9
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 363,
+     "dcl": 729,
+     "load": 1317,
+     "fcp": 744,
+     "lcp": 744,
+     "ready": 1920,
+     "htmlKB": 47.9,
+     "jsFiles": 18,
+     "jsTransferKB": 252.1,
+     "jsDecodedKB": 805.7,
+     "imgFiles": 9,
+     "imgKB": 703,
+     "requests": 70,
+     "errors": []
+    },
+    {
+     "ttfb": 210,
+     "dcl": 708,
+     "load": 1814,
+     "fcp": 724,
+     "lcp": 724,
+     "ready": 1962,
+     "htmlKB": 47.9,
+     "jsFiles": 18,
+     "jsTransferKB": 252.1,
+     "jsDecodedKB": 805.7,
+     "imgFiles": 9,
+     "imgKB": 703,
+     "requests": 68,
+     "errors": []
+    },
+    {
+     "ttfb": 209,
+     "dcl": 772,
+     "load": 1382,
+     "fcp": 788,
+     "lcp": 788,
+     "ready": 1696,
+     "htmlKB": 47.9,
+     "jsFiles": 18,
+     "jsTransferKB": 252.1,
+     "jsDecodedKB": 805.7,
+     "imgFiles": 9,
+     "imgKB": 703,
+     "requests": 71,
+     "errors": []
+    }
+   ]
+  },
+  "home/mobile": {
+   "path": "/",
+   "profile": "mobile",
+   "ttfb": 238,
+   "fcp": 1288,
+   "lcp": 1288,
+   "ready": 4560,
+   "load": 8774,
+   "requests": 46,
+   "jsFiles": 13,
+   "jsTransferKB": 209.8,
+   "jsDecodedKB": 668.9,
+   "htmlKB": 47.9,
+   "imgFiles": 7,
+   "imgKB": 564.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1217,
+     "end": 1913,
+     "ms": 697,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 3982,
+     "end": 4563,
+     "ms": 581,
+     "kb": 74.9
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 225,
+     "dcl": 1215,
+     "load": 8774,
+     "fcp": 1288,
+     "lcp": 1288,
+     "ready": 4463,
+     "htmlKB": 47.9,
+     "jsFiles": 13,
+     "jsTransferKB": 209.8,
+     "jsDecodedKB": 668.9,
+     "imgFiles": 7,
+     "imgKB": 564.6,
+     "requests": 46,
+     "errors": []
+    },
+    {
+     "ttfb": 277,
+     "dcl": 1248,
+     "load": 8787,
+     "fcp": 1308,
+     "lcp": 1308,
+     "ready": 4560,
+     "htmlKB": 47.9,
+     "jsFiles": 13,
+     "jsTransferKB": 209.8,
+     "jsDecodedKB": 668.9,
+     "imgFiles": 7,
+     "imgKB": 564.6,
+     "requests": 46,
+     "errors": []
+    },
+    {
+     "ttfb": 238,
+     "dcl": 1282,
+     "load": 8698,
+     "fcp": 1284,
+     "lcp": 1284,
+     "ready": 4586,
+     "htmlKB": 47.9,
+     "jsFiles": 13,
+     "jsTransferKB": 209.8,
+     "jsDecodedKB": 668.9,
+     "imgFiles": 7,
+     "imgKB": 564.6,
+     "requests": 46,
+     "errors": []
+    }
+   ]
+  },
+  "requests/desktop": {
+   "path": "/requests/",
+   "profile": "desktop",
+   "ttfb": 222,
+   "fcp": 1164,
+   "lcp": 2408,
+   "ready": 1150,
+   "load": 2790,
+   "requests": 79,
+   "jsFiles": 20,
+   "jsTransferKB": 270.7,
+   "jsDecodedKB": 863.5,
+   "htmlKB": 178.7,
+   "imgFiles": 16,
+   "imgKB": 742.5,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1040,
+     "end": 1543,
+     "ms": 504,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1544,
+     "end": 1898,
+     "ms": 353,
+     "kb": 74.9
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 214,
+     "dcl": 1612,
+     "load": 1818,
+     "fcp": 1628,
+     "lcp": 2436,
+     "ready": 1612,
+     "htmlKB": 178.7,
+     "jsFiles": 20,
+     "jsTransferKB": 270.7,
+     "jsDecodedKB": 863.5,
+     "imgFiles": 16,
+     "imgKB": 742.5,
+     "requests": 80,
+     "errors": []
+    },
+    {
+     "ttfb": 226,
+     "dcl": 1150,
+     "load": 3677,
+     "fcp": 1164,
+     "lcp": 2408,
+     "ready": 1150,
+     "htmlKB": 178.7,
+     "jsFiles": 20,
+     "jsTransferKB": 270.7,
+     "jsDecodedKB": 863.5,
+     "imgFiles": 16,
+     "imgKB": 742.5,
+     "requests": 78,
+     "errors": []
+    },
+    {
+     "ttfb": 222,
+     "dcl": 1066,
+     "load": 2790,
+     "fcp": 1116,
+     "lcp": 2004,
+     "ready": 1066,
+     "htmlKB": 178.7,
+     "jsFiles": 20,
+     "jsTransferKB": 270.7,
+     "jsDecodedKB": 863.5,
+     "imgFiles": 16,
+     "imgKB": 742.5,
+     "requests": 79,
+     "errors": []
+    }
+   ]
+  },
+  "requests/mobile": {
+   "path": "/requests/",
+   "profile": "mobile",
+   "ttfb": 293,
+   "fcp": 1652,
+   "lcp": 14832,
+   "ready": 1647,
+   "load": 14825,
+   "requests": 58,
+   "jsFiles": 20,
+   "jsTransferKB": 270.7,
+   "jsDecodedKB": 863.5,
+   "htmlKB": 178.7,
+   "imgFiles": 7,
+   "imgKB": 567.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1513,
+     "end": 2410,
+     "ms": 897,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 5404,
+     "end": 6248,
+     "ms": 844,
+     "kb": 74.9
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 304,
+     "dcl": 1622,
+     "load": 14723,
+     "fcp": 1628,
+     "lcp": 14728,
+     "ready": 1622,
+     "htmlKB": 178.7,
+     "jsFiles": 20,
+     "jsTransferKB": 270.7,
+     "jsDecodedKB": 863.5,
+     "imgFiles": 7,
+     "imgKB": 567.6,
+     "requests": 58,
+     "errors": []
+    },
+    {
+     "ttfb": 242,
+     "dcl": 1759,
+     "load": 14836,
+     "fcp": 1760,
+     "lcp": 14840,
+     "ready": 1759,
+     "htmlKB": 178.7,
+     "jsFiles": 20,
+     "jsTransferKB": 270.7,
+     "jsDecodedKB": 863.5,
+     "imgFiles": 7,
+     "imgKB": 567.6,
+     "requests": 58,
+     "errors": []
+    },
+    {
+     "ttfb": 293,
+     "dcl": 1649,
+     "load": 14825,
+     "fcp": 1652,
+     "lcp": 14832,
+     "ready": 1647,
+     "htmlKB": 178.7,
+     "jsFiles": 20,
+     "jsTransferKB": 270.7,
+     "jsDecodedKB": 863.5,
+     "imgFiles": 7,
+     "imgKB": 567.6,
+     "requests": 58,
+     "errors": []
+    }
+   ]
+  },
+  "request-view/desktop": {
+   "path": "/requests/view/?id=3c6c7198-9e2c-4950-9dfb-f32a1545ec26",
+   "profile": "desktop",
+   "ttfb": 220,
+   "fcp": 1400,
+   "lcp": 2112,
+   "ready": 2129,
+   "load": 3494,
+   "requests": 68,
+   "jsFiles": 20,
+   "jsTransferKB": 283.5,
+   "jsDecodedKB": 916.4,
+   "htmlKB": 140.9,
+   "imgFiles": 5,
+   "imgKB": 564.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1346,
+     "end": 1932,
+     "ms": 586,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/list_attachments",
+     "start": 1805,
+     "end": 2093,
+     "ms": 289,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_preferences",
+     "start": 1805,
+     "end": 2094,
+     "ms": 289,
+     "kb": 0.1
+    },
+    {
+     "url": "/api/db/rpc/request_preferences",
+     "start": 1807,
+     "end": 2094,
+     "ms": 287,
+     "kb": 0.1
+    },
+    {
+     "url": "/api/db/rpc/list_attachments",
+     "start": 1807,
+     "end": 2094,
+     "ms": 287,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1932,
+     "end": 2296,
+     "ms": 364,
+     "kb": 74.9
+    },
+    {
+     "url": "/api/db/rpc/company_business_features",
+     "start": 2309,
+     "end": 2613,
+     "ms": 305,
+     "kb": 1.1
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 220,
+     "dcl": 913,
+     "load": 2021,
+     "fcp": 992,
+     "lcp": 1644,
+     "ready": 2129,
+     "htmlKB": 140.9,
+     "jsFiles": 20,
+     "jsTransferKB": 283.5,
+     "jsDecodedKB": 916.4,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 69,
+     "errors": []
+    },
+    {
+     "ttfb": 348,
+     "dcl": 1782,
+     "load": 6571,
+     "fcp": 1860,
+     "lcp": 2948,
+     "ready": 2929,
+     "htmlKB": 140.9,
+     "jsFiles": 20,
+     "jsTransferKB": 283.5,
+     "jsDecodedKB": 916.4,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 68,
+     "errors": []
+    },
+    {
+     "ttfb": 211,
+     "dcl": 1373,
+     "load": 3494,
+     "fcp": 1400,
+     "lcp": 2112,
+     "ready": 2109,
+     "htmlKB": 140.9,
+     "jsFiles": 20,
+     "jsTransferKB": 283.5,
+     "jsDecodedKB": 916.4,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 68,
+     "errors": []
+    }
+   ]
+  },
+  "request-view/mobile": {
+   "path": "/requests/view/?id=3c6c7198-9e2c-4950-9dfb-f32a1545ec26",
+   "profile": "mobile",
+   "ttfb": 327,
+   "fcp": 1952,
+   "lcp": 1952,
+   "ready": 5902,
+   "load": 14198,
+   "requests": 54,
+   "jsFiles": 15,
+   "jsTransferKB": 241.2,
+   "jsDecodedKB": 779.6,
+   "htmlKB": 140.9,
+   "imgFiles": 5,
+   "imgKB": 564.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 2076,
+     "end": 3108,
+     "ms": 1032,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 5549,
+     "end": 6387,
+     "ms": 838,
+     "kb": 74.9
+    },
+    {
+     "url": "/api/db/rpc/request_preferences",
+     "start": 5578,
+     "end": 5979,
+     "ms": 400,
+     "kb": 0.1
+    },
+    {
+     "url": "/api/db/rpc/list_attachments",
+     "start": 5579,
+     "end": 6004,
+     "ms": 425,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_preferences",
+     "start": 5583,
+     "end": 6004,
+     "ms": 422,
+     "kb": 0.1
+    },
+    {
+     "url": "/api/db/rpc/list_attachments",
+     "start": 5583,
+     "end": 6004,
+     "ms": 422,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_business_features",
+     "start": 6403,
+     "end": 6704,
+     "ms": 301,
+     "kb": 1.1
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 301,
+     "dcl": 1702,
+     "load": 14062,
+     "fcp": 1704,
+     "lcp": 1704,
+     "ready": 5554,
+     "htmlKB": 140.9,
+     "jsFiles": 15,
+     "jsTransferKB": 241.2,
+     "jsDecodedKB": 779.6,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 54,
+     "errors": []
+    },
+    {
+     "ttfb": 327,
+     "dcl": 1949,
+     "load": 14289,
+     "fcp": 1952,
+     "lcp": 1952,
+     "ready": 5902,
+     "htmlKB": 140.9,
+     "jsFiles": 15,
+     "jsTransferKB": 241.2,
+     "jsDecodedKB": 779.6,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 54,
+     "errors": []
+    },
+    {
+     "ttfb": 350,
+     "dcl": 2153,
+     "load": 14198,
+     "fcp": 2224,
+     "lcp": 2224,
+     "ready": 6025,
+     "htmlKB": 140.9,
+     "jsFiles": 15,
+     "jsTransferKB": 241.2,
+     "jsDecodedKB": 779.6,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 54,
+     "errors": []
+    }
+   ]
+  },
+  "companies/desktop": {
+   "path": "/companies/",
+   "profile": "desktop",
+   "ttfb": 226,
+   "fcp": 900,
+   "lcp": 900,
+   "ready": 882,
+   "load": 1281,
+   "requests": 79,
+   "jsFiles": 21,
+   "jsTransferKB": 268.1,
+   "jsDecodedKB": 851.9,
+   "htmlKB": 166.7,
+   "imgFiles": 14,
+   "imgKB": 567.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 766,
+     "end": 1290,
+     "ms": 524,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1290,
+     "end": 1649,
+     "ms": 359,
+     "kb": 74.9
+    },
+    {
+     "url": "/api/db/rpc/company_business_features",
+     "start": 1664,
+     "end": 1983,
+     "ms": 320,
+     "kb": 1.1
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 239,
+     "dcl": 1142,
+     "load": 1388,
+     "fcp": 1164,
+     "lcp": 1164,
+     "ready": 1142,
+     "htmlKB": 166.7,
+     "jsFiles": 21,
+     "jsTransferKB": 268.1,
+     "jsDecodedKB": 851.9,
+     "imgFiles": 14,
+     "imgKB": 567.6,
+     "requests": 79,
+     "errors": []
+    },
+    {
+     "ttfb": 226,
+     "dcl": 882,
+     "load": 1219,
+     "fcp": 900,
+     "lcp": 900,
+     "ready": 882,
+     "htmlKB": 166.7,
+     "jsFiles": 21,
+     "jsTransferKB": 268.1,
+     "jsDecodedKB": 851.9,
+     "imgFiles": 14,
+     "imgKB": 567.6,
+     "requests": 79,
+     "errors": []
+    },
+    {
+     "ttfb": 211,
+     "dcl": 784,
+     "load": 1281,
+     "fcp": 804,
+     "lcp": 804,
+     "ready": 784,
+     "htmlKB": 166.7,
+     "jsFiles": 21,
+     "jsTransferKB": 268.1,
+     "jsDecodedKB": 851.9,
+     "imgFiles": 14,
+     "imgKB": 567.6,
+     "requests": 79,
+     "errors": []
+    }
+   ]
+  },
+  "companies/mobile": {
+   "path": "/companies/",
+   "profile": "mobile",
+   "ttfb": 293,
+   "fcp": 1764,
+   "lcp": 1764,
+   "ready": 1756,
+   "load": 11394,
+   "requests": 55,
+   "jsFiles": 16,
+   "jsTransferKB": 225.7,
+   "jsDecodedKB": 715.1,
+   "htmlKB": 166.7,
+   "imgFiles": 10,
+   "imgKB": 567.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1695,
+     "end": 2250,
+     "ms": 555,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 7744,
+     "end": 8490,
+     "ms": 747,
+     "kb": 74.9
+    },
+    {
+     "url": "/api/db/rpc/company_business_features",
+     "start": 8505,
+     "end": 8810,
+     "ms": 304,
+     "kb": 1.1
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 293,
+     "dcl": 1644,
+     "load": 11394,
+     "fcp": 1644,
+     "lcp": 1644,
+     "ready": 1644,
+     "htmlKB": 166.7,
+     "jsFiles": 16,
+     "jsTransferKB": 225.7,
+     "jsDecodedKB": 715.1,
+     "imgFiles": 10,
+     "imgKB": 567.6,
+     "requests": 55,
+     "errors": []
+    },
+    {
+     "ttfb": 229,
+     "dcl": 1756,
+     "load": 11313,
+     "fcp": 1764,
+     "lcp": 1764,
+     "ready": 1756,
+     "htmlKB": 166.7,
+     "jsFiles": 16,
+     "jsTransferKB": 225.7,
+     "jsDecodedKB": 715.1,
+     "imgFiles": 10,
+     "imgKB": 567.6,
+     "requests": 56,
+     "errors": []
+    },
+    {
+     "ttfb": 394,
+     "dcl": 1773,
+     "load": 11536,
+     "fcp": 1780,
+     "lcp": 1780,
+     "ready": 1773,
+     "htmlKB": 166.7,
+     "jsFiles": 16,
+     "jsTransferKB": 225.7,
+     "jsDecodedKB": 715.1,
+     "imgFiles": 10,
+     "imgKB": 567.6,
+     "requests": 55,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/desktop": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "desktop",
+   "ttfb": 249,
+   "fcp": 1096,
+   "lcp": 1096,
+   "ready": 2162,
+   "load": 1557,
+   "requests": 68,
+   "jsFiles": 20,
+   "jsTransferKB": 261.4,
+   "jsDecodedKB": 832.7,
+   "htmlKB": 136.7,
+   "imgFiles": 5,
+   "imgKB": 564.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1016,
+     "end": 1538,
+     "ms": 522,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_products",
+     "start": 1230,
+     "end": 1480,
+     "ms": 250,
+     "kb": 1.2
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1538,
+     "end": 1895,
+     "ms": 356,
+     "kb": 74.9
+    },
+    {
+     "url": "/api/db/rpc/company_reviews",
+     "start": 1904,
+     "end": 2146,
+     "ms": 242,
+     "kb": 1.4
+    },
+    {
+     "url": "/api/db/rpc/company_public_stats",
+     "start": 1905,
+     "end": 2133,
+     "ms": 228,
+     "kb": 0
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 209,
+     "dcl": 1159,
+     "load": 2352,
+     "fcp": 1244,
+     "lcp": 1244,
+     "ready": 2318,
+     "htmlKB": 136.7,
+     "jsFiles": 20,
+     "jsTransferKB": 261.4,
+     "jsDecodedKB": 832.7,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 66,
+     "errors": []
+    },
+    {
+     "ttfb": 249,
+     "dcl": 1011,
+     "load": 1557,
+     "fcp": 1096,
+     "lcp": 1096,
+     "ready": 2125,
+     "htmlKB": 136.7,
+     "jsFiles": 20,
+     "jsTransferKB": 261.4,
+     "jsDecodedKB": 832.7,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 68,
+     "errors": []
+    },
+    {
+     "ttfb": 289,
+     "dcl": 1048,
+     "load": 1512,
+     "fcp": 1060,
+     "lcp": 1060,
+     "ready": 2162,
+     "htmlKB": 136.7,
+     "jsFiles": 20,
+     "jsTransferKB": 261.4,
+     "jsDecodedKB": 832.7,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 68,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/mobile": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "mobile",
+   "ttfb": 207,
+   "fcp": 1752,
+   "lcp": 1752,
+   "ready": 6104,
+   "load": 7318,
+   "requests": 49,
+   "jsFiles": 15,
+   "jsTransferKB": 219,
+   "jsDecodedKB": 695.9,
+   "htmlKB": 136.7,
+   "imgFiles": 5,
+   "imgKB": 564.6,
+   "api": [
+    {
+     "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+     "start": 1363,
+     "end": 2066,
+     "ms": 703,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 4802,
+     "end": 5556,
+     "ms": 754,
+     "kb": 74.9
+    },
+    {
+     "url": "/api/db/rpc/company_products",
+     "start": 4818,
+     "end": 5131,
+     "ms": 313,
+     "kb": 1.2
+    },
+    {
+     "url": "/api/db/rpc/company_reviews",
+     "start": 5564,
+     "end": 5823,
+     "ms": 259,
+     "kb": 1.4
+    },
+    {
+     "url": "/api/db/rpc/company_public_stats",
+     "start": 5564,
+     "end": 5846,
+     "ms": 282,
+     "kb": 0
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 207,
+     "dcl": 1840,
+     "load": 7289,
+     "fcp": 1844,
+     "lcp": 1844,
+     "ready": 6177,
+     "htmlKB": 136.7,
+     "jsFiles": 15,
+     "jsTransferKB": 219,
+     "jsDecodedKB": 695.9,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 49,
+     "errors": []
+    },
+    {
+     "ttfb": 235,
+     "dcl": 1747,
+     "load": 7368,
+     "fcp": 1752,
+     "lcp": 1752,
+     "ready": 6104,
+     "htmlKB": 136.7,
+     "jsFiles": 15,
+     "jsTransferKB": 219,
+     "jsDecodedKB": 695.9,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 49,
+     "errors": []
+    },
+    {
+     "ttfb": 206,
+     "dcl": 1436,
+     "load": 7318,
+     "fcp": 1440,
+     "lcp": 1440,
+     "ready": 5856,
+     "htmlKB": 136.7,
+     "jsFiles": 15,
+     "jsTransferKB": 219,
+     "jsDecodedKB": 695.9,
+     "imgFiles": 5,
+     "imgKB": 564.6,
+     "requests": 49,
+     "errors": []
+    }
+   ]
+  }
+ }
+}

@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { categories, currentCategory, units } from "../../lib/categories";
+import { optimizable } from "../../lib/image";
 import { Icon } from "../Icon";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { RequestCatalogCover } from "./RequestCatalogCover";
+import { avatarInitials } from "../../lib/avatar-initials";
 
 export type RequestRowData = {
   isNew?: boolean;
@@ -51,13 +54,13 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
   return (
     <article style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined} data-enter={entrance ? "" : undefined} className={`request-card${hasPhoto ? " request-card--photo" : ""}${r.isOwn ? " request-card--mine" : closedLike ? " request-card--closed" : ""}`}>
       <div className="request-card__visual">
-        {hasPhoto ? <img src={r.photo!} alt="" width={480} height={240} style={{ opacity: loadedPhoto === r.photo ? 1 : 0 }} loading={priority ? "eager" : "lazy"} onLoad={() => setLoadedPhoto(r.photo)} onError={() => setFailedPhoto(r.photo)} /> : <RequestCatalogCover category={r.category} />}
+        {hasPhoto ? <Image src={r.photo!} alt="" width={480} height={240} sizes="(max-width: 720px) 100vw, 480px" unoptimized={!optimizable(r.photo)} style={{ opacity: loadedPhoto === r.photo ? 1 : 0 }} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} onLoad={() => setLoadedPhoto(r.photo)} onError={() => setFailedPhoto(r.photo)} /> : <RequestCatalogCover category={r.category} />}
         {r.isNew ? <Badge status="success" className="request-card__badge">ახალი</Badge> : null}
       </div>
       <div className="request-card__body">
         <h2 className="request-card__title"><Link className="card-main-link" href={href}>{r.title}</Link></h2>
         <span className="request-card__category">{categories[category] || r.category}</span>
-        <p className="request-card__owner"><span className="request-card__avatar" aria-hidden="true">{r.ownerName.slice(0, 1)}</span>{r.ownerName}</p>
+        <p className="request-card__owner"><span className="request-card__avatar" aria-hidden="true">{avatarInitials(r.ownerName)}</span>{r.ownerName}</p>
         <ul className="request-card__facts" aria-label="მოთხოვნის დეტალები">
           {r.cityLabel ? <li><Icon name="map-pin" />{r.cityLabel}</li> : null}
           {quantity ? <li><Icon name="package" />{quantity}</li> : null}
@@ -68,13 +71,12 @@ export function RequestRow({ r, priority = false, entranceIndex }: { r: RequestR
             <span><Icon name="message-square" />{r.offerCount ?? 0} შეთავაზება</span>
           </div>
           <div className="catalog-card-actions">
-            <Button variant="secondary" href={href}>დეტალები</Button>
-            {r.canOffer ? <Button variant="primary" href={`${href}#send-offer`}>შეთავაზება</Button> : null}
+            {r.canOffer ? <Button variant="primary" href={`/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზების გაგზავნა</Button> : <Button variant="secondary" href={href}>მოთხოვნის ნახვა</Button>}
           </div>
         </div>
         {r.isOwn || (r.showOwnOfferBadge && r.ownOfferStatus) ? <p className="request-card__status">
-          {r.isOwn ? <span className="is-own">შენი მოთხოვნა</span> : null}
-          {r.showOwnOfferBadge && r.ownOfferStatus ? <span className="is-own">შენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
+          {r.isOwn ? <span className="is-own">თქვენი მოთხოვნა</span> : null}
+          {r.showOwnOfferBadge && r.ownOfferStatus ? <span className="is-own">თქვენი შეთავაზება {r.ownOfferStatus === "chosen" ? "არჩეულია" : "გაგზავნილია"}</span> : null}
         </p> : null}
       </div>
     </article>

@@ -1,5 +1,6 @@
-.toasts{position:fixed;left:var(--space-4);right:var(--space-4);bottom:calc(var(--space-4) + env(safe-area-inset-bottom));z-index:var(--z-toast);display:grid;justify-items:center;gap:var(--space-3);pointer-events:none}
-.toast{display:flex;align-items:flex-start;gap:var(--space-3);width:100%;max-width:var(--size-380);padding:var(--size-14) var(--space-4);border-radius:var(--size-12);background:var(--ink-950);color:var(--white);box-shadow:var(--shadow-4);pointer-events:auto;animation:enter var(--motion-base) var(--ease) both}
+/* Phones: under the header, so a toast never covers a bottom action bar, sheet buttons or the keyboard. */
+.toasts{position:fixed;left:var(--space-4);right:var(--space-4);top:calc(var(--size-56) + var(--space-2) + env(safe-area-inset-top));z-index:var(--z-toast);display:grid;justify-items:center;gap:var(--space-3);pointer-events:none}
+.toast{display:flex;align-items:flex-start;gap:var(--space-3);width:100%;max-width:var(--size-380);padding:var(--size-14) var(--space-4);border-radius:var(--size-12);background:var(--ink-950);color:var(--white);box-shadow:var(--shadow-4);pointer-events:auto;animation:enter var(--motion-overlay-in) var(--motion-overlay-ease) both}
 .icon{flex:none;margin-top:var(--space-compact);color:var(--success-600)}
 .toast[data-tone=info] .icon{color:var(--info-600)}
 .toast[data-tone=warning] .icon{color:var(--warning-100)}
@@ -11,7 +12,9 @@
 .action{font-size:var(--fs-eyebrow);font-weight:var(--fw-semibold);text-decoration:underline;min-width:var(--tap-min);overflow-wrap:anywhere;max-width:30%}
 .close{display:grid;place-items:center;flex:none;width:var(--tap-min);margin-right:calc(-1 * var(--space-3));color:var(--ink-300)}
 .action:focus-visible,.close:focus-visible{outline:var(--size-2) solid var(--white);outline-offset:var(--size-2)}
-:global(body:has(.ma-actionbar)) .toasts{bottom:calc(var(--size-88) + env(safe-area-inset-bottom))}
-@media(min-width:640px){.toasts{left:auto;right:var(--space-6);bottom:var(--space-6);width:var(--size-380);justify-items:end}:global(body:has(.ma-actionbar)) .toasts{bottom:var(--space-6)}}
-@keyframes enter{from{opacity:0;transform:translateY(var(--space-3))}}
+@media(min-width:640px){.toasts{left:auto;right:var(--space-6);width:var(--size-380);justify-items:end}}
+/* Desktop has no fixed bottom bars (they end at 1023px): bottom-right. */
+@media(min-width:1024px){.toasts{top:auto;bottom:var(--space-6)}.toast{animation-name:enter-up}}
+@keyframes enter{from{opacity:0;transform:translateY(calc(-1 * var(--space-3)))}}
+@keyframes enter-up{from{opacity:0;transform:translateY(var(--space-3))}}
 @media(prefers-reduced-motion:reduce){.toast{animation:none}}

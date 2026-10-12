@@ -6,7 +6,7 @@ import { EmptyState } from "../ui/Structure";
 
 export function ServiceUnavailable() {
   return (
-    <EmptyState role="alert" icon="circle-alert" title="სერვისი დროებით მიუწვდომელია" text="მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა." action={<Button type="button" variant="secondary" onClick={() => window.location.reload()}>
+    <EmptyState role="alert" icon="circle-alert" title="სერვისი დროებით მიუწვდომელია" text="მონაცემები ვერ ჩაიტვირთა. სცადეთ ხელახლა." action={<Button type="button" variant="secondary" onClick={() => window.location.reload()}>
         ხელახლა ცდა
       </Button>} />
   );

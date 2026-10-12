@@ -55,30 +55,29 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
     { key: "offers", label: "შეთავაზებები", value: totals.offers, action: "შეთავაზებების ნახვა", href: "/admin/?tab=offers" },
     { key: "companies", label: "კომპანიები", value: totals.companies, action: "კომპანიების ნახვა", href: "/admin/?tab=companies" },
     { key: "users", label: "ანგარიშები", value: totals.users, action: "ანგარიშების ნახვა", href: "/admin/?tab=users" },
-    { key: "chosen", label: "მოთხოვნები არჩეული მომწოდებლით", value: totals.chosen, action: "ნახვა", href: "/admin/?tab=requests&status=chosen" },
-    { key: "verified", label: "დადასტურებული კომპანიები", value: totals.verified, action: "ნახვა", href: "/admin/?tab=companies&status=verified" },
+    { key: "chosen", label: "მომწოდებელი არჩეულია", value: totals.chosen, action: "მოთხოვნების ნახვა", href: "/admin/?tab=requests&status=chosen" },
+    { key: "verified", label: "ვერიფიცირებული კომპანიები", value: totals.verified, action: "კომპანიების ნახვა", href: "/admin/?tab=companies&status=verified" },
   ];
 
   return <div className={styles.overview}>
     <div className={styles.nextActions} aria-label="შემდეგი მოქმედებები">
       <strong><Icon name="badge-check" />შემდეგი მოქმედებები</strong>
       {overview ? <>
-        {pending!.total > 0 ? <Link href="/admin/?tab=companies&status=unverified">{pending!.total} კომპანია განხილვას ელოდება</Link> : null}
+        {pending!.total > 0 ? <Link href="/admin/?tab=companies&status=unverified">{pending!.total} კომპანია ვერიფიკაციას ელოდება</Link> : null}
         {unanswered!.total > 0 ? <a href="#unanswered-queue" onClick={() => { if (unansweredQueue.current) unansweredQueue.current.open = true; }}>{unanswered!.total} მოთხოვნა უპასუხოდაა</a> : null}
         {expiring!.total > 0 ? <a href="#expiring-queue" onClick={() => { if (expiringQueue.current) expiringQueue.current.open = true; }}>{expiring!.total} მოთხოვნის ვადა იწურება</a> : null}
         {!pending!.total && !unanswered!.total && !expiring!.total ? <p>მიმდინარე რიგებში გადაუდებელი მოქმედება არ არის.</p> : null}
       </> : <p role="status">{failed ? "მოქმედებები ვერ ჩაიტვირთა." : "მოქმედებები იტვირთება…"}</p>}
     </div>
-    {failed ? <div className={`${styles.panel} ${styles.overviewError}`} role="alert"><p>{overview ? "განახლება ვერ მოხერხდა. ნაჩვენებია ბოლოს ჩატვირთული მონაცემები." : "მიმოხილვა ვერ ჩაიტვირთა. სცადე ხელახლა."}</p><Button variant="secondary" size="sm" onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button></div> : null}
+    {failed ? <div className={`${styles.panel} ${styles.overviewError}`} role="alert"><p>{overview ? "განახლება ვერ მოხერხდა. ნაჩვენებია ბოლოს ჩატვირთული მონაცემები." : "მიმოხილვა ვერ ჩაიტვირთა. სცადეთ ხელახლა."}</p><Button variant="secondary" size="sm" onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button></div> : null}
     <div className={styles.kpis}>
-      {kpis.slice(0, 4).map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
+      {kpis.map(k => <Link key={k.key} href={k.href} className={styles.kpi}>
         <span className={styles.kpiLabel}>{k.label}</span>
         <strong className={styles.kpiValue}>{k.value ?? "—"}</strong>
         <span className={styles.delta}>{k.action}</span>
       </Link>)}
     </div>
 
-    <div className={styles.overviewSecondary}>{kpis.slice(4).map(k => <Link key={k.key} href={k.href}><span>{k.label}</span><strong>{k.value ?? "—"}</strong></Link>)}</div>
     <div className={styles.overviewSplit}>
     <section className={styles.panel} aria-labelledby="activity-heading">
       <header className={analyticsStyles.activityHeader}><h2 id="activity-heading">აქტივობის ანალიტიკა</h2><div className={analyticsStyles.periodControl} role="group" aria-label="აქტივობის პერიოდი">{([7,30] as const).map(period=><Button key={period} variant="ghost" size="sm" aria-pressed={activityPeriod===period} onClick={()=>setActivityPeriod(period)}>{period} დღე</Button>)}</div></header>
@@ -95,19 +94,19 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
       <header className={styles.panelHead}><h2 id="attention-heading">ყურადღება სჭირდება</h2></header>
       <div className={styles.attention}>
         <details className={styles.queue} open>
-          <summary><Icon name="badge-check" />დასადასტურებელი კომპანიები <span>{pending?.total ?? "…"}</span><Icon name="chevron-down" /></summary>
-          {pending && !pending.total ? <p className={styles.queueEmpty}>განხილვის მომლოდინე კომპანია არ არის.</p> : null}
+          <summary><Icon name="badge-check" />ვერიფიკაციის მოლოდინში <span>{pending?.total ?? "…"}</span><Icon name="chevron-down" /></summary>
+          {pending && !pending.total ? <p className={styles.queueEmpty}>ვერიფიკაციის მომლოდინე კომპანია არ არის.</p> : null}
           <ul>
             {(pending?.items || []).map(u => <li key={u.id}>
               <button type="button" className={styles.queueName} onClick={() => onOpenUser(u.id)}>
                 <strong>{u.company || u.name}</strong>
                 <small>{categories[u.industry || ""] || u.industry || "კომპანია"}</small>
               </button>
-              <Button type="button" variant="secondary" onClick={() => onVerify({ id: u.id, label: u.company || u.name })}>დადასტურება</Button>
+              <Button type="button" variant="secondary" onClick={() => onVerify({ id: u.id, label: u.company || u.name })}>ვერიფიცირება</Button>
             </li>)}
           </ul>
           {(pending?.total || 0) > 6 ? <p className={styles.queueEmpty}>ნაჩვენებია 6 კომპანია {pending!.total}-დან.</p> : null}
-          <Link className={styles.queueMore} href="/admin/?tab=companies&status=unverified">დასადასტურებელი კომპანიების ნახვა</Link>
+          <Link className={styles.queueMore} href="/admin/?tab=companies&status=unverified">ყველა კომპანიის ნახვა</Link>
         </details>
         <details id="unanswered-queue" ref={unansweredQueue} className={styles.queue}>
           <summary><Icon name="hourglass" />3+ დღე უპასუხოდ <span>{(unanswered?.total ?? "…")}</span><Icon name="chevron-down" /></summary>
