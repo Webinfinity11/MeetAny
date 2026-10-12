@@ -36,6 +36,9 @@ const RPCS = new Set([
   // New flows (migrations 20261007-*): offer terms and comparison, deals, deal contact, matching, onboarding.
   'set_offer_terms', 'compare_offers', 'select_offer_deal', 'get_deal', 'advance_deal', 'propose_deal_terms', 'confirm_deal_terms', 'rate_deal',
   'get_deal_contact', 'set_matching_categories', 'list_matching', 'set_onboarding_details', 'admin_set_document_status',
+  // Brief features (migrations 20261013-*): deal counts, saved requests, viewed offers, deals list, matching count, drafts.
+  'company_public_stats', 'list_saved_requests', 'set_saved_request', 'mark_request_offers_viewed', 'list_my_deals',
+  'count_matching_suppliers', 'my_request_draft', 'save_request_draft', 'delete_request_draft',
 ]);
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
