@@ -9,6 +9,9 @@
 .chips > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .chips > span:last-child { flex: none; }
 .chips .warning { background: var(--warning-100); color: var(--warning-700); }
+/* Narrow compact cards: stack the deadline under the category instead of clipping the category. */
+.compact .chips { flex-direction: column; align-items: flex-start; }
+.compact .chips > span:first-child { max-width: 100%; }
 .body { flex: 1; display: flex; flex-direction: column; padding: var(--size-16); }
 .body h3 { margin: 0; font-size: var(--size-15); font-weight: var(--fw-bold); line-height: var(--size-22); overflow-wrap: anywhere; }
 .mainLink { color: inherit; text-decoration: none; }

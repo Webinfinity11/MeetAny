@@ -24,7 +24,8 @@
 .supplier { display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; border-radius: var(--size-20); background: var(--ink-950); color: var(--white); }
 .supplierCopy { position: relative; z-index: 1; padding: var(--size-48); }
 .supplier .eyebrow { color: var(--ink-400); }
-.supplier h2 { color: var(--white); font-size: var(--size-34); }
+/* Two classes deep so the page-wide `.home-page h2` colour cannot win over the dark panel. */
+.supplier .supplierCopy h2 { color: var(--white); font-size: var(--size-34); }
 .supplierLead { margin-top: var(--size-16); color: var(--ink-300); font-size: var(--size-15); line-height: var(--size-28); }
 .supplier ul { list-style: none; padding: 0; margin: var(--size-24) 0 0; display: grid; gap: var(--size-10); }
 .supplier li { display: flex; align-items: flex-start; gap: var(--size-10); color: var(--ink-200); font-size: var(--size-14); }
@@ -52,7 +53,7 @@
 }
 @media (max-width:639px) {
   .how { padding-block: var(--size-48); }
-  .supplier h2 { font-size: var(--size-26); }
+  .supplier .supplierCopy h2 { font-size: var(--size-26); }
   .steps { grid-template-columns: 1fr; gap: var(--size-12); }
   .steps li { display: flex; gap: var(--size-16); padding: var(--size-16); }
   .stepHead { align-items: flex-start; }
