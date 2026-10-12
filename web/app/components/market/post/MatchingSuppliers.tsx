@@ -30,5 +30,5 @@ export function MatchingSuppliers({ store, requestId }: { store: Store; requestI
 
 export function MatchingPreview({ store, category }: { store: Store; category: string }) {
   const items: { id: string; company?: string }[] = category ? store.listCompanies({ industry: category }).filter((company: { id: string }) => company.id !== store.currentUser()?.id) : [];
-  return <div className={styles.matchingPreview}><p><strong>{items.length}</strong> შესაბამისი კომპანია</p><div className={styles.avatarRow}>{items.slice(0, 5).map(item => <span className={styles.avatar} key={item.id} title={item.company}>{item.company?.slice(0, 2)}</span>)}</div><p>ყველას ეცნობება გამოქვეყნებისთანავე</p></div>;
+  return <div className={styles.matchingPreview}><p>ამ კატეგორიაში <strong>{items.length}</strong> კომპანიაა</p><div className={styles.avatarRow}>{items.slice(0, 5).map(item => <span className={styles.avatar} key={item.id} title={item.company}>{item.company?.slice(0, 2)}</span>)}</div><p>გამოქვეყნების შემდეგ ნახავთ შესაბამის მომწოდებლებს.</p></div>;
 }

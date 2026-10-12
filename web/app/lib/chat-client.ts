@@ -21,7 +21,7 @@ type Feed = { unread: number | null; list: { items?: Conversation[]; error?: str
 type Source = {
   state: Feed; listeners: Set<() => void>; listSubs: number;
   read?: () => Promise<number>; list?: () => Promise<Conversation[]>;
-  run: () => Promise<void>; stop?: () => void;
+  run: (joined?: boolean) => Promise<void>; stop?: () => void;
 };
 const sources = new Map<string, Source>();
 
@@ -38,14 +38,14 @@ function titleCount(unread: number | null) {
 function feed(owner: string): Source {
   let source = sources.get(owner);
   if (source) return source;
-  let busy = false, again = false, failed = false;
+  let busy = false, again = false, failed = false, readingList = false;
   const src: Source = {
     state: { unread: null, list: null }, listeners: new Set(), listSubs: 0,
-    run: async () => {
+    run: async (joined = false) => {
       if (document.hidden || !src.listeners.size) return;
       // A viewer that joins mid-request (a list after the badge) gets one more run right after.
-      if (busy) { again = true; return; }
-      busy = true; again = false;
+      if (busy) { if (!joined || (src.listSubs && !readingList)) again = true; return; }
+      busy = true; again = false; readingList = !!(src.listSubs && src.list);
       try {
         if (src.listSubs && src.list) {
           const items = await src.list();
@@ -60,7 +60,7 @@ function feed(owner: string): Source {
         if (src.listSubs) src.state = { ...src.state, list: { ...src.state.list, error } };
         if (!failed) toast(error);
         failed = true;
-      } finally { busy = false; }
+      } finally { busy = false; readingList = false; }
       titleCount(src.state.unread);
       src.listeners.forEach(fn => fn());
       if (again) void src.run();
@@ -90,7 +90,7 @@ function useFeed(store: Store | undefined, owner: string | undefined, wantsList:
       src.stop = () => { clearInterval(timer); window.removeEventListener("meetany:chat-changed", run); window.removeEventListener("focus", run); document.removeEventListener("visibilitychange", run); titleCount(null); };
     }
     // A new list viewer needs items now; a badge reuses what the feed already has.
-    if (src.state.unread === null || (wantsList && !src.state.list)) void src.run(); else update();
+    if (src.state.unread === null || (wantsList && !src.state.list)) void src.run(true); else update();
     return () => {
       src.listeners.delete(update);
       if (wantsList) src.listSubs--;

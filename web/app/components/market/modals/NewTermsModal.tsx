@@ -11,7 +11,7 @@ export function NewTermsModal({ deal, store, pending, onClose, onSubmit }: { dea
   const [sending, setSending] = useState(false);
   useEffect(() => { let active = true; void store.listConversations().then((items: Conversation[]) => { if (active) setConversation(items.find(c => c.requestId === deal.request_id && c.companyId === deal.supplier_id)?.id); }).catch(() => {}); return () => { active = false; }; }, [store, deal.request_id, deal.supplier_id]);
   const busy = pending || sending;
-  return <Modal open onClose={() => { if (!busy) onClose(); }} width={560} title="ახალი პირობები" lead="შეცვალეთ მხოლოდ საჭირო ველები. მეორე მხარე მიიღებს ან უარყოფს.">
+  return <Modal open onClose={() => { if (!busy) onClose(); }} width={560} title="ახალი პირობები" lead="ცვლილებას მეორე მხარის თანხმობა სჭირდება.">
     <DealTermsForm deal={deal} pending={busy} commentAvailable={!!conversation} onCancel={onClose} onSubmit={async (args, comment) => {
       setSending(true);
       try {

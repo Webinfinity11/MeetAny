@@ -1,5 +1,6 @@
 "use client";
 import { ChatContext, ChatMessages } from "./messaging/ChatParts";
+import { SharedFiles } from "./messaging/SharedFiles";
 import { Button } from "../ui/Button";
 
 
@@ -101,7 +102,7 @@ function ChatDock({ store, owner, role }: { store: Store; owner: string; role: s
     return () => { window.removeEventListener("meetany:chat-open", open); window.removeEventListener("meetany:chat-list", list); };
   }, []);
   return <>
-    {selection ? <button type="button" className="ma-chat-launcher" aria-label={`მიმოწერა${unread ? `, ${unread} წაუკითხავი` : ""}`} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><Icon name="message-square" /><span>მიმოწერა</span>{unread ? <span className="ma-chat-badge">{unread > 99 ? "99+" : unread}</span> : null}</button> : null}
+    {selection ? <button type="button" className="ma-chat-launcher" aria-label={`${expanded ? "ჩატის დახურვა" : "ჩატის გახსნა"}${unread ? `, ${unread} წაუკითხავი` : ""}`} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><Icon name="message-square" /><span className="ma-chat-launcher__dots" aria-hidden="true"><i/><i/><i/></span>{unread ? <span className="ma-chat-badge" aria-hidden="true">{unread > 99 ? "99+" : unread}</span> : null}</button> : null}
     {expanded && view === "list" ? <ChatList store={store} owner={owner} role={role} onSelect={choose} onClose={() => setExpanded(false)} /> : null}
     {selection ? <ChatWindow key={selection.key} store={store} owner={owner} target={selection.target} visible={expanded && view === "thread"} onBack={() => setView("list")} onClose={() => setExpanded(false)} /> : null}
   </>;
@@ -191,6 +192,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყე საუბარი</h3><p>მოიკითხე დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : <ChatMessages messages={messages} owner={owner} name={name} now={now}/>}
     </div>
     {failed ? <div className="ma-chat__retry"><span>განახლება ვერ მოხერხდა.</span><button className="ma-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
+    {conversation && visible ? <SharedFiles store={store} target={conversation.id}/> : null}
     <form className="ma-chat__composer" onSubmit={e => { e.preventDefault(); void send(); }}>
       <label className="ma-sr-only" htmlFor="ma-chat-body">შეტყობინება</label>
       <textarea ref={input} id="ma-chat-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერე შეტყობინება…" onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(); } }}/>

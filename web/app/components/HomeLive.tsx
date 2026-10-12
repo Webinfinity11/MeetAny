@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { OpportunityCard, OpportunitySkeleton } from "./market/OpportunityCard";
-import styles from "./home/HomeSections.module.css";
 import { useMarketStore } from "../lib/market-client";
-import { Icon } from "./Icon";
 import { RequestCatalogCover } from "./market/RequestCatalogCover";
 
 export type HomeRequest = {
@@ -29,7 +27,7 @@ export function HomeRequestPhoto({ request, live = false }: { request: HomeReque
   const [failed, setFailed] = useState<string | null>(null);
   return <div className={live ? "home-live-photo" : "home-opportunity-photo"}>
     {request.photo && failed !== request.photo
-      ? <img src={request.photo} alt="" width={480} height={300} loading={live ? "eager" : "lazy"} onError={() => setFailed(request.photo)} />
+      ? <img src={request.photo} alt="" width={480} height={300} loading="lazy" onError={() => setFailed(request.photo)} />
       : <RequestCatalogCover category={request.category} />}
   </div>;
 }
@@ -41,15 +39,5 @@ export function HomeRequests() {
     {!ready ? Array.from({ length: 5 }, (_, i) => <OpportunitySkeleton key={i} />)
       : !requests.length ? <p className="home-empty">{available ? "ღია მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>
       : requests.map(r => <OpportunityCard key={r.id} compact request={{ ...r, daysLeft: store?.daysLeft(r, now) ?? 0, isNew: now >= Date.parse(r.createdAt) && now - Date.parse(r.createdAt) < 86400000 }} offers={store?.offerCount(r.id)} />)}
-  </div>;
-}
-
-export function HomeTrust() {
-  const { store, ready, available } = useMarketStore();
-  const loaded = ready && available && store;
-  return <div className={styles.trust}>
-    <span><Icon name="shield-check" /><span>{loaded ? <strong>{store.listCompanies().filter((c: { verified: boolean }) => c.verified).length.toLocaleString("ka-GE")} </strong> : "— "}ვერიფიცირებული კომპანია</span></span>
-    <span><Icon name="file-text" /><span>{loaded ? <strong>{store.listRequests({ state: "open" }).length.toLocaleString("ka-GE")} </strong> : "— "}აქტიური მოთხოვნა</span></span>
-    <span><Icon name="lock-keyhole" />კონტაქტი იხსნება არჩევის შემდეგ</span>
   </div>;
 }

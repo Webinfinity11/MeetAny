@@ -14,6 +14,7 @@ import { SaveCompanyButton } from "./SaveCompanyButton";
 import { RequestAlertSettings } from "./RequestAlertSettings";
 import styles from "./engagement.module.css";
 import { dealActionLabel, dealHref, type Deal } from "../../lib/deal-client";
+import { useConversationList, type Conversation } from "../../lib/chat-client";
 type Cursor = { created_at: string; id: string; asOf: string } | null;
 type Notice = { deal_id?: string | null; deal_action?: string | null; deal_revision?: number | null; id: string; kind: string; title: string; request_id: string; created_at: string; read_at: string | null; category?: string; city?: string; needed_by?: string | null };
 type Saved = { company_id: string; company: string; city: string; industry: string };
@@ -59,7 +60,7 @@ function NoticeRows({ items, limit, store, compact = false }: { items: Notice[];
   return <Fragment key={n.id}>
    {!compact && (!index || dayBand(rows[index - 1].created_at) !== day) ? <h2 className={styles.dayHeading}>{day}</h2> : null}
    <article className={styles.row} data-unread={!n.read_at} data-selected={!compact && selected?.id === n.id}>
-    <Link href={noticeHref(n)} aria-current={!compact && selected?.id === n.id ? "true" : undefined} onClick={event => {
+    <Link href={noticeHref(n)} data-navigation-preview={!compact || undefined} aria-current={!compact && selected?.id === n.id ? "true" : undefined} onClick={event => {
      if (!compact && matchMedia("(min-width:1024px)").matches && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); setSelectedId(n.id); }
      acknowledge(n);
     }} className={styles.noticeLink}>
@@ -98,6 +99,32 @@ function NoticeDetail({ notice, store, acknowledge }: { notice: Notice; store?: 
   <Button href={noticeHref(notice)} onClick={acknowledge}>{actionLabel(notice)}</Button>
  </aside>;
 }
+function ConversationNoticeRows({ current, retry, store, owner, compact = false }: { current: ReturnType<typeof useConversationList>["current"]; retry: () => void; store?: Store; owner?: string; compact?: boolean }) {
+ const [now] = useState(() => Date.now());
+ if (!current) return <ListSkeleton compact label="მიმოწერები იტვირთება…"/>;
+ if (current.error && !current.items) return <div role="alert"><p>{current.error}</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div>;
+ const items = [...(current.items || [])].sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
+ const rows = compact ? items.slice(0, 5) : items;
+ return <>
+  {current.error && <div role="alert"><p>{current.error}</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div>}
+  {!rows.length ? <div className={styles.emptyState}><Icon name="message-square"/><h3>მიმოწერა ჯერ არ გაქვთ</h3><Button variant="secondary" href="/companies/">კომპანიების ნახვა</Button></div> : <ul className={styles.messageNotices}>{rows.map((conversation: Conversation) => {
+   const requestId = conversation.requestId || (conversation.contextKey && conversation.contextKey !== "general" ? conversation.contextKey : null);
+   const name = conversation.otherCompany || conversation.otherName || "მომხმარებელი";
+   const context = requestId ? store?.getRequest(requestId)?.title || "მოთხოვნის შესახებ" : "პირადი მიმოწერა";
+   const message = conversation.lastMessage;
+   const at = conversation.lastMessageAt || conversation.createdAt;
+   return <li key={conversation.id} className={styles.row} data-unread={conversation.unreadCount > 0}>
+    <Link className={styles.noticeLink} href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`}>
+     <span className={styles.noticeIcon}><Icon name="message-square"/>{conversation.unreadCount > 0 && <span className={styles.unreadDot} aria-hidden="true"/>}</span>
+     <span className={styles.noticeCopy}><strong className={styles.noticeTitle}>{name}</strong><span className={styles.noticeSubtitle}>{message ? `${message.senderId === owner ? "შენ: " : ""}${message.body}` : context}</span>{message && <span className={styles.meta}>{context}</span>}</span>
+     <time className={styles.noticeTime} dateTime={at}>{relative(at, now)}</time>
+     {conversation.unreadCount > 0 && <span className={styles.messageUnread} aria-label={`${conversation.unreadCount} წაუკითხავი`}>{conversation.unreadCount}</span>}
+    </Link>
+   </li>;
+  })}</ul>}
+  {compact && items.length > rows.length && <Link className="account-link" href="/account/?tab=messages">ყველა მიმოწერა</Link>}
+ </>;
+}
 export function NotificationBell() {
  const { store, ready } = useMarketStore();
  const me = ready ? store?.currentUser() : null;
@@ -131,6 +158,7 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
  const { store } = useMarketStore();
  const full = useSearchParams().get("tab") === "notifications" || all;
  const actor = store?.currentUser()?.id;
+ const conversations = useConversationList(kind === "notifications" ? store : undefined, kind === "notifications" ? actor : undefined);
  const state = store?.engagement();
  const [cursor, setCursor] = useState<Cursor>(null);
  const [retry, setRetry] = useState(0);
@@ -175,11 +203,12 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
   finally {setPending(false);}
  }
  return <div className={styles.stack}>
-  {kind === "saved" ? <h2 className="account-section__title">შენახული კომპანიები</h2> : <header className={`${styles.panelHead} ${styles.notificationHead}`}><h1>შეტყობინებები</h1><Button variant="secondary" size="sm" disabled={marking || !state?.unread || state?.status !== "ready"} onClick={() => void markAll()}><Icon name="check"/>{marking ? "ინიშნება…" : "ყველა წაკითხულია"}</Button></header>}
-  {failed(state?.status) ? <ServiceUnavailable /> : state?.status !== "ready" ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : <>
+  {kind === "saved" ? <h2 className="account-section__title">შენახული კომპანიები</h2> : <header className={`${styles.panelHead} ${styles.notificationHead}`}><h1>შეტყობინებები</h1>{filter !== "messages" && <Button variant="secondary" size="sm" disabled={marking || !state?.unread || state?.status !== "ready"} onClick={() => void markAll()}><Icon name="check"/>{marking ? "ინიშნება…" : "ყველა წაკითხულია"}</Button>}</header>}
+  {kind === "notifications" && <div className={styles.filters} aria-label="შეტყობინებების ტიპი">{[["all", "ყველა"], ...Object.entries(noticeTypes)].map(([type, text]) => <Button key={type} variant={filter === type ? "primary" : "secondary"} aria-pressed={filter === type} onClick={() => setFilter(type)}>{text}<span>{type === "messages" ? conversations.current?.items?.length ?? "…" : current?.page?.items.filter(n => type === "all" || noticeType(n) === type).length ?? "…"}</span></Button>)}</div>}
+  {kind === "notifications" && filter === "messages" ? <ConversationNoticeRows current={conversations.current} retry={conversations.retry} store={store} owner={actor} compact={!full}/> : failed(state?.status) ? <ServiceUnavailable /> : state?.status !== "ready" ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : <>
    {!current ? <ListSkeleton compact label={kind === "saved" ? "შენახული კომპანიები იტვირთება…" : "შეტყობინებები იტვირთება…"} /> : current.error ? <div role="alert"><p>სია ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</Button></div> : <>
-    {!current.page?.items.length ? <div className={styles.emptyState}><span className={styles.emptyIcon}><Icon name={kind === "saved" ? "bookmark" : "bell"}/></span><h3>{kind === "saved" ? "შენახული კომპანიები ჯერ არ გაქვს" : "შეტყობინებები ჯერ არ გაქვს"}</h3><p>{kind === "saved" ? "მონიშნე საინტერესო მომწოდებლები და აქ მარტივად დაუბრუნდი." : "ახალი შეთავაზებები და შესაბამისი მოთხოვნები აქ გამოჩნდება."}</p><Button variant="secondary" href={kind === "saved" ? "/companies/" : "/requests/"}>{kind === "saved" ? "კომპანიების ნახვა" : "მოთხოვნების ნახვა"}</Button></div> : kind === "notifications" ? <><div className={styles.filters} aria-label="შეტყობინებების ტიპი">{[["all", "ყველა"], ...Object.entries(noticeTypes)].map(([type, text]) => <button key={type} type="button" aria-pressed={filter === type} onClick={() => setFilter(type)}>{text}<span>{current.page!.items.filter(n => type === "all" || noticeType(n) === type).length}</span></button>)}</div><NoticeRows store={store} items={current.page.items.filter(n => filter === "all" || noticeType(n) === filter)} limit={full ? undefined : 5}/></> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
-     <div><h3 className="account-row__title"><Link href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p className="account-row__meta">{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
+    {!current.page?.items.length ? <div className={styles.emptyState}><span className={styles.emptyIcon}><Icon name={kind === "saved" ? "bookmark" : "bell"}/></span><h3>{kind === "saved" ? "შენახული კომპანიები ჯერ არ გაქვს" : "შეტყობინებები ჯერ არ გაქვს"}</h3><p>{kind === "saved" ? "მონიშნე საინტერესო მომწოდებლები და აქ მარტივად დაუბრუნდი." : "ახალი შეთავაზებები და შესაბამისი მოთხოვნები აქ გამოჩნდება."}</p><Button variant="secondary" href={kind === "saved" ? "/companies/" : "/requests/"}>{kind === "saved" ? "კომპანიების ნახვა" : "მოთხოვნების ნახვა"}</Button></div> : kind === "notifications" ? <><NoticeRows store={store} items={current.page.items.filter(n => filter === "all" || noticeType(n) === filter)} limit={full ? undefined : 5}/></> : current.page.items.map(c => <article className={styles.savedRow} key={c.company_id}>
+     <div><h3 className="account-row__title"><Link className={styles.savedLink} href={`/companies/view/?id=${c.company_id}`}>{c.company}</Link></h3><p className="account-row__meta">{categories[c.industry] || c.industry} · {cities[c.city] || c.city}</p></div><SaveCompanyButton id={c.company_id}/>
     </article>)}
     {kind === "notifications" && !full && current.page && (current.page.nextCursor || current.page.items.length > 5) ? <Link className="account-link" href="/account/?tab=notifications">ყველა შეტყობინება ({current.page.items.length}{current.page.nextCursor ? "+" : ""})</Link> : null}
     {full || kind === "saved" ? <div className={styles.head}>{cursor ? <Button type="button" variant="secondary" onClick={() => { setCursor(null); setFilter("all"); }}>პირველი გვერდი</Button> : null}{current.page?.nextCursor ? <Button type="button" variant="secondary" onClick={() => { setCursor(current.page!.nextCursor); setFilter("all"); }}>შემდეგი გვერდი</Button> : null}</div> : null}

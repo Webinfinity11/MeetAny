@@ -4,7 +4,7 @@ import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/primitives.css";
 import "./styles/patterns.css";
-import Link from "next/link";
+import { Button } from "./components/ui/Button";
 import { useEffect } from "react";
 import { StatusPage, statusPageStyles as styles } from "./components/StatusPage";
 
@@ -21,12 +21,12 @@ export default function GlobalError({ error, retry }: { error: Error & { digest?
         <title>შეცდომა — MeetAny</title>
         <main>
           <StatusPage eyebrow="შეცდომა" title="საიტი ვერ ჩაიტვირთა" text="რაღაც არ გამოვიდა — სცადე თავიდან ან დაბრუნდი მთავარზე.">
-            <button className={styles.button} type="button" onClick={() => retry()}>
+            <Button onClick={() => retry()}>
               სცადე თავიდან
-            </button>
-            <Link className={styles.link} href="/">
+            </Button>
+            <Button variant="secondary" href="/">
               მთავარზე დაბრუნება
-            </Link>
+            </Button>
           </StatusPage>
         </main>
       </body>

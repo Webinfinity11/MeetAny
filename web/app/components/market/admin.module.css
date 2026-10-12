@@ -17,7 +17,7 @@
 .content :global(.ma-h1) { font-size: var(--size-28); line-height: var(--size-36); }
 .content :global(.ma-lead) { margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--text-3); line-height: var(--lh-sm); }
 .content :global(.ma-page-head__actions) { margin-left: auto; }
-.content :global(.ma-page-head__actions .ma-btn) { font-size: var(--fs-sm); }
+.content :global(.ma-page-head__actions .ma-btn) { font-size:var(--btn-fs); }
 
 /* One surface keeps search, filters, results and pagination together. */
 .listSurface { display: grid; gap: var(--space-4); min-width: 0; padding: var(--space-5); border: var(--size-1) solid var(--border); border-radius: var(--size-12); background: var(--white); }
@@ -44,7 +44,7 @@
 .workspace :global(.ma-table) tbody tr:hover td { background: var(--bg-subtle); }
 .workspace :global(.ma-table-wrap) { min-width: 0; overflow-x: auto; }
 .workspace :global(.ma-table .ma-proto-tableactions) { flex-wrap: wrap; }
-.workspace :global(.ma-table .ma-btn) { min-height: var(--size-32); padding: var(--space-1) var(--space-3); font-size: var(--fs-xs); font-feature-settings: normal; }
+.workspace :global(.ma-table .ma-btn) { min-height:var(--btn-h); padding: var(--space-1) var(--space-3); font-size:var(--btn-fs); font-feature-settings: normal; }
 .workspace :global(.ma-table) small { margin-top: var(--space-1); font-size: var(--fs-xs); }
 
 /* The overview prioritizes four totals, activity and the next actions. */
@@ -109,7 +109,7 @@
 .queueName small { font-size: var(--fs-xs); color: var(--text-3); }
 .queueName:hover strong { color: var(--action); }
 .queueName:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-.queue li :global(.ma-btn) { flex: none; min-height: var(--size-36); padding: var(--space-1) var(--space-2); font-size: var(--fs-xs); }
+.queue li :global(.ma-btn) { flex: none; min-height: var(--btn-h); padding-inline: var(--space-3); }
 .queueEmpty { margin: 0 0 var(--space-4); font-size: var(--fs-xs); color: var(--text-3); }
 .queueMore { display: inline-flex; align-items: center; gap: var(--space-1); padding-bottom: var(--space-3); font-size: var(--fs-xs); color: var(--action); }
 .queueMore svg { width: var(--size-14); height: var(--size-14); }
@@ -183,7 +183,7 @@
   .workspace :global(.ma-table) td[data-label="მოთხოვნა"], .workspace :global(.ma-table) td[data-label="მომხმარებელი"], .workspace :global(.ma-table) td[data-label="მოქმედება"], .workspace :global(.ma-table) td[data-label="დარგი · ქალაქი"], .workspace :global(.ma-table) td[data-label="საჩივარი"] { grid-column: 1 / -1; }
   .workspace :global(.ma-table) tr:has(.checkCell) td:nth-child(2) { padding-right: var(--space-8); }
   .workspace :global(.ma-table) .checkCell { position: absolute; right: var(--space-4); top: var(--space-4); width: auto; }
-  .workspace :global(.ma-table .ma-btn) { min-height: var(--tap-min); }
+  .workspace :global(.ma-table .ma-btn) { min-height:var(--btn-h); }
   .workspace :global(.ma-table) td[colspan] { grid-column: 1 / -1; }
 }
 
@@ -228,11 +228,11 @@
 .detailList li button:hover { color: var(--action); text-decoration: underline; }
 .detailList li small { font-size: var(--fs-xs); color: var(--text-3); }
 .detailActions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-2); width: 100%; }
-.drawer .detailActions :global(.ma-btn) { min-width: 0; width: 100%; min-height: var(--tap-min); padding-inline: var(--space-3); font-size: var(--fs-sm); white-space: normal; line-height: var(--lh-sm); overflow-wrap: anywhere; }
+.drawer .detailActions :global(.ma-btn) { min-width: 0; width: 100%; min-height:var(--btn-h); padding-inline: var(--space-3); font-size:var(--btn-fs); white-space: normal; line-height: var(--lh-sm); overflow-wrap: anywhere; }
 
 /* ---------- Selection, bulk bar, list tools ---------- */
 .listTools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
-.listTools :global(.ma-btn) { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-40); font-size: var(--fs-sm); font-feature-settings: normal; letter-spacing: normal; }
+.listTools :global(.ma-btn) { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--btn-h); font-feature-settings: normal; letter-spacing: normal; }
 .listTools :global(.ma-btn) svg { width: var(--size-16); height: var(--size-16); }
 .checkCell { width: var(--size-44); padding-right: 0 !important; }
 .workspace :global(.ma-table) td.checkCell { min-width: 0; }
@@ -240,7 +240,7 @@
 .workspace :global(.ma-table) tr[data-selected] td { background: var(--selected-bg); }
 .bulkBar { position: sticky; bottom: var(--space-4); z-index: 3; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--card-radius); background: var(--ink-900); color: var(--white); box-shadow: 0 var(--size-10) var(--size-30) var(--color-rgba-0-0-0-22); animation: bulk-in var(--motion-base) var(--motion-ease); }
 .bulkBar strong { margin-right: auto; font-size: var(--fs-sm); }
-.bulkBar :global(.ma-btn) { min-height: var(--size-36); padding: 0 var(--space-3); font-size: var(--fs-sm); font-feature-settings: normal; letter-spacing: normal; }
+.bulkBar :global(.ma-btn) { min-height: var(--btn-h); padding-inline: var(--space-3); font-feature-settings: normal; letter-spacing: normal; }
 .bulkBar :global(.ma-btn--ghost) { color: var(--white); }
 @keyframes bulk-in { from { opacity: .72; transform: translateY(var(--size-6)); } }
 @media (prefers-reduced-motion: reduce) { .bulkBar { animation: none; } }
@@ -253,7 +253,7 @@
 .photoMeta { display: grid; gap: var(--size-2); min-width: 0; padding: 0 var(--space-1); }
 .photoMeta a { overflow: hidden; color: var(--text); font-size: var(--fs-sm); font-weight: var(--fw-semibold); text-overflow: ellipsis; white-space: nowrap; }
 .photoMeta small { font-size: var(--fs-xs); color: var(--text-3); }
-.photoCard :global(.ma-btn) { min-height: var(--size-34); font-size: var(--fs-xs); font-feature-settings: normal; letter-spacing: normal; }
+.photoCard :global(.ma-btn) { min-height: var(--btn-h); font-feature-settings: normal; letter-spacing: normal; }
 
 /* ---------- Reports: count of new reports on the navigation item ---------- */
 .navigation a > .navBadge { flex: none; font-variant-numeric: tabular-nums; }
@@ -314,7 +314,7 @@
 
 /* Lists keep status visible; moderation and contact details belong to the drawer. */
 @media(max-width:767px) {
- .workspace .compactRequests td[data-label="ავტორი"], .workspace .compactUsers td[data-label="კონტაქტი"], .workspace .compactUsers td[data-label="როლი"] { display: none; }
+ .workspace .compactRequests td[data-label="ავტორი"] { display: none; }
  .workspace :is(.compactRequests,.compactUsers) td[data-label="მოქმედება"] { grid-column: 2; justify-self: end; align-self: end; }
  .workspace .compactRequests td[data-label="შეთავაზებები"] { grid-column: 1; }
  .workspace :is(.compactRequests,.compactUsers) td[data-label="სტატუსი"] { grid-column: 1; }
@@ -324,7 +324,7 @@
 }
 
 @media(max-width:767px) {
- .workspace .queue :global(.ma-btn) { min-height: var(--tap-min); }
+ .workspace .queue :global(.ma-btn) { min-height:var(--btn-h); }
 }
 
 /* Status words stay intact; actions wrap as a whole on narrow company/user cards. */
@@ -332,6 +332,32 @@
  .workspace .compactUsers tr { display: flex; flex-wrap: wrap; align-items: end; }
  .workspace .compactUsers td:is([data-label="მომხმარებელი"],[data-label="კომპანია"]) { flex-basis: 100%; }
  .workspace .compactUsers td[data-label="კომპანია"]::before { display: none; }
- .workspace .compactUsers td[data-label="სტატუსი"] { flex: 0 1 auto; min-width: min-content; max-width: 100%; }
+ .workspace .compactUsers td[data-label="სტატუსი"] { flex: 1 1 auto; min-width: 0; max-width: 100%; }
  .workspace .compactUsers td[data-label="მოქმედება"] { flex: 0 0 auto; margin-left: auto; }
+}
+
+/* User moderation shares the site's controls and keeps every value readable. */
+.workspace .compactUsers { table-layout: auto; }
+.workspace .compactUsers :is(th,td) { vertical-align: middle; }
+.workspace .compactUsers td { overflow-wrap: anywhere; }
+.workspace .compactUsers th:first-child { width: var(--size-44); }
+.workspace .compactUsers th:nth-child(2) { width: 30%; }
+.workspace .compactUsers th:nth-child(3) { width: var(--size-112); }
+.workspace .compactUsers td[data-label="როლი"] { overflow-wrap: normal; min-width: var(--size-112); }
+.workspace .compactUsers .userContact { font-weight: var(--fw-regular); }
+.workspace .compactUsers th:nth-child(4) { width: 24%; }
+.workspace .compactUsers th:last-child { width: var(--size-120); }
+.workspace .compactUsers .rowLink { font-feature-settings: var(--theme-caps-headings); overflow-wrap: anywhere; }
+.workspace .compactUsers .userContact a { display: block; width: fit-content; max-width: 100%; color: var(--text-2); text-decoration: none; overflow-wrap: anywhere; }
+.workspace .compactUsers .userContact a + a { margin-top: var(--space-1); font-size: var(--fs-xs); color: var(--text-3); }
+.workspace .compactUsers .userContact a:hover { color: var(--text-link); text-decoration: underline; }
+@media(max-width:767px) {
+ .workspace .compactUsers td:is([data-label="როლი"],[data-label="კონტაქტი"]) { display: grid; flex-basis: 100%; gap: var(--space-1); }
+ .workspace .compactUsers td[data-label="მოქმედება"] { flex: 0 1 auto; max-width: 100%; }
+ .workspace .compactUsers .userContact a { min-height: var(--tap-min); display: flex; align-items: center; }
+ .workspace .compactUsers .userContact a + a { margin-top: 0; }
+}
+
+@media(max-width:479px) {
+ .filters > div, .filters .search { flex-basis: 100%; }
 }

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Button } from "./ui/Button";
 import styles from "./StatusPage.module.css";
 
 export { styles as statusPageStyles };
@@ -30,9 +30,9 @@ export function StatusPage({
 export function NotFoundBody() {
   return (
     <StatusPage eyebrow="შეცდომა 404" title="გვერდი ვერ მოიძებნა" text="ბმული მოძველებულია ან გვერდი წაიშალა.">
-      <Link className={styles.button} href="/">
+      <Button href="/">
         მთავარზე დაბრუნება
-      </Link>
+      </Button>
     </StatusPage>
   );
 }

@@ -1,5 +1,6 @@
 .env*
 .openai
+.threadrig
 node_modules
 archive
 DEMO-ACCOUNTS*
@@ -12,3 +13,4 @@ web/*.tsbuildinfo
 /db/
 
 DEMO-FEATURES.local.json
+DEMO-PHOTOS.local.json

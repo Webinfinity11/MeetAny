@@ -12,7 +12,6 @@ import Link from "next/link";
 import { Icon } from "../Icon";
 import { CompanyProducts } from "./CompanyProducts";
 import { type ProductCardData } from "./ProductCard";
-import { avatarInitials } from "./CompanyAvatar";
 import { CompanyGallery } from "./CompanyGallery";
 import { CompanyActions } from "./company/CompanyActions";
 import { CompanyReviews, useCompanyReviews } from "./company/CompanyReviews";
@@ -79,21 +78,20 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
     <div className={`ma-page company-profile detail-page ${styles.page}`}>
       <Link className="ma-back" href="/companies/"><Icon name="chevron-left" />კომპანიები</Link>
       <header className={styles.hero}>
-        <span className={styles.avatar}>{c.logoUrl ? <img src={c.logoUrl} alt="" /> : avatarInitials(name)}
+        <span className={styles.avatar}>{c.logoUrl ? <img src={c.logoUrl} alt="" /> : <Icon name="building-2"/>}
           {c.verified ? <span className={styles.verified} role="img" aria-label="ვერიფიცირებული კომპანია"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 14.4 4l3.1-.3.9 3 2.7 1.6-1 3 1 3-2.7 1.6-.9 3-3.1-.3L12 22l-2.4-2-3.1.3-.9-3L2.9 15.7l1-3-1-3 2.7-1.6.9-3 3.1.3L12 2Z"/><path className={styles.verifiedCheck} d="m8.5 12.2 2.3 2.3 4.7-4.9"/></svg></span> : null}
         </span>
         <div className={styles.identity}>
           <h1 className={styles.name}>{name}</h1>
           <p className={styles.meta}>{[categories[c.industry] || c.industry, cities[c.city] || c.city].filter(Boolean).join(" · ")}</p>
-          <p className={styles.rating}>{reviews.data ? reviews.data.total > 0 ? <><Icon name="star"/><strong>{reviews.data.rating ?? "—"}</strong><span>· {reviews.data.total} შეფასება</span></> : "შეფასებები ჯერ არ არის" : reviews.error ? "შეფასებები ვერ ჩაიტვირთა" : "შეფასებები იტვირთება…"}</p>
+          {reviews.data && reviews.data.total > 0 ? <p className={styles.rating}><Icon name="star"/><strong>{reviews.data.rating ?? "—"}</strong><span>· {reviews.data.total} შეფასება</span></p> : null}
           {c.about?.startsWith("სადემო კომპანია.") ? <p className="company-demo-label">სადემო კომპანია · ინფორმაცია და კონტაქტები პრეზენტაციის მაგალითია.</p> : null}
         </div>
         <div className={styles.actions}>
           {ownProfile ? <Button variant="primary" href="/account/?tab=profile">რედაქტირება</Button> : <><Button variant="primary" href={`/requests/new/?category=${encodeURIComponent(c.industry || "")}`}><Icon name="file-text"/>ფასის მოთხოვნა</Button><CompanyActions companyId={c.id} name={name}/></>}
-          <p className={styles.contactRule}><Icon name="lock-keyhole"/>ტელეფონი და ელფოსტა — გარიგების შემდეგ</p>
         </div>
       </header>
-      <div className={styles.content}>
+      <div className={`${styles.content} ${facts.length ? "" : styles.contentFull}`}>
       <div className={styles.main}>
         {c.about || products.length ? <section aria-labelledby="company-about">
           <h2 id="company-about" className="detail-section-title">ჩვენ შესახებ</h2>
@@ -114,12 +112,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
         <CompanyReviews resource={reviews}/>
       </div>
 
-      <aside className={styles.sidebar}>
-        <section className={styles.panel}><h2 className="detail-section-title">ვერიფიკაცია</h2>
-          {c.verified ? <><ul className={styles.verification}>{["კომპანიის რეგისტრაცია", "საიდენტიფიკაციო კოდი", "ბიზნეს-ელფოსტა"].map(label => <li key={label}><Icon name="circle-check"/>{label}</li>)}</ul><p className={styles.privacy}>დოკუმენტები კონფიდენციალურია — ჩანს მხოლოდ შედეგი.</p></> : <span className={styles.pending}>ვერიფიკაცია მიმდინარეობს</span>}
-        </section>
-        {facts.length ? <section className={styles.panel}><h2 className="detail-section-title">დეტალები</h2><dl className={styles.facts}>{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section> : null}
-      </aside>
+      {facts.length ? <aside className={styles.sidebar}><section className={styles.panel}><h2 className="detail-section-title">დეტალები</h2><dl className={styles.facts}>{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section></aside> : null}
       </div>
       {!ownProfile && store?.currentUser()?.role !== "admin" ? <div className={styles.report}><ReportButton kind="company" targetId={c.id} /></div> : null}
     </div>

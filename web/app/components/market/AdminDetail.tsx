@@ -7,6 +7,7 @@ import { Sheet } from "../ui/Sheet";
 import type { Store } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
+import { AdminVerification } from "./VerificationDocuments";
 import { AdminEditPanel, AdminPlanEditor } from "./AdminEditPanel";
 import styles from "./admin.module.css";
 
@@ -105,6 +106,7 @@ export function AdminDetail({ store, target, v2, onClose, onOpen, onAction }: {
           <dt>ქალაქი</dt><dd>{cities[user.city || ""] || user.city || "—"}</dd>
           <dt>რეგისტრაცია</dt><dd>{user.created_at ? dateLabel(user.created_at) : "—"}</dd>
         </dl>
+        {user.role==="company"?<AdminVerification key={user.id} store={store} id={user.id}/>:null}
         {user.about ? <p className={styles.detailText}>{user.about}</p> : null}
         {user.role === "company" ? <details className={styles.disclosure}>
           <summary>პაკეტი</summary>

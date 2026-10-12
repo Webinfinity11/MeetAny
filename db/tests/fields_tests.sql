@@ -54,7 +54,7 @@ select t.throws($$select public.create_request('Bad unit', 'Unknown unit must fa
 select t.throws($$select public.create_request('Bad unit', 'Georgian label is not a key', 'packaging', 'tbilisi', null, 10, 'ცალი')$$, 'MA112', 'F1 unit label instead of key -> MA112');
 select t.throws(format($$select public.create_request('Bad date', 'Needed by yesterday must fail', 'packaging', 'tbilisi', null, null, null, %L)$$, t.today() - 1), 'MA113', 'F1 needed_by yesterday -> MA113');
 select t.throws(format($$select public.create_request('Bad date', 'Needed by too far must fail', 'packaging', 'tbilisi', null, null, null, %L)$$, (t.today() + interval '2 years 1 day')::date), 'MA113', 'F1 needed_by beyond 2 years -> MA113');
-select t.throws($$select public.create_request('Hi', 'Short title checked first', 'packaging', 'tbilisi', null, 0, 'pcs')$$, 'MA101', 'F1 existing checks come first (MA101 before MA111)');
+select t.throws($$select public.create_request('', 'Empty title checked first', 'packaging', 'tbilisi', null, 0, 'pcs')$$, 'MA101', 'F1 existing checks come first (MA101 before MA111)');
 select t.as_anon();
 select t.throws($$select public.create_request('Anon request', 'Anonymous with quantity', 'packaging', 'tbilisi', null, 5, 'pcs')$$, 'MA001', 'F1 anonymous -> MA001');
 

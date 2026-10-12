@@ -1,0 +1,34 @@
+'use client';
+import {useId,useState} from 'react';
+import type {Deal} from '../../lib/deal-client';
+import type {Store} from '../../lib/market-client';
+import {dealDate,money} from '../../lib/deal-client';
+import {Button} from '../ui/Button';
+import {CustomSelect} from '../ui/CustomSelect';
+import {Modal} from '../ui/Modal';
+import {Badge} from '../ui/Badge';
+import {FileAttachments} from './FileAttachments';
+import {units} from '../../lib/categories';
+import s from './deals.module.css';
+type Write=(name:string,args?:Record<string,unknown>)=>Promise<boolean>;
+const statuses:Record<string,string>={started:'შეკვეთა მიღებულია',producing:'მზადდება',ready:'მზადაა გასაგზავნად',delivered:'მიწოდებულია'};
+const reasons:Record<string,string>={quality:'ხარისხი / დეფექტი',quantity:'რაოდენობა',late:'დაგვიანება',other:'სხვა'};
+const fields:Record<string,string>={total_price:'ჯამური ფასი',quantity:'რაოდენობა',unit:'ერთეული',delivery_days:'მიწოდება (დღე)',delivery_date:'თარიღი',delivery_place:'მისამართი',payment_terms:'გადახდა',includes:'მოიცავს'};
+const formatted=(key:string,value:unknown)=>value==null||value===''?'—':key==='total_price'?money(Number(value)):Array.isArray(value)?value.join(', '):key==='unit'?units[String(value)]||String(value):String(value);
+export function DealProposals({deal,actor,write,disabled}:{deal:Deal;actor:string;write:Write;disabled:boolean}) {
+ const [all,setAll]=useState(false);if(!deal.proposals?.length)return null;
+ return <section className={s.card}><header className={s.cardHead}><h2>პირობების ცვლილებები</h2>{deal.proposals.length>3?<Button variant="ghost" size="sm" onClick={()=>setAll(v=>!v)}>{all?'შემოკლება':'ყველა ცვლილება'}</Button>:null}</header><div className={s.collaborationList}>{deal.proposals.slice(0,all?undefined:3).map(p=><article key={p.id} className={s.proposal}><header className={s.cardHead}><strong>{p.actor_id===deal.buyer_id?'მყიდველის':'მომწოდებლის'} შეთავაზება</strong><Badge status={p.status==='accepted'?'success':p.status==='pending'?'warning':'neutral'}>{{pending:'მოლოდინში',accepted:'შეთანხმებულია',rejected:'უარყოფილია',superseded:'განახლებულია'}[p.status]}</Badge></header><time dateTime={p.created_at}>{dealDate(p.created_at)}</time><dl className={s.proposalRows}>{Object.entries(fields).filter(([key])=>JSON.stringify(p.previous[key])!==JSON.stringify(p.proposed[key])).map(([key,label])=><div key={key}><dt>{label}</dt><dd><span>{formatted(key,p.previous[key])}</span><strong>{formatted(key,p.proposed[key])}</strong></dd></div>)}</dl>{p.status==='pending'&&p.actor_id!==actor&&deal.stage==='terms'&&[deal.buyer_id,deal.supplier_id].includes(actor)?<div className={s.actions}>{!(actor===deal.buyer_id?deal.buyer_confirmed_at:deal.supplier_confirmed_at)?<Button disabled={disabled} onClick={()=>void write('confirm_deal_terms')}>მიღება</Button>:null}<Button variant="secondary" disabled={disabled} onClick={()=>void write('reject_deal_proposal',{p_proposal_id:p.id})}>უარყოფა</Button></div>:null}</article>)}</div></section>;
+}
+export function DealUpdates({store,deal,supplier,disabled,write}:{store:Store;deal:Deal;supplier:boolean;disabled:boolean;write:Write}) {
+ const id=useId();const [status,setStatus]=useState('producing');const [body,setBody]=useState('');const [fileBusy,setFileBusy]=useState(false);
+ const paused=deal.issues?.some(i=>i.status==='open');
+ return <section className={s.card}><h2>შესრულების განახლებები</h2>{supplier&&deal.stage==='progress'?<form className={s.form} onSubmit={async e=>{e.preventDefault();if(await write('add_deal_update',{p_status:status,p_body:body}))setBody('');}}><fieldset disabled={disabled||paused||fileBusy}><div className="ma-field"><label htmlFor={`${id}-status`}>ეტაპი</label><CustomSelect id={`${id}-status`} value={status} onChange={e=>setStatus(e.target.value)}>{Object.entries(statuses).map(([k,v])=><option key={k} value={k}>{v}</option>)}</CustomSelect></div><div className="ma-field"><label htmlFor={`${id}-body`}>განახლება</label><textarea id={`${id}-body`} className="ma-textarea" required maxLength={2000} value={body} onChange={e=>setBody(e.target.value)}/></div><Button type="submit" disabled={!body.trim()} loading={disabled}>განახლების დამატება</Button></fieldset></form>:null}<FileAttachments store={store} kind="deal" target={deal.id} label="შესრულების ფოტოები და ფაილები" editable={supplier&&deal.stage==='progress'&&!paused} onBusy={setFileBusy}/><div className={s.collaborationList}>{deal.updates?.map(u=><article key={u.id} className={s.proposal}><header className={s.cardHead}><strong>{statuses[u.status]}</strong><time dateTime={u.created_at}>{dealDate(u.created_at)}</time></header><p className={s.description}>{u.body}</p></article>)}</div></section>;
+}
+export function DealIssues({store,deal}:{store:Store;deal:Deal}) {
+ if(!deal.issues?.length)return null;
+ return <section className={s.card}><h2>პრობლემის განხილვა</h2><div className={s.collaborationList}>{deal.issues.map(i=><article key={i.id} className={s.proposal}><header className={s.cardHead}><strong>{reasons[i.reason]}</strong><Badge status={i.status==='open'?'warning':'neutral'}>{i.status==='open'?'განხილვაშია':'განხილვა დასრულებულია'}</Badge></header><p className={s.description}>{i.body}</p>{i.status==='open'?<p className={s.note}>დასრულება და შეფასება შეჩერებულია განხილვის დასრულებამდე.</p>:<p className={s.description}>{i.resolution}</p>}</article>)}</div><FileAttachments store={store} kind="issue" target={deal.id} label="პრობლემის ფაილები"/></section>;
+}
+export function DealIssueModal({store,deal,disabled,write,onClose}:{store:Store;deal:Deal;disabled:boolean;write:Write;onClose:()=>void}) {
+ const id=useId();const [reason,setReason]=useState('quality');const [body,setBody]=useState('');const [fileBusy,setFileBusy]=useState(false);
+ return <Modal open width={560} icon="triangle-alert" title="პრობლემის შეტყობინება" onClose={()=>{if(!disabled&&!fileBusy)onClose();}} actions={<><Button variant="secondary" disabled={disabled||fileBusy} onClick={onClose}>გაუქმება</Button><Button type="submit" form={id} loading={disabled} disabled={fileBusy||body.trim().length<3}>გაგზავნა</Button></>}><form id={id} className={s.form} onSubmit={async e=>{e.preventDefault();if(!fileBusy&&await write('open_deal_issue',{p_reason:reason,p_body:body}))onClose();}}><fieldset disabled={disabled}><div className="ma-field"><label htmlFor={`${id}-reason`}>მიზეზი</label><CustomSelect id={`${id}-reason`} value={reason} onChange={e=>setReason(e.target.value)}>{Object.entries(reasons).map(([k,v])=><option key={k} value={k}>{v}</option>)}</CustomSelect></div><div className="ma-field"><label htmlFor={`${id}-body`}>რა არ შეესაბამება შეთანხმებას?</label><textarea id={`${id}-body`} className="ma-textarea" required minLength={3} maxLength={2000} value={body} onChange={e=>setBody(e.target.value)}/></div><FileAttachments store={store} kind="issue" target={deal.id} editable onBusy={setFileBusy}/></fieldset></form></Modal>;
+}

@@ -6,6 +6,9 @@ const migration=args.find(arg=>!arg.startsWith('--'))||'contact-events';
 const dryRun=process.argv.includes('--dry-run');
 const inspect=process.argv.includes('--inspect');
 const plans={
+ 'short-request-titles':{file:'20261009-short-request-titles',tables:[],routines:['create_request(text,text,text,text,text,numeric,text,date,text)','update_request(uuid,text,text,text,text,numeric,text,date,text)']},
+ 'flow-completion':{file:'20261009-flow-completion',tables:['attachments','file_uploads','request_preferences','deal_proposals','deal_updates','deal_issues','deal_reviews'],routines:['become_company(text,text)','begin_file_upload(text,uuid,text,text,integer,text)','get_attachment(uuid)','submit_verification()','list_matching_feed(text,text,integer,integer)','add_deal_update(uuid,integer,text,text)','open_deal_issue(uuid,integer,text,text)','create_request_full(text,text,text,text,text,numeric,text,date,text,jsonb,uuid)','reject_deal_proposal(uuid,integer,uuid)','complete_onboarding()','review_verification(uuid,text)','verification_record(uuid)','rate_deal_full(uuid,integer,integer[],boolean,text)']},
+  'design-settings': { file: '20261009-design-settings', tables: ['site_design'], routines: ['site_design()', 'admin_save_site_design(jsonb,integer)'] },
   'offer-terms': { file: '20261007-offer-terms', tables: [], routines: ['set_offer_terms(uuid,text,date,text[],timestamptz)', 'compare_offers(uuid)'] },
   deals: { file: '20261007-deals', tables: ['deals', 'deal_events'], routines: ['select_offer_deal(uuid,timestamptz)', 'get_deal(uuid)', 'propose_deal_terms(uuid,integer,numeric,numeric,text,integer,date,text,text,text[])', 'advance_deal(uuid,text,integer)', 'confirm_deal_terms(uuid,integer)', 'rate_deal(uuid,integer,text,integer)'] },
   'contact-visibility': { file: '20261007-contact-visibility', tables: [], routines: ['get_deal_contact(uuid)', 'contact_for_request(uuid)', 'log_contact_event(text,uuid,text,text)'] },

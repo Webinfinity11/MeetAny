@@ -1,4 +1,5 @@
 import { Icon } from "../Icon";
+import { Badge } from "../ui/Badge";
 import styles from "./HomeSections.module.css";
 
 export const heroOffers = [
@@ -10,5 +11,5 @@ export const heroOffers = [
 ] as const;
 // Illustration only: private offers are never requested or exposed by this component.
 export function HeroOffer({ offer: o }: { offer: typeof heroOffers[number] }) {
-  return <article className={styles.offer} aria-hidden="true"><div className={styles.offerCompany}><span className="home-live-initials">{o.initials}</span><div><strong>{o.company}<Icon name="badge-check" /></strong><p>{o.request}</p></div></div><div className={styles.offerPrice}><div><p>შეთავაზება</p><strong>{o.price}</strong></div><span className={styles[o.status]}>{o.status === "new" ? "ახალი" : o.status === "viewed" ? "ნანახი" : "არჩეული"}</span></div><p className={styles.delivery}><Icon name="clock" />მიწოდება {o.delivery}</p></article>;
+  return <article className={styles.offer} aria-hidden="true"><div className={styles.offerCompany}><span className="home-live-initials">{o.initials}</span><div><strong>{o.company}<Icon name="badge-check" /></strong><p>{o.request}</p></div></div><div className={styles.offerPrice}><div><p>შეთავაზება</p><strong>{o.price}</strong></div><Badge status={o.status === "new" ? "success" : "info"}>{o.status === "new" ? "ახალი" : o.status === "viewed" ? "ნანახი" : "არჩეული"}</Badge></div><p className={styles.delivery}><Icon name="clock" />მიწოდება {o.delivery}</p></article>;
 }

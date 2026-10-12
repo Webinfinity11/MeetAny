@@ -5,6 +5,7 @@ export const onboardSteps = ['type', 'details', 'profile', 'provide', 'need', 'v
 export type OnboardStep = typeof onboardSteps[number];
 export type Product = { name: string; photoUrl: string; note: string };
 export type OnboardProfile = {
+  onboarding_completed_at?:string|null;
   id: string; role: string; blocked: boolean; verified: boolean;
   name: string; company: string; city: string; industry: string; email: string; phone: string;
   about: string; address: string | null; lat: number | null; lng: number | null;
@@ -22,7 +23,22 @@ const keysByStep: Partial<Record<OnboardStep, readonly (keyof OnboardProfile)[]>
   details: ['legal_name', 'registration_code', 'founded_year', 'legal_form', 'employee_band', 'contact_position', 'website', 'markets', 'languages', 'city', 'address', 'name'],
   profile: ['company', 'about', 'industry', 'business_tags', 'certificates'],
   provide: ['provide_categories', 'offers'], need: ['need_categories', 'seeks'],
+  verify: ['certificates'],
 };
+type OnboardModel = { profile: OnboardProfile; products: Product[] };
+export function onboardWrites(step: OnboardStep, dirty: Iterable<OnboardStep>, leaving = false) {
+  const changed = new Set(dirty);
+  return onboardSteps.filter((value, index) => (leaving || index <= onboardSteps.indexOf(step)) && (changed.has(value) || value === step));
+}
+/** Keep later, unfinished drafts when earlier steps refresh their saved data. */
+export function retainOnboardDraft(saved: OnboardModel, draft: OnboardModel, steps: readonly OnboardStep[]): OnboardModel {
+  const profile = { ...saved.profile };
+  for (const step of steps) {
+    for (const key of keysByStep[step] || []) Object.assign(profile, { [key]: draft.profile[key] });
+    if (step === 'type') profile.provide_categories = draft.profile.provide_categories;
+  }
+  return { profile, products: steps.includes('provide') ? draft.products : saved.products };
+}
 export async function readOnboardProfile(store: Store): Promise<OnboardProfile> {
   const data = await store.callRpc('my_profile');
   const profile = Array.isArray(data) ? data[0] : data;

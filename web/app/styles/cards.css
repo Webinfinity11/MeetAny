@@ -387,7 +387,7 @@
 .request-card__summary .icon { width: var(--size-13); height: var(--size-13); }
 .request-card__summary .is-urgent { color: var(--warning-700); font-weight: var(--fw-semibold); }
 .catalog-card-actions { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
-.catalog-card-actions > .ma-btn { flex: 1; min-width: 0; padding-inline: var(--space-2); font-size: var(--size-13); }
+.catalog-card-actions > .ma-btn { flex: 1; min-width: 0; padding-inline: var(--space-2); font-size:var(--btn-fs); }
 .company-card--catalog { overflow: hidden; border-color: var(--ink-200); box-shadow: none; }
 .company-card--catalog .company-card__media { aspect-ratio: 2; }
 .company-card--catalog .company-card__body { padding: var(--space-4); gap: var(--space-2); }

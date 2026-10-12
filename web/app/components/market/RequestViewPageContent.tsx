@@ -2,6 +2,8 @@
 import { Button } from "../ui/Button";
 
 
+import { FileAttachments } from "./FileAttachments";
+import { RequestPreferenceRecord } from "./RequestPreferences";
 import { SendOfferForm } from "./SendOfferForm";
 import { compareHref, dealHref, selectOfferDeal, flowCode, staleReview } from "../../lib/deal-client";
 import { CustomSelect } from "../ui/CustomSelect";
@@ -212,7 +214,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           ) : (
             <div className="ma-stack request-offer-list">
               {orderedOffers.map((o) => (
-                <OfferCard key={o.id} o={o} messageTarget={isOwner && o.companyId ? { companyId: o.companyId, requestId: r.id } : undefined} canReport={isOwner} canChoose={isOwner && !r.chosenOfferId && state === "open"} onChoose={() => choose(o.id)} />
+                <OfferCard store={store!} key={o.id} o={o} messageTarget={isOwner && o.companyId ? { companyId: o.companyId, requestId: r.id } : undefined} canReport={isOwner} canChoose={isOwner && !r.chosenOfferId && state === "open"} onChoose={() => choose(o.id)} />
               ))}
             </div>
           )}
@@ -222,7 +224,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           {myOffer ? (
             <>
               <h2 className="ma-h3">შენი შეთავაზება</h2>
-              <OfferCard o={myOffer} canChoose={false} messageTarget={{ companyId: me.id, requestId: r.id }} />
+              <OfferCard store={store!} o={myOffer} canChoose={false} messageTarget={{ companyId: me.id, requestId: r.id }} />
               {me.verified && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
                 <div className="ma-cluster"><Button variant="secondary" type="submit" aria-label="შეთავაზების რედაქტირება" onClick={() => setEditOffer(!editOffer)}><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
                 {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)} onCancel={() => setEditOffer(false)}/> : null}
@@ -267,7 +269,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               <div><dt><Icon name="clock"/>შეთავაზებების ბოლო ვადა</dt><dd>{dateLabel(r.expiresAt)}</dd></div>
             </dl>
             <div className="request-description-brief"><h2><Icon name="file-text"/>მოთხოვნის აღწერა</h2><div className="request-description-content">
-            <p className="ma-prose">{r.body}</p>
+            <p className="ma-prose">{r.body}</p><RequestPreferenceRecord key={`${r.id}:${me?.id||"guest"}`} store={store!} id={r.id} editable={isOwner&&!closed}/><FileAttachments key={`files:${r.id}:${me?.id||"guest"}`} store={store!} kind="request" target={r.id} editable={isOwner&&!closed}/>
 
             </div></div>
           </section>

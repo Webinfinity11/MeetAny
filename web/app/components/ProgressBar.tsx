@@ -15,6 +15,7 @@ function NavigationListener() {
     const start = (event: MouseEvent) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.defaultPrevented) return;
       const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a[href]") : null;
+      if (link?.hasAttribute("data-navigation-preview") && matchMedia("(min-width:1024px)").matches) return;
       if (!link || link.hasAttribute("download") || (link.target && link.target !== "_self")) return;
       const next = new URL(link.href, location.href);
       if (next.origin !== location.origin || (next.pathname === location.pathname && next.search === location.search)) return;

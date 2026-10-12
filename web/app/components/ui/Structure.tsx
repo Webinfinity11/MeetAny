@@ -11,7 +11,7 @@ export type SectionProps = { title: ReactNode; action?: ReactNode; children: Rea
 export function Section({ title, action, children, className = "" }: SectionProps) {
   return <section className={`ma-section ${className}`.trim()}><div className="ma-section__head"><h2 className="ma-section__title">{title}</h2>{action}</div>{children}</section>;
 }
-export type EmptyStateProps = { icon?: string; title?: string; text: string; action?: ReactNode; className?: string };
-export function EmptyState({ icon, title, text, action, className = "" }: EmptyStateProps) {
-  return <div className={`ma-empty ${className}`.trim()}>{icon ? <span className="ma-empty__icon"><Icon name={icon} /></span> : null}{title ? <h3 className="ma-empty__title">{title}</h3> : null}<p className="ma-empty__text">{text}</p>{action && <div className="ma-empty__actions">{action}</div>}</div>;
+export type EmptyStateProps = { icon?: string; title?: string; text: string; action?: ReactNode; className?: string; role?: "alert" | "status" };
+export function EmptyState({ icon, title, text, action, className = "", role }: EmptyStateProps) {
+  return <div className={`ma-empty ${className}`.trim()} role={role}>{icon ? <span className="ma-empty__icon"><Icon name={icon} /></span> : null}{title ? <h3 className="ma-empty__title">{title}</h3> : null}<p className="ma-empty__text">{text}</p>{action && <div className="ma-empty__actions">{action}</div>}</div>;
 }

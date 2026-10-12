@@ -29,8 +29,8 @@
   --theme-surface:#FFFFFF;
   --theme-font:FiraGO;
   --theme-radius:8px;
-  --theme-caps-headings:normal;
-  --theme-caps-buttons:normal;
+  --theme-caps-headings:"case" 1;
+  --theme-caps-buttons:"case" 1;
   --theme-caps-tracking:0;
   --theme-caps-hero:normal;
   --theme-icon-stroke:1.75;
@@ -143,9 +143,9 @@
   --shadow-2:0 2px 4px color-mix(in srgb,var(--theme-ink) 6%,transparent),0 6px 16px color-mix(in srgb,var(--theme-ink) 8%,transparent);
   --shadow-3:0 8px 24px color-mix(in srgb,var(--theme-ink) 12%,transparent),0 2px 6px color-mix(in srgb,var(--theme-ink) 6%,transparent);
   --shadow-4:0 24px 64px color-mix(in srgb,var(--ink-950) 24%,transparent);
-  --control-h-sm:36px;
+  --control-h-sm:var(--control-h);
   --control-h:44px;
-  --control-h-lg:52px;
+  --control-h-lg:calc(var(--control-h) + 8px);
   --tap-min:44px;
   --icon-sm:16px;
   --icon:20px;
@@ -520,9 +520,11 @@
   --field-radius:8px;
   --field-fs:var(--fs-body);
   --field-error:var(--danger-600);
-  --badge-radius:var(--radius-pill);
+  --badge-radius:var(--radius-sm);
   --badge-fs:var(--fs-xs);
-  --badge-weight:var(--fw-semibold);
+  --badge-weight:var(--fw-medium);
+  --badge-fill:var(--white);
+  --badge-tint:0%;
   --avatar-size-sm:40px;
   --avatar-size-md:48px;
   --avatar-size-lg:56px;
@@ -534,7 +536,7 @@
 :root[data-theme="blue"]{
   /* Logo colours (owner, 2026-10-08): the logo blue leads, the logo orange-coral warms
      ratings, deadlines, VIP and accents; avatars carry the logo blue-to-coral sweep. */
-  --theme-primary:#2B66DE;
+  --theme-primary:var(--design-primary,#2B66DE);
   --theme-accent:#F2683A;
   --theme-ink:#1B2433;
   --theme-swatch:#171717;
@@ -550,8 +552,8 @@
   --inverse-border:color-mix(in srgb,var(--white) 20%,var(--brand-panel-bg));
   --message-sent-bg:var(--blue-600);
   --logo-sky:#3AA6F2;
-  --hero-pattern:linear-gradient(color-mix(in srgb,var(--theme-primary) 8%,transparent) var(--size-1), transparent var(--size-1)), linear-gradient(90deg, color-mix(in srgb,var(--theme-primary) 8%,transparent) var(--size-1), transparent var(--size-1)), radial-gradient(ellipse 55% 70% at 0% 0%, color-mix(in srgb,var(--logo-sky) 14%,transparent), transparent 70%), radial-gradient(ellipse 50% 70% at 100% 100%, color-mix(in srgb,var(--theme-accent) 12%,transparent), transparent 70%);
-  --avatar-bg:linear-gradient(135deg,var(--logo-sky) 0%,var(--theme-primary) 55%,var(--theme-accent) 100%);
+  --hero-pattern:none;
+  --avatar-bg:var(--ink-900);
   --warning-50:var(--orange-50);
   --warning-100:var(--orange-100);
   --warning-600:var(--orange-500);

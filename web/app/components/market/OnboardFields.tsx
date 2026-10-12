@@ -1,6 +1,7 @@
 'use client';
 import { useId, useState, type ReactNode } from 'react';
 import { Button } from '../ui/Button';
+import { CustomSelect } from '../ui/CustomSelect';
 import { Icon } from '../Icon';
 import { categories } from '../../lib/categories';
 import s from './onboarding.module.css';
@@ -25,10 +26,9 @@ export function OnboardField({ label, value, onChange, required, maxLength, type
   const common = { id, value, required, 'aria-invalid': !!error, 'aria-describedby': error ? id + '-error' : undefined, onInvalid: (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { setError(''); onChange?.(e.target.value); } };
   return <div className={s.field}><label htmlFor={id}>{label}{required && <span> *</span>}{hint && <small>{hint}</small>}</label>
     <div className={icon ? s.inputIcon : s.inputControl}>{icon && <OnboardIcon name={icon} />}
-    {options ? <select {...common}><option value="">აირჩიეთ</option>{Object.entries(options).map(([key, text]) => <option value={key} key={key}>{text}</option>)}</select>
+    {options ? <CustomSelect {...common}><option value="">აირჩიეთ</option>{Object.entries(options).map(([key, text]) => <option value={key} key={key}>{text}</option>)}</CustomSelect>
       : multiline ? <textarea {...common} maxLength={maxLength} rows={3} readOnly={readOnly} />
-      : <input {...common} type={type} maxLength={maxLength} readOnly={readOnly} min={min} max={max} />}{options && <span className={s.selectArrow}><Icon name="chevron-down" /></span>}</div>
-    {readOnly && <small className={s.registrationHint}>რეგისტრაციიდან</small>}
+      : <input {...common} type={type} maxLength={maxLength} readOnly={readOnly} min={min} max={max} />}</div>
     {error && <small id={id + '-error'} className={s.fieldError}>{error}</small>}
   </div>;
 }
@@ -36,12 +36,12 @@ export function OnboardItems({ label, values, onChange, suggestions = [], checkb
   const id = useId(), [text, setText] = useState(''), [adding, setAdding] = useState(!checkboxes);
   const [customOptions, setCustomOptions] = useState(values);
   const add = () => { const value = text.trim(); if (value && values.length < 8 && !values.includes(value)) { onChange([...values, value]); setCustomOptions(previous => [...new Set([...previous, value])]); setText(''); } };
-  const customButton = <button type="button" className={s.customAdd} aria-label={`${label} — საკუთარი`} aria-expanded={adding} disabled={values.length >= 8} onClick={() => setAdding(!adding)}><Icon name="plus" />საკუთარი</button>;
+  const customButton = <Button variant="secondary" className={s.customAdd} aria-label={`${label} — საკუთარი`} aria-expanded={adding} disabled={values.length >= 8} onClick={() => setAdding(!adding)}><Icon name="plus" />საკუთარი</Button>;
   return <div className={s.items} role="group" aria-label={label}>
     {!checkboxes && <div className={s.cardHeading}><label htmlFor={id}>{label}</label><span>{values.length} / 8</span></div>}
     {checkboxes ? <div className={s.checkboxes}>{[...new Set([...suggestions, ...customOptions, ...values])].map(value => <label key={value}><input type="checkbox" checked={values.includes(value)} disabled={!values.includes(value) && values.length >= 8} onChange={() => onChange(values.includes(value) ? values.filter(item => item !== value) : [...values, value])} />{value}</label>)}{customButton}</div>
-      : <div className={rows ? s.itemRows : s.chips}>{values.map((value, index) => <button type="button" className={s.selected} key={index} onClick={() => onChange(values.filter((_, i) => i !== index))} aria-label={`${value} — წაშლა`}>{rows && <span className={s.reviewIcon}><Icon name="package" /></span>}<span>{value}</span><Icon name="x" /></button>)}
-      {suggestions.filter(value => !values.includes(value)).map(value => <button key={value} type="button" disabled={values.length >= 8} onClick={() => onChange([...values, value])}>{value}<Icon name="plus" /></button> )}</div>}
+      : <div className={rows ? s.itemRows : s.chips}>{values.map((value, index) => <Button variant="secondary" className={s.selected} key={index} onClick={() => onChange(values.filter((_, i) => i !== index))} aria-label={`${value} — წაშლა`}>{rows && <span className={s.reviewIcon}><Icon name="package" /></span>}<span>{value}</span><Icon name="x" /></Button>)}
+      {suggestions.filter(value => !values.includes(value)).map(value => <Button key={value} variant="secondary" disabled={values.length >= 8} onClick={() => onChange([...values, value])}>{value}<Icon name="plus" /></Button> )}</div>}
     {adding && <div className={s.addItem}><input id={id} aria-label={label} value={text} maxLength={120} placeholder="დაამატეთ" onChange={e => setText(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} /><Button variant="secondary" disabled={!text.trim() || values.length >= 8 || values.includes(text.trim())} onClick={add}>დამატება</Button></div>}
     {adding && text.trim() && <small>ჩანაწერის შესანახად დააჭირეთ „დამატებას“.</small>}
   </div>;
@@ -51,7 +51,7 @@ const shortLabels: Record<string, string> = { catering: 'HoReCa', food_fresh: '�
 export function OnboardCategories({ values, onChange, compact = false, limit = 34 }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number }) {
   const need = ['food_fresh', 'packaging', 'catering', 'equipment', 'software_web', 'renovation', 'textiles', 'cleaning', 'freight', 'advertising', 'office_household', 'other'];
   const keys = [...new Set([...(compact ? featured : need), ...values])];
-  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <button type="button" key={key} aria-label={categories[key as keyof typeof categories]} title={categories[key as keyof typeof categories]} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
+  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <Button variant={values.includes(key)?"primary":"secondary"} key={key} aria-label={categories[key as keyof typeof categories]} title={categories[key as keyof typeof categories]} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
     <svg viewBox="0 0 24 24" aria-hidden="true"><use href={`/icons-categories.svg#${key}`} /></svg><span>{shortLabels[key] || categories[key as keyof typeof categories] || key}</span>{!compact && values.includes(key) && <Icon name="check" />}
-  </button>)}</div></>;
+  </Button>)}</div></>;
 }

@@ -64,6 +64,7 @@ function fixture(t, { signedIn = true } = {}) {
       if (url.pathname.endsWith('/get-session')) return reply(signedIn ? { user: { id: me.id } } : null);
       return reply({ token: token(url.pathname.endsWith('/anonymous') ? 'anonymous' : 'authenticated') });
     }
+    if(url.pathname.endsWith('/bootstrap'))return Response.json({message:'not found',code:'PGRST205'},{status:404});
     const rpc = url.pathname.split('/rpc/')[1], args = options.body ? JSON.parse(options.body) : {};
     if (rpc === 'set_my_products') return reply(args.p_items);
     if (rpc === 'my_profile') return reply(me);
@@ -139,13 +140,13 @@ test('public discovery omits internal fixtures while owners and admin can inspec
  const now=new Date().toISOString(),expires=new Date(Date.now()+86400000).toISOString();
  const normal={id:uuid(910),role:'company',company:'ტექსტილის პარტნიორი',about:'',offers:[],seeks:[],service_cities:[],city:'tbilisi',industry:'textiles',created_at:now};
  const internal={...normal,id:uuid(911),company:'სატესტო კომპანია'};
- const requests=[{id:uuid(912),owner_id:normal.id,title:'ტესტრექ',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}, {id:uuid(913),owner_id:normal.id,title:'სადემო მაგალითი: თეთრეული',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}];
+ const requests=[{id:uuid(912),owner_id:normal.id,title:'ტესტრექ',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}, {id:uuid(913),owner_id:normal.id,title:'სადემო მაგალითი: თეთრეული',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}, {id:uuid(914),owner_id:normal.id,title:'[strict-qa] სასტუმროსთვის 40 კომპლექტი თეთრეული',body:'ტექსტი',category:'textiles',city:'tbilisi',created_at:now,expires_at:expires,status:'open'}];
  const store=createMarketStore({initial:{companies:[normal,internal],profiles:[],requests,companyStats:[],counts:[]},background:false});
  assert.deepEqual(store.listCompanies().map(c=>c.id),[normal.id]);
  assert.equal(store.listCompanies({includeTests:true}).length,2);
  assert.deepEqual(store.listRequests().map(r=>r.id),[uuid(913)]);
- assert.equal(store.listRequests({ownerId:normal.id}).length,2);
- assert.equal(store.listRequests({includeHidden:true,state:''}).length,2);
+ assert.equal(store.listRequests({ownerId:normal.id}).length,3);
+ assert.equal(store.listRequests({includeHidden:true,state:''}).length,3);
  assert.equal(store.getRequest(uuid(912)).title,'ტესტრექ');
 });
 

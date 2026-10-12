@@ -6,7 +6,7 @@ import { Button } from "../ui/Button";
 import { EmptyState } from "../ui/Structure";
 import { Icon } from "../Icon";
 import { ServiceUnavailable } from "./ServiceUnavailable";
-import { SkeletonGrid } from "./Skeletons";
+import { ListSkeleton, SkeletonGrid } from "./Skeletons";
 import { ResultsBar } from "./ResultsBar";
 import { CatalogSearch } from "./CatalogSearch";
 import { CatalogHeader } from "./CatalogHeader";
@@ -55,7 +55,8 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const featureById = useMemo(() => new Map(business.data?.map(f => [f.id, f]) || []), [business.data]);
   const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "recommended");
   const verified = filters.get("verified") === "1";
-  const mapView = filters.get("view") === "map";
+  const requestedView = filters.get("view");
+  const view = requestedView === "grid" || requestedView === "map" ? requestedView : "list";
   const paid = filters.get("plan") === "paid";
   const distribution = useBusinessResource<Distribution[]>(ready && type === "distributors" ? store?.companyDistributionProfiles : undefined, "distribution");
   const distributionById = useMemo(() => new Map(distribution.data?.map(d => [d.id, d]) || []), [distribution.data]);
@@ -146,15 +147,19 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         <div className={styles.toolbar}>
           <div className={styles.search}><CatalogSearch id="company-query" label="ძიება" placeholder="მოძებნე კომპანია ან მომსახურება" value={query} onChange={q => filters.set({ q })} mode="companies" resultIds={rows.map(c => c.id)} onCategory={industry => filters.set({ industry, q: "" })} /></div>
           <ResultsBar count={ready && available ? `ნაპოვნია ${rows.length} კომპანია` : ""} items={activeItems} onRemove={key => setFilters({ [key]: "" })} onClear={clearFilters}
-            filterButton={<Button variant="secondary" className="catalog-filter-toggle" aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრები ({activeItems.length})</Button>}
+            filterButton={<Button variant="secondary" className="catalog-filter-toggle" aria-haspopup="dialog" aria-controls="filters" aria-expanded={sheetOpen} onClick={() => setSheetOpen(true)}><Icon name="sliders-horizontal" />ფილტრი{activeItems.length ? ` (${activeItems.length})` : ""}</Button>}
             sort={{ value: sort, onChange: sort => filters.set({ sort }), options: [{ value: "recommended", label: "რეკომენდებული" }, { value: "newest", label: "უახლესი" }, { value: "active", label: "ყველაზე აქტიური" }] }}
-            utility={<div className="view-switch" role="group" aria-label="ხედი"><Button variant="secondary" aria-pressed={!mapView} onClick={() => filters.set({ view: "" })}><Icon name="layout-grid" />ბადე</Button><Button variant="secondary" aria-pressed={mapView} onClick={() => filters.set({ view: "map" })}><Icon name="map-pin" />რუკა</Button></div>} />
+            utility={<div className={`view-switch ${styles.companyViewSwitch}`} role="group" aria-label="ხედი">{([
+              { value: "list", label: "სია", icon: "list-filter" },
+              { value: "grid", label: "ბადე", icon: "layout-grid" },
+              { value: "map", label: "რუკა", icon: "map-pin" },
+            ] as const).map(option => <Button key={option.value} variant="secondary" aria-label={option.label} title={option.label} aria-pressed={view === option.value} onClick={() => filters.set({ view: option.value === "list" ? "" : option.value })}><Icon name={option.icon} />{option.label}</Button>)}</div>} />
         </div>
-        <div className={styles.grid}>
-          {!available ? <ServiceUnavailable /> : !ready ? <SkeletonGrid count={6} /> : type === "distributors" && (business.error || distribution.error) ? <BusinessError error={business.error || distribution.error!} retry={() => { business.reload(); distribution.reload(); }} /> : type === "distributors" && (business.loading || distribution.loading) ? <SkeletonGrid count={6} /> : !rows.length
+        <div className={`${styles.grid}${view === "list" ? ` ${styles.companyList}` : ""}`}>
+          {!available ? <ServiceUnavailable /> : !ready ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : type === "distributors" && (business.error || distribution.error) ? <BusinessError error={business.error || distribution.error!} retry={() => { business.reload(); distribution.reload(); }} /> : type === "distributors" && (business.loading || distribution.loading) ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : !rows.length
             ? <EmptyState icon="search" title="ვერაფერი მოიძებნა" text="სცადე სხვა დარგი ან ქალაქი." action={<Button variant="secondary" onClick={clearFilters}>ფილტრების გასუფთავება</Button>} />
-            : mapView ? <div className="companies-map-view"><CompaniesMap companies={mapped} />{unmapped.length > 0 && <p className="companies-map__unmapped">რუკაზე არ ჩანს ({unmapped.length}), მისამართი არ აქვს მითითებული: {unmapped.map((c, index) => <span key={c.id}>{index ? ", " : ""}<Link href={`/companies/view/?id=${encodeURIComponent(c.id)}`}>{c.name}</Link></span>)}</p>}</div>
-            : rows.map(c => <CompanyListingCard key={c.id} catalog c={c} />)}
+            : view === "map" ? <div className="companies-map-view"><CompaniesMap companies={mapped} />{unmapped.length > 0 && <p className="companies-map__unmapped">რუკაზე არ ჩანს ({unmapped.length}), მისამართი არ აქვს მითითებული: {unmapped.map((c, index) => <span key={c.id}>{index ? ", " : ""}<Link href={`/companies/view/?id=${encodeURIComponent(c.id)}`}>{c.name}</Link></span>)}</p>}</div>
+            : rows.map(c => <CompanyListingCard key={c.id} catalog catalogLayout={view} c={c} />)}
         </div>
       </section>
     </div>

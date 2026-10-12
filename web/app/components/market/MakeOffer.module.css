@@ -12,7 +12,7 @@
 .fields label{font-size:var(--fs-sm);font-weight:var(--fw-semibold)}
 .fields small{font-size:var(--fs-xs);color:var(--text-3)}
 .fields textarea{min-height:var(--size-96);resize:vertical}
-.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:var(--space-5)}
 .two>div{min-width:0}.two input{min-width:0;max-width:100%}
 .actions{display:flex;flex-direction:column-reverse;gap:var(--space-3);padding-top:var(--space-5);border-top:var(--space-hairline) solid var(--border)}
 .actions button{white-space:normal;width:100%;min-height:var(--size-44)}
@@ -26,7 +26,7 @@
 .buyer{display:flex;gap:var(--space-3);align-items:center;border-top:var(--space-hairline) solid var(--border);margin-top:var(--space-5);padding-top:var(--space-5);font-size:var(--fs-sm)}.buyer>div{min-width:0;overflow-wrap:anywhere}.buyer p{color:var(--text-3);font-size:var(--fs-xs)}
 .formCard,.offerSummary{display:grid;gap:var(--space-4);padding:var(--space-6);border:var(--space-hairline) solid var(--border);border-radius:var(--card-radius);background:var(--white);min-width:0;overflow-wrap:anywhere}
 .formCard h2,.offerSummary h2{font-size:var(--fs-title);margin:0}.formCard input{max-width:100%;min-width:0}.formCard :global(.ma-check){min-height:var(--size-44)}
-.chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}.chips button{border-radius:var(--radius-pill);min-height:var(--size-44);white-space:normal}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}.chips button{white-space:normal}
 .offerSummary{position:sticky;top:var(--size-88);font-size:var(--fs-sm)}.offerSummary>strong{font-size:var(--fs-h2)}.offerSummary ul{padding-left:var(--space-5);margin:0}.offerSummary ul:empty{display:none}
 .addTerm{display:flex;gap:var(--space-2)}.addTerm input{min-width:0;flex:1}
 .embedded{grid-template-columns:minmax(0,1fr)}.embedded .offerSummary{position:static}

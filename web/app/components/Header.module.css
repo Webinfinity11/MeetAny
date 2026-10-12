@@ -129,7 +129,7 @@ html:has(.ma-mnav[open]){overflow:hidden}
 .ma-header__link{height:100%;padding:0;border-radius:0;border-bottom:var(--size-2) solid transparent;color:var(--ink-700);font-size:var(--size-14)}
 .ma-header__link:hover{background:transparent;color:var(--active-text)}
 .ma-header__link[aria-current=page]{background:transparent;color:var(--active-text);border-color:var(--action-strong);border-radius:0;box-shadow:none;font-weight:var(--fw-medium)}
-.ma-header__actions :global(.ma-btn),.ma-mnav__foot .ma-header__cta{min-height:var(--size-40);height:var(--size-40);font-size:var(--size-14);font-family:var(--font-sans)}
+.ma-header__actions :global(.ma-btn),.ma-mnav__foot .ma-header__cta{min-height:var(--btn-h);height:var(--size-40);font-size:var(--btn-fs);font-family:var(--font-sans)}
 .ma-header__actions .ma-header__cta,.ma-mnav__foot .ma-header__cta{background:var(--action-strong);color:var(--white);border-color:var(--action-strong);padding-inline:var(--space-4)}
 .ma-header__actions .ma-header__cta:hover,.ma-mnav__foot .ma-header__cta:hover{background:var(--action-strong-hover)}
 .ma-header__actions .ma-header__login{background:var(--white);color:var(--active-text);border-color:var(--ink-300)}
@@ -183,7 +183,7 @@ html:has(.ma-mnav[open]){overflow:hidden}
 .ma-header__actions .ma-header__cta-short,.ma-header__actions:has(.ma-header__updates) .ma-header__cta-short{display:none}
 .ma-header__actions .ma-header__cta-label,.ma-header__actions:has(.ma-header__updates) .ma-header__cta-label{display:inline;position:static;width:auto;height:auto;overflow:visible;clip:auto}
 @media(min-width:640px){.ma-header__search{display:inline-flex}.ma-header .ma-header__login{display:inline-flex}}
-@media(min-width:768px){.ma-header__nav{display:flex}.ma-header__menu-btn{display:none}}
+@media(min-width:1024px){.ma-header__nav{display:flex}.ma-header__menu-btn{display:none}}
 @media(min-width:768px) and (max-width:1199.98px){.ma-header__inner{gap:var(--space-3);padding-inline:var(--space-4)}.ma-header__nav{gap:var(--space-3)}.ma-header__account .ma-menu__trigger{width:calc(var(--size-48) * 2)}.ma-header__actions .ma-header__cta{padding-inline:var(--space-2)}}
 @media(max-width:767.98px){
 .ma-header__inner,.ma-header__inner:has(.ma-header__updates){height:calc(var(--size-56) - var(--size-1));padding-inline:var(--space-4);gap:var(--space-2)}
@@ -213,4 +213,29 @@ html:has(.ma-mnav[open]){overflow:hidden}
 .ma-header__actions:has(.ma-header__updates) .ma-header__cta{width:var(--size-40);min-width:var(--size-40);padding:0;justify-content:center}
 .ma-header__actions:has(.ma-header__updates) :is(.ma-header__cta-label,.ma-header__cta-short){display:none}
 .ma-header__actions:has(.ma-header__updates) .ma-header__cta>:global(.icon){display:block}
+}
+/* Keep controls from shrinking into one another; tablet navigation uses the drawer. */
+.ma-header__brand,.ma-header__actions,.ma-header__link{flex:none}
+.ma-header__link{white-space:nowrap}
+.ma-header__search,.ma-header__menu-btn,.ma-mnav__close{width:var(--tap-min);height:var(--tap-min);border-radius:var(--btn-radius)}
+.ma-header__actions :global(.ma-btn),.ma-header__account .ma-menu__trigger,.ma-header__updates :is(button[aria-controls=notification-list],:global(.ma-chat-unread)){min-height:var(--btn-h);height:var(--tap-min)}
+.ma-header__updates :is(button[aria-controls=notification-list],:global(.ma-chat-unread)){width:var(--tap-min)}
+.ma-header__account .ma-menu__trigger{width:var(--size-64);padding:var(--space-1);justify-content:center;border-radius:var(--btn-radius)}
+.ma-header__account .ma-menu__trigger>.ma-menu__label{display:none}
+@media(max-width:1023.98px){
+  .ma-header__nav{display:none}
+  .ma-header__menu-btn{display:grid}
+}
+@media(max-width:767.98px){
+  .ma-header .ma-header__account{display:none}
+  .ma-header__actions .ma-header__cta,.ma-header__actions:has(.ma-header__updates) .ma-header__cta{width:var(--tap-min);min-width:var(--tap-min);padding:0}
+  .ma-header__actions .ma-header__cta :is(.ma-header__cta-label,.ma-header__cta-short),.ma-header__actions:has(.ma-header__updates) .ma-header__cta :is(.ma-header__cta-label,.ma-header__cta-short){display:none}
+  .ma-header__actions .ma-header__cta>:global(.icon){display:block;flex:none}
+}
+@media(max-width:399.98px){
+  .ma-header__inner,.ma-header__inner:has(.ma-header__updates){padding-inline:var(--space-3);gap:var(--space-1)}
+}
+/* At narrow phone widths, updates remain available in the mobile menu. */
+@media(max-width:359.98px){
+  .ma-header__updates{display:none}
 }

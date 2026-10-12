@@ -32,20 +32,28 @@ export type CompanyListingData = {
   stats: { sent: number; chosen: number };
 };
 
-/** Photo-first company card (same language as the home page): picture on top with the save button,
- *  then name, industry and cities, a few services and the call button. The whole card links to the profile. */
-export function CompanyListingCard({ c, entranceIndex, catalog = false }: { c: CompanyListingData; entranceIndex?: number; catalog?: boolean }) {
+/** Catalog cards keep identity together, then give the description the full width. */
+export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogLayout = "grid" }: { c: CompanyListingData; entranceIndex?: number; catalog?: boolean; catalogLayout?: "grid" | "list" }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const cityIds = [...new Set((c.serviceCities.filter(Boolean).length ? c.serviceCities : [c.city]).filter(Boolean))];
   const places = cityIds.slice(0, 2).map(id => cities[id] || id).join(", ") + (cityIds.length > 2 ? ` +${cityIds.length - 2}` : "");
   const image = companyImage(c.name, c.logoUrl, c.gallery);
+  const isDemo = c.about.startsWith("სადემო კომპანია.");
+  const description = isDemo ? c.about.replace(/^სადემო კომპანია\. ინფორმაცია და ფოტოები საილუსტრაციოა\.\s*/, "") : c.about;
   const entrance = entranceIndex != null && entranceIndex < 12;
-  if (catalog) return <article className={styles.company}>
-    {c.logoUrl ? <Image unoptimized className={styles.logo} src={c.logoUrl} alt="" width={56} height={56} loading="lazy" /> : <span className={styles.logo} aria-hidden="true">{c.name.slice(0, 2)}</span>}
-    <h3><Link href={href}>{c.name}</Link>{c.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
-    <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
-    {c.about && <p className={styles.description}>{c.about}</p>}
-    {c.offers.length > 0 && <ul className={styles.services}>{c.offers.slice(0, 2).map((offer, index) => <li key={index}>{offer}</li>)}{c.offers.length > 2 && <li>+{c.offers.length - 2}</li>}</ul>}
+  if (catalog) return <article className={`${styles.company}${catalogLayout === "list" ? ` ${styles.companyRow}` : ""}`}>
+    <header className={styles.companyIdentity}>
+      {image ? <Image unoptimized className={styles.logo} src={image} alt="" width={56} height={56} loading="lazy" /> : <span className={styles.logo} aria-hidden="true"><Icon name="building-2"/></span>}
+      <div className={styles.companyDetails}>
+        <h3><Link href={href}>{c.name}</Link>{c.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
+        <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
+        {isDemo ? <Badge className={styles.demoLabel}>სადემო კომპანია</Badge> : null}
+      </div>
+    </header>
+    <div className={styles.companySummary}>
+      {description && <p className={styles.description}>{description}</p>}
+      {c.offers.length > 0 && <ul className={styles.services} aria-label="მომსახურება">{c.offers.slice(0, 2).map((offer, index) => <li key={index}>{offer}</li>)}{c.offers.length > 2 && <li>+{c.offers.length - 2}</li>}</ul>}
+    </div>
     <Button variant="secondary" href={href}>პროფილი</Button>
   </article>;
   return (

@@ -39,7 +39,7 @@ a.ma-ocard__name:hover{color:var(--blue-700);text-decoration:underline;text-unde
 .ma-ocard__actions .ma-btn{flex:1 1 var(--size-160)}
 @media (min-width:768px){.ma-ocard__actions{justify-content:flex-end}.ma-ocard__actions .ma-btn{flex:0 0 auto}}
 .ma-ocard--new .ma-ocard__name-row::after{content:"";order:-1;width:var(--size-8);height:var(--size-8);border-radius:var(--radius-circle);background:var(--orange-400);box-shadow:var(--badge-accent-ring)}
-.ma-ocard--chosen{border:var(--size-2) solid transparent;padding:calc(var(--card-pad) - var(--space-hairline));background:linear-gradient(var(--white),var(--white)) padding-box,var(--brand-gradient) border-box;box-shadow:var(--shadow-2);animation:ma-ring-in var(--dur-slow) var(--ease) both}
+.ma-ocard--chosen{border:var(--size-2) solid var(--action);padding:calc(var(--card-pad) - var(--space-hairline));background:var(--white);box-shadow:var(--shadow-2);animation:ma-ring-in var(--dur-slow) var(--ease) both}
 @keyframes ma-ring-in{from{opacity:.4;transform:scale(.985)}to{opacity:1;transform:none}}
 .ma-ocard--declined{background:var(--bg-subtle);border-color:var(--border-subtle);box-shadow:none}
 .ma-ocard--declined,.ma-ocard--declined .ma-ocard__name,.ma-ocard--declined .ma-ocard__body{color:var(--text-3)}
@@ -130,7 +130,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
 .ma [hidden]{display:none!important}
 @keyframes ma-rise{from{opacity:0;transform:translateY(var(--size-8))}to{opacity:1;transform:none}}
 @keyframes ma-content-in{from{opacity:.72;transform:translateY(var(--size-4))}to{opacity:1;transform:none}}
-.ma-main>.ma-container>:not(.ma-loading):not(:has(.ma-loading)){animation:ma-content-in var(--motion-base) var(--motion-ease) both}
+.ma-main>.ma-container>:not(.ma-loading):not(.post-page):not(:has(.ma-loading)){animation:ma-content-in var(--motion-base) var(--motion-ease) both}
 @media(prefers-reduced-motion:reduce){.ma-main>.ma-container>*{animation:none!important}}
 .ma-ocard{transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur-fast) var(--ease)}
 @media (hover:hover){
@@ -289,8 +289,14 @@ html:has(.ma-sheet[open]){overflow:hidden}
 .ma-chat-badge{display:inline-flex;align-items:center;justify-content:center;min-width:var(--space-5);min-height:var(--space-5);padding:0 var(--space-1);border-radius:var(--radius-pill);background:var(--action);color:var(--text-on-brand);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums}
 .ma-chat-unread>.ma-chat-badge{position:absolute;top:calc(-1 * var(--space-1));right:calc(-1 * var(--space-1));border:var(--size-1) solid var(--bg)}
 @keyframes ma-chat-enter{from{opacity:0;transform:translateY(var(--space-6))}to{opacity:1;transform:translateY(0)}}
-.ma-chat-launcher{position:fixed;right:var(--size-24);bottom:var(--size-24);z-index:var(--z-menu);display:flex;align-items:center;gap:var(--size-10);min-height:var(--size-52);padding:0 var(--size-20);border:var(--size-1) solid var(--blue-700);border-radius:var(--size-18);background:var(--blue-700);color:var(--white);box-shadow:0 var(--size-6) var(--size-24) var(--color--172b4d26);font-size:var(--size-14);font-weight:var(--fw-semibold);cursor:pointer}
-.ma-chat-launcher:hover{background:var(--blue-900)}
+.ma-chat-launcher{position:fixed;right:var(--size-24);bottom:var(--size-24);z-index:var(--z-menu);display:grid;place-items:center;width:var(--size-52);height:var(--size-52);padding:0;border:var(--size-1) solid var(--action);border-radius:var(--btn-radius);background:var(--action);color:var(--white);box-shadow:var(--shadow-2);cursor:pointer;transition:background-color var(--motion-fast),box-shadow var(--motion-fast)}
+.ma-chat-launcher:hover{background:var(--action-strong-hover);box-shadow:var(--shadow-3)}
+.ma-chat-launcher>.icon{width:var(--size-28);height:var(--size-28)}
+.ma-chat-launcher__dots{position:absolute;display:flex;gap:var(--size-2);top:var(--size-22);left:var(--size-19);pointer-events:none}
+.ma-chat-launcher__dots i{width:var(--size-3);height:var(--size-3);border-radius:var(--radius-circle);background:currentColor}
+@keyframes ma-chat-invite{0%,100%{opacity:.45;transform:translateY(0)}50%{opacity:1;transform:translateY(calc(-1 * var(--size-2)))}}
+@media(prefers-reduced-motion:no-preference){.ma-chat-launcher__dots i{animation:ma-chat-invite 600ms ease-in-out 3}.ma-chat-launcher__dots i:nth-child(2){animation-delay:100ms}.ma-chat-launcher__dots i:nth-child(3){animation-delay:200ms}.ma-chat-launcher:is(:hover,:focus-visible) .ma-chat-launcher__dots i{animation-iteration-count:infinite}}
+.ma-chat-launcher>.ma-chat-badge{position:absolute;top:var(--size-neg-5);right:var(--size-neg-5);border:var(--size-1) solid var(--action)}
 .ma-chat-launcher .ma-chat-badge{background:var(--white);color:var(--blue-700)}
 .ma-chat--dock[open]{bottom:var(--size-88);max-height:calc(100dvh - var(--size-112));animation:none}
 .ma-chat-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:var(--size-8)}
@@ -313,8 +319,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
   .ma:has(.ma-chat:modal){height:100dvh;overflow:hidden}
   .ma-chat[open]{inset:0;width:100%;height:100dvh;max-height:100dvh;max-width:100%;border:0;border-radius:0;box-shadow:none}
   .ma-chat--dock[open]{top:var(--chat-viewport-top,var(--size-0));bottom:auto;height:var(--chat-viewport-height,100dvh);max-height:var(--chat-viewport-height,100dvh)}
-  .ma-chat-launcher{right:var(--size-16);bottom:calc(var(--size-16) + env(safe-area-inset-bottom));width:var(--size-52);padding:0;justify-content:center;border-radius:var(--size-18)}
-  .ma-chat-launcher>span:not(.ma-chat-badge){position:absolute;width:var(--size-1);height:var(--size-1);overflow:hidden;clip-path:inset(50%)}
+  .ma-chat-launcher{right:var(--size-16);bottom:calc(var(--size-16) + env(safe-area-inset-bottom));width:var(--size-52);padding:0;justify-content:center;border-radius:var(--btn-radius)}
   .ma-chat-launcher>.ma-chat-badge{position:absolute;top:var(--size-neg-5);right:var(--size-neg-5);border:var(--size-1) solid var(--blue-700)}
   .ma-chat--dock .ma-chat__head{gap:var(--size-8);padding-inline:var(--size-12)}
   .ma-chat--dock .ma-chat__head>.ma-avatar{width:var(--size-36);height:var(--size-36)}
@@ -403,6 +408,6 @@ html:has(.ma-sheet[open]){overflow:hidden}
 
 /* One accessible theme control in each header: a swatch-only square, named by aria-label and title. */
 .ma-theme-toggle{flex:none;width:var(--tap-min);min-height:var(--tap-min);height:var(--tap-min);padding:0;border-color:var(--ink-300)}
-.ma-theme-toggle__swatch{display:block;width:var(--size-18);height:var(--size-18);flex:none;border:var(--size-1) solid var(--ink-300);border-radius:var(--radius-circle);background:linear-gradient(135deg,var(--theme-swatch) 50%,var(--white) 50%)}
+.ma-theme-toggle__swatch{display:block;width:var(--size-18);height:var(--size-18);flex:none;border:var(--size-1) solid var(--ink-300);border-radius:var(--radius-circle);background:var(--theme-swatch)}
 .ma-theme-toggle[aria-pressed=true]{border-color:var(--action);background:var(--selected-bg);color:var(--selected-text)}
 /* With the toggle, a signed-in header has no room for the account name; the avatar opens the same menu. */

@@ -8,6 +8,7 @@ import type { Store } from "../../lib/market-client";
 import { useBusinessResource } from "../../lib/business-client";
 import { dateLabel } from "../../lib/format";
 import { CustomSelect } from "../ui/CustomSelect";
+import { AdminDealIssues } from "./AdminDealIssues";
 import { AdminState } from "./AdminState";
 import { ListSkeleton } from "./Skeletons";
 import styles from "./admin.module.css";
@@ -44,6 +45,7 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
   const resource = useBusinessResource<Page>(load, `${status}:${offset}:${revision}`);
   const page = resource.data;
   return <>
+    <AdminDealIssues store={store}/>
     <div className={styles.filters}>
       <div><label htmlFor="admin-report-status">სტატუსი</label><CustomSelect id="admin-report-status" className="ma-select" value={status} onChange={event => { setOffset(0); onStatus(event.target.value); }}>
         <option value="new">ახალი</option><option value="handled">დამუშავებული</option>

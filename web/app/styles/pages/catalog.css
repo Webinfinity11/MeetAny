@@ -112,7 +112,6 @@
   /* Keep each catalog's cover behind the content and search menus. */
   background-color: var(--color--f0f4fc);
   background-image:
-    linear-gradient(rgb(240 244 252 / 14%), rgb(240 244 252 / 14%)),
     var(--catalog-cover-image, url("/assets/companies-hero-georgian-city-v1.webp"));
   background-size: cover;
   background-position: center;
@@ -138,8 +137,8 @@
   overflow: hidden;
   pointer-events: none;
   /* Photos fade out at the top and bottom edges of the band. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, var(--color-legacy-ink) 18%, var(--color-legacy-ink) 82%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, var(--color-legacy-ink) 18%, var(--color-legacy-ink) 82%, transparent);
+  mask-image:none;
+  mask-image:none;
 }
 .catalog-collage__col {
   position: absolute;
@@ -222,8 +221,8 @@
 @media (max-width: 1179px) {
   .companies-catalog .catalog-header--center { padding-block: var(--space-10) var(--size-132); }
   .catalog-collage {
-    -webkit-mask-image: linear-gradient(to right, transparent, var(--color-legacy-ink) 8%, var(--color-legacy-ink) 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, var(--color-legacy-ink) 8%, var(--color-legacy-ink) 92%, transparent);
+    mask-image:none;
+    mask-image:none;
   }
   .catalog-collage__col { display: none !important; }
   .catalog-collage__strip {
@@ -592,8 +591,8 @@
 .catalog-sort .ma-select {
   width: auto;
   min-width: var(--size-160);
-  min-height: var(--size-40);
-  height: var(--size-40);
+  min-height: var(--field-h);
+  height: auto;
   border-color: var(--card-border);
   border-radius: var(--size-6);
   background-color: var(--white);
@@ -674,7 +673,7 @@
 }
 .catalog-page #filters .ma-sheet__footer .ma-btn {
   width: 100%;
-  min-height: var(--control-h-lg);
+  min-height:var(--btn-h);
 }
 
 /* ---------- Tablet and below ---------- */
@@ -737,8 +736,8 @@
   }
   .catalog-sort .ma-select,
   .catalog-filter-toggle {
-    min-height: var(--tap-min);
-    height: var(--tap-min);
+    min-height: var(--field-h);
+    height: auto;
   }
 }
 

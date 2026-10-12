@@ -623,7 +623,7 @@
   }
   .detail-actionbar .ma-btn {
     flex: 1;
-    min-height: var(--control-h-lg);
+    min-height:var(--btn-h);
   }
   body:has(.detail-actionbar) .ma-footer {
     padding-bottom: var(--size-80);
@@ -854,26 +854,26 @@
 .request-management h2{display:flex;align-items:center;gap:var(--size-8);font-size:var(--size-15);margin:0;line-height:1.6}
 .request-management h2 .icon{width:var(--size-18);height:var(--size-18);color:var(--blue-700)}
 .request-management-note{margin:0 0 var(--size-4);font-size:var(--size-12);line-height:1.8;color:var(--text-3)}
-.request-management>.ma-btn{width:100%;justify-content:flex-start;font-size:var(--size-13);gap:var(--size-8);padding-inline:var(--size-12);white-space:normal}
+.request-management>.ma-btn{width:100%;justify-content:flex-start;font-size:var(--btn-fs);gap:var(--size-8);padding-inline:var(--size-12);white-space:normal}
 .request-action-detail{margin-left:auto;font-size:var(--size-11);color:var(--text-3);white-space:nowrap}
 .request-manage-more>summary{display:flex;align-items:center;gap:var(--size-8);cursor:pointer;list-style:none;min-height:var(--size-44);color:var(--text-2);font-size:var(--size-13)}
-.request-manage-more>div{display:grid;gap:var(--size-8);padding-top:var(--size-4)}.request-manage-more .ma-btn{justify-content:flex-start;font-size:var(--size-13);padding-inline:var(--size-12)}
+.request-manage-more>div{display:grid;gap:var(--size-8);padding-top:var(--size-4)}.request-manage-more .ma-btn{justify-content:flex-start;font-size:var(--btn-fs);padding-inline:var(--size-12)}
 .request-workspace summary:focus-visible{outline:var(--size-2) solid var(--blue-700);outline-offset:var(--size-neg-2);border-radius:var(--size-8)}
 .request-workspace .detail-share{gap:var(--size-8)}.request-workspace .detail-share__links{display:grid;gap:var(--size-6)}.request-workspace .detail-share__links .detail-link{display:inline-flex;align-items:center;gap:var(--size-8);min-height:var(--size-36);font-size:var(--size-12);justify-self:start}
 .request-workspace .request-responses{padding:0;gap:var(--size-16);scroll-margin-top:calc(var(--header-h) + var(--size-20))}
 .request-workspace .request-offers__title{font-size:var(--size-21);line-height:1.5;gap:var(--size-8)}.request-workspace .request-offers-count{min-width:var(--size-26);height:var(--size-26);border:0;background:var(--blue-50);color:var(--blue-700);font-size:var(--size-12)}
 .request-workspace .request-offers__new{font-size:var(--size-11)}.request-workspace .request-offers-privacy{font-size:var(--size-11);max-width:var(--size-320)}
 .request-workspace .request-offers-tools{gap:var(--size-8)}.request-workspace .request-offers-tools .ma-select{max-width:var(--size-190);font-size:var(--size-12);min-width:0}
-.request-workspace .request-offers-tools .ma-btn{font-size:var(--size-12);gap:var(--size-6);padding-inline:var(--size-12)}
+.request-workspace .request-offers-tools .ma-btn{font-size:var(--btn-fs);gap:var(--size-6);padding-inline:var(--size-12)}
 .request-workspace .ma-ocard{padding:var(--size-20);border-radius:var(--size-14);box-shadow:none;gap:var(--size-16)}
 .request-workspace .ma-ocard__body{font-size:var(--size-14);line-height:1.8;margin:0}
 .request-workspace .ma-ocard__name{font-size:var(--size-15);line-height:1.6}
 .request-offer-actions{display:flex;align-items:center;justify-content:space-between;gap:var(--size-12);border-top:var(--size-1) solid var(--border-subtle);padding-top:var(--size-16)}
-.request-offer-actions .ma-btn{font-size:var(--size-12);gap:var(--size-6);min-height:var(--size-42);padding-inline:var(--size-12)}
+.request-offer-actions .ma-btn{font-size:var(--btn-fs);gap:var(--size-6);min-height:var(--btn-h);padding-inline:var(--size-12)}
 @media(max-width:1100px){.request-workspace .request-detail-grid{grid-template-columns:minmax(0,1fr) var(--size-280);gap:var(--size-20)}.request-workspace .request-offers-tools{width:100%}.request-workspace .request-offers-tools .ma-select{flex:1;max-width:none}}
 @media(max-width:1023px){.request-workspace .request-detail-grid{grid-template-columns:minmax(0,1fr)}.request-workspace .request-detail-aside{position:static}.request-workspace[data-owner] .request-detail-aside{max-width:none}.request-workspace .request-offers-tools{width:auto}.request-workspace .request-offers-tools .ma-select{max-width:var(--size-190)}body:has(.detail-actionbar) .ma-chat-launcher{bottom:calc(var(--size-96) + env(safe-area-inset-bottom))}}
 @media(min-width:768px) and (max-width:1023px){body:has(.detail-actionbar) .ma-chat--dock[open]{bottom:var(--size-164);max-height:calc(100dvh - var(--size-188))}}
-@media(max-width:767px){.request-workspace{padding-top:var(--size-16);gap:var(--size-16)}.request-workspace .detail-hero__title{font-size:var(--size-23);line-height:1.5;max-width:none}.request-workspace .request-detail-main{gap:var(--size-24)}.request-workspace .request-detail-facts{padding:var(--size-16);gap:var(--size-16)}.request-workspace .request-detail-facts>div{flex-basis:calc(50% - var(--size-16))}.request-description-content{padding:0 var(--size-16) var(--size-16)}.request-workspace .request-offers-header{gap:var(--size-12)}.request-workspace .request-offers-tools{width:100%}.request-workspace .request-offers-tools .ma-select{max-width:none}.request-workspace .request-offers__title{font-size:var(--size-20)}.request-workspace .ma-ocard{padding:var(--size-16)}.request-offer-actions{flex-direction:column;align-items:stretch;gap:var(--size-8)}.request-offer-actions .ma-btn{width:100%;min-height:var(--size-44)}.request-offer-actions .ma-btn--primary{order:-1}.request-workspace .request-offers-privacy{max-width:none}.request-workspace .request-detail-aside{padding:var(--size-16)}}
+@media(max-width:767px){.request-workspace{padding-top:var(--size-16);gap:var(--size-16)}.request-workspace .detail-hero__title{font-size:var(--size-23);line-height:1.5;max-width:none}.request-workspace .request-detail-main{gap:var(--size-24)}.request-workspace .request-detail-facts{padding:var(--size-16);gap:var(--size-16)}.request-workspace .request-detail-facts>div{flex-basis:calc(50% - var(--size-16))}.request-description-content{padding:0 var(--size-16) var(--size-16)}.request-workspace .request-offers-header{gap:var(--size-12)}.request-workspace .request-offers-tools{width:100%}.request-workspace .request-offers-tools .ma-select{max-width:none}.request-workspace .request-offers__title{font-size:var(--size-20)}.request-workspace .ma-ocard{padding:var(--size-16)}.request-offer-actions{flex-direction:column;align-items:stretch;gap:var(--size-8)}.request-offer-actions .ma-btn{width:100%;min-height:var(--btn-h);}.request-offer-actions .ma-btn--primary{order:-1}.request-workspace .request-offers-privacy{max-width:none}.request-workspace .request-detail-aside{padding:var(--size-16)}}
 @media(max-width:767px){.request-workspace .detail-aside__block .ma-cluster>.ma-btn{width:100%;max-width:100%;min-width:0;white-space:normal}.request-workspace .ma-form>.ma-btn{width:100%;white-space:normal}.request-workspace .request-detail-main>.detail-aside__block{padding:var(--size-16)}}
 /* Report („შეატყობინე“): a quiet text action that never competes with the main ones. */
 .report-link{min-height:var(--control-h-sm);gap:var(--space-compact);font-size:var(--size-12);font-weight:var(--fw-medium);color:var(--text-3)}
@@ -910,7 +910,7 @@
  .request-workspace .offer-terms--compact .offer-terms__price { grid-column: 1 / -1; grid-template-columns: auto minmax(0,1fr); align-items: baseline; gap: var(--space-2); }
  .request-workspace .offer-terms__price dd { text-align: right; }
  .request-workspace .request-offer-actions { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; }
- .request-workspace .request-offer-actions .ma-btn { font-size: var(--fs-xs); min-height: var(--tap-min); }
+ .request-workspace .request-offer-actions .ma-btn { font-size:var(--btn-fs); min-height:var(--btn-h); }
  .request-workspace .request-offer-actions .ma-btn--primary { grid-column: 1 / -1; grid-row: 1; }
  .request-workspace .request-offer-actions .report-link { min-height: var(--tap-min); margin: 0; justify-self: end; }
  .request-workspace .request-offer-actions > :only-child { grid-column: 1 / -1; justify-self: start; width: auto; }

@@ -5,6 +5,7 @@ import { Button } from "../ui/Button";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChatContext, ChatMessages, MessagingEmpty } from "./messaging/ChatParts";
+import { SharedFiles } from "./messaging/SharedFiles";
 import styles from "./engagement.module.css";
 import { useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
@@ -166,6 +167,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
         : <ChatMessages messages={messages} owner={me.id} name={d.name} now={now}/>}
     </div>
     {failed && loaded ? <div className={styles["inbox-retry"]} role="alert"><span>განახლება ვერ მოხერხდა.</span><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
+    <SharedFiles store={store} target={conversation.id}/>
     <form className={styles["inbox-compose"]} onSubmit={e => { e.preventDefault(); void submit(); }}>
       <label className="ma-sr-only" htmlFor="inbox-body">შეტყობინება</label>
       <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერე შეტყობინება…"

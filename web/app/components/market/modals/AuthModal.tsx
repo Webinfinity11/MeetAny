@@ -29,7 +29,7 @@ export function AuthModal({ open, onClose, onSuccess, intent, context, next }: {
   const query = encodeURIComponent(next);
   return <Modal className={styles.auth} open={open} onClose={onClose} title={title} lead={`${context} — შესვლის შემდეგ მოქმედება გაგრძელდება`} width={460}>
     {open && <LoginForm onReset={() => router.push(`/account/?tab=reset&next=${query}`)} onSuccess={() => { onClose(); onSuccess(); }} />}
-    <div className={styles.registration}>ჯერ არ გაქვთ ანგარიში? <Link href={`/account/?tab=register&role=company&next=${query}`}>კომპანიის რეგისტრაცია</Link><br /><Link href={`/account/?tab=register&role=client&next=${query}`}>კლიენტის რეგისტრაცია</Link></div>
+    <div className={styles.registration}>ჯერ არ გაქვთ ანგარიში? <Link href={`/account/?tab=register&next=${query}`}>ანგარიშის შექმნა</Link></div>
     <p className={styles.note}><Icon name="shield-check" />ერთი ანგარიში — ყიდვაც და გაყიდვაც</p>
   </Modal>;
 }

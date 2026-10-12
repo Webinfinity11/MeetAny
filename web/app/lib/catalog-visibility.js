@@ -5,5 +5,6 @@ export function isInternalTestAccount(user) {
 }
 
 export function isInternalTestRequest(request, owner) {
-  return isInternalTestAccount(owner) || /^(?:ტესტრექ|test(?: request)?|e2e(?:[: -].*)?)$/i.test(request.title.trim());
+  const title = request.title.trim();
+  return isInternalTestAccount(owner) || /^\[(?:strict-qa|qa|e2e)\]/i.test(title) || /^(?:ტესტრექ|test(?: request)?|e2e(?:[: -].*)?)$/i.test(title);
 }

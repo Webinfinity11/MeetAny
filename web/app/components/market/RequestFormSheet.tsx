@@ -149,7 +149,7 @@ export function RequestFormSheet({
     setError(null);
     const errors: FieldErrors = {};
     const t = title.trim(), b = body.trim();
-    if (t.length < 5) errors.title = t ? "სათაური მინიმუმ 5 სიმბოლოა" : "მიუთითე სათაური";
+    if (!t) errors.title = "მიუთითე სათაური";
     if (!category) errors.category = "აირჩიე კატეგორია";
     if (!city) errors.city = "აირჩიე ქალაქი";
     if (b.length < 10) errors.body = b ? "აღწერა მინიმუმ 10 სიმბოლოა" : "აღწერე, რა გჭირდება";

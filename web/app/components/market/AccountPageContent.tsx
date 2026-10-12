@@ -18,10 +18,10 @@ import { Dashboard } from "./account/Dashboard";
 import { MyRequests } from "./account/MyRequests";
 import { MyOffers } from "./account/MyOffers";
 import { MyDeals } from "./account/MyDeals";
-import { CompanyProfile, ProfileForm, PasswordForm } from "./account/Profile";
+import { CompanyProfile, CompanyProfileNav, ProfileForm, PasswordForm } from "./account/Profile";
 import { readSeen, type AnyUser, type RequestItem, type OfferItem, type Tab, type NavItem } from "./account/shared";
 export function AccountPageContent() {
-  const { store, ready, available } = useMarketStore();
+  const { store, ready, sessionReady, available } = useMarketStore();
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawTab = searchParams.get("tab") || "";
@@ -48,7 +48,7 @@ export function AccountPageContent() {
     return { myOffers: [] as OfferItem[], myRequests };
   }, [store, me]);
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
-  if (!ready || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
+  if (!ready || !sessionReady || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
   if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
   const isCompany = me.role === "company";
   const requestedSpace = searchParams.get("space");
@@ -61,9 +61,10 @@ export function AccountPageContent() {
     { key: "deals", label: "გარიგებები", icon: "handshake" },
     { key: "messages", label: "მესიჯები", icon: "message-square", count: unread },
     { key: "notifications", label: "შეტყობინებები", icon: "bell", count: engagement?.status === "ready" ? engagement.unread : null },
+    { key: "saved", label: "შენახული კომპანიები", icon: "bookmark" },
     { key: "profile", label: isCompany ? "კომპანიის პროფილი" : "პროფილი", icon: isCompany ? "building-2" : "user-round" },
   ];
-  const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : activeTab === "saved" ? "შენახული" : activeTab === "business" ? "ხილვადობის პაკეტები" : tabs.find(item => item.key === activeTab)?.label || "ანგარიში";
+  const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : activeTab === "saved" ? "შენახული" : activeTab === "business" ? "კომპანიის პროფილი" : tabs.find(item => item.key === activeTab)?.label || "ანგარიში";
   return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} title={title} lead={activeTab === "overview" ? "თქვენი პროფილით შერჩეული შესაძლებლობები." : undefined} action={activeTab === "requests" ? <Button href="/requests/new/"><Icon name="plus"/>ახალი მოთხოვნა</Button> : activeTab === "offers" ? <Button variant="secondary" href="/matching/"><Icon name="search"/>ახალი შესაძლებლობები</Button> : undefined}>
     {activeTab === "deals" ? <MyDeals key={me.id} store={store} actor={me.id}/> : null}
     {activeTab === "overview" ? <Dashboard me={me}/> : null}
@@ -73,7 +74,7 @@ export function AccountPageContent() {
     {activeTab === "saved" ? <div className="account-panel"><EngagementPanel kind="saved"/></div> : null}
     {activeTab === "notifications" ? <div id="alerts" className="account-panel account-alerts"><EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"}/></div> : null}
     {activeTab === "messages" ? <div className="account-wide"><Inbox key={me.id} store={store} me={me}/></div> : null}
-    {activeTab === "business" ? <CompanyBusinessPanel key={me.id} owner={me.id}/> : null}
+    {activeTab === "business" ? <div className="account-main--profile"><CompanyProfileNav active="business"/><CompanyBusinessPanel key={me.id} owner={me.id}/></div> : null}
     {activeTab === "profile" ? <div className="account-main--profile">{me.blocked ? <p className="ma-field__error" role="status">ანგარიში დაბლოკილია.</p> : null}{isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"}/> : <><ProfileForm me={me}/><PasswordForm key={me.id}/></>}</div> : null}
   </AccountShell>;
 }

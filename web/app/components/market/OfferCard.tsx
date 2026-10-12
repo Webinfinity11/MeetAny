@@ -1,4 +1,6 @@
 
+import type { Store } from "../../lib/market-client";
+import {FileAttachments} from "./FileAttachments";
 import { dealDate } from "../../lib/deal-client";
 import { OfferDescription } from "./offer/OfferDescription";
 import flowStyles from "./offer/OfferFlow.module.css";
@@ -39,7 +41,7 @@ export function offerPrice(o: OfferCardData) {
  return `${new Intl.NumberFormat("ka-GE",{maximumFractionDigits:2}).format(o.price)} ₾ · ${o.priceType==="unit"?"ერთეულის":"ჯამური"}`;
 }
 
-export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTarget }: { o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean; messageTarget?: { companyId: string; requestId: string } }) {
+export function OfferCard({ store,o, onChoose, canChoose, canReport = false, messageTarget }: { store?:Store; o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean; messageTarget?: { companyId: string; requestId: string } }) {
   const cls =
     o.status === "chosen"
       ? " ma-ocard--chosen"
@@ -73,7 +75,7 @@ export function OfferCard({ o, onChoose, canChoose, canReport = false, messageTa
       {o.commercialTerms?.length ? <div className={flowStyles.termsList}><span>მოიცავს</span><ul>{o.commercialTerms.map(term => <li key={term}><Icon name="check"/>{term}</li>)}</ul></div> : null}
       {o.paymentTerms ? <p className={flowStyles.detailNote}>გადახდა: {o.paymentTerms}</p> : null}
       <p className={flowStyles.detailNote}>მიწოდების ხარჯი: {o.deliveryIncluded ? "შედის" : "დასაზუსტებელია"}</p>
-      <OfferDescription body={o.body}/>
+      <OfferDescription body={o.body}/>{store?<FileAttachments store={store} kind="offer" target={o.id}/>:null}
       <footer className="request-offer-actions">
         {canChoose && o.status === "sent" ? <Button type="button" variant="primary" onClick={onChoose}><Icon name="check"/>არჩევა</Button> : null}
         {messageTarget ? <MessageButton {...messageTarget} variant="secondary" /> : null}

@@ -13,6 +13,7 @@ import { dealHref, compareHref } from "../../../lib/deal-client";
 import { readRequestDraft } from "../../../lib/request-draft";
 import { toast } from "../../Toasts";
 import { useConversationList } from "../../../lib/chat-client";
+import styles from "./account.module.css";
 
 export function MyRequests({ requests, store, me, now, seen }: { requests: RequestItem[]; store: Store; me: AnyUser; now: number; seen: Record<string, string> }) {
   const deals = useAccountDeals(store, me.id);
@@ -42,7 +43,7 @@ export function MyRequests({ requests, store, me, now, seen }: { requests: Reque
     <Filters label="მოთხოვნის სტატუსი" value={filter} onChange={setFilter} items={[{ key: "all", label: "ყველა", count: requests.length + Number(!!draft) }, ...filters]}/>
     {visible.length || showDraft ? <ul className="account-rows account-request-list">
       {showDraft ? <li className="account-request-card">
-        <div className="account-item-heading"><span className="account-draft-photo"><Icon name="file-text"/></span><div><h2><Link href="/requests/new/?draft=1">{draft.title.trim() || "დაუსრულებელი მოთხოვნა"}</Link></h2><p>{meta(draft.quantity, draft.unit, draft.category, draft.city)}</p></div></div>
+        <div className="account-item-heading"><span className="account-draft-photo"><Icon name="file-text"/></span><div><h2><Link className={styles.cardLink} href="/requests/new/?draft=1">{draft.title.trim() || "დაუსრულებელი მოთხოვნა"}</Link></h2><p>{meta(draft.quantity, draft.unit, draft.category, draft.city)}</p></div></div>
         <div className="account-request-summary"><Status tone="muted">მონახაზი</Status><span className="account-request-count"><Icon name="inbox"/>0 შეთავაზება</span></div>
         <Button variant="secondary" href="/requests/new/?draft=1">გაგრძელება</Button>
       </li> : null}
@@ -58,7 +59,7 @@ export function MyRequests({ requests, store, me, now, seen }: { requests: Reque
         const reviewing = state === "open" && count > 0;
         const tone = reviewing ? "info" : state === "open" ? "success" : state === "chosen" ? "dark" : state === "hidden" ? "muted" : "neutral";
         return <li className="account-request-card" data-highlight={fresh > 0 || undefined} key={request.id}>
-          <div className="account-item-heading"><RequestPhoto request={request}/><div><h2><Link href={requestHref(request.id)} title={request.title}>{request.title}</Link></h2><p>{meta(request.quantity, request.unit, request.category, request.city)}</p></div></div>
+          <div className="account-item-heading"><RequestPhoto request={request}/><div><h2><Link className={styles.cardLink} href={requestHref(request.id)} title={request.title}>{request.title}</Link></h2><p>{meta(request.quantity, request.unit, request.category, request.city)}</p></div></div>
           <div className="account-request-summary">
             <Status tone={tone}>{reviewing ? "შეთავაზებების განხილვა" : state === "chosen" ? "მომწოდებელი არჩეულია" : labels[state] || store.stateLabels[state]}</Status>
             <span className="account-request-count">{partner && ["chosen", "complete"].includes(state) ? <><Icon name="building-2"/><span className="account-request-partner" title={partner.company || partner.name}>{partner.company || partner.name}</span></> : <><Icon name="inbox"/>{count} შეთავაზება{fresh ? <strong>+{fresh}</strong> : null}</>}</span>

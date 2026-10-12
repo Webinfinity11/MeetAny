@@ -12,6 +12,10 @@ export type Deal = {
   delivery_date: string | null; delivery_place: string | null; payment_terms: string | null; includes: string[];
   buyer_confirmed_at: string | null; supplier_confirmed_at: string | null;
   rating: number | null; review: string | null; rated_at: string | null;
+  review_details?:{scores:number[];would_again:boolean}|null;
+  proposals?: {id:string;actor_id:string;revision:number;previous:Record<string,unknown>;proposed:Record<string,unknown>;status:'pending'|'accepted'|'rejected'|'superseded';created_at:string}[];
+  updates?: {id:string;actor_id:string;status:string;body:string;created_at:string}[];
+  issues?: {id:string;actor_id:string;reason:string;body:string;status:'open'|'resolved';resolution?:string;created_at:string}[];
   events?: { id: string; actor_id: string; action: string; revision: number; created_at: string }[];
 };
 export type DealContact = { id: string; name: string; company: string; phone: string | null; email: string | null; contact_position?: string | null };
@@ -28,7 +32,7 @@ export type DealTermsInput = {
 };
 export const dealHref = (id: string) => `/deals/view/?id=${encodeURIComponent(id)}`;
 export const compareHref = (id: string) => `/requests/compare/?id=${encodeURIComponent(id)}`;
-export const dealActionLabel = (action?: string | null) => ({ selected: "მომწოდებელი არჩეულია", discuss: "დეტალების განხილვა", propose_terms: "ახალი პირობებია შემოთავაზებული", terms: "პირობები განახლდა", confirm_terms: "პირობები დადასტურდა", progress: "შესრულება დაიწყო", complete: "გარიგება დასრულდა", cancelled: "გარიგება გაუქმდა", rated: "გარიგება შეფასდა" }[action || ""] || "გარიგება განახლდა");
+export const dealActionLabel = (action?: string | null) => ({ update_started:"შეკვეთა მიღებულია",update_producing:"შეკვეთა მზადდება",update_ready:"მზადაა გასაგზავნად",update_delivered:"შეკვეთა მიწოდებულია",issue_opened:"პრობლემა განხილვაშია",issue_resolved:"პრობლემის განხილვა დასრულდა",proposal_rejected:"ცვლილება უარყოფილია",selected: "მომწოდებელი არჩეულია", discuss: "დეტალების განხილვა", propose_terms: "ახალი პირობებია შემოთავაზებული", terms: "პირობები განახლდა", confirm_terms: "პირობები დადასტურდა", progress: "შესრულება დაიწყო", complete: "გარიგება დასრულდა", cancelled: "გარიგება გაუქმდა", rated: "გარიგება შეფასდა" }[action || ""] || "გარიგება განახლდა");
 export const flowCode = (error: unknown) => {
   const e = error as { code?: string; message?: string };
   return e?.code || e?.message?.match(/MA\d{3}/)?.[0];

@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Button } from "./ui/Button";
 import { useEffect } from "react";
-import { StatusPage, statusPageStyles as styles } from "./StatusPage";
+import { StatusPage } from "./StatusPage";
 
 // Body of every route group's error.tsx: renders inside that group's layout, so the header and
 // footer stay. retry() re-renders the segment; the link leaves it.
@@ -13,12 +13,12 @@ export function RouteError({ error, retry }: { error: Error & { digest?: string 
 
   return (
     <StatusPage eyebrow="შეცდომა" title="გვერდი ვერ ჩაიტვირთა" text="რაღაც არ გამოვიდა — სცადე თავიდან ან დაბრუნდი მთავარზე.">
-      <button className={styles.button} type="button" onClick={() => retry()}>
+      <Button onClick={() => retry()}>
         სცადე თავიდან
-      </button>
-      <Link className={styles.link} href="/">
+      </Button>
+      <Button variant="secondary" href="/">
         მთავარზე დაბრუნება
-      </Link>
+      </Button>
     </StatusPage>
   );
 }

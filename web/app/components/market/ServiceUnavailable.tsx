@@ -1,16 +1,13 @@
 "use client";
 import { Button } from "../ui/Button";
+import { EmptyState } from "../ui/Structure";
 
 
 
 export function ServiceUnavailable() {
   return (
-    <div className="ma-empty">
-      <h2 className="ma-empty__title" role="alert">სერვისი დროებით მიუწვდომელია</h2>
-      <p className="ma-empty__text">მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.</p>
-      <Button type="button" variant="secondary" onClick={() => window.location.reload()}>
+    <EmptyState role="alert" icon="circle-alert" title="სერვისი დროებით მიუწვდომელია" text="მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა." action={<Button type="button" variant="secondary" onClick={() => window.location.reload()}>
         ხელახლა ცდა
-      </Button>
-    </div>
+      </Button>} />
   );
 }

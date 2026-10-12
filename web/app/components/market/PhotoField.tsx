@@ -117,9 +117,10 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
 
 
 /** Logo selection stays local until the profile is saved, so cancelling leaves no uploaded file. */
-export function LogoField({ name, logoUrl, file, onChange, onRemove, disabled, uploading }: {
+export function LogoField({ name, logoUrl, file, onChange, onRemove, disabled, uploading, compact = false }: {
   name: string; logoUrl?: string | null; file: File | null;
   onChange: (file: File) => void; onRemove: () => void; disabled: boolean; uploading: boolean;
+  compact?: boolean;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
@@ -142,7 +143,7 @@ export function LogoField({ name, logoUrl, file, onChange, onRemove, disabled, u
       <Button variant="secondary" type="button" disabled={disabled} onClick={() => input.current?.click()}>ატვირთვა</Button>
       {file || logoUrl ? <Button variant="ghost" type="button" disabled={disabled} onClick={() => { setError(""); onRemove(); }}>წაშლა</Button> : null}
     </div>
-    <p id="profile-logo-help" className="account-hint">JPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ.</p>
+    <p id="profile-logo-help" className="account-hint">{compact ? "JPG, PNG, WEBP, GIF · 2 მბ-მდე" : "JPG, PNG, WEBP ან GIF · მაქსიმუმ 2 მბ. ცვლილება გამოჩნდება შენახვის შემდეგ."}</p>
     {uploading ? <div className="logo-field__progress" role="status"><progress aria-label="ლოგო იტვირთება" />ლოგო იტვირთება…</div> : null}
     {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
   </div>;
@@ -154,8 +155,8 @@ export const GALLERY_MAX = 8;
 
 /** Company photos (up to 8). Like the logo, choices stay local until the profile is saved;
  *  the first photo leads the public gallery and the catalog card. */
-export function GalleryField({ items, onChange, disabled, uploading }: {
-  items: GalleryItem[]; onChange: (items: GalleryItem[]) => void; disabled: boolean; uploading: boolean;
+export function GalleryField({ items, onChange, disabled, uploading, compact = false }: {
+  items: GalleryItem[]; onChange: (items: GalleryItem[]) => void; disabled: boolean; uploading: boolean; compact?: boolean;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
@@ -196,7 +197,7 @@ export function GalleryField({ items, onChange, disabled, uploading }: {
     </ul>
     <input ref={input} className="ma-sr-only" type="file" multiple tabIndex={-1} aria-hidden="true" aria-label="გალერეის ფოტოების დამატება" accept="image/jpeg,image/png,image/webp,image/gif" disabled={disabled}
       onChange={e => { add([...(e.target.files || [])]); e.target.value = ""; }} />
-    <p className="account-hint">ოფისი, საწყობი, პროდუქცია ან შესრულებული სამუშაო · JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ. პირველი ფოტო ჩანს კატალოგის ბარათზე. ცვლილება გამოჩნდება შენახვის შემდეგ.</p>
+    <p className="account-hint">{compact ? "JPG, PNG, WEBP, GIF · 5 მბ-მდე. პირველი ფოტო — კატალოგში." : "ოფისი, საწყობი, პროდუქცია ან შესრულებული სამუშაო · JPG, PNG, WEBP ან GIF, თითო მაქსიმუმ 5 მბ. პირველი ფოტო ჩანს კატალოგის ბარათზე. ცვლილება გამოჩნდება შენახვის შემდეგ."}</p>
     {uploading ? <div className="logo-field__progress" role="status"><progress aria-label="ფოტოები იტვირთება" />ფოტოები იტვირთება…</div> : null}
     {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
   </div>;

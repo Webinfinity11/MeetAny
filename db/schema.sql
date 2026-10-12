@@ -131,7 +131,7 @@ declare
     when 'MA001' then 'not signed in'
     when 'MA002' then 'account is blocked'
     when 'MA003' then 'admin only'
-    when 'MA101' then 'title must be at least 5 characters'
+    when 'MA101' then 'title is required'
     when 'MA102' then 'description must be at least 10 characters'
     when 'MA103' then 'invalid category'
     when 'MA104' then 'invalid city'
@@ -201,7 +201,7 @@ create table if not exists public.profiles (
 create table if not exists public.requests (
   id uuid primary key default gen_random_uuid(),
   owner_id uuid not null references public.profiles (id) on delete cascade,
-  title text not null check (char_length(title) between 5 and 120),
+  title text not null check (char_length(title) between 1 and 120 and char_length(btrim(title)) > 0),
   body text not null check (char_length(body) between 10 and 2000),
   category text not null check (meetany_private.is_category(category)),
   city text not null check (meetany_private.is_city(city)),
@@ -622,7 +622,7 @@ declare
 begin
   perform 1 from public.profiles where id = me.id for update;  -- serialize per owner
   if meetany_private.open_count(me.id) >= 5 then perform meetany_private.fail('MA105'); end if;
-  if char_length(v_title) < 5 then perform meetany_private.fail('MA101'); end if;
+  if char_length(v_title) < 1 then perform meetany_private.fail('MA101'); end if;
   if char_length(v_body) < 10 then perform meetany_private.fail('MA102'); end if;
   if not meetany_private.is_category(p_category) then perform meetany_private.fail('MA103'); end if;
   if not meetany_private.is_city(p_city) then perform meetany_private.fail('MA104'); end if;
@@ -714,7 +714,7 @@ begin
      or exists (select 1 from public.offers o where o.request_id = r.id) then
     perform meetany_private.fail('MA110');
   end if;
-  if char_length(v_title) < 5 then perform meetany_private.fail('MA101'); end if;
+  if char_length(v_title) < 1 then perform meetany_private.fail('MA101'); end if;
   if char_length(v_body) < 10 then perform meetany_private.fail('MA102'); end if;
   if not meetany_private.is_category(p_category) then perform meetany_private.fail('MA103'); end if;
   if not meetany_private.is_city(p_city) then perform meetany_private.fail('MA104'); end if;
@@ -2782,7 +2782,7 @@ declare
     when 'MA001' then 'not signed in'
     when 'MA002' then 'account is blocked'
     when 'MA003' then 'admin only'
-    when 'MA101' then 'title must be at least 5 characters'
+    when 'MA101' then 'title is required'
     when 'MA102' then 'description must be at least 10 characters'
     when 'MA103' then 'invalid category'
     when 'MA104' then 'invalid city'

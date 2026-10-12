@@ -3,8 +3,8 @@
 html:has(body.ma){-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--header-h) + var(--size-16))}
 body.ma{margin:0;min-width:var(--size-320);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-regular);color:var(--text);background:var(--canvas);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
 .ma,.ma-footer,.ma-sheet,#form-dialog{font-feature-settings:normal}
-.ma :is(h1,h2),.ma :is(.ma-display,.ma-h1,.ma-h2,.ma-section__title,.ma-sheet__title),.ma-sheet :is(h1,h2,.ma-sheet__title),#form-dialog h2{font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
-.ma .ma-btn,.ma-sheet .ma-btn{font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
+.ma :is(h1,h2,h3,h4,h5,h6),.ma :is(.ma-display,.ma-h1,.ma-h2,.ma-title,.ma-section__title,.ma-sheet__title),.ma-sheet :is(h1,h2,h3,h4,h5,h6,.ma-sheet__title),#form-dialog h2{font-feature-settings:var(--ff-heading)!important;letter-spacing:var(--ls-heading)}
+.ma .ma-btn,.ma-sheet .ma-btn,.ma .ma-tab{font-feature-settings:var(--ff-button)!important;letter-spacing:var(--ls-button)}
 .ma :where(h1,h2,h3,h4,h5,h6){margin:0;font-weight:var(--fw-semibold);color:var(--text);overflow-wrap:break-word}
 .ma :where(p,ul,ol,dl,dd,figure,blockquote){margin:0}
 .ma :where(ul[class],ol[class]){list-style:none;padding:0}
@@ -46,9 +46,5 @@ body.ma{margin:0;min-width:var(--size-320);font-family:var(--font-sans);font-siz
   color: var(--action);
 }
 
-/* Mtavruli is for page/section headings and buttons; user-written names and titles on cards stay in
-   regular letters so long text remains readable. */
-.ma :is(.detail-hero__title, .detail-author__name, .request-card__title, .company-card__name, .home-company__name, .home-request__title, .ma-ocard__name, .account-row__title, .inbox-row__name, .search-suggestion strong) {
-  font-feature-settings: normal;
-  letter-spacing: normal;
-}
+/* TT (FiraGO's Georgian case feature) is shared by headings and action buttons.
+   Paragraphs, field values, metadata and informational badges retain regular letters. */

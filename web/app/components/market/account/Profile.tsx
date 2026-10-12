@@ -17,12 +17,17 @@ import { useMarketStore } from "../../../lib/market-client";
 import { cities } from "../../../lib/categories";
 import { categoryOptions } from "../CategoryOptions";
 import type { AnyUser } from "./shared";
+import { CompanyUpgrade } from "./CompanyUpgrade";
+import styles from "./ProfileForm.module.css";
 const profileSections = { details: "მონაცემები და ფოტოები", products: "პროდუქტები", distribution: "დისტრიბუცია", security: "პაროლი" };
+export function CompanyProfileNav({active}:{active:string}) {
+ return <nav className="company-profile-sections" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}<Link href="/account/?tab=business" aria-current={active==="business"?"page":undefined}>ხილვადობის პაკეტები</Link></nav>;
+}
 export function CompanyProfile({me,section}:{me:AnyUser;section:string}) {
  const active=Object.hasOwn(profileSections,section)?section:"details";
  return <>
-  <nav className="company-profile-sections" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}<Link href="/account/?tab=business">ხილვადობის პაკეტები</Link></nav>
-  {active==="details"?<ProfileForm key={me.id} me={me}/>:active==="products"?<section className="account-section"><CompanyProducts companyId={me.id} edit/><p className="account-hint">ფოტოების დასამატებლად გახსენი <Link className="ma-link" href="/account/?tab=profile&section=details">მონაცემები და ფოტოები</Link>. ჯერ შეინახე გალერეა, შემდეგ აირჩიე პროდუქტის ფოტო.</p></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}
+  <CompanyProfileNav active={active}/>
+  {active==="details"?<ProfileForm key={me.id} me={me}/>:active==="products"?<section className="account-section"><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}
  </>;
 }
 
@@ -57,6 +62,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const coordinateDetails = useRef<HTMLDetailsElement>(null);
+  const [mapOpen, setMapOpen] = useState(false);
   const v = useFieldErrors();
 
   async function submit(e: React.FormEvent) {
@@ -108,17 +114,17 @@ export function ProfileForm({ me }: { me: AnyUser }) {
   }
 
   return (
-    <section className="account-section">
-      <h2 className="account-section__title">{isCompany ? "კომპანიის პროფილი" : "პირადი მონაცემები"}</h2>
+    <section className={`account-section ${styles.profileForm}`}>
+      <div className={styles.toolbar}>
+        <h2 className="account-section__title">{isCompany ? "მონაცემები და ფოტოები" : "პირადი მონაცემები"}</h2>
+        <Button variant="primary" type="submit" form="account-profile-form" loading={pending}>შენახვა</Button>
+        {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
+        {saved ? <p className="account-save-feedback" role="status"><Icon name="check"/>ცვლილებები შენახულია.</p> : null}
+      </div>
       <p className="account-hint">{isCompany ? "ეს ინფორმაცია ჩანს საჯარო პროფილზე და კომპანიების კატალოგში." : "სახელი და კომპანია ჩანს შენს მოთხოვნებზე."}</p>
-      <form className="ma-form" onSubmit={submit} onChange={() => setSaved(false)} noValidate>
+      <form id="account-profile-form" className="ma-form" onSubmit={submit} onChange={() => setSaved(false)} noValidate>
         <fieldset className="account-form-group" disabled={pending}>
           {isCompany ? <legend>ძირითადი</legend> : null}
-        {isCompany ? <LogoField name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading === "logo"}
-          onChange={file => { setLogoFile(file); setLogoChanged(true); setSaved(false); }}
-          onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); setSaved(false); }} /> : null}
-        {isCompany ? <GalleryField items={gallery} disabled={pending} uploading={uploading === "gallery"}
-          onChange={next => { setGallery(next); setGalleryChanged(true); setSaved(false); }} /> : null}
         <div className="ma-form__row ma-form__row--2">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="name">
@@ -135,8 +141,30 @@ export function ProfileForm({ me }: { me: AnyUser }) {
             {v.message("company")}
           </div>
         </div>
+        <div className="ma-form__row ma-form__row--2">
         <div className="ma-field profile-city-field"><label className="ma-field__label" htmlFor="profile-city">ქალაქი *</label><CustomSelect id="profile-city" value={city} onChange={event=>setCity(event.target.value)}>{Object.entries(cities).map(([id,label])=><option key={id} value={id}>{label}</option>)}</CustomSelect></div>
-        <div className="ma-form__row ma-form__row--3 account-contact">
+          {isCompany ? (
+            <div className="ma-field">
+              <label className="ma-field__label" htmlFor="industry">
+                მიმართულება *
+              </label>
+              <CustomSelect className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
+                {categoryOptions()}
+              </CustomSelect>
+            </div>
+          ) : null}
+        </div>
+        </fieldset>
+        {isCompany ? <fieldset className="account-form-group" disabled={pending}><legend>ლოგო და ფოტოები</legend><div className={styles.media}>
+        {isCompany ? <LogoField compact name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading === "logo"}
+          onChange={file => { setLogoFile(file); setLogoChanged(true); setSaved(false); }}
+          onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); setSaved(false); }} /> : null}
+        {isCompany ? <GalleryField compact items={gallery} disabled={pending} uploading={uploading === "gallery"}
+          onChange={next => { setGallery(next); setGalleryChanged(true); setSaved(false); }} /> : null}
+
+        </div></fieldset> : null}
+        <fieldset className="account-form-group" disabled={pending}><legend>კონტაქტი</legend>
+        <div className="ma-form__row ma-form__row--2 account-contact">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="profile-phone">
               ტელეფონი
@@ -149,18 +177,9 @@ export function ProfileForm({ me }: { me: AnyUser }) {
             </label>
             <input className="ma-input" id="profile-email" readOnly value={me.email} />
           </div>
-          {isCompany ? (
-            <div className="ma-field">
-              <label className="ma-field__label" htmlFor="industry">
-                მიმართულება *
-              </label>
-              <CustomSelect className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
-                {categoryOptions()}
-              </CustomSelect>
-            </div>
-          ) : null}
+
         </div>
-        <p className="ma-field__help account-contact__help" id="profile-phone-help">ტელეფონი და ელფოსტა ჩანს მხოლოდ იმ მხარისთვის, ვისთანაც შეთავაზება აირჩა (გარიგებაში). მათ შესაცვლელად: <Link href="/terms/#contact">მხარდაჭერასთან დაკავშირება</Link>.</p>
+        <p className="ma-field__help account-contact__help" id="profile-phone-help">კონტაქტს მხოლოდ გარიგების მეორე მხარე ხედავს. შესაცვლელად: <Link href="/terms/#contact">მხარდაჭერასთან დაკავშირება</Link>.</p>
         </fieldset>
         {isCompany ? (
           <>
@@ -168,14 +187,13 @@ export function ProfileForm({ me }: { me: AnyUser }) {
             <legend>მომსახურება</legend>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="about">
-                კომპანიის შესახებ · მაქს. 1000 სიმბოლო
+                კომპანიის შესახებ <span className="ma-field__opt" id="about-count">{about.length}/1000</span>
               </label>
               <textarea className="ma-textarea" id="about" maxLength={1000} aria-describedby="about-count" value={about} onChange={(e) => setAbout(e.target.value)} />
-              <p className="ma-field__help account-counter" id="about-count">{about.length}/1000</p>
             </div>
             <div className="ma-form__row ma-form__row--2">
-              <ProfileItems id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);setSaved(false);}}/>
-              <ProfileItems id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
+              <ProfileItems compact id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);setSaved(false);}}/>
+              <ProfileItems compact id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
             </div>
             <CompactMultiSelect id="profile-service-cities" label="მომსახურების ქალაქები" options={Object.entries(cities).map(([value,label])=>({value,label}))} value={serviceCities} exclusiveValue="georgia" disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
           </fieldset>
@@ -188,7 +206,9 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
               <p className="ma-field__help" id="address-help">ჩანს პროფილზე „მიმართულება“ ბმულით</p>
             </div>
-            <LocationPicker city={city} disabled={pending} value={Number.isFinite(parseCoord(lat))&&Number.isFinite(parseCoord(lng))&&Math.abs(parseCoord(lat)!)<=90&&Math.abs(parseCoord(lng)!)<=180?{lat:parseCoord(lat)!,lng:parseCoord(lng)!}:null} onChange={point=>{setLat(point?String(point.lat):"");setLng(point?String(point.lng):"");v.clear("lat");v.clear("lng");setSaved(false);}}/>
+            <details className={styles.locationDetails} onToggle={e => setMapOpen(e.currentTarget.open)}><summary><Icon name="map-pin"/><span>მდებარეობა რუკაზე</span>{lat && lng ? <small>მონიშნულია</small> : null}<Icon name="chevron-down"/></summary>
+            {mapOpen ? <LocationPicker city={city} disabled={pending} value={Number.isFinite(parseCoord(lat))&&Number.isFinite(parseCoord(lng))&&Math.abs(parseCoord(lat)!)<=90&&Math.abs(parseCoord(lng)!)<=180?{lat:parseCoord(lat)!,lng:parseCoord(lng)!}:null} onChange={point=>{setLat(point?String(point.lat):"");setLng(point?String(point.lng):"");v.clear("lat");v.clear("lng");setSaved(false);}}/> : null}
+            </details>
             <details className="account-location-details" ref={coordinateDetails}>
               <summary>კოორდინატების ხელით მითითება</summary>
             <fieldset className="ma-field account-coords" aria-describedby="coords-help">
@@ -213,21 +233,11 @@ export function ProfileForm({ me }: { me: AnyUser }) {
           </fieldset>
           </>
         ) : null}
-        {error ? (
-          <p className="ma-field__error" role="alert">
-            {error}
-          </p>
-        ) : null}
-        <div className="account-form-actions">
-          <Button variant="primary" type="submit" disabled={pending}>
-            {pending ? "ინახება…" : "შენახვა"}
-          </Button>
-          {saved ? <p className="account-save-feedback" role="status"><Icon name="check"/>ცვლილებები შენახულია.</p> : null}
-        </div>
         {isCompany ? <div className="account-form-links">
           <Link className="account-link" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}>საჯარო პროფილი</Link>
         </div> : null}
       </form>
+      <CompanyUpgrade user={me}/>
     </section>
   );
 }
@@ -281,7 +291,7 @@ export function PasswordForm() {
             <div className="auth-field-message">{v.message("password-repeat")}</div>
           </div>
         </fieldset>
-        <div className="auth-field-message"><p className="ma-field__error" role="alert">{error || ""}</p></div>
+        {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
         <div className="account-form-actions">
           <Button variant="primary" type="submit" disabled={pending}>{pending ? "ინახება…" : "პაროლის შეცვლა"}</Button>
         </div>

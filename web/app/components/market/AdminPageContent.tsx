@@ -165,7 +165,7 @@ export function AdminPageContent() {
   // the list also shows admins — say how many, so the two numbers add up.
   const unfilteredUsers = admin.mode === "ready" ? (!query && !status && !role ? admin.page?.filteredTotal : undefined) : users.length;
   const adminCount = unfilteredUsers === undefined ? 0 : Math.max(0, unfilteredUsers - stats.users);
-  const adminNote = (tab === "users" || tab === "companies") && adminCount ? ` · მათ შორის ${adminCount} ადმინი — ზედა მთვლელში არ ითვლება` : "";
+  const adminNote = (tab === "users" || tab === "companies") && adminCount ? ` · ${adminCount} ადმინი` : "";
 
   async function run(kind: PendingKind, action: string, id: string, reason: string, url?: string) {
     if (!store) return;
@@ -348,17 +348,16 @@ export function AdminPageContent() {
                   <td className={styles.checkCell}>{u.role !== "admin" ? <input type="checkbox" className={styles.check} aria-label={`მონიშვნა: ${u.company || u.name}`} checked={selected.includes(u.id)} onChange={() => toggleSelected(u.id)} /> : null}</td>
                   <td data-label={tab === "companies" ? "კომპანია" : "მომხმარებელი"}>
                     <button type="button" className={styles.rowLink} onClick={() => setDetail({ kind: "user", id: u.id })}>{u.company || u.name}</button>
-                    <small>
-                      {u.name} · {cities[u.city] || u.city}
-                    </small>
+                    <small>{[u.name !== (u.company || u.name) ? u.name : null, cities[u.city] || u.city].filter(Boolean).join(" · ")}</small>
                   </td>
                   <td data-label="როლი">
                     {u.role === "company" ? "კომპანია" : u.role === "admin" ? "ადმინი" : "კლიენტი"}
                     {u.industry ? <small>{categories[u.industry] || u.industry}</small> : null}
                   </td>
-                  <td data-label="კონტაქტი">
-                    {u.phone}
-                    <small>{u.email}</small>
+                  <td data-label="კონტაქტი" className={styles.userContact}>
+                    {u.phone ? <a href={`tel:${u.phone.replace(/[^+\d]/g, "")}`}>{u.phone}</a> : null}
+                    {u.email ? <a href={`mailto:${u.email}`}>{u.email}</a> : null}
+                    {!u.phone && !u.email ? "—" : null}
                   </td>
                   <td data-label="სტატუსი">
                     <AdminUserStatus user={u} onAction={setPendingAction} />

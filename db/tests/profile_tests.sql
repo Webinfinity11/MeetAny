@@ -91,7 +91,7 @@ select t.throws(format($$select public.update_request(%L, 'Anon edit', 'Anonymou
 select t.as_user('pf_g');
 select t.throws(format($$select public.update_request(%L, 'Rival edit', 'Rival changes the request', 'furniture', 'tbilisi')$$, t.get('pf_req')), 'MA107', 'P3 other user -> MA107');
 select t.as_user('pf_c');
-select t.throws(format($$select public.update_request(%L, 'Hi', 'Stackable chairs for a hall', 'furniture', 'tbilisi')$$, t.get('pf_req')), 'MA101', 'P3 short title -> MA101');
+select t.throws(format($$select public.update_request(%L, '', 'Stackable chairs for a hall', 'furniture', 'tbilisi')$$, t.get('pf_req')), 'MA101', 'P3 empty title -> MA101');
 select t.throws(format($$select public.update_request(%L, 'Need chairs', 'short', 'furniture', 'tbilisi')$$, t.get('pf_req')), 'MA102', 'P3 short body -> MA102');
 select t.throws(format($$select public.update_request(%L, 'Need chairs', 'Stackable chairs for a hall', 'weapons', 'tbilisi')$$, t.get('pf_req')), 'MA103', 'P3 bad category -> MA103');
 select t.throws(format($$select public.update_request(%L, 'Need chairs', 'Stackable chairs for a hall', 'furniture', 'paris')$$, t.get('pf_req')), 'MA104', 'P3 bad city -> MA104');

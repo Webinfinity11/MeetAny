@@ -60,8 +60,8 @@
 .confirmation svg{flex-shrink:0;color:var(--success-600)}
 .confirmation small{display:block;font-size:var(--size-12);color:var(--ink-500);margin-top:var(--size-4)}
 .form{display:grid;gap:var(--size-16);margin-top:var(--size-16)}
-.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--size-16)}
-.form label{display:grid;gap:var(--size-6);font-size:var(--size-14);min-width:0}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:var(--space-4)}
+.form label{display:grid;align-content:start;gap:var(--space-2);font-size:var(--fs-sm);min-width:0}
 .form input,.form select,.form textarea{width:100%;min-width:0}
 .form fieldset{border:0;padding:0;margin:0;min-width:0}
 .alert{border:var(--size-1) solid var(--warning-600);background:var(--warning-50);border-radius:var(--card-radius);padding:var(--size-16);margin-top:var(--size-16);font-size:var(--size-14);display:grid;gap:var(--size-12)}
@@ -154,9 +154,16 @@
 .grid{grid-template-columns:minmax(0,1fr) var(--size-300);gap:var(--space-6)}
 .aside{max-width:none}
 .identity h2{font-size:var(--size-15)}
-.identity .note{font-size:var(--size-12)}
-.contact .success{display:flex;align-items:center;gap:var(--space-2);font-size:var(--size-12)}
-.contact a{min-height:0}
+.identity .note{font-size:var(--fs-xs);margin-top:var(--space-1)}
+.identity>div{min-width:0}
+.identity h2{display:flex;align-items:center;gap:var(--space-2)}
+.identity h2 svg{width:var(--icon-sm);height:var(--icon-sm);flex:none;color:var(--success-600)}
+.contact{padding:var(--space-4)}
+.contact ul{margin-top:var(--space-3);gap:var(--space-1)}
+.contact li{display:grid;grid-template-columns:var(--icon-md) minmax(0,1fr);gap:var(--space-3);align-items:center}
+.contact li svg{width:var(--icon-md);height:var(--icon-md)}
+.contact li small{display:block;color:var(--text-3);font-size:var(--fs-xs)}
+.contact a{min-width:0;min-height:var(--tap-min);overflow-wrap:anywhere}
 .cancelAction{font-size:var(--size-12);color:var(--ink-500);text-decoration:none}
 .changes li>span{display:flex;align-items:center;justify-content:center;width:var(--size-36);height:var(--size-36);border-radius:50%;background:var(--ink-100);flex-shrink:0}
 .changes svg{color:var(--ink-700);width:var(--size-16);height:var(--size-16)}
@@ -196,7 +203,7 @@
 .compose input{flex:1;min-width:0;height:var(--size-44)}
 .compose button{flex-shrink:0;width:var(--size-44);height:var(--size-44);padding:0;background:var(--ink-950);color:var(--white)}
 .discussionActions{justify-content:flex-end}
-.termsFields{display:grid;gap:var(--space-5)}
+.termsFields{display:grid;gap:var(--space-3)}
 .priceInput{position:relative}
 .priceInput input{padding-right:var(--space-8)}
 .priceInput>span{position:absolute;right:var(--space-3);top:50%;transform:translateY(-50%);color:var(--ink-500);font-size:var(--size-12)}
@@ -209,12 +216,27 @@
 .form .issueChoices label{border:0;border-radius:0;padding:0;background:transparent;min-height:var(--size-24)}
 .issueChoices{grid-template-columns:repeat(2,minmax(0,1fr))}
 .reviewCriteria{border-top:var(--size-1) solid var(--ink-150)}
-.form .reviewCriterion{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);font-size:var(--size-14);padding:var(--space-3) 0;border-bottom:var(--size-1) solid var(--ink-150)}
+.form:has(.reviewCriteria){gap:var(--space-3)}
+.form .reviewCriterion{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);font-size:var(--size-14);padding:var(--space-2) 0;border-bottom:var(--size-1) solid var(--ink-150)}
 .reviewStars{display:flex;gap:var(--space-1);flex-shrink:0}
-.reviewStars button{display:flex;align-items:center;justify-content:center;border:0;padding:0;background:transparent;color:var(--ink-200);cursor:pointer;width:var(--size-22);height:var(--size-22)}
+.reviewStars button{display:flex;align-items:center;justify-content:center;border:0;padding:0;background:transparent;color:var(--ink-200);cursor:pointer;width:var(--tap-min);height:var(--tap-min)}
 .reviewStars button[data-filled=true]{color:var(--warning-600)}
 .reviewStars button svg:global(.icon){width:var(--size-22);height:var(--size-22);fill:currentColor}
 .reviewStars button:focus-visible{outline:var(--size-2) solid var(--ink-950);outline-offset:var(--size-2)}
 .againChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2);margin-top:var(--space-control-y)}
+.form .compactComment{min-height:var(--size-80);height:var(--size-80)}
+@media(max-width:39.99rem){.form .reviewCriterion{flex-wrap:wrap}.reviewStars{gap:0}}
 @media(width < 62.5rem){.grid{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:40rem){.issueCard{flex-direction:column;align-items:stretch}.termIncludes{grid-template-columns:minmax(0,1fr)}.modalActions{flex-direction:column-reverse;align-items:stretch}.discussion .chatLog{padding:var(--space-5)}.messageRow .bubble{max-width:calc(100% - var(--size-44))}.messageRow[data-mine=true] .bubble{max-width:90%}}
+@media(max-width:40rem){.issueCard{flex-direction:column;align-items:stretch}.termIncludes{grid-template-columns:minmax(0,1fr)}.modalActions{flex-direction:column-reverse;flex-wrap:nowrap;align-items:stretch}.form>.modalActions>button{flex:0 0 auto;width:100%}.discussion .chatLog{padding:var(--space-5)}.messageRow .bubble{max-width:calc(100% - var(--size-44))}.messageRow[data-mine=true] .bubble{max-width:90%}}
+
+/* Narrow summaries keep the whole price readable rather than splitting digits in three columns. */
+@media(max-width:479px){.facts{grid-template-columns:minmax(0,1fr)}.facts>div{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--space-2);padding:var(--space-3)}.facts>div+div{border-left:0;border-top:var(--size-1) solid var(--ink-200)}.facts dd{margin:0;font-variant-numeric:tabular-nums}}
+.collaborationList { display:grid; gap:var(--space-4); }
+.proposal { display:grid; gap:var(--space-3); border:var(--size-1) solid var(--card-border); border-radius:var(--card-radius); padding:var(--space-4); min-width:0; }
+.proposal time { font-size:var(--fs-sm); color:var(--ink-600); }
+.proposalRows { margin:0; display:grid; gap:var(--space-3); }
+.proposalRows > div { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--space-3); }
+.proposalRows dt { color:var(--ink-600); }
+.proposalRows dd { margin:0; display:grid; gap:var(--space-1); white-space:pre-wrap; overflow-wrap:anywhere; }
+.proposalRows dd span { color:var(--ink-600); text-decoration:line-through; }
+@media(max-width:520px) { .proposalRows > div { grid-template-columns:minmax(0,1fr); } }

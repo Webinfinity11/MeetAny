@@ -43,7 +43,8 @@ export function Header() {
   // The header must not pop in: the last known role (guest/client/company/admin) is remembered and
   // drawn before the session check finishes, so buttons keep their place on every load.
   const hint = useSyncExternalStore(subscribeNothing, readRoleHint, () => null);
-  const liveRole = ready ? ((me?.role as string | undefined) || "guest") : null;
+  const sessionUnknown = !ready || !!store?.sessionLoadError?.();
+  const liveRole = ready && !sessionUnknown ? ((me?.role as string | undefined) || "guest") : null;
   useEffect(() => {
     if (!liveRole) return;
     try { localStorage.setItem("meetany.headerRole", liveRole); } catch {}
@@ -73,7 +74,7 @@ export function Header() {
   const accountLabel = isAdmin ? "ადმინი" : "პროფილი";
   const focusEdge = useRef<"first" | "last" | null>(null);
   // Messages and notifications live once, as the badged icons in the header bar (visible at every width).
-  const links = !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company&entry=header"]]
+  const links = !me && sessionUnknown ? [["user-round", "ანგარიში", "/account/"]] : !me && store?.hasSession() ? [["user-round", "პროფილის დასრულება", "/account/"]] : !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company&entry=header"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
     : me.role === "company" ? [
       ["search", "შესაბამისი მოთხოვნები", "/account/?tab=opportunities"],
@@ -97,6 +98,8 @@ export function Header() {
   const mobileLinks = !me ? links : isAdmin ? links : [
     [isCompanyRole(me.role) ? "building-2" : "clipboard-list", isCompanyRole(me.role) ? "ჩემი კომპანია" : "ჩემი მოთხოვნები", "/account/"],
     ["message-square", "მიმოწერები", "/account/?tab=messages"],
+    ["bell", "შეტყობინებები", "/account/?tab=notifications"],
+    ["bookmark", "შენახული კომპანიები", "/account/?tab=saved"],
     ["settings", "პროფილის პარამეტრები", "/account/?tab=profile"],
   ];
   useLayoutEffect(() => {
@@ -108,7 +111,7 @@ export function Header() {
   useEffect(() => {
     const close = (e: PointerEvent) => { if (!dropdown.current?.contains(e.target as Node)) setAccountOpen(false); };
     document.addEventListener("pointerdown", close);
-    const media = matchMedia("(min-width:768px)");
+    const media = matchMedia("(min-width:1024px)");
     const resize = () => { if (media.matches) mobile.current?.close(); };
     media.addEventListener("change", resize);
     return () => { document.removeEventListener("pointerdown", close); media.removeEventListener("change", resize); };
@@ -132,7 +135,7 @@ export function Header() {
         <Link className={h("ma-header__search")} href="/requests/?focus=search" onClick={event => { if (pathname === "/requests/") { const input = document.querySelector<HTMLInputElement>('main input[type="search"]'); if (input) { event.preventDefault(); input.focus(); } } }} aria-label="მოთხოვნების ძიება"><Icon name="search"/></Link>
         <ThemeToggle />
         {role && role !== "guest" && !isAdmin ? <div className={h("ma-header__updates")}>{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className={h("ma-header__slot")} aria-hidden="true" /><span className={h("ma-header__slot")} aria-hidden="true" /></>}</div> : null}
-        {role === "guest" ? <Button variant="secondary" className={h("ma-header__login")} href="/account/">შესვლა</Button> : null}{!isAdmin && !isCompany ? add : null}
+        {role === "guest" ? <Button variant="secondary" className={h("ma-header__login")} href="/account/">{sessionUnknown ? "ანგარიში" : store?.hasSession() && !me ? "პროფილი" : "შესვლა"}</Button> : null}{!isAdmin && !isCompany ? add : null}
         {me ? <div ref={dropdown} className={h("ma-menu ma-header__account")} onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {
           if (e.key === "Escape") {e.preventDefault(); e.stopPropagation(); setAccountOpen(false); dropdown.current?.querySelector<HTMLButtonElement>("button")?.focus();}
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
@@ -152,7 +155,7 @@ export function Header() {
           </div>
         </div> : role && role !== "guest" ? <div className={h("ma-menu ma-header__account")}>
           {/* Same trigger as the live menu, drawn from the remembered role until the session is known. */}
-          <button className={h(`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`)} type="button" title={accountLabel} aria-label={accountLabel} aria-busy="true" tabIndex={-1}>{isAdmin ? <><Icon name="shield-check"/><span className={h("ma-menu__label")}>{accountLabel}</span><Icon name="chevron-down"/></> : <span className={h("ma-avatar ma-header__avatar")} aria-hidden="true"><Icon name={role === "company" ? "building-2" : "user-round"}/></span>}</button>
+          <Link className={h(`ma-menu__trigger${isAdmin ? "" : " ma-menu__trigger--compact"}`)} href="/account/" title={accountLabel} aria-label={accountLabel} aria-busy={!ready}>{isAdmin ? <><Icon name="shield-check"/><span className={h("ma-menu__label")}>{accountLabel}</span><Icon name="chevron-down"/></> : <span className={h("ma-avatar ma-header__avatar")} aria-hidden="true"><Icon name={role === "company" ? "building-2" : "user-round"}/></span>}</Link>
         </div> : null}
       </div>
       <button ref={opener} className={h("ma-header__menu-btn")} aria-label="მენიუ" aria-haspopup="dialog" aria-controls="ma-mnav" aria-expanded={menuOpen} onClick={() => {mobile.current?.showModal(); setMenuOpen(true);}}><Icon name="menu"/></button>

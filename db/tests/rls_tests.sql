@@ -309,8 +309,8 @@ select t.throws($$select public.create_request('სკამები 1000 ც�
 select t.throws($$insert into public.requests (owner_id, title, body, category, city) values (gen_random_uuid(), 'hello world', 'hello world body', 'food_fresh', 'tbilisi')$$, '42501', 'anon direct insert into requests denied');
 
 select t.as_user('nino');
-select t.throws($$select public.create_request('abc', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi')$$, 'MA101', 'short title -> MA101');
-select t.throws($$select public.create_request('    abcd    ', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi')$$, 'MA101', 'title is trimmed before length check -> MA101');
+select t.throws($$select public.create_request('', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi')$$, 'MA101', 'empty title -> MA101');
+select t.throws($$select public.create_request('    ', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'furniture', 'tbilisi')$$, 'MA101', 'title is trimmed before length check -> MA101');
 select t.throws($$select public.create_request('სკამები 1000 ცალი', 'მოკლე', 'furniture', 'tbilisi')$$, 'MA102', 'short body -> MA102');
 select t.throws($$select public.create_request('სკამები 1000 ცალი', 'გვჭირდება 1000 სკამი დარბაზისთვის', 'chairs', 'tbilisi')$$, 'MA103', 'bad category -> MA103');
 select t.throws($$select public.create_request('სკამები 1000 ცალი', 'გვჭირდება 1000 სკამი დარბაზისთვის', null, 'tbilisi')$$, 'MA103', 'null category -> MA103');

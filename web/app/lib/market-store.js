@@ -1,7 +1,9 @@
+import { normalizeMobilePhone as normalizePhone } from './mobile-phone.js';
 /* Shared browser data/auth layer. Called once by market-client.ts after mount.
    Every mutation refreshes cache and notifies React subscribers. See db/CONTRACT.md. */
 import { toast } from '../components/Toasts';
 import { readAllRows } from './read-all-rows.js';
+import { withReadTimeout } from './read-timeout.js';
 import { categories, categoryKind, expandCategories } from './categories-data.js';
 import { isInternalTestAccount, isInternalTestRequest } from './catalog-visibility.js';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
@@ -32,7 +34,7 @@ export function createMarketStore({initial=null,background=true}={}){
   MA701:'აირჩიე მიზეზი. „სხვა“ მიზეზისთვის დაწერე 3–500 სიმბოლო.',MA702:'ეს გვერდი ვეღარ მოიძებნა ან მისი შეტყობინება შეუძლებელია.',MA703:'საკუთარ გვერდზე შეტყობინებას ვერ გააგზავნი.',
   MA704:'ამაზე უკვე შეგვატყობინე. შეტყობინებას განვიხილავთ.',MA705:'დღეში შეიძლება 10 შეტყობინება. სცადე ხვალ.',MA706:'საჩივარი უკვე დამუშავებულია. განაახლე სია.',
   MA001:'ამისთვის შედი ანგარიშში.',MA002:'ანგარიში დაბლოკილია.',MA003:'ეს მოქმედება მხოლოდ ადმინისთვისაა.',
-  MA101:'სათაური უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს.',MA102:'აღწერე საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიე კატეგორია.',MA104:'აირჩიე ქალაქი.',
+  MA101:'მიუთითე სათაური.',MA102:'აღწერე საჭიროება მინიმუმ 10 სიმბოლოთი.',MA103:'აირჩიე კატეგორია.',MA104:'აირჩიე ქალაქი.',
   MA105:'ერთდროულად შეიძლება 5 ღია განცხადება. დახურე ძველი და სცადე თავიდან.',MA106:'განცხადება ვერ მოიძებნა.',MA107:'ეს განცხადება შენ არ გეკუთვნის.',
   MA108:'არჩეული ან დამალული განცხადება ვერ გაგრძელდება.',MA109:'ატვირთე მხოლოდ სურათი.',
   MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიე რაოდენობის ერთეული.',MA113:'აირჩიე დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
@@ -71,12 +73,6 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  const clean=(value,max)=>String(value??'').trim().slice(0,max);
 
- function normalizePhone(value){
-  const digits=String(value||'').replace(/[^\d]/g,'');
-  const local=digits.startsWith('995')?digits.slice(3):digits.startsWith('0')?digits.slice(1):digits;
-  if(!/^5\d{8}$/.test(local))return null;
-  return '+995 '+local.slice(0,3)+' '+local.slice(3,6)+' '+local.slice(6);
- }
 
  /* ---------- config ---------- */
  const config={authUrl:process.env.NEXT_PUBLIC_NEON_AUTH_BASE_URL,dataApiUrl:'/api/db',uploadUrl:'/api/blob-upload'};
@@ -91,65 +87,80 @@ export function createMarketStore({initial=null,background=true}={}){
 
  /* ---------- tokens (Neon Auth JWT, 15 min, re-fetched from /token while the session cookie lives) ---------- */
  const claimsOf=t=>{try{return JSON.parse(decodeURIComponent(escape(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));}catch{return {};}};
- let userJwt=null,userExp=0,authUser=null,anon=null,anonExp=0;
- function setUserJwt(t){
+ let userJwt=null,userExp=0,authUser=null,userJwtTask=null,authRevision=0,authInFlight=0,profileError=null;
+ function setUserJwt(t,sessionUser){
+  const previous=authUser?.id||null;
   const c=t?claimsOf(t):{};
-  if(t&&c.sub&&c.role==='authenticated'){userJwt=t;userExp=(Number(c.exp)||0)*1000;authUser={id:c.sub,email:String(c.email||'').toLowerCase()};}
+  if(t&&c.sub&&c.role==='authenticated'){userJwt=t;userExp=(Number(c.exp)||0)*1000;authUser={id:c.sub,email:String(c.email||sessionUser?.email||'').toLowerCase(),name:String(sessionUser?.name||'')};}
   else{userJwt=null;userExp=0;authUser=null;}
+  if(previous&&previous!==authUser?.id)clearCallerCache();
  }
+ let sessionPreloadUsed=false;
  async function authFetch(path,body){
-  let res;
+  if(path==='/get-session'&&!sessionPreloadUsed&&typeof window!=='undefined'&&window.__meetanySessionPreload){
+   sessionPreloadUsed=true;
+   const preload=window.__meetanySessionPreload;delete window.__meetanySessionPreload;
+   const response=await withReadTimeout(()=>preload);
+   if(response?.error==='TIMEOUT')throw userError(GENERIC,'NETWORK',new Error('Session read timed out'));
+   if(response)return response;
+  }
+  let res,data;
   try{
-   res=await fetch(AUTH+path,{method:body?'POST':'GET',credentials:'include',
-    headers:body?{'Content-Type':'application/json',Accept:'application/json'}:{Accept:'application/json'},body:body?JSON.stringify(body):undefined});
+   const read=async signal=>{
+    res=await fetch(AUTH+path,{method:body?'POST':'GET',credentials:'include',signal,
+     headers:body?{'Content-Type':'application/json',Accept:'application/json'}:{Accept:'application/json'},body:body?JSON.stringify(body):undefined});
+    data=await res.json().catch(()=>null);
+   };
+   if(body)await read();else await withReadTimeout(read);
   }catch(err){throw userError(GENERIC,'NETWORK',err);}
-  const data=await res.json().catch(()=>null);
   if(!res.ok){const e=new Error(data?.message||('auth '+res.status));e.status=res.status;e.code=data?.code||'';throw e;}
   return {data,jwt:res.headers.get('set-auth-jwt')};
  }
  // Asks Neon Auth for a fresh user JWT (needs the session cookie). No session -> signed out.
- async function loadUserJwt(){
-  try{
-   // get-session answers 200 (null when signed out), so a signed-out visit logs no 401.
-   const {data:session,jwt}=await authFetch('/get-session');
-   if(!session?.user){setUserJwt(null);return null;}
-   const {data}=jwt?{data:{token:jwt}}:await authFetch('/token');
-   setUserJwt(data?.token||null);
-  }
-  catch(err){if(err.status===401||err.status===403||err.status===404)setUserJwt(null);else throw err;}
-  return userJwt;
- }
- // Parallel reads share one in-flight /token/anonymous request.
- let anonTask=null;
- function anonJwt(){
-  if(anon&&Date.now()<anonExp-60e3)return Promise.resolve(anon);
-  if(!anonTask)anonTask=authFetch('/token/anonymous').then(({data})=>{
-   if(!data?.token)throw new Error('no anonymous token');
-   const e=Number(data.expires_at)||0;
-   anon=data.token;anonExp=e>1e12?e:e>0?e*1000:(Number(claimsOf(anon).exp)||0)*1000; // seconds or milliseconds
-   return anon;
-  }).finally(()=>{anonTask=null;});
-  return anonTask;
+ async function loadUserJwt(fresh=false){
+  if(authInFlight&&!fresh)return userJwt;
+  if(fresh){authRevision++;userJwtTask=null;sessionPreloadUsed=true;if(typeof window!=='undefined')delete window.__meetanySessionPreload;}
+  if(userJwtTask)return userJwtTask;
+  const revision=authRevision;
+  const task=(async()=>{
+   try{
+    const {data:session,jwt}=await authFetch('/get-session');
+    if(revision!==authRevision)return userJwt;
+    if(!session?.user){setUserJwt(null);return null;}
+    const {data}=jwt?{data:{token:jwt}}:await authFetch('/token');
+    if(revision===authRevision)setUserJwt(data?.token||null,session.user);
+   }catch(err){
+    if(revision!==authRevision)return userJwt;
+    if(err.status===401||err.status===403||err.status===404)setUserJwt(null);else throw err;
+   }
+   return userJwt;
+  })();
+  userJwtTask=task;
+  try{return await task;}finally{if(userJwtTask===task)userJwtTask=null;}
  }
  async function token(){
-  if(userJwt&&Date.now()<userExp-60e3)return userJwt;
-  if(userJwt&&!(await loadUserJwt()))return anonJwt();
-  return userJwt||anonJwt();
+  if(userJwt&&Date.now()>=userExp-60e3)await loadUserJwt();
+  // The same-origin API already authorizes absent credentials as anonymous.
+  // Guests need no external Auth request or anonymous JWT.
+  return userJwt;
  }
 
  /* ---------- Data API ---------- */
  async function db(path,{method='GET',body,retried=false,keepalive=false}={}){
   const bearer=await token();
-  let res;
+  let res,text;
   try{
-   res=await fetch(API+path,{method,keepalive,headers:{Authorization:'Bearer '+bearer,Accept:'application/json',...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body!==undefined?JSON.stringify(body):undefined});
+   const read=async signal=>{
+    res=await fetch(API+path,{method,keepalive,signal,headers:{...(bearer?{Authorization:'Bearer '+bearer}:{}),Accept:'application/json',...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body!==undefined?JSON.stringify(body):undefined});
+    text=await res.text();
+   };
+   if(method==='GET')await withReadTimeout(read);else await read();
   }catch(err){throw userError(GENERIC,'NETWORK',err);}
   if(res.status===401&&!retried){
    // Expired or revoked token: fetch a fresh one once and retry.
-   if(bearer===userJwt){userExp=0;await loadUserJwt();}else{anon=null;}
+   if(bearer){userExp=0;await loadUserJwt();}else throw toError({message:'HTTP 401'});
    return db(path,{method,body,retried:true,keepalive});
   }
-  const text=await res.text();
   let data=null;if(text){try{data=JSON.parse(text);}catch{data=null;}}
   if(!res.ok)throw toError(data||{message:'HTTP '+res.status});
   return data;
@@ -160,7 +171,7 @@ export function createMarketStore({initial=null,background=true}={}){
 
  /* ---------- cache ---------- */
  let cache={me:null,requests:[],offers:[],counts:{},profiles:{},contacts:{},users:null,stats:null,companies:[],companyStats:{}};
- let isReady=false,loadFailed=!configured,sessionReady=false;
+ let isReady=false,loadFailed=!configured,sessionReady=false,sessionLoadError=null;
  let dataRevision=0;
  const requestLoads=new Map();
  const companyLoads=new Map();
@@ -263,13 +274,11 @@ export function createMarketStore({initial=null,background=true}={}){
  seedPublic(initial);
 
  // Independent reads run side by side; each dependent read starts as soon as its input arrives.
- async function load(){
+ async function loadLegacy(){
   if(!userJwt||Date.now()>=userExp-60e3){
-   // A guest needs the anonymous token next, so ask for it while get-session answers.
-   if(!userJwt&&!anon)anonJwt().catch(()=>{});
    await loadUserJwt();
   }
-  const uid=authUser?.id||null;
+  const uid=authUser?.id||null,revision=authRevision;
   const post=(fn,body={})=>db('/rpc/'+fn,{method:'POST',body});
   const reqP=readAllRows(db,'/requests?select=*').then(r=>r.map(mapRequest));
   const meP=uid?post('my_profile').then(one).then(mapUser):Promise.resolve(null);
@@ -304,6 +313,7 @@ export function createMarketStore({initial=null,background=true}={}){
   const settled=await Promise.allSettled(all);
   const failed=settled.find(s=>s.status==='rejected');
   if(failed)throw failed.reason;
+  if(revision!==authRevision||uid!==(authUser?.id||null))return;
   const [requests,me,companies,offerList,statRows,countRows,{statsRow,userRows},profileRows,contactList]=settled.map(s=>s.value);
   const next={me,requests,offers:me?offerList:[],counts:{},profiles:{},contacts:{},users:null,stats:statsRow||null,companies,companyStats:{}};
   for(const c of companies)next.profiles[c.id]=c;
@@ -320,12 +330,37 @@ export function createMarketStore({initial=null,background=true}={}){
   await refreshEngagement(pre);
  }
 
+ // Bootstrap all caller-scoped data in one network/database transaction.
+ async function load(){
+  if(!userJwt||Date.now()>=userExp-60e3)await loadUserJwt();
+  if(!authInFlight&&authUser&&pendingMatches()&&hasPendingDetails()){
+   try{await completeProfile(pending);profileError=null;}catch(err){profileError=err.userMessage||GENERIC;}
+  }
+  const revision=authRevision,actor=authUser?.id||null;
+  let data;
+  try{data=await db('/bootstrap');}
+  catch(err){if(err.code==='PGRST205')return loadLegacy();throw err;}
+  if(revision!==authRevision||actor!==(authUser?.id||null))return;
+  const me=mapUser(data.me),companies=data.companies.map(mapUser).sort(compareCompanies);
+  const next={me,requests:data.requests.map(mapRequest),offers:me?data.offers.map(mapOffer):[],counts:{},profiles:{},contacts:{},users:null,stats:data.stats||null,companies,companyStats:{}};
+  for(const p of [...companies,...data.profiles.map(mapUser)])next.profiles[p.id]=p;
+  if(me){next.profiles[me.id]=me;if(pendingMatches()){setPending(null);profileError=null;}}
+  for(const row of data.counts)next.counts[row.request_id]=Number(row.offers)||0;
+  for(const row of data.companyStats)next.companyStats[row.company_id]={sent:Number(row.offers_sent)||0,chosen:Number(row.offers_chosen)||0};
+  for(const row of data.contacts)if(row.contact)next.contacts[row.id]=row.contact;
+  if(JSON.stringify(cache)!==JSON.stringify(next)){cache=next;dataRevision++;}
+  engagementCapabilities=data.capabilities;
+  if(me&&!me.blocked&&data.engagement){engagement={...data.engagement,owner:me.id,status:'ready',emailDelivery:data.capabilities.emailDelivery};engagementStale=false;}
+  else engagement={...engagement,owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null}};
+  if(pendingSaveIntent())await refreshEngagement();
+ }
+
  // Refreshes are serialized: a call during a running refresh schedules exactly one more.
  let running=null,queued=null,loadedAt=0;
  function refresh(){
   if(!configured)return Promise.resolve();
   if(running){if(!queued)queued=running.then(()=>{queued=null;return refresh();});return queued;}
-  running=load().then(()=>{loadFailed=false;dataStale=false;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!isReady)loadFailed=true;else dataStale=true;})
+  running=load().then(()=>{loadFailed=false;dataStale=false;sessionLoadError=null;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!sessionReady)sessionLoadError=GENERIC;if(!isReady)loadFailed=true;else dataStale=true;})
    .then(()=>{running=null;isReady=true;sessionReady=true;emit();});
   return running;
  }
@@ -335,7 +370,7 @@ export function createMarketStore({initial=null,background=true}={}){
   if(Date.now()-loadedAt<5000)return Promise.resolve();
   return refresh();
  }
- const readyPromise=background&&typeof window!=='undefined'?(configured?refresh():Promise.resolve().then(()=>{isReady=true;emit();})):Promise.resolve();
+ const readyPromise=background&&typeof window!=='undefined'?(configured?refresh():Promise.resolve().then(()=>{isReady=true;sessionReady=true;sessionLoadError=UNAVAILABLE;emit();})):Promise.resolve();
 
  function client(){if(!configured)fail(UNAVAILABLE);}
  async function rpc(name,args={}){client();return db('/rpc/'+name,{method:'POST',body:args});}
@@ -350,12 +385,15 @@ export function createMarketStore({initial=null,background=true}={}){
  try{pending=JSON.parse(sessionStorage.getItem(PENDING_KEY)||'null');}catch{pending=null;}
  function setPending(value){pending=value;try{if(value)sessionStorage.setItem(PENDING_KEY,JSON.stringify(value));else sessionStorage.removeItem(PENDING_KEY);}catch{}}
  // Signed in with Neon Auth but no MarketStore profile yet (the code was verified, complete_profile not done).
- function needsProfile(){return !!(authUser&&!cache.me);}
+ function needsProfile(){return !!(sessionReady&&!authInFlight&&authUser&&!cache.me);}
+ function pendingMatches(){return !!(pending&&authUser&&pending.email?.toLowerCase()===authUser.email);}
+ function hasPendingDetails(){return !!(pending?.role&&pending?.name&&pending?.phone&&pending?.city);}
  function pendingProfile(){
-  if(needsProfile())return {...(pending&&pending.email===authUser.email?pending:{}),email:authUser.email};
+  if(needsProfile())return {name:authUser.name,...(pendingMatches()?pending:{}),email:authUser.email};
   return pending?{...pending}:null;
  }
- function pendingEmail(){return pending&&!authUser?pending.email||null:null;}
+ let verifyingEmail=false;
+ function pendingEmail(){return pending&&(!authUser||verifyingEmail)?pending.email||null:null;}
 
  function validateProfile(input,{email,withPassword}){
   const role=input.role==='company'?'company':'client';
@@ -369,40 +407,42 @@ export function createMarketStore({initial=null,background=true}={}){
   if(!input.acceptTerms)fail(TERMS);
   if(!Object.hasOwn(cities,input.city))fail(MSG.MA104,'MA104');
   if(role==='company'&&!Object.hasOwn(categories,input.industry))fail(MSG.MA407,'MA407');
-  return {role,name,company:company||name,phone,city:input.city,industry:role==='company'?input.industry:null,email};
+  return {role,name,company:company||name,phone,city:input.city,industry:role==='company'?input.industry:null,email,acceptTerms:true};
  }
  async function completeProfile(p){
   const row=one(await rpc('complete_profile',{p_role:p.role,p_name:p.name,p_company:p.company,p_phone:p.phone,p_city:p.city,p_industry:p.industry}));
   return row;
  }
  // After the code was verified or a password sign-in: JWT -> profile (complete it if the form values are known) -> blocked check.
- async function finishSignIn(){
-  if(!(await loadUserJwt()))fail(GENERIC);
+ async function finishSignIn(loaded=false){
+  if(!(loaded?userJwt:await loadUserJwt(true)))fail(GENERIC);
   let me=one(await rpc('my_profile'));
-  if(!me&&pending&&pending.email===authUser.email){
+  if(!me&&pendingMatches()&&hasPendingDetails()){
    try{me=await completeProfile(pending);}
-   catch(err){await refresh();throw err;}
+   catch(err){profileError=err.userMessage||GENERIC;await refresh();throw err;}
   }
   if(!me){await refresh();fail('', 'PROFILE_REQUIRED');}
   if(me.blocked){await logout();fail(BLOCKED_LOGIN);}
-  setPending(null);
+  setPending(null);profileError=null;
   await refresh();
   if(!cache.me)fail(GENERIC);
   return cache.me;
  }
 
- async function register(input){
+ async function registerInner(input){
   client();
   // Already signed in without a profile (e.g. MA405 after the code step): only complete the profile.
-  if(needsProfile()){
+  if(authUser&&!cache.me){
    const p=validateProfile(input,{email:authUser.email,withPassword:false});
    setPending(p);
-   return finishSignIn();
+   return finishSignIn(true);
   }
   const email=clean(input.email,120).toLowerCase();
   const p=validateProfile(input,{email,withPassword:true});
+  setPending(p);
   try{await authFetch('/sign-up/email',{email,password:String(input.password||''),name:p.name});}
   catch(err){
+   setPending(null);
    if(err.userMessage)throw err;
    const code=String(err.code||'');
    if(/^USER_ALREADY_EXISTS/.test(code)||err.status===422&&/exist/i.test(err.message))fail(EMAIL_EXISTS);
@@ -412,10 +452,11 @@ export function createMarketStore({initial=null,background=true}={}){
   }
   setPending(p);
   // No email code step when Neon Auth signs the user in right away (email verification off).
-  if(await loadUserJwt().catch(()=>null))return finishSignIn();
+  if(await loadUserJwt(true).catch(()=>null))return finishSignIn(true);
   return {confirmationPending:true,email,message:CHECK_EMAIL};
  }
- async function verifyEmailCode(code){
+ async function register(input){authInFlight++;try{return await registerInner(input);}finally{authInFlight--;emit();}}
+ async function verifyEmailCodeInner(code){
   client();
   const email=pending?.email;
   if(!email)fail(GENERIC);
@@ -428,6 +469,11 @@ export function createMarketStore({initial=null,background=true}={}){
    throw toError(err);
   }
   return finishSignIn();
+ }
+ async function verifyEmailCode(code){
+  verifyingEmail=true;authInFlight++;
+  try{return await verifyEmailCodeInner(code);}
+  finally{verifyingEmail=false;authInFlight--;emit();}
  }
  async function resendCode(){
   client();
@@ -503,12 +549,21 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  function pendingResetEmail(){return resetEmail;}
 
+ function clearCallerCache(){
+  cache={me:null,requests:[],offers:[],counts:{},profiles:{},contacts:{},users:null,stats:null,companies:[],companyStats:{}};
+  engagement={owner:null,status:'idle',savedIds:[],unread:0,notifications:{items:[],nextCursor:null},emailOffers:false,emailDelivery:false};
+  dataRevision++;engagementRevision++;
+ }
  async function logout(){
   if(!configured)return;
+  authInFlight++;authRevision++;userJwtTask=null;
+  setUserJwt(null);setPending(null);clearCallerCache();profileError=null;emit();
   let error=null;
-  try{await authFetch('/sign-out',{});}catch(err){error=err;}
-  setUserJwt(null);setPending(null);
-  await refresh();
+  try{
+   try{await authFetch('/sign-out',{});}catch(err){error=err;}
+   authRevision++;userJwtTask=null;
+   await refresh();
+  }finally{authInFlight--;emit();}
   if(error)throw toError(error);
  }
 
@@ -634,7 +689,7 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  function validateRequest(input,keepDate=null){
   const title=clean(input.title,120),body=clean(input.body,2000);
-  if(title.length<5)fail(MSG.MA101,'MA101');
+  if(!title)fail(MSG.MA101,'MA101');
   if(body.length<10)fail(MSG.MA102,'MA102');
   if(!Object.hasOwn(categories,input.category))fail(MSG.MA103,'MA103');
   if(!Object.hasOwn(cities,input.city))fail(MSG.MA104,'MA104');
@@ -687,8 +742,8 @@ export function createMarketStore({initial=null,background=true}={}){
   const hasPhoto=input.photo&&(typeof input.photo==='string'?input.photo.startsWith('data:image/'):true);
   const photo=hasPhoto?await uploadPhoto(user,input.photo):null;
   try{
-   return await mutate('create_request',{p_title:fields.title,p_body:fields.body,p_category:fields.category,p_city:fields.city,p_photo_url:photo?photo.url:null,
-    p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy,p_address_note:fields.addressNote},mapRequest);
+   return await mutate(input.preferences?'create_request_full':'create_request',{p_title:fields.title,p_body:fields.body,p_category:fields.category,p_city:fields.city,p_photo_url:photo?photo.url:null,
+    p_quantity:fields.quantity,p_unit:fields.unit,p_needed_by:fields.neededBy,p_address_note:fields.addressNote,...(input.preferences?{p_preferences:input.preferences,p_draft:input.attachmentDraft||null}:{})},mapRequest);
   }catch(err){
    if(photo)removePhoto(photo.url);
    throw err;
@@ -915,11 +970,12 @@ export function createMarketStore({initial=null,background=true}={}){
   // Generic entry points for the new flows (deals, comparison, matching, onboarding): callRpc reads,
   // mutateRpc writes and then refreshes the public snapshot. Errors carry MAxxx userMessage texts.
   callRpc:(name,args={})=>rpc(name,args),
+  authenticatedFetch:async (path,options={})=>{if(!/^\/api\/files(?:\?|$)/.test(path))throw new Error('Invalid file endpoint');const headers=new Headers(options.headers);headers.set('Authorization','Bearer '+await token());let response=await fetch(path,{...options,headers});if(response.status===401){userExp=0;await loadUserJwt();headers.set('Authorization','Bearer '+await token());response=await fetch(path,{...options,headers});}return response;},
   mutateRpc:(name,args={})=>mutate(name,args),
-  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isSessionReady:()=>sessionReady,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,
+  seedPublic,ready:()=>readyPromise,isReady:()=>isReady,isSessionReady:()=>sessionReady,sessionLoadError:()=>sessionLoadError,isAvailable:()=>configured&&!loadFailed,isStale:()=>dataStale||engagementStale,refresh,revalidate,dataRevision:()=>dataRevision,ensureRequest,
   // A signed-in session exists even when its profile has not loaded yet (e.g. a failed first refresh).
   hasSession:()=>!!authUser,
-  currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,login,logout,
+  currentUser,userById,register,verifyEmailCode,resendCode,pendingEmail,pendingProfile,needsProfile,profileCompletionError:()=>profileError,login,logout,
   requestPasswordReset,resetPassword,changePassword,pendingResetEmail,
   requestState,daysLeft,offerCount,listRequests,getRequest,visibleOffers,contactFor,
   createRequest,updateRequest,closeRequest,extendRequest,deleteRequest,sendOffer,withdrawOffer,chooseOffer,myOffers,

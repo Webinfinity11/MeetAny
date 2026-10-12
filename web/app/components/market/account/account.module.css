@@ -18,8 +18,8 @@
 .heading h1{margin:0;font-size:var(--size-30);line-height:1.25;color:var(--ink-950);overflow-wrap:anywhere}
 .heading p{margin:var(--space-2) 0 0;color:var(--ink-600);font-size:var(--fs-button)}
 .heading>a{flex:none}
-.shell :global(.account-filter-chips){overflow:auto;flex-wrap:nowrap;max-width:100%;padding-bottom:var(--space-1)}
-.shell :global(.account-filter-chips button){flex:none;min-height:var(--tap-min)}
+.shell :global(.account-filter-chips){overflow:visible;flex-wrap:wrap;max-width:100%;padding-bottom:var(--space-1)}
+.shell :global(.account-filter-chips button){flex:0 1 auto;min-width:0;min-height:var(--btn-h);white-space:normal}
 .deals{display:grid;gap:var(--space-3);list-style:none;margin:0;padding:0}
 .deal{position:relative;isolation:isolate;display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-4);padding:var(--space-4);border:var(--size-1) solid var(--ink-200);border-radius:var(--card-radius);background:var(--white);min-height:var(--size-96)}
 .deal>div{flex:1;min-width:0}
@@ -36,13 +36,7 @@
 @media(max-width:1023px){.shell.shell>.sidebar{grid-column:1;grid-row:auto}.shell.shell>.main{grid-column:1;grid-row:auto}}
 
 /* Shared account pills also render inside the mobile detail modal. */
-.status.status.status{display:inline-flex;align-items:center;gap:var(--space-1);width:fit-content;max-width:100%;padding:var(--space-half) var(--space-2);border-radius:var(--radius-pill);font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-semibold);white-space:nowrap;background:var(--ink-100);color:var(--ink-700)}
-.status.status::before{display:none}
-.status.status[data-tone=info]{background:var(--info-100);color:var(--info-700)}
-.status.status[data-tone=success]{background:var(--success-100);color:var(--success-700)}
-.status.status[data-tone=warning]{background:var(--warning-100);color:var(--warning-700)}
-.status.status[data-tone=dark]{background:var(--action-strong);color:var(--white)}
-.status.status[data-tone=muted]{background:var(--ink-100);color:var(--ink-400)}
+.status{width:fit-content;max-width:100%}
 
 /* Requests: mobile cards become five aligned columns from 900px. */
 .shell :global(.account-request-card){position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-3);padding:var(--space-3) var(--space-4);align-items:center}
@@ -55,7 +49,7 @@
 .shell :global(.account-request-count){display:flex;align-items:center;flex-wrap:nowrap;gap:var(--space-1);min-width:0;font-size:var(--fs-xs);white-space:nowrap}
 .shell :global(.account-request-count .icon){flex:none;width:var(--size-16);height:var(--size-16);color:var(--ink-400)}
 .shell :global(.account-request-partner){max-width:var(--size-120);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-700)}
-.shell :global(.account-request-card) :global(.ma-btn){width:100%;grid-column:1/-1;font-size:var(--fs-eyebrow);min-height:var(--size-40);height:auto}
+.shell :global(.account-request-card) :global(.ma-btn){width:100%;grid-column:1/-1;min-height:var(--btn-h);height:auto}
 @media(min-width:900px){
   .shell :global(.account-request-card){grid-template-columns:auto minmax(0,1fr) auto auto auto;gap:var(--space-4)}
   .shell :global(.account-request-card .account-item-heading),.shell :global(.account-request-summary){display:contents}
@@ -113,7 +107,7 @@
 .shell :global(.account-verification-icon[data-tone=success]){background:var(--success-100);color:var(--success-700)}
 .shell :global(.account-verification-icon[data-tone=neutral]){background:var(--ink-100);color:var(--ink-500)}
 .shell :global(.account-quick-actions){gap:var(--space-3)}
-.shell :global(.account-quick-actions) :global(.ma-btn){justify-content:flex-start;min-height:var(--size-48);padding-inline:var(--space-3);white-space:nowrap;font-size:var(--fs-sm)}
+.shell :global(.account-quick-actions) :global(.ma-btn){justify-content:flex-start;min-height:var(--btn-h);padding-inline:var(--space-3);white-space:nowrap;font-size:var(--btn-fs);}
 .shell :global(.account-feed-heading){display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-4)}
 .shell :global(.account-feed-heading h2){margin:0;font-size:var(--fs-title);font-weight:var(--fw-bold)}
 .shell :global(.account-feed-heading a){font-size:var(--fs-sm);font-weight:var(--fw-semibold);color:var(--ink-950)}
@@ -135,3 +129,6 @@
 .shell :global(.account-request-card):hover,.deal:hover,.matchCard:hover{border-color:var(--card-hover-border)}
 @media(max-width:1023px){.nav{scrollbar-width:thin;padding-bottom:var(--space-1)}.nav a{gap:var(--space-2)}}
 @media(max-width:767px){.matchGrid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:767px){
+  .shell :global(.account-item-heading h2),.matchCopy h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow-wrap:anywhere}
+}

@@ -27,7 +27,7 @@
 .supplier li p { color: var(--ink-300); margin: var(--size-4) 0 0; font-size: var(--size-14); }
 .photo { position: relative; min-height: var(--size-240); }
 .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 35%; }
-.photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--brand-panel-bg), transparent 35%); }
+.photo::after { content: ""; position: absolute; inset: 0; background:transparent; }
 .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-20); margin-top: var(--size-32); }
 .card { padding: var(--size-24); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); }
 .card > svg { margin-bottom: var(--size-16); color: var(--action); }
@@ -49,7 +49,7 @@
 @media (max-width: 1023px) {
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .supplier { grid-template-columns: 1fr; }
-  .photo::after { background: linear-gradient(180deg, var(--brand-panel-bg), transparent 40%); }
+  .photo::after { background:transparent; }
 }
 @media (max-width: 639px) {
   .page { padding-block: var(--size-32); }

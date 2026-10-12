@@ -8,7 +8,7 @@
   margin: var(--space-16) auto var(--space-20);
   padding: var(--space-12) var(--space-8);
   border: var(--size-1) solid var(--card-border);
-  border-radius: var(--size-24);
+  border-radius: var(--card-radius);
   background: var(--white);
   box-shadow: var(--card-shadow);
   text-align: center;
@@ -52,51 +52,6 @@
   justify-content: center;
   gap: var(--space-3) var(--space-6);
   margin-top: var(--space-4);
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--control-h);
-  padding: var(--space-control-y) var(--space-control-x);
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--action);
-  color: var(--white);
-  font-family: var(--font-sans);
-  font-size: var(--fs-button);
-  line-height: var(--lh-button);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-button);
-  font-feature-settings: var(--ff-button);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease);
-}
-
-.button:hover {
-  background: var(--action-hover);
-  color: var(--white);
-}
-
-.button:active {
-  background: var(--action-press);
-}
-
-.link {
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  font-weight: var(--fw-medium);
-  color: var(--text-link);
-  text-decoration: underline;
-  text-underline-offset: var(--size-3);
-}
-
-.button:focus-visible,
-.link:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
 }
 
 /* global-error renders without Header/Footer, so it centres its own column. */

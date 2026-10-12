@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./account.module.css";
+import { Badge, type BadgeProps } from "../../ui/Badge";
 import { Icon } from "../../Icon";
 import { categoryPhoto, currentCategory } from "../../../lib/categories";
 export type AnyUser = {
@@ -29,7 +30,7 @@ export type AnyUser = {
 export type RequestItem = { chosenOfferId?: string | null; id: string; ownerId: string; title: string; category: string; city: string; createdAt: string; expiresAt: string; hidden: boolean; photo?: string | null; quantity?: number | null; unit?: string | null };
 export type OfferItem = { id: string; companyUserId: string; requestId: string; status: string; createdAt: string; updatedAt?: string; paymentTerms?: string | null; price?: number | null; priceType?: string; deliveryDays?: number | null; vatIncluded?: boolean; deliveryIncluded?: boolean };
 export type Tab = "deals" | "overview" | "opportunities" | "requests" | "offers" | "saved" | "messages" | "notifications" | "profile" | "business";
-export type NavItem = { key: Tab; label: string; icon: string; count?: number | null };
+export type NavItem = { key: Tab; label: string; icon: string; count?: number | null; href?: string };
 export const requestHref = (id: string) => `/requests/view/?id=${encodeURIComponent(id)}`;
 export const offerLabel = (status: string) => status === "chosen" ? "არჩეული" : status === "declined" ? "არ შეირჩა" : "მოლოდინში";
 export const amount = (offer: OfferItem) => offer.price == null || offer.priceType === "negotiable" ? "შეთანხმებით" : `${new Intl.NumberFormat("ka-GE", { maximumFractionDigits: 2 }).format(offer.price)} ₾${offer.priceType === "unit" ? " / ერთეული" : ""}`;
@@ -38,7 +39,7 @@ export function readSeen(): Record<string, string> {
   try { return JSON.parse(localStorage.getItem("meetany.seen") || "{}") || {}; } catch { return {}; }
 }
 export function Status({ tone, children }: { tone: string; children: React.ReactNode }) {
-  return <span className={`account-status ${styles.status}`} data-tone={tone}>{children}</span>;
+  return <Badge className={styles.status} status={(tone === "open" ? "success" : tone === "chosen" ? "info" : ["success","warning","info","danger","dark","muted"].includes(tone) ? tone : "neutral") as BadgeProps["status"]}>{children}</Badge>;
 }
 export function RequestPhoto({ request }: { request?: RequestItem | null }) {
   const [failed, setFailed] = useState<string | null>(null);

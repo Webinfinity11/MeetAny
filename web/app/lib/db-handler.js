@@ -11,9 +11,12 @@ import { asCaller, isConnectionError } from './db.js';
 import { invalidatePublicSnapshot } from './public-snapshot.js';
 import { rpcValue } from './rpc-value.js';
 import { TABLES, tableQuery } from './table-query.js';
+import { marketBootstrap } from './market-bootstrap.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
+  'verification_record','rate_deal_full','create_request_full','reject_deal_proposal','complete_onboarding','review_verification',
+  'become_company','list_attachments','remove_attachment','bind_draft_files','submit_verification','set_request_preferences','request_preferences','list_matching_feed','add_deal_update','open_deal_issue','admin_deal_issues','admin_resolve_deal_issue',
   'admin_edit_profile','admin_edit_request','admin_company_settings','admin_manage_plan','site_content','admin_save_site_content',
   'company_products','set_my_products','admin_market_metrics','company_distribution_profiles','set_my_distribution',
   'company_business_features','company_reviews','my_company_review_targets','save_company_review',
@@ -37,6 +40,7 @@ const RPCS = new Set([
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
 const PUBLIC_WRITES = new Set([
+  'create_request_full','review_verification','become_company','set_request_preferences',
   'admin_edit_profile','admin_edit_request','admin_manage_plan','admin_save_site_content','save_company_review','admin_moderate_review','admin_resolve_plan',
   'set_my_distribution','set_my_products',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
@@ -127,7 +131,10 @@ const handler = {
     }
     try {
       let result;
-      if (request.method === 'GET' && path === 'capabilities') {
+      if (request.method === 'GET' && path === 'bootstrap') {
+        result = await asCaller(claims, db => marketBootstrap(db, claims.role === 'authenticated'));
+        result.capabilities = { engagement: true, emailDelivery: process.env.NOTIFICATION_EMAIL_ENABLED === 'true' && !!process.env.RESEND_API_KEY && !!process.env.NOTIFICATION_FROM && !!process.env.APP_ORIGIN };
+      } else if (request.method === 'GET' && path === 'capabilities') {
         result = await asCaller(claims, async (db) => ({ engagement: !!(await db.query("select to_regprocedure('public.engagement_state()') is not null as enabled")).rows[0].enabled, emailDelivery: process.env.NOTIFICATION_EMAIL_ENABLED === 'true' && !!process.env.RESEND_API_KEY && !!process.env.NOTIFICATION_FROM && !!process.env.APP_ORIGIN }));
       } else if (request.method === 'GET' && TABLES.has(path)) {
         const { sql, values } = tableQuery(path, url.searchParams);

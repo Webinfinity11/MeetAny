@@ -12,7 +12,7 @@ export function Dashboard({ me }: { me: AnyUser }) {
     <section className="account-profile-status">
       <div className="account-verification">
         <span className="account-verification-icon" data-tone={tone}><Icon name={me.blocked ? "ban" : me.verified ? "circle-check" : "hourglass"}/></span>
-        <div><h2>ვერიფიკაცია <Status tone={tone}>{me.blocked ? "დაბლოკილია" : me.verified ? "დადასტურებული" : "მიმდინარეობს"}</Status></h2><p>{me.blocked ? "ანგარიში დაბლოკილია." : me.verified ? "კომპანიის პროფილი დადასტურებულია." : "ჩვეულებრივ 1–2 სამუშაო დღე. მანამდე სრულად შეგიძლიათ გამოყენება."}</p></div>
+        <div><h2>ვერიფიკაცია <Status tone={tone}>{me.blocked ? "დაბლოკილია" : me.verified ? "დადასტურებული" : "დასადასტურებელია"}</Status></h2><p>{me.blocked ? "ანგარიში დაბლოკილია." : me.verified ? "კომპანიის პროფილი დადასტურებულია." : "კომპანიის პროფილს ადმინისტრატორი ამოწმებს. მანამდე შეგიძლიათ პროფილის შევსება და მოთხოვნების დათვალიერება. შეთავაზებებს დადასტურების შემდეგ გაგზავნით."}</p></div>
       </div>
       <div><div className="account-progress-heading"><h2>პროფილი · {completion}%</h2><Link href="/account/?tab=profile">{remaining.length ? "დასრულება" : "რედაქტირება"}</Link></div><progress aria-label="პროფილის სისრულე" value={completion} max={100}/><p>{remaining.length ? `დარჩა: ${remaining.join(", ")}` : "პროფილი სრულად შევსებულია"}</p></div>
     </section>

@@ -3,7 +3,7 @@
 .visual { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: var(--ink-100); }
 .compact .visual { aspect-ratio: 16 / 10; }
 .visual > img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.new { position: absolute; top: var(--size-10); left: var(--size-10); background: var(--success-100); color: var(--success-700); border-radius: var(--radius-pill); padding: var(--size-2) var(--size-10); font-size: var(--size-11); font-weight: var(--fw-semibold); }
+.new { position: absolute; top: var(--size-10); left: var(--size-10); }
 .chips { position: absolute; bottom: var(--size-10); inset-inline: var(--size-10); display: flex; justify-content: space-between; gap: var(--size-4); }
 .chips > span, .category { padding: var(--size-2) var(--size-8); background: var(--white); border-radius: var(--size-6); font-size: var(--size-11); font-weight: var(--fw-semibold); white-space: nowrap; }
 .chips > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }

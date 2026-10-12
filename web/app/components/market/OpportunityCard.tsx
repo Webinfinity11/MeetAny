@@ -7,6 +7,7 @@ import { categories, cities, currentCategory, units } from "../../lib/categories
 import { formatNumber } from "../../lib/format";
 import { Icon } from "../Icon";
 import { Button } from "../ui/Button";
+import { Badge } from "../ui/Badge";
 import { RequestCatalogCover } from "./RequestCatalogCover";
 import catalogStyles from "./catalog/Catalog.module.css";
 import styles from "./OpportunityCard.module.css";
@@ -29,7 +30,7 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
   return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full} ${horizontal ? styles.horizontal : ""}`}`} data-request-id={r.id}>
     <div className={styles.visual}>
       {r.photo && failed !== r.photo ? <Image unoptimized src={r.photo} alt="" width={480} height={300} loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />}
-      {compact ? r.isNew && <span className={styles.new}>ახალი</span> : (r.isNew || r.daysLeft <= 5) && <span className={`${styles.new} ${r.isNew ? "" : styles.urgent}`}>{r.isNew ? "ახალი" : "სასწრაფო"}</span>}
+      {compact ? r.isNew && <Badge status="success" className={styles.new}>ახალი</Badge> : (r.isNew || r.daysLeft <= 5) && <Badge status={r.isNew ? "success" : "warning"} className={styles.new}>{r.isNew ? "ახალი" : "სასწრაფო"}</Badge>}
       {compact ? <div className={styles.chips}><span title={category}>{category}</span><span className={r.daysLeft <= 5 ? styles.warning : ""}>{deadline}</span></div>
         : <>{onSave && <button type="button" className={styles.save} aria-label={saved ? "შენახვიდან წაშლა" : "მოთხოვნის შენახვა"} aria-pressed={saved} onClick={onSave}><Icon name="bookmark" /></button>}</>}
     </div>

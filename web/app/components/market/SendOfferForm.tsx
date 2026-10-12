@@ -8,6 +8,8 @@ import type { OfferCardData } from './OfferCard';
 import { useFieldErrors, type FieldErrors } from './fieldErrors';
 import { CustomSelect } from '../ui/CustomSelect';
 import { Button } from '../ui/Button';
+import { FileAttachments } from "./FileAttachments";
+import { attachmentDraft } from "../../lib/attachment-draft";
 import { money } from '../../lib/deal-client';
 import { Icon } from '../Icon';
 import { toast } from '../Toasts';
@@ -19,6 +21,9 @@ const valuesFrom = (o?: Partial<StoredOffer> | OfferCardData): Values => ({ body
 
 export function SendOfferForm({ requestId, existing, onDone, onCancel, standalone = false }: { requestId: string; existing?: OfferCardData; standalone?: boolean; onDone: (editing: boolean) => void; onCancel: () => void }) {
   const { store, sessionReady } = useMarketStore();
+  const [fileBusy,setFileBusy]=useState(false);
+  const [fileDraft,setFileDraft]=useState('');
+  const [offerId,setOfferId]=useState(existing?.id||'');
   const [values, setValues] = useState<Values>(() => valuesFrom(existing));
   const [customTerm, setCustomTerm] = useState('');
   const [showCustom, setShowCustom] = useState(false);
@@ -54,23 +59,21 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
         }
         if (!['negotiable', 'unit', 'total'].includes(next.priceType)) next.priceType = 'negotiable';
       }
+      setOfferId(offer?.id||'');
+      setFileDraft(attachmentDraft(`meetany.offerFiles.${owner}.${requestId}`));
       baseRevision.current = offer?.updatedAt;
-      setValues(next); setEditing(!!offer); setError(''); setConflict(false);
+      setPartial(undefined);setValues(next); setEditing(!!offer); setError(''); setConflict(false);
       if (draft.pendingTerms && offer?.id === draft.pendingTerms.id) {
         const saved = draft.pendingTerms;
-        if (termsEqual(offer, saved.terms)) {
-          localStorage.removeItem(key);
-        } else {
-          setPartial(saved);
-          setValues({ ...next, paymentTerms: saved.terms.paymentTerms || '', validUntil: saved.terms.validUntil || '', commercialTerms: saved.terms.commercialTerms.join('\n') });
-          setConflict(offer.updatedAt !== saved.updatedAt);
-          setError('ძირითადი შეთავაზება შენახულია. დამატებითი პირობები ჯერ არ დადასტურებულა.');
-        }
+        setPartial(saved);
+        setValues({ ...next, paymentTerms: saved.terms.paymentTerms || '', validUntil: saved.terms.validUntil || '', commercialTerms: saved.terms.commercialTerms.join('\n') });
+        setConflict(!termsEqual(offer,saved.terms)&&offer.updatedAt !== saved.updatedAt);
+        setError(termsEqual(offer,saved.terms)?'შეთავაზება შენახულია. დაასრულეთ ფაილების შენახვა.':'ძირითადი შეთავაზება შენახულია. დამატებითი პირობები ჯერ არ დადასტურებულა.');
       }
       setLoaded(key);
     }).catch(err => { if (active) setError(err.message?.startsWith('პირობები') ? err.message : flowError(err)); });
     return () => { active = false; };
-  }, [key, ensureRequest, myOffers, currentUser, requestId, revision]);
+  }, [key, ensureRequest, myOffers, currentUser, requestId, revision,owner]);
   useEffect(() => {
     if (!key || loaded !== key || completed) return;
     try { localStorage.setItem(key, JSON.stringify({ ...values, pendingTerms: partial })); } catch {}
@@ -85,7 +88,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   }
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!store || busy.current || !key || loaded !== key || conflict || completed) return;
+    if (!store || fileBusy || busy.current || !key || loaded !== key || conflict || completed) return;
     const errors: FieldErrors = {};
     if (values.body.trim().length < 10 || values.body.length > 2000) errors['of-body'] = 'აღწერა უნდა შეიცავდეს 10–2000 სიმბოლოს.';
     if (!values.deliveryDays.trim() || (!Number.isInteger(Number(values.deliveryDays)) || Number(values.deliveryDays) < 0 || Number(values.deliveryDays) > 365)) errors['of-deliveryDays'] = 'მიუთითეთ 0–365 დღე.';
@@ -113,6 +116,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
         try { localStorage.setItem(key, JSON.stringify({ ...values, pendingTerms: saved })); } catch {}
         await setOfferTerms(store, saved, terms);
       }
+      if(saved&&fileDraft)await store.callRpc('bind_draft_files',{p_kind:'offer',p_draft:fileDraft,p_target:saved.id});
       setPartial(undefined); setCompleted(true);
       try { localStorage.removeItem(key); } catch {}
       await store.refresh();
@@ -145,10 +149,11 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
       <section className={styles.formCard}><h2>გადახდის პირობები</h2><div className={styles.chips} role="group" aria-label="გადახდის პირობები">{payments.map(term => <Button key={term} variant={values.paymentTerms === term && !otherPayment ? 'primary' : 'secondary'} aria-pressed={values.paymentTerms === term && !otherPayment} onClick={() => { change('paymentTerms', term); setOtherPayment(false); }}>{term}</Button>)}<Button variant={otherPayment || !!values.paymentTerms && !payments.includes(values.paymentTerms) ? 'primary' : 'secondary'} onClick={() => setOtherPayment(true)}>სხვა</Button></div>{otherPayment || !!values.paymentTerms && !payments.includes(values.paymentTerms) ? <div className="ma-field"><label htmlFor="of-paymentTerms">სხვა პირობები</label><input className="ma-input" maxLength={500} value={values.paymentTerms} onChange={e => change('paymentTerms', e.target.value)} {...v.control('of-paymentTerms')}/></div> : null}{v.message('of-paymentTerms')}</section>
       <section className={styles.formCard}><h2>კომერციული პირობები</h2><div className={styles.chips} role="group" aria-label="კომერციული პირობები">{Array.from(new Set([...presets, ...selectedTerms])).map(term => <Button key={term} variant={selectedTerms.includes(term) ? 'primary' : 'secondary'} aria-pressed={selectedTerms.includes(term)} disabled={!selectedTerms.includes(term) && selectedTerms.length >= 8} onClick={() => toggleTerm(term)}>{selectedTerms.includes(term) ? <Icon name="check"/> : null}{term}</Button>)}<Button variant="secondary" aria-expanded={showCustom} onClick={() => setShowCustom(v => !v)}><Icon name="plus"/>საკუთარი</Button></div>{showCustom ? <div className="ma-field"><label htmlFor="of-commercialTerms">საკუთარი პირობა</label><div className={styles.addTerm}><input className="ma-input" maxLength={120} value={customTerm} onChange={e => setCustomTerm(e.target.value)} {...v.control('of-commercialTerms')}/><Button variant="secondary" disabled={!customTerm.trim() || selectedTerms.length >= 8} onClick={() => { if (!selectedTerms.includes(customTerm.trim())) toggleTerm(customTerm.trim()); setCustomTerm(''); }}>დამატება</Button></div>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div> : null}</section>
       <section className={styles.formCard}><h2>მოკლე აღწერა</h2><div className="ma-field"><label htmlFor="of-body">მოკლე აღწერა *</label><textarea className="ma-textarea" minLength={10} maxLength={2000} required value={values.body} onChange={e => change('body', e.target.value)} {...v.control('of-body')}/>{v.message('of-body')}<small>{values.body.length}/2000 · რეკომენდებულია 500 სიმბოლომდე.</small></div></section>
+      {store&&fileDraft?<section className={styles.formCard}><FileAttachments key={offerId||fileDraft} store={store} kind={offerId?"offer":"offer_draft"} target={offerId||fileDraft} editable onBusy={setFileBusy}/>{offerId?<FileAttachments store={store} kind="offer_draft" target={fileDraft} label="მონახაზის ფაილები"/>:null}</section>:null}
     </fieldset>
     <div className={styles.submitArea}>
     {error ? <div className={styles.notice} role="alert"><p>{error}</p>{conflict || partial || loaded !== key ? <Button variant="secondary" disabled={pending} onClick={() => void reload()}>ბოლო ვერსიის ჩატვირთვა</Button> : null}</div> : null}
     {completed ? <p role="status">შეთავაზება და პირობები შენახულია.</p> : null}
-    <div className={styles.actions}><Button variant="secondary" disabled={pending} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={!key || loaded !== key || conflict || completed}>{partial ? 'პირობების შენახვის გამეორება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div><p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p></div>
+    <div className={styles.actions}><Button variant="secondary" disabled={pending||fileBusy} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={fileBusy||!key || loaded !== key || conflict || completed}>{partial ? 'შენახვის დასრულება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div><p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p></div>
   </form>;
 }
