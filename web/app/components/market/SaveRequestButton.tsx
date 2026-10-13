@@ -25,8 +25,11 @@ export function useRequestSaving() {
 
  async function run(id: string, saved: boolean) {
   if (!store) return;
+  const actorId = store.currentUser()?.id;
   setPendingId(id);
-  try { await store.setSavedRequest(id, saved); toast(saved ? "მოთხოვნა შენახულია." : "მოთხოვნა შენახულებიდან ამოიშალა."); }
+  try { await store.setSavedRequest(id, saved); toast(saved ? "მოთხოვნა შენახულია." : { title: "ამოღებულია", action: { label: "დააბრუნეთ", onClick: () => {
+   if (store.currentUser()?.id === actorId) void run(id, true);
+  } } }); }
   catch (err) { toastError((err as { userMessage?: string }).userMessage || "შენახვა ვერ შესრულდა."); }
   finally { setPendingId(null); }
  }

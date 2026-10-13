@@ -127,6 +127,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   // Public company phone only (same projection as the profile page); clients have none.
   const phone = usePublicPhone(store, d.isCompany ? d.otherId : undefined);
   const [body, setBody] = useState("");
+  const [validationError, setValidationError] = useState("");
   const log = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const atBottom = useRef(true);
@@ -149,6 +150,10 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   }, [messages]);
 
   async function submit() {
+    if (pending) return;
+    if (!body.trim()) { setValidationError("დაწერეთ შეტყობინება"); input.current?.focus(); return; }
+    if (!loaded) { setValidationError("საუბარი ჯერ არ ჩატვირთულა. სცადეთ ხელახლა."); return; }
+    setValidationError("");
     if (await send(body, () => { atBottom.current = true; })) { setBody(""); input.current?.focus(); }
   }
   const sheet = !wide;
@@ -173,10 +178,10 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
     <SharedFiles store={store} target={conversation.id}/>
     <form className={styles["inbox-compose"]} onSubmit={e => { e.preventDefault(); void submit(); }}>
       <label className="ma-sr-only" htmlFor="inbox-body">შეტყობინება</label>
-      <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერეთ შეტყობინება…"
-        onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void submit(); } }}/>
-      <Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><Icon name="send"/><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button>
-      {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
+      <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} aria-invalid={!!(validationError || sendError)} aria-describedby={validationError || sendError ? "inbox-error" : undefined} placeholder="დაწერეთ შეტყობინება…"
+        onChange={e => { setBody(e.target.value); setValidationError(""); }} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void submit(); } }}/>
+      <Button variant="primary" type="submit" disabled={pending}><Icon name="send"/><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button>
+      {validationError || sendError ? <p id="inbox-error" className="ma-field__error" role="alert">{validationError || sendError}</p> : null}
     </form>
   </div>;
   // Below 768 the open thread covers the page under the header, outside any transformed ancestor.

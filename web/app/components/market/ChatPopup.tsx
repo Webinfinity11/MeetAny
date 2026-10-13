@@ -161,6 +161,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
   const atBottom = useRef(true);
   const { conversation, messages, loaded, failed, pending, sendError, send: deliver, retry } = useChatThread(store, target, visible);
   const [body, setBody] = useState("");
+  const [validationError, setValidationError] = useState("");
   const otherId = conversation?.otherId || (conversation ? (conversation.clientId === owner ? conversation.companyId : conversation.clientId) : target.companyId !== owner ? target.companyId : "");
   const peer = store.userById(otherId);
   const logoUrl = peer?.logoUrl;
@@ -173,6 +174,10 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
     if (atBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [messages]);
   async function send() {
+    if (pending) return;
+    if (!body.trim()) { setValidationError("დაწერეთ შეტყობინება"); input.current?.focus(); return; }
+    if (!loaded) { setValidationError("საუბარი ჯერ არ ჩატვირთულა. სცადეთ ხელახლა."); return; }
+    setValidationError("");
     if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); if (dialog.current?.open) input.current?.focus(); }
   }
   return <dialog ref={dialog} className={`ma-chat ma-chat--dock ${styles.dock}`} aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
@@ -190,9 +195,9 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
     {conversation && visible ? <SharedFiles store={store} target={conversation.id}/> : null}
     <form className="ma-chat__composer" onSubmit={e => { e.preventDefault(); void send(); }}>
       <label className="ma-sr-only" htmlFor="ma-chat-body">შეტყობინება</label>
-      <textarea ref={input} id="ma-chat-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} placeholder="დაწერეთ შეტყობინება…" onChange={e => setBody(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(); } }}/>
-      {sendError ? <p className="ma-field__error" role="alert">{sendError}</p> : null}
-      <div className="ma-chat__composer-foot"><Button variant="primary" type="submit" disabled={!loaded || !body.trim() || pending}><Icon name="send"/><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button></div>
+      <textarea ref={input} id="ma-chat-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} aria-invalid={!!(validationError || sendError)} aria-describedby={validationError || sendError ? "ma-chat-error" : undefined} placeholder="დაწერეთ შეტყობინება…" onChange={e => { setBody(e.target.value); setValidationError(""); }} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(); } }}/>
+      {validationError || sendError ? <p id="ma-chat-error" className="ma-field__error" role="alert">{validationError || sendError}</p> : null}
+      <div className="ma-chat__composer-foot"><Button variant="primary" type="submit" disabled={pending}><Icon name="send"/><span>{pending ? "იგზავნება…" : "გაგზავნა"}</span></Button></div>
     </form>
   </dialog>;
 }

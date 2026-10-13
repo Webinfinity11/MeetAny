@@ -35,7 +35,10 @@ export function SaveCompanyButton({ id, icon = false }: { id: string; icon?: boo
   }
   if (state?.status !== "ready") { toastError("შენახვა დროებით მიუწვდომელია. სცადეთ მოგვიანებით.");return; }
   setPending(true);
-  try { await store.setSavedCompany(id, !saved); toast(saved ? "კომპანია შენახულებიდან ამოიშალა." : "კომპანია შენახულია."); }
+  try { await store.setSavedCompany(id, !saved); toast(saved ? { title: "ამოღებულია", action: { label: "დააბრუნეთ", onClick: () => {
+   if (store.currentUser()?.id !== me.id) return;
+   void store.setSavedCompany(id, true).then(() => toast("კომპანია შენახულია."), (err: { userMessage?: string }) => toastError(err.userMessage || "შენახვა ვერ შესრულდა."));
+  } } } : "კომპანია შენახულია."); }
   catch (err) { toastError((err as {userMessage?: string}).userMessage || "შენახვა ვერ შესრულდა."); }
   finally { setPending(false); }
  }

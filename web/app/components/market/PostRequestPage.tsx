@@ -69,10 +69,9 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const [body, setBody] = useState(draft?.body || "");
   const [quantity, setQuantity] = useState(draft?.quantity || "");
   const [unit, setUnit] = useState(draft?.unit || "pcs");
-  const [cityChoice, setCity] = useState(params.has("city") ? (Object.hasOwn(cities, params.get("city") || "") ? params.get("city")! : "") : draft?.city || "");
+  const [cityChoice, setCity] = useState(params.has("city") ? (Object.hasOwn(cities, params.get("city") || "") ? params.get("city")! : "") : draft?.city && Object.hasOwn(cities, draft.city) ? draft.city : "");
   const [addressNote, setAddressNote] = useState(draft?.addressNote || "");
   const [neededBy, setNeededBy] = useState(draftDate(draft?.neededByText || ""));
-  const [otherCity, setOtherCity] = useState(false);
   // "server" only after save_request_draft succeeded; "browser" is this tab's sessionStorage copy.
   const [saved, setSaved] = useState<{ where: "server" | "browser"; at: string } | null>(null);
   const clock = () => new Date().toLocaleTimeString("ka-GE", { timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false });
@@ -101,7 +100,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const previousStep = useRef(1);
   const v = useFieldErrors();
   const user = store.currentUser();
-  const city = otherCity ? cityChoice : cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
+  const city = cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
   const signedIn = sessionStatus === "ready" && !!user;
   const openRequestCount = signedIn ? store.listRequests({ ownerId: user.id, state: "open" }).length : 0;
   const current: RequestDraft = { title, category, city, addressNote, quantity, unit, neededByText: draftText(neededBy), body, preferences, attachmentDraft };
@@ -124,7 +123,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       if (draft ? !(serverAt > sessionAt) : latest.current.hasContent) return;
       setRestoredDraft(true);
       setTitle(server.title); setCategory(server.category); setPreferences(server.preferences || {}); setBody(server.body);
-      setQuantity(server.quantity); setUnit(server.unit); setCity(server.city); setAddressNote(server.addressNote);
+      setQuantity(server.quantity); setUnit(server.unit); setCity(Object.hasOwn(cities, server.city) ? server.city : ""); setAddressNote(server.addressNote);
       setNeededBy(draftDate(server.neededByText)); setFurthest(furthestFor(server));
     }).catch(() => undefined);
     return () => { cancelled = true; };
@@ -302,10 +301,11 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
             </> : step === 2 ? <><FormCard title="მიწოდება" className={styles.deliveryCard}>
               <div className={styles.deliveryFields}>
                 <div className="ma-field"><label id="city-label">ქალაქი / რეგიონი <span>*</span></label>
-                  <div className={styles.iconField}><Icon name="map-pin"/><CustomSelect aria-labelledby="city-label" required value={otherCity || !["tbilisi", "batumi", "kutaisi"].includes(city) ? "other" : city} onChange={e => { const value = e.target.value; setOtherCity(value === "other"); setCity(value === "other" ? "" : value); v.clear("city"); }} {...v.control("city")}>
-                    {["tbilisi", "batumi", "kutaisi"].map(id => <option key={id} value={id}>{cities[id]}</option>)}<option value="other">სხვა</option>
+                  <div className={styles.iconField}><Icon name="map-pin"/><CustomSelect aria-labelledby="city-label" required value={city} onChange={e => { setCity(e.target.value); v.clear("city"); }} {...v.control("city")}>
+                    <option value="" disabled>აირჩიეთ ქალაქი</option>
+                    {Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
                   </CustomSelect></div>
-                  {otherCity || !["tbilisi", "batumi", "kutaisi"].includes(city) ? <><input className="ma-input" aria-label="სხვა ქალაქი / რეგიონი" list="post-cities" value={cities[cityChoice] || cityChoice} onChange={e => { setCity(Object.entries(cities).find(([, label]) => label === e.target.value)?.[0] || e.target.value); v.clear("city"); }}/><datalist id="post-cities">{Object.values(cities).map(label => <option key={label} value={label}/>)}</datalist></> : null}{v.message("city")}
+                  {v.message("city")}
                 </div>
                 <div className="ma-field"><label htmlFor="addressNote">მისამართი <small>არასავალდებულო</small></label><input className="ma-input" id="addressNote" maxLength={120} placeholder="რაიონი / ორიენტირი" value={addressNote} onChange={e => setAddressNote(e.target.value)} /></div>
                 <div className="ma-field"><label htmlFor="neededBy">სასურველი თარიღი <span>*</span></label><input className="ma-input" required type="date" onInput={e=>{setNeededBy(e.currentTarget.value);v.clear("neededBy");}} min={minDate} max={maxDate} value={neededBy} onChange={e => { setNeededBy(e.target.value); v.clear("neededBy"); }} {...v.control("neededBy")} />{v.message("neededBy")}</div>
