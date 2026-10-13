@@ -30,3 +30,7 @@
 @media (max-width: 639px) {
   .locationDetails > summary { flex-wrap: wrap; }
 }
+.contacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4);margin:0}
+.contacts dt{font-weight:var(--fw-medium);margin-bottom:var(--space-2)}
+.contacts dd{margin:0;overflow-wrap:anywhere}
+@media(max-width:639px){.contacts{grid-template-columns:minmax(0,1fr)}}

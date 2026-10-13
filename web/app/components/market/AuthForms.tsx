@@ -135,7 +135,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     if (role === "company" && company.trim().length < 2) errors["reg-company"] = "მიუთითეთ დასახელება";
     if (!normalizeMobilePhone(phone)) errors["reg-phone"] = "ჩაწერეთ მობილურის ნომერი";
     if (!profileRequired && !isEmail(email)) errors["reg-email"] = "ჩაწერეთ სწორი ელფოსტა";
-    if (role === "company" && !industry) errors["reg-industry"] = "აირჩიეთ მიმართულება";
+    if (role === "company" && !industry) errors["reg-industry"] = "აირჩიეთ დარგი";
     if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "მინიმუმ 8 სიმბოლო" : "მიუთითეთ პაროლი";
     if (!city) errors["reg-city"] = "აირჩიეთ ქალაქი";
     if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმეთ წესებს";
@@ -231,9 +231,9 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           {v.message("reg-city")}
         </div>
         {role === "company" ? (
-          <div className="ma-field">
+          <div className="ma-field auth-category-field">
             <label className="ma-field__label" htmlFor="reg-industry">
-              მიმართულება *
+              დარგი *
             </label>
             <CategoryChips id="reg-industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ""); v.clear("reg-industry");}} />
             <div className="auth-field-message">{v.message("reg-industry")}</div>
@@ -282,9 +282,8 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
     window.history.pushState(null, "", url.pathname + url.search);
   };
   const registrationRole = searchParams.get("role") || initialRole;
-  const isCompany = registrationRole === "company";
   const loginCopy = authLoginCopy(searchParams.get("intent"), searchParams.get("context"), searchParams.get("next"));
-  const subtitle = mode === "register" ? isCompany ? "შექმენით ანგარიში, შემდეგ შეავსეთ კომპანიის პროფილი." : "რამდენიმე ველი — და მოთხოვნის განთავსება შეგიძლიათ." : mode === "reset" ? "მიიღეთ კოდი ელფოსტაზე და დააყენეთ ახალი პაროლი." : loginCopy.lead;
+  const subtitle = mode === "register" ? "აირჩიეთ ანგარიშის ტიპი და შეავსეთ მონაცემები." : mode === "reset" ? "მიიღეთ კოდი ელფოსტაზე და დააყენეთ ახალი პაროლი." : loginCopy.lead;
   const page = (title: string, body: React.ReactNode, lead = subtitle) => (
     <div className={`ma-page auth-page${(mode === "register" && !store?.pendingEmail()) || store?.needsProfile() ? " auth-page--register" : ""}`}>
       <div className="auth-shell">
@@ -298,7 +297,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   );
   if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანეთ ელფოსტაზე მიღებული კოდი.");
   if (store?.needsProfile()) return page("რეგისტრაციის დასრულება", <RegisterForm key={store.pendingProfile()?.email || "complete"} initialRole={initialRole}/>, "შეამოწმეთ მონაცემები და დაასრულეთ რეგისტრაცია.");
-  return page(mode === "register" ? isCompany ? "კომპანიის პროფილის შექმნა" : "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : loginCopy.title, <>
+  return page(mode === "register" ? "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : loginCopy.title, <>
     {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm initialRole={registrationRole} />}
     {mode !== "reset" && <div className="auth-registration">
       {mode === "login" ? <>

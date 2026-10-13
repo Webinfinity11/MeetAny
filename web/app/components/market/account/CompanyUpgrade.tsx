@@ -2,12 +2,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../ui/Button';
-import { CustomSelect } from '../../ui/CustomSelect';
+import { CategoryChips } from '../../ui/CategoryChips';
 import { useMarketStore } from '../../../lib/market-client';
 import { categories } from '../../../lib/categories';
-import { intents, type AccountIntent } from '../../../lib/onboarding-client';
 import { useFieldErrors, type FieldErrors } from '../fieldErrors';
-import { categoryOptions } from '../CategoryOptions';
 import { Icon } from '../../Icon';
 import type { AnyUser } from './shared';
 import styles from './CompanyUpgrade.module.css';
@@ -18,7 +16,6 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
   const router = useRouter();
   const [company, setCompany] = useState(user.company || '');
   const [industry, setIndustry] = useState('');
-  const [intent, setIntent] = useState<AccountIntent>('both');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const fields = useFieldErrors();
@@ -35,7 +32,7 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
     if (!fields.check(errors, ['upgrade-company', 'upgrade-industry'])) return;
     setBusy(true); setError('');
     try {
-      const result = await store.mutateRpc('become_company', { p_company: company.trim(), p_industry: industry, p_account_intent: intent });
+      const result = await store.mutateRpc('become_company', { p_company: company.trim(), p_industry: industry, p_account_intent: 'both' });
       if (result?.id !== user.id || result.role !== 'company') throw new Error('კომპანიის პროფილის შექმნა ვერ დადასტურდა.');
       router.push('/onboarding/?step=type');
     } catch (failure) {
@@ -47,11 +44,10 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
     {!open ? <Button className={styles.action} variant="secondary" aria-expanded={false} aria-controls="company-upgrade-form" onClick={() => setOpen(true)}><Icon name="plus"/>კომპანიის პროფილის დამატება</Button> : <form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
       <fieldset className={styles.fields} disabled={busy}>
         <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-company">კომპანიის დასახელება *</label><input className="ma-input" autoComplete="organization" maxLength={120} value={company} onChange={event => { setCompany(event.target.value); fields.clear('upgrade-company'); }} {...fields.control('upgrade-company')}/>{fields.message('upgrade-company')}</div>
-        <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-industry">დარგი *</label><div><CustomSelect value={industry} onChange={event => { setIndustry(event.target.value); fields.clear('upgrade-industry'); }} {...fields.control('upgrade-industry')}><option value="" disabled>აირჩიეთ დარგი</option>{categoryOptions()}</CustomSelect></div>{fields.message('upgrade-industry')}</div>
-        <fieldset className={styles.intents}><legend>რისთვის გამოიყენებთ MeetAny-ს?</legend>{(Object.keys(intents) as AccountIntent[]).map(key => <label key={key}><input type="radio" name="upgrade-intent" value={key} checked={intent === key} onChange={() => setIntent(key)} />{intents[key]}</label>)}</fieldset>
+        <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-industry">დარგი *</label><CategoryChips id="upgrade-industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ''); fields.clear('upgrade-industry');}}/>{fields.message('upgrade-industry')}</div>
       </fieldset>
       {error && <p className="ma-field__error" role="alert">{error}</p>}
-      <p className={styles.next}>შემდეგ ნაბიჯზე შეავსებთ კომპანიის მონაცემებს და გაგზავნით დოკუმენტებს ვერიფიკაციისთვის.</p>
+      <p className={styles.next}>შემდეგ ნაბიჯზე აირჩევთ, რისთვის გამოიყენებთ MeetAny-ს.</p>
       <div className={styles.actions}><Button type="submit" loading={busy}>კომპანიის პროფილის შექმნა</Button><Button variant="ghost" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>დაბრუნება</Button></div>
     </form>}
   </section>;

@@ -1,6 +1,7 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import { Icon } from "../../Icon";
 import { Button } from "../../ui/Button";
 import { CustomSelect } from "../../ui/CustomSelect";
@@ -15,18 +16,26 @@ import { LocationPicker } from "../LocationPicker";
 import { CompanyDistributionPanel } from "../CompanyBusiness";
 import { useMarketStore } from "../../../lib/market-client";
 import { cities } from "../../../lib/categories";
-import { categoryOptions } from "../CategoryOptions";
+import { CategoryChips } from "../../ui/CategoryChips";
+import { ChipsInput } from "../../ui/ChipsInput";
+import { Sheet } from "../../ui/Sheet";
+import { ConfirmSheet } from "../../ui/ConfirmSheet";
+import { useUnsavedGuard } from "../../../lib/use-unsaved-draft";
+import { normalizeMobilePhone } from "../../../lib/mobile-phone";
+import { isEmail } from "../fieldErrors";
+import { readOnboardProfile, type OnboardProfile } from "../../../lib/onboarding-client";
+import { VerificationDocuments } from "../VerificationDocuments";
 import type { AnyUser } from "./shared";
 import styles from "./ProfileForm.module.css";
-const profileSections = { details: "მონაცემები და ფოტოები", products: "პროდუქტები", distribution: "დისტრიბუცია", security: "პაროლი" };
+const profileSections = { details: "მონაცემები და ფოტოები", legal: "იურიდიული მონაცემები", documents: "დოკუმენტები", products: "პროდუქტები", distribution: "დისტრიბუცია", security: "პაროლი" };
 export function CompanyProfileNav({active}:{active:string}) {
- return <nav className="company-profile-sections" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}</nav>;
+ return <nav className="company-profile-sections ma-scroll-row" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}</nav>;
 }
 export function CompanyProfile({me,section}:{me:AnyUser;section:string}) {
  const active=Object.hasOwn(profileSections,section)?section:"details";
  return <>
   <CompanyProfileNav active={active}/>
-  {active==="details"?<ProfileForm key={me.id} me={me}/>:active==="products"?<section className="account-section"><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}
+  {active==="details"?<ProfileForm key={me.id} me={me}/>:active==="legal"?<LegalProfile key={me.id}/>:active==="documents"?<ProfileDocuments key={me.id} me={me}/>:active==="products"?<section className="account-section"><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}
  </>;
 }
 
@@ -60,13 +69,19 @@ export function ProfileForm({ me }: { me: AnyUser }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [savedAt, setSavedAt] = useState("");
   const coordinateDetails = useRef<HTMLDetailsElement>(null);
   const [mapOpen, setMapOpen] = useState(false);
   const v = useFieldErrors();
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!store || pending) return;
+  const snapshot = JSON.stringify({name, company, city, industry, about, offers, seeks, serviceCities, address, lat, lng});
+  const [baseline, setBaseline] = useState(snapshot);
+  const dirty = snapshot !== baseline || logoChanged || galleryChanged;
+  const guard = useUnsavedGuard(dirty);
+  async function submit(e: React.FormEvent) { e.preventDefault(); await save(); }
+  async function save() {
+    if (!store || pending) return false;
+    if (!dirty) return true;
     const errors: FieldErrors = {};
     if (name.trim().length < 2) errors.name = "მიუთითეთ სახელი და გვარი";
     if (isCompany && company.trim().length < 2) errors.company = "მიუთითეთ კომპანიის დასახელება";
@@ -79,7 +94,12 @@ export function ProfileForm({ me }: { me: AnyUser }) {
       if (lngValue === null && latValue !== null) errors.lng = "მიუთითეთ გრძედიც ან წაშალეთ ორივე";
     }
     if ((errors.lat || errors.lng) && coordinateDetails.current) coordinateDetails.current.open=true;
-    if (!v.check(errors, ["name", "company", "lat", "lng"])) return;
+    if (!city) errors["profile-city"] = "აირჩიეთ ქალაქი";
+    if (isCompany && !industry) errors.industry = "აირჩიეთ დარგი";
+    if (!v.check(errors, ["name", "company", "profile-city", "industry", "lat", "lng"])) {
+      if (guard.open) setError("შეასწორეთ მონიშნული ველები. ფორმაში დასაბრუნებლად აირჩიეთ „დარჩენა“.");
+      return false;
+    }
     setPending(true);
     setError(null);
     setSaved(false);
@@ -102,10 +122,14 @@ export function ProfileForm({ me }: { me: AnyUser }) {
         setGallery((user?.gallery || []).map((url: string) => ({ key: url, url })));
         setGalleryChanged(false);
       }
+      setBaseline(snapshot);
+      setSavedAt(new Date().toLocaleTimeString("ka-GE", {hour:"2-digit", minute:"2-digit"}));
       setSaved(true);
       toast("პროფილი შენახულია.");
+      return true;
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "ვერ შესრულდა.");
+      return false;
     } finally {
       setUploading(null);
       setPending(false);
@@ -138,15 +162,14 @@ export function ProfileForm({ me }: { me: AnyUser }) {
           </div>
         </div>
         <div className="ma-form__row ma-form__row--2">
-        <div className="ma-field profile-city-field"><label className="ma-field__label" htmlFor="profile-city">ქალაქი *</label><CustomSelect id="profile-city" value={city} onChange={event=>setCity(event.target.value)}>{Object.entries(cities).map(([id,label])=><option key={id} value={id}>{label}</option>)}</CustomSelect></div>
+        <div className="ma-field profile-city-field"><label className="ma-field__label" htmlFor="profile-city">ქალაქი *</label><CustomSelect {...v.control("profile-city")} value={city} onChange={event=>{setCity(event.target.value);v.clear("profile-city");}}>{Object.entries(cities).map(([id,label])=><option key={id} value={id}>{label}</option>)}</CustomSelect>{v.message("profile-city")}</div>
           {isCompany ? (
-            <div className="ma-field">
+            <div className="ma-field account-category-field">
               <label className="ma-field__label" htmlFor="industry">
                 დარგი *
               </label>
-              <CustomSelect className="ma-select" id="industry" value={industry} onChange={(e) => setIndustry(e.target.value)}>
-                {categoryOptions()}
-              </CustomSelect>
+              <CategoryChips id="industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ""); v.clear("industry");}} />
+              {v.message("industry")}
             </div>
           ) : null}
         </div>
@@ -160,22 +183,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
 
         </div></fieldset> : null}
         <fieldset className="account-form-group" disabled={pending}><legend>კონტაქტი</legend>
-        <div className="ma-form__row ma-form__row--2 account-contact">
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="profile-phone">
-              ტელეფონი
-            </label>
-            <input className="ma-input ma-input--num" id="profile-phone" readOnly value={me.phone} aria-describedby="profile-phone-help" />
-          </div>
-          <div className="ma-field">
-            <label className="ma-field__label" htmlFor="profile-email">
-              ელფოსტა
-            </label>
-            <input className="ma-input" id="profile-email" readOnly value={me.email} />
-          </div>
-
-        </div>
-        <p className="ma-field__help account-contact__help" id="profile-phone-help">კონტაქტს მხოლოდ გარიგების მეორე მხარე ხედავს. შესაცვლელად: <Link href="/terms/#contact">მხარდაჭერასთან დაკავშირება</Link>.</p>
+        <ContactChange me={me}/>
         </fieldset>
         {isCompany ? (
           <>
@@ -183,7 +191,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
             <legend>მომსახურება</legend>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="about">
-                კომპანიის შესახებ <span className="ma-field__opt" id="about-count">{about.length}/1000</span>
+                კომპანიის შესახებ (არასავალდებულო) <span className="ma-field__opt" id="about-count">{about.length}/1000</span>
               </label>
               <textarea className="ma-textarea" id="about" maxLength={1000} aria-describedby="about-count" value={about} onChange={(e) => setAbout(e.target.value)} />
             </div>
@@ -192,6 +200,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <ProfileItems compact id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
             </div>
             <CompactMultiSelect id="profile-service-cities" label="მომსახურების ქალაქები" options={Object.entries(cities).map(([value,label])=>({value,label}))} value={serviceCities} exclusiveValue="georgia" disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
+            <p className="ma-field__help">იგივე სია დისტრიბუციის რეგიონებისაა</p>
           </fieldset>
           <fieldset className="account-form-group" disabled={pending}>
             <legend>მისამართი</legend>
@@ -229,14 +238,13 @@ export function ProfileForm({ me }: { me: AnyUser }) {
           </fieldset>
           </>
         ) : null}
-        {/* Save sits after the last field, where the form ends. */}
-        <div className="account-form-actions">
-          <Button variant="primary" type="submit" loading={pending}>ცვლილებების შენახვა</Button>
-          {isCompany ? <Button variant="ghost" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="external-link"/>საჯარო პროფილის ნახვა</Button> : null}
-          {saved ? <p className="account-save-feedback" role="status"><Icon name="check"/>ცვლილებები შენახულია.</p> : null}
+        <div className="ma-form-bar">
+          <p className="ma-form-bar__note" role="status">{dirty ? "შეუნახავი ცვლილებები" : saved ? `შენახულია ${savedAt}` : "ცვლილებები არ არის"}</p>
+          <Button variant="primary" type="submit" loading={pending}>შენახვა</Button>
         </div>
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
       </form>
+      <UnsavedSheet guard={guard} pending={pending} error={error} save={save}/>
     </section>
   );
 }
@@ -299,3 +307,107 @@ export function PasswordForm() {
   );
 }
 
+
+function UnsavedSheet({guard, pending, error, save}: {guard: ReturnType<typeof useUnsavedGuard>; pending: boolean; error: string | null; save: () => Promise<boolean>}) {
+ return <ConfirmSheet id="profile-unsaved" open={guard.open} title="შეუნახავი ცვლილებები" confirmLabel="შენახვა" pendingLabel="ინახება…" cancelLabel="დარჩენა" pending={pending} error={error} onCancel={guard.stay} onConfirm={async () => {if (await save()) guard.leave();}}>
+  <p>გასვლამდე შეინახეთ ცვლილებები ან უარყავით ისინი.</p>
+  <Button variant="ghost" disabled={pending} onClick={guard.leave}>უარყოფა</Button>
+ </ConfirmSheet>;
+}
+
+function ContactChange({me}: {me: AnyUser}) {
+ const {store} = useMarketStore();
+ const [open, setOpen] = useState(false), [phone, setPhone] = useState(''), [email, setEmail] = useState(''), [note, setNote] = useState('');
+ const [pending, setPending] = useState(false), [error, setError] = useState(''), [sent, setSent] = useState(false);
+ const fields = useFieldErrors();
+ async function send(event: React.FormEvent) {
+  event.preventDefault(); event.stopPropagation();
+  if (!store || pending) return;
+  const errors: FieldErrors = {};
+  if (phone.trim() && !normalizeMobilePhone(phone)) errors['contact-phone'] = 'ჩაწერეთ მობილურის ნომერი';
+  if (email.trim() && !isEmail(email)) errors['contact-email'] = 'ჩაწერეთ სწორი ელფოსტა';
+  if (!phone.trim() && !email.trim()) errors['contact-phone'] = 'მიუთითეთ ახალი ტელეფონი ან ელფოსტა';
+  if (!fields.check(errors, Object.keys(errors))) return;
+  setPending(true); setError('');
+  try {
+   await store.callRpc('request_contact_change', {p_phone: phone.trim() || null, p_email: email.trim() || null, p_note: note.trim() || null});
+   setSent(true); setOpen(false); setPhone(''); setEmail(''); setNote('');
+  } catch (failure) {
+   const detail = failure as {code?: string; hint?: string; message?: string; userMessage?: string; cause?: {code?: string; hint?: string; message?: string}};
+   const text = [detail.code, detail.hint, detail.message, detail.userMessage, detail.cause?.code, detail.cause?.hint, detail.cause?.message].join(' ');
+   setError(text.includes('MA710') ? 'მოთხოვნა უკვე გაგზავნილია' : text.includes('MA711') ? 'მიუთითეთ ახალი, სწორი კონტაქტი; მოთხოვნა მაქსიმუმ 500 სიმბოლოა.' : detail.userMessage || 'მოთხოვნა ვერ გაიგზავნა. სცადეთ ხელახლა.');
+  } finally {setPending(false);}
+ }
+ return <>
+  <dl className={styles.contacts}><div><dt>ტელეფონი</dt><dd>{me.phone}</dd></div><div><dt>ელფოსტა</dt><dd>{me.email}</dd></div></dl>
+  <Button variant="secondary" aria-label="კონტაქტის შეცვლა" aria-haspopup="dialog" onClick={() => setOpen(true)}>შეცვლა</Button>
+  {sent && <p role="status">მოთხოვნა გაგზავნილია. პასუხს მიიღებთ 1–2 სამუშაო დღეში.</p>}
+  {open && createPortal(<Sheet open={open} onClose={() => {if (!pending) setOpen(false);}} title="კონტაქტის შეცვლა" footer={<Button type="submit" form="contact-change" loading={pending}>მოთხოვნის გაგზავნა</Button>}>
+   <p>ეს ანგარიშის იდენტიფიკატორებია; ცვლილებას ადმინისტრატორი ასრულებს 1–2 სამუშაო დღეში</p>
+   <form id="contact-change" className="ma-form" onSubmit={send} noValidate>
+    <div className="ma-field"><label className="ma-field__label" htmlFor="contact-phone">ახალი ტელეფონი</label><input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={e => {setPhone(e.target.value); fields.clear('contact-phone');}} {...fields.control('contact-phone')}/>{fields.message('contact-phone')}</div>
+    <div className="ma-field"><label className="ma-field__label" htmlFor="contact-email">ახალი ელფოსტა</label><input className="ma-input" type="email" autoComplete="email" maxLength={200} value={email} onChange={e => {setEmail(e.target.value); fields.clear('contact-email');}} {...fields.control('contact-email')}/>{fields.message('contact-email')}</div>
+    <div className="ma-field"><label className="ma-field__label" htmlFor="contact-note">შენიშვნა</label><textarea className="ma-textarea" id="contact-note" maxLength={500} value={note} onChange={e => setNote(e.target.value)}/><p className="ma-field__help">მთლიანი მოთხოვნა — მაქსიმუმ 500 სიმბოლო.</p></div>
+    {error && <p className="ma-field__error" role="alert">{error}</p>}
+   </form>
+  </Sheet>, document.body)}
+ </>;
+}
+
+function ProfileDocuments({me}: {me: AnyUser}) {
+ const {store} = useMarketStore();
+ const [profile, setProfile] = useState<OnboardProfile | null>(null), [error, setError] = useState('');
+ useEffect(() => {let active = true; if (store) void readOnboardProfile(store).then(p => {if(active) setProfile(p);}, () => {if(active) setError('დოკუმენტების სტატუსი ვერ ჩაიტვირთა.');}); return () => {active=false;};}, [store]);
+ return <section className="account-section"><h2 className="account-section__title">დოკუმენტები</h2>{error ? <p role="alert">{error}</p> : profile && store ? <VerificationDocuments store={store} id={me.id} status={profile.verification_documents_status} verified={profile.verified} note={profile.verification_note} onStatus={status => setProfile({...profile, verification_documents_status: status as OnboardProfile['verification_documents_status']})}/> : <p role="status">იტვირთება…</p>}</section>;
+}
+
+const legalFields = [
+ ['legal_name', 'იურიდიული სახელი', 200], ['registration_code', 'საიდენტიფიკაციო კოდი', 40],
+ ['contact_position', 'პოზიცია', 100], ['website', 'ვებგვერდი', 500],
+] as const;
+function LegalProfile() {
+ const {store} = useMarketStore();
+ const [profile, setProfile] = useState<OnboardProfile | null>(null), [baseline, setBaseline] = useState('');
+ const [pending, setPending] = useState(false), [error, setError] = useState<string | null>(null), [savedAt, setSavedAt] = useState('');
+ const fields = useFieldErrors();
+ const editable = (p: OnboardProfile) => JSON.stringify([...legalFields.map(([key]) => p[key]), p.legal_form, p.founded_year, p.employee_band, p.markets, p.languages]);
+ useEffect(() => {let active=true; if(store) void readOnboardProfile(store).then(p => {if(active) {setProfile(p); setBaseline(editable(p));}}, () => {if(active) setError('მონაცემები ვერ ჩაიტვირთა.');}); return () => {active=false;};}, [store]);
+ const dirty = !!profile && editable(profile) !== baseline;
+ const guard = useUnsavedGuard(dirty);
+ const patch = (value: Partial<OnboardProfile>) => setProfile(p => p ? {...p, ...value} : p);
+ async function save() {
+  if (!store || !profile || pending) return false;
+  if (!dirty) return true;
+  const errors: FieldErrors = {};
+  if (profile.legal_name && profile.legal_name.trim().length < 2) errors['legal-legal_name'] = 'მინიმუმ 2 სიმბოლო';
+  if (profile.registration_code && profile.registration_code.trim().length < 3) errors['legal-registration_code'] = 'მინიმუმ 3 სიმბოლო';
+  if (profile.website && !/^https?:\/\//.test(profile.website)) errors['legal-website'] = 'ბმული დაიწყეთ https://-ით';
+  if (profile.founded_year !== null && (!Number.isInteger(profile.founded_year) || profile.founded_year < 1800 || profile.founded_year > new Date().getFullYear())) errors['legal-year'] = 'მიუთითეთ წელი 1800-დან მიმდინარე წლამდე';
+  if (!fields.check(errors, Object.keys(errors))) {if (guard.open) setError('შეასწორეთ მონიშნული ველები. ფორმაში დასაბრუნებლად აირჩიეთ „დარჩენა“.'); return false;}
+  setPending(true); setError(null);
+  try {
+   // Preserve the other onboarding fields from a fresh server row.
+   const current = await readOnboardProfile(store);
+   await store.mutateRpc('set_onboarding_details', {p_account_intent: current.account_intent, p_business_tags: current.business_tags, p_certificates: current.certificates,
+    p_legal_name: profile.legal_name?.trim() || null, p_registration_code: profile.registration_code?.trim() || null,
+    p_legal_form: profile.legal_form || null, p_founded_year: profile.founded_year, p_employee_band: profile.employee_band || null,
+    p_contact_position: profile.contact_position?.trim() || null, p_website: profile.website?.trim() || null,
+    p_markets: profile.markets, p_languages: profile.languages});
+   setBaseline(editable(profile)); setSavedAt(new Date().toLocaleTimeString('ka-GE', {hour:'2-digit', minute:'2-digit'})); return true;
+  } catch(failure) {setError((failure as {userMessage?: string}).userMessage || 'მონაცემები ვერ შეინახა.'); return false;}
+  finally {setPending(false);}
+ }
+ return <section className={`account-section ${styles.profileForm}`}><h2 className="account-section__title">იურიდიული მონაცემები</h2><p className="account-hint">ყველა ველი არასავალდებულოა.</p>
+  {profile ? <form className="ma-form" onSubmit={async e => {e.preventDefault(); await save();}} noValidate>
+   <fieldset className="account-form-group" disabled={pending}><div className="ma-form__row ma-form__row--2">
+    {legalFields.map(([key, label, max]) => <div className="ma-field" key={key}><label className="ma-field__label" htmlFor={`legal-${key}`}>{label}</label><input className="ma-input" maxLength={max} type={key === 'website' ? 'url' : 'text'} value={profile[key] || ''} onChange={e => {patch({[key]: e.target.value || null}); fields.clear(`legal-${key}`);}} {...fields.control(`legal-${key}`)}/>{fields.message(`legal-${key}`)}</div>)}
+    <div className="ma-field"><label className="ma-field__label" htmlFor="legal-form">იურიდიული ფორმა</label><CustomSelect id="legal-form" value={profile.legal_form || ''} onChange={e => patch({legal_form: e.target.value || null})}><option value="">აირჩიეთ</option>{Array.from(new Set(['შპს', 'ინდ. მეწარმე', 'სს', 'კოოპერატივი', 'სხვა', ...(profile.legal_form ? [profile.legal_form] : [])])).map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
+    <div className="ma-field"><label className="ma-field__label" htmlFor="legal-year">დაარსების წელი</label><input className="ma-input" type="number" min={1800} max={new Date().getFullYear()} value={profile.founded_year ?? ''} onChange={e => {patch({founded_year: e.target.value ? Number(e.target.value) : null}); fields.clear('legal-year');}} {...fields.control('legal-year')}/>{fields.message('legal-year')}</div>
+    <div className="ma-field"><label className="ma-field__label" htmlFor="legal-employees">თანამშრომლები</label><CustomSelect id="legal-employees" value={profile.employee_band || ''} onChange={e => patch({employee_band: e.target.value || null})}><option value="">აირჩიეთ</option>{['1-7','8-50','51-200','201+'].map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
+   </div><ChipsInput id="legal-markets" label="ბაზრები" compact values={profile.markets} onChange={markets => patch({markets})}/><ChipsInput id="legal-languages" label="ენები" compact values={profile.languages} onChange={languages => patch({languages})}/></fieldset>
+   <div className="ma-form-bar"><p className="ma-form-bar__note" role="status">{dirty ? 'შეუნახავი ცვლილებები' : savedAt ? `შენახულია ${savedAt}` : 'ცვლილებები არ არის'}</p><Button type="submit" loading={pending}>შენახვა</Button></div>
+  </form> : !error ? <p role="status">იტვირთება…</p> : null}
+  {error && <p className="ma-field__error" role="alert">{error}</p>}
+  <UnsavedSheet guard={guard} pending={pending} error={error} save={save}/>
+ </section>;
+}
