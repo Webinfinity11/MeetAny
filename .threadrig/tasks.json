@@ -1,0 +1,380 @@
+{
+  "goal" : "სრულყოფილების რაუნდი 2026-10-12: საიტზე ვიზუალური/ტექსტური ხარვეზები არ უნდა იყოს, ადმინი ყველაფერს მართავს. გეგმა: web/qa/PERFECTION-2026-10-12/PLAN.md. წინა რაუნდი (დიზაინის 36 არტბორდი) დასრულებულია, გარდა T2.10-ისა.",
+  "phases" : [
+    {
+      "id" : "P1",
+      "summary" : "ხუთი ფართობი 1440/390, ხარვეზების სია ID-ებით analysis/*.md",
+      "tasks" : [
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/qa/PERFECTION-2026-10-12/analysis/public.md"
+          ],
+          "id" : "T1.1",
+          "status" : "done",
+          "title" : "გაიარე საჯარო ეკრანები (32 ხარვეზი)",
+          "updatedAt" : "2026-10-12T10:23:12Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/qa/PERFECTION-2026-10-12/analysis/client.md"
+          ],
+          "id" : "T1.2",
+          "status" : "done",
+          "title" : "გაიარე კლიენტის ანგარიში (54)",
+          "updatedAt" : "2026-10-12T10:23:12Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/qa/PERFECTION-2026-10-12/analysis/company.md"
+          ],
+          "id" : "T1.3",
+          "status" : "done",
+          "title" : "გაიარე კომპანიის ანგარიში + onboarding (31)",
+          "updatedAt" : "2026-10-12T10:23:12Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/qa/PERFECTION-2026-10-12/analysis/deal.md"
+          ],
+          "id" : "T1.4",
+          "status" : "done",
+          "title" : "გაიარე გარიგების ეკრანები (27)",
+          "updatedAt" : "2026-10-12T10:23:12Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/qa/PERFECTION-2026-10-12/analysis/admin.md"
+          ],
+          "id" : "T1.5",
+          "status" : "done",
+          "title" : "გაიარე ადმინი და მართვის სისრულე",
+          "updatedAt" : "2026-10-12T10:26:21Z"
+        }
+      ],
+      "title" : "ეტაპი 1 · ანალიზი"
+    },
+    {
+      "id" : "P2",
+      "summary" : "სტანდარტი, პრიორიტეტები, ნაკადების დაყოფა ფაილების გადაფარვის გარეშე",
+      "tasks" : [
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/qa/PERFECTION-2026-10-12/PLAN.md"
+          ],
+          "id" : "T2.1",
+          "status" : "done",
+          "title" : "დაწერე PLAN.md სტანდარტით და ნაკადების დაყოფით",
+          "updatedAt" : "2026-10-12T10:23:12Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "id" : "T2.2",
+          "status" : "done",
+          "title" : "შეავსე PLAN.md §4 ადმინის ნაკლოვანებებით",
+          "updatedAt" : "2026-10-12T10:26:21Z"
+        }
+      ],
+      "title" : "ეტაპი 2 · გეგმა"
+    },
+    {
+      "id" : "P3",
+      "summary" : "ნაკადები PLAN.md §3-ის მიხედვით, after/ კადრები 1440/390",
+      "tasks" : [
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/app/lib/format.ts",
+            "web/app/lib/deal-client.ts",
+            "web/app/components/ui/Avatar.tsx",
+            "web/app/components/ui/Notice.tsx",
+            "web/app/styles/patterns.css"
+          ],
+          "id" : "T3.1",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "საერთო საფუძველი: format/deal labels/Avatar/Notice/tokens/fixed-bar",
+          "updatedAt" : "2026-10-12T10:34:33Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "files" : [
+            "web/app/(home)/page.tsx",
+            "web/app/components/home/HomeSections.tsx"
+          ],
+          "id" : "T3.2",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "მთავარი გვერდი: რიცხვები, რატომ MeetAny, კომპანიები, FAQ, CTA",
+          "updatedAt" : "2026-10-12T10:36:58Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T3.1"
+          ],
+          "id" : "T3.3",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "საერთო UI და მობილური UX (390/360)",
+          "updatedAt" : "2026-10-12T11:03:58Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T3.1"
+          ],
+          "id" : "T3.4",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "კატალოგი და დეტალი",
+          "updatedAt" : "2026-10-12T11:01:11Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T3.1"
+          ],
+          "id" : "T3.5",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "ანგარიშის სივრცე (დაფა, მენიუ, ჩატი, შეტყობინებები, პროფილი)",
+          "updatedAt" : "2026-10-12T11:07:52Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T3.1"
+          ],
+          "id" : "T3.6",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "კომპანიის პროფილი და onboarding (ვერიფიკაციის სტატუსი, კატეგორიები)",
+          "updatedAt" : "2026-10-12T10:55:25Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T3.1"
+          ],
+          "id" : "T3.7",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "გარიგება და შეთავაზება (D-01..D-27, Q1..Q8)",
+          "updatedAt" : "2026-10-12T11:03:02Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T1.5"
+          ],
+          "id" : "T3.8",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "ადმინი: ვიზუალი + მართვის ნაკლოვანებები + მიგრაციები",
+          "updatedAt" : "2026-10-12T11:10:31Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "dependsOn" : [
+            "T3.3",
+            "T3.4",
+            "T3.5",
+            "T3.6",
+            "T3.7",
+            "T3.8"
+          ],
+          "id" : "T3.9",
+          "status" : "done",
+          "title" : "საბოლოო გავლა: სკრიპტები ხელახლა, after/, REPORT.md",
+          "updatedAt" : "2026-10-12T12:09:11Z"
+        }
+      ],
+      "title" : "ეტაპი 3 · შესრულება"
+    },
+    {
+      "id" : "P4",
+      "summary" : "ინტეგრაცია, ყველა ტესტი, ბრაუზერით შემოწმება, ერთი ანგარიში მთავარ ჩატს",
+      "tasks" : [
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "id" : "T4.1",
+          "status" : "done",
+          "title" : "ინტეგრაცია + tsc/lint/unit/db + ბრაუზერი 1440/390",
+          "updatedAt" : "2026-10-12T12:09:34Z"
+        },
+        {
+          "createdAt" : "2026-10-12T10:23:12Z",
+          "id" : "T4.2",
+          "status" : "done",
+          "title" : "ანგარიში: ცხრილი, commit-ები, მიგრაციების რიგი, დარჩენილი",
+          "updatedAt" : "2026-10-12T12:09:35Z"
+        }
+      ],
+      "title" : "ეტაპი 4 · ანგარიში"
+    },
+    {
+      "id" : "P5",
+      "summary" : "ფაილი web/qa/OWNER-DEFECTS-2026-10-13/owner-comments.pptx — 7 სლაიდი, სკრინშოტები იმავე საქაღალდეში. ყოველი დავალება: გასწორება + 1440/390 სკრინშოტი + ტესტები.",
+      "tasks" : [
+        {
+          "acceptance" : [
+            "1440 და 390-ზე განთავსების/შემდეგი ღილაკი ფორმის ნებისმიერ წერტილში ჩანს ეკრანზე, ფუტერზე ქვემოთ არ ჩადის",
+            "ღილაკი არ ფარავს ბოლო ველს (ქვედა padding)",
+            "overlay-audit 0, type-audit 0"
+          ],
+          "createdAt" : "2026-10-13T11:38:00Z",
+          "detail" : "სლ.2 (s2-post-request.png): მთავარი მოქმედება („შემდეგი: მიწოდება“ / „მოთხოვნის განთავსება“) გვერდის ბოლოს, ფუტერის შემდეგაა — მომხმარებელი ვერ პოულობს. ქვედა ზოლი viewport-ზე უნდა ეკვროდეს და ფორმის ნაბიჯი მოკლე იყოს; მობილურზეც.",
+          "files" : [
+            "web/app/components/market/PostRequestPage.tsx",
+            "web/app/components/market/post/Post.module.css",
+            "web/app/styles/primitives.css"
+          ],
+          "id" : "T5.1",
+          "priority" : "high",
+          "title" : "ასწიე მოთხოვნის განთავსების ღილაკი ზემოთ (/requests/new/)",
+          "updatedAt" : "2026-10-13T11:38:00Z"
+        },
+        {
+          "acceptance" : [
+            "ახალი მოთხოვნა განთავსებისთანავე ჩანს /requests/-ზე და მთავარი გვერდის „ახალ მოთხოვნებში“ (ხელახალი ჩატვირთვის გარეშე ან პირველივე reload-ზე)",
+            "მიზეზი ჩაწერილია commit-ში",
+            "ტესტი, რომელიც ამას იჭერს"
+          ],
+          "createdAt" : "2026-10-13T11:38:08Z",
+          "detail" : "სლ.2: „განთავსების შემდეგ არ ჩანს ახალ განცხადებებში“. სავარაუდო მიზეზები: საჯარო snapshot-ის ქეში (public-snapshot.js, 30წმ/10წთ) არ ინვალიდირდება create_request_full-ზე (PUBLIC_WRITES db-handler.js-ში), ან ფილტრი (verified-only/ტესტური სათაურის ფილტრი) მალავს. გაიმეორე ლოკალურად და დაადგინე.",
+          "files" : [
+            "web/app/lib/db-handler.js",
+            "web/app/lib/public-snapshot.js",
+            "web/app/lib/market-store.js",
+            "web/app/components/market/RequestsPageContent.tsx"
+          ],
+          "id" : "T5.2",
+          "priority" : "high",
+          "title" : "გაასწორე: ახალი მოთხოვნა არ ჩანს სიაში განთავსების შემდეგ",
+          "updatedAt" : "2026-10-13T11:38:08Z"
+        },
+        {
+          "acceptance" : [
+            "სტუმარი, კლიენტი, დაუდასტურებელი და ვერიფიცირებული კომპანია — თითოს აქვს ერთი მკაფიო მოქმედება შეთავაზებისკენ",
+            "„მოთხოვნის განთავსება“ ამ ბლოკში მეორადია ან არ ჩანს",
+            "1440/390 სკრინშოტები ოთხივე როლით"
+          ],
+          "createdAt" : "2026-10-13T11:38:12Z",
+          "detail" : "სლ.3 (s3-request-view-no-offer.png): შესულ მომხმარებელს მოთხოვნის გახსნისას შეთავაზების ღილაკი არ უჩანს, მხოლოდ „მოთხოვნის განთავსება“ და „შეთავაზებებს კომპანიები აგზავნიან“. კლიენტის ანგარიშს უნდა ჰქონდეს გასაგები გზა: „შეთავაზების გასაგზავნად გახდით კომპანია“ → become_company/onboarding; დაუდასტურებელ კომპანიას — „ვერიფიკაციის დასრულება“; ვერიფიცირებულს — ღილაკი.",
+          "files" : [
+            "web/app/components/market/RequestViewPageContent.tsx"
+          ],
+          "id" : "T5.3",
+          "priority" : "high",
+          "title" : "აჩვენე „შეთავაზების გაგზავნა“ მოთხოვნის გვერდზე ყველა შესაბამის მომხმარებელს",
+          "updatedAt" : "2026-10-13T11:38:12Z"
+        },
+        {
+          "acceptance" : [
+            "onboarding-ის 7 ნაბიჯში დარგის არჩევა ერთხელ ხდება",
+            "industry/provide_categories ბაზაში იგივე რჩება (ლოგიკა/RPC არ ირღვევა)",
+            "1440/390 სკრინშოტები ყველა ნაბიჯზე"
+          ],
+          "createdAt" : "2026-10-13T11:38:18Z",
+          "detail" : "სლ.5 (s5-business-profile-repeat.png) „დარგი ბევრჯერ მეორდება“: დარგი ჩნდება კომპანიის მონაცემებში, ბიზნეს-პროფილის „ძირითად დარგში“, „რას ანვდით“ კატეგორიებში და პრევიუში. დატოვე ერთ ადგილას (ერთი წყარო), დანარჩენი წინა არჩევიდან შეივსოს/გამოჩნდეს მხოლოდ შესაცვლელად.",
+          "files" : [
+            "web/app/components/market/OnboardFields.tsx",
+            "web/app/components/market/OnboardSteps.tsx",
+            "web/app/components/market/OnboardPage.tsx"
+          ],
+          "id" : "T5.4",
+          "priority" : "high",
+          "title" : "დარგი მხოლოდ ერთხელ იკითხე onboarding-ში",
+          "updatedAt" : "2026-10-13T11:38:18Z"
+        },
+        {
+          "acceptance" : [
+            "ჯგუფის სათაური არ გამოიყურება გამორთულ ვარიანტად",
+            "სასურველი კატეგორია ≤2 მოქმედებით ან ძიებით იპოვება",
+            "კლავიატურით მუშაობს, 390-ზე მოხერხებულია"
+          ],
+          "createdAt" : "2026-10-13T11:38:24Z",
+          "detail" : "სლ.4 (s4-industry-dropdown.png): ჩამოსაშლელში ჯგუფის სახელები („საკვები და სასმელი“, „მშენებლობა და რემონტი“) ნაცრისფერ, თითქოს გამორთულ ვარიანტებად ჩანს და 37 ერთეულიანი სია გრძელია. ჯგუფები ნათლად სათაურებად, ძიებით ან ორ დონედ (ჯგუფი → კატეგორია), CategoryIcon-ით.",
+          "files" : [
+            "web/app/components/ui/CustomSelect.tsx",
+            "web/app/components/market/OnboardFields.tsx"
+          ],
+          "id" : "T5.5",
+          "title" : "გაამარტივე დარგის ამომრჩევი (ჯგუფის სათაურები)",
+          "updatedAt" : "2026-10-13T11:38:24Z"
+        },
+        {
+          "acceptance" : [
+            "ტეგი/სერტიფიკატი ემატება Enter-ით და ღილაკით",
+            "ჩიპებზე მთავრული არ არის",
+            "„დამატება“ არასდროს გამოიყურება გამორთულად, როცა ველში ტექსტია",
+            "იგივე კომპონენტი პროფილის ფორმაშიც"
+          ],
+          "createdAt" : "2026-10-13T11:38:30Z",
+          "detail" : "სლ.4–5 (s4-business-profile.png, s5-certificates.png): მთავრული მსხვილი ჩიპები „+“-ით, ქვემოთ ცალკე ველი და ნაცრისფერი, თითქოს გამორთული „დამატება“. უნდა იყოს ერთი ველი: ჩაწერე → Enter/„,“ ამატებს ჩიპად, შემოთავაზებები ჩიპებად ჩვეულებრივი შრიფტით, არჩეული ✓/×, „დამატება“ აქტიური როცა ტექსტია.",
+          "files" : [
+            "web/app/components/market/OnboardFields.tsx",
+            "web/app/components/market/onboarding.module.css"
+          ],
+          "id" : "T5.6",
+          "title" : "გაამარტივე სერტიფიკატების და ტეგების შეყვანა",
+          "updatedAt" : "2026-10-13T11:38:30Z"
+        },
+        {
+          "acceptance" : [
+            "set_my_products 100 პროდუქტს იღებს (მიგრაცია + db ტესტი)",
+            "ცარიელი ახალი რიგით „შემდეგი“ მუშაობს",
+            "ბრაუზერის native tooltip აღარ ჩანს, შეცდომა ქართულად ველის ქვეშ",
+            "„მომსახურების დამატება“ აქტიური",
+            "100 პროდუქტზე სია კომფორტულია (კომპაქტური რიგები, ძიება/გვერდები თუ საჭიროა)"
+          ],
+          "createdAt" : "2026-10-13T11:38:38Z",
+          "detail" : "სლ.7 (s7-products-limit.png, s7-products-next-blocked.png): ლიმიტი 12 პროდუქტი — საჭიროა 100. ცარიელი ახალი პროდუქტის ფორმა ბლოკავს შემდეგ ნაბიჯზე გადასვლას (ბრაუზერის ინგლისური „Please fill out this field“), „მომსახურების დამატება“ ნაცრისფერია, „შემდეგი“ შავი. ცარიელი draft-რიგი გადასვლისას უნდა უგულებელყოფილ იქნას ან შეკითხვით მოიხსნას; ვალიდაცია ქართულად, ჩვენი სტილით (novalidate).",
+          "files" : [
+            "web/app/components/market/OnboardFields.tsx",
+            "web/app/components/market/OnboardSteps.tsx",
+            "db/migrations/20261013-products-limit.sql",
+            "db/tests/products_limit_tests.sql",
+            "db/tests/run.sh"
+          ],
+          "id" : "T5.7",
+          "priority" : "high",
+          "title" : "გაზარდე პროდუქციის ლიმიტი 100-მდე და გაასწორე „შემდეგი“-ს ჩაკეტვა",
+          "updatedAt" : "2026-10-13T11:38:38Z"
+        },
+        {
+          "acceptance" : [
+            "შაბლონი ჩამოიტვირთება (.xlsx, ქართული სათაურებით)",
+            "ატვირთვა აჩვენებს წინასწარ ნახვას: სწორი რიგები და შეცდომები რიგ-რიგ",
+            "დადასტურების შემდეგ პროდუქტები ინახება (კოდი, ერთეული, ფასი ბაზაში)",
+            "100 რიგი ≤ რამდენიმე წამში",
+            "unit ტესტი პარსერზე"
+          ],
+          "createdAt" : "2026-10-13T11:38:45Z",
+          "dependsOn" : [
+            "T5.7"
+          ],
+          "detail" : "სლ.6 (s6-products.png): კომპანიამ პროდუქცია ერთიანად შაბლონიდან ატვირთოს, rs.ge-ს მოდელით: კოდი, დასახელება, ერთეული (კგ, ცალი, მეტრი…), ერთეულის ფასი. ჩამოსატვირთი .xlsx შაბლონი, ატვირთვისას წინასწარი ნახვა შეცდომებით, დადასტურება. ფასი — არასავალდებულო ველი (ბრიფის მიხედვით ფასი შეთავაზებაშია).",
+          "files" : [
+            "web/app/components/market/OnboardFields.tsx",
+            "web/app/components/market/account/Profile.tsx",
+            "web/public/templates/meetany-products.xlsx",
+            "db/migrations/20261013-products-fields.sql"
+          ],
+          "id" : "T5.8",
+          "title" : "დაამატე პროდუქციის ატვირთვა Excel შაბლონით (rs.ge-ს მოდელი)",
+          "updatedAt" : "2026-10-13T11:38:45Z"
+        }
+      ],
+      "title" : "P5 მფლობელის ხარვეზები (PPTX, 2026-10-13)"
+    }
+  ],
+  "updatedAt" : "2026-10-13T11:38:45Z",
+  "version" : 1
+}

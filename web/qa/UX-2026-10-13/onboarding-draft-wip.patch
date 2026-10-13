@@ -1,0 +1,260 @@
+diff --git a/web/app/components/market/OnboardPage.tsx b/web/app/components/market/OnboardPage.tsx
+index 6e47a2f..d0457d4 100644
+--- a/web/app/components/market/OnboardPage.tsx
++++ b/web/app/components/market/OnboardPage.tsx
+@@ -3,8 +3,9 @@ import Link from 'next/link';
+ import { useEffect, useRef, useState } from 'react';
+ import { useRouter, useSearchParams } from 'next/navigation';
+ import { getMarketStore, useMarketStore } from '../../lib/market-client';
+-import { stepsFor, onboardWrites, retainOnboardDraft, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
++import { stepsFor, onboardSteps, onboardDraftKey, serializeOnboardDraft, restoreOnboardDraft, onboardWrites, retainOnboardDraft, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+ import { toast } from '../Toasts';
++import { Notice } from '../ui/Notice';
+ import { Button } from '../ui/Button';
+ import { Icon } from '../Icon';
+ import { Logo } from '../Logo';
+@@ -24,6 +25,10 @@ export function OnboardLoading() {
+ }
+ 
+ type Model = { profile: OnboardProfile; products: Product[] };
++// Storage can be unavailable in private mode or when the quota is exhausted.
++function storeDraft(id: string, value: string | null) {
++  try { if (value) localStorage.setItem(onboardDraftKey(id), value); else localStorage.removeItem(onboardDraftKey(id)); } catch { /* Server saving remains available. */ }
++}
+ export function OnboardPage() {
+   const { store, sessionReady, available } = useMarketStore();
+   const router = useRouter(), params = useSearchParams();
+@@ -33,6 +38,8 @@ export function OnboardPage() {
+   const role = user?.role as string | undefined;
+   const blocked = !!user?.blocked;
+   const [savedAt, setSavedAt] = useState('');
++  const [restoredDraft, setRestoredDraft] = useState(false);
++  const [hasChanges, setHasChanges] = useState(false);
+   const [model, setModel] = useState<Model | null>(null);
+   const [persisted, setPersisted] = useState<Model | null>(null);
+   // The step list follows the intent being edited, so choosing one on "type" reshapes it at once.
+@@ -43,22 +50,60 @@ export function OnboardPage() {
+   const [error, setError] = useState(''), [notice, setNotice] = useState(''), [pending, setPending] = useState(false), [retry, setRetry] = useState(0);
+   const [errorStep, setErrorStep] = useState<OnboardStep | null>(null);
+   const dirty = useRef(new Set<OnboardStep>()), lock = useRef(false);
++  const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
++  const draftWrite = useRef<{ id: string; value: string | null } | null>(null);
++  const flushDraft = () => {
++    if (draftTimer.current) clearTimeout(draftTimer.current);
++    draftTimer.current = null;
++    if (draftWrite.current) { storeDraft(draftWrite.current.id, draftWrite.current.value); draftWrite.current = null; }
++  };
++  const persistDraft = (next: Model, changed: Iterable<OnboardStep>, immediately = false) => {
++    const steps = [...changed];
++    setHasChanges(steps.length > 0);
++    draftWrite.current = { id: next.profile.id, value: steps.length ? serializeOnboardDraft(next, steps) : null };
++    if (draftTimer.current) clearTimeout(draftTimer.current);
++    if (immediately) flushDraft(); else draftTimer.current = setTimeout(flushDraft, 500);
++  };
+   const form = useRef<HTMLFormElement>(null);
+   const heading = useRef<HTMLHeadingElement>(null);
+   useEffect(() => {
+     if (!sessionReady || !actor || role !== 'company' || blocked) return;
+     let active = true;
+-    readOnboard(getMarketStore()).then(result => { if (active) { setModel(result); setPersisted(result); setError(''); dirty.current.clear(); } }, err => { if (active) setError(onboardError(err)); });
++    readOnboard(getMarketStore()).then(result => { if (active) {
++      let raw: string | null = null;
++      try { raw = localStorage.getItem(onboardDraftKey(result.profile.id)); } catch { /* Storage is optional. */ }
++      const restored = restoreOnboardDraft(result, raw);
++      dirty.current = new Set(restored !== result ? onboardSteps.filter(value => JSON.parse(raw!).dirtySteps.includes(value) &&
++        JSON.stringify(retainOnboardDraft(result, restored, [value])) !== JSON.stringify(result)) : []);
++      if (restored === result) storeDraft(result.profile.id, null);
++      setHasChanges(dirty.current.size > 0); setModel(restored); setPersisted(result); setRestoredDraft(restored !== result); setSavedAt(''); setError('');
++    } }, err => { if (active) setError(onboardError(err)); });
+     return () => { active = false; };
+   }, [sessionReady, actor, role, blocked, retry]);
+   useEffect(() => {
+-    const unload = (event: BeforeUnloadEvent) => { if (dirty.current.size || lock.current) event.preventDefault(); };
++    const unload = (event: BeforeUnloadEvent) => { flushDraft(); if (dirty.current.size || lock.current) event.preventDefault(); };
+     window.addEventListener('beforeunload', unload);
+-    return () => window.removeEventListener('beforeunload', unload);
++    window.addEventListener('pagehide', flushDraft);
++    return () => { flushDraft(); window.removeEventListener('beforeunload', unload); window.removeEventListener('pagehide', flushDraft); };
+   }, []);
+   useEffect(() => { heading.current?.focus(); }, [step]);
+-  const patch = (value: Partial<OnboardProfile>) => { dirty.current.add(step); setNotice(''); setSavedAt(''); setModel(previous => previous ? { ...previous, profile: { ...previous.profile, ...value } } : previous); };
+-  const setProducts = (products: Product[]) => { dirty.current.add('provide'); setNotice(''); setSavedAt(''); setModel(previous => previous ? { ...previous, products } : previous); };
++  const patch = (value: Partial<OnboardProfile>) => {
++    if (!model) return;
++    dirty.current.add(step); setNotice(''); setSavedAt('');
++    const next = { ...model, profile: { ...model.profile, ...value } };
++    setModel(next); persistDraft(next, dirty.current);
++  };
++  const setProducts = (products: Product[]) => {
++    if (!model) return;
++    dirty.current.add('provide'); setNotice(''); setSavedAt('');
++    const next = { ...model, products };
++    setModel(next); persistDraft(next, dirty.current);
++  };
++  const discardDraft = () => {
++    if (!persisted || pending) return;
++    dirty.current.clear(); persistDraft(persisted, [], true);
++    setModel(persisted); setRestoredDraft(false); setSavedAt(''); setError(''); setErrorStep(null);
++  };
+   async function save(destination?: OnboardStep | 'account' | 'home') {
+     if (!model || !store || pending || lock.current || !form.current?.reportValidity()) return;
+     lock.current = true; setPending(true); setError(''); setErrorStep(null); setNotice('');
+@@ -80,11 +125,15 @@ export function OnboardPage() {
+           if (!Array.isArray(categories?.provide) || !Array.isArray(categories?.need)) throw new Error('კატეგორიების შენახვა ვერ დადასტურდა.');
+           result = await readOnboard(source);
+         }
++        dirty.current.delete(target);
++        const remainingModel = retainOnboardDraft(result, model, [...dirty.current]);
++        setPersisted(result); setModel(remainingModel); persistDraft(remainingModel, dirty.current, true);
+       }
+       if(step==='review'&&destination==='account')await store.mutateRpc('complete_onboarding',{});
+-      const remaining = [...dirty.current].filter(value => !writes.includes(value) && steps.includes(value));
++      const remaining = [...dirty.current];
+       setModel(retainOnboardDraft(result, model, remaining)); setPersisted(result);
+       dirty.current = new Set(remaining);
++      if (!remaining.length) setRestoredDraft(false);
+       setSavedAt(remaining.length ? '' : new Date().toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit', hour12: false }));
+       if (destination === 'home') router.push('/');
+       else if (destination === 'account') { toast({ title: 'პროფილი შენახულია' }); router.push('/account/'); }
+@@ -151,6 +200,8 @@ export function OnboardPage() {
+     <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
+       <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
+         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
++        <p className={s.draftStatus} role="status">{hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : ''}</p>
++        {restoredDraft && <Notice tone="info" className={s.draftNotice} action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გაუქმება</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
+         <form ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1]); }}>
+           <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>
+           {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შესწორება</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
+diff --git a/web/app/components/market/onboarding.module.css b/web/app/components/market/onboarding.module.css
+index d2ccc76..5b1d7d0 100644
+--- a/web/app/components/market/onboarding.module.css
++++ b/web/app/components/market/onboarding.module.css
+@@ -18,6 +18,9 @@
+ .main { min-width: 0; container: onboard-main / inline-size; }
+ .main h1 { margin: 0; font-size: var(--size-28); line-height: 1.25; font-weight: var(--fw-bold); letter-spacing: -.02em; color: var(--ink-950); outline: none; text-wrap: balance; }
+ .lead { max-width: 64ch; margin: var(--space-2) 0 var(--space-8); color: var(--ink-600); font-size: var(--fs-body); line-height: 1.6; text-wrap: pretty; }
++.draftStatus { margin: 0 0 var(--space-4); color: var(--ink-600); font-size: var(--fs-sm); line-height: var(--lh-sm); }
++.draftStatus:empty { display: none; }
++.draftNotice { margin-bottom: var(--space-5); }
+ .formFieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+ .columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: start; }
+ @container onboard-main (min-width: 820px) { .columns:has(> .aside) { grid-template-columns: minmax(0, 1fr) var(--size-280); } }
+diff --git a/web/app/lib/onboarding-client.ts b/web/app/lib/onboarding-client.ts
+index 30c1083..f604d3b 100644
+--- a/web/app/lib/onboarding-client.ts
++++ b/web/app/lib/onboarding-client.ts
+@@ -78,6 +78,45 @@ export function retainOnboardDraft(saved: OnboardModel, draft: OnboardModel, ste
+   }
+   return { profile, products: steps.includes('provide') ? draft.products : saved.products };
+ }
++export const onboardDraftKey = (profileId: string) => `onboard-draft:${profileId}`;
++export const onboardDraftLifetime = 24 * 60 * 60 * 1000;
++const draftKeys = (step: OnboardStep) => step === 'type' ? [...(keysByStep.type || []), 'provide_categories' as const] : keysByStep[step] || [];
++/** Only editable step data and product strings belong in a local draft, never files or server flags. */
++export function serializeOnboardDraft(model: OnboardModel, dirtySteps: Iterable<OnboardStep>, now = Date.now()): string {
++  const dirty = new Set(dirtySteps);
++  const steps = onboardSteps.filter(step => dirty.has(step) && draftKeys(step).length);
++  const profile = Object.fromEntries(steps.flatMap(step => draftKeys(step).map(key => [key, model.profile[key]])));
++  return JSON.stringify({ version: 1, profileId: model.profile.id, savedAt: now, dirtySteps: steps, profile,
++    ...(steps.includes('provide') ? { products: model.products.map(({ name, photoUrl, note }) => ({ name, photoUrl, note })) } : {}) });
++}
++/** Invalid, foreign and expired drafts cannot replace confirmed server data. */
++export function restoreOnboardDraft(persisted: OnboardModel, draft: string | null, now = Date.now()): OnboardModel {
++  if (!draft) return persisted;
++  try {
++    const value = JSON.parse(draft);
++    if (value?.version !== 1 || value.profileId !== persisted.profile.id || !Number.isFinite(value.savedAt)
++      || value.savedAt > now || now - value.savedAt >= onboardDraftLifetime
++      || !Array.isArray(value.dirtySteps) || !value.profile || typeof value.profile !== 'object') return persisted;
++    const profile = { ...persisted.profile };
++    const arrays = ['markets', 'languages', 'business_tags', 'certificates', 'provide_categories', 'need_categories', 'offers', 'seeks'];
++    const nullable = ['legal_name', 'registration_code', 'legal_form', 'employee_band', 'contact_position', 'website', 'address'];
++    for (const step of onboardSteps.filter(step => value.dirtySteps.includes(step))) {
++      for (const key of draftKeys(step)) {
++        if (!Object.hasOwn(value.profile, key)) continue;
++        const field = value.profile[key];
++        const valid = arrays.includes(key) ? Array.isArray(field) && field.every(item => typeof item === 'string')
++          : key === 'founded_year' ? field === null || typeof field === 'number' && Number.isFinite(field)
++          : typeof field === 'string' || nullable.includes(key) && field === null;
++        if (valid) Object.assign(profile, { [key]: field });
++      }
++    }
++    const products = value.dirtySteps.includes('provide') && Array.isArray(value.products)
++      && value.products.every((item: Product) => item && ['name', 'photoUrl', 'note'].every(key => typeof item[key as keyof Product] === 'string'))
++      ? value.products.map(({ name, photoUrl, note }: Product) => ({ name, photoUrl, note })) : persisted.products;
++    const restored = { profile, products };
++    return JSON.stringify(restored) === JSON.stringify(persisted) ? persisted : restored;
++  } catch { return persisted; }
++}
+ export async function readOnboardProfile(store: Store): Promise<OnboardProfile> {
+   const data = await store.callRpc('my_profile');
+   const profile = Array.isArray(data) ? data[0] : data;
+diff --git a/web/qa/unit/onboarding-draft.test.mjs b/web/qa/unit/onboarding-draft.test.mjs
+index 997c186..ada4ed2 100644
+--- a/web/qa/unit/onboarding-draft.test.mjs
++++ b/web/qa/unit/onboarding-draft.test.mjs
+@@ -9,7 +9,7 @@ const source = ts.transpileModule(readFileSync(new URL('../../app/lib/onboarding
+ }).outputText;
+ const context = { exports: {}, require: () => ({ categories: {} }) };
+ vm.runInNewContext(source, context);
+-const { onboardWrites, retainOnboardDraft, stepsFor } = context.exports;
++const { onboardWrites, retainOnboardDraft, stepsFor, serializeOnboardDraft, restoreOnboardDraft, onboardDraftKey, onboardDraftLifetime } = context.exports;
+ 
+ test('returning to an unfinished later step does not submit its invalid hidden draft', () => {
+   assert.deepEqual([...onboardWrites('type', ['details', 'profile'])], ['type']);
+@@ -46,3 +46,55 @@ test('writes only cover the steps of the current intent', () => {
+   assert.deepEqual([...onboardWrites('need', ['details', 'provide', 'need'], false, steps)], ['details', 'need']);
+   assert.deepEqual([...onboardWrites('type', ['provide', 'need'], true, steps)], ['type', 'need']);
+ });
++
++const persisted = { profile: { id: 'company-a', account_intent: 'both', about: 'Saved', company: 'Company', industry: 'food', business_tags: [], certificates: [], name: 'Owner', legal_name: 'Legal', verified: true, provide_categories: ['food'], offers: ['Service'], logo_url: 'server.jpg' }, products: [{ name: 'Saved product', photoUrl: 'server.jpg', note: '' }] };
++const draft = { profile: { ...persisted.profile, about: 'Draft', name: 'Draft owner', verified: false, logo_url: 'draft.jpg' }, products: [{ name: 'Draft product', photoUrl: 'uploaded.jpg', note: 'Note', file: { secret: 'binary' } }] };
++const now = 100000000;
++
++test('serialize includes only dirty fields and product strings, without files or server flags', () => {
++  const profile = JSON.parse(serializeOnboardDraft(draft, ['profile'], now));
++  assert.deepEqual(Object.keys(profile.profile).sort(), ['about', 'business_tags', 'certificates', 'company', 'industry']);
++  assert.equal(profile.products, undefined);
++  const products = JSON.parse(serializeOnboardDraft(draft, new Set(['provide']), now));
++  assert.deepEqual(products.products, [{ name: 'Draft product', photoUrl: 'uploaded.jpg', note: 'Note' }]);
++  assert.equal(products.profile.verified, undefined);
++  assert.equal(onboardDraftKey('company-a'), 'onboard-draft:company-a');
++});
++
++test('restore never overwrites a step without dirty changes or server-owned media and flags', () => {
++  const raw = serializeOnboardDraft(draft, ['profile'], now);
++  const result = restoreOnboardDraft(persisted, raw, now + 1);
++  assert.equal(result.profile.about, 'Draft');
++  assert.equal(result.profile.name, 'Owner');
++  assert.equal(result.profile.verified, true);
++  assert.equal(result.profile.logo_url, 'server.jpg');
++  assert.equal(result.products, persisted.products);
++  assert.equal(persisted.profile.about, 'Saved');
++});
++
++test('expired, foreign, future, malformed and identical drafts are ignored', () => {
++  const raw = serializeOnboardDraft(draft, ['profile'], now);
++  assert.equal(restoreOnboardDraft(persisted, raw, now + onboardDraftLifetime), persisted);
++  assert.equal(restoreOnboardDraft(persisted, raw, now - 1), persisted);
++  assert.equal(restoreOnboardDraft(persisted, raw.replace('company-a', 'company-b'), now), persisted);
++  for (const value of [null, '{', '{}', 'null']) assert.equal(restoreOnboardDraft(persisted, value, now), persisted);
++  assert.equal(restoreOnboardDraft(persisted, serializeOnboardDraft(persisted, ['profile'], now), now), persisted);
++  assert.equal(restoreOnboardDraft(persisted, raw, now + onboardDraftLifetime - 1).profile.about, 'Draft');
++});
++
++test('type categories and products restore while saved steps can be removed independently', () => {
++  const changed = { ...draft, profile: { ...draft.profile, provide_categories: ['beverages'] } };
++  const result = restoreOnboardDraft(persisted, serializeOnboardDraft(changed, ['type', 'provide', 'profile'], now), now);
++  assert.deepEqual([...result.profile.provide_categories], ['beverages']);
++  assert.equal(result.products[0].name, 'Draft product');
++  const remaining = restoreOnboardDraft(persisted, serializeOnboardDraft(result, ['provide'], now), now);
++  assert.equal(remaining.profile.about, 'Saved');
++  assert.equal(remaining.products[0].name, 'Draft product');
++});
++
++test('invalid editable data and injected non-dirty properties do not replace persisted values', () => {
++  const value = JSON.parse(serializeOnboardDraft(draft, ['profile'], now));
++  Object.assign(value.profile, { about: {}, name: 'Injected owner', verified: false, business_tags: [3] });
++  value.dirtySteps.push('__proto__');
++  assert.equal(restoreOnboardDraft(persisted, JSON.stringify(value), now), persisted);
++});
