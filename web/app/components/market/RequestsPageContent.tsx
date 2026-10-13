@@ -263,7 +263,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         <div className={styles.requestResults}>
         <ResultsBar
             utility={<div className={styles.viewSwitch} aria-label="ხედის არჩევა">{(["grid", "list"] as const).map(value => <button key={value} type="button" aria-label={value === "grid" ? "ბადე" : "სია"} aria-pressed={view === value} onClick={() => setView(value)}><Icon name={value === "grid" ? "layout-grid" : "list-filter"} /></button>)}</div>}
-            count={countLabel}
+            count={<>{countLabel}{pageCount > 1 ? <span> · გვერდი {page} / {pageCount}</span> : null}</>}
             items={activeItems}
             onRemove={key => setFilters({[key]: ""})}
             onClear={clearFilters}

@@ -42,10 +42,15 @@ export default function HowItWorksPage() {
     </section>
     <section className={styles.section} id="verification" aria-labelledby="trust-title">
       <p className={styles.eyebrow}>ნდობა და უსაფრთხოება</p><h2 id="trust-title">ვერიფიკაცია</h2>
-      <div className={styles.cards}><article className={styles.card}><Icon name="file-text" /><h3>რა დოკუმენტებია საჭირო</h3><p>ვერიფიკაციისთვის ატვირთეთ კომპანიის რეგისტრაციის ამონაწერი და საგადასახადო დოკუმენტი; სურვილისამებრ — სერტიფიკატები.</p><Link href="/terms/#contact">მხარდაჭერასთან დაკავშირება</Link></article>
-        <article className={styles.card}><Icon name="badge-check" /><h3>განხილვა და დადასტურება</h3><p>განხილვა 1–2 სამუშაო დღე გრძელდება. მონაცემების გადამოწმების შემდეგ გუნდი კომპანიას „დადასტურებული“ ნიშნით აღნიშნავს კატალოგსა და პროფილზე.</p></article></div>
+      <div className={styles.cards}><article className={styles.card}><Icon name="file-text" /><h3>რა დოკუმენტებია საჭირო</h3><p>ვერიფიკაციისთვის ატვირთეთ კომპანიის რეგისტრაციის ამონაწერი და საგადასახადო დოკუმენტი; სურვილისამებრ — სერტიფიკატები.</p><Link href="/how-it-works/#help">მხარდაჭერასთან დაკავშირება</Link></article>
+        <article className={styles.card}><Icon name="badge-check" /><h3>განხილვა და დადასტურება</h3><p>განხილვა 1–2 სამუშაო დღე გრძელდება. მონაცემების გადამოწმების შემდეგ გუნდი კომპანიას „ვერიფიცირებული“ ნიშნით აღნიშნავს კატალოგსა და პროფილზე.</p></article></div>
       <aside className={styles.contact}><Icon name="lock" /><div><h3>კონტაქტის წესი</h3><p>ტელეფონი და ელფოსტა ჩანს მხოლოდ გარიგების მხარეებისთვის: მოთხოვნის ავტორისთვის და კომპანიისთვის, ვისი შეთავაზებაც აირჩიეს.</p></div></aside>
     </section>
+    <section className={styles.section} id="help" aria-labelledby="help-title"><h2 id="help-title">დახმარება</h2><div className={styles.cards}>
+      <article className={styles.card}><h3>კონტაქტის შეცვლა</h3><p>გახსენით პროფილი → კონტაქტი → შეცვლა. მიუთითეთ ახალი კონტაქტი და შენიშვნა — მოთხოვნას გუნდი განიხილავს.</p><Link href="/account/?tab=profile">პროფილის გახსნა</Link></article>
+      <article className={styles.card}><h3>დარღვევის შეტყობინება</h3><p>მოთხოვნის, კომპანიის ან შეთავაზების გვერდზე აირჩიეთ „დარღვევის შეტყობინება“. შეტყობინებას მხოლოდ გუნდი ხედავს.</p></article>
+      <article className={styles.card}><h3>გარიგების პრობლემა</h3><p>გახსენით შესაბამისი გარიგება და აირჩიეთ „პრობლემის შეტყობინება“.</p><Link href="/account/?tab=deals">ჩემი გარიგებები</Link></article>
+    </div></section>
     <section className={styles.section} aria-labelledby="faq-title"><h2 id="faq-title">ხშირად დასმული კითხვები</h2><div className={styles.faq}>{faq.map(([question, answer]) => <details key={question}><summary>{question}<Icon name="chevron-down" /></summary><p>{answer}</p></details>)}</div><Link className={styles.more} href="/terms/">წესები და კონფიდენციალურობა</Link></section>
     <section className={styles.cta}><div><h2>დაიწყეთ MeetAny-ზე</h2><p>აღწერეთ საჭიროება ან შესთავაზეთ კომპანიებს თქვენი პროდუქტი და მომსახურება.</p></div><div className={styles.actions}><Button size="lg" href="/requests/new/">მოთხოვნის განთავსება</Button><Button variant="secondary" size="lg" href="/account/?tab=register&role=company">კომპანიის რეგისტრაცია</Button></div></section>
   </div>;
