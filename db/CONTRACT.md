@@ -932,3 +932,8 @@ Production რიგში გაუშვით `db/migrations/20261013-qa-roun
 - უცვლელი `update_my_profile(p_name text,p_company text,p_city text,p_industry text default null,p_about text default '',p_offers text[] default '{}',p_seeks text[] default '{}',p_service_cities text[] default '{}',p_address text default null,p_lat double precision default null,p_lng double precision default null,p_logo_url text default null) returns public.profiles` უკვე უშვებს `about`-ის 1000 სიმბოლოს; 1001 → `MA410`. სვეტის CHECK-იც 1000-ია, ბაზის ცვლილება საჭირო არ იყო.
 
 შემოწმება: `qa_round_tests.sql`, განახლებული `product_tests.sql` და `flow_completion_tests.sql`; `run.sh` ახალ მიგრაციას ორჯერ ატარებს.
+
+### Contact identifier change requests (20261013-contact-change)
+`request_contact_change(p_phone text, p_email text, p_note text) → jsonb {id,status,created_at}` is authenticated-only and targets the caller's profile. At least one changed identifier is required. Phone uses `normalize_phone`; email must be valid and ≤200 characters. The combined Georgian description is ≤500 characters. Optional empty contacts become null. Codes: `MA710` already has an open request; `MA711` invalid/unchanged input. An advisory lock and existing unique index serialize duplicates.
+
+The private reports queue stores `target_kind='contact_change'`, `target_id=reporter_id`, `reason='other'`, and `body='ტელეფონი: X · ელფოსტა: Y · შენიშვნა: Z'` (the existing `reason` column is an enum). Credentials remain unchanged; administrators fulfill via `admin_edit_profile`. Resolving a contact report never blocks its target. Admin UI needs a `contact_change` label and contact-specific handling copy; this migration does not alter the admin UI.

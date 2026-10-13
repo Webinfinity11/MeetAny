@@ -1,0 +1,23 @@
+\set ON_ERROR_STOP 1
+select t.as_super();
+select t.ok(not has_function_privilege('anonymous','public.request_contact_change(text,text,text)','EXECUTE'),'CC anonymous cannot request');
+select t.as_anon();
+select t.throws($q$select public.request_contact_change('555123456',null,null)$q$,'42501','CC guest rejected');
+select t.as_user('rp_client');
+select t.throws($q$select public.request_contact_change(null,null,'note only')$q$,'MA711','CC requires contact');
+select t.throws($q$select public.request_contact_change('123',null,null)$q$,'MA711','CC invalid phone');
+select t.throws($q$select public.request_contact_change(null,'bad@',null)$q$,'MA711','CC invalid email');
+select t.throws($q$select public.request_contact_change(null,'valid@example.ge',repeat('x',500))$q$,'MA711','CC combined description limit');
+select t.put('cc_request',(public.request_contact_change('555123456','new-contact@example.ge','გთხოვთ შეცვალოთ')->>'id')::uuid);
+select t.throws($q$select public.request_contact_change(null,'second@example.ge',null)$q$,'MA710','CC one open request');
+select t.as_super();
+select t.ok(exists(select 1 from meetany_private.reports where id=t.get('cc_request') and reporter_id=t.uid('rp_client') and target_id=t.uid('rp_client') and target_kind='contact_change' and body like 'ტელეფონი: +995 555 123 456%'),'CC own profile target and normalized phone');
+select t.ok((select email<>'new-contact@example.ge' from public.profiles where id=t.uid('rp_client')),'CC does not change identity');
+select t.as_user('rp_admin');
+select t.ok(exists(select 1 from jsonb_array_elements(public.admin_list_reports('new',0)->'items') x where x->>'id'=t.get('cc_request')::text),'CC visible in admin queue');
+select public.admin_resolve_report(t.get('cc_request'),'hide','Contact change reviewed');
+select t.as_super();
+select t.ok(not (select blocked from public.profiles where id=t.uid('rp_client')),'CC resolving never blocks profile');
+select t.as_user('rp_client');
+select t.ok(public.request_contact_change(null,'later@example.ge',null)->>'status'='new','CC new request allowed after resolution');
+select t.as_super();

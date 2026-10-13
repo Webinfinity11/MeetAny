@@ -22,7 +22,7 @@ const RPCS = new Set([
   'company_business_features','company_reviews','my_company_review_targets','save_company_review',
   'my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request',
   'admin_business_audit', 'admin_business_queue','admin_moderate_review','admin_resolve_plan',
-  'report_content', 'admin_list_reports', 'admin_resolve_report',
+  'request_contact_change', 'report_content', 'admin_list_reports', 'admin_resolve_report',
   'my_profile', 'complete_profile', 'update_my_profile', 'set_my_gallery', 'list_companies', 'company_stats', 'offer_counts',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'send_offer', 'withdraw_offer', 'choose_offer', 'contact_for_request', 'log_contact_event',
