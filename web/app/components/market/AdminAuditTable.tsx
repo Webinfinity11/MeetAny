@@ -44,6 +44,8 @@ export function AdminAuditFilters({ action, target, query, period, onChange }: {
 }
 
 export function AdminAuditTable({ events, query, period, onOpen }: { events: AdminAuditEvent[]; query: string; period: string; onOpen: (target: AdminTarget) => void }) {
+  // Until admin_list_audit_v2 accepts p_q/p_from/p_to (including its count and cursor),
+  // search and date filtering deliberately apply only to the loaded page.
   const [now] = useState(() => Date.now());
   // Calendar days in Tbilisi (UTC+4), matching the admin overview.
   const today = Math.floor((now + 4 * 3600000) / 86400000) * 86400000 - 4 * 3600000;

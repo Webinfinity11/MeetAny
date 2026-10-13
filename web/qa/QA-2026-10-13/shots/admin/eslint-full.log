@@ -1,0 +1,44 @@
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/(ideas)/ideas/[slug]/page.tsx
+  13:239  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/BusinessIdeas.tsx
+  11:433  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/AdminContentEditor.tsx
+  28:152  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/AdminEditPanel.tsx
+  42:180   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  43:3430  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/AdminPhotos.tsx
+  20:109  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/CompanyProducts.tsx
+  143:180  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/PhotoField.tsx
+   54:9   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  100:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/RequestViewPageContent.tsx
+  317:130  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/ui/ImageUpload.tsx
+  23:135  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/qa/PERFECTION-2026-10-12/scripts/deal-after.mjs
+  204:13  warning  'select' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/qa/home-review-20261009/qa.mjs
+  49:623  warning  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  50:159  warning  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/qa/home-v2-2026-10-13/type-audit.mjs
+  18:11  warning  'parse' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/qa/perf-2026-10-12/measure.mjs
+  102:173  warning  'api' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 16 problems (0 errors, 16 warnings)

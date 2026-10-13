@@ -1,0 +1,125 @@
+{
+ "base": "http://localhost:3409",
+ "results": [
+  {
+   "tab": "requests",
+   "width": 1440,
+   "current": [
+    "მოთხოვნები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "users",
+   "width": 1440,
+   "current": [
+    "მომხმარებლები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "offers",
+   "width": 1440,
+   "current": [
+    "შეთავაზებები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "audit",
+   "width": 1440,
+   "current": [
+    "ისტორია"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "contacts",
+   "width": 1440,
+   "current": [
+    "კონტაქტები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 45,
+   "overflow": 0
+  },
+  {
+   "tab": "requests",
+   "width": 390,
+   "current": [
+    "მოთხოვნები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "users",
+   "width": 390,
+   "current": [
+    "მომხმარებლები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "offers",
+   "width": 390,
+   "current": [
+    "შეთავაზებები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "audit",
+   "width": 390,
+   "current": [
+    "ისტორია"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 25,
+   "overflow": 0
+  },
+  {
+   "tab": "contacts",
+   "width": 390,
+   "current": [
+    "კონტაქტები"
+   ],
+   "tabs": 12,
+   "headings": 1,
+   "rows": 45,
+   "overflow": 0
+  },
+  {
+   "state": "empty",
+   "rows": 0,
+   "text": "ამ ფილტრებით ჩანაწერები ვერ მოიძებნაშეცვალეთ ძიება ან გაასუფთავეთ ფილტრები.ფილტრების გასუფთავება"
+  },
+  {
+   "state": "sheet",
+   "reasonField": 1
+  }
+ ],
+ "errors": []
+}

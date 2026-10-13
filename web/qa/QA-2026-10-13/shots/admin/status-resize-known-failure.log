@@ -1,0 +1,2 @@
+page.waitForFunction: Timeout 30000ms exceeded.
+    at /Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/qa/admin-status-control.mjs:6:1503

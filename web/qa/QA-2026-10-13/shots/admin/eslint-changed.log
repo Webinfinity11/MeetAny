@@ -1,0 +1,9 @@
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/AdminContentEditor.tsx
+  28:152  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/4F25C062-CB42-465E-83BC-24DD247F0FB0/workspace/checkout/web/app/components/market/AdminEditPanel.tsx
+  42:180   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  43:3430  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+✖ 3 problems (0 errors, 3 warnings)

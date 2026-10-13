@@ -1,0 +1,75 @@
+{
+  "checks": [
+    "AD-02-1440",
+    "AD-03-1440",
+    "AD-04-1440",
+    "AD-06-1440",
+    "AD-05-dirty-1440",
+    "AD-05-published-1440",
+    "AD-10-companies-1440",
+    "AD-07-companies-1440",
+    "AD-10-users-1440",
+    "AD-07-users-1440",
+    "AD-10-offers-1440",
+    "AD-08-1440",
+    "AD-09-expanded-1440",
+    "AD-09-sheet-1440",
+    "AD-11-1440",
+    "AD-12-1440",
+    "AD-02-390",
+    "AD-03-390",
+    "AD-04-390",
+    "AD-06-390",
+    "AD-05-dirty-390",
+    "AD-05-published-390",
+    "AD-10-companies-390",
+    "AD-07-companies-390",
+    "AD-10-users-390",
+    "AD-07-users-390",
+    "AD-10-offers-390",
+    "AD-08-390",
+    "AD-09-expanded-390",
+    "AD-09-sheet-390",
+    "AD-11-390",
+    "AD-12-390"
+  ],
+  "errors": [],
+  "notes": [
+    "AD-05: nine photos exceed 1.5 mobile screens; sticky publishing bar retained.",
+    "AD-11: loaded-page filter only; admin_list_audit_v2 needs p_q/p_from/p_to applied before count and cursor.",
+    "Profile and content writes intercepted; no database mutations."
+  ],
+  "validation": {
+    "tsc": 0,
+    "eslint_full": 0,
+    "eslint_changed": 0,
+    "lint_design": 0,
+    "unit": {
+      "exit": 0,
+      "passed": 73
+    },
+    "admin_audit_p2_local": {
+      "exit": 0,
+      "views": 32
+    },
+    "admin_flat_navigation_local": {
+      "exit": 0,
+      "views": 48
+    },
+    "admin_ui_check": {
+      "exit": 0
+    },
+    "admin_status_control": {
+      "exit": 1,
+      "blocker": "Existing shared ui/ActionMenu.tsx positions the open menu outside viewport after desktop-to-phone resize. This file is outside assigned scope."
+    },
+    "admin_business_audit": {
+      "exit": 0,
+      "widths": [
+        1440,
+        390,
+        320
+      ]
+    }
+  }
+}

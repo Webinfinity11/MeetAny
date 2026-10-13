@@ -16,7 +16,7 @@ try {
   page.on('pageerror', e => errors.push(e.message.slice(0, 200)));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text().slice(0, 200)); });
   const settle = async () => {
-    await page.locator('main .ma-stat').first().waitFor({ timeout: 90000 });
+    await page.locator('main h1').first().waitFor({ timeout: 90000 });
     await page.waitForFunction(() => !document.querySelector('main')?.innerText.includes('იტვირთება…'), null, { timeout: 60000 });
   };
   for (const width of [1440, 390]) {
@@ -25,12 +25,12 @@ try {
       stage = `${tab} ${width}`;
       const method = { requests: 'admin_search_requests', users: 'admin_search_users', offers: 'admin_search_offers', audit: 'admin_list_audit_v2', contacts: 'admin_contact_events' }[tab];
       const responsePromise = page.waitForResponse(r => r.url().endsWith('/rpc/'+method) && r.request().method() === 'POST', { timeout: 90000 });
-      await page.goto(`${base}/admin/?tab=${tab}`, { waitUntil: 'networkidle' });
+      await page.goto(`${base}/admin/?tab=${tab}`, { waitUntil: 'domcontentloaded' });
       const response = await responsePromise;
       assert.equal(response.status(), 200, `${method} response`);
       const data = await response.json();
       await settle();
-      assert.equal(await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a').count(), 5);
+      assert.equal(await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a').count(), 12);
       assert.equal(await page.locator(`nav[aria-label="ადმინისტრირების განყოფილებები"] a[href="/admin/?tab=${tab}"][aria-current="page"]`).count(), 1);
       assert(!(await page.locator('main').innerText()).includes('საჭიროა ბაზის განახლება'));
       if (tab === 'offers' || tab === 'audit') {
@@ -47,23 +47,24 @@ try {
       results.push({ tab, width,
         current: await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a[aria-current="page"]').allTextContents(),
         tabs: await page.locator('nav[aria-label="ადმინისტრირების განყოფილებები"] a').count(),
-        kpis: await page.locator('main .ma-stat').count(),
+        headings: await page.locator('main h1').count(),
         rows: await page.locator('main tbody tr').count(),
         overflow: await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth)) });
     }
   }
   stage = 'empty and moderation sheet';
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(`${base}/admin/?tab=requests&q=zzzz-no-match`, { waitUntil: 'networkidle' });
+  await page.goto(`${base}/admin/?tab=requests&q=zzzz-no-match`, { waitUntil: 'domcontentloaded' });
   await settle();
   results.push({ state: 'empty', rows: await page.locator('main tbody tr').count(), text: (await page.locator('main .ma-empty, main [class*="state"]').allTextContents()).join(' | ').slice(0, 200) });
-  await page.goto(`${base}/admin/?tab=requests`, { waitUntil: 'networkidle' });
+  await page.goto(`${base}/admin/?tab=requests`, { waitUntil: 'domcontentloaded' });
   await settle();
-  await page.locator('main tbody tr').first().getByRole('button', { name: /დამალვა|გამოჩენა/ }).click();
+  await page.locator('main tbody tr').first().getByRole('button', { name: 'დეტალების ნახვა', exact: true }).click();
+  await page.locator('dialog[open]').getByRole('button', { name: /დამალვა|გამოჩენა/ }).click();
   const sheet = page.locator('dialog#moderation');
   await sheet.waitFor({ state: 'visible', timeout: 10000 });
   results.push({ state: 'sheet', reasonField: await sheet.locator('textarea[name="reason"]').count() });
-  await sheet.getByRole('button', { name: 'გაუქმება' }).click();
+  await sheet.getByRole('button', { name: 'დაბრუნება' }).click();
   console.log(JSON.stringify({ base, results, errors }, null, 1));
   if (errors.length || results.some(r => r.overflow)) process.exitCode = 1;
 } catch (e) {
