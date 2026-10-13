@@ -1,0 +1,382 @@
+[
+  {
+    "step": "A01-register-company",
+    "status": "FAIL",
+    "reason": "page.waitForURL: Timeout 45000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/onboarding/**\" until \"load\"\n============================================================ | console error: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "shots": [
+      "shots/e2e/01-a01-register-company-newcompany-1440.png",
+      "shots/e2e/01-a01-register-company-newcompany-390.png"
+    ],
+    "ms": 79907
+  },
+  {
+    "step": "A02-onboarding-type-both",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/02-a02-onboarding-type-both-newcompany-1440.png",
+      "shots/e2e/02-a02-onboarding-type-both-newcompany-390.png"
+    ],
+    "ms": 1852
+  },
+  {
+    "step": "A03-onboarding-details-minimal",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/03-a03-onboarding-details-minimal-newcompany-1440.png",
+      "shots/e2e/03-a03-onboarding-details-minimal-newcompany-390.png"
+    ],
+    "ms": 1686
+  },
+  {
+    "step": "A04-onboarding-profile-logo",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/04-a04-onboarding-profile-logo-newcompany-1440.png",
+      "shots/e2e/04-a04-onboarding-profile-logo-newcompany-390.png"
+    ],
+    "ms": 2045
+  },
+  {
+    "step": "A05-onboarding-product-service",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/05-a05-onboarding-product-service-newcompany-1440.png",
+      "shots/e2e/05-a05-onboarding-product-service-newcompany-390.png"
+    ],
+    "ms": 1622
+  },
+  {
+    "step": "A06-onboarding-xlsx-import",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/06-a06-onboarding-xlsx-import-newcompany-1440.png",
+      "shots/e2e/06-a06-onboarding-xlsx-import-newcompany-390.png"
+    ],
+    "ms": 1589
+  },
+  {
+    "step": "A07-onboarding-need",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/07-a07-onboarding-need-newcompany-1440.png",
+      "shots/e2e/07-a07-onboarding-need-newcompany-390.png"
+    ],
+    "ms": 1265
+  },
+  {
+    "step": "A07b-verification-required-legal-details",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/08-a07b-verification-required-legal-details-newcompany-1440.png",
+      "shots/e2e/08-a07b-verification-required-legal-details-newcompany-390.png"
+    ],
+    "ms": 1558
+  },
+  {
+    "step": "A08-onboarding-verify-documents",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/09-a08-onboarding-verify-documents-newcompany-1440.png",
+      "shots/e2e/09-a08-onboarding-verify-documents-newcompany-390.png"
+    ],
+    "ms": 1235
+  },
+  {
+    "step": "A09-onboarding-review-dashboard",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/10-a09-onboarding-review-dashboard-newcompany-1440.png",
+      "shots/e2e/10-a09-onboarding-review-dashboard-newcompany-390.png"
+    ],
+    "ms": 1271
+  },
+  {
+    "step": "B01-hotel-close-old-e2e-requests",
+    "status": "FAIL",
+    "reason": "console error: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "shots": [
+      "shots/e2e/11-b01-hotel-close-old-e2e-requests-hotel-1440.png",
+      "shots/e2e/11-b01-hotel-close-old-e2e-requests-hotel-390.png"
+    ],
+    "ms": 10851
+  },
+  {
+    "step": "B02-hotel-publish-request-photo",
+    "status": "FAIL",
+    "reason": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('heading', { name: 'მოთხოვნა გამოქვეყნდა', exact: true }) to be visible\n | console error: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "shots": [
+      "shots/e2e/12-b02-hotel-publish-request-photo-hotel-1440.png",
+      "shots/e2e/12-b02-hotel-publish-request-photo-hotel-390.png"
+    ],
+    "ms": 44367
+  },
+  {
+    "step": "B03-guest-request-list",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: requestId; previous flow did not complete | console error: Failed to load resource: the server responded with a status of 400 (Bad Request) | console error: Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "shots": [
+      "shots/e2e/13-b03-guest-request-list-evidence-guest-1440.png",
+      "shots/e2e/13-b03-guest-request-list-evidence-guest-390.png"
+    ],
+    "ms": 51108
+  },
+  {
+    "step": "B04-guest-home",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: requestId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/14-b04-guest-home-evidence-guest-1440.png",
+      "shots/e2e/14-b04-guest-home-evidence-guest-390.png"
+    ],
+    "ms": 14224
+  },
+  {
+    "step": "B05-wood-matching",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: requestId; previous flow did not complete | console error: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "shots": [
+      "shots/e2e/15-b05-wood-matching-wood-1440.png",
+      "shots/e2e/15-b05-wood-matching-wood-390.png"
+    ],
+    "ms": 5248
+  },
+  {
+    "step": "B06-wood-offer-file",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: requestId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/16-b06-wood-offer-file-wood-1440.png",
+      "shots/e2e/16-b06-wood-offer-file-wood-390.png"
+    ],
+    "ms": 995
+  },
+  {
+    "step": "B07-wood-withdraw-offer",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: offerId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/17-b07-wood-withdraw-offer-wood-1440.png",
+      "shots/e2e/17-b07-wood-withdraw-offer-wood-390.png"
+    ],
+    "ms": 1065
+  },
+  {
+    "step": "B08-wood-resend-offer",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: offerId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/18-b08-wood-resend-offer-wood-1440.png",
+      "shots/e2e/18-b08-wood-resend-offer-wood-390.png"
+    ],
+    "ms": 1540
+  },
+  {
+    "step": "B09-hotel-compare-select",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: offerId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/19-b09-hotel-compare-select-hotel-1440.png",
+      "shots/e2e/19-b09-hotel-compare-select-hotel-390.png"
+    ],
+    "ms": 3299
+  },
+  {
+    "step": "B10-deal-discuss-both-directions",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: dealId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/20-b10-deal-discuss-both-directions-hotel-1440.png",
+      "shots/e2e/20-b10-deal-discuss-both-directions-hotel-390.png"
+    ],
+    "ms": 1733
+  },
+  {
+    "step": "B11-deal-terms-both-confirm",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: dealId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/21-b11-deal-terms-both-confirm-wood-1440.png",
+      "shots/e2e/21-b11-deal-terms-both-confirm-wood-390.png"
+    ],
+    "ms": 1335
+  },
+  {
+    "step": "B12-deal-progress-file-download",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: dealId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/22-b12-deal-progress-file-download-wood-1440.png",
+      "shots/e2e/22-b12-deal-progress-file-download-wood-390.png"
+    ],
+    "ms": 1017
+  },
+  {
+    "step": "B13-deal-complete",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: dealId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/23-b13-deal-complete-hotel-1440.png",
+      "shots/e2e/23-b13-deal-complete-hotel-390.png"
+    ],
+    "ms": 1899
+  },
+  {
+    "step": "B14-deal-review",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: dealId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/24-b14-deal-review-hotel-1440.png",
+      "shots/e2e/24-b14-deal-review-hotel-390.png"
+    ],
+    "ms": 1678
+  },
+  {
+    "step": "B15-review-public-profile",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: reviewCreated; previous flow did not complete | console error: Failed to load resource: the server responded with a status of 503 (Service Unavailable) | console error: MarketStore: {message: database unavailable, code: MA998, details: null, hint: null} | console error: MarketStore: refresh failed Error: რაღაც ვერ შესრულდა. სცადეთ ხელახლა.\n    at userError (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:133:19)\n    at db (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:329:19)\n    at async load (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:851:37)\n    at async update (webpack-internal:///(app-pages-browser)/./app/lib/market-client.ts:39:21)",
+    "shots": [
+      "shots/e2e/25-b15-review-public-profile-evidence-guest-1440.png",
+      "shots/e2e/25-b15-review-public-profile-evidence-guest-390.png"
+    ],
+    "ms": 68212
+  },
+  {
+    "step": "C01-admin-return-documents",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/26-c01-admin-return-documents-owner_admin-1440.png",
+      "shots/e2e/26-c01-admin-return-documents-owner_admin-390.png"
+    ],
+    "ms": 1997
+  },
+  {
+    "step": "C02-company-return-reason",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/27-c02-company-return-reason-newcompany-1440.png",
+      "shots/e2e/27-c02-company-return-reason-newcompany-390.png"
+    ],
+    "ms": 3561
+  },
+  {
+    "step": "C03-company-resubmit-documents",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/28-c03-company-resubmit-documents-newcompany-1440.png",
+      "shots/e2e/28-c03-company-resubmit-documents-newcompany-390.png"
+    ],
+    "ms": 2366
+  },
+  {
+    "step": "C04-admin-approve-verification",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete | console error: Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "shots": [
+      "shots/e2e/29-c04-admin-approve-verification-owner_admin-1440.png",
+      "shots/e2e/29-c04-admin-approve-verification-owner_admin-390.png"
+    ],
+    "ms": 20237
+  },
+  {
+    "step": "C05-company-public-verification-badge",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/30-c05-company-public-verification-badge-evidence-guest-1440.png",
+      "shots/e2e/30-c05-company-public-verification-badge-evidence-guest-390.png"
+    ],
+    "ms": 38163
+  },
+  {
+    "step": "C06-admin-hide-review",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: reviewCreated; previous flow did not complete",
+    "shots": [
+      "shots/e2e/31-c06-admin-hide-review-owner_admin-1440.png",
+      "shots/e2e/31-c06-admin-hide-review-owner_admin-390.png"
+    ],
+    "ms": 4957
+  },
+  {
+    "step": "C07-admin-restore-review",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: reviewCreated; previous flow did not complete",
+    "shots": [
+      "shots/e2e/32-c07-admin-restore-review-owner_admin-1440.png",
+      "shots/e2e/32-c07-admin-restore-review-owner_admin-390.png"
+    ],
+    "ms": 1633
+  },
+  {
+    "step": "C08-hotel-complaint",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete | console error: MarketStore: refresh failed Error: რაღაც ვერ შესრულდა. სცადეთ ხელახლა.\n    at userError (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:133:19)\n    at db (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:329:19)\n    at async load (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:851:37)",
+    "shots": [
+      "shots/e2e/33-c08-hotel-complaint-hotel-1440.png",
+      "shots/e2e/33-c08-hotel-complaint-hotel-390.png"
+    ],
+    "ms": 16617
+  },
+  {
+    "step": "C09-admin-resolve-complaint",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: complaint; previous flow did not complete",
+    "shots": [
+      "shots/e2e/34-c09-admin-resolve-complaint-owner_admin-1440.png",
+      "shots/e2e/34-c09-admin-resolve-complaint-owner_admin-390.png"
+    ],
+    "ms": 3576
+  },
+  {
+    "step": "C10-hotel-complaint-result-georgian",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: complaint; previous flow did not complete",
+    "shots": [
+      "shots/e2e/35-c10-hotel-complaint-result-georgian-hotel-1440.png",
+      "shots/e2e/35-c10-hotel-complaint-result-georgian-hotel-390.png"
+    ],
+    "ms": 5296
+  },
+  {
+    "step": "C11-admin-catalog-image-public",
+    "status": "FAIL",
+    "reason": "locator.getAttribute: Timeout 12000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('img').first()\n | console error: Failed to load resource: the server responded with a status of 401 (Unauthorized) | console error: Failed to load resource: the server responded with a status of 400 (Bad Request) | console error: MarketStore: refresh failed Error: რაღაც ვერ შესრულდა. სცადეთ ხელახლა.\n    at userError (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:133:19)\n    at db (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:329:19)\n    at async load (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:851:37)\n    at async update (webpack-internal:///(app-pages-browser)/./app/lib/market-client.ts:39:21)",
+    "shots": [
+      "shots/e2e/36-c11-admin-catalog-image-public-owner_admin-1440.png",
+      "shots/e2e/36-c11-admin-catalog-image-public-owner_admin-390.png"
+    ],
+    "ms": 38063
+  },
+  {
+    "step": "C12-admin-catalog-image-restore",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: contentChanged; previous flow did not complete",
+    "shots": [
+      "shots/e2e/37-c12-admin-catalog-image-restore-owner_admin-1440.png",
+      "shots/e2e/37-c12-admin-catalog-image-restore-owner_admin-390.png"
+    ],
+    "ms": 1236
+  },
+  {
+    "step": "D01-guest-request-login-context",
+    "status": "FAIL",
+    "reason": "Prerequisite missing: companyId; previous flow did not complete",
+    "shots": [
+      "shots/e2e/38-d01-guest-request-login-context-evidence-guest-1440.png",
+      "shots/e2e/38-d01-guest-request-login-context-evidence-guest-390.png"
+    ],
+    "ms": 25829
+  }
+]
