@@ -9,7 +9,7 @@ import { useRequestDetail } from '../../lib/use-request-detail';
 import { validRequestId } from '../../lib/matching-client';
 import { ownOffer } from '../../lib/offer-terms-client';
 import { cities, units } from '../../lib/categories';
-import { verificationLabel } from '../../lib/onboarding-client';
+import { verificationLabel, verificationHint, verificationAction } from '../../lib/onboarding-client';
 import { dateShort } from '../../lib/format';
 import { DetailSkeleton } from './Skeletons';
 import { CompanyAvatar } from './CompanyAvatar';
