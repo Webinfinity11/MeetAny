@@ -888,6 +888,10 @@ Production-ზე apply არ შესრულებულა; ახალ�
 | ალერტები | `meetany_private.default_request_alert_preferences(p)` | ნაგულისხმევი: კატეგორიები = `provide_categories` (ცარიელზე `[industry]`), ქალაქები = `['georgia']`, ჩართული მხოლოდ verified კომპანიას; ხელით შენახული პარამეტრი უპირატესია |
 | ანგარიშის გაუმჯობესება | `become_company(p_company text, p_industry text, p_account_intent text)` | `public.profiles`; `buy/sell/both`, სხვა → MA902; 2-არგუმენტიანი ვერსია `'both'`-ს იძახებს |
 | მოთხოვნის ფორმა / ჩემი მოთხოვნები | `save_request_draft(p_data jsonb)`, `my_request_draft()`, `delete_request_draft()` | ერთი მონახაზი თითო მომხმარებელზე (`meetany_private.request_drafts`); authenticated; დაშვებული გასაღებები: title, category, city, addressNote, quantity, unit, neededByText, body, preferences, attachmentDraft; ≤16 kB |
+| matching v2 (`20261013-matching-v2.sql`) | `meetany_private.matching_suppliers(category, exclude)` | ერთი წესი: verified, არადაბლოკილი კომპანია; `exact` = კატეგორია `provide_categories`-შია; იმავე ჯგუფის (`category_groups()`, = `categories-data.js`) კომპანიები ემატება, როცა ზუსტი <3; `alerted` = ზუსტი, ან ჯგუფი როცა ზუსტი 0 |
+| მოთხოვნის ფორმა, ნაბიჯი 3 | `count_matching_suppliers(...)` | v2: `alerted` რაოდენობა = ალერტის მიმღებები ნაგულისხმევი პარამეტრებით |
+| matching (მფლობელი) | `list_matching(p_request_id, ...)` | v2: + `match ('exact'/'similar')`, `notified` (მიიღო `request_match`), `reasons {category,city:'local'/'georgia',keywords[],deals,rating}`; `score` = ზუსტი 200 / მსგავსი 100 + ქალაქი 30/20 + სიტყვები 5×≤3 + დასრულებული გარიგება 3×≤5 + შეფასება×2 ≤10; ქალაქის ფილტრში 'georgia'-ს მომსახურე კომპანიებიც რჩება |
+| შეტყობინებები | `notifications.kind` + `verify_to_respond` | დაუდასტურებელ კომპანიას, რომლის `provide_categories` (ცარიელზე `industry`) ემთხვევა ახალ მოთხოვნას; `request_id` + `detail {day,title}`; ერთი დღეში (თბილისის დრო) თითო კომპანიაზე; ელფოსტა არა; შენახული გამორთული ალერტი ბლოკავს |
 
 ## ადმინის მართვა v2 (2026-10-12, `20261012-admin-management.sql`)
 

@@ -22,7 +22,9 @@ type Saved = { company_id: string; company: string; city: string; industry: stri
 type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
 // Store statuses: idle (not loaded yet) → ready | unavailable (feature off) | error (request failed).
 const failed = (status?: string) => status === "unavailable" || status === "error";
-const label = (kind: string) => kind === "request_match" ? "შესაბამისი მოთხოვნა" : kind === "offer_chosen" ? "შეთავაზება აირჩიეს" : kind === "offer_received" ? "ახალი შეთავაზება" : kind === "offer_declined" ? "შეთავაზება არ შეირჩა" : kind === "verification_reviewed" ? "ვერიფიკაცია" : kind === "report_resolved" ? "საჩივარი განხილულია" : "შეტყობინება";
+const label = (kind: string) => kind === "request_match" ? "შესაბამისი მოთხოვნა" : kind === "offer_chosen" ? "შეთავაზება აირჩიეს" : kind === "offer_received" ? "ახალი შეთავაზება" : kind === "offer_declined" ? "შეთავაზება არ შეირჩა" : kind === "verification_reviewed" ? "ვერიფიკაცია" : kind === "report_resolved" ? "საჩივარი განხილულია" : kind === "verify_to_respond" ? "ახალი მოთხოვნა თქვენს მიმართულებაზე" : "შეტყობინება";
+// An unverified company sees a matching request; answering it needs verification first.
+const verifyText = "ამ მოთხოვნაზე პასუხისთვის დაასრულეთ ვერიფიკაცია";
 // Calendar day in Tbilisi as a UTC-midnight number, for "today / yesterday / N days ago".
 const tbilisiDay = (value: string | number) => Date.parse(new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Tbilisi", year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(value)));
 const clock = (value: string) => new Intl.DateTimeFormat("en-GB", {timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false}).format(new Date(value));
@@ -41,8 +43,8 @@ const noticeLabel = (n: Notice) => {
 // Second line: what the notice is about; a returned verification carries the moderator's note.
 const noticeSubject = (n: Notice, requestTitle?: string) => n.kind === "verification_reviewed" ? (n.detail?.status === "approved" ? null : n.detail?.note) || n.detail?.title || n.title : requestTitle || n.title || n.detail?.title;
 /** Where a notice leads; null when there is nowhere to go (resolved reports, unknown kinds without a request). */
-const noticeHref = (n: Notice): string | null => n.deal_id ? dealHref(n.deal_id) : n.kind === "verification_reviewed" ? "/onboarding/" : n.kind === "report_resolved" || !n.request_id ? null : n.kind === "offer_received" ? `/requests/compare/?id=${encodeURIComponent(n.request_id)}` : `/requests/view/?id=${encodeURIComponent(n.request_id)}`;
-const actionLabel = (n: Notice) => n.kind === "offer_received" && !n.deal_id ? "შედარება" : n.kind === "verification_reviewed" ? "პროფილის გახსნა" : "ნახვა";
+const noticeHref = (n: Notice): string | null => n.deal_id ? dealHref(n.deal_id) : n.kind === "verification_reviewed" ? "/onboarding/" : n.kind === "verify_to_respond" ? "/onboarding/?step=verify" : n.kind === "report_resolved" || !n.request_id ? null : n.kind === "offer_received" ? `/requests/compare/?id=${encodeURIComponent(n.request_id)}` : `/requests/view/?id=${encodeURIComponent(n.request_id)}`;
+const actionLabel = (n: Notice) => n.kind === "offer_received" && !n.deal_id ? "შედარება" : n.kind === "verification_reviewed" ? "პროფილის გახსნა" : n.kind === "verify_to_respond" ? "ვერიფიკაციის გავლა" : "ნახვა";
 function NoticeRows({ items, limit, store, compact = false }: { items: Notice[]; limit?: number; store?: Store; compact?: boolean }) {
  const [now] = useState(() => Date.now());
  const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -67,6 +69,7 @@ function NoticeRows({ items, limit, store, compact = false }: { items: Notice[];
      <span className={styles.noticeIcon} data-type={noticeType(n)}><Icon name={noticeType(n) === "offers" ? "inbox" : noticeType(n) === "deal" ? "handshake" : "bell"}/>{!n.read_at ? <span className={styles.unreadDot} aria-hidden="true"/> : null}</span>
      <span className={styles.noticeCopy}><strong className={styles.noticeTitle}>{title}</strong><span className={styles.noticeSubtitle}>{subtitle}</span>
       {n.kind === "request_match" ? <span className={styles.meta}>{[categories[n.category || ""], cities[n.city || ""]].filter(Boolean).join(" · ")}</span> : null}
+      {n.kind === "verify_to_respond" ? <span className={styles.meta}>{verifyText}</span> : null}
      </span>
      <time className={styles.noticeTime} dateTime={n.created_at}>{compact ? relative(n.created_at, now) : clock(n.created_at)}</time>
      {!n.read_at ? <span className="ma-sr-only">წაუკითხავი</span> : null}
@@ -98,7 +101,7 @@ function NoticeDetail({ notice, store, acknowledge }: { notice: Notice; store?: 
  return <aside className={styles.noticeDetail} aria-label="შეტყობინების დეტალი">
   <p className={styles.meta}>{noticeLabel(notice)} · {clock(notice.created_at)}</p>
   <h2>{request?.title || notice.detail?.title || notice.title}</h2>
-  {notice.kind === "verification_reviewed" && notice.detail?.note ? <p>{notice.detail.note}</p> : notice.kind === "report_resolved" && notice.detail?.resolution ? <p>{notice.detail.resolution}</p> : null}
+  {notice.kind === "verification_reviewed" && notice.detail?.note ? <p>{notice.detail.note}</p> : notice.kind === "report_resolved" && notice.detail?.resolution ? <p>{notice.detail.resolution}</p> : notice.kind === "verify_to_respond" ? <p>{verifyText}</p> : null}
   {company ? <h3>{company.company || company.name}</h3> : null}
   <dl>{request ? <div><dt>მოთხოვნა</dt><dd>{[request.quantity != null ? `${request.quantity} ${store?.units[request.unit] || ""}` : null, cities[request.city] || request.city].filter(Boolean).join(" · ")}</dd></div> : null}
    {deal ? <><div><dt>ფასი</dt><dd>{money(deal.total_price == null ? null : Number(deal.total_price))}</dd></div>{deal.delivery_days != null ? <div><dt>მიწოდება</dt><dd>{deal.delivery_days} დღე</dd></div> : null}</> : offer ? <><div><dt>ფასი</dt><dd>{money(offer.price == null ? null : Number(offer.price))}{offer.price != null && offer.priceType === "unit" ? " / ერთეული" : ""}</dd></div>{offer.deliveryDays != null ? <div><dt>მიწოდება</dt><dd>{offer.deliveryDays} დღე</dd></div> : null}</> : null}

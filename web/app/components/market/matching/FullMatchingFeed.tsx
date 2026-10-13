@@ -91,7 +91,8 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
   // A company without any picture shows its avatar, never an empty grey box.
   const visual = (item: FeedItem, width: number, height: number) => <FeedPhoto src={photo(item)} name={title(item)} width={width} height={height}/>;
   const description = (item: FeedItem): string | undefined => supplier(item) ? ownerFor(item)?.about : requestFor(item)?.body;
-  const badge = (item: FeedItem) => <Badge className={styles.kind} status={supplier(item) ? 'info' : 'success'}>{supplier(item) ? 'მომწოდებელი' : 'ყიდვის მოთხოვნა'}</Badge>;
+  // A supplier from a neighbouring direction of the same group (list_matching match='similar') says so.
+  const badge = (item: FeedItem) => <><Badge className={styles.kind} status={supplier(item) ? 'info' : 'success'}>{supplier(item) ? 'მომწოდებელი' : 'ყიდვის მოთხოვნა'}</Badge>{item.match === 'similar' ? <Badge className={styles.kind} status="muted">მსგავსი მიმართულება</Badge> : null}</>;
   const viewHref = (item: FeedItem) => `/${supplier(item) ? 'companies' : 'requests'}/view/?id=${encodeURIComponent(item.id)}`;
   const actionHref = (item: FeedItem) => supplier(item) ? viewHref(item) : me.role === 'company' ? (me.verified ? `/offers/new/?requestId=${encodeURIComponent(item.id)}` : '/onboarding/?step=verify') : '/account/?tab=profile#company-upgrade';
   const actionLabel = (item: FeedItem) => supplier(item) ? 'კომპანიის ნახვა' : me.role !== 'company' ? 'კომპანიის პროფილის შექმნა' : me.verified ? 'შეთავაზების გაგზავნა' : 'ვერიფიკაციის გავლა';
