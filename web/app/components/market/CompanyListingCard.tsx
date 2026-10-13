@@ -57,7 +57,7 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
       {description && <p className={styles.description}>{description}</p>}
       {c.offers.length > 0 && <ul className={styles.services} aria-label="მომსახურება">{c.offers.slice(0, 2).map((offer, index) => <li key={index}>{offer}</li>)}{c.offers.length > 2 && <li>+{c.offers.length - 2}</li>}</ul>}
     </div>
-    <Button variant="secondary" href={href}>პროფილის ნახვა</Button>
+    <div className={styles.companyActions}><Button variant="secondary" href={href}>პროფილის ნახვა</Button><SaveCompanyButton id={c.id}/></div>
   </article>;
   return (
     <article className={`company-card${catalog ? " company-card--catalog" : ""}`} data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>

@@ -185,3 +185,7 @@
 .requestResults :global(.catalog-count strong) { font-weight: var(--fw-bold); color: var(--ink-950); }
 .requestResults :global(.catalog-filter-toggle) { min-height: var(--size-36); height: var(--size-36); padding: 0 var(--size-12); border-color: var(--ink-950); font-size: var(--size-13); line-height: var(--lh-meta); gap: var(--size-6); }
 .filterCount { display: inline-grid; place-items: center; min-width: var(--size-20); height: var(--size-20); padding: 0 var(--size-4); border-radius: var(--radius-pill); background: var(--action-strong); color: var(--white); font-size: var(--fs-meta); }
+
+.companyActions{position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-top:auto}
+.companyRow .companyActions{grid-column:2;grid-row:1;align-self:center;margin-top:0}
+@media(max-width:639px){.companyRow .companyActions{grid-column:1;grid-row:auto}}
