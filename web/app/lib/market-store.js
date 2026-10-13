@@ -4,7 +4,7 @@ import { normalizeMobilePhone as normalizePhone } from './mobile-phone.js';
 import { toast } from '../components/Toasts';
 import { readAllRows } from './read-all-rows.js';
 import { withReadTimeout } from './read-timeout.js';
-import { SESSION_HINT_KEY } from './auth-session-preload.js';
+import { SESSION_HINT_KEY, browserSessionCache } from './auth-session-preload.js';
 import { categories, categoryKind, expandCategories } from './categories-data.js';
 import { isInternalTestAccount, isInternalTestRequest } from './catalog-visibility.js';
 /** @param {{initial?: Awaited<ReturnType<typeof import('./public-snapshot').loadPublicSnapshot>>, background?: boolean}} options */
@@ -85,6 +85,7 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  const AUTH=baseUrl(config.authUrl),API=baseUrl(config.dataApiUrl),UPLOAD=baseUrl(config.uploadUrl||'/api/blob-upload');
  const configured=!!(AUTH&&API);
+ const sessionCache=browserSessionCache(AUTH+'/get-session');
 
  /* ---------- tokens (Neon Auth JWT, 15 min, re-fetched from /token while the session cookie lives) ---------- */
  const claimsOf=t=>{try{return JSON.parse(decodeURIComponent(escape(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));}catch{return {};}};
@@ -109,13 +110,16 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  function rememberSession(signedIn){try{if(signedIn)localStorage.setItem(SESSION_HINT_KEY,'1');else localStorage.removeItem(SESSION_HINT_KEY);}catch{}}
  async function authFetch(path,body){
+  if(['/sign-in/email','/sign-up/email','/email-otp/verify-email'].includes(path)){sessionCache?.invalidate();authRevision++;userJwtTask=null;sessionPreloadUsed=true;bootstrapPreloadUsed=true;}
   if(path==='/get-session'&&!sessionPreloadUsed&&typeof window!=='undefined'&&window.__meetanySessionPreload){
    sessionPreloadUsed=true;
    const preload=window.__meetanySessionPreload;delete window.__meetanySessionPreload;
    const response=await withReadTimeout(()=>preload);
+   if(response?.error==='RATE_LIMIT')throw userError('ძალიან ბევრი მცდელობა — სცადეთ წუთში','RATE_LIMIT');
    if(response?.error==='TIMEOUT')throw userError(GENERIC,'NETWORK',new Error('Session read timed out'));
    if(response)return response;
   }
+  if(path==='/get-session'&&sessionCache)return sessionCache.load();
   let res,data;
   try{
    const read=async signal=>{
@@ -125,13 +129,15 @@ export function createMarketStore({initial=null,background=true}={}){
    };
    if(body)await read();else await withReadTimeout(read);
   }catch(err){throw userError(GENERIC,'NETWORK',err);}
+  if(res.status===429)throw userError('ძალიან ბევრი მცდელობა — სცადეთ წუთში','RATE_LIMIT');
   if(!res.ok){const e=new Error(data?.message||('auth '+res.status));e.status=res.status;e.code=data?.code||'';throw e;}
+  if(['/sign-in/email','/sign-up/email','/email-otp/verify-email'].includes(path))sessionCache?.invalidate(true);
   return {data,jwt:res.headers.get('set-auth-jwt')};
  }
  // Asks Neon Auth for a fresh user JWT (needs the session cookie). No session -> signed out.
  async function loadUserJwt(fresh=false){
   if(authInFlight&&!fresh)return userJwt;
-  if(fresh){authRevision++;userJwtTask=null;sessionPreloadUsed=true;bootstrapPreloadUsed=true;if(typeof window!=='undefined'){delete window.__meetanySessionPreload;delete window.__meetanyBootstrapPreload;}}
+  if(fresh){sessionCache?.invalidate();authRevision++;userJwtTask=null;sessionPreloadUsed=true;bootstrapPreloadUsed=true;if(typeof window!=='undefined'){delete window.__meetanySessionPreload;delete window.__meetanyBootstrapPreload;}}
   if(userJwtTask)return userJwtTask;
   const revision=authRevision;
   const task=(async()=>{
@@ -140,7 +146,7 @@ export function createMarketStore({initial=null,background=true}={}){
     if(revision!==authRevision)return userJwt;
     if(!session?.user){setUserJwt(null);return null;}
     const {data}=jwt?{data:{token:jwt}}:await authFetch('/token');
-    if(revision===authRevision)setUserJwt(data?.token||null,session.user);
+    if(revision===authRevision){setUserJwt(data?.token||null,session.user);sessionCache?.write({data:session,jwt:data?.token});}
    }catch(err){
     if(revision!==authRevision)return userJwt;
     if(err.status===401||err.status===403||err.status===404)setUserJwt(null);else throw err;
@@ -170,7 +176,7 @@ export function createMarketStore({initial=null,background=true}={}){
   }catch(err){throw userError(GENERIC,'NETWORK',err);}
   if(res.status===401&&!retried){
    // Expired or revoked token: fetch a fresh one once and retry.
-   if(bearer){userExp=0;await loadUserJwt();}else throw toError({message:'HTTP 401'});
+   if(bearer){if(bearer===userJwt&&!userJwtTask){userExp=0;sessionCache?.invalidate();}await loadUserJwt();}else throw toError({message:'HTTP 401'});
    return db(path,{method,body,retried:true,keepalive});
   }
   let data=null;if(text){try{data=JSON.parse(text);}catch{data=null;}}
@@ -386,7 +392,7 @@ export function createMarketStore({initial=null,background=true}={}){
  function refresh(){
   if(!configured)return Promise.resolve();
   if(running){if(!queued)queued=running.then(()=>{queued=null;return refresh();});return queued;}
-  running=load().then(()=>{loadFailed=false;dataStale=false;sessionLoadError=null;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!sessionReady)sessionLoadError=GENERIC;if(!isReady)loadFailed=true;else dataStale=true;})
+  running=load().then(()=>{loadFailed=false;dataStale=false;sessionLoadError=null;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!sessionReady)sessionLoadError=err.userMessage||GENERIC;if(!isReady)loadFailed=true;else dataStale=true;})
    .then(()=>{running=null;isReady=true;sessionReady=true;emit();});
   return running;
  }
@@ -582,16 +588,19 @@ export function createMarketStore({initial=null,background=true}={}){
  }
  async function logout(){
   if(!configured)return;
+  sessionCache?.invalidate();rememberSession(false);sessionPreloadUsed=true;bootstrapPreloadUsed=true;
   authInFlight++;authRevision++;userJwtTask=null;
   setUserJwt(null);setPending(null);clearCallerCache();profileError=null;emit();
   let error=null;
   try{
-   try{await authFetch('/sign-out',{});}catch(err){error=err;}
+   try{await authFetch('/sign-out',{});sessionCache?.invalidate(true);}catch(err){error=err;}
    authRevision++;userJwtTask=null;
    await refresh();
   }finally{authInFlight--;emit();}
   if(error)throw toError(error);
  }
+
+ sessionCache?.subscribe(()=>{authRevision++;userJwtTask=null;sessionPreloadUsed=true;bootstrapPreloadUsed=true;setUserJwt(null);setPending(null);clearCallerCache();emit();void refresh();});
 
  /* ---------- reads ---------- */
  function requestState(r,now=Date.now()){
