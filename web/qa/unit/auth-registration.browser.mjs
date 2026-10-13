@@ -13,8 +13,11 @@ try {
  await p.locator('#reg-company').fill('QA რეგისტრაცია '+stamp);await p.locator('#reg-name').fill('სატესტო პირი');await p.locator('#reg-phone').fill('+995 5'+String(stamp).slice(-8));await p.locator('#reg-email').fill(email);await p.locator('#reg-password').fill('local-e2e-password');
  await p.locator('#reg-city').click();await p.locator('#reg-city-options').getByRole('option',{name:'თბილისი',exact:true}).click();await p.locator('#reg-industry [role=radio]').first().click();await p.locator('#reg-terms').check();
  await p.locator('.auth-register button[type=submit]').click();await p.waitForURL('**/onboarding/?step=type',{timeout:60000});
+ // Reloading the registration URL exercises the parent guard without a mounted submit callback.
+ await p.goto('http://localhost:3407/account/?tab=register&role=company',{waitUntil:'domcontentloaded',timeout:60000});
+ await p.waitForURL('**/onboarding/?step=type',{timeout:60000});
  created=(await db.query('select id,role,company from public.profiles where email=$1',[email])).rows[0];assert.equal(created?.role,'company');
  await p.getByRole('heading').first().waitFor();await p.screenshot({path:'qa/QA-2026-10-13/shots/auth-profile/registered-onboarding-390.png',fullPage:true});
- fs.writeFileSync('qa/QA-2026-10-13/shots/auth-profile/registration-result.json',JSON.stringify({email,id:created.id,role:created.role,url:p.url(),localAuthFixture:true},null,2));
- console.log('PASS real local registration → company profile → onboarding type');
-} finally {await browser.close();if(created)await db.query('delete from neon_auth."user" where id=$1 and email=$2',[created.id,email]);await db.end();}
+ fs.writeFileSync('qa/QA-2026-10-13/shots/auth-profile/registration-result.json',JSON.stringify({email,id:created.id,role:created.role,url:p.url(),localAuthFixture:true,parentRedirectAfterReload:true},null,2));
+ console.log('PASS real local registration → onboarding type; registration URL reload → onboarding type');
+} finally {await browser.close();await db.query('delete from neon_auth."user" where email=$1',[email]);await db.end();}

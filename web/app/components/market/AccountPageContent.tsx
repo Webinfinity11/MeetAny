@@ -57,8 +57,14 @@ export function AccountPageContent() {
   const buyOpen = intent !== "sell" || myRequests.length > 0 || requestedSpace === "buy";
   const space = buyOnly || (buyOpen && (tab === "requests" || (requestedSpace === "buy" && !["offers", "opportunities"].includes(rawTab)))) ? "buy" : "sell";
   const tabs = useAccountNav(store, me, space);
+  // The store can unmount RegisterForm before its async submit finishes. Keep the
+  // registration destination in this surviving parent as well, including code verification.
+  const registeringCompany = sessionReady && me?.role === "company" && rawTab === "register";
+  useEffect(() => {
+    if (registeringCompany) router.replace("/onboarding/?step=type");
+  }, [registeringCompany, router]);
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
-  if (!ready || !sessionReady || me?.role === "admin") return <AccountSkeleton admin={me?.role === "admin"}/>;
+  if (!ready || !sessionReady || me?.role === "admin" || registeringCompany) return <AccountSkeleton admin={me?.role === "admin"}/>;
   if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
   // Selling sections do not exist for a buyer; their links land on the dashboard.
   const outOfSpace = buyOnly && ["opportunities", "offers"].includes(tab) || !isCompany && tab === "business";

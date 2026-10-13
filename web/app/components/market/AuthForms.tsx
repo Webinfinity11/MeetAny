@@ -149,10 +149,11 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       await store.register({ role, name, company: role === "company" ? company : "", phone, email: email.trim(), city, industry, password, acceptTerms });
       if (store.currentUser()) trackRegistration(role, "profile_created");
       else if (store.pendingEmail()) trackRegistration(role, "email_pending");
-      if (store.currentUser()?.role === "company") router.push("/onboarding/?step=type");
+      // Publish the new session before navigating: auth listeners may rerender this form away.
+      window.dispatchEvent(new Event("meetany:auth"));
+      if (store.currentUser()?.role === "company") router.replace("/onboarding/?step=type");
       else if (next && store.currentUser()) router.push(next);
       else router.refresh();
-      window.dispatchEvent(new Event("meetany:auth"));
     } catch (err) {
       setError((err as { userMessage?: string })?.userMessage || "რეგისტრაცია ვერ შესრულდა.");
     } finally {

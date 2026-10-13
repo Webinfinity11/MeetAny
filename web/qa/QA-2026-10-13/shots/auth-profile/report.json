@@ -6,7 +6,8 @@
     "unitTests": "75/75",
     "databaseTests": "2148/2148",
     "browser": "PASS: 1440/390/360 registration and profile; role retention; login/offer intent; guard stay/discard/save; unchanged no-op; legal save; documents; contact request and duplicate",
-    "registration": "PASS: real local DB profile creation and /onboarding/?step=type using local auth fixture"
+    "registration": "PASS: real local DB profile creation and /onboarding/?step=type using local auth fixture",
+    "QA-01": "PASS: auth event precedes replace; surviving AccountPageContent redirects company registration sessions; fresh local registration and authenticated registration URL reload both reach /onboarding/?step=type."
   },
   "database": "meetany_preview_1791892006000",
   "cleanup": "Registration fixture deleted; profile field edits restored; contact report deleted",
