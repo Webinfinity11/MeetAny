@@ -58,6 +58,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const params = useSearchParams();
   const [draft] = useState(() => readRequestDraft());
   const [sessionAt] = useState(() => draft ? readRequestDraftAt() : 0);
+  const targetCompany = store.getCompany(params.get("company") || "");
   const initialCategory = currentCategory(params.get("category") || "");
   const [title, setTitle] = useState(params.has("title") ? (params.get("title") || "").slice(0, 120) : draft?.title || "");
   const [category, setCategory] = useState(params.has("category") ? (Object.hasOwn(categories, initialCategory) ? initialCategory : "") : draft?.category || "");
@@ -258,6 +259,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
 
   return <div className={`post-page ${styles.page}`} style={{ '--post-actions-height': `${published ? 0 : actionsHeight}px` } as CSSProperties}>
     {!published ? <header className="post-heading"><h1 ref={heading} tabIndex={-1}>მოთხოვნის განთავსება</h1></header> : null}
+    {!published && targetCompany ? <div className={styles.connectionNotice} role="status"><p>მოთხოვნა საჯაროა — {targetCompany.company || targetCompany.name} და სხვა შესაბამისი კომპანიებიც ნახავენ.</p></div> : null}
     {!published && openRequestCount >= 5 ? <div className={styles.connectionNotice} role="status"><p>თქვენ გაქვთ {openRequestCount} ღია მოთხოვნა — დახურეთ ერთი, რომ ახალი გამოაქვეყნოთ.</p><Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button></div> : null}
     {!published ? <StepBar step={step} /> : null}
     {published ? <>
