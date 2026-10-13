@@ -12,3 +12,5 @@
 @media(max-width:480px){.control input{flex-basis:100%}}
 
 .root :global(.ma-field__label){display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-2)}
+
+.undo{display:flex;align-items:center;gap:var(--space-1);font-size:var(--fs-sm);color:var(--text-2)}

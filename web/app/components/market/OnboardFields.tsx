@@ -18,9 +18,9 @@ export function OnboardCard({ title, children, hint }: { title: string; children
   return <section className={s.card}><div className={s.cardHeading}><h2>{title}</h2>{hint && <span className={hint === 'არასავალდებულო' ? s.optionalHint : undefined}>{hint}</span>}</div><div className={s.stack}>{children}</div></section>;
 }
 /** `invalid` is a form-level rule (e.g. a duplicate name): it blocks submit like any other validity error. */
-export function OnboardField({ label, value, onChange, required, maxLength, type = 'text', options, readOnly, multiline, min, max, icon, hint, invalid = '' }: {
+export function OnboardField({ label, value, onChange, required, maxLength, type = 'text', options, readOnly, multiline, min, max, icon, hint, autoComplete, invalid = '' }: {
   label: string; value: string; onChange?: (value: string) => void; required?: boolean; maxLength?: number;
-  type?: string; options?: Record<string, string>; readOnly?: boolean; multiline?: boolean; min?: number; max?: number; icon?: string; hint?: string; invalid?: string;
+  autoComplete?: string; type?: string; options?: Record<string, string>; readOnly?: boolean; multiline?: boolean; min?: number; max?: number; icon?: string; hint?: string; invalid?: string;
 }) {
   const id = useId();
   const [error, setError] = useState('');
@@ -28,7 +28,7 @@ export function OnboardField({ label, value, onChange, required, maxLength, type
   useEffect(() => { input.current?.setCustomValidity(invalid); }, [invalid]);
   const validation = (field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => field.validity.valid ? '' : field.validity.customError ? field.validationMessage : field.validity.valueMissing ? 'შეავსეთ სავალდებულო ველი.' : field.validity.rangeUnderflow || field.validity.rangeOverflow ? 'მიუთითეთ წელი დასაშვებ დიაპაზონში.' : 'შეამოწმეთ ველის ფორმატი.';
   const shown = error || invalid;
-  const common = { id, value, required, 'aria-invalid': !!shown, 'aria-describedby': shown ? id + '-error' : undefined, onInvalid: (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { e.preventDefault(); setError(validation(e.currentTarget)); e.currentTarget.closest('details')?.setAttribute('open', ''); e.currentTarget.focus(); }, onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { setError(''); onChange?.(e.target.value); } };
+  const common = { id, value, required, autoComplete, 'aria-invalid': !!shown, 'aria-describedby': shown ? id + '-error' : undefined, onInvalid: (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { e.preventDefault(); setError(validation(e.currentTarget)); e.currentTarget.closest('details')?.setAttribute('open', ''); e.currentTarget.focus(); }, onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setError(validation(e.currentTarget)), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { setError(''); onChange?.(e.target.value); } };
   return <div className={s.field}><label htmlFor={id}>{label}{required && <span> *</span>}{hint && <small>{hint}</small>}</label>
     <div className={icon ? s.inputIcon : s.inputControl}>{icon && <OnboardIcon name={icon} />}
     {options ? <CustomSelect {...common}><option value="">აირჩიეთ</option>{Object.entries(options).map(([key, text]) => <option value={key} key={key}>{text}</option>)}</CustomSelect>
@@ -42,11 +42,11 @@ export function OnboardItems({ label, values, onChange, suggestions = [], checkb
   const [customOptions, setCustomOptions] = useState(values);
   const add = () => { const value = text.trim(); if (value && values.length < 8 && !values.includes(value)) { onChange([...values, value]); setCustomOptions(previous => [...new Set([...previous, value])]); setText(''); } };
   if (!checkboxes) return <ChipsInput id={id} label={label} values={values} onChange={onChange} suggestions={suggestions} compact={rows} />;
-  const customButton = <Button variant="secondary" className={s.customAdd} aria-label={`${label} — საკუთარი`} aria-expanded={adding} disabled={values.length >= 8} onClick={() => setAdding(!adding)}><Icon name="plus" />საკუთარი</Button>;
+  const customButton = <Button variant="secondary" className={s.customAdd} aria-label={`${label} — საკუთარი`} aria-expanded={adding} disabled={values.length >= 8} onClick={() => setAdding(!adding)}><Icon name="plus" />დაამატეთ საკუთარი</Button>;
   return <div className={s.items} role="group" aria-label={label}>
     <div className={s.checkboxes}>{[...new Set([...suggestions, ...customOptions, ...values])].map(value => <label key={value}><input type="checkbox" checked={values.includes(value)} disabled={!values.includes(value) && values.length >= 8} onChange={() => onChange(values.includes(value) ? values.filter(item => item !== value) : [...values, value])} />{value}</label>)}{customButton}</div>
-    {adding && <div className={s.addItem}><input id={id} aria-label={label} value={text} maxLength={120} placeholder="დაამატეთ" onChange={e => setText(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} /><Button variant="secondary" disabled={!text.trim() || values.length >= 8 || values.includes(text.trim())} onClick={add}>დამატება</Button></div>}
-    {adding && text.trim() && <small>ჩანაწერის შესანახად დააჭირეთ „დამატებას“.</small>}
+    {adding && <div className={s.addItem}><input id={id} aria-label={label} value={text} maxLength={120} placeholder="დაამატეთ" onChange={e => setText(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} /><Button variant="secondary" disabled={!text.trim() || values.length >= 8 || values.includes(text.trim())} onClick={add}>დაამატეთ</Button></div>}
+    {adding && text.trim() && <small>ჩანაწერის შესანახად დააჭირეთ „დაამატეთ“.</small>}
   </div>;
 }
 /** Steps 1 (what you supply) and 5 (what you buy) pick from the same list with the same names:

@@ -17,7 +17,7 @@ import s from './onboarding.module.css';
 
 export function OnboardLoading() {
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" href="/account/">გასვლა</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" href="/account/">გადით</Button></div></header>
     <div className={s.shell}>
       <aside className={s.navigation}><ListSkeleton compact kind="records" label="ნაბიჯები იტვირთება…" /></aside>
       <main className={s.main}><DetailSkeleton compact label="კომპანიის პროფილი იტვირთება…" /></main>
@@ -175,12 +175,12 @@ export function OnboardPage() {
     } catch (err) { const message = onboardError(err); setError(message); toast({ title: message, tone: 'danger' }); }
     finally { lock.current = false; setPending(false); }
   }
-  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" href="/account/">გასვლა</Button></div></header>{content}</div>;
+  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" href="/account/">გადით</Button></div></header>{content}</div>;
   if (!sessionReady) return <OnboardLoading />;
-  if (!available) return shell(<main className={s.state}><h1>მონაცემები მიუწვდომელია</h1><Button onClick={() => { void store?.revalidate(); }}>ხელახლა ცდა</Button></main>);
-  if (!actor) return shell(<main className={s.state}><h1>კომპანიის პროფილის შექმნა</h1><p>გააგრძელეთ თქვენი კომპანიის ანგარიშით.</p><Button href="/account/?tab=register&role=company&next=%2Fonboarding%2F">რეგისტრაცია</Button><Button variant="secondary" href="/account/?next=%2Fonboarding%2F">შესვლა</Button></main>);
-  if (blocked || role !== 'company') return shell(<main className={s.state}><h1>{blocked ? 'ანგარიში შეზღუდულია' : 'კომპანიის ანგარიშის გვერდი'}</h1><p>{role === 'admin' ? 'ადმინისტრატორის ანგარიში კომპანიის პროფილად არ იცვლება.' : 'ამ პროფილის შევსება მხოლოდ კომპანიის ანგარიშით არის შესაძლებელი.'}</p><Button href={role === 'admin' ? '/admin/' : '/account/'}>ჩემს ანგარიშზე დაბრუნება</Button></main>);
-  if (!model || model.profile.id !== actor) return error ? shell(<main className={s.state}><p role="alert">{error}</p><Button onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button></main>) : <OnboardLoading />;
+  if (!available) return shell(<main className={s.state}><h1>მონაცემები მიუწვდომელია</h1><Button onClick={() => { void store?.revalidate(); }}>სცადეთ ხელახლა</Button></main>);
+  if (!actor) return shell(<main className={s.state}><h1>კომპანიის პროფილის შექმნა</h1><p>გააგრძელეთ თქვენი კომპანიის ანგარიშით.</p><Button href="/account/?tab=register&role=company&next=%2Fonboarding%2F">დარეგისტრირდით</Button><Button variant="secondary" href="/account/?next=%2Fonboarding%2F">შედით</Button></main>);
+  if (blocked || role !== 'company') return shell(<main className={s.state}><h1>{blocked ? 'ანგარიში შეზღუდულია' : 'კომპანიის ანგარიშის გვერდი'}</h1><p>{role === 'admin' ? 'ადმინისტრატორის ანგარიში კომპანიის პროფილად არ იცვლება.' : 'ამ პროფილის შევსება მხოლოდ კომპანიის ანგარიშით არის შესაძლებელი.'}</p><Button href={role === 'admin' ? '/admin/' : '/account/'}>დაბრუნდით თქვენს ანგარიშზე</Button></main>);
+  if (!model || model.profile.id !== actor) return error ? shell(<main className={s.state}><p role="alert">{error}</p><Button onClick={() => setRetry(value => value + 1)}>სცადეთ ხელახლა</Button></main>) : <OnboardLoading />;
   // Completion reflects confirmed server data, never unsaved input or position alone.
   const saved = persisted?.profile.id === actor ? persisted : null;
   const p = saved?.profile;
@@ -207,16 +207,16 @@ export function OnboardPage() {
     void save(target);
   };
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>შენახვა და გასვლა</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>შეინახეთ და გადით</Button></div></header>
     <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
       <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
         <p className={s.draftStatus} role="status">{hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : ''}</p>
-        {restoredDraft && <Notice tone="info" className={s.draftNotice} action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გაუქმება</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
+        {restoredDraft && <Notice tone="info" className={s.draftNotice} action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გააუქმეთ</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
         <form noValidate ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1], index === last); }}>
           <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>
-          {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შესწორება</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
-          <div className={s.actions}><span className={s.autosave} role="status">{pending ? 'ინახება…' : savedAt ? 'შენახულია ' + savedAt : ''}</span>{hasChanges && <Button variant="ghost" className={s.discardAction} disabled={pending} onClick={() => setConfirmDiscard(true)}>ცვლილებების გაუქმება</Button>}{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(steps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === last ? 'დასრულება' : step === 'verify' ? 'გადახედვა' : 'შემდეგი'}</Button></div>
+          {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შეასწორეთ</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
+          <div className={s.actions}><span className={s.autosave} role="status">{pending ? 'ინახება…' : savedAt ? 'შენახულია ' + savedAt : ''}</span>{hasChanges && <Button variant="ghost" className={s.discardAction} disabled={pending} onClick={() => setConfirmDiscard(true)}>გააუქმეთ ცვლილებები</Button>}{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(steps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === last ? 'დაასრულეთ' : step === 'verify' ? 'გადახედეთ' : 'შემდეგი'}</Button></div>
         </form>
       </main>
     </div>
