@@ -153,7 +153,7 @@ export function AdminPageContent() {
   async function run(action: AdminAction, id: string, reason: string, choice?: string) {
     if (!store) return;
     const { kind, url } = action;
-    if (kind === "reports") { await store.adminResolveReport(id, action.action === "reportReject" ? "reject" : "hide", reason); return; }
+    if (kind === "reports") { await store.adminResolveReport(id, action.action === "reportReject" ? "dismiss" : action.action === "reportHide.review" ? "hide_review" : action.action === "reportHide.conversation" ? "block_user" : "hide", reason); return; }
     if (kind === "photos") { await store.adminRemovePhoto(id, url, reason); return; }
     if (kind === "reviews") { await store.adminModerateReview(id, action.action === "hideReview" ? "hidden" : "published", reason); return; }
     if (kind === "deals") { await store.mutateRpc("admin_set_deal_stage", { p_deal: id, p_stage: action.action === "dealCancel" ? "cancelled" : choice, p_reason: reason }); return; }
@@ -165,6 +165,9 @@ export function AdminPageContent() {
     } else if (kind === "offers") {
       await store.adminDeleteOffer(id, reason);
     } else {
+      if (action.action === "roleClient" || action.action === "roleCompany") { await store.mutateRpc("admin_set_role",{p_user_id:id,p_role:action.action === "roleClient" ? "client" : "company",p_reason:reason}); return; }
+      if (action.action === "anonymize") { await store.mutateRpc("admin_anonymize_user",{p_user_id:id,p_reason:reason}); return; }
+      if (action.action === "hideCompany" || action.action === "showCompany") { await store.mutateRpc("admin_set_company_hidden",{p_user_id:id,p_hidden:action.action === "hideCompany",p_reason:reason}); return; }
       if (action.action === "verify") await store.adminSetVerified(id, true);
       else if (action.action === "unverify") await store.mutateRpc("admin_set_verified", { p_user_id: id, p_verified: false, p_reason: reason });
       else if (action.action === "approveDocs") await store.mutateRpc("review_verification", { p_profile_id: id, p_status: "approved", p_note: null });

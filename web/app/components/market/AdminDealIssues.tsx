@@ -1,4 +1,5 @@
 'use client';
+import {AdminIssueComment} from './AdminIssueComment';
 import {useCallback} from 'react';
 import type {Store} from '../../lib/market-client';
 import {useBusinessResource} from '../../lib/business-client';
@@ -18,6 +19,7 @@ export function AdminDealIssues({store,revision,onOpen,onAction}:{store:Store;re
   <small>{i.actor_side==='buyer'?'მყიდველი':'მომწოდებელი'}{i.actor_name?` · ${i.actor_name}`:''} · {adminDateTime(i.created_at)}</small>
   <p className={styles.listText}>{i.body}</p>
   {i.resolution?<p className={styles.listText}>შედეგი: {i.resolution}{i.resolver_name?` — ${i.resolver_name}`:''}</p>:null}
+  <AdminIssueComment store={store} issueId={i.id}/>
   {i.status==='open'?<div className={styles.inlineActions}><Button variant="secondary" size="sm" onClick={()=>onAction({kind:'issues',action:'resolveIssue',id:i.id,label:`${i.title} · ${issueReasons[i.reason]||''}`,choice:{label:'შედეგი',options:Object.entries(issueOutcomes).filter(([value])=>value!=='cancelled'||i.stage!=='complete')}})}>განხილვის დასრულება…</Button><Button variant="ghost" size="sm" onClick={()=>onOpen({kind:'deal',id:i.deal_id})}>გარიგების ნახვა</Button></div>:null}
  </li>;
  return <section className={styles.panel} aria-labelledby="deal-issues-heading"><header className={styles.panelHead}><h2 id="deal-issues-heading">გარიგების პრობლემები</h2>{open.length?<span>{open.length} ღია</span>:null}</header>

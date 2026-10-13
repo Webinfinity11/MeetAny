@@ -1,4 +1,5 @@
 "use client";
+import { ReportButton } from "./ReportButton";
 import { ChatContext, ChatMessages } from "./messaging/ChatParts";
 import { SharedFiles } from "./messaging/SharedFiles";
 import { Button } from "../ui/Button";
@@ -186,6 +187,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
       <button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" title="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button>
     </header>
     <nav className={styles.threadTabs} aria-label="მიმოწერის ხედი"><button type="button" onClick={onBack}><Icon name="chevron-left"/>ყველა საუბარი</button>{conversation ? <Link href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose}><Icon name="external-link"/>სრულად გახსნა</Link> : null}</nav>
+    {conversation ? <details><summary style={{minHeight:"var(--tap-min)",padding:"var(--space-3)"}}>საუბრის მოქმედებები</summary><ReportButton kind="conversation" targetId={conversation.id}/></details> : null}
     <ChatContext store={store} requestId={requestId} companyId={conversation?.companyId || target.companyId}/>
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყეთ საუბარი</h3><p>მოიკითხეთ დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : <ChatMessages messages={messages} owner={owner} name={name} now={now}/>}

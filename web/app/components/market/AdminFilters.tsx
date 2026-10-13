@@ -3,7 +3,7 @@ import styles from "./admin.module.css";
 
 const states: Record<string, [string, string][]> = {
   requests: [["open", "ღია"], ["chosen", "მომწოდებელი არჩეულია"], ["closed", "დახურული"], ["expired", "ვადაგასული"], ["hidden", "დამალული"]],
-  offers: [["sent", "გაგზავნილი"], ["chosen", "არჩეული"], ["declined", "არ შეირჩა"], ["expired", "ვადაგასული"]],
+  offers: [["sent", "გაგზავნილი"], ["chosen", "არჩეული"], ["declined", "არ შეირჩა"], ["withdrawn", "გაუქმებული"], ["expired", "ვადაგასული"]],
   companies: [["pending", "განსახილველი"], ["verified", "ვერიფიცირებული"], ["returned", "დაბრუნებული"], ["no_documents", "დოკუმენტები არ არის"], ["unverified", "ყველა ვერიფიკაციის გარეშე"], ["blocked", "დაბლოკილი"]],
   users: [["active", "აქტიური"], ["blocked", "დაბლოკილი"], ["unverified", "კომპანია ვერიფიკაციის გარეშე"]],
 };

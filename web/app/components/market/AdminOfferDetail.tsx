@@ -1,4 +1,5 @@
 "use client";
+import { AdminOfferEditPanel } from "./AdminOfferEditPanel";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Sheet } from "../ui/Sheet";
@@ -14,6 +15,7 @@ export function AdminOfferDetail({ store, id, revision, onClose, onOpen, onActio
   store: Store; id: string; revision: number; onClose: () => void; onOpen: (target: AdminTarget) => void; onAction: (action: AdminAction) => void;
 }) {
   const [state, setState] = useState<{ key: string; offer?: AdminOffer | null; error?: boolean }>({ key: "" });
+  const [editing, setEditing] = useState(false);
   const [retry, setRetry] = useState(0);
   const key = `${id}:${revision}:${retry}`;
   const search = store.adminSearchOffers;
@@ -48,7 +50,9 @@ export function AdminOfferDetail({ store, id, revision, onClose, onOpen, onActio
     </dl>
     <FileAttachments store={store} kind="offer" target={offer.id} label="ფაილები" />
   </div>;
-  const footer = offer ? <div className={styles.detailActions}>
+  if (editing && offer) body = <AdminOfferEditPanel store={store} offer={offer} onSaved={() => {setEditing(false);setRetry(n => n + 1);}} onCancel={() => setEditing(false)}/>;
+  const footer = offer && !editing ? <div className={styles.detailActions}>
+    <Button type="button" onClick={() => setEditing(true)}>რედაქტირება</Button>
     <Button type="button" variant="secondary" onClick={() => onOpen({ kind: "request", id: offer.request_id })}>მოთხოვნის ნახვა</Button>
     {offer.deal_id ? <Button type="button" variant="secondary" onClick={() => onOpen({ kind: "deal", id: offer.deal_id! })}>გარიგების ნახვა</Button> : <span />}
     <div className={styles.dangerZone}>

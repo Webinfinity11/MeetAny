@@ -945,3 +945,29 @@ The private reports queue stores `target_kind='contact_change'`, `target_id=repo
 `admin_list_reports` includes `payload`, `current_phone`, and `current_email`; `contact_change` targets join profiles. `admin_apply_contact_change(p_report_id uuid, p_note text default null)` requires `require_admin()`, locks the report and profile, revalidates normalized/unique mobile and email format, changes the profile contacts, audits old/new values, closes this report with resolution `applied`, and notifies its author in one transaction. Replays fail with MA706. Invalid/mobile-conflict codes are MA403/MA404/MA405; malformed payload is MA711. `update_my_profile` does not accept phone or email; the new RPC uses the same profile-creation validation rules for these identifiers.
 
 **`profiles.email` is the contact email only. Neon Auth login email, credentials, and verification are never changed by this RPC.** `admin_resolve_report(...,'reject',reason)` closes a contact request without changing the profile and sends the reason to its author; `hide` is forbidden for this kind. RPC execution is granted to `authenticated`, with the admin role checked inside the function, and is not available to `anonymous`.
+
+### Admin actions — 20261014-admin-actions.sql (T7.3)
+
+All administrator writes below are SECURITY DEFINER, call `require_admin()`, revoke PUBLIC/anonymous access and grant authenticated execution. Mandatory reasons are trimmed, 3–500 characters (`MA304`). Every successful call inserts `meetany_private.moderation_audit` with the administrator, target, reason and changed flags. `admin_search_users` includes `catalog_hidden`, `catalog_hidden_reason`, and `anonymized_at` through its existing profile projection.
+
+| RPC | Result | Audit |
+|---|---|---|
+| `admin_set_role(p_user_id uuid, p_role text, p_reason text)` | void | `user.role` (old/new role, verified) |
+| `admin_anonymize_user(p_user_id uuid, p_reason text)` | void | `user.anonymize` |
+| `admin_set_company_hidden(p_user_id uuid, p_hidden boolean, p_reason text)` | void | `company.hide` / `company.show` |
+| `admin_edit_offer(p_id uuid, p_patch jsonb, p_reason text)` | public.offers | `offer.edit` (only changed keys) |
+| `admin_comment_deal_issue(p_issue_id uuid, p_body text)` | void | `deal.issue_comment` (target deal, new_flags.issue_id; first 500 body characters as audit reason) |
+
+Role changes only support client/company. Admin role assignment/removal, own role changes and anonymized accounts fail with `MA309`. Company→client clears verified without changing verification_documents_status; client→company resets onboarding_completed_at, permitting a missing industry until onboarding is completed. Anonymizing an administrator fails with `MA310`. Anonymization replaces identity/contact/address/legal/photo data, blocks the profile, hides open requests, marks sent offers `withdrawn`, removes saved items and alert settings/email jobs, and retains conversations. `anonymized_at` permits empty identity fields only while blocked; the partial phone uniqueness index excludes emptied phones. **Neon Auth records are not deleted or changed by SQL**: the application profile remains blocked, and `require_user()` rejects access. The administrator UI explains that the authorization account remains blocked.
+
+`catalog_hidden` does not block sign-in or sending offers. Catalog/home/snapshot and the shared supplier matching rule exclude hidden companies. Public profile RLS and company section RPCs deny others; the company itself and administrators retain profile access. Public stats do not expose hidden-company deal counts.
+
+Offer patch keys: body, price, price_type, vat_included, delivery_days, delivery_included, payment_terms, valid_until, commercial_terms. Unknown keys, non-object/empty patches fail `MA311`. Body/price/delivery validation follows send_offer; terms follow set_offer_terms. An unchanged historical expiry does not prevent editing other fields. Editing an offer does not alter already agreed deal terms. The update timestamp changes; the audit contains actual changed fields, including normalized dependent values.
+
+`report_content(p_kind text,p_target_id uuid,p_reason text,p_text text default '')` additionally accepts `review` and `conversation`. Review must be published on a visible company and not authored by the reporter; owner is review author, context is company. Conversation requires membership and targets the other participant. Existing rate/duplicate controls apply (`MA702`, `MA703`, `MA704`, `MA705`). `company_reviews` includes author_id so the UI omits self-report controls.
+
+`admin_list_reports(p_status text default 'new',p_offset integer default 0)` includes these kinds, their existence/removal state, Georgian target labels and review target_body. `admin_resolve_report(p_id uuid,p_action text,p_reason text)` supports `hide_review` for reviews, `block_user` for conversations and `dismiss`; existing hide/reject and contact-change behavior remain. All resolutions additionally audit `report.resolve` on target_type `report`, preserve business audit and notify reporters with result/note. Wrong kind/action combinations fail `22023`.
+
+Issue comments trim body to a validated 3–1000 characters (`MA902`), insert an `admin_comment` deal update, increment revision and use `deal_event` to notify both parties. Missing issue returns `MA901`. Comments do not resolve the issue or change the deal stage.
+
+API allowlist: all five new admin RPCs in RPCS; role, anonymize, company_hidden and offer_edit also in PUBLIC_WRITES for public snapshot invalidation. Report resolution was already a public write.

@@ -15,10 +15,11 @@ export const adminMoney = (value: number | string | null | undefined) =>
 export const verificationLabels: Record<string, string> = {
   not_submitted: "დოკუმენტები არ არის", pending: "განსახილველი", approved: "ვერიფიცირებული", rejected: "დაბრუნებული",
 };
-type CompanyState = { role?: string; verified?: boolean; blocked?: boolean; verification_documents_status?: string | null };
+type CompanyState = { catalog_hidden?: boolean; role?: string; verified?: boolean; blocked?: boolean; verification_documents_status?: string | null };
 export function companyStatus(u: CompanyState): { label: string; tone: "success" | "warning" | "danger" | "neutral" | "info" } {
   if (u.blocked) return { label: "დაბლოკილი", tone: "danger" };
   if (u.role !== "company") return { label: "აქტიური", tone: "info" };
+  if (u.catalog_hidden) return { label: "დამალული", tone: "neutral" };
   if (u.verified) return { label: verificationLabels.approved, tone: "success" };
   const docs = u.verification_documents_status || "not_submitted";
   return docs === "pending" ? { label: verificationLabels.pending, tone: "warning" }

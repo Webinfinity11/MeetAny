@@ -1,4 +1,5 @@
 "use client";
+import { AdminReportContent } from "./AdminReportContent";
 import { Sheet } from "../ui/Sheet";
 import { ConfirmSheet } from "../ui/ConfirmSheet";
 import { adminErrorMessage } from "../../lib/use-admin-data";
@@ -17,32 +18,33 @@ import { ListSkeleton } from "./Skeletons";
 import styles from "./admin.module.css";
 
 export type AdminReport = {
-  id: string; target_kind: "request" | "company" | "offer" | "contact_change"; target_id: string; context_id: string | null;
+  id: string; target_kind: "request" | "company" | "offer" | "contact_change" | "review" | "conversation"; target_id: string; context_id: string | null;
   reason: "spam" | "fake" | "offensive" | "other"; body: string; status: "new" | "handled";
   resolution: "hidden" | "rejected" | "applied" | null; resolution_reason: string | null; created_at: string; handled_at: string | null;
   payload?: {phone?: string | null; email?: string | null; note?: string | null}; current_phone?: string; current_email?: string;
   reporter_id: string; reporter_name: string | null; reporter_email: string | null;
-  target_label: string | null; target_exists: boolean; target_removed: boolean; context_label: string; offer_status: string;
+  target_body?: string; target_label: string | null; target_exists: boolean; target_removed: boolean; context_label: string; offer_status: string;
   target_reports: number; target_new: number; handler_name: string | null;
 };
 type Page = { items: AdminReport[]; total: number; newCount: number };
 export type ReportAction = { report: AdminReport; action: "reportHide" | "reportReject"; label: string };
 
 export const reportReasons: Record<string, string> = { spam: "სპამი ან რეკლამა", fake: "ყალბი ან შეცდომაში შემყვანი", offensive: "შეურაცხმყოფელი", other: "სხვა" };
-const kinds: Record<string, string> = { request: "მოთხოვნა", company: "კომპანია", offer: "შეთავაზება", contact_change: "კონტაქტის შეცვლის მოთხოვნა" };
+const kinds: Record<string, string> = { review: "შეფასება", conversation: "მიმოწერა", request: "მოთხოვნა", company: "კომპანია", offer: "შეთავაზება", contact_change: "კონტაქტის შეცვლის მოთხოვნა" };
 /** Hiding means the existing moderation action for that kind of content. */
-export const hideLabels: Record<string, string> = { request: "დამალვა", company: "დაბლოკვა", offer: "წაშლა" };
+export const hideLabels: Record<string, string> = { review: "შეფასების დამალვა", conversation: "მომხმარებლის დაბლოკვა", request: "დამალვა", company: "დაბლოკვა", offer: "წაშლა" };
 const PAGE = 20;
 
 export const reportTargetLabel = (r: AdminReport) =>
   r.target_kind === "offer" ? `${r.target_label || "კომპანია"}${r.context_label ? ` · ${r.context_label}` : ""}` : r.target_label || `${kinds[r.target_kind]} · #${r.target_id.slice(0, 8)}`;
-const targetDetail = (r: AdminReport): AdminTarget => ({ kind: (r.target_kind === "company" || r.target_kind === "contact_change") ? "user" : r.target_kind, id: r.target_id });
+const targetDetail = (r: AdminReport): AdminTarget => r.target_kind === "conversation" ? null : r.target_kind === "review" ? {kind:"user",id:r.context_id!} : ({ kind: (r.target_kind === "company" || r.target_kind === "contact_change") ? "user" : r.target_kind, id: r.target_id });
 
 /** Reports queue: new or handled, newest first, 20 per page. */
 export function AdminReports({ store, status, revision, onStatus, onAction, onCount, onOpen }: {
   store: Store; status: "new" | "handled"; revision: number;
   onStatus: (status: string) => void; onAction: (action: ReportAction) => void; onCount: (count: number) => void; onOpen: (target: AdminTarget) => void;
 }) {
+  const [content, setContent] = useState<AdminReport | null>(null);
   const [offset, setOffset] = useState(0);
   const [contact, setContact] = useState<AdminReport | null>(null);
   const [confirm, setConfirm] = useState(false), [pending, setPending] = useState(false), [error, setError] = useState<string | null>(null);
@@ -74,7 +76,7 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
           <thead><tr>{["საჩივარი", "მიზეზი", "ავტორი", "თარიღი", status === "new" ? "მოქმედება" : "შედეგი"].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead>
           <tbody>{page.items.map(r => <tr key={r.id}>
             <td data-label="საჩივარი">
-              {r.target_exists ? <button type="button" className={styles.rowLink} onClick={() => r.target_kind === "contact_change" ? setContact(r) : onOpen(targetDetail(r))}>{reportTargetLabel(r)}</button> : reportTargetLabel(r)}
+              {r.target_exists ? <button type="button" className={styles.rowLink} onClick={() => r.target_kind === "contact_change" ? setContact(r) : ["review","conversation"].includes(r.target_kind) ? setContent(r) : onOpen(targetDetail(r))}>{reportTargetLabel(r)}</button> : reportTargetLabel(r)}
               <small>{kinds[r.target_kind]}{!r.target_exists ? " · წაშლილია" : r.target_removed ? (r.target_kind === "company" ? " · დაბლოკილია" : " · დამალულია") : ""} · სულ {r.target_reports} საჩივარი{r.target_new > 1 && r.status === "new" ? `, ${r.target_new} ახალი` : ""}</small>
             </td>
             <td data-label="მიზეზი"><span style={r.target_kind === "contact_change" ? {whiteSpace:"normal"} : undefined} className={`ma-badge ma-badge--${r.reason === "other" ? "neutral" : "warning"}`}>{r.target_kind === "contact_change" ? kinds.contact_change : reportReasons[r.reason]}</span>{r.body ? <p className={styles.excerpt}>{r.body}</p> : null}</td>
@@ -96,6 +98,7 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
           <Button type="button" variant="secondary" disabled={offset + PAGE >= page.total} onClick={() => setOffset(n => n + PAGE)}>შემდეგი</Button>
         </nav> : null}
       </>}
+    {content ? <AdminReportContent key={content.id} store={store} report={content} onClose={() => setContent(null)} onOpen={onOpen}/> : null}
     <Sheet open={!!contact && !confirm} title="კონტაქტის შეცვლის მოთხოვნა" onClose={() => setContact(null)} footer={contact?.status === "new" ? <>
       <Button variant="primary" onClick={() => {setError(null);setConfirm(true);}}>შესრულება</Button>
       <Button variant="secondary" onClick={() => {if(contact){onAction({report:contact,action:"reportReject",label:reportTargetLabel(contact)});setContact(null);}}}>უარყოფა…</Button>

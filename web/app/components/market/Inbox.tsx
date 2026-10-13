@@ -1,4 +1,5 @@
 "use client";
+import { ReportButton } from "./ReportButton";
 import { Button } from "../ui/Button";
 
 
@@ -168,6 +169,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
       {d.requestId ? <Button variant="secondary" size="sm" href={`/requests/view/?id=${encodeURIComponent(d.requestId)}`}>მოთხოვნის ნახვა</Button> : null}
       {phone ? <a className={styles["inbox-call"]} href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} title={phone}><Icon name="phone"/></a> : null}
     </header>
+    <details><summary style={{minHeight:"var(--tap-min)",padding:"var(--space-3)"}}>საუბრის მოქმედებები</summary><ReportButton kind="conversation" targetId={conversation.id}/></details>
     <div className={styles["inbox-log"]} ref={log} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}
       onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }}>
       {!loaded ? <p className={styles["inbox-log__note"]} role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p>

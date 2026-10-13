@@ -16,7 +16,7 @@ export function DealDiscussion({ store, deal, actor }: { store: Store; deal: Dea
   const [body, setBody] = useState("");
   return <section className={`${styles.card} ${styles.discussion}`} aria-label="მიმოწერა"><div className={styles.chatLog} role="log" aria-label="გარიგების მიმოწერა" aria-live="polite">
     {!chat.loaded ? chat.failed ? <p role="status">მიმოწერა ვერ ჩაიტვირთა.</p> : <ListSkeleton compact kind="records" label="მიმოწერა იტვირთება…" /> : !chat.messages.length ? <p className={styles.note}>დააზუსტეთ ფასი, მიწოდება და გადახდის პირობები.</p> : chat.messages.map((m, i) => {
-      const name = store.getCompany(m.senderId)?.company || store.getCompany(m.senderId)?.name || (m.senderId === actor ? "თქვენ" : "პარტნიორი");
+      const name = store.getCompany(m.senderId)?.company || store.getCompany(m.senderId)?.name || (m.senderId === actor ? "თქვენ" : chat.conversation?.otherCompany || chat.conversation?.otherName || "პარტნიორი");
       const day = (at: string) => dealDate(at);
       return <Fragment key={m.id}>{i === 0 || day(chat.messages[i - 1].createdAt) !== day(m.createdAt) ? <p className={styles.chatDate}>{day(m.createdAt)}</p> : null}<div className={styles.messageRow} data-mine={m.senderId === actor}>{m.senderId !== actor ? <span className={styles.chatAvatar} aria-hidden="true">{avatarInitials(name)}</span> : null}<div className={styles.bubble} data-mine={m.senderId === actor}><small>{name} · {new Date(m.createdAt).toLocaleTimeString("ka-GE", { timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit" })}</small>{m.body}{m.senderId === actor ? <small>{m.readAt ? "წაკითხულია" : "გაგზავნილია"}</small> : null}</div></div></Fragment>;
     })}

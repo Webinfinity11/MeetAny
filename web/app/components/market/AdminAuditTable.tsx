@@ -13,6 +13,8 @@ export type AdminAuditEvent = {
 };
 
 export const auditActions: Record<string, string> = {
+  "user.role": "როლის შეცვლა", "user.anonymize": "ანგარიშის ანონიმიზაცია", "company.hide": "კატალოგიდან დამალვა", "company.show": "კატალოგში დაბრუნება",
+  "offer.edit": "შეთავაზების რედაქტირება", "report.resolve": "საჩივრის განხილვა", "deal.issue_comment": "პრობლემაზე ადმინისტრაციის კომენტარი",
   edit_profile: "პროფილის რედაქტირება", edit_request: "მოთხოვნის რედაქტირება",
   "request.hide": "მოთხოვნის დამალვა", "request.show": "მოთხოვნის გამოჩენა", "request.delete": "მოთხოვნის წაშლა",
   "request.preferences": "ბიუჯეტისა და პირობების შეცვლა",
@@ -23,7 +25,7 @@ export const auditActions: Record<string, string> = {
   "company.verification_review": "ვერიფიკაციის დოკუმენტების განხილვა",
   "deal.stage": "გარიგების ეტაპის შეცვლა", "deal.issue_resolve": "გარიგების პრობლემის განხილვა",
 };
-const targets: Record<string, string> = { request: "მოთხოვნა", user: "ანგარიში", offer: "შეთავაზება", deal: "გარიგება" };
+const targets: Record<string, string> = { request: "მოთხოვნა", user: "ანგარიში", offer: "შეთავაზება", deal: "გარიგება", report: "საჩივარი" };
 const roles: Record<string, string> = { company: "კომპანია", client: "კლიენტი", admin: "ადმინი" };
 const targetLabel = (e: AdminAuditEvent) => e.target_type === "user" && e.target_role ? roles[e.target_role] : targets[e.target_type];
 const openable = (e: AdminAuditEvent): AdminTarget => e.target_exists === false ? null

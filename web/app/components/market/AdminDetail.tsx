@@ -26,7 +26,7 @@ export type AdminAction = {
 };
 
 type User = { id: string; role: string; name: string; company?: string; email?: string; phone?: string; city?: string; industry?: string;
-  about?: string; verified?: boolean; blocked?: boolean; blocked_reason?: string; created_at?: string; account_intent?: string | null;
+  about?: string; catalog_hidden?: boolean; verified?: boolean; blocked?: boolean; blocked_reason?: string; created_at?: string; account_intent?: string | null;
   verification_documents_status?: string; legal_name?: string | null; registration_code?: string | null; legal_form?: string | null;
   website?: string | null; founded_year?: number | null; employee_band?: string | null };
 type Offer = { id: string; request_id?: string; request_title?: string; body: string; price?: number | null; price_type?: string | null; status: string; created_at: string; company_id?: string };
@@ -175,6 +175,9 @@ function AccountOrRequest({ store, target, v2, revision, onClose, onOpen, onActi
       footer = editing ? null : <div className={styles.detailActions}>
         <Button type="button" variant="primary" onClick={() => setEditTarget(`user:${user.id}`)}>რედაქტირება</Button>
         {company && !user.blocked ? <Button type="button" variant="secondary" onClick={() => onAction({ kind: "users", action: user.verified ? "unverify" : "verify", id: user.id, label })}>{user.verified ? "ვერიფიკაციის მოხსნა…" : "ვერიფიცირება…"}</Button> : <span />}
+        {user.role !== "admin" ? <Button variant="secondary" onClick={() => onAction({kind:"users",action:company?"roleClient":"roleCompany",id:user.id,label})}>როლის შეცვლა…</Button> : null}
+        {company ? <Button variant="secondary" onClick={() => onAction({kind:"users",action:user.catalog_hidden?"showCompany":"hideCompany",id:user.id,label})}>{user.catalog_hidden?"კატალოგში დაბრუნება…":"კატალოგიდან დამალვა…"}</Button> : null}
+        {user.role !== "admin" ? <div className={styles.dangerZone}><Button variant="danger-quiet" onClick={() => onAction({kind:"users",action:"anonymize",id:user.id,label})}>ანონიმიზაცია…</Button></div> : null}
         {user.role !== "admin" ? <div className={styles.dangerZone}><Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "users", action: user.blocked ? "unblock" : "block", id: user.id, label })}>{user.blocked ? "ანგარიშის განბლოკვა…" : "ანგარიშის დაბლოკვა…"}</Button></div> : null}
       </div>;
     }

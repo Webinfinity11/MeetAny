@@ -9,7 +9,7 @@ import { Sheet } from "../ui/Sheet";
 import { toast } from "../Toasts";
 import { useMarketStore } from "../../lib/market-client";
 
-export type ReportKind = "request" | "company" | "offer";
+export type ReportKind = "request" | "company" | "offer" | "review" | "conversation";
 const reasons = [
   { key: "spam", label: "სპამი ან რეკლამა" },
   { key: "fake", label: "ყალბი ან შეცდომაში შემყვანი" },
@@ -17,6 +17,8 @@ const reasons = [
   { key: "other", label: "სხვა მიზეზი" },
 ];
 const questions: Record<ReportKind, string> = {
+  review: "რა არის არასწორი ამ შეფასებაში?",
+  conversation: "რა პრობლემაა ამ მიმოწერაში?",
   request: "რა არის არასწორი ამ მოთხოვნაში?",
   company: "რა არის არასწორი ამ კომპანიის გვერდზე?",
   offer: "რა არის არასწორი ამ შეთავაზებაში?",
@@ -44,7 +46,7 @@ export function ReportButton({ kind, targetId }: { kind: ReportKind; targetId: s
     button.current?.focus();
   }
   return <>
-    <button ref={button} type="button" className="detail-link report-link" onClick={start}><Icon name="flag" />დარღვევის შეტყობინება</button>
+    <Button ref={button} type="button" variant="ghost" size="sm" className="detail-link report-link" onClick={start}><Icon name="flag" />{kind === "conversation" ? "საჩივარი ადმინისტრაციას" : "დარღვევის შეტყობინება"}</Button>
     {open ? <ReportSheet kind={kind} targetId={targetId} onClose={close} /> : null}
   </>;
 }

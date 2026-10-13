@@ -1,0 +1,35 @@
+[
+  {
+    "width": 1440,
+    "actions": 6,
+    "userReports": 2,
+    "overflow": 0,
+    "pageerrors": 0,
+    "ids": {
+      "buyer": "7a215be3-bb18-4f41-a7cd-0ffe8f255ead",
+      "seller": "e75bb45c-f6a6-48d4-908a-6a2cff4f2a87"
+    }
+  },
+  {
+    "width": 390,
+    "actions": 6,
+    "userReports": 2,
+    "overflow": 0,
+    "pageerrors": 0,
+    "ids": {
+      "buyer": "74368b51-6b4e-4dff-a5b3-bfc2920d5a17",
+      "seller": "de84c0c1-1ada-46d3-b380-41ff73308c97"
+    }
+  },
+  {
+    "width": 360,
+    "actions": 6,
+    "userReports": 2,
+    "overflow": 0,
+    "pageerrors": 0,
+    "ids": {
+      "buyer": "d1e556fd-3074-449c-9cd1-2d2b29acecf3",
+      "seller": "085c2fcc-356d-46b0-a904-2a0d486c63b2"
+    }
+  }
+]

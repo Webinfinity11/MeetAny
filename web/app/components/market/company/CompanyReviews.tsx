@@ -1,4 +1,5 @@
 "use client";
+import { ReportButton } from "../ReportButton";
 import { useCallback } from "react";
 import { useMarketStore } from "../../../lib/market-client";
 import { useBusinessResource } from "../../../lib/business-client";
@@ -10,7 +11,7 @@ import styles from "./CompanyProfile.module.css";
 import { ListSkeleton } from "../Skeletons";
 import { dateShort } from "../../../lib/format";
 
-type Reviews = { total: number; rating: number | null; items: { id: string; author: string; rating: number; body: string; updated_at: string }[] };
+type Reviews = { total: number; rating: number | null; items: { id: string; author_id: string; author: string; rating: number; body: string; updated_at: string }[] };
 export function useCompanyReviews(companyId: string) {
   const { store, sessionReady, available } = useMarketStore();
   const read = store?.companyReviews;
@@ -25,6 +26,7 @@ export function useCompanyStats(companyId: string) {
   return useBusinessResource<CompanyStats>(companyId && sessionReady && available && read ? load : undefined, companyId);
 }
 export function CompanyReviews({ resource }: { resource: ReturnType<typeof useCompanyReviews> }) {
+  const { store } = useMarketStore();
   return <section aria-labelledby="company-reviews">
     <div className={styles.sectionHeading}><h2 id="company-reviews" className="detail-section-title">შეფასებები</h2><span>მხოლოდ დასრულებული გარიგებებიდან</span></div>
     {resource.error ? <EmptyState role="alert" icon="circle-alert" title="შეფასებები ვერ ჩაიტვირთა" text="სცადეთ ხელახლა." action={<Button variant="secondary" onClick={resource.reload}>ხელახლა ცდა</Button>}/> : !resource.data ? <ListSkeleton compact label="შეფასებები იტვირთება…"/> : resource.data.total === 0 ? <EmptyState icon="star" title="შეფასებები ჯერ არ არის" text="შეფასებები დასრულებული გარიგებების შემდეგ გამოჩნდება."/> :
@@ -34,6 +36,7 @@ export function CompanyReviews({ resource }: { resource: ReturnType<typeof useCo
           <div className={styles.reviewHeading}><strong>{review.author}</strong><span className={styles.stars} role="img" aria-label={`${review.rating} ქულა 5-დან`}>{Array.from({ length: 5 }, (_, i) => <Icon key={i} name="star" className={i < review.rating ? styles.filledStar : undefined}/>)}</span></div>
           <time dateTime={review.updated_at}>{dateShort(review.updated_at)}</time>
           <p>{review.body}</p>
+          {store?.currentUser()?.id !== review.author_id ? <ReportButton kind="review" targetId={review.id}/> : null}
         </div>
       </li>)}</ul>}
   </section>;

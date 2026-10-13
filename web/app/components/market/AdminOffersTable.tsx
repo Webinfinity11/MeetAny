@@ -7,12 +7,12 @@ import styles from "./admin.module.css";
 
 export type AdminOffer = {
   id: string; request_id: string; company_id: string; body: string; price: number | string | null;
-  price_type: string | null; status: "sent" | "chosen" | "declined"; created_at: string;
+  price_type: string | null; status: "sent" | "chosen" | "declined" | "withdrawn"; created_at: string;
   company_name: string | null; request_title: string | null; request_hidden: boolean;
   vat_included?: boolean | null; delivery_days?: number | null; delivery_included?: boolean | null; payment_terms?: string | null;
   valid_until?: string | null; commercial_terms?: string[] | null; expired?: boolean; deal_id?: string | null;
 };
-export const offerStatuses: Record<string, string> = { sent: "გაგზავნილი", chosen: "არჩეული", declined: "არ შეირჩა" };
+export const offerStatuses: Record<string, string> = { sent: "გაგზავნილი", chosen: "არჩეული", declined: "არ შეირჩა", withdrawn: "გაუქმებული" };
 /** "1 920 ₾" for the whole offer, "120 ₾ / ერთეული" per unit; no price is "შეთანხმებით". */
 export const offerPrice = (offer: Pick<AdminOffer, "price" | "price_type">) =>
   offer.price == null ? "შეთანხმებით" : `${adminMoney(offer.price)}${offer.price_type === "unit" ? " / ერთეული" : offer.price_type === "from" ? "-დან" : ""}`;

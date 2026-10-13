@@ -1,4 +1,5 @@
 "use client";
+import { AdminIssueComment } from "./AdminIssueComment";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Sheet } from "../ui/Sheet";
@@ -65,9 +66,11 @@ export function AdminDealDetail({ store, id, revision, onClose, onOpen, onAction
         <small>{party(issue.actor_id)} · {adminDateTime(issue.created_at)}</small>
         <p className={styles.listText}>{issue.body}</p>
         {issue.resolution ? <p className={styles.listText}>შედეგი: {issue.resolution}</p> : null}
+        <AdminIssueComment store={store} issueId={issue.id} onSaved={() => setRetry(n => n + 1)}/>
         {issue.status === "open" ? <Button variant="secondary" size="sm" onClick={() => onAction({ kind: "issues", action: "resolveIssue", id: issue.id, label: `${row?.request_title || "გარიგება"} · ${issueReasons[issue.reason] || ""}`,
           choice: { label: "შედეგი", options: Object.entries(issueOutcomes).filter(([value]) => value !== "cancelled" || deal.stage !== "complete") } })}>განხილვის დასრულება…</Button> : null}
       </li>)}</ul><FileAttachments store={store} kind="issue" target={deal.id} label="პრობლემის ფაილები" /></section> : null}
+      {deal.updates?.filter(u => u.status === "admin_comment").map(u => <section key={u.id}><h4>ადმინისტრაციის კომენტარი</h4><p className={styles.detailText}>{u.body}</p></section>)}
       {deal.rating != null ? <section className={styles.detailList}><h4>შეფასება <span>{deal.rating}/5</span></h4>
         {deal.review_details?.scores?.length ? <p className={styles.note}>{deal.review_details.scores.map((score, i) => `${criteria[i] || ""} ${score}`).join(" · ")}{deal.review_details.would_again ? " · კვლავ ითანამშრომლებს" : ""}</p> : null}
         {deal.review ? <p className={styles.detailText}>{deal.review}</p> : null}

@@ -2,7 +2,7 @@
 import {ActionMenu,type ActionMenuItem} from '../ui/ActionMenu';
 import {companyStatus} from '../../lib/admin-helpers';
 import styles from './admin-status.module.css';
-type User={id:string;role:string;company?:string;name:string;verified:boolean;blocked:boolean;blockedReason?:string;blocked_reason?:string;verification_documents_status?:string};
+type User={catalog_hidden?:boolean;id:string;role:string;company?:string;name:string;verified:boolean;blocked:boolean;blockedReason?:string;blocked_reason?:string;verification_documents_status?:string};
 type Action={kind:'users';action:string;id:string;label:string};
 /** One chip: the verification state for companies (from the documents status), access for everyone else. */
 export function AdminUserStatus({user,onAction}:{user:User;onAction:(action:Action)=>void}){
@@ -11,6 +11,7 @@ export function AdminUserStatus({user,onAction}:{user:User;onAction:(action:Acti
  const reason=user.blockedReason||user.blocked_reason;
  const action=(key:string)=>()=>onAction({kind:'users',action:key,id,label:name});
  const items:ActionMenuItem[]=[];
+ if(role==='company')items.push({id:'catalog',label:user.catalog_hidden?'კატალოგში დაბრუნება…':'კატალოგიდან დამალვა…',onSelect:action(user.catalog_hidden?'showCompany':'hideCompany')});
  if(role==='company'&&!blocked){
   if(verified)items.push({id:'unverify',label:'ვერიფიკაციის მოხსნა',danger:true,onSelect:action('unverify')});
   else if(user.verification_documents_status==='pending')items.push({id:'approve',label:'დოკუმენტების დადასტურება',onSelect:action('approveDocs')},{id:'return',label:'დოკუმენტების დაბრუნება',onSelect:action('returnDocs')});

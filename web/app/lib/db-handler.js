@@ -15,6 +15,7 @@ import { marketBootstrap } from './market-bootstrap.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
+  'admin_set_role', 'admin_anonymize_user', 'admin_set_company_hidden', 'admin_edit_offer', 'admin_comment_deal_issue',
   'verification_record','verification_requirements','rate_deal_full','create_request_full','reject_deal_proposal','complete_onboarding','review_verification',
   'become_company','list_attachments','remove_attachment','bind_draft_files','submit_verification','set_request_preferences','request_preferences','list_matching_feed','add_deal_update','open_deal_issue','admin_deal_issues','admin_resolve_deal_issue',
   'admin_edit_profile','admin_edit_request','admin_company_settings','admin_manage_plan','site_content','admin_save_site_content',
@@ -51,6 +52,7 @@ const RPCS = new Set([
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
 const PUBLIC_WRITES = new Set([
+  'admin_set_role', 'admin_anonymize_user', 'admin_set_company_hidden', 'admin_edit_offer',
   'create_request_full','review_verification','become_company','set_request_preferences',
   'admin_edit_profile','admin_edit_request','admin_manage_plan','admin_save_site_content','save_company_review','admin_moderate_review','admin_resolve_plan',
   'set_my_distribution','set_my_products',
