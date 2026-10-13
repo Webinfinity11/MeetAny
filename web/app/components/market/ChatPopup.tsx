@@ -168,6 +168,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
   const isCompany = peer?.role === "company" || otherId === (conversation?.companyId || target.companyId);
   const requestId = conversation?.requestId || (conversation?.contextKey && conversation.contextKey !== "general" ? conversation.contextKey : null) || target.requestId;
   const [now] = useState(() => Date.now());
+  const lastSent = messages.findLast(message => message.senderId === owner);
   useEffect(() => {
     if (atBottom.current && scroll.current) scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [messages]);
@@ -184,6 +185,7 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
     <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყეთ საუბარი</h3><p>მოიკითხეთ დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : <ChatMessages messages={messages} owner={owner} name={name} now={now}/>}
     </div>
+    {lastSent ? <small className="ma-note" role="status">ბოლო შეტყობინება · {lastSent.readAt ? "წაკითხულია" : "გაგზავნილია"}</small> : null}
     {failed ? <div className="ma-chat__retry"><span>განახლება ვერ მოხერხდა.</span><button className="ma-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
     {conversation && visible ? <SharedFiles store={store} target={conversation.id}/> : null}
     <form className="ma-chat__composer" onSubmit={e => { e.preventDefault(); void send(); }}>

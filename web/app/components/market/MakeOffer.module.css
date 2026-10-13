@@ -61,3 +61,12 @@
 .offerCount { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-4) var(--space-5); border: var(--space-hairline) solid var(--border); border-radius: var(--card-radius); background: var(--white); font-size: var(--fs-sm); color: var(--ink-700); }
 .offerCount svg { flex: none; color: var(--ink-500); }
 .breadcrumbs a{display:inline-flex;align-items:center;min-height:var(--tap-min)}
+
+.requestSummary{padding:var(--space-4);margin:var(--space-5) 0;border:var(--space-hairline) solid var(--border);border-radius:var(--card-radius);background:var(--ink-50);font-size:var(--fs-sm);line-height:var(--lh-sm)}
+.requestSummary summary{cursor:pointer;font-weight:var(--fw-semibold);min-height:var(--tap-min);overflow-wrap:anywhere}
+.requestSummary dl{display:flex;flex-wrap:wrap;gap:var(--space-4);margin:var(--space-3) 0}.requestSummary dt{color:var(--text-3)}.requestSummary dd{margin:0}
+.requestSummary a{display:inline-flex;align-items:center;min-height:var(--tap-min)}
+.sendSummary{font-size:var(--fs-sm);line-height:var(--lh-sm);overflow-wrap:anywhere;margin:0;flex-basis:100%}
+.chips button[aria-pressed="true"]{background:var(--ink-100);border-color:var(--ink-600);color:var(--ink-950)}
+.summary{order:0}
+.form :global(.ma-form-bar){flex-direction:row;flex-wrap:wrap;min-width:0}.form :global(.ma-form-bar) .actions{width:100%;padding:0;border:0}

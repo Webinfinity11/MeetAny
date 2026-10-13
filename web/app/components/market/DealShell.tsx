@@ -24,7 +24,7 @@ export function DealStepper({ deal }: { deal: Deal }) {
     <ol>{stages.map((stage, i) => <li key={stage} data-current={i === current && !done(i)} data-done={done(i)} aria-current={i === current ? "step" : undefined}><span className={styles.stepNumber}>{done(i) ? <Icon name="check"/> : i + 1}</span><span>{dealStageLabel(stage)}<small>{done(i) ? dealDate(dates[i]) : i === current ? "მიმდინარე" : "მოლოდინში"}</small></span></li>)}</ol>
   </nav>;
 }
-export function DealShell({ deal, requestTitle, partner, actions, summary, children, aside }: { deal: Deal; requestTitle: string; partner: string; actions: ReactNode; summary?: ReactNode; children: ReactNode; aside: ReactNode }) {
+export function DealShell({ deal, requestTitle, partner, actions, summary, children, aside, waiting }: { deal: Deal; requestTitle: string; partner: string; actions: ReactNode; summary?: ReactNode; children: ReactNode; aside: ReactNode; waiting?: string }) {
   const leads: Record<string, string> = {
     selected: `პარტნიორის კონტაქტი გაიხსნა: ${partner}. დააზუსტეთ დეტალები ჩატში ან დაუკავშირდით პირდაპირ.`,
     discuss: "შეათანხმეთ ფასი, ვადა და პირობები. როცა ორივე მხარე შეთანხმდება, გადადით პირობების დადასტურებაზე.",
@@ -35,7 +35,7 @@ export function DealShell({ deal, requestTitle, partner, actions, summary, child
   };
   return <div className={styles.page}>
     <Link href="/account/?tab=deals" className={styles.back}><Icon name="chevron-left"/>გარიგებები</Link>
-    <header className={styles.header}><div><p className={styles.context}>{requestTitle} · #{deal.id.slice(0, 8).toUpperCase()}</p><h1>{dealStageLabel(deal.stage)}</h1><p>{leads[deal.stage]}</p></div>{actions ? <div className={styles.actions}>{actions}</div> : null}</header>
+    <header className={styles.header}><div><p className={styles.context}>{requestTitle} · #{deal.id.slice(0, 8).toUpperCase()}</p><h1>{dealStageLabel(deal.stage)}</h1><p>{waiting || leads[deal.stage]}</p></div>{actions ? <div className={styles.actions}>{actions}</div> : null}</header>
     <DealStepper deal={deal}/>{summary}<div className={styles.grid}><div className={styles.main}>{children}</div><aside className={styles.aside}>{aside}</aside></div>
   </div>;
 }
