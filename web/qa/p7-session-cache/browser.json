@@ -1,0 +1,63 @@
+{
+  "before": 10,
+  "after": 1,
+  "afterInvalidation": 2,
+  "invalidated": true,
+  "navigations": [
+    {
+      "path": "/",
+      "calls": 1
+    },
+    {
+      "path": "/requests/",
+      "calls": 1
+    },
+    {
+      "path": "/companies/",
+      "calls": 1
+    },
+    {
+      "path": "/how-it-works/",
+      "calls": 1
+    },
+    {
+      "path": "/terms/",
+      "calls": 1
+    },
+    {
+      "path": "/requests/view/?id=",
+      "calls": 1
+    },
+    {
+      "path": "/companies/view/?id=",
+      "calls": 1
+    },
+    {
+      "path": "/requests/",
+      "calls": 1
+    },
+    {
+      "path": "/",
+      "calls": 1
+    },
+    {
+      "path": "/companies/",
+      "calls": 1
+    }
+  ],
+  "widths": [
+    {
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "overflow": 0
+    }
+  ],
+  "pageerrors": []
+}

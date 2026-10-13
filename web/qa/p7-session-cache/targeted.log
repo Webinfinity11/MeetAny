@@ -1,0 +1,204 @@
+TAP version 13
+# (node:22326) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/CB53A3E7-93FB-4A0C-B301-9881F8219786/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/CB53A3E7-93FB-4A0C-B301-9881F8219786/workspace/checkout/web/package.json.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: guest bootstrap needs no anonymous token and no dependent catalog requests
+ok 1 - guest bootstrap needs no anonymous token and no dependent catalog requests
+  ---
+  duration_ms: 98.969625
+  type: 'test'
+  ...
+# Subtest: failed first session/bootstrap read exposes a recoverable state even with a public seed
+ok 2 - failed first session/bootstrap read exposes a recoverable state even with a public seed
+  ---
+  duration_ms: 1.563333
+  type: 'test'
+  ...
+# Subtest: a valid session without a market profile finishes loading and requests profile completion
+ok 3 - a valid session without a market profile finishes loading and requests profile completion
+  ---
+  duration_ms: 4.155333
+  type: 'test'
+  ...
+# Subtest: logout clears private data even when an old signed-in response arrives and guest refresh fails
+ok 4 - logout clears private data even when an old signed-in response arrives and guest refresh fails
+  ---
+  duration_ms: 7.203166
+  type: 'test'
+  ...
+# Subtest: registration completes with session email when JWT omits email, without a second form
+ok 5 - registration completes with session email when JWT omits email, without a second form
+  ---
+  duration_ms: 4.780166
+  type: 'test'
+  ...
+# Subtest: profile conflict retains submitted fields and retry completes existing account
+ok 6 - profile conflict retains submitted fields and retry completes existing account
+  ---
+  duration_ms: 5.954458
+  type: 'test'
+  ...
+# Subtest: reload resumes a submitted profile without storing or asking for the password
+ok 7 - reload resumes a submitted profile without storing or asking for the password
+  ---
+  duration_ms: 29.692875
+  type: 'test'
+  ...
+# Subtest: registration ignores a guest session response started before sign-up
+ok 8 - registration ignores a guest session response started before sign-up
+  ---
+  duration_ms: 2.95225
+  type: 'test'
+  ...
+# Subtest: email verification keeps the code screen during a concurrent unfinished-profile refresh
+ok 9 - email verification keeps the code screen during a concurrent unfinished-profile refresh
+  ---
+  duration_ms: 5.149875
+  type: 'test'
+  ...
+# Subtest: early session response is consumed once without a second Auth request
+ok 10 - early session response is consumed once without a second Auth request
+  ---
+  duration_ms: 6.705292
+  type: 'test'
+  ...
+# Subtest: failed early session read falls back to the normal session check
+ok 11 - failed early session read falls back to the normal session check
+  ---
+  duration_ms: 20.231417
+  type: 'test'
+  ...
+# Subtest: timed-out early session read does not repeat the hung request and can be retried
+ok 12 - timed-out early session read does not repeat the hung request and can be retried
+  ---
+  duration_ms: 2.324708
+  type: 'test'
+  ...
+# Subtest: registration supersedes an early guest session read still in flight
+ok 13 - registration supersedes an early guest session read still in flight
+  ---
+  duration_ms: 14.699583
+  type: 'test'
+  ...
+# (node:22327) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/CB53A3E7-93FB-4A0C-B301-9881F8219786/workspace/checkout/web/app/lib/auth-session-preload.js is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/CB53A3E7-93FB-4A0C-B301-9881F8219786/workspace/checkout/web/package.json.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: ten page loads reuse persisted session, memory and JWT until exp minus 60 seconds
+ok 14 - ten page loads reuse persisted session, memory and JWT until exp minus 60 seconds
+  ---
+  duration_ms: 174.447334
+  type: 'test'
+  ...
+# Subtest: logout clears persistence, pending preload and notifies another tab
+ok 15 - logout clears persistence, pending preload and notifies another tab
+  ---
+  duration_ms: 5.50075
+  type: 'test'
+  ...
+# Subtest: 429 uses still-valid JWT during safety minute and retries exactly once after 30 seconds
+ok 16 - 429 uses still-valid JWT during safety minute and retries exactly once after 30 seconds
+  ---
+  duration_ms: 11.7925
+  type: 'test'
+  ...
+# Subtest: 429 without usable cache has Georgian message and one successful delayed retry
+ok 17 - 429 without usable cache has Georgian message and one successful delayed retry
+  ---
+  duration_ms: 3.550625
+  type: 'test'
+  ...
+# Subtest: logout while get-session is pending prevents old session repopulation
+ok 18 - logout while get-session is pending prevents old session repopulation
+  ---
+  duration_ms: 0.94525
+  type: 'test'
+  ...
+# Subtest: generated preload uses persisted session and only fetches bootstrap
+ok 19 - generated preload uses persisted session and only fetches bootstrap
+  ---
+  duration_ms: 4.446458
+  type: 'test'
+  ...
+# Subtest: expired JWT is removed and never used as a 429 fallback
+ok 20 - expired JWT is removed and never used as a 429 fallback
+  ---
+  duration_ms: 1.949166
+  type: 'test'
+  ...
+# Subtest: a missed cross-tab invalidation is detected on the next page load
+ok 21 - a missed cross-tab invalidation is detected on the next page load
+  ---
+  duration_ms: 0.906958
+  type: 'test'
+  ...
+# Subtest: Data API 401 invalidates persisted session and obtains one replacement JWT
+ok 22 - Data API 401 invalidates persisted session and obtains one replacement JWT
+  ---
+  duration_ms: 69.665
+  type: 'test'
+  ...
+# Subtest: ten guest page loads reuse persisted null user for five minutes
+ok 23 - ten guest page loads reuse persisted null user for five minutes
+  ---
+  duration_ms: 1.896875
+  type: 'test'
+  ...
+# Subtest: same-tab sign-in invalidation removes guest cache
+ok 24 - same-tab sign-in invalidation removes guest cache
+  ---
+  duration_ms: 1.347333
+  type: 'test'
+  ...
+# Subtest: cross-tab sign-in event removes guest cache and notifies subscribers
+ok 25 - cross-tab sign-in event removes guest cache and notifies subscribers
+  ---
+  duration_ms: 30.180125
+  type: 'test'
+  ...
+# Subtest: guest cache rejects a missed generation change or a different endpoint
+ok 26 - guest cache rejects a missed generation change or a different endpoint
+  ---
+  duration_ms: 3.345459
+  type: 'test'
+  ...
+# Subtest: generated guest preload fetches bootstrap exactly once without get-session
+ok 27 - generated guest preload fetches bootstrap exactly once without get-session
+  ---
+  duration_ms: 5.890667
+  type: 'test'
+  ...
+# Subtest: expired guest never bridges a 429 and reports the Georgian error
+ok 28 - expired guest never bridges a 429 and reports the Georgian error
+  ---
+  duration_ms: 0.823833
+  type: 'test'
+  ...
+# Subtest: late guest write in the same generation preserves signed-in user
+ok 29 - late guest write in the same generation preserves signed-in user
+  ---
+  duration_ms: 0.792833
+  type: 'test'
+  ...
+# Subtest: guest request started before sign-in cannot replace the new user cache
+ok 30 - guest request started before sign-in cannot replace the new user cache
+  ---
+  duration_ms: 0.451667
+  type: 'test'
+  ...
+# Subtest: successful JSON null becomes a canonical guest response and persists across pages
+ok 31 - successful JSON null becomes a canonical guest response and persists across pages
+  ---
+  duration_ms: 2.227833
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 609.090833

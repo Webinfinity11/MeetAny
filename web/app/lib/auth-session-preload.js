@@ -1,5 +1,6 @@
 export const SESSION_HINT_KEY = 'meetany.session';
 export const SESSION_CACHE_KEY = 'meetany.session.v1';
+export const GUEST_SESSION_TTL = 300000;
 // Self-contained so the early inline script and hydrated store use exactly the same cache.
 export function createSessionCache(env, endpoint) {
   const key = 'meetany.session.v1', syncKey = key + '.revision';
@@ -11,13 +12,20 @@ export function createSessionCache(env, endpoint) {
   function read(margin = 60000) {
     let value = memory;
     if (!value) { try { value = JSON.parse(get('sessionStorage', key)); } catch {} }
-    if (!value || value.endpoint !== endpoint || value.generation !== get('localStorage', syncKey) || !value.data?.user || exp(value) <= Date.now() + margin) { remove(); return null; }
+    if (!value || value.endpoint !== endpoint || value.generation !== get('localStorage', syncKey) || (value.guest ? !(value.until > Date.now()) : !value.data?.user || exp(value) <= Date.now() + margin)) { remove(); return null; }
     memory = value;
     return value;
   }
   function write(value) {
-    if (!value?.data?.user || exp(value) <= Date.now() + 60000) return;
-    memory = { ...value, endpoint, generation: get('localStorage', syncKey) };
+    if (!value?.data) return;
+    if (!value.data.user) {
+      // A late guest response must not replace a valid signed-in session.
+      if (read(0)?.data?.user) return;
+      memory = { guest: true, until: Date.now() + 300000, endpoint, generation: get('localStorage', syncKey), data: { user: null, session: null }, jwt: null };
+    } else {
+      if (exp(value) <= Date.now() + 60000) return;
+      memory = { ...value, endpoint, generation: get('localStorage', syncKey) };
+    }
     try { env.sessionStorage.setItem(key, JSON.stringify(memory)); } catch {}
   }
   function invalidate(broadcast = false) {
@@ -57,7 +65,7 @@ export function createSessionCache(env, endpoint) {
       }
       const data = await response.json().catch(() => null);
       if (!response.ok) throw Object.assign(new Error(data?.message || 'Auth request failed'), { status: response.status, code: data?.code });
-      const value = { data, jwt: response.headers.get('set-auth-jwt') };
+      const value = data?.user ? { data, jwt: response.headers.get('set-auth-jwt') } : { data: { user: null, session: null }, jwt: null };
       if (version === revision) { bridge = null; write(value); }
       return value;
     };
