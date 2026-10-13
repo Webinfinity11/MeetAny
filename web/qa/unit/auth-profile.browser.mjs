@@ -37,7 +37,7 @@ try {
  await p.goto(origin+'/account/?role=company&next=/offers/new/?requestId=x');await p.locator('#login-email').waitFor();await shot('role-company-login',390);
  await p.goto(origin+'/account/?intent=offer&context='+encodeURIComponent('სატესტო მოთხოვნის სათაური')+'&next=/offers/new/?requestId=x');await p.locator('#login-email').waitFor();
  assert.equal(await p.locator('#auth-title').innerText(),'შედით, რომ გაგზავნოთ შეთავაზება');await shot('offer-context-login',390);
- await p.locator('.auth-registration').getByRole('button',{name:'კომპანიის რეგისტრაცია',exact:true}).click();await p.locator('#reg-company').waitFor();assert(new URL(p.url()).searchParams.get('next'));
+ await p.locator('.auth-registration').getByRole('button',{name:'დაარეგისტრირეთ კომპანია',exact:true}).click();await p.locator('#reg-company').waitFor();assert(new URL(p.url()).searchParams.get('next'));
  console.log('PASS registration validation, role retention, login mode, offer context');
  }
  if(process.env.PROFILE_ONLY) await context.request.post('http://localhost:4407/sign-in/email',{data:{email:ledger.accounts.owner_company.email,password:'local-test-only'}});
@@ -48,17 +48,17 @@ try {
  for(const width of [1440,390,360]){await p.evaluate(()=>scrollTo(0,0));await shot('profile',width);const box=await p.locator('.ma-form-bar').boundingBox();assert(box.y+box.height<=901,'save bar in viewport');}
  const before=writes;await p.locator('.ma-form-bar button').click();assert.equal(writes,before,'unchanged profile makes no write');
  await p.locator('#about').fill(original+' QA');await p.locator('.company-profile-sections').getByRole('link',{name:'პროდუქტები',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor();await shot('unsaved-sheet',390,false);
- await p.locator('#profile-unsaved').getByRole('button',{name:'დარჩენა',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor({state:'hidden'});assert.equal(await p.locator('#about').inputValue(),original+' QA');
- await p.getByRole('navigation',{name:'ანგარიშის განყოფილებები'}).getByRole('link',{name:'დაფა',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor();await p.locator('#profile-unsaved').getByRole('button',{name:'უარყოფა',exact:true}).click();await p.locator('#about').waitFor({state:'hidden'});
+ await p.locator('#profile-unsaved').getByRole('button',{name:'დარჩით',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor({state:'hidden'});assert.equal(await p.locator('#about').inputValue(),original+' QA');
+ await p.getByRole('navigation',{name:'ანგარიშის განყოფილებები'}).getByRole('link',{name:'დაფა',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor();await p.locator('#profile-unsaved').getByRole('button',{name:'უარყავით',exact:true}).click();await p.locator('#about').waitFor({state:'hidden'});
  await p.goto(origin+'/account/?tab=profile');await p.locator('#about').waitFor();assert.equal(await p.locator('#about').inputValue(),original);
  await p.locator('#about').fill(original+' QA');await p.locator('.ma-form-bar button').click();await p.getByRole('status').filter({hasText:'შენახულია'}).first().waitFor();await shot('profile-saved',390);
- await p.locator('#about').fill(original);await p.locator('.company-profile-sections').getByRole('link',{name:'იურიდიული მონაცემები',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor();await p.locator('#profile-unsaved').getByRole('button',{name:'შენახვა',exact:true}).click();await p.locator('#legal-legal_name').waitFor();
+ await p.locator('#about').fill(original);await p.locator('.company-profile-sections').getByRole('link',{name:'იურიდიული მონაცემები',exact:true}).click();await p.locator('#profile-unsaved[open]').waitFor();await p.locator('#profile-unsaved').getByRole('button',{name:'შეინახეთ',exact:true}).click();await p.locator('#legal-legal_name').waitFor();
  for(const width of [1440,390,360]) await shot('legal',width);
  const position=originalPosition=await p.locator('#legal-contact_position').inputValue();await p.locator('#legal-contact_position').fill(position+' QA');await p.locator('.ma-form-bar button').click();await p.getByRole('status').filter({hasText:'შენახულია'}).first().waitFor();await p.locator('#legal-contact_position').fill(position);await p.locator('.ma-form-bar button').click();await p.getByRole('status').filter({hasText:'შენახულია'}).first().waitFor();
  await p.locator('.company-profile-sections').getByRole('link',{name:'დოკუმენტები',exact:true}).click();await p.getByRole('heading',{name:'რეგისტრაციის ამონაწერი',exact:true}).waitFor();await shot('documents',390);
- await p.locator('.company-profile-sections').getByRole('link',{name:'მონაცემები და ფოტოები',exact:true}).click();await p.locator('#about').waitFor();await p.getByRole('button',{name:'კონტაქტის შეცვლა',exact:true}).click();await p.locator('#contact-email').waitFor();await shot('contact-sheet',390,false);
- await p.locator('#contact-email').fill(marker+'@meetany.local');await p.getByRole('button',{name:'მოთხოვნის გაგზავნა',exact:true}).click();await p.getByRole('status').filter({hasText:'მოთხოვნა გაგზავნილია'}).waitFor();
- await p.getByRole('button',{name:'კონტაქტის შეცვლა',exact:true}).click();await p.locator('#contact-email').fill('e2e-contact-again@meetany.local');await p.getByRole('button',{name:'მოთხოვნის გაგზავნა',exact:true}).click();await p.getByRole('alert').filter({hasText:'მოთხოვნა უკვე გაგზავნილია'}).waitFor();await shot('contact-duplicate',390,false);
+ await p.locator('.company-profile-sections').getByRole('link',{name:'მონაცემები და ფოტოები',exact:true}).click();await p.locator('#about').waitFor();await p.getByRole('button',{name:'შეცვალეთ კონტაქტი',exact:true}).click();await p.locator('#contact-email').waitFor();await shot('contact-sheet',390,false);
+ await p.locator('#contact-email').fill(marker+'@meetany.local');await p.getByRole('button',{name:'გაგზავნეთ მოთხოვნა',exact:true}).click();await p.getByRole('status').filter({hasText:'მოთხოვნა გაგზავნილია'}).waitFor();
+ await p.getByRole('button',{name:'შეცვალეთ კონტაქტი',exact:true}).click();await p.locator('#contact-email').fill('e2e-contact-again@meetany.local');await p.getByRole('button',{name:'გაგზავნეთ მოთხოვნა',exact:true}).click();await p.getByRole('alert').filter({hasText:'მოთხოვნა უკვე გაგზავნილია'}).waitFor();await shot('contact-duplicate',390,false);
  assert.deepEqual(errors,[]);console.log('PASS profile guard stay/discard/save, no-op, legal save, documents, contact request/duplicate');
 } finally {
  await browser.close();

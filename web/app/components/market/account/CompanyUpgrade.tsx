@@ -41,14 +41,14 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
   }
   return <section className={`account-section ${styles.panel}`} id="company-upgrade" aria-labelledby="company-upgrade-title">
     <div className={styles.intro}><span className={styles.icon} aria-hidden="true"><Icon name="building-2"/></span><div><h2 className="account-section__title" id="company-upgrade-title">კომპანიის პროფილი</h2><p>ამავე ანგარიშით გაყიდეთ პროდუქტები და მომსახურება — მოთხოვნები, გარიგებები და მიმოწერები შენარჩუნდება.</p></div></div>
-    {!open ? <Button className={styles.action} variant="secondary" aria-expanded={false} aria-controls="company-upgrade-form" onClick={() => setOpen(true)}><Icon name="plus"/>კომპანიის პროფილის დამატება</Button> : <form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
+    {!open ? <Button className={styles.action} variant="secondary" aria-expanded={false} aria-controls="company-upgrade-form" onClick={() => setOpen(true)}><Icon name="plus"/>დაამატეთ კომპანიის პროფილი</Button> : <form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
       <fieldset className={styles.fields} disabled={busy}>
         <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-company">კომპანიის დასახელება *</label><input className="ma-input" autoComplete="organization" maxLength={120} value={company} onChange={event => { setCompany(event.target.value); fields.clear('upgrade-company'); }} {...fields.control('upgrade-company')}/>{fields.message('upgrade-company')}</div>
         <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-industry">დარგი *</label><CategoryChips id="upgrade-industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ''); fields.clear('upgrade-industry');}}/>{fields.message('upgrade-industry')}</div>
       </fieldset>
       {error && <p className="ma-field__error" role="alert">{error}</p>}
       <p className={styles.next}>შემდეგ ნაბიჯზე აირჩევთ, რისთვის გამოიყენებთ MeetAny-ს.</p>
-      <div className={styles.actions}><Button type="submit" loading={busy}>კომპანიის პროფილის შექმნა</Button><Button variant="ghost" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>დაბრუნება</Button></div>
+      <div className={styles.actions}><Button type="submit" loading={busy}>გააგრძელეთ</Button><Button variant="ghost" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>დაბრუნდით</Button></div>
     </form>}
   </section>;
 }

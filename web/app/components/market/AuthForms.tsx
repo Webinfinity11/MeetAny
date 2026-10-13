@@ -27,7 +27,7 @@ export function PasswordInput({ value, onChange, autoComplete, disabled, field }
     <div className="auth-password auth-input-icon">
       <Icon name="lock-keyhole" />
       <input className="ma-input" type={shown ? "text" : "password"} autoComplete={autoComplete} disabled={disabled} value={value} onChange={(e) => onChange(e.target.value)} {...field} />
-      <button type="button" className="auth-password__toggle" aria-pressed={shown} aria-label={shown ? "პაროლის დამალვა" : "პაროლის ჩვენება"} disabled={disabled} onClick={() => setShown((v) => !v)}>
+      <button type="button" className="auth-password__toggle" aria-pressed={shown} aria-label={shown ? "დამალეთ პაროლი" : "აჩვენეთ პაროლი"} disabled={disabled} onClick={() => setShown((v) => !v)}>
         <Icon name={shown ? "eye-off" : "eye"} />
       </button>
     </div>
@@ -91,12 +91,12 @@ export function LoginForm({ onReset, onSuccess }: { onReset: () => void; onSucce
         </label>
         <PasswordInput autoComplete="current-password" value={password} onChange={(value) => {setPassword(value); v.clear("login-password");}} field={v.control("login-password")} />
         {v.message("login-password")}
-        <button type="button" className="auth-link auth-forgot" onClick={onReset}>დაგავიწყდათ?</button>
+        <button type="button" className="auth-link auth-forgot" onClick={onReset}>აღადგინეთ პაროლი</button>
       </div>
       <div className="auth-submit">
         <FormAlert error={error} />
         <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>
-          {pending ? "შესვლა…" : "შესვლა"}
+          {pending ? "მიმდინარეობს შესვლა…" : "შედით"}
         </Button>
       </div>
     </form>
@@ -105,7 +105,7 @@ export function LoginForm({ onReset, onSuccess }: { onReset: () => void; onSucce
 
 // Seed controlled fields from the parent’s loaded store on the first render.
 // A separate hook starts undefined and loses pending details when this form remounts.
-function RegisterForm({ initialRole, store }: { initialRole: string; store: Store }) {
+function RegisterForm({ initialRole, store, onSubmitted }: { initialRole: string; store: Store; onSubmitted?: () => void }) {
   const router = useRouter();
   const next = safeNext(useSearchParams().get("next"));
   const profileRequired = !!store?.needsProfile();
@@ -148,6 +148,7 @@ function RegisterForm({ initialRole, store }: { initialRole: string; store: Stor
     setPending(true);
     try {
       await store.register({ role, name, company: role === "company" ? company : "", phone, email: email.trim(), city, industry, password, acceptTerms });
+      onSubmitted?.();
       if (store.currentUser()) trackRegistration(role, "profile_created");
       else if (store.pendingEmail()) trackRegistration(role, "email_pending");
       // Publish the new session before navigating: auth listeners may rerender this form away.
@@ -260,7 +261,7 @@ function RegisterForm({ initialRole, store }: { initialRole: string; store: Stor
       <div className="auth-submit">
         <FormAlert error={error} />
         <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>
-          {pending ? "იქმნება…" : profileRequired ? "რეგისტრაციის დასრულება" : "ანგარიშის შექმნა"}
+          {pending ? "იქმნება…" : profileRequired ? "დაასრულეთ რეგისტრაცია" : "დარეგისტრირდით"}
         </Button>
       </div>
     </form>
@@ -272,6 +273,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   const {store} = useMarketStore();
   const mode: Mode = authMode(searchParams.get("tab"));
   const [, refresh] = useState(0);
+  const [editingEmail, setEditingEmail] = useState(false);
   useEffect(() => {
     const update = () => refresh(n => n + 1);
     window.addEventListener("meetany:auth", update);
@@ -287,7 +289,7 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   const loginCopy = authLoginCopy(searchParams.get("intent"), searchParams.get("context"), searchParams.get("next"));
   const subtitle = mode === "register" ? "აირჩიეთ ანგარიშის ტიპი და შეავსეთ მონაცემები." : mode === "reset" ? "მიიღეთ კოდი ელფოსტაზე და დააყენეთ ახალი პაროლი." : loginCopy.lead;
   const page = (title: string, body: React.ReactNode, lead = subtitle) => (
-    <div className={`ma-page auth-page${(mode === "register" && !store?.pendingEmail()) || store?.needsProfile() ? " auth-page--register" : ""}`}>
+    <div className={`ma-page auth-page${(mode === "register" && (!store?.pendingEmail() || editingEmail)) || store?.needsProfile() ? " auth-page--register" : ""}`}>
       <div className="auth-shell">
         <section className="auth-card" aria-labelledby="auth-title">
           <h1 id="auth-title" className="auth-title">{title}</h1>
@@ -297,22 +299,22 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
       </div>
     </div>
   );
-  if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანეთ ელფოსტაზე მიღებული კოდი.");
+  if (store?.pendingEmail() && !editingEmail) return page("ელფოსტის დადასტურება", <RecoveryForm verification onChangeEmail={() => {setEditingEmail(true); switchMode("register");}} onDone={() => refresh(n => n + 1)} />, "შეიყვანეთ ელფოსტაზე მიღებული კოდი.");
   if (store?.needsProfile()) return page("რეგისტრაციის დასრულება", <RegisterForm key={store.pendingProfile()?.email || "complete"} initialRole={initialRole} store={store}/>, "შეამოწმეთ მონაცემები და დაასრულეთ რეგისტრაცია.");
   return page(mode === "register" ? "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : loginCopy.title, <>
-    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : store ? <RegisterForm initialRole={registrationRole} store={store} /> : null}
+    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : store ? <RegisterForm initialRole={registrationRole} store={store} onSubmitted={() => setEditingEmail(false)} /> : null}
     {mode !== "reset" && <div className="auth-registration">
       {mode === "login" ? <>
-        <p>ჯერ არ გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("register", "client")}>რეგისტრაცია</button></p>
-        <p>კომპანია არ გაქვთ? <button type="button" onClick={() => switchMode("register", "company")}>კომპანიის რეგისტრაცია</button></p>
+        <p>ჯერ არ გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("register", "client")}>დარეგისტრირდით</button></p>
+        <p>კომპანია არ გაქვთ? <button type="button" onClick={() => switchMode("register", "company")}>დაარეგისტრირეთ კომპანია</button></p>
       </> : <>
-        <p>უკვე გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("login")}>შესვლა</button></p>
+        <p>უკვე გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("login")}>შედით</button></p>
       </>}
     </div>}
   </>);
 }
 
-function RecoveryForm({ verification = false, onDone }: {verification?: boolean; onDone: () => void}) {
+function RecoveryForm({ verification = false, onDone, onChangeEmail }: {verification?: boolean; onDone: () => void; onChangeEmail?: () => void}) {
   const router = useRouter();
   const {store} = useMarketStore();
   const [email, setEmail] = useState(store?.pendingResetEmail() || "");
@@ -340,7 +342,8 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
   }
   return <form className="ma-form auth-controls" onSubmit={submit} noValidate>
     {!sent ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-email">ელფოსტა</label><div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={e => {setEmail(e.target.value); v.clear("reset-email");}} {...v.control("reset-email")}/></div>{v.message("reset-email")}</div> : <>
-      <p className="auth-hint">შეამოწმეთ ელფოსტა და შეიყვანეთ მიღებული კოდი.</p>
+      <p className="auth-hint">კოდი გაიგზავნა ელფოსტაზე: <strong>{verification ? store?.pendingEmail() : email || store?.pendingResetEmail()}</strong>. შეიყვანეთ მიღებული კოდი.</p>
+      {verification && onChangeEmail ? <button type="button" className="auth-link" disabled={pending} onClick={onChangeEmail}>შეცვალეთ ელფოსტა</button> : null}
       <div className="ma-field"><label className="ma-field__label" htmlFor="reset-code">კოდი</label><div className="auth-input-icon"><Icon name="mail" /><input className="ma-input" autoComplete="one-time-code" inputMode="numeric" value={code} onChange={e => {setCode(e.target.value); v.clear("reset-code");}} {...v.control("reset-code")}/></div>{v.message("reset-code")}</div>
       {!verification ? <div className="ma-field"><label className="ma-field__label" htmlFor="reset-password">ახალი პაროლი</label><PasswordInput autoComplete="new-password" value={password} onChange={value => {setPassword(value); v.clear("reset-password");}} field={v.control("reset-password")}/>{v.message("reset-password")}</div> : null}
       <button type="button" className="auth-link" disabled={pending} onClick={async () => {
@@ -348,13 +351,13 @@ function RecoveryForm({ verification = false, onDone }: {verification?: boolean;
         try {if (verification) await store?.resendCode(); else await store?.requestPasswordReset(email); setNotice("კოდი ხელახლა გაიგზავნა.");}
         catch(err) {setError((err as {userMessage?: string}).userMessage || "ვერ გაიგზავნა.");}
         finally {setPending(false);}
-      }}>კოდის ხელახლა გაგზავნა</button>
+      }}>ხელახლა გაგზავნეთ კოდი</button>
     </>}
     {notice ? <p className="auth-hint" role="status">{notice}</p> : null}
     <div className="auth-submit">
       <FormAlert error={error || null} />
-      <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დადასტურება" : "კოდის მიღება"}</Button>
+      <Button variant="primary" className="ma-btn--block" type="submit" disabled={pending}>{pending ? "იტვირთება…" : sent ? "დაადასტურეთ" : "მიიღეთ კოდი"}</Button>
     </div>
-    {!verification ? <button type="button" className="auth-link" onClick={onDone}>შესვლაზე დაბრუნება</button> : null}
+    {!verification ? <button type="button" className="auth-link" onClick={onDone}>დაბრუნდით შესვლაზე</button> : null}
   </form>;
 }

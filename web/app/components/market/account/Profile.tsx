@@ -240,7 +240,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
         ) : null}
         <div className="ma-form-bar">
           <p className="ma-form-bar__note" role="status">{dirty ? "შეუნახავი ცვლილებები" : saved ? `შენახულია ${savedAt}` : "ცვლილებები არ არის"}</p>
-          <Button variant="primary" type="submit" loading={pending}>შენახვა</Button>
+          <Button variant="primary" type="submit" loading={pending}>შეინახეთ</Button>
         </div>
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
       </form>
@@ -300,7 +300,7 @@ export function PasswordForm() {
         </fieldset>
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
         <div className="account-form-actions">
-          <Button variant="primary" type="submit" disabled={pending}>{pending ? "ინახება…" : "პაროლის შეცვლა"}</Button>
+          <Button variant="primary" type="submit" disabled={pending}>{pending ? "ინახება…" : "შეცვალეთ პაროლი"}</Button>
         </div>
       </form>
     </section>
@@ -309,9 +309,9 @@ export function PasswordForm() {
 
 
 function UnsavedSheet({guard, pending, error, save}: {guard: ReturnType<typeof useUnsavedGuard>; pending: boolean; error: string | null; save: () => Promise<boolean>}) {
- return <ConfirmSheet id="profile-unsaved" open={guard.open} title="შეუნახავი ცვლილებები" confirmLabel="შენახვა" pendingLabel="ინახება…" cancelLabel="დარჩენა" pending={pending} error={error} onCancel={guard.stay} onConfirm={async () => {if (await save()) guard.leave();}}>
+ return <ConfirmSheet id="profile-unsaved" open={guard.open} title="შეუნახავი ცვლილებები" confirmLabel="შეინახეთ" pendingLabel="ინახება…" cancelLabel="დარჩით" pending={pending} error={error} onCancel={guard.stay} onConfirm={async () => {if (await save()) guard.leave();}}>
   <p>გასვლამდე შეინახეთ ცვლილებები ან უარყავით ისინი.</p>
-  <Button variant="ghost" disabled={pending} onClick={guard.leave}>უარყოფა</Button>
+  <Button variant="ghost" disabled={pending} onClick={guard.leave}>უარყავით</Button>
  </ConfirmSheet>;
 }
 
@@ -340,9 +340,9 @@ function ContactChange({me}: {me: AnyUser}) {
  }
  return <>
   <dl className={styles.contacts}><div><dt>ტელეფონი</dt><dd>{me.phone}</dd></div><div><dt>ელფოსტა</dt><dd>{me.email}</dd></div></dl>
-  <Button variant="secondary" aria-label="კონტაქტის შეცვლა" aria-haspopup="dialog" onClick={() => setOpen(true)}>შეცვლა</Button>
+  <Button variant="secondary" aria-label="შეცვალეთ კონტაქტი" aria-haspopup="dialog" onClick={() => setOpen(true)}>შეცვალეთ</Button>
   {sent && <p role="status">მოთხოვნა გაგზავნილია. პასუხს მიიღებთ 1–2 სამუშაო დღეში.</p>}
-  {open && createPortal(<Sheet open={open} onClose={() => {if (!pending) setOpen(false);}} title="კონტაქტის შეცვლა" footer={<Button type="submit" form="contact-change" loading={pending}>მოთხოვნის გაგზავნა</Button>}>
+  {open && createPortal(<Sheet open={open} onClose={() => {if (!pending) setOpen(false);}} title="კონტაქტის შეცვლა" footer={<Button type="submit" form="contact-change" loading={pending}>გაგზავნეთ მოთხოვნა</Button>}>
    <p>ეს ანგარიშის იდენტიფიკატორებია; ცვლილებას ადმინისტრატორი ასრულებს 1–2 სამუშაო დღეში</p>
    <form id="contact-change" className="ma-form" onSubmit={send} noValidate>
     <div className="ma-field"><label className="ma-field__label" htmlFor="contact-phone">ახალი ტელეფონი</label><input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={e => {setPhone(e.target.value); fields.clear('contact-phone');}} {...fields.control('contact-phone')}/>{fields.message('contact-phone')}</div>
@@ -405,7 +405,7 @@ function LegalProfile() {
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-year">დაარსების წელი</label><input className="ma-input" type="number" min={1800} max={new Date().getFullYear()} value={profile.founded_year ?? ''} onChange={e => {patch({founded_year: e.target.value ? Number(e.target.value) : null}); fields.clear('legal-year');}} {...fields.control('legal-year')}/>{fields.message('legal-year')}</div>
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-employees">თანამშრომლები</label><CustomSelect id="legal-employees" value={profile.employee_band || ''} onChange={e => patch({employee_band: e.target.value || null})}><option value="">აირჩიეთ</option>{['1-7','8-50','51-200','201+'].map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
    </div><ChipsInput id="legal-markets" label="ბაზრები" compact values={profile.markets} onChange={markets => patch({markets})}/><ChipsInput id="legal-languages" label="ენები" compact values={profile.languages} onChange={languages => patch({languages})}/></fieldset>
-   <div className="ma-form-bar"><p className="ma-form-bar__note" role="status">{dirty ? 'შეუნახავი ცვლილებები' : savedAt ? `შენახულია ${savedAt}` : 'ცვლილებები არ არის'}</p><Button type="submit" loading={pending}>შენახვა</Button></div>
+   <div className="ma-form-bar"><p className="ma-form-bar__note" role="status">{dirty ? 'შეუნახავი ცვლილებები' : savedAt ? `შენახულია ${savedAt}` : 'ცვლილებები არ არის'}</p><Button type="submit" loading={pending}>შეინახეთ</Button></div>
   </form> : !error ? <p role="status">იტვირთება…</p> : null}
   {error && <p className="ma-field__error" role="alert">{error}</p>}
   <UnsavedSheet guard={guard} pending={pending} error={error} save={save}/>
