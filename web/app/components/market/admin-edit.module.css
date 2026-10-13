@@ -41,3 +41,5 @@
 .form > .actions { position: sticky; bottom: calc(-1 * var(--space-4)); z-index: 1; padding-block: var(--space-3) var(--space-4); background: var(--white); }
 .photoActions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 .photoActions .upload { flex: 1 1 var(--size-200); }
+
+.publishBar { position: sticky; top: var(--header-h); z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3); background: var(--white); border: var(--size-1) solid var(--border); border-radius: var(--radius-lg); }

@@ -9,7 +9,7 @@ export const adminSections = {
   users: { label: "მომხმარებლები", icon: "users", description: "ყველა ანგარიში და წვდომის მართვა" },
   reports: { label: "საჩივრები", icon: "flag", description: "მომხმარებლების საჩივრების განხილვა და დარღვევებზე რეაგირება" },
   reviews: { label: "შეფასებები", icon: "star", description: "შეფასებები ქვეყნდება ავტომატურად; საჭიროებისას დამალეთ მიზეზით." },
-  content: { label: "საიტის შიგთავსი", icon: "image", description: "მთავარი გვერდის ტექსტები და ფოტოები" },
+  content: { label: "საიტის შიგთავსი", icon: "image", description: "კომპანიების კატალოგის ფოტოები" },
   contacts: { label: "კონტაქტები", icon: "phone", description: "ნომრის ნახვები, დარეკვები და ახალი მიმოწერები" },
   photos: { label: "ფოტოები", icon: "image", description: "კომპანიების ატვირთული ლოგოები და გალერეის ფოტოები" },
   audit: { label: "ისტორია", icon: "clock", description: "ვინ, როდის და რა შეცვალა ადმინისტრირებისას" },
