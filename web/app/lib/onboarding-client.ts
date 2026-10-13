@@ -9,7 +9,7 @@ export const intents: Record<AccountIntent, string> = { buy: 'მომწოდ
 export function stepsFor(intent?: AccountIntent | string | null): readonly OnboardStep[] {
   return onboardSteps.filter(step => step === 'provide' ? intent !== 'buy' : step === 'need' ? intent !== 'sell' : true);
 }
-export type Product = { name: string; photoUrl: string; note: string };
+export type Product = { name: string; photoUrl?: string | null; note: string; code?: string; unit?: string; price?: number };
 export type OnboardProfile = {
   onboarding_completed_at?:string|null;
   id: string; role: string; blocked: boolean; verified: boolean;
@@ -57,6 +57,16 @@ export function verificationAction(status?: string | null, verified = false): { 
   return state === 'none' ? { label: 'დოკუმენტების ატვირთვა', href: '/onboarding/?step=verify' }
     : state === 'returned' ? { label: 'დოკუმენტების შესწორება', href: '/onboarding/?step=verify' } : null;
 }
+export const verificationRequirements = {
+  legal_name: 'იურიდიული სახელი', registration_code: 'საიდენტიფიკაციო კოდი',
+  registration_document: 'რეგისტრაციის ამონაწერი', tax_document: 'საგადასახადო დოკუმენტი',
+} as const;
+export type VerificationRequirements = Record<keyof typeof verificationRequirements, boolean>;
+export async function readVerificationRequirements(store: Store): Promise<VerificationRequirements> {
+  const data = await store.callRpc('verification_requirements');
+  if (!data || Object.keys(verificationRequirements).some(key => typeof data[key] !== 'boolean')) throw new Error('ვერიფიკაციის მოთხოვნები ვერ ჩაიტვირთა. სცადეთ ხელახლა.');
+  return data;
+}
 const detailKeys = ['account_intent', 'employee_band', 'founded_year', 'markets', 'languages', 'legal_name', 'registration_code', 'legal_form', 'contact_position', 'website', 'business_tags', 'certificates'] as const;
 const keysByStep: Partial<Record<OnboardStep, readonly (keyof OnboardProfile)[]>> = {
   type: ['account_intent'],
@@ -77,6 +87,72 @@ export function retainOnboardDraft(saved: OnboardModel, draft: OnboardModel, ste
     if (step === 'type') profile.provide_categories = draft.profile.provide_categories;
   }
   return { profile, products: steps.includes('provide') ? draft.products : saved.products };
+}
+export const onboardDraftKey = (profileId: string) => `onboard-draft:${profileId}`;
+export const onboardDraftLifetime = 24 * 60 * 60 * 1000;
+const draftKeys = (step: OnboardStep) => step === 'type' ? [...(keysByStep.type || []), 'provide_categories' as const] : keysByStep[step] || [];
+/** Only editable step data and product strings belong in a local draft, never files or server flags. */
+export function serializeOnboardDraft(model: OnboardModel, dirtySteps: Iterable<OnboardStep>, now = Date.now()): string {
+  const dirty = new Set(dirtySteps);
+  const steps = onboardSteps.filter(step => dirty.has(step) && draftKeys(step).length);
+  const profile = Object.fromEntries(steps.flatMap(step => draftKeys(step).map(key => [key, model.profile[key]])));
+  return JSON.stringify({ version: 1, profileId: model.profile.id, savedAt: now, dirtySteps: steps, profile,
+    ...(steps.includes('provide') ? { products: model.products.map(({ name, photoUrl, note, code, unit, price }) => ({ name, photoUrl, note, code, unit, price })) } : {}) });
+}
+/** Invalid, foreign and expired drafts cannot replace confirmed server data. */
+export function restoreOnboardDraft(persisted: OnboardModel, draft: string | null, now = Date.now()): OnboardModel {
+  if (!draft) return persisted;
+  try {
+    const value = JSON.parse(draft);
+    if (value?.version !== 1 || value.profileId !== persisted.profile.id || !Number.isFinite(value.savedAt)
+      || value.savedAt > now || now - value.savedAt >= onboardDraftLifetime
+      || !Array.isArray(value.dirtySteps) || !value.profile || typeof value.profile !== 'object') return persisted;
+    const profile = { ...persisted.profile };
+    const arrays = ['markets', 'languages', 'business_tags', 'certificates', 'provide_categories', 'need_categories', 'offers', 'seeks'];
+    const nullable = ['legal_name', 'registration_code', 'legal_form', 'employee_band', 'contact_position', 'website', 'address'];
+    for (const step of onboardSteps.filter(step => value.dirtySteps.includes(step))) {
+      for (const key of draftKeys(step)) {
+        if (!Object.hasOwn(value.profile, key)) continue;
+        const field = value.profile[key];
+        const valid = arrays.includes(key) ? Array.isArray(field) && field.every(item => typeof item === 'string')
+          : key === 'founded_year' ? field === null || typeof field === 'number' && Number.isFinite(field)
+          : typeof field === 'string' || nullable.includes(key) && field === null;
+        if (valid) Object.assign(profile, { [key]: field });
+      }
+    }
+    const products = value.dirtySteps.includes('provide') && Array.isArray(value.products)
+      && value.products.every((item: Product) => item && typeof item.name === 'string' && typeof item.note === 'string' && (item.photoUrl == null || typeof item.photoUrl === 'string') && (item.code === undefined || typeof item.code === 'string') && (item.unit === undefined || typeof item.unit === 'string') && (item.price === undefined || typeof item.price === 'number' && Number.isFinite(item.price)))
+      ? value.products.map(({ name, photoUrl, note, code, unit, price }: Product) => ({ name, photoUrl, note, ...(code !== undefined ? { code } : {}), ...(unit !== undefined ? { unit } : {}), ...(price !== undefined ? { price } : {}) })) : persisted.products;
+    const restored = { profile, products };
+    return JSON.stringify(restored) === JSON.stringify(persisted) ? persisted : restored;
+  } catch { return persisted; }
+}
+/** Shared by normal saves and save-and-exit: invalid steps stay only in the local draft. */
+export function validateOnboardStep(step: OnboardStep, p: OnboardProfile, products: Product[]): string {
+  const length = (value: string | null | undefined, min: number, max: number) => !value?.trim() || value.trim().length >= min && value.trim().length <= max;
+  const items = (values: string[]) => values.length <= 8 && values.every(value => !!value.trim() && value.length <= 120);
+  if (step === 'type' && (!['buy', 'sell', 'both'].includes(p.account_intent) || p.provide_categories.length > 5)) return 'აირჩიეთ ანგარიშის ტიპი და მაქსიმუმ 5 დარგი.';
+  if (step === 'details') {
+    if (p.name.trim().length < 2 || p.name.length > 80) return 'საკონტაქტო პირის სახელი უნდა შეიცავდეს 2–80 სიმბოლოს.';
+    if (!p.city) return 'აირჩიეთ ქალაქი.';
+    if (!length(p.legal_name, 2, 200)) return 'იურიდიული სახელი უნდა შეიცავდეს 2–200 სიმბოლოს.';
+    if (!length(p.registration_code, 3, 40)) return 'საიდენტიფიკაციო კოდი უნდა შეიცავდეს 3–40 სიმბოლოს.';
+    if (p.founded_year != null && (!Number.isInteger(p.founded_year) || p.founded_year < 1800 || p.founded_year > new Date().getFullYear())) return 'მიუთითეთ წელი დასაშვებ დიაპაზონში.';
+    if (p.website?.trim() && !/^https?:\/\/\S+$/.test(p.website)) return 'ვებგვერდი უნდა იწყებოდეს https:// ან http://-ით.';
+    if (!length(p.legal_form, 1, 80) || !length(p.contact_position, 1, 100) || !length(p.address, 1, 200) || !length(p.website, 1, 500) || !items(p.markets) || !items(p.languages)) return 'შეამოწმეთ დამატებითი მონაცემების ფორმატი.';
+  }
+  if (step === 'profile' && (p.company.trim().length < 2 || p.about.length > 1000 || !items(p.business_tags) || !items(p.certificates))) return 'შეამოწმეთ კომპანიის სახელი, აღწერა (1000-მდე სიმბოლო) და ტეგები.';
+  if (step === 'provide') {
+    const filled = products.filter(item => item.name.trim());
+    if (filled.length > 100) return 'ლიმიტი: მაქსიმუმ 100 პროდუქტი.';
+    if (filled.some(item => item.name.trim().length < 2 || item.name.length > 80 || item.note.length > 200)) return 'პროდუქტის სახელი უნდა შეიცავდეს 2–80 სიმბოლოს, აღწერა — 200-მდე.';
+    const names = filled.map(item => item.name.trim().toLocaleLowerCase('ka'));
+    if (new Set(names).size !== names.length) return 'ეს პროდუქტი უკვე დამატებულია.';
+    if (names.some(name => p.offers.some(offer => offer.trim().toLocaleLowerCase('ka') === name))) return 'ეს სახელი მომსახურებებშია — გადაიტანეთ?';
+    if (p.provide_categories.length > 5 || !items(p.offers)) return 'მაქსიმუმ 5 დარგი და 8 მომსახურება.';
+  }
+  if (step === 'need' && !items(p.seeks)) return 'მაქსიმუმ 8 პუნქტი, თითო 120 სიმბოლომდე.';
+  return '';
 }
 export async function readOnboardProfile(store: Store): Promise<OnboardProfile> {
   const data = await store.callRpc('my_profile');
@@ -105,7 +181,7 @@ export async function saveOnboardStep(store: Store, step: OnboardStep, draft: On
   const merged = { ...current };
   for (const key of keysByStep[step] || []) Object.assign(merged, { [key]: draft[key] });
   if (['type', 'details', 'profile'].includes(step)) {
-    const args = Object.fromEntries(detailKeys.map(key => ['p_' + key, merged[key]]));
+    const args = Object.fromEntries(detailKeys.map(key => ['p_' + key, typeof merged[key] === 'string' && !merged[key]?.trim() ? null : merged[key]]));
     const result = await store.callRpc('set_onboarding_details', args);
     const row = Array.isArray(result) ? result[0] : result;
     if (row?.id !== current.id) throw new Error('შენახვა ვერ დადასტურდა. სცადეთ ხელახლა.');
@@ -120,7 +196,7 @@ export async function saveOnboardStep(store: Store, step: OnboardStep, draft: On
     if (!Array.isArray(result?.provide) || !Array.isArray(result?.need)) throw new Error('კატეგორიების შენახვა ვერ დადასტურდა.');
   }
   if (step === 'provide') {
-    const result = await store.setMyProducts(products);
+    const result = await store.setMyProducts(products.filter(item => item.name.trim()));
     if (!Array.isArray(result)) throw new Error('პროდუქტების შენახვა ვერ დადასტურდა.');
   }
   // verify/review are read-only: there is no document submission or completion RPC.

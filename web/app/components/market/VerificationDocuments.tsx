@@ -1,24 +1,59 @@
 'use client';
-import {useState,useEffect} from 'react';
+import {useState,useEffect,useRef} from 'react';
+import Link from 'next/link';
 import type {Store} from '../../lib/market-client';
 import {Button} from '../ui/Button';
 import {Badge} from '../ui/Badge';
 import {FileAttachments} from './FileAttachments';
-import {verificationHint,verificationLabel,verificationState,verificationTone} from '../../lib/onboarding-client';
+import {readVerificationRequirements,verificationRequirements,type VerificationRequirements,verificationHint,verificationLabel,verificationState,verificationTone} from '../../lib/onboarding-client';
 import s from './flow-details.module.css';
 import v from './onboarding.module.css';
 import a from './admin.module.css';
 import {verificationLabels} from '../../lib/admin-helpers';
-/** The company's side: one status (verificationState), its hint, the three files and the submit action. */
-export function VerificationDocuments({store,id,status,verified=false,note,onStatus,onBusy}:{store:Store;id:string;status:string;verified?:boolean;note?:string|null;onStatus?:(status:string)=>void;onBusy?:(value:boolean)=>void}) {
- const [busy,setBusy]=useState(false);const [error,setError]=useState('');const state=verificationState(status,verified);const locked=state==='pending'||state==='approved';
- const updateBusy=(v:boolean)=>{setBusy(v);onBusy?.(v);};
- return <div className={s.fields}><div className={v.verificationStatus}><Badge status={verificationTone(status,verified)}>{verificationLabel(status,verified)}</Badge><p>{verificationHint(status,verified,note)}</p></div>
- <FileAttachments store={store} kind="verification" target={id} slot="registration" label="რეგისტრაციის ამონაწერი" editable={!locked} onBusy={updateBusy}/>
- <FileAttachments store={store} kind="verification" target={id} slot="tax" label="საგადასახადო დოკუმენტი" editable={!locked} onBusy={updateBusy}/>
- <FileAttachments store={store} kind="verification" target={id} slot="certificate" label="სერტიფიკატის ასლი (არასავალდებულო)" editable={!locked} onBusy={updateBusy}/>
- {!locked?<Button disabled={busy} loading={busy} onClick={async()=>{updateBusy(true);setError('');try{const p=await store.mutateRpc('submit_verification',{});onStatus?.(p.verification_documents_status);}catch{setError('შეავსეთ იურიდიული მონაცემები, დაამატეთ ლოგო, რეგისტრაციის ამონაწერი და საგადასახადო დოკუმენტი.');}finally{updateBusy(false);}}}>{state==='returned'?'ხელახლა გაგზავნა':'განხილვაზე გაგზავნა'}</Button>:null}
- {error?<p className="ma-field__error" role="alert">{error}</p>:null}</div>;
+type RequirementKey = keyof VerificationRequirements;
+function Checklist({requirements,attempted=false,onDetails,onDocument}:{requirements:VerificationRequirements;attempted?:boolean;onDetails?:()=>void;onDocument?:(slot:'registration'|'tax')=>void}) {
+ return <ul className={v.requirements} aria-label="ვერიფიკაციის მოთხოვნები">{(Object.entries(verificationRequirements) as [RequirementKey,string][]).map(([key,label]) => <li key={key} data-missing={!requirements[key] || undefined} data-error={attempted && !requirements[key] || undefined}>
+  <span aria-hidden="true">{requirements[key] ? '✓' : '✗'}</span>
+  {key==='legal_name'||key==='registration_code' ? onDetails ? <Button variant="ghost" onClick={onDetails}>{label}</Button> : <Link href="/onboarding/?step=details">{label}</Link> : onDocument ? <Button variant="ghost" onClick={()=>onDocument(key==='registration_document'?'registration':'tax')}>{label}</Button> : <span>{label}</span>}
+  <span className="ma-sr-only">{requirements[key]?'შესრულებულია':'არ არის მითითებული'}</span>
+ </li>)}</ul>;
+}
+/** Read-only requirements also explain exactly what is missing in the final review. */
+export function VerificationSummary({store,id,onDetails}:{store:Store;id:string;onDetails:()=>void}) {
+ const [requirements,setRequirements]=useState<VerificationRequirements>();const [error,setError]=useState('');const [revision,setRevision]=useState(0);
+ useEffect(()=>{let active=true;void readVerificationRequirements(store).then(value=>{if(active)setRequirements(value);},()=>{if(active)setError('მოთხოვნები ვერ ჩაიტვირთა.');});return()=>{active=false;};},[store,id,revision]);
+ return requirements?<Checklist requirements={requirements} onDetails={onDetails}/>:error?<div role="alert">{error}<Button variant="ghost" onClick={()=>{setError('');setRevision(value=>value+1);}}>ხელახლა ცდა</Button></div>:<p role="status">მოთხოვნები იტვირთება…</p>;
+}
+/** Company verification has two document slots, shown one at a time. */
+export function VerificationDocuments({store,id,status,verified=false,note,onStatus,onBusy,onDetails}:{store:Store;id:string;status:string;verified?:boolean;note?:string|null;onStatus?:(status:string)=>void;onBusy?:(value:boolean)=>void;onDetails?:()=>void}) {
+ const [busy,setBusy]=useState(false),[error,setError]=useState(''),[attempted,setAttempted]=useState(false);
+ const [requirements,setRequirements]=useState<VerificationRequirements>(),[revision,setRevision]=useState(0);
+ const [slot,setSlot]=useState<'registration'|'tax'|'review'>('registration');
+ const root=useRef<HTMLDivElement>(null);const state=verificationState(status,verified);const locked=state==='pending'||state==='approved';
+ const updateBusy=(value:boolean)=>{setBusy(value);onBusy?.(value);};
+ useEffect(()=>{let active=true;void readVerificationRequirements(store).then(value=>{if(active){setRequirements(value);setError('');}},()=>{if(active)setError('ვერიფიკაციის მოთხოვნები ვერ ჩაიტვირთა. სცადეთ ხელახლა.');});return()=>{active=false;};},[store,id,revision,status]);
+ const focusMissing=()=>requestAnimationFrame(()=>root.current?.querySelector<HTMLElement>('[data-missing] button, [data-missing] a')?.focus());
+ const submit=async()=>{
+  updateBusy(true);setAttempted(true);setError('');
+  try {
+   const current=await readVerificationRequirements(store);setRequirements(current);
+   if(Object.values(current).some(value=>!value)){focusMissing();return;}
+   const profile=await store.mutateRpc('submit_verification',{});onStatus?.(profile.verification_documents_status);
+  }catch(err){
+   if((err as {code?:string})?.code==='MA902'||(err as Error)?.message?.includes('MA902')){
+    try{setRequirements(await readVerificationRequirements(store));focusMissing();}catch{setError('ვერიფიკაციის მოთხოვნები ვერ ჩაიტვირთა. სცადეთ ხელახლა.');}
+   }else setError('ვერ გაიგზავნა. სცადეთ ხელახლა.');
+  }finally{updateBusy(false);}
+ };
+ return <div ref={root} className={s.fields}>
+ {requirements?<Checklist requirements={requirements} attempted={attempted} onDetails={onDetails} onDocument={setSlot}/>:<p role="status">მოთხოვნები იტვირთება…</p>}
+ <div className={v.verificationStatus}><Badge status={verificationTone(status,verified)}>{verificationLabel(status,verified)}</Badge><p>{verificationHint(status,verified,note)}</p></div>
+ <nav className={v.addRow} aria-label="დოკუმენტების ნაბიჯები">{(['registration','tax','review'] as const).map((value,index)=><Button key={value} variant={slot===value?'secondary':'ghost'} disabled={busy} aria-current={slot===value?'step':undefined} onClick={()=>setSlot(value)}>{index+1}. {value==='registration'?'რეგისტრაცია':value==='tax'?'საგადასახადო':'მიმოხილვა'}</Button>)}</nav>
+ {slot!=='review'?<FileAttachments key={slot} store={store} kind="verification" target={id} slot={slot} label={slot==='registration'?'რეგისტრაციის ამონაწერი':'საგადასახადო დოკუმენტი'} editable={!locked} onBusy={updateBusy} onChange={()=>setRevision(value=>value+1)}/>:<p className={v.muted}>გაგზავნამდე შეამოწმეთ ზემოთ ჩამოთვლილი ოთხივე პუნქტი.</p>}
+ {slot!=='review'&&<Button variant="secondary" disabled={busy} onClick={()=>setSlot(slot==='registration'?'tax':'review')}>შემდეგი დოკუმენტის ნაბიჯი</Button>}
+ {!locked?<Button disabled={busy} loading={busy} onClick={()=>void submit()}>{state==='returned'?'ხელახლა გაგზავნა':'განხილვაზე გაგზავნა'}</Button>:null}
+ {error?<div className="ma-field__error" role="alert">{error}<Button variant="ghost" disabled={busy} onClick={()=>setRevision(value=>value+1)}>ხელახლა ცდა</Button></div>:null}
+ </div>;
 }
 // Admin side: one verification term and status, documents, and the review actions in one row (decisions go through ModerationSheet).
 type AdminVerificationAction={kind:'users';action:string;id:string;label:string};

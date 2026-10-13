@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getMarketStore, useMarketStore } from '../../lib/market-client';
-import { stepsFor, onboardWrites, retainOnboardDraft, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
+import { validateOnboardStep, stepsFor, onboardSteps, onboardDraftKey, serializeOnboardDraft, restoreOnboardDraft, onboardWrites, retainOnboardDraft, onboardError, readOnboard, readOnboardProfile, saveOnboardStep, profileInput, type OnboardProfile, type OnboardStep, type Product } from '../../lib/onboarding-client';
 import { toast } from '../Toasts';
+import { ConfirmSheet } from '../ui/ConfirmSheet';
+import { Notice } from '../ui/Notice';
 import { Button } from '../ui/Button';
 import { Icon } from '../Icon';
 import { Logo } from '../Logo';
@@ -24,6 +26,10 @@ export function OnboardLoading() {
 }
 
 type Model = { profile: OnboardProfile; products: Product[] };
+// Storage can be unavailable in private mode or when the quota is exhausted.
+function storeDraft(id: string, value: string | null) {
+  try { if (value) localStorage.setItem(onboardDraftKey(id), value); else localStorage.removeItem(onboardDraftKey(id)); } catch { /* Server saving remains available. */ }
+}
 export function OnboardPage() {
   const { store, sessionReady, available } = useMarketStore();
   const router = useRouter(), params = useSearchParams();
@@ -33,6 +39,9 @@ export function OnboardPage() {
   const role = user?.role as string | undefined;
   const blocked = !!user?.blocked;
   const [savedAt, setSavedAt] = useState('');
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
+  const [restoredDraft, setRestoredDraft] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
   const [model, setModel] = useState<Model | null>(null);
   const [persisted, setPersisted] = useState<Model | null>(null);
   // The step list follows the intent being edited, so choosing one on "type" reshapes it at once.
@@ -43,31 +52,76 @@ export function OnboardPage() {
   const [error, setError] = useState(''), [notice, setNotice] = useState(''), [pending, setPending] = useState(false), [retry, setRetry] = useState(0);
   const [errorStep, setErrorStep] = useState<OnboardStep | null>(null);
   const dirty = useRef(new Set<OnboardStep>()), lock = useRef(false);
+  const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const draftWrite = useRef<{ id: string; value: string | null } | null>(null);
+  const flushDraft = () => {
+    if (draftTimer.current) clearTimeout(draftTimer.current);
+    draftTimer.current = null;
+    if (draftWrite.current) { storeDraft(draftWrite.current.id, draftWrite.current.value); draftWrite.current = null; }
+  };
+  const persistDraft = (next: Model, changed: Iterable<OnboardStep>, immediately = false) => {
+    const steps = [...changed];
+    setHasChanges(steps.length > 0);
+    draftWrite.current = { id: next.profile.id, value: steps.length ? serializeOnboardDraft(next, steps) : null };
+    if (draftTimer.current) clearTimeout(draftTimer.current);
+    if (immediately) flushDraft(); else draftTimer.current = setTimeout(flushDraft, 500);
+  };
   const form = useRef<HTMLFormElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (!sessionReady || !actor || role !== 'company' || blocked) return;
     let active = true;
-    readOnboard(getMarketStore()).then(result => { if (active) { setModel(result); setPersisted(result); setError(''); dirty.current.clear(); } }, err => { if (active) setError(onboardError(err)); });
+    readOnboard(getMarketStore()).then(result => { if (active) {
+      let raw: string | null = null;
+      try { raw = localStorage.getItem(onboardDraftKey(result.profile.id)); } catch { /* Storage is optional. */ }
+      let restored = restoreOnboardDraft(result, raw);
+      dirty.current = new Set(restored !== result ? onboardSteps.filter(value => JSON.parse(raw!).dirtySteps.includes(value) &&
+        JSON.stringify(retainOnboardDraft(result, restored, [value])) !== JSON.stringify(result)) : []);
+      const fromDraft = restored !== result;
+      if (!fromDraft) storeDraft(result.profile.id, null);
+      if (!dirty.current.has('type') && !dirty.current.has('provide') && restored.profile.account_intent !== 'buy' && !restored.profile.provide_categories.length && restored.profile.industry) { restored = { ...restored, profile: { ...restored.profile, provide_categories: [restored.profile.industry] } }; dirty.current.add('type'); }
+      setHasChanges(dirty.current.size > 0); setModel(restored); setPersisted(result); setRestoredDraft(fromDraft); setSavedAt(''); setError('');
+    } }, err => { if (active) setError(onboardError(err)); });
     return () => { active = false; };
   }, [sessionReady, actor, role, blocked, retry]);
   useEffect(() => {
-    const unload = (event: BeforeUnloadEvent) => { if (dirty.current.size || lock.current) event.preventDefault(); };
+    const unload = (event: BeforeUnloadEvent) => { flushDraft(); if (dirty.current.size || lock.current) event.preventDefault(); };
     window.addEventListener('beforeunload', unload);
-    return () => window.removeEventListener('beforeunload', unload);
+    window.addEventListener('pagehide', flushDraft);
+    return () => { flushDraft(); window.removeEventListener('beforeunload', unload); window.removeEventListener('pagehide', flushDraft); };
   }, []);
   useEffect(() => { heading.current?.focus(); }, [step]);
-  const patch = (value: Partial<OnboardProfile>) => { dirty.current.add(step); setNotice(''); setSavedAt(''); setModel(previous => previous ? { ...previous, profile: { ...previous.profile, ...value } } : previous); };
-  const setProducts = (products: Product[]) => { dirty.current.add('provide'); setNotice(''); setSavedAt(''); setModel(previous => previous ? { ...previous, products } : previous); };
-  async function save(destination?: OnboardStep | 'account' | 'home') {
-    if (!model || !store || pending || lock.current || !form.current?.reportValidity()) return;
+  const patch = (value: Partial<OnboardProfile>) => {
+    if (!model) return;
+    dirty.current.add(step); setNotice(''); setSavedAt('');
+    const next = { ...model, profile: { ...model.profile, ...value } };
+    setModel(next); persistDraft(next, dirty.current);
+  };
+  const setProducts = (products: Product[]) => {
+    if (!model) return;
+    dirty.current.add('provide'); setNotice(''); setSavedAt('');
+    const next = { ...model, products };
+    setModel(next); persistDraft(next, dirty.current);
+  };
+  const discardDraft = () => {
+    if (!persisted || pending) return;
+    dirty.current.clear(); persistDraft(persisted, [], true);
+    setModel(persisted); setRestoredDraft(false); setSavedAt(''); setError(''); setErrorStep(null);
+  };
+  async function save(destination?: OnboardStep | 'account' | 'home', completing = false) {
+    if (!model || !store || pending || lock.current) return;
+    const leaving = !completing && (destination === 'account' || destination === 'home');
+    if (!leaving && !form.current?.checkValidity()) { form.current?.querySelector<HTMLElement>('[aria-invalid=true]')?.focus(); return; }
+    persistDraft(model, dirty.current, true);
     lock.current = true; setPending(true); setError(''); setErrorStep(null); setNotice('');
     let writeTarget = step;
     try {
       let result = model;
-      const writes = onboardWrites(step, dirty.current, destination === 'account' || destination === 'home', steps);
+      const writes = onboardWrites(step, dirty.current, leaving || completing, steps).filter(target => !leaving || !validateOnboardStep(target, model.profile, model.products));
       for (const target of writes) {
         writeTarget = target;
+        const invalid = validateOnboardStep(target, model.profile, model.products);
+        if (invalid) throw new Error(invalid);
         result = await saveOnboardStep(getMarketStore(), target, model.profile, model.products);
         // Supplied categories are chosen on type; save them with the existing RPC
         // without saving unrelated product/profile drafts.
@@ -80,19 +134,23 @@ export function OnboardPage() {
           if (!Array.isArray(categories?.provide) || !Array.isArray(categories?.need)) throw new Error('კატეგორიების შენახვა ვერ დადასტურდა.');
           result = await readOnboard(source);
         }
+        dirty.current.delete(target);
+        const remainingModel = retainOnboardDraft(result, model, [...dirty.current]);
+        setPersisted(result); setModel(remainingModel); persistDraft(remainingModel, dirty.current, true);
       }
-      if(step==='review'&&destination==='account')await store.mutateRpc('complete_onboarding',{});
-      const remaining = [...dirty.current].filter(value => !writes.includes(value) && steps.includes(value));
+      if(completing)await store.mutateRpc('complete_onboarding',{});
+      const remaining = [...dirty.current];
       setModel(retainOnboardDraft(result, model, remaining)); setPersisted(result);
       dirty.current = new Set(remaining);
+      if (!remaining.length) setRestoredDraft(false);
       setSavedAt(remaining.length ? '' : new Date().toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit', hour12: false }));
       if (destination === 'home') router.push('/');
-      else if (destination === 'account') { toast({ title: 'პროფილი შენახულია' }); router.push('/account/'); }
+      else if (destination === 'account') { toast({ title: remaining.length ? 'შეუნახავი ცვლილებები ამ მოწყობილობაზე შენარჩუნებულია' : 'პროფილი შენახულია' }); router.push('/account/'); }
       else if (destination) router.push('/onboarding/?step=' + destination);
-    } catch (err) { const message = onboardError(err); setError(message); setErrorStep(writeTarget); toast({ title: message, tone: 'danger' }); }
+    } catch (err) { const message = onboardError(err); setError(message); setErrorStep(writeTarget); toast({ title: message, tone: 'danger' }); if (leaving) router.push(destination === 'home' ? '/' : '/account/'); }
     finally { lock.current = false; setPending(false); }
   }
-  async function upload(file: File, kind: 'logo' | 'gallery' | 'cover') {
+  async function upload(file: File | null, kind: 'logo' | 'gallery') {
     if (!model || !store || lock.current) return;
     lock.current = true; setPending(true); setError(''); setNotice('');
     try {
@@ -100,18 +158,20 @@ export function OnboardPage() {
       const current = await readOnboardProfile(source);
       if (current.id !== model.profile.id) throw new Error('ანგარიში შეიცვალა. განაახლეთ გვერდი.');
       if (kind === 'logo') {
-        const uploaded = await source.uploadLogo(file);
+        const uploaded = file ? await source.uploadLogo(file) : { url: '' };
         const result = await source.updateProfile({ ...profileInput(current), logoUrl: uploaded.url });
-        if (result?.id !== current.id || result.logoUrl !== uploaded.url) throw new Error('ლოგოს შენახვა ვერ დადასტურდა.');
+        if (result?.id !== current.id || (result.logoUrl || '') !== uploaded.url) throw new Error('ლოგოს შენახვა ვერ დადასტურდა.');
       } else {
+        if (!file) return;
         if (current.gallery.length >= 8) throw new Error('გალერეაში მაქსიმუმ 8 ფოტოა.');
-        const result = await source.setGallery(kind === 'cover' ? [file, ...current.gallery] : [...current.gallery, file]);
+        const result = await source.setGallery([...current.gallery, file]);
         if (result?.id !== current.id || !result.gallery?.length || result.gallery.length <= current.gallery.length) throw new Error('ფოტოს შენახვა ვერ დადასტურდა.');
       }
       const saved = await readOnboardProfile(source);
       setModel(previous => previous ? { ...previous, profile: { ...previous.profile, logo_url: saved.logo_url, gallery: saved.gallery } } : previous);
+      setPersisted(previous => previous ? { ...previous, profile: { ...previous.profile, logo_url: saved.logo_url, gallery: saved.gallery } } : previous);
       setNotice('ფოტო შენახულია.');
-      return kind === 'logo' ? saved.logo_url || undefined : kind === 'cover' ? saved.gallery[0] : saved.gallery[saved.gallery.length - 1];
+      return kind === 'logo' ? saved.logo_url || undefined : saved.gallery[saved.gallery.length - 1];
     } catch (err) { const message = onboardError(err); setError(message); toast({ title: message, tone: 'danger' }); }
     finally { lock.current = false; setPending(false); }
   }
@@ -126,8 +186,8 @@ export function OnboardPage() {
   const p = saved?.profile;
   const completed: Record<OnboardStep, boolean> = {
     type: !!p && ['buy', 'sell', 'both'].includes(p.account_intent),
-    details: !!(p?.legal_name?.trim() && p.registration_code?.trim() && p.legal_form?.trim() && p.founded_year && p.employee_band && p.name?.trim() && p.city),
-    profile: !!(p?.company?.trim() && p.industry && p.about?.trim()),
+    details: !!(p?.name?.trim() && p.city),
+    profile: !!p && p.company.trim().length >= 2,
     // Steps 4–5 are done once something is saved there; products need no photo to count.
     provide: p?.account_intent === 'buy' || !!(p?.offers.length || saved?.products.some(product => product.name.trim())),
     need: p?.account_intent === 'sell' || !!(p?.need_categories.length || p?.seeks.length),
@@ -147,16 +207,20 @@ export function OnboardPage() {
     void save(target);
   };
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გასვლა</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><ThemeToggle /><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>შენახვა და გასვლა</Button></div></header>
     <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
       <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
         <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
-        <form ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1]); }}>
+        <p className={s.draftStatus} role="status">{hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : ''}</p>
+        {restoredDraft && <Notice tone="info" className={s.draftNotice} action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გაუქმება</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
+        <form noValidate ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1], index === last); }}>
           <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>
           {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შესწორება</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
+          <Button variant="ghost" disabled={!hasChanges || pending} onClick={() => setConfirmDiscard(true)}>ცვლილებების გაუქმება</Button>
           <div className={s.actions}><span className={s.autosave} role="status">{pending ? 'ინახება…' : savedAt ? 'შენახულია ' + savedAt : ''}</span>{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(steps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === last ? 'დასრულება' : step === 'verify' ? 'გადახედვა' : 'შემდეგი'}</Button></div>
         </form>
       </main>
     </div>
+    <ConfirmSheet id="onboard-discard" open={confirmDiscard} title="ცვლილებების გაუქმება" confirmLabel="ცვლილებების გაუქმება" pendingLabel="უქმდება…" pending={pending} danger onCancel={() => setConfirmDiscard(false)} onConfirm={() => { discardDraft(); setConfirmDiscard(false); }}><p>შეუნახავი ცვლილებები წაიშლება. შენახული მონაცემები დარჩება.</p></ConfirmSheet>
   </div>;
 }
