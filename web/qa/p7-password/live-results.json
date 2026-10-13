@@ -1,0 +1,28 @@
+{
+  "account": "demo client (hotel)",
+  "responses": [
+    {
+      "path": "/neondb/auth/sign-in/email",
+      "status": 200
+    },
+    {
+      "path": "/neondb/auth/change-password",
+      "status": 200
+    },
+    {
+      "path": "/neondb/auth/change-password",
+      "status": 400,
+      "code": "INVALID_PASSWORD",
+      "message": "Invalid password"
+    }
+  ],
+  "pageerrors": [],
+  "stage": "complete",
+  "toast": true,
+  "fieldsCleared": true,
+  "headerSignedIn": true,
+  "signedInAfterRefresh": true,
+  "wrongCurrentInline": true,
+  "focus": true,
+  "overflow": 0
+}

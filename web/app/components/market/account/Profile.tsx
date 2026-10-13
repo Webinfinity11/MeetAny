@@ -273,7 +273,14 @@ export function PasswordForm() {
       setCurrent(""); setPassword(""); setRepeat("");
       toast("პაროლი შეიცვალა.");
     } catch (err) {
-      setError((err as { userMessage?: string }).userMessage || "პაროლი ვერ შეიცვალა.");
+      const failure = err as { code?: string; userMessage?: string };
+      const message = failure.userMessage || "პაროლი ვერ შეიცვალა.";
+      const field = failure.code === "INVALID_PASSWORD" ? "password-current"
+        : failure.code === "PASSWORD_TOO_SHORT" || failure.code === "PASSWORD_TOO_LONG" ? "password-new" : null;
+      if (field) {
+        // Wait for pending controls to be enabled before check focuses the field.
+        requestAnimationFrame(() => v.check({ [field]: message }, [field]));
+      } else setError(message);
     } finally { setPending(false); }
   }
   return (

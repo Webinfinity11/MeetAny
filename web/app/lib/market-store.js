@@ -573,8 +573,8 @@ export function createMarketStore({initial=null,background=true}={}){
   catch(err){
    if(err.userMessage)throw err;
    const code=String(err.code||'');
-   if(code==='PASSWORD_TOO_SHORT')fail(PASSWORD_SHORT);
-   if(code==='PASSWORD_TOO_LONG')fail('პაროლი მაქსიმუმ 128 სიმბოლოა.');
+   if(code==='PASSWORD_TOO_SHORT')fail(PASSWORD_SHORT,code);
+   if(code==='PASSWORD_TOO_LONG')fail('პაროლი მაქსიმუმ 128 სიმბოლოა.',code);
    if(code==='INVALID_PASSWORD')fail('მიმდინარე პაროლი არასწორია.',code);
    throw toError(err);
   }

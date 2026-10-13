@@ -1,0 +1,100 @@
+[
+  {
+    "role": "client",
+    "width": 1440,
+    "overflow": 0,
+    "pageerrors": 0,
+    "clientErrors": 3,
+    "passwordRequests": 0
+  },
+  {
+    "role": "client",
+    "width": 390,
+    "overflow": 0,
+    "pageerrors": 0,
+    "clientErrors": 3,
+    "passwordRequests": 0
+  },
+  {
+    "role": "client",
+    "width": 360,
+    "overflow": 0,
+    "pageerrors": 0,
+    "clientErrors": 3,
+    "passwordRequests": 0
+  },
+  {
+    "role": "client",
+    "code": "INVALID_PASSWORD",
+    "field": "current",
+    "focus": true,
+    "message": "მიმდინარე პაროლი არასწორია."
+  },
+  {
+    "role": "client",
+    "code": "PASSWORD_TOO_SHORT",
+    "field": "new",
+    "focus": true,
+    "message": "პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან."
+  },
+  {
+    "role": "client",
+    "code": "PASSWORD_TOO_LONG",
+    "field": "new",
+    "focus": true,
+    "message": "პაროლი მაქსიმუმ 128 სიმბოლოა."
+  },
+  {
+    "role": "client",
+    "unknownErrorAtFormEnd": true
+  },
+  {
+    "role": "company",
+    "width": 1440,
+    "overflow": 0,
+    "pageerrors": 0,
+    "clientErrors": 3,
+    "passwordRequests": 0
+  },
+  {
+    "role": "company",
+    "width": 390,
+    "overflow": 0,
+    "pageerrors": 0,
+    "clientErrors": 3,
+    "passwordRequests": 0
+  },
+  {
+    "role": "company",
+    "width": 360,
+    "overflow": 0,
+    "pageerrors": 0,
+    "clientErrors": 3,
+    "passwordRequests": 0
+  },
+  {
+    "role": "company",
+    "code": "INVALID_PASSWORD",
+    "field": "current",
+    "focus": true,
+    "message": "მიმდინარე პაროლი არასწორია."
+  },
+  {
+    "role": "company",
+    "code": "PASSWORD_TOO_SHORT",
+    "field": "new",
+    "focus": true,
+    "message": "პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან."
+  },
+  {
+    "role": "company",
+    "code": "PASSWORD_TOO_LONG",
+    "field": "new",
+    "focus": true,
+    "message": "პაროლი მაქსიმუმ 128 სიმბოლოა."
+  },
+  {
+    "role": "company",
+    "unknownErrorAtFormEnd": true
+  }
+]
