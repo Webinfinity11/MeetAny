@@ -53,12 +53,12 @@ export function OnboardItems({ label, values, onChange, suggestions = [], checkb
 }
 /** Steps 1 (what you supply) and 5 (what you buy) pick from the same list with the same names:
  *  the featured categories first, every other one under "all categories". */
-export function OnboardCategories({ values, onChange, compact = false, limit = 34 }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number }) {
+export function OnboardCategories({ values, onChange, compact = false, limit = 34, count }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number; count?: string }) {
   const [all, setAll] = useState(false);
   const keys = all ? Object.keys(categories) : [...new Set([...featuredCategories, ...values])];
   const label = (key: string) => categories[key as keyof typeof categories] || key;
-  return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <Button variant={values.includes(key)?"primary":"secondary"} key={key} title={label(key)} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
-    <CategoryIcon id={key} size={16} /><span>{label(key)}</span>{!compact && values.includes(key) && <Icon name="check" />}
+  return <><div className={s.categoryGrid} data-compact={compact || undefined}>{keys.map(key => <Button variant="secondary" key={key} title={label(key)} aria-pressed={values.includes(key)} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
+    <CategoryIcon id={key} tile /><span>{label(key)}</span><span className={s.chipCheck} aria-hidden="true"><Icon name="check" /></span>
   </Button>)}</div>
-  <Button variant="ghost" size="sm" className={s.allCategories} aria-expanded={all} onClick={() => setAll(!all)}><Icon name={all ? 'chevron-up' : 'chevron-down'} />{all ? 'მხოლოდ ძირითადი კატეგორიები' : `ყველა კატეგორია (${Object.keys(categories).length})`}</Button></>;
+  <div className={s.categoryFooter}><Button variant="ghost" size="sm" className={s.allCategories} aria-expanded={all} onClick={() => setAll(!all)}><Icon name={all ? 'chevron-up' : 'chevron-down'} />{all ? 'მხოლოდ ძირითადი კატეგორიები' : `ყველა კატეგორია (${Object.keys(categories).length})`}</Button>{count && <span className={s.categoryCount} aria-live="polite">{count}</span>}</div></>;
 }
