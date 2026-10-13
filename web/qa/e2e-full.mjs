@@ -34,8 +34,9 @@ const ledger = JSON.parse(fs.readFileSync(path.join(root, 'DEMO-ACCOUNTS.local.m
 const secrets = Object.values(ledger.accounts).map(a => a.password).filter(Boolean);
 const redact = text => secrets.reduce((s, password) => s.replaceAll(password, '[REDACTED]'), String(text).replace(/\u001b\[[0-9;]*m/g, '')).replace(/(postgres(?:ql)?:\/\/)[^\s]+/g, '$1[REDACTED]');
 const ts = Date.now(), prefix = `[e2e] ${ts}`;
+// HomeLive deliberately hides titles matching /ტესტ|test|e2e/i. Use a neutral, unique title.
 const state = { run: ts, phone: `+995 5${String(ts).slice(-8)}`, email: `e2e+${ts}@meetany.local`, title: `ხის მაგიდების შესყიდვა ${ts}` };
-const results = [], actors = new Map(), seeds = [];
+const results = [], actors = new Map(), seeds = [], observations = {};
 let activePages = new Set(), lastAuth = 0, lastStepFinished = 0;
 fs.mkdirSync(shotsDir, { recursive: true });
 const db = new pg.Client({ connectionString: env.DATABASE_URL, connectionTimeoutMillis: 15000, query_timeout: 15000 });
@@ -219,7 +220,7 @@ async function checkAttempt(step, fn, fallback, attempt) {
   await Promise.all([...actors.values()].flatMap(a => [...a.pendingResponses]));
   const http = [...actors.values()].flatMap(a => a.http.slice(httpOffsets.get(a) || 0));
   reasons.push(...http.map(r => `${r.role}: HTTP ${r.status} ${r.method} ${r.url} RPC=${r.rpc || '(none)'} body=${r.body}`));
-  const row = { http, seeds: seeds.slice(seedOffset), step, status: reasons.length ? 'FAIL' : 'PASS', reason: [...new Set(reasons)].join(' | ') || 'UI და შემოწმებები წარმატებულია', shots, ms: Date.now() - started };
+  const row = { http, seeds: seeds.slice(seedOffset), observations: observations[step] || {}, step, status: reasons.length ? 'FAIL' : 'PASS', reason: [...new Set(reasons)].join(' | ') || 'UI და შემოწმებები წარმატებულია', shots, ms: Date.now() - started };
   return row;
 }
 const company = await actor('newcompany'), hotel = await actor('hotel'), wood = await actor('wood'), admin = await actor('owner_admin');
@@ -326,9 +327,9 @@ try {
   await check('B02-hotel-publish-request-photo', async () => {
     await login('hotel', hotel); await goto(h, '/requests/new/'); await h.getByRole('textbox', { name: /^სათაური/ }).fill(state.title); await pick(h, /კატეგორია/, 'ავეჯი'); await h.getByRole('textbox', { name: /^აღწერა/ }).fill(`${prefix} გვჭირდება 12 ხის მაგიდა სასტუმროსთვის, თბილისში მიწოდებით და აწყობით.`); await h.getByRole('textbox', { name: /^რაოდენობა/ }).fill('12'); await h.getByLabel('მოთხოვნის ფოტოს არჩევა', { exact: true }).setInputFiles(png);
     await h.getByRole('button', { name: /^(შემდეგი: მიწოდება|შემდეგი: გადახედვა|მოთხოვნის გამოქვეყნება)$/ }).click(); await pick(h, /ქალაქი/, 'თბილისი'); await h.getByLabel(/სასურველი თარიღი/).fill(new Date(ts + 14 * 86400000).toISOString().slice(0, 10)); await h.getByRole('textbox', { name: /^მისამართი/ }).fill('[e2e] თბილისი'); await h.getByRole('button', { name: /^(შემდეგი: მიწოდება|შემდეგი: გადახედვა|მოთხოვნის გამოქვეყნება)$/ }).click(); await h.getByRole('button', { name: /^(შემდეგი: მიწოდება|შემდეგი: გადახედვა|მოთხოვნის გამოქვეყნება)$/ }).click(); await h.getByRole('heading', { name: 'მოთხოვნა გამოქვეყნდა', exact: true }).waitFor({ timeout: 30000 });
-    const row = (await sql('select id,photo_url from public.requests where title=$1', [state.title]))[0]; assert(row?.photo_url); state.requestId = row.id;
+    const row = (await sql('select id,photo_url from public.requests where title=$1', [state.title]))[0]; assert(row?.photo_url); state.requestId = row.id; state.requestPublishedAt = Date.now();
   }, h);
-  for (const [name, route] of [['B03-guest-request-list', '/requests/'], ['B04-guest-home', '/']]) await check(name, async () => { required('requestId'); const guest = await actor(name, true); await goto(guest.p, route); await guest.p.getByText(state.title, { exact: true }).first().waitFor(); });
+  for (const [name, route] of [['B03-guest-request-list', '/requests/'], ['B04-guest-home', '/']]) await check(name, async () => { required('requestId'); const guest = await actor(name, true); const openedAt = Date.now(); await goto(guest.p, route); await guest.p.getByText(state.title, { exact: true }).first().waitFor(); observations[name] = { title: state.title, navigationToVisibleMs: Date.now() - openedAt, sincePublishConfirmedMs: Date.now() - state.requestPublishedAt }; });
   await check('B05-wood-matching', async () => { required('requestId'); await login('wood', wood); await goto(w, '/matching/'); await w.getByText(state.title, { exact: true }).first().waitFor(); }, w);
   await check('B06-wood-offer-file', async () => { required('requestId'); await login('wood', wood); await sendOffer(); }, w);
   await check('B07-wood-withdraw-offer', async () => { required('offerId'); await goto(w, requestRoute()); await w.getByRole('button', { name: 'შეთავაზების გაუქმება', exact: true }).click(); await w.getByRole('dialog').getByRole('button', { name: 'შეთავაზების გაუქმება', exact: true }).click(); await w.getByRole('dialog').waitFor({ state: 'hidden' }); const remaining = (await sql('select status from public.offers where id=$1', [state.offerId]))[0]; assert(!remaining || remaining.status === 'withdrawn', 'Offer must be withdrawn or deleted'); }, w);
