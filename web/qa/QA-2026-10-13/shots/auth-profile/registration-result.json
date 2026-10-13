@@ -1,8 +1,10 @@
 {
-  "email": "e2e+1791896931908@meetany.local",
-  "id": "112e8c3b-9a26-4cde-8447-a3f0fc7ddfce",
+  "email": "e2e+1791897231004@meetany.local",
+  "id": "f1b2834c-8da9-454a-848a-8d257c7c5035",
   "role": "company",
   "url": "http://localhost:3407/onboarding/?step=type",
   "localAuthFixture": true,
-  "parentRedirectAfterReload": true
+  "parentRedirectAfterReload": true,
+  "pendingFieldsRetainedAfterFailure": true,
+  "completions": 2
 }

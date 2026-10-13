@@ -7,7 +7,7 @@ import { Button } from "../ui/Button";
 import { CustomSelect } from "../ui/CustomSelect";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMarketStore } from "../../lib/market-client";
+import { useMarketStore, type Store } from "../../lib/market-client";
 import { cities } from "../../lib/categories";
 import { normalizeMobilePhone } from "../../lib/mobile-phone";
 import { CategoryChips } from "../ui/CategoryChips";
@@ -103,8 +103,9 @@ export function LoginForm({ onReset, onSuccess }: { onReset: () => void; onSucce
   );
 }
 
-function RegisterForm({ initialRole }: { initialRole: string }) {
-  const { store } = useMarketStore();
+// Seed controlled fields from the parent’s loaded store on the first render.
+// A separate hook starts undefined and loses pending details when this form remounts.
+function RegisterForm({ initialRole, store }: { initialRole: string; store: Store }) {
   const router = useRouter();
   const next = safeNext(useSearchParams().get("next"));
   const profileRequired = !!store?.needsProfile();
@@ -297,9 +298,9 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
     </div>
   );
   if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანეთ ელფოსტაზე მიღებული კოდი.");
-  if (store?.needsProfile()) return page("რეგისტრაციის დასრულება", <RegisterForm key={store.pendingProfile()?.email || "complete"} initialRole={initialRole}/>, "შეამოწმეთ მონაცემები და დაასრულეთ რეგისტრაცია.");
+  if (store?.needsProfile()) return page("რეგისტრაციის დასრულება", <RegisterForm key={store.pendingProfile()?.email || "complete"} initialRole={initialRole} store={store}/>, "შეამოწმეთ მონაცემები და დაასრულეთ რეგისტრაცია.");
   return page(mode === "register" ? "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : loginCopy.title, <>
-    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm initialRole={registrationRole} />}
+    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : store ? <RegisterForm initialRole={registrationRole} store={store} /> : null}
     {mode !== "reset" && <div className="auth-registration">
       {mode === "login" ? <>
         <p>ჯერ არ გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("register", "client")}>რეგისტრაცია</button></p>

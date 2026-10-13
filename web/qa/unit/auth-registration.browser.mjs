@@ -12,12 +12,28 @@ try {
  await p.goto('http://localhost:3407/account/?tab=register&role=company',{waitUntil:'domcontentloaded',timeout:60000});await p.locator('#reg-company').waitFor();
  await p.locator('#reg-company').fill('QA რეგისტრაცია '+stamp);await p.locator('#reg-name').fill('სატესტო პირი');await p.locator('#reg-phone').fill('+995 5'+String(stamp).slice(-8));await p.locator('#reg-email').fill(email);await p.locator('#reg-password').fill('local-e2e-password');
  await p.locator('#reg-city').click();await p.locator('#reg-city-options').getByRole('option',{name:'თბილისი',exact:true}).click();await p.locator('#reg-industry [role=radio]').first().click();await p.locator('#reg-terms').check();
+ let completions=0;
+ await context.route('**/rpc/complete_profile',async route=>{
+  if(++completions===1)return route.fulfill({status:400,contentType:'application/json',body:JSON.stringify({message:'MA405: phone already registered',code:'P0001'})});
+  return route.continue();
+ });
+ await p.locator('.auth-register button[type=submit]').click();
+ await p.getByRole('heading',{name:'რეგისტრაციის დასრულება',exact:true}).waitFor();
+ assert.equal(await p.locator('#reg-company').inputValue(),'QA რეგისტრაცია '+stamp);
+ assert.equal(await p.locator('#reg-name').inputValue(),'სატესტო პირი');
+ assert.equal(await p.locator('#reg-email').inputValue(),email);
+ assert.equal(await p.locator('#reg-email').isDisabled(),true);
+ assert.equal((await p.locator('#reg-phone').inputValue()).replaceAll(' ',''),'+9955'+String(stamp).slice(-8));
+ assert.match(await p.locator('#reg-city').innerText(),/თბილისი/);
+ assert.equal(await p.locator('#reg-industry [aria-checked=true]').count(),1);
+ assert.equal(await p.locator('#reg-terms').isChecked(),true);
+ await p.screenshot({path:'qa/QA-2026-10-13/shots/auth-profile/pending-profile-retained-390.png',fullPage:true});
  await p.locator('.auth-register button[type=submit]').click();await p.waitForURL('**/onboarding/?step=type',{timeout:60000});
  // Reloading the registration URL exercises the parent guard without a mounted submit callback.
  await p.goto('http://localhost:3407/account/?tab=register&role=company',{waitUntil:'domcontentloaded',timeout:60000});
  await p.waitForURL('**/onboarding/?step=type',{timeout:60000});
  created=(await db.query('select id,role,company from public.profiles where email=$1',[email])).rows[0];assert.equal(created?.role,'company');
  await p.getByRole('heading').first().waitFor();await p.screenshot({path:'qa/QA-2026-10-13/shots/auth-profile/registered-onboarding-390.png',fullPage:true});
- fs.writeFileSync('qa/QA-2026-10-13/shots/auth-profile/registration-result.json',JSON.stringify({email,id:created.id,role:created.role,url:p.url(),localAuthFixture:true,parentRedirectAfterReload:true},null,2));
- console.log('PASS real local registration → onboarding type; registration URL reload → onboarding type');
+ fs.writeFileSync('qa/QA-2026-10-13/shots/auth-profile/registration-result.json',JSON.stringify({email,id:created.id,role:created.role,url:p.url(),localAuthFixture:true,parentRedirectAfterReload:true,pendingFieldsRetainedAfterFailure:true,completions},null,2));
+ console.log('PASS pending company fields retained after complete_profile 400; retry → onboarding type; registration URL reload → onboarding type');
 } finally {await browser.close();await db.query('delete from neon_auth."user" where email=$1',[email]);await db.end();}
