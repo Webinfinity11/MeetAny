@@ -1,0 +1,86 @@
+{
+  "/(home)/page": {
+    "bytes": 292313,
+    "gzipBytes": 102584
+  },
+  "/_global-error/page": {
+    "bytes": 292313,
+    "gzipBytes": 102584
+  },
+  "/_not-found/page": {
+    "bytes": 288356,
+    "gzipBytes": 101024
+  },
+  "/(account)/account/page": {
+    "bytes": 487037,
+    "gzipBytes": 159991
+  },
+  "/(admin)/admin/page": {
+    "bytes": 547923,
+    "gzipBytes": 166552
+  },
+  "/(companies)/companies/page": {
+    "bytes": 323138,
+    "gzipBytes": 113635
+  },
+  "/(how)/how-it-works/page": {
+    "bytes": 293863,
+    "gzipBytes": 103435
+  },
+  "/(ideas)/ideas/page": {
+    "bytes": 307104,
+    "gzipBytes": 106979
+  },
+  "/(matching)/matching/page": {
+    "bytes": 331892,
+    "gzipBytes": 115959
+  },
+  "/(onboarding)/onboarding/page": {
+    "bytes": 404069,
+    "gzipBytes": 138384
+  },
+  "/(requests)/requests/page": {
+    "bytes": 357738,
+    "gzipBytes": 126378
+  },
+  "/(terms)/terms/page": {
+    "bytes": 292609,
+    "gzipBytes": 102821
+  },
+  "/dev/qa-layout/page": {
+    "bytes": 350058,
+    "gzipBytes": 122747
+  },
+  "/dev/ui/page": {
+    "bytes": 340567,
+    "gzipBytes": 118508
+  },
+  "/(company-view)/companies/view/page": {
+    "bytes": 370267,
+    "gzipBytes": 128433
+  },
+  "/(compare-offers)/requests/compare/page": {
+    "bytes": 396917,
+    "gzipBytes": 139630
+  },
+  "/(deals)/deals/view/page": {
+    "bytes": 383727,
+    "gzipBytes": 130119
+  },
+  "/(ideas)/ideas/[slug]/page": {
+    "bytes": 308016,
+    "gzipBytes": 107511
+  },
+  "/(make-offer)/offers/new/page": {
+    "bytes": 362076,
+    "gzipBytes": 125578
+  },
+  "/(request-view)/requests/view/page": {
+    "bytes": 415421,
+    "gzipBytes": 144781
+  },
+  "/(requests-new)/requests/new/page": {
+    "bytes": 422035,
+    "gzipBytes": 146111
+  }
+}

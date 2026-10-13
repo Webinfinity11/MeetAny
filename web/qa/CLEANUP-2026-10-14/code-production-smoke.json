@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "htmlBytes": 294175
+  },
+  {
+    "path": "/requests/",
+    "status": 200,
+    "htmlBytes": 250256
+  },
+  {
+    "path": "/companies/",
+    "status": 200,
+    "htmlBytes": 248122
+  },
+  {
+    "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+    "status": 200,
+    "htmlBytes": 67359
+  },
+  {
+    "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "status": 200,
+    "htmlBytes": 83147
+  },
+  {
+    "path": "/account/",
+    "status": 200,
+    "htmlBytes": 55550
+  },
+  {
+    "path": "/how-it-works/",
+    "status": 200,
+    "htmlBytes": 80211
+  },
+  {
+    "path": "/admin/",
+    "status": 200,
+    "htmlBytes": 37905
+  }
+]

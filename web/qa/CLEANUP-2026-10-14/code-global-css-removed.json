@@ -1,0 +1,16 @@
+{
+  "web/app/styles/pages/catalog.css": [
+    "catalog-facet",
+    "catalog-facet--child",
+    "catalog-facet-group",
+    "catalog-facet-more",
+    "catalog-facet__children",
+    "catalog-facet__count",
+    "catalog-facet__icon",
+    "catalog-facet__label",
+    "catalog-facets"
+  ],
+  "web/app/styles/pages/homepage.css": [
+    "discovery-search"
+  ]
+}

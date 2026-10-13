@@ -1,0 +1,67 @@
+{
+  "web/app/components/home/HomeSections.module.css": [
+    "stepMeta"
+  ],
+  "web/app/components/market/MakeOffer.module.css": [
+    "offerSummary"
+  ],
+  "web/app/components/market/Matching.module.css": [
+    "offerBuyer",
+    "offerRow",
+    "offerSheet",
+    "offerTitle"
+  ],
+  "web/app/components/market/account/account.module.css": [
+    "buyerAvatar"
+  ],
+  "web/app/components/market/admin.module.css": [
+    "chartAxis",
+    "chartBar",
+    "chartBarActive",
+    "chartBase",
+    "chartHit",
+    "chartPlot",
+    "chartTip",
+    "charts",
+    "deltaDown",
+    "deltaUp",
+    "demoExamples",
+    "demoGlossary",
+    "demoIntro",
+    "demoStep",
+    "demoStepNumber",
+    "demoSteps",
+    "overviewSecondary",
+    "presentationHint",
+    "testSwitch",
+    "wrapAny"
+  ],
+  "web/app/components/market/company/CompanyProfile.module.css": [
+    "productsEmpty"
+  ],
+  "web/app/components/market/engagement.module.css": [
+    "contextInAside",
+    "contextRequest",
+    "emptyIcon",
+    "messageNotices",
+    "messageUnread",
+    "noticeKind",
+    "noticeTop",
+    "previewTitle",
+    "statusPill"
+  ],
+  "web/app/components/market/onboarding.module.css": [
+    "allCategories",
+    "categoryCount",
+    "categoryFooter",
+    "categoryGrid",
+    "chipCheck",
+    "coverAction",
+    "coverFrame",
+    "coverPlaceholder",
+    "itemRows",
+    "largeAvatar",
+    "logoAction",
+    "profileMedia"
+  ]
+}
