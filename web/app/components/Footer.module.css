@@ -10,6 +10,6 @@
 .bottom { border-top: var(--size-1) solid var(--ink-800); padding-block: var(--size-20); color: var(--ink-400); font-size: var(--fs-meta); line-height: var(--lh-meta); }
 .bottom > div { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--size-24); }
 @media (max-width:767px) { .top { grid-template-columns: 1fr; gap: var(--size-32); } .brand p { font-size: var(--fs-control-copy); } }
-.bottom :global(.ma-theme-toggle) { width: auto; height: auto; min-height: var(--tap-min); padding: var(--space-2) var(--space-3); color: var(--ink-200); background: var(--btn-ghost-bg); border-color: var(--btn-ghost-bg); }
-.bottom :global(.ma-theme-toggle:hover), .bottom :global(.ma-theme-toggle:active) { color: var(--white); background: var(--ink-800); }
+.bottom :global(.ma-theme-toggle) { width: auto; height: auto; min-height: var(--tap-min); padding: var(--space-2) 0; color: var(--ink-200); background: transparent; border-color: transparent; }
+.bottom :global(.ma-theme-toggle:hover), .bottom :global(.ma-theme-toggle:active) { color: var(--white); background: transparent; }
 .bottom :global(.ma-theme-toggle__swatch) { border-color: var(--ink-200); }
