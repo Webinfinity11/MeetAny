@@ -10,3 +10,4 @@ export { ConfirmSheet } from "./ConfirmSheet";
 export { CategoryChips, type CategoryChipsProps } from "./CategoryChips";
 export { ChipsInput, type ChipsInputProps } from "./ChipsInput";
 export { ImageUpload, type ImageUploadProps, type ImageUploadItem } from "./ImageUpload";
+export { CityChips, type CityChipsProps } from "./CityChips";

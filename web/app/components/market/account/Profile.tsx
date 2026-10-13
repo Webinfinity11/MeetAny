@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "../../Icon";
 import { Button } from "../../ui/Button";
 import { CustomSelect } from "../../ui/CustomSelect";
-import { CompactMultiSelect } from "../../ui/CompactMultiSelect";
+import { CityChips } from "../../ui/CityChips";
 import { toast } from "../../Toasts";
 import { PasswordInput } from "../AuthForms";
 import { useFieldErrors, type FieldErrors } from "../fieldErrors";
@@ -199,8 +199,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <ProfileItems compact id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);setSaved(false);}}/>
               <ProfileItems compact id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
             </div>
-            <CompactMultiSelect id="profile-service-cities" label="მომსახურების ქალაქები" options={Object.entries(cities).map(([value,label])=>({value,label}))} value={serviceCities} exclusiveValue="georgia" disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
-            <p className="ma-field__help">იგივე სია დისტრიბუციის რეგიონებისაა</p>
+            <CityChips id="profile-service-cities" value={serviceCities} disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
           </fieldset>
           <fieldset className="account-form-group" disabled={pending}>
             <legend>მისამართი</legend>

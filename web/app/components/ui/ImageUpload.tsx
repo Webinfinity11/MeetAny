@@ -20,7 +20,7 @@ function Preview({ item, logo, label }: { item: ImageUploadItem; logo: boolean; 
     return () => { if (url) URL.revokeObjectURL(url); };
   }, [item.file, item.url]);
   const src = item.file ? preview : item.url;
-  return logo ? <Avatar name={label} logoUrl={src} size="lg" /> : broken ? <span className={s.failed}>ფოტო ვერ გაიხსნა</span> : src ? <img src={src} alt={label} onError={() => setBroken(true)} /> : <Icon name="image" />;
+  return logo ? <Avatar name={label} logoUrl={src} size="lg" /> : broken ? <span className={s.failed} role="img" aria-label="სურათი ვერ ჩაიტვირთა" title="სურათი ვერ ჩაიტვირთა"><Icon name="image" /></span> : src ? <img src={src} alt={label} onError={() => setBroken(true)} /> : <Icon name="image" />;
 }
 export function ImageUpload({ id, label, kind, items, onChange, max = 8, disabled = false, uploading = false, hint }: ImageUploadProps) {
   const input = useRef<HTMLInputElement>(null);
