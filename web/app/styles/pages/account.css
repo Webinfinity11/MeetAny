@@ -206,8 +206,8 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-lead{margin:0 0 var(--space-4);font-size:var(--fs-copy);line-height:var(--lh-copy);color:var(--ink-600);max-width:var(--measure)}
 .auth-page .ma-check a{color:var(--ink-950);text-underline-offset:var(--size-3)}
 @media(max-width:639px){
- .ma-page.auth-page{align-items:end;padding:var(--space-6) 0 0}
- .auth-card{border-radius:var(--size-20) var(--size-20) 0 0;padding-bottom:calc(var(--size-28) + env(safe-area-inset-bottom))}
+ .ma-page.auth-page{align-items:start;min-height:0;padding:var(--space-4) 0 calc(var(--space-10) + env(safe-area-inset-bottom))}
+ .auth-card{padding:var(--space-6) var(--space-5);border-radius:var(--size-16)}
 }
 
 /* ---------- Account: pill tabs, card surfaces, hoverable rows ---------- */
