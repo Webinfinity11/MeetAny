@@ -194,7 +194,7 @@ select t.as_user('fc_b');
 select t.throws('select public.submit_verification()','MA902','FC incomplete verification rejected');
 select t.throws('select public.complete_onboarding()','MA902','FC incomplete company cannot complete onboarding');
 select t.as_super();
-update public.profiles set logo_url=t.photo('fc_b','logo.png'),about='A complete company description' where id=t.uid('fc_b');
+update public.profiles set logo_url=null,about='A complete company description' where id=t.uid('fc_b');
 select t.as_user('fc_b');
 select public.set_onboarding_details('both','8-50',2020,array['GE'],array['ka'],'Buyer Legal','405882001','LLC','Director',null,'{}','{}');
 select t.ok(not (public.complete_onboarding()).verified,'FC onboarding completion does not require or grant verification');
@@ -202,7 +202,7 @@ select t.ok((public.complete_onboarding()).onboarding_completed_at is not null,'
 select t.put('fc_registration_file',t.fc_file('verification',t.uid('fc_b'),'application/pdf',convert_to('%PDF-test','UTF8'),'registration'));
 select t.throws('select public.submit_verification()','MA902','FC missing tax document blocks submission');
 select t.put('fc_tax_file',t.fc_file('verification',t.uid('fc_b'),'application/pdf',convert_to('%PDF-test','UTF8'),'tax'));
-select t.ok((public.submit_verification()).verification_documents_status='pending' and (select not verified from public.my_profile()),'FC complete verification enters pending without self approval');
+select t.ok((public.submit_verification()).verification_documents_status='pending' and (select not verified from public.my_profile()),'FC verification without logo enters pending without self approval');
 select t.throws($q$select public.remove_attachment(t.get('fc_registration_file'))$q$,'MA901','FC pending verification file cannot be removed');
 select t.throws($q$select public.begin_file_upload('verification',t.uid('fc_b'),'x','application/pdf',9,'tax')$q$,'MA901','FC pending verification file cannot be replaced');
 select t.throws($q$select public.review_verification(t.uid('fc_b'),'approved')$q$,'MA003','FC company cannot approve itself');

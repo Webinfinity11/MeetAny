@@ -15,7 +15,7 @@ import { marketBootstrap } from './market-bootstrap.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
-  'verification_record','rate_deal_full','create_request_full','reject_deal_proposal','complete_onboarding','review_verification',
+  'verification_record','verification_requirements','rate_deal_full','create_request_full','reject_deal_proposal','complete_onboarding','review_verification',
   'become_company','list_attachments','remove_attachment','bind_draft_files','submit_verification','set_request_preferences','request_preferences','list_matching_feed','add_deal_update','open_deal_issue','admin_deal_issues','admin_resolve_deal_issue',
   'admin_edit_profile','admin_edit_request','admin_company_settings','admin_manage_plan','site_content','admin_save_site_content',
   'company_products','set_my_products','admin_market_metrics','company_distribution_profiles','set_my_distribution',

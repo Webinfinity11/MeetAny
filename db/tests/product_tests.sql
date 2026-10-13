@@ -9,7 +9,7 @@ select t.throws($q$select public.set_my_products('[]')$q$,'MA201','PR client den
 select t.as_user('gal_f');
 select public.set_my_gallery(array[t.photo('gal_f','gallery-product.jpg')]);
 select t.throws($q$select public.set_my_products('{}')$q$,'MA622','PR object rejected');
-select t.throws($q$select public.set_my_products('[{"name":"x"}]')$q$,'MA622','PR incomplete item rejected');
+select t.throws($q$select public.set_my_products('[{"name":"x"}]')$q$,'MA622','PR too short name rejected');
 select t.throws($q$select public.set_my_products(jsonb_build_array(jsonb_build_object('name','Chair','photoUrl',t.photo('gal_g','gallery-product.jpg'))))$q$,'MA622','PR foreign owner photo rejected');
 select t.throws($q$select public.set_my_products(jsonb_build_array(jsonb_build_object('name','Chair','photoUrl',t.photo('gal_f','gallery-missing.jpg'))))$q$,'MA622','PR missing gallery photo rejected');
 select t.ok(jsonb_array_length(public.set_my_products(jsonb_build_array(jsonb_build_object('name','Chair','photoUrl',t.photo('gal_f','gallery-product.jpg'),'note','Wooden chair'))))=1,'PR product saved');
