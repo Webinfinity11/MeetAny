@@ -11,7 +11,7 @@ export function ChipsInput({ id, label, values, onChange, suggestions = [], max 
   const add = (text = draft) => {
     if (disabled) return;
     const value = text.trim();
-    if (!value) return;
+    if (!value) { setError('ჯერ ჩაწერეთ პუნქტი'); input.current?.focus(); return; }
     if (values.some(item => item.toLocaleLowerCase() === value.toLocaleLowerCase())) { setError('ეს პუნქტი უკვე დამატებულია'); return; }
     if (values.length >= max) { setError(`მაქსიმუმ ${max} პუნქტი`); return; }
     if (value.length > maxLength) { setError(`მაქსიმუმ ${maxLength} სიმბოლო`); return; }
@@ -24,7 +24,7 @@ export function ChipsInput({ id, label, values, onChange, suggestions = [], max 
     {suggestions.some(value => !values.includes(value)) && <div className={s.suggestions}>{suggestions.filter(value => !values.includes(value)).map(value => <Button key={value} variant="secondary" disabled={disabled} className={s.suggestion} onClick={() => add(value)}>{value}<Icon name="plus" /></Button>)}</div>}
     <div className={s.control}><input ref={input} id={id} className="ma-input" value={draft} disabled={disabled} maxLength={maxLength} placeholder={placeholder} aria-invalid={!!error} aria-describedby={error || help ? `${id}-help` : undefined}
       onChange={event => { setDraft(event.target.value); setError(''); }} onKeyDown={event => { if (!event.nativeEvent.isComposing && ['Enter', ','].includes(event.key)) { event.preventDefault(); add(); } }} />
-      <Button variant="secondary" disabled={disabled} aria-disabled={!draft.trim() || undefined} onClick={() => add()}>დამატება</Button></div>
+      <Button variant="secondary" disabled={disabled} onClick={() => add()}>დამატება</Button></div>
     {error || help ? <p id={`${id}-help`} className={error ? 'ma-field__error' : 'ma-field__help'} role={error ? 'alert' : undefined}>{error || help}</p> : null}
   </div>;
 }
