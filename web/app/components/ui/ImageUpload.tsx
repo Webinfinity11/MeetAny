@@ -42,7 +42,7 @@ export function ImageUpload({ id, label, kind, items, onChange, max = 8, disable
     const next = [...items], [item] = next.splice(index, 1);
     next.splice(to, 0, item); onChange(next);
   };
-  return <div className={`ma-field ${s.root}`} aria-busy={uploading}>
+  return <div className={`ma-field ${s.root}`} data-kind={kind} aria-busy={uploading}>
     <span className="ma-field__label" id={`${id}-label`}>{label}{!logo && <span className="ma-field__opt">{items.length} / {limit}</span>}</span>
     <ul className={s.grid} aria-labelledby={`${id}-label`}>
       {items.map((item, index) => <li key={item.key} className={s.item} draggable={!logo && !inactive}
@@ -50,10 +50,10 @@ export function ImageUpload({ id, label, kind, items, onChange, max = 8, disable
         onDragOver={event => { event.preventDefault(); }} onDrop={event => { event.preventDefault(); if (dragged.current) move(dragged.current, index); else add(Array.from(event.dataTransfer.files)); dragged.current = null; }}>
         <div className={s.tile} data-logo={logo || undefined}><Preview item={item} logo={logo} label={`${label} ${index + 1}`} />{!logo && index === 0 && <span className={s.badge}>მთავარი</span>}</div>
         <div className={s.tools}>{logo ? <Button variant="ghost" disabled={inactive} onClick={() => input.current?.click()}>შეცვლა</Button> : index > 0 ? <Button variant="ghost" disabled={inactive} aria-label={`ფოტო ${index + 1} — მთავრად დაყენება`} title="მთავრად დაყენება" onClick={() => move(item.key, 0)}><Icon name="star" /></Button> : null}
-          <Button variant="ghost" disabled={inactive} aria-label={`${logo ? 'ლოგო' : `ფოტო ${index + 1}`} — წაშლა`} onClick={() => { setError(''); onChange(items.filter(i => i.key !== item.key)); }}><Icon name="x" />{logo && 'წაშლა'}</Button></div>
+          <Button variant="ghost" disabled={inactive} aria-label={`${logo ? 'ლოგო' : `ფოტო ${index + 1}`} — წაშლა`} onClick={() => { setError(''); onChange(items.filter(i => i.key !== item.key)); }}>{logo ? 'წაშლა' : <Icon name="x" />}</Button></div>
       </li>)}
       {items.length < limit && <li><Button variant="secondary" className={`${s.tile} ${s.add}`} disabled={inactive} data-over={over || undefined} aria-describedby={`${id}-help`} onClick={() => input.current?.click()}
-        onDragOver={event => { event.preventDefault(); if (!inactive) setOver(true); }} onDragLeave={() => setOver(false)} onDrop={event => { event.preventDefault(); setOver(false); add(Array.from(event.dataTransfer.files)); }}><Icon name="upload" /><span>დამატება</span><span className={s.format}>{size} მბ-მდე</span></Button></li>}
+        onDragOver={event => { event.preventDefault(); if (!inactive) setOver(true); }} onDragLeave={() => setOver(false)} onDrop={event => { event.preventDefault(); setOver(false); add(Array.from(event.dataTransfer.files)); }}><Icon name="upload" /><span>{logo ? 'ლოგოს ატვირთვა' : 'დამატება'}</span>{!logo && <span className={s.format}>{size} მბ-მდე</span>}</Button></li>}
     </ul>
     <input ref={input} id={id} className="ma-sr-only" type="file" multiple={!logo} disabled={inactive} tabIndex={-1} aria-label={`${label} — დამატება`} accept={ALLOWED.join(',')} onChange={event => { add(Array.from(event.target.files || [])); event.target.value = ''; }} />
     <p id={`${id}-help`} className="ma-field__help">{hint ?? `JPG, PNG, WEBP ან GIF · ${size} მბ-მდე${logo ? '' : ' · პირველი ფოტო მთავარია.'}`}</p>

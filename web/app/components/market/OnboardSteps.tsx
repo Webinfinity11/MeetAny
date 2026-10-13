@@ -78,9 +78,8 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
   </>;
   if (step === 'profile') return <>
     <Card title="ვინ ხართ"><ImageUpload id="onboard-logo" label="ლოგო (არასავალდებულო)" kind="logo" items={p.logo_url ? [{ key: 'logo', url: p.logo_url }] : []} onChange={items => { void upload(items[0]?.file || null, 'logo'); }} />
-      <Field label="კომპანიის შესახებ" hint={`${p.about.length} / 1000`} multiline value={p.about || ''} maxLength={1000} onChange={about => patch({ about })} /></Card>
-    <Link href="/account/?tab=profile">ფოტოები და გალერეა — პროფილის პარამეტრებში</Link>
-    <Card title="დარგი და ტეგები"><div><p>დარგი: {categories[p.industry] || 'არ არის მითითებული'}</p><Button variant="ghost" aria-expanded={editingIndustry} onClick={() => setEditingIndustry(!editingIndustry)}>შეცვლა</Button></div>
+      <Field label="კომპანიის შესახებ" hint={`${p.about.length} / 1000`} multiline value={p.about || ''} maxLength={1000} onChange={about => patch({ about })} /><p className={s.muted}>გალერეა და ფონური ფოტო ემატება <Link href="/account/?tab=profile">პროფილის პარამეტრებში</Link></p></Card>
+    <Card title="დარგი და ტეგები"><div className={s.industryRow}><p>დარგი: {categories[p.industry] || 'არ არის მითითებული'}</p><Button variant="ghost" aria-expanded={editingIndustry} onClick={() => setEditingIndustry(!editingIndustry)}>შეცვლა</Button></div>
       {editingIndustry && <CategoryChips value={[p.industry]} onChange={values => { patch({ industry: values[0] }); setEditingIndustry(false); }} />}
       <Items label="ტეგები" values={p.business_tags} suggestions={['HoReCa', 'დისტრიბუცია', 'იმპორტი', 'წარმოება', 'კეითერინგი']} onChange={business_tags => patch({ business_tags })} /></Card>
     <details className={s.optional}><summary>დამატებითი</summary><Card title="სერტიფიკატები" hint="არასავალდებულო"><Items label="სერტიფიკატები" values={p.certificates} suggestions={certificateOptions} onChange={certificates => patch({ certificates })} /></Card></details>
