@@ -13,12 +13,13 @@ export type HomeRequest = {
 };
 export type HomeCompany = { id: string; company: string; industry: string; city: string; createdAt: string };
 
-/** Both home sections use the existing public store; no extra data fetch or invented counts. */
+/** Both home sections use the existing public store; no extra data fetch or invented counts.
+ * Up to nine requests: the grid takes the newest five, the live strip the next four. */
 export function useHomeFeed(initial?: PublicSnapshot) {
   const { store, ready, available } = useMarketStore(initial);
   const requests: HomeRequest[] = ready && available && store
     ? [...(store.listRequests({ state: "open" }) as HomeRequest[])].filter(r => !/ტესტ|test|e2e/i.test(r.title))
-      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 5) : [];
+      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 9) : [];
   const companies: HomeCompany[] = ready && available && store
     ? [...(store.listCompanies() as HomeCompany[])].filter(c => !/ტესტ|test|e2e/i.test(c.company))
       .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 5) : [];
@@ -41,6 +42,6 @@ export function HomeRequests({ initial, initialNow }: { initial?: PublicSnapshot
   return <div className="home-opportunities" aria-busy={!ready}>
     {!ready ? Array.from({ length: 5 }, (_, i) => <OpportunitySkeleton key={i} />)
       : !requests.length ? <p className="home-empty">{available ? "ღია მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>
-      : requests.map(r => <OpportunityCard key={r.id} compact request={{ ...r, daysLeft: store?.daysLeft(r, now) ?? 0, isNew: now >= Date.parse(r.createdAt) && now - Date.parse(r.createdAt) < 86400000 }} offers={store?.offerCount(r.id)} />)}
+      : requests.slice(0, 5).map(r => <OpportunityCard key={r.id} compact request={{ ...r, daysLeft: store?.daysLeft(r, now) ?? 0, isNew: now >= Date.parse(r.createdAt) && now - Date.parse(r.createdAt) < 86400000 }} offers={store?.offerCount(r.id)} />)}
   </div>;
 }

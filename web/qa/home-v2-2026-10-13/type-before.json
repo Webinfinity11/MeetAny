@@ -1,0 +1,1714 @@
+{
+ "390": {
+  "sizes": [
+   [
+    11,
+    32
+   ],
+   [
+    12,
+    44
+   ],
+   [
+    13,
+    27
+   ],
+   [
+    14,
+    24
+   ],
+   [
+    15,
+    23
+   ],
+   [
+    16,
+    18
+   ],
+   [
+    17,
+    3
+   ],
+   [
+    18,
+    2
+   ],
+   [
+    21,
+    1
+   ],
+   [
+    22,
+    7
+   ],
+   [
+    26,
+    3
+   ],
+   [
+    30,
+    1
+   ]
+  ],
+  "issues": [
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › p.hero-eyebrow",
+    "fs": 12,
+    "sample": "ბიზნესები ბიზნესებისთვის"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › li",
+    "fs": 12,
+    "sample": "გადამოწმებული კომპანიები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › li",
+    "fs": 12,
+    "sample": "განთავსება უფასოა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › li",
+    "fs": 12,
+    "sample": "კონტაქტი — არჩევის შემდეგ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › span",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › span",
+    "fs": 11,
+    "sample": "გაგზავნილი შეთავაზება"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "ვისთვის არის MeetAny › span",
+    "fs": 13,
+    "sample": "აღწერეთ საჭიროება და მიიღეთ შეთავაზებები"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "ვისთვის არის MeetAny › span",
+    "ratio": 1.5,
+    "sample": "აღწერეთ საჭიროება და მიიღეთ შეთავაზებები"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "ვისთვის არის MeetAny › span",
+    "fs": 13,
+    "sample": "ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზა"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "ვისთვის არის MeetAny › span",
+    "ratio": 1.5,
+    "sample": "ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "ავეჯი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span.Aqb6ea_",
+    "fs": 11,
+    "sample": "3 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "0 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "კომერციული ინვენტარი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "10 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "8 ლითონის თარო სათადარიგო ნაწილებისთვის"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "1 შეთავაზება"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "requests-heading › span",
+    "ratio": 2.17,
+    "sample": "1 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "ხილი, ბოსტნეული და ხორცი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "19 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "სეზონური ბოსტნეული კვირაში სამჯერ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "0 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "ავეჯი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "16 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "10 კომპაქტური ხის მაგიდა 70×70"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "6 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "IT მხარდაჭერა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "8 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "მჭირდება 101 კომპიუტერი HP"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "0 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "ახლახან განთავსდა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "მოდის შეთავაზებები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 11,
+    "sample": "თბილისი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 11,
+    "sample": "რუსთავი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 11,
+    "sample": "1 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 11,
+    "sample": "თბილისი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 11,
+    "sample": "თბილისი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 11,
+    "sample": "6 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--info",
+    "fs": 12,
+    "sample": "ახალი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება ხვალიდან"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--neutral",
+    "fs": 12,
+    "sample": "ნანახია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 3 კვირაში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--success",
+    "fs": 12,
+    "sample": "არჩეული"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 5 დღეში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--info",
+    "fs": 12,
+    "sample": "ახალი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 1 კვირაში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--neutral",
+    "fs": 12,
+    "sample": "ნანახია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 2 კვირაში"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "მიუთითეთ, რა, რამდენი, სად და როდის გჭირ"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "შესაბამისი მომწოდებლები გიგზავნიან ფასს,"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "აირჩიეთ საუკეთესო შეთავაზება — კონტაქტი "
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "დაადასტურეთ პირობები, მიჰყევით შესრულება"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "home-why-title › h3",
+    "ratio": 1.45,
+    "sample": "მხოლოდ გადამოწმებული კომპანიები"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-why-title › p",
+    "fs": 14,
+    "sample": "კომპანია შეთავაზებას მხოლოდ მაშინ აგზავნ"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-why-title › p",
+    "fs": 14,
+    "sample": "ტელეფონი და ელფოსტა იხსნება მხოლოდ თქვენ"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "home-why-title › h3",
+    "ratio": 1.45,
+    "sample": "შეფასება — დასრულებული გარიგებიდან"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-why-title › p",
+    "fs": 14,
+    "sample": "შეფასებას ტოვებს მხოლოდ ის, ვისთანაც გარ"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "home-companies-title › p",
+    "ratio": 1.86,
+    "sample": "ხილი, ბოსტნეული და ხორცი · თბილისი"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ფერმერთა კოოპერატივი: კახეთისა და ქართლი"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ფერმერთა კოოპერატივი: კახეთისა და ქართლი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "სეზონური ბოსტნეული და მწვანილი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ხილი და კენკრა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 2"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და "
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და "
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "სასტუმროს თეთრეული"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ფარდების შეკერვა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "მაგიდებისა და სკამების დამზადება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "სავაჭრო თაროები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "home-companies-title › p",
+    "ratio": 1.86,
+    "sample": "ბრენდინგი და დიზაინი · თბილისი"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "მარკეტინგის სააგენტო მცირე და საშუალო ბი"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "მარკეტინგის სააგენტო მცირე და საშუალო ბი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ლოგო და ბრენდის იდენტობა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "შეფუთვისა და ეტიკეტის დიზაინი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 2"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "home-companies-title › a",
+    "ratio": 1.63,
+    "sample": "კოლხეთის ტვირთი"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "home-companies-title › p",
+    "ratio": 1.86,
+    "sample": "ტვირთის გადაზიდვა · მთელი საქართველო"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ფოთის პორტიდან ვზიდავთ კონტეინერულ და პა"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ფოთის პორტიდან ვზიდავთ კონტეინერულ და პა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "კონტეინერის გატანა პორტიდან"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "პალეტური გადაზიდვა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "home-companies-title › p",
+    "ratio": 1.86,
+    "sample": "ვებსაიტი და აპები · თბილისი"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ვაკეთებთ ვებგვერდებს და მარტივ ონლაინ შე"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ვაკეთებთ ვებგვერდებს და მარტივ ონლაინ შე"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ვებგვერდის დამზადება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ონლაინ მენიუ და შეკვეთები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "supplier-title › p.rKMM2a_",
+    "ratio": 1.87,
+    "sample": "დაარეგისტრირეთ კომპანია, მიიღეთ შესაბამი"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "supplier-title › li",
+    "ratio": 1.86,
+    "sample": "შეთავაზების გაგზავნა უფასოა"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "supplier-title › li",
+    "fs": 14,
+    "sample": "მოთხოვნები თქვენი დარგისა და ქალაქის მიხ"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "supplier-title › li",
+    "ratio": 1.86,
+    "sample": "მოთხოვნები თქვენი დარგისა და ქალაქის მიხ"
+   },
+   {
+    "rule": "text ≥15px",
+    "at": "supplier-title › li",
+    "fs": 14,
+    "sample": "შეფასებები მხოლოდ დასრულებული გარიგებები"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "supplier-title › li",
+    "ratio": 1.86,
+    "sample": "შეფასებები მხოლოდ დასრულებული გარიგებები"
+   }
+  ]
+ },
+ "1440": {
+  "sizes": [
+   [
+    11,
+    28
+   ],
+   [
+    12,
+    58
+   ],
+   [
+    13,
+    23
+   ],
+   [
+    14,
+    31
+   ],
+   [
+    15,
+    23
+   ],
+   [
+    16,
+    13
+   ],
+   [
+    17,
+    7
+   ],
+   [
+    18,
+    1
+   ],
+   [
+    22,
+    2
+   ],
+   [
+    26,
+    7
+   ],
+   [
+    27.28,
+    1
+   ],
+   [
+    28,
+    2
+   ],
+   [
+    34,
+    1
+   ],
+   [
+    44,
+    1
+   ]
+  ],
+  "issues": [
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › p.hero-eyebrow",
+    "fs": 12,
+    "sample": "ბიზნესები ბიზნესებისთვის"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › span",
+    "fs": 12,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "discovery-title › span",
+    "fs": 12,
+    "sample": "გაგზავნილი შეთავაზება"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "ვისთვის არის MeetAny › span",
+    "fs": 13,
+    "sample": "აღწერეთ საჭიროება და მიიღეთ შეთავაზებები"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "ვისთვის არის MeetAny › span",
+    "ratio": 1.5,
+    "sample": "აღწერეთ საჭიროება და მიიღეთ შეთავაზებები"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "ვისთვის არის MeetAny › span",
+    "fs": 13,
+    "sample": "ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზა"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "ვისთვის არის MeetAny › span",
+    "ratio": 1.5,
+    "sample": "ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "ავეჯი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span.Aqb6ea_",
+    "fs": 11,
+    "sample": "3 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "requests-heading › li",
+    "ratio": 2,
+    "sample": "4  ცალი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "0 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "კომერციული ინვენტარი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "10 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "8 ლითონის თარო სათადარიგო ნაწილებისთვის"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "requests-heading › li",
+    "ratio": 2,
+    "sample": "8  ცალი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "1 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "ხილი, ბოსტნეული და ხორცი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "19 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "სეზონური ბოსტნეული კვირაში სამჯერ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "0 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "ავეჯი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "16 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "10 კომპაქტური ხის მაგიდა 70×70"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "6 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "IT მხარდაჭერა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 11,
+    "sample": "8 დღე დარჩა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "requests-heading › a.Aqb6ea_",
+    "ratio": 1.47,
+    "sample": "მჭირდება 101 კომპიუტერი HP"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › strong.Aqb6ea_",
+    "fs": 12,
+    "sample": "ფასი შეთანხმებით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "requests-heading › span",
+    "fs": 12,
+    "sample": "0 შეთავაზება"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "live-title › p",
+    "fs": 15,
+    "sample": "ბიზნესები აქვეყნებენ, რა სჭირდებათ, და გ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "ახლახან განთავსდა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "მოდის შეთავაზებები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-category",
+    "fs": 11,
+    "sample": "ავეჯი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "live-title › h3",
+    "ratio": 1.43,
+    "sample": "კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "თბილისი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-category",
+    "fs": 11,
+    "sample": "კომერციული ინვენტარი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "live-title › h3",
+    "ratio": 1.43,
+    "sample": "8 ლითონის თარო სათადარიგო ნაწილებისთვის"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "რუსთავი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "1 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-category",
+    "fs": 11,
+    "sample": "ხილი, ბოსტნეული და ხორცი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "live-title › h3",
+    "ratio": 1.43,
+    "sample": "სეზონური ბოსტნეული კვირაში სამჯერ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "თბილისი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-category",
+    "fs": 11,
+    "sample": "ავეჯი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.home-live-eyebrow",
+    "fs": 11,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "live-title › p.home-live-eyebrow",
+    "cr": 3.16,
+    "need": 4.5,
+    "sample": "მოთხოვნა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "თბილისი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span",
+    "fs": 12,
+    "sample": "6 შეთავაზება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-initials",
+    "fs": 12,
+    "sample": "A"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "live-title › strong",
+    "ratio": 2,
+    "sample": "მომწოდებელი A"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--info",
+    "fs": 12,
+    "sample": "ახალი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება ხვალიდან"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-initials",
+    "fs": 12,
+    "sample": "B"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--neutral",
+    "fs": 12,
+    "sample": "ნანახია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 3 კვირაში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-initials",
+    "fs": 12,
+    "sample": "C"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--success",
+    "fs": 12,
+    "sample": "არჩეული"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 5 დღეში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-initials",
+    "fs": 12,
+    "sample": "D"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--info",
+    "fs": 12,
+    "sample": "ახალი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 1 კვირაში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.home-live-initials",
+    "fs": 12,
+    "sample": "E"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ვერიფიცირებული კომპანია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p",
+    "fs": 11,
+    "sample": "ფასი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › span.ma-badge.ma-badge--neutral",
+    "fs": 12,
+    "sample": "ნანახია"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "live-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "მიწოდება 2 კვირაში"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "0 1"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "home-how-title › p.rKMM2a_",
+    "cr": 2.95,
+    "need": 4.5,
+    "sample": "0 1"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "მიუთითეთ, რა, რამდენი, სად და როდის გჭირ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "0 2"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "home-how-title › p.rKMM2a_",
+    "cr": 2.95,
+    "need": 4.5,
+    "sample": "0 2"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "შესაბამისი მომწოდებლები გიგზავნიან ფასს,"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "0 3"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "home-how-title › p.rKMM2a_",
+    "cr": 2.95,
+    "need": 4.5,
+    "sample": "0 3"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "აირჩიეთ საუკეთესო შეთავაზება — კონტაქტი "
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 12,
+    "sample": "0 4"
+   },
+   {
+    "rule": "contrast AA",
+    "at": "home-how-title › p.rKMM2a_",
+    "cr": 2.95,
+    "need": 4.5,
+    "sample": "0 4"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-how-title › p.rKMM2a_",
+    "fs": 14,
+    "sample": "დაადასტურეთ პირობები, მიჰყევით შესრულება"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-why-title › p",
+    "fs": 15,
+    "sample": "სამი წესი, რომელსაც საიტი ყველა გარიგება"
+   },
+   {
+    "rule": "measure ≤ ~75ch",
+    "at": "home-why-title › p",
+    "ch": 85,
+    "sample": "სამი წესი, რომელსაც საიტი ყველა გარიგება"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "home-why-title › h3",
+    "ratio": 1.45,
+    "sample": "მხოლოდ გადამოწმებული კომპანიები"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-why-title › p",
+    "fs": 14,
+    "sample": "კომპანია შეთავაზებას მხოლოდ მაშინ აგზავნ"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-why-title › p",
+    "fs": 14,
+    "sample": "ტელეფონი და ელფოსტა იხსნება მხოლოდ თქვენ"
+   },
+   {
+    "rule": "heading line-height 1.2–1.35",
+    "at": "home-why-title › h3",
+    "ratio": 1.45,
+    "sample": "შეფასება — დასრულებული გარიგებიდან"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-why-title › p",
+    "fs": 14,
+    "sample": "შეფასებას ტოვებს მხოლოდ ის, ვისთანაც გარ"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p",
+    "fs": 15,
+    "sample": "დოკუმენტებით გადამოწმებული მომწოდებლები,"
+   },
+   {
+    "rule": "measure ≤ ~75ch",
+    "at": "home-companies-title › p",
+    "ch": 85,
+    "sample": "დოკუმენტებით გადამოწმებული მომწოდებლები,"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ფერმერთა კოოპერატივი: კახეთისა და ქართლი"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ფერმერთა კოოპერატივი: კახეთისა და ქართლი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "სეზონური ბოსტნეული და მწვანილი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ხილი და კენკრა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 2"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და "
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ვკერავთ სასტუმროს თეთრეულს, ფარდებსა და "
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "სასტუმროს თეთრეული"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ფარდების შეკერვა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "მაგიდებისა და სკამების დამზადება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "სავაჭრო თაროები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "მარკეტინგის სააგენტო მცირე და საშუალო ბი"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "მარკეტინგის სააგენტო მცირე და საშუალო ბი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ლოგო და ბრენდის იდენტობა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "შეფუთვისა და ეტიკეტის დიზაინი"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 2"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "home-companies-title › p",
+    "ratio": 1.86,
+    "sample": "ტვირთის გადაზიდვა · მთელი საქართველო"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ფოთის პორტიდან ვზიდავთ კონტეინერულ და პა"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ფოთის პორტიდან ვზიდავთ კონტეინერულ და პა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "კონტეინერის გატანა პორტიდან"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "პალეტური გადაზიდვა"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "fs": 14,
+    "sample": "ვაკეთებთ ვებგვერდებს და მარტივ ონლაინ შე"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "home-companies-title › p.Ktkn0G_",
+    "ratio": 1.86,
+    "sample": "ვაკეთებთ ვებგვერდებს და მარტივ ონლაინ შე"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ვებგვერდის დამზადება"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "ონლაინ მენიუ და შეკვეთები"
+   },
+   {
+    "rule": "meta ≥13px",
+    "at": "home-companies-title › li",
+    "fs": 12,
+    "sample": "+ 1"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "supplier-title › p.rKMM2a_",
+    "fs": 15,
+    "sample": "დაარეგისტრირეთ კომპანია, მიიღეთ შესაბამი"
+   },
+   {
+    "rule": "text line-height 1.55–1.7",
+    "at": "supplier-title › p.rKMM2a_",
+    "ratio": 1.87,
+    "sample": "დაარეგისტრირეთ კომპანია, მიიღეთ შესაბამი"
+   },
+   {
+    "rule": "wrapped label line-height 1.3–1.7",
+    "at": "supplier-title › li",
+    "ratio": 1.86,
+    "sample": "შეთავაზების გაგზავნა უფასოა"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "supplier-title › li",
+    "fs": 14,
+    "sample": "მოთხოვნები თქვენი დარგისა და ქალაქის მიხ"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "supplier-title › li",
+    "fs": 14,
+    "sample": "შეფასებები მხოლოდ დასრულებული გარიგებები"
+   },
+   {
+    "rule": "text ≥16px",
+    "at": "home-cta-title › p",
+    "fs": 15,
+    "sample": "აღწერეთ, რა გჭირდებათ, და შეადარეთ ვერიფ"
+   }
+  ]
+ }
+}

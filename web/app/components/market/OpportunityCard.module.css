@@ -2,10 +2,11 @@
 .card:hover { box-shadow: var(--shadow-3); }
 .visual { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: var(--ink-100); }
 .compact .visual { aspect-ratio: 16 / 10; }
+.compact .body h3 { font-size: var(--fs-body); line-height: var(--size-21); }
 .visual > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .new { position: absolute; top: var(--size-10); left: var(--size-10); }
 .chips { position: absolute; bottom: var(--size-10); inset-inline: var(--size-10); display: flex; justify-content: space-between; gap: var(--size-4); }
-.chips > span, .category { padding: var(--size-2) var(--size-8); background: var(--white); border-radius: var(--size-6); font-size: var(--size-11); font-weight: var(--fw-semibold); white-space: nowrap; }
+.chips > span, .category { padding: var(--size-2) var(--size-8); background: var(--white); border-radius: var(--size-6); font-size: var(--fs-meta); line-height: var(--lh-eyebrow); font-weight: var(--fw-semibold); white-space: nowrap; }
 .chips > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .chips > span:last-child { flex: none; }
 .chips .warning { background: var(--warning-100); color: var(--warning-700); }
@@ -24,9 +25,16 @@
 .buyer > span { display: grid; place-items: center; width: var(--size-24); height: var(--size-24); border-radius: var(--radius-circle); background: var(--ink-100); }
 .buyer svg { color: var(--info-600); }
 .facts { display: flex; flex-wrap: wrap; gap: var(--size-6) var(--size-16); list-style: none; margin: var(--size-12) 0 0; padding: 0; color: var(--ink-600); font-size: var(--size-13); }
-.compact .facts { flex-direction: column; }
+.compact .facts { flex-direction: column; line-height: var(--lh-eyebrow); }
 .facts li, .summary span { display: flex; align-items: center; gap: var(--size-6); }
 .facts svg, .summary svg { flex: none; width: var(--size-14); height: var(--size-14); }
+/* Compact card with offers (home): the public budget and the offer count on one footer line. */
+.price { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--size-4) var(--size-12); margin: auto 0 0; padding-top: var(--size-12); border-top: var(--size-1) solid var(--ink-150); }
+.facts:has(+ .price) { margin-bottom: var(--size-12); }
+.price strong { color: var(--ink-950); font-size: var(--size-15); font-weight: var(--fw-bold); font-variant-numeric: tabular-nums; }
+.price strong.muted { color: var(--ink-600); font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.price span { display: flex; align-items: center; gap: var(--size-4); color: var(--ink-600); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+.price svg { flex: none; width: var(--size-14); height: var(--size-14); }
 .bottom { margin-top: auto; padding-top: var(--size-16); }
 .summary { display: flex; flex-wrap: wrap; gap: var(--size-12); border-top: var(--size-1) solid var(--ink-150); padding-top: var(--size-12); color: var(--ink-600); font-size: var(--size-12); }
 .warning { color: var(--warning-700); }

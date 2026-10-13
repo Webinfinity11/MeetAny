@@ -7,18 +7,39 @@ import styles from "./HomeSections.module.css";
 
 export type HomeStatsData = { openRequests: number; verifiedCompanies: number; offersSent: number; completedDeals: number };
 
-/** Live counters under the hero; zero counters are left out, and the band hides below two. */
-export function HomeStats({ stats }: { stats?: HomeStatsData | null }) {
-  const items = stats ? ([
-    ["openRequests", "ღია მოთხოვნა", "/requests/"],
-    ["verifiedCompanies", "ვერიფიცირებული კომპანია", "/companies/"],
-    ["offersSent", "გაგზავნილი შეთავაზება", null],
-    ["completedDeals", "დასრულებული გარიგება", null],
-  ] as const).filter(([key]) => Number(stats[key]) > 0) : [];
-  if (items.length < 2) return null;
-  return <section className={styles.stats} aria-label="MeetAny რიცხვებში"><dl className={`home-wrap ${styles.statsList}`} data-count={items.length}>{items.map(([key, label, href]) => <div key={key} className={styles.stat}>
-    <dt>{href ? <Link href={href}>{label}</Link> : label}</dt><dd>{formatNumber(Number(stats![key]), 0)}</dd>
-  </div>)}</dl></section>;
+type StatKey = keyof HomeStatsData;
+/** Real counters only (home_stats); a zero counter is left out rather than shown. */
+const counted = (stats: HomeStatsData | null | undefined, keys: StatKey[]) => stats ? keys.filter(key => Number(stats[key]) > 0).map(key => [key, Number(stats[key])] as const) : [];
+
+/** Two white cards on the hero photo: who answers and how much they answer. */
+export function HomeHeroStats({ stats }: { stats?: HomeStatsData | null }) {
+  const labels: Partial<Record<StatKey, [string, string]>> = { verifiedCompanies: ["building-2", "ვერიფიცირებული კომპანია"], offersSent: ["inbox", "გაგზავნილი შეთავაზება"] };
+  const items = counted(stats, ["verifiedCompanies", "offersSent"]);
+  if (!items.length) return null;
+  return <ul className={styles.heroStats} aria-label="MeetAny რიცხვებში">{items.map(([key, value]) => <li key={key} className={styles.heroStat}>
+    <span className={styles.heroStatIcon}><Icon name={labels[key]![0]} /></span><strong>{formatNumber(value, 0)}</strong><span>{labels[key]![1]}</span>
+  </li>)}</ul>;
+}
+
+/** Under the hero: the two ways in (buyer / supplier) and the counters the photo cards do not show. */
+export function HomeAudience({ stats }: { stats?: HomeStatsData | null }) {
+  const labels: Partial<Record<StatKey, [string, string | null]>> = { openRequests: ["ღია მოთხოვნა", "/requests/"], completedDeals: ["დასრულებული გარიგება", null] };
+  const items = counted(stats, ["openRequests", "completedDeals"]);
+  return <section className={`home-wrap ${styles.audience}`} aria-label="ვისთვის არის MeetAny">
+    <Link className={styles.path} href="/requests/new/">
+      <span className={styles.pathIcon}><Icon name="building-2" /></span>
+      <span><strong>მჭირდება მომწოდებელი ან პარტნიორი</strong><span>აღწერეთ საჭიროება და მიიღეთ შეთავაზებები გადამოწმებული კომპანიებისგან.</span></span>
+      <Icon name="arrow-right" className={styles.pathArrow} />
+    </Link>
+    <Link className={`${styles.path} ${styles.pathSupplier}`} href="/requests/">
+      <span className={styles.pathIcon}><Icon name="users" /></span>
+      <span><strong>ვეძებ კლიენტებს</strong><span>ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზავნეთ შეთავაზება.</span></span>
+      <Icon name="arrow-right" className={styles.pathArrow} />
+    </Link>
+    {items.length > 0 && <dl className={styles.counters}>{items.map(([key, value]) => <div key={key}>
+      <dt>{labels[key]![1] ? <Link href={labels[key]![1]!}>{labels[key]![0]}</Link> : labels[key]![0]}</dt><dd>{formatNumber(value, 0)}</dd>
+    </div>)}</dl>}
+  </section>;
 }
 
 export function HomeHow() {

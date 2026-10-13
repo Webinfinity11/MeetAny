@@ -5,7 +5,8 @@ import ts from 'typescript';
 const files=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(path.join(dir,e.name)):[path.join(dir,e.name)]);
 const errors=[];
 for(const file of files('app')) {
- if(file.endsWith('.css')&&/(?:linear|radial|conic)-gradient\s*\(/.test(fs.readFileSync(file,'utf8')))errors.push(`${file}: gradients are not allowed`);
+ // No colour gradients; an alpha mask (mask-image, e.g. the home strip's edge fade) is allowed.
+ if(file.endsWith('.css'))postcss.parse(fs.readFileSync(file,'utf8')).walkDecls(d=>{if(/(?:linear|radial|conic)-gradient\s*\(/.test(d.value)&&!/^(?:-webkit-)?mask(?:-image)?$/.test(d.prop))errors.push(`${file}:${d.source.start.line}: gradients are not allowed`);});
  if(file.endsWith('.css')&&!file.endsWith('/tokens.css'))postcss.parse(fs.readFileSync(file,'utf8')).walkDecls(d=>{
   if(!d.value.includes('url(')&&/(?:#[\da-f]{3,8}\b|rgba?\(|(?<![\w-])-?(?:\d*\.)?\d+px\b)/i.test(d.value))errors.push(`${file}:${d.source.start.line}: use a token for ${d.prop}`);
  });

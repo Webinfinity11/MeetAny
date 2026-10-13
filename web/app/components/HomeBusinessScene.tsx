@@ -7,7 +7,6 @@ import { categories, cities, currentCategory } from "../lib/categories";
 import { HomeRequestPhoto, useHomeFeed, type HomeRequest } from "./HomeLive";
 import { HeroOffer, heroOffers } from "./home/HeroOffer";
 import type { PublicSnapshot } from "../lib/market-client";
-import styles from "./home/HomeSections.module.css";
 
 function HeroRequest({ request: r, offers, duplicate = false }: { request: HomeRequest; offers: number; duplicate?: boolean }) {
   return <Link href={`/requests/view/?id=${encodeURIComponent(r.id)}`} className="home-live-request" data-request-id={r.id} tabIndex={duplicate ? -1 : undefined}>
@@ -15,19 +14,19 @@ function HeroRequest({ request: r, offers, duplicate = false }: { request: HomeR
     <div className="home-live-body"><p className="home-live-eyebrow">მოთხოვნა</p><h3>{r.title}</h3><div className="home-live-meta"><span><Icon name="map-pin" />{cities[r.city] || r.city}</span>{offers > 0 ? <span><Icon name="inbox" />{offers} შეთავაზება</span> : null}</div></div>
   </Link>;
 }
+/** The live strip the owner keeps: newest requests on the left, schematic offers arriving on the right.
+ * It shows the requests after the five in the "ახალი მოთხოვნები" grid, so the page never repeats a card. */
 export function HomeBusinessScene({ initial }: { initial?: PublicSnapshot }) {
   const [paused, setPaused] = useState(false);
   const { store, ready, available, requests } = useHomeFeed(initial);
+  const shown = requests.length >= 9 ? requests.slice(5, 9) : requests.slice(0, 4);
   const empty = <p className="home-empty">{available ? "მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>;
-  return <>
-    <div className={`hero-scene ${styles.desktopScene}`} aria-label="ახლახან განთავსებული მოთხოვნები" data-paused={paused || undefined} aria-busy={!ready}>
-      <div className="home-live-headings"><span><Icon name="file-text" />ახლახან განთავსდა</span><span aria-hidden="true"><Icon name="inbox" />ასე მოდის შეთავაზებები</span></div>
-      <div className="hero-scene__photos">
-        <div className="hero-scene__column">{!ready ? <div className="home-live-skeleton ma-skel" /> : !requests.length ? empty : <div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{requests.slice(0, 4).map(r => <HeroRequest key={r.id} request={r} offers={store?.offerCount(r.id) ?? 0} duplicate={duplicate} />)}</div>)}</div>}</div>
-        <div className="hero-scene__column" aria-hidden="true"><div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{heroOffers.map(o => <HeroOffer key={o.id} offer={o} />)}</div>)}</div></div>
-      </div>
-      <button className={`hero-scene__motion ${styles.pause}`} type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label={paused ? "გაგრძელება" : "პაუზა"}><Icon name={paused ? "play" : "pause"} /></button>
+  return <div className="hero-scene" aria-label="ახლახან განთავსებული მოთხოვნები" data-paused={paused || undefined} aria-busy={!ready}>
+    <div className="hero-scene__photos">
+      <div className="hero-scene__column">{!ready ? <div className="home-live-skeleton ma-skel" /> : !shown.length ? empty : <div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{shown.map(r => <HeroRequest key={r.id} request={r} offers={store?.offerCount(r.id) ?? 0} duplicate={duplicate} />)}</div>)}</div>}</div>
+      <div className="hero-scene__column" aria-hidden="true"><div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{heroOffers.map(o => <HeroOffer key={o.id} offer={o} />)}</div>)}</div></div>
     </div>
-    <div className={styles.mobileScene} aria-busy={!ready}>{!ready ? <div className="home-live-skeleton ma-skel" /> : requests[0] ? <HeroRequest request={requests[0]} offers={store?.offerCount(requests[0].id) ?? 0} /> : empty}<div className={styles.mobileOffers} aria-hidden="true">{[heroOffers[0], heroOffers[2]].map(o => <HeroOffer key={o.id} offer={o} />)}</div></div>
-  </>;
+    {/* Hover and focus pause the strip by CSS; this button is for keyboard and touch only (hidden until focused, shown where there is no hover). */}
+    <button className="hero-scene__motion" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label={paused ? "გაგრძელება" : "პაუზა"}><Icon name={paused ? "play" : "pause"} /></button>
+  </div>;
 }
