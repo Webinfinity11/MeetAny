@@ -1,55 +1,17 @@
 "use client";
-
 import Image from "next/image";
 import { optimizable } from "../../lib/image";
 import { useSiteContent } from "../../lib/site-content";
+import { siteContentDefaults } from "../../lib/site-content-defaults";
 
-/** Companies header collage: slowly drifting photo columns at both edges, fading toward the search;
- *  on phones and tablets a single horizontal strip under it. Illustrative stock photos of work
- *  (public/assets/photos/cover/SOURCES.txt), not listed companies. */
-const columns = [
-  ["welding", "grocery", "warehouse", "kitchen"],
-  ["warehouse", "engineering", "seedlings", "team"],
-  ["grocery", "welding", "trucks", "metalwork"],
-  ["kitchen", "metalwork", "welding", "grocery"],
-  ["seedlings", "trucks", "team", "welding"],
-  ["kitchen", "metalwork", "warehouse", "engineering"],
-];
-const strip = ["warehouse", "welding", "grocery", "welding", "kitchen", "seedlings", "trucks", "metalwork", "engineering", "grocery"];
-// Replace staged close-ups with genuine work and business environments already credited
-// in public/assets/photos/sources.json and cover/SOURCES.txt.
-const photoOverrides: Record<string, string> = {
-  ceramics: "/assets/photos/cover/welding.jpg",
-  warehouse: "/assets/photos/logistics-warehouse.jpg",
-  produce: "/assets/photos/cover/grocery.jpg",
-  team: "/assets/photos/creative-team.jpg",
-  crafting: "/assets/photos/cover/metalwork.jpg",
-};
-const src = (name: string) => photoOverrides[name] || `/assets/photos/cover/${name}.jpg`;
-const managedSlots: Record<string, number> = {
-  welding: 1, ceramics: 1, warehouse: 2, packaging: 2, grocery: 3, produce: 3,
-  team: 4, kitchen: 5, engineering: 6, seedlings: 7, trucks: 8,
-  metalwork: 9, crafting: 9,
-};
-
+/** The nine photos published by the admin, visible at every viewport width. */
 export function CompanyCatalogCover() {
   const content = useSiteContent();
-  const photo = (name: string) => content[`businessImage${managedSlots[name]}`] || src(name);
-  return (
-    <div className="catalog-collage" aria-hidden="true">
-      {columns.map((photos, index) => (
-        <div key={index} className={`catalog-collage__col catalog-collage__col--${index + 1}${index % 2 ? " catalog-collage__col--even" : ""}`}>
-          {/* The list is rendered twice so the drift loops without a jump. */}
-          <div className="catalog-collage__track">
-            {[...photos, ...photos].map((name, i) => <Image key={i} src={photo(name)} alt="" width={160} height={200} loading="eager" unoptimized={!optimizable(photo(name))} />)}
-          </div>
-        </div>
-      ))}
-      <div className="catalog-collage__strip">
-        <div className="catalog-collage__strip-track">
-          {[...strip, ...strip].map((name, i) => <Image key={i} src={photo(name)} alt="" width={96} height={72} loading="lazy" unoptimized={!optimizable(photo(name))} />)}
-        </div>
-      </div>
-    </div>
-  );
+  return <div aria-label="კატალოგის ფოტოები" data-catalog-cover style={{display:"flex", gap:"var(--space-3)", overflowX:"auto", paddingBlock:"var(--space-4)"}}>
+    {Array.from({length:9}, (_, i) => {
+      const key = `businessImage${i + 1}`, src = content[key] || siteContentDefaults[key];
+      return <Image key={key} src={src} alt="" width={128} height={96} unoptimized={!optimizable(src)}
+        style={{width:"var(--size-128)", height:"var(--size-96)", flexShrink:0, objectFit:"cover", borderRadius:"var(--radius-md)"}} />;
+    })}
+  </div>;
 }

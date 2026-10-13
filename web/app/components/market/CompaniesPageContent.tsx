@@ -9,6 +9,7 @@ import { ServiceUnavailable } from "./ServiceUnavailable";
 import { ListSkeleton, SkeletonGrid } from "./Skeletons";
 import { ResultsBar } from "./ResultsBar";
 import { CatalogSearch } from "./CatalogSearch";
+import { CompanyCatalogCover } from "./CompanyCatalogCover";
 import { CatalogHeader } from "./CatalogHeader";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import { CompanyListingCard, type CompanyListingData } from "./CompanyListingCard";
@@ -141,6 +142,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const unmapped = rows.filter(c => c.lat == null || c.lng == null);
   return <div className={`ma-page companies-catalog catalog-page ${styles.page}`}>
     <CatalogHeader title="კომპანიები" description="კომპანიები და მომსახურება მთელი საქართველოდან." />
+    <CompanyCatalogCover />
     <div className="catalog-workspace">
       <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{body}</aside>
       <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
