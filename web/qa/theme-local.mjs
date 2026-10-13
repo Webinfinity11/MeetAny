@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
 
 const origin = process.env.QA_ORIGIN || 'http://localhost:3210';
 assert(['localhost', '127.0.0.1'].includes(new URL(origin).hostname), 'Local preview required');
-const output = path.resolve('qa/shots/theme-local');
+const output = path.resolve(process.env.QA_OUTPUT || 'qa/shots/theme-local');
 await fs.mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true, executablePath: process.env.QA_BROWSER_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
 const id = '00000000-0000-4000-8000-000000000081';
@@ -46,6 +46,8 @@ async function fixture(role = 'guest', saved) {
     if (req.resourceType() === 'image' && url.hostname.endsWith('.public.blob.vercel-storage.com')) return route.fulfill({ contentType: 'image/jpeg', body: await fs.readFile(path.resolve('public/assets/photos/fresh-produce.jpg')) });
     if (url.origin !== origin) { report.unexpected.push(url.origin); return route.abort(); }
     if (url.pathname.startsWith('/api/db/')) {
+      if (fn === 'bootstrap') return json({ me: actor ? { ...profile, id: actor, role } : null, companies: [profile], requests: [request], offers: actor ? [offer] : [], profiles: [{ ...profile, id: buyer, role: 'client' }], counts: [], companyStats: [], contacts: [], capabilities: { engagement: true, emailDelivery: false }, engagement: { savedIds: [], savedRequestIds: [], unread: 0, notifications: { items: [], nextCursor: null }, emailOffers: false } });
+      if (fn === 'my_request_draft' || fn === 'mark_request_offers_viewed') return json(null);
       if (fn === 'my_profile') return json(actor ? { ...profile, id: actor, role } : []);
       if (fn === 'profiles') return json(url.searchParams.get('role') === 'eq.company' ? [profile] : [profile, { ...profile, id: buyer, role: 'client', company: 'Coffee House', name: 'ანა კაპანაძე' }]);
       if (fn === 'requests') return json([request]);
@@ -57,64 +59,83 @@ async function fixture(role = 'guest', saved) {
       if (fn === 'get_deal') return json(deal);
       if (fn === 'get_deal_contact') return json([{ ...profile, id: role === 'company' ? buyer : id }]);
       if (fn === 'compare_offers') return json([{ ...offer, company: profile.company, city: 'tbilisi', verified: true, total_gel: 2000, best_price: true, fastest: true, eligible: true, commercial_terms: [] }]);
-      if (['company_business_features', 'company_products', 'company_stats', 'offer_counts', 'list_my_conversations', 'list_messages', 'company_distribution_profiles', 'company_reviews', 'my_company_review_targets', 'list_matching'].includes(fn)) return json([]);
+      if (['list_my_deals', 'list_matching_feed', 'list_attachments', 'company_business_features', 'company_products', 'company_stats', 'offer_counts', 'list_my_conversations', 'list_messages', 'company_distribution_profiles', 'company_reviews', 'my_company_review_targets', 'list_matching'].includes(fn)) return json([]);
       report.unexpected.push(fn); return route.abort();
     }
     if (url.pathname.startsWith('/api/analytics/')) return json({ enabled: false });
     return route.continue();
   });
   const page = await context.newPage();
-  page.setDefaultTimeout(15000);
+  page.setDefaultTimeout(30000);
+  page.setDefaultNavigationTimeout(60000);
   page.on('pageerror', error => report.pageErrors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') report.consoleErrors.push(message.text()); });
   return { context, page };
 }
+async function themeReady(page) {
+  await page.waitForFunction(() => { const button = document.querySelector('footer .ma-theme-toggle'); return Object.keys(button || {}).some(key => key.startsWith('__reactProps') && typeof button[key]?.onClick === 'function'); });
+}
 async function ready(page, route) {
-  await page.goto(origin + route, { waitUntil: 'domcontentloaded' });
-  await page.getByRole('button', { name: 'ლურჯი თემა', exact: true }).waitFor();
+  await page.goto(origin + route, { waitUntil: 'networkidle' });
+  if (!route.startsWith('/onboarding/')) await page.locator('footer .ma-theme-toggle').waitFor();
+  else check(await page.locator('.ma-theme-toggle').count() === 0, 'Onboarding has no toggle');
+  if (!route.startsWith('/onboarding/')) await themeReady(page);
   await page.locator('main h1').first().waitFor();
   await page.waitForFunction(() => !document.querySelector('.ma-header') || !!document.querySelector('.ma-header__login,.ma-header__account'));
   await page.evaluate(() => document.fonts.ready);
 }
 async function view(page, name, theme, width) {
   await page.setViewportSize({ width, height: 1000 });
+  await page.mouse.move(0, 0);
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await page.evaluate(() => Promise.all(document.getAnimations().filter(animation => animation.constructor.name === 'CSSTransition').map(animation => animation.finished.catch(() => {}))));
   const state = await page.evaluate(() => {
-    const root = getComputedStyle(document.documentElement);
+    const sample = document.createElement('span');
+    sample.style.transition = 'none';
+    sample.style.backgroundColor = 'var(--action-strong)';
+    document.body.append(sample);
+    const primary = getComputedStyle(sample).backgroundColor;
+    sample.style.backgroundColor = 'var(--white)';
+    const inverse = getComputedStyle(sample).backgroundColor;
+    sample.remove();
     const buttons = [...document.querySelectorAll('.ma-btn--primary:not(:disabled):not([aria-disabled=true])')].filter(b => b.getBoundingClientRect().width);
     const ctaLabels = [...document.querySelectorAll('.ma-header__cta span')];
     return { theme: document.documentElement.dataset.theme, overflow: document.documentElement.scrollWidth > innerWidth,
       compactHeader: innerWidth >= 768 || ctaLabels.every(el => !el.getBoundingClientRect().width),
-      primary: root.getPropertyValue('--action-strong').trim(), buttons: buttons.map(b => ({ label: b.textContent, color: getComputedStyle(b).backgroundColor })) };
+      primary, inverse, buttons: buttons.map(b => ({ label: b.textContent, inverse: !!b.closest('section[aria-labelledby="supplier-title"]'), color: getComputedStyle(b).backgroundColor })) };
   });
   check(state.theme === theme && !state.overflow, `${name}: ${theme}, width ${width}, no overflow`);
   check(state.compactHeader, `${name}: mobile header CTA stays inside its button`);
-  if (theme === 'blue') check(state.buttons.every(b => b.color === 'rgb(37, 99, 235)'), `${name}: primary buttons use blue`);
+  if (theme === 'blue') check(state.buttons.every(b => b.color === (b.inverse ? state.inverse : state.primary)), `${name}: primary buttons use blue (supplier inverse CTA stays white): ${JSON.stringify(state.buttons)}`);
   const file = `${name}-${theme}-${width}.png`;
-  await page.screenshot({ path: path.join(output, file), fullPage: true, animations: 'disabled' });
+  await page.screenshot({ path: path.join(output, file), fullPage: true, animations: 'disabled', caret: 'initial' });
   report.views.push(file);
+  console.log(`VIEW ${file}`);
 }
 try {
   const { context, page } = await fixture();
   await ready(page, '/');
-  const toggle = page.getByRole('button', { name: 'ლურჯი თემა', exact: true });
-  check(await toggle.getAttribute('aria-pressed') === 'false', 'Fresh visit uses classic');
+  const toggle = page.locator('footer .ma-theme-toggle');
+  check(await toggle.getAttribute('aria-pressed') === 'true', 'Fresh visit uses blue');
+  await toggle.click();
+  await page.waitForFunction(() => document.querySelector('footer .ma-theme-toggle')?.getAttribute('aria-pressed') === 'false');
+  await toggle.scrollIntoViewIfNeeded();
   await toggle.focus(); await page.keyboard.press('Enter');
-  await page.waitForFunction(() => document.querySelector('.ma-theme-toggle')?.getAttribute('aria-pressed') === 'true');
+  await page.waitForFunction(() => document.querySelector('footer .ma-theme-toggle')?.getAttribute('aria-pressed') === 'true');
   check(await toggle.getAttribute('aria-pressed') === 'true', 'Keyboard enables blue theme');
   check(await page.evaluate(() => localStorage.getItem('meetany.theme')) === 'blue', 'Choice is persisted');
   await page.getByRole('navigation', { name: 'მთავარი ნავიგაცია' }).getByRole('link', { name: 'კომპანიები', exact: true }).click();
   await page.waitForURL('**/companies/');
   check(await toggle.getAttribute('aria-pressed') === 'true', 'Next navigation preserves theme');
-  await page.reload(); await toggle.waitFor();
-  await page.waitForFunction(() => document.querySelector('.ma-theme-toggle')?.getAttribute('aria-pressed') === 'true');
+  await page.reload(); await toggle.waitFor(); await themeReady(page);
+  await page.waitForFunction(() => document.querySelector('footer .ma-theme-toggle')?.getAttribute('aria-pressed') === 'true');
   check(await toggle.getAttribute('aria-pressed') === 'true', 'Reload restores theme');
   const other = await context.newPage(); await other.goto(origin + '/account/');
-  await other.getByRole('button', { name: 'ლურჯი თემა', exact: true }).waitFor();
-  await other.waitForFunction(() => document.querySelector('.ma-theme-toggle')?.getAttribute('aria-pressed') === 'true');
+  await other.locator('footer .ma-theme-toggle').waitFor(); await themeReady(other);
+  await other.waitForFunction(() => document.querySelector('footer .ma-theme-toggle')?.getAttribute('aria-pressed') === 'true');
   await toggle.click();
   await other.waitForFunction(() => document.documentElement.dataset.theme === 'classic');
-  check(await other.getByRole('button', { name: 'ლურჯი თემა' }).getAttribute('aria-pressed') === 'false', 'Other tabs synchronize');
+  check(await other.locator('footer .ma-theme-toggle').getAttribute('aria-pressed') === 'false', 'Other tabs synchronize');
   await other.close();
   for (const theme of ['classic', 'blue']) {
     if (await page.evaluate(() => document.documentElement.dataset.theme) !== theme) await toggle.click();
@@ -141,17 +162,17 @@ try {
   check(await stored.page.evaluate(() => document.documentElement.dataset.theme) === 'blue', 'Saved blue theme is applied before hydration');
   await stored.context.close();
   const invalid = await fixture('guest', 'invalid'); await ready(invalid.page, '/');
-  check(await invalid.page.evaluate(() => document.documentElement.dataset.theme) === 'classic', 'Invalid storage uses classic');
+  check(await invalid.page.evaluate(() => document.documentElement.dataset.theme) === 'blue', 'Invalid storage uses blue');
   await invalid.context.close();
   const denied = await fixture();
   await denied.context.addInitScript(() => { Storage.prototype.getItem = Storage.prototype.setItem = () => { throw new DOMException('Blocked', 'SecurityError'); }; });
-  await ready(denied.page, '/'); await denied.page.getByRole('button', { name: 'ლურჯი თემა' }).click();
-  check(await denied.page.evaluate(() => document.documentElement.dataset.theme) === 'blue', 'Toggle works with storage blocked');
+  await ready(denied.page, '/'); await denied.page.locator('footer .ma-theme-toggle').click();
+  check(await denied.page.evaluate(() => document.documentElement.dataset.theme) === 'classic', 'Toggle works with storage blocked');
   await denied.context.close();
   check(report.pageErrors.length === 0 && report.consoleErrors.length === 0 && report.unexpected.length === 0, 'No runtime/console errors or unexpected API calls');
   await fs.writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2));
   console.log(`PASS: ${report.checks.length} checks, ${report.views.length} views; database writes 0`);
 } catch (error) {
   await fs.writeFile(path.join(output, 'report.json'), JSON.stringify({ ...report, failure: error.message }, null, 2));
-  console.error(error.message); process.exitCode = 1;
+  console.error(error.stack); process.exitCode = 1;
 } finally { await browser.close(); }

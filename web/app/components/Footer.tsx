@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styles from "./Footer.module.css";
+import { ThemeToggle } from "./ThemeToggle";
 import { Logo } from "./Logo";
 import { useMarketStore } from "../lib/market-client";
 
@@ -17,6 +18,6 @@ export function Footer() {
         <nav className={styles.column} aria-label="ინფორმაცია"><h2>ინფორმაცია</h2><Link href="/how-it-works/">როგორ მუშაობს</Link><Link href="/terms/">წესები და კონფიდენციალურობა</Link></nav>
       </div>
     </div>
-    <div className={styles.bottom}><div className={styles.inner}><span>© 2026 MeetAny · საქართველო</span><span>ბიზნესებს შორის კავშირისთვის</span></div></div>
+    <div className={styles.bottom}><div className={styles.inner}><span>© 2026 MeetAny · საქართველო</span><ThemeToggle labelled /></div></div>
   </footer>;
 }

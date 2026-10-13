@@ -1,0 +1,311 @@
+{
+  "views": [
+    {
+      "route": "/",
+      "theme": "blue",
+      "width": 1440,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "color(srgb 0.856941 0.862588 0.872)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          32
+        ]
+      },
+      "footerShot": "home-blue-1440-footer.png",
+      "headerShot": "home-blue-1440-header.png"
+    },
+    {
+      "route": "/",
+      "theme": "classic",
+      "width": 1440,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          32
+        ]
+      },
+      "footerShot": "home-classic-1440-footer.png",
+      "headerShot": "home-classic-1440-header.png"
+    },
+    {
+      "route": "/requests/",
+      "theme": "blue",
+      "width": 1440,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          32
+        ]
+      },
+      "footerShot": "requests-blue-1440-footer.png",
+      "headerShot": "requests-blue-1440-header.png"
+    },
+    {
+      "route": "/requests/",
+      "theme": "classic",
+      "width": 1440,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          32
+        ]
+      },
+      "footerShot": "requests-classic-1440-footer.png",
+      "headerShot": "requests-classic-1440-header.png"
+    },
+    {
+      "route": "/account/",
+      "theme": "blue",
+      "width": 1440,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          32
+        ]
+      },
+      "footerShot": "account-blue-1440-footer.png",
+      "headerShot": "account-blue-1440-header.png"
+    },
+    {
+      "route": "/account/",
+      "theme": "classic",
+      "width": 1440,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          32
+        ]
+      },
+      "footerShot": "account-classic-1440-footer.png",
+      "headerShot": "account-classic-1440-header.png"
+    },
+    {
+      "route": "/",
+      "theme": "blue",
+      "width": 390,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "color(srgb 0.856941 0.862588 0.872)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "home-blue-390-footer.png",
+      "headerShot": "home-blue-390-header.png"
+    },
+    {
+      "route": "/",
+      "theme": "classic",
+      "width": 390,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "home-classic-390-footer.png",
+      "headerShot": "home-classic-390-header.png"
+    },
+    {
+      "route": "/requests/",
+      "theme": "blue",
+      "width": 390,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "requests-blue-390-footer.png",
+      "headerShot": "requests-blue-390-header.png"
+    },
+    {
+      "route": "/requests/",
+      "theme": "classic",
+      "width": 390,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "requests-classic-390-footer.png",
+      "headerShot": "requests-classic-390-header.png"
+    },
+    {
+      "route": "/account/",
+      "theme": "blue",
+      "width": 390,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "account-blue-390-footer.png",
+      "headerShot": "account-blue-390-header.png"
+    },
+    {
+      "route": "/account/",
+      "theme": "classic",
+      "width": 390,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "account-classic-390-footer.png",
+      "headerShot": "account-classic-390-header.png"
+    },
+    {
+      "route": "/",
+      "theme": "blue",
+      "width": 360,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "color(srgb 0.856941 0.862588 0.872)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "home-blue-360-footer.png",
+      "headerShot": "home-blue-360-header.png"
+    },
+    {
+      "route": "/",
+      "theme": "classic",
+      "width": 360,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "home-classic-360-footer.png",
+      "headerShot": "home-classic-360-header.png"
+    },
+    {
+      "route": "/requests/",
+      "theme": "blue",
+      "width": 360,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "requests-blue-360-footer.png",
+      "headerShot": "requests-blue-360-header.png"
+    },
+    {
+      "route": "/requests/",
+      "theme": "classic",
+      "width": 360,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "requests-classic-360-footer.png",
+      "headerShot": "requests-classic-360-header.png"
+    },
+    {
+      "route": "/account/",
+      "theme": "blue",
+      "width": 360,
+      "label": "თემა: ლურჯი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "account-blue-360-footer.png",
+      "headerShot": "account-blue-360-header.png"
+    },
+    {
+      "route": "/account/",
+      "theme": "classic",
+      "width": 360,
+      "label": "თემა: შავ-თეთრი",
+      "height": 44,
+      "color": "rgb(255, 255, 255)",
+      "overflow": 0,
+      "header": {
+        "outside": 0,
+        "rows": [
+          28
+        ]
+      },
+      "footerShot": "account-classic-360-footer.png",
+      "headerShot": "account-classic-360-header.png"
+    }
+  ],
+  "pageErrors": []
+}

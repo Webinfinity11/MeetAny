@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "./ui/Button";
-import { ThemeToggle } from "./ThemeToggle";
 import { Logo } from "./Logo";
 import { Avatar, avatarInitials } from "./ui/Avatar";
 
@@ -131,7 +130,6 @@ export function Header() {
       {brand}<nav className={h("ma-header__nav")} aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className={h("ma-header__actions")}>
         <Link className={h("ma-header__search")} href="/requests/?focus=search" onClick={event => { if (pathname === "/requests/") { const input = document.querySelector<HTMLInputElement>('main input[type="search"]'); if (input) { event.preventDefault(); input.focus(); } } }} aria-label="მოთხოვნების ძიება"><Icon name="search"/></Link>
-        <ThemeToggle />
         {role && role !== "guest" && !isAdmin ? <div className={h("ma-header__updates")}>{me ? <><NotificationBell/><ChatUnreadLink/></> : <><span className={h("ma-header__slot")} aria-hidden="true" /><span className={h("ma-header__slot")} aria-hidden="true" /></>}</div> : null}
         {role === "guest" ? <Button variant="secondary" className={h("ma-header__login")} href="/account/">{sessionUnknown ? "ანგარიში" : store?.hasSession() && !me ? "პროფილი" : "შესვლა"}</Button> : null}{!isAdmin && !isCompany ? add : null}
         {me ? <div ref={dropdown} className={h("ma-menu ma-header__account")} onBlur={e => {if (!e.currentTarget.contains(e.relatedTarget)) setAccountOpen(false);}} onKeyDown={e => {

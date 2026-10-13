@@ -408,8 +408,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
 
 /* SiteHeader / SiteFooter: design-system shell, with the live account and mobile navigation. */
 
-/* One accessible theme control in each header: a swatch-only square, named by aria-label and title. */
+/* Compact theme control; the footer adds a visible label and its inverse surface styles. */
 .ma-theme-toggle{flex:none;width:var(--tap-min);min-height:var(--tap-min);height:var(--tap-min);padding:0;border-color:var(--ink-300)}
 .ma-theme-toggle__swatch{display:block;width:var(--size-18);height:var(--size-18);flex:none;border:var(--size-1) solid var(--ink-300);border-radius:var(--radius-circle);background:var(--theme-swatch)}
-.ma-theme-toggle[aria-pressed=true]{border-color:var(--action);background:var(--selected-bg);color:var(--selected-text)}
-/* With the toggle, a signed-in header has no room for the account name; the avatar opens the same menu. */
+.ma-theme-toggle.ma-btn--secondary[aria-pressed=true]{border-color:var(--action);background:var(--selected-bg);color:var(--selected-text)}
