@@ -26,7 +26,7 @@ import { adminSections, type AdminSection } from "../../lib/admin-sections";
 import { AdminPhotos } from "./AdminPhotos";
 import { AdminReports, type ReportAction } from "./AdminReports";
 import { AdminDetail, type AdminTarget, type AdminAction } from "./AdminDetail";
-import { downloadCsv, readAllAdminPages } from "../../lib/admin-helpers";
+import { adminActionResult, downloadCsv, readAllAdminPages } from "../../lib/admin-helpers";
 import styles from "./admin.module.css";
 import { ModerationSheet } from "./ModerationSheet";
 import { useMarketStore } from "../../lib/market-client";
@@ -191,7 +191,9 @@ export function AdminPageContent() {
     if (failure && !done) { setError(adminErrorMessage(failure, "მოქმედება ვერ შესრულდა. სცადეთ ხელახლა.")); return; }
     setPendingAction(null);
     if (pendingAction.ids) setSelected([]);
-    toast(failure ? { title: `შესრულდა ${done} / ${ids.length}. დანარჩენი ვერ შეიცვალა — სცადეთ ხელახლა.`, tone: "warning" } : ids.length > 1 ? `შესრულდა ${done} ჩანაწერზე.` : "ცვლილება შენახულია.");
+    const company = pendingAction.kind === "users" && (tab === "companies" || ids.every(id => (allUsers.find(user => user.id === id) || store.userById(id))?.role === "company"));
+    const result = adminActionResult(pendingAction.action, company);
+    toast(failure ? { title: `${result} — ${done} / ${ids.length}. დანარჩენი ვერ შეიცვალა — სცადეთ ხელახლა.`, tone: "warning" } : ids.length > 1 ? `${result} — ${done} ჩანაწერზე.` : `${result}.`);
   }
 
   async function exportCsv() {

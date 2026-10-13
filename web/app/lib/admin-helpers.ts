@@ -106,3 +106,24 @@ export async function readAllAdminPages<T>(search: (args: Record<string, unknown
   } while (cursor && items.length < cap);
   return items;
 }
+
+/** Result text shared by single-record and bulk moderation feedback. */
+export function adminActionResult(action: string, company = false): string {
+  const results: Record<string, string> = {
+    "reportHide.request": "მოთხოვნა დაიმალა; საჩივრები დამუშავდა",
+    "reportHide.offer": "შეთავაზება წაიშალა; საჩივრები დამუშავდა",
+    "reportHide.company": "კომპანია დაიბლოკა; საჩივრები დამუშავდა",
+    reportReject: "საჩივარი უარყოფილია", removePhoto: "ფოტო წაიშალა",
+    hide: "მოთხოვნა დაიმალა", unhide: "მოთხოვნა გამოჩნდა", delete: "მოთხოვნა წაიშალა",
+    deleteOffer: "შეთავაზება წაიშალა",
+    block: company ? "კომპანია დაიბლოკა" : "ანგარიში დაიბლოკა",
+    unblock: company ? "კომპანია განიბლოკა" : "ანგარიში განიბლოკა",
+    verify: "კომპანია ვერიფიცირებულია", unverify: "ვერიფიკაცია მოიხსნა",
+    approveDocs: "დოკუმენტები დადასტურდა; კომპანია ვერიფიცირებულია",
+    returnDocs: "დოკუმენტები შესწორებისთვის დაბრუნდა",
+    hideReview: "შეფასება დაიმალა", publishReview: "შეფასება აღდგა",
+    dealStage: "გარიგების ეტაპი შეიცვალა", dealCancel: "გარიგება გაუქმდა",
+    resolveIssue: "პრობლემის განხილვა დასრულდა",
+  };
+  return results[action] || "მოქმედება შესრულდა";
+}
