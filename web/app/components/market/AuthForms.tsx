@@ -5,17 +5,17 @@ import { Button } from "../ui/Button";
 
 
 import { CustomSelect } from "../ui/CustomSelect";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore } from "../../lib/market-client";
 import { cities } from "../../lib/categories";
 import { normalizeMobilePhone } from "../../lib/mobile-phone";
-import { categoryOptions } from "./CategoryOptions";
+import { CategoryChips } from "../ui/CategoryChips";
 import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 
 type Mode = "login" | "register" | "reset";
 
-import { safeNext } from "../../lib/auth-redirect";
+import { authMode, authLoginCopy, safeNext } from "../../lib/auth-redirect";
 import { trackRegistration } from "../../lib/registration-telemetry";
 
 import { loginAccount } from "./request/loginAccount";
@@ -109,18 +109,19 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
   const next = safeNext(useSearchParams().get("next"));
   const profileRequired = !!store?.needsProfile();
   const profile = store?.pendingProfile();
-  const [role] = useState(profile?.role || (initialRole === "company" ? "company" : "client"));
+  const [role, setRole] = useState(profile?.role || (initialRole === "company" ? "company" : "client"));
   const [name, setName] = useState(profile?.name || "");
   const [company, setCompany] = useState(profile?.company || "");
   const [phone, setPhone] = useState(profile?.phone || "+995 ");
   const [email, setEmail] = useState(profile?.email || "");
-  const [city, setCity] = useState(profile?.city || "tbilisi");
+  const [city, setCity] = useState(profile?.city || "");
   const [industry, setIndustry] = useState(profile?.industry || "");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(!!profile?.acceptTerms);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(store?.profileCompletionError?.() || null);
   const v = useFieldErrors();
+  const summary = useRef<HTMLDivElement>(null);
   const edit = (id: string, set: (value: string) => void) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {set(e.target.value); v.clear(id);};
   useEffect(() => { trackRegistration(role, "form_open"); }, [role]);
 
@@ -136,12 +137,16 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
     if (!profileRequired && !isEmail(email)) errors["reg-email"] = "ჩაწერეთ სწორი ელფოსტა";
     if (role === "company" && !industry) errors["reg-industry"] = "აირჩიეთ მიმართულება";
     if (!profileRequired && password.length < 8) errors["reg-password"] = password ? "მინიმუმ 8 სიმბოლო" : "მიუთითეთ პაროლი";
+    if (!city) errors["reg-city"] = "აირჩიეთ ქალაქი";
     if (!acceptTerms) errors["reg-terms"] = "რეგისტრაციისთვის დაეთანხმეთ წესებს";
-    if (!v.check(errors, [...(role === "company" ? ["reg-company", "reg-name"] : ["reg-name", "reg-company"]), "reg-phone", "reg-email", "reg-industry", "reg-password", "reg-terms"])) return;
+    if (!v.check(errors, Object.keys(errors))) {
+      requestAnimationFrame(() => summary.current?.focus());
+      return;
+    }
     trackRegistration(role, "form_submitted");
     setPending(true);
     try {
-      await store.register({ role, name, company, phone, email: email.trim(), city, industry, password, acceptTerms });
+      await store.register({ role, name, company: role === "company" ? company : "", phone, email: email.trim(), city, industry, password, acceptTerms });
       if (store.currentUser()) trackRegistration(role, "profile_created");
       else if (store.pendingEmail()) trackRegistration(role, "email_pending");
       if (store.currentUser()?.role === "company") router.push("/onboarding/?step=type");
@@ -160,22 +165,29 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
       <label className="ma-field__label" htmlFor="reg-name">
         {role === "company" ? "საკონტაქტო პირი *" : "სახელი და გვარი *"}
       </label>
-      <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={edit("reg-name", setName)} {...v.control("reg-name")} />
+      <input className="ma-input" autoFocus={role === "client"} maxLength={80} autoComplete="name" value={name} onChange={edit("reg-name", setName)} {...v.control("reg-name")} />
       <div className="auth-field-message">{v.message("reg-name")}</div>
     </div>
   );
   const companyField = (
     <div className="ma-field">
       <label className="ma-field__label" htmlFor="reg-company">
-        {role === "company" ? "კომპანიის დასახელება" : "კომპანია"}{role === "client" ? <> <span className="ma-field__opt">არასავალდებულო</span></> : " *"}
+        კომპანიის დასახელება *
       </label>
-      <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
+      <input className="ma-input" autoFocus maxLength={100} autoComplete="organization" value={company} onChange={edit("reg-company", setCompany)} {...v.control("reg-company")} />
       <div className="auth-field-message">{v.message("reg-company")}</div>
     </div>
   );
 
   return (
     <form className="ma-form auth-controls auth-register" onSubmit={submit} onChange={() => trackRegistration(role, "form_started")} noValidate>
+      <div className="auth-role-switch" role="group" aria-label="ანგარიშის ტიპი">
+        {([['client', 'ვეძებ მომწოდებელს'], ['company', 'კომპანია ვარ']] as const).map(([value, label]) => <button type="button" key={value} aria-pressed={role === value} onClick={() => {setRole(value); v.check({}, []);}}>{label}</button>)}
+      </div>
+      {Object.keys(v.errors).length > 0 && <div className="auth-error-summary" ref={summary} role="alert" tabIndex={-1}>
+        <strong>შეავსეთ {Object.keys(v.errors).length} ველი</strong>
+        <ul>{Object.entries(v.errors).map(([id, message]) => <li key={id}><a href={`#${id}`} onClick={event => {event.preventDefault(); const field = document.getElementById(id); field?.scrollIntoView({block: 'center'}); (field?.matches('input,button') ? field : field?.querySelector<HTMLElement>('button,input'))?.focus();}}>{message}</a></li>)}</ul>
+      </div>}
       <fieldset className="auth-register-group">
         <legend>{role === "company" ? "კომპანიის მონაცემები" : "პირადი მონაცემები"}</legend>
         <div className={`ma-form__row${role === "company" ? " ma-form__row--2" : ""}`}>
@@ -208,25 +220,22 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
           <label className="ma-field__label" htmlFor="reg-city">
             ქალაქი *
           </label>
-          <div><CustomSelect className="ma-select" id="reg-city" value={city} onChange={(e) => setCity(e.target.value)}>
+          <div><CustomSelect className="ma-select" {...v.control("reg-city")} value={city} onChange={(e) => {setCity(e.target.value); v.clear("reg-city");}}>
+            <option value="" disabled>აირჩიეთ ქალაქი</option>
             {Object.entries(cities).map(([id, label]) => (
               <option key={id} value={id}>
                 {label}
               </option>
             ))}
           </CustomSelect></div>
+          {v.message("reg-city")}
         </div>
         {role === "company" ? (
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="reg-industry">
               მიმართულება *
             </label>
-            <div><CustomSelect className="ma-select" value={industry} onChange={edit("reg-industry", setIndustry)} {...v.control("reg-industry")}>
-              <option value="" disabled>
-                აირჩიეთ
-              </option>
-              {categoryOptions()}
-            </CustomSelect></div>
+            <CategoryChips id="reg-industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ""); v.clear("reg-industry");}} />
             <div className="auth-field-message">{v.message("reg-industry")}</div>
           </div>
         ) : null}
@@ -259,7 +268,7 @@ function RegisterForm({ initialRole }: { initialRole: string }) {
 export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   const searchParams = useSearchParams();
   const {store} = useMarketStore();
-  const mode: Mode = searchParams.get("tab") === "reset" ? "reset" : searchParams.get("tab") === "register" || initialRole ? "register" : "login";
+  const mode: Mode = authMode(searchParams.get("tab"));
   const [, refresh] = useState(0);
   useEffect(() => {
     const update = () => refresh(n => n + 1);
@@ -269,14 +278,13 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   const switchMode = (next: Mode, role?: "client" | "company") => {
     const url = new URL(window.location.href);
     if (next === "login") url.searchParams.delete("tab"); else url.searchParams.set("tab", next);
-    if (next !== "register") url.searchParams.delete("role");
-    else if (role) url.searchParams.set("role", role);
-    else url.searchParams.delete("role");
+    if (role) url.searchParams.set("role", role);
     window.history.pushState(null, "", url.pathname + url.search);
   };
   const registrationRole = searchParams.get("role") || initialRole;
   const isCompany = registrationRole === "company";
-  const subtitle = mode === "register" ? isCompany ? "შექმენით ანგარიში, შემდეგ შეავსეთ კომპანიის პროფილი." : "რამდენიმე ველი — და მოთხოვნის განთავსება შეგიძლიათ." : mode === "reset" ? "მიიღეთ კოდი ელფოსტაზე და დააყენეთ ახალი პაროლი." : "კეთილი იყოს თქვენი დაბრუნება.";
+  const loginCopy = authLoginCopy(searchParams.get("intent"), searchParams.get("context"), searchParams.get("next"));
+  const subtitle = mode === "register" ? isCompany ? "შექმენით ანგარიში, შემდეგ შეავსეთ კომპანიის პროფილი." : "რამდენიმე ველი — და მოთხოვნის განთავსება შეგიძლიათ." : mode === "reset" ? "მიიღეთ კოდი ელფოსტაზე და დააყენეთ ახალი პაროლი." : loginCopy.lead;
   const page = (title: string, body: React.ReactNode, lead = subtitle) => (
     <div className={`ma-page auth-page${(mode === "register" && !store?.pendingEmail()) || store?.needsProfile() ? " auth-page--register" : ""}`}>
       <div className="auth-shell">
@@ -290,11 +298,12 @@ export function AuthForms({ initialRole = "" }: { initialRole?: string }) {
   );
   if (store?.pendingEmail()) return page("ელფოსტის დადასტურება", <RecoveryForm verification onDone={() => refresh(n => n + 1)} />, "შეიყვანეთ ელფოსტაზე მიღებული კოდი.");
   if (store?.needsProfile()) return page("რეგისტრაციის დასრულება", <RegisterForm key={store.pendingProfile()?.email || "complete"} initialRole={initialRole}/>, "შეამოწმეთ მონაცემები და დაასრულეთ რეგისტრაცია.");
-  return page(mode === "register" ? isCompany ? "კომპანიის პროფილის შექმნა" : "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : searchParams.get("next") ? "შედით, რომ გააგრძელოთ" : "შესვლა", <>
-    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm key={registrationRole} initialRole={registrationRole} />}
+  return page(mode === "register" ? isCompany ? "კომპანიის პროფილის შექმნა" : "რეგისტრაცია" : mode === "reset" ? "პაროლის აღდგენა" : loginCopy.title, <>
+    {mode === "reset" ? <RecoveryForm onDone={() => switchMode("login")} /> : mode === "login" ? <LoginForm onReset={() => switchMode("reset")} /> : <RegisterForm initialRole={registrationRole} />}
     {mode !== "reset" && <div className="auth-registration">
       {mode === "login" ? <>
-        <p>ჯერ არ გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("register")}>რეგისტრაცია</button></p>
+        <p>ჯერ არ გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("register", "client")}>რეგისტრაცია</button></p>
+        <p>კომპანია არ გაქვთ? <button type="button" onClick={() => switchMode("register", "company")}>კომპანიის რეგისტრაცია</button></p>
       </> : <>
         <p>უკვე გაქვთ ანგარიში? <button type="button" onClick={() => switchMode("login")}>შესვლა</button></p>
       </>}

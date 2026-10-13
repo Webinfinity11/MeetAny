@@ -699,3 +699,11 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 /* Form submit buttons span the phone width the same way in every account form. */
 @media(max-width:639px){.account-form-actions>.ma-btn{width:100%}}
 .account-hint{font-size:var(--fs-copy);line-height:var(--lh-copy);max-width:var(--measure)}
+
+.auth-role-switch{display:flex;gap:var(--space-1);padding:var(--space-1);border:var(--size-1) solid var(--border-subtle);border-radius:var(--radius-md)}
+.auth-role-switch button{flex:1;min-height:var(--size-44);padding:var(--space-2);border:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font:inherit;cursor:pointer}
+.auth-role-switch button[aria-pressed="true"]{background:var(--bg-subtle);color:var(--text-1);font-weight:var(--weight-semibold)}
+.auth-error-summary{padding:var(--space-4);border:var(--size-1) solid var(--danger);border-radius:var(--radius-md);scroll-margin-top:var(--header-h)}
+.auth-error-summary ul{padding-left:var(--space-5);margin-top:var(--space-2)}
+.auth-error-summary a{text-decoration:underline}
+.company-profile-sections.ma-scroll-row{flex-wrap:nowrap}
