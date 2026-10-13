@@ -141,7 +141,7 @@ async function login(role, a, preserveRoute = false) {
     const account = ledger.accounts[role]; assert(account, `Missing ledger role ${role}`);
     await email.fill(account.email || `demo-${role}@meetany.ge`);
     await a.p.getByLabel('პაროლი', { exact: true }).fill(account.password);
-    await authSubmit(a.p, () => a.p.getByRole('button', { name: 'შესვლა', exact: true }).click(), () => email.waitFor({ state: 'hidden', timeout: 45000 }));
+    await authSubmit(a.p, () => a.p.getByRole('button', { name: 'შედით', exact: true }).click(), () => email.waitFor({ state: 'hidden', timeout: 45000 }));
   }
   await a.p.waitForTimeout(1000); a.authenticated = true; await persist(a); return a;
 }
