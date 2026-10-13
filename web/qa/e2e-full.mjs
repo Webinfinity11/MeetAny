@@ -34,7 +34,7 @@ const ledger = JSON.parse(fs.readFileSync(path.join(root, 'DEMO-ACCOUNTS.local.m
 const secrets = Object.values(ledger.accounts).map(a => a.password).filter(Boolean);
 const redact = text => secrets.reduce((s, password) => s.replaceAll(password, '[REDACTED]'), String(text).replace(/\u001b\[[0-9;]*m/g, '')).replace(/(postgres(?:ql)?:\/\/)[^\s]+/g, '$1[REDACTED]');
 const ts = Date.now(), prefix = `[e2e] ${ts}`;
-const state = { run: ts, phone: `+995 5${String(ts).slice(-8)}`, email: `e2e+${ts}@meetany.local`, title: `ხის მაგიდები e2e-${ts}` };
+const state = { run: ts, phone: `+995 5${String(ts).slice(-8)}`, email: `e2e+${ts}@meetany.local`, title: `ხის მაგიდების შესყიდვა ${ts}` };
 const results = [], actors = new Map(), seeds = [];
 let activePages = new Set(), lastAuth = 0, lastStepFinished = 0;
 fs.mkdirSync(shotsDir, { recursive: true });
@@ -146,7 +146,8 @@ async function login(role, a, preserveRoute = false) {
 }
 async function pick(p, label, value) { await p.getByRole('combobox', { name: label }).click(); await p.getByRole('option', { name: value, exact: true }).click(); }
 async function select(p, id, value) { await p.locator(`#${id}`).click(); await p.getByRole('option', { name: value, exact: true }).click(); }
-async function next(p, step) { await p.getByRole('button', { name: /^(შემდეგი|გადახედვა|დასრულება)$/ }).click(); await p.waitForURL(url => step === 'account' ? url.pathname === '/account/' : url.searchParams.get('step') === step, { timeout: 25000 }); }
+async function next(p, step) { await p.getByRole('button', { name: /^(შემდეგი|გადახედვა|გადახედეთ|დაასრულეთ|დასრულება)$/ }).click(); await p.waitForURL(url => step === 'account' ? url.pathname === '/account/' : url.searchParams.get('step') === step, { timeout: 25000 }); }
+async function registrationCategory(p) { const chip = p.getByRole('radiogroup', { name: 'დარგი', exact: true }).getByRole('radio', { name: 'ავეჯი', exact: true }); if (!await chip.count()) await p.getByRole('button', { name: /ყველა კატეგორია/ }).click(); await chip.click(); }
 async function category(p) { let b = p.getByRole('button', { name: 'ავეჯი', exact: true }); if (!await b.count()) await p.getByRole('button', { name: /ყველა კატეგორია/ }).click(); b = p.getByRole('button', { name: 'ავეჯი', exact: true }); if (await b.getAttribute('aria-pressed') !== 'true') await b.click(); }
 // Keep the same role sessions across attempts; only guest scenarios create contexts.
 // Retry evidence remains in JSON even when the last attempt succeeds.
@@ -229,9 +230,9 @@ async function moderation(page, message) { const dialog = page.locator('#moderat
 async function openCompany() { required('companyId'); await goto(a, `/admin/?tab=companies&q=${state.companyId}`); await a.getByRole('button', { name: 'დეტალების ნახვა' }).first().click(); }
 async function sendOffer() {
   await goto(w, `/offers/new/?requestId=${state.requestId}`);
-  await w.locator('#of-body').fill(`${prefix} თორმეტი ხის მაგიდა, მიწოდებით და აწყობით.`);
-  await w.locator('#of-price').fill('2400'); await select(w, 'of-deliveryDays', '7 სამუშაო დღე');
-  await w.getByRole('button', { name: 'მიწოდებისას', exact: true }).click();
+  await w.getByRole('textbox', { name: 'მოკლე აღწერა *', exact: true }).fill(`${prefix} თორმეტი ხის მაგიდა, მიწოდებით და აწყობით.`);
+  await w.getByRole('textbox', { name: /თანხა ლარში/ }).fill('2400'); await pick(w, /მიწოდების ვადა/, '7 დღე');
+  await pick(w, /გადახდის პირობები/, '100% მიწოდებისას');
   await w.getByLabel('ფაილები — დამატება', { exact: true }).setInputFiles({ ...png, name: 'e2e-offer.png' });
   await w.getByRole('button', { name: 'e2e-offer.png', exact: true }).waitFor();
   await w.getByRole('button', { name: 'შეთავაზების გაგზავნა', exact: true }).click();
@@ -248,9 +249,9 @@ try {
     await p.getByRole('textbox', { name: /მობილური ტელეფონი/ }).fill(state.phone);
     await p.getByRole('textbox', { name: /ელფოსტა/ }).fill(state.email);
     await p.getByLabel(/^პაროლი\s/).fill(ledger.accounts.wood.password);
-    await pick(p, /ქალაქი/, 'თბილისი'); await pick(p, /მიმართულება/, 'ავეჯი');
+    await pick(p, /ქალაქი/, 'თბილისი'); await registrationCategory(p);
     await p.getByRole('checkbox', { name: /ვეთანხმები/ }).check();
-    await authSubmit(p, () => p.getByRole('button', { name: /^(ანგარიშის შექმნა|რეგისტრაცია)$/ }).click(), async () => {
+    await authSubmit(p, () => p.getByRole('button', { name: /^(ანგარიშის შექმნა|რეგისტრაცია|დარეგისტრირდით)$/ }).click(), async () => {
       await p.waitForURL('**/onboarding/**', { timeout: 45000 });
     });
     await persist(company);
@@ -265,9 +266,9 @@ try {
       await p.getByRole('textbox', { name: /მობილური ტელეფონი/ }).fill(state.phone);
       const email = p.getByRole('textbox', { name: /ელფოსტა/ });
       if (await email.isEnabled()) await email.fill(state.email);
-      await pick(p, /ქალაქი/, 'თბილისი'); await pick(p, /მიმართულება/, 'ავეჯი');
+      await pick(p, /ქალაქი/, 'თბილისი'); await registrationCategory(p);
       await p.getByRole('checkbox', { name: /ვეთანხმები/ }).check();
-      await p.getByRole('button', { name: 'რეგისტრაციის დასრულება', exact: true }).click();
+      await p.getByRole('button', { name: 'დაასრულეთ რეგისტრაცია', exact: true }).click();
       await p.waitForURL('**/onboarding/**', { timeout: 45000 });
       await persist(company);
       state.companyId = (await sql('select id from public.profiles where email=$1', [state.email]))[0]?.id;
@@ -278,8 +279,8 @@ try {
   state.companyId ||= (await sql('select id from public.profiles where email=$1', [state.email]))[0]?.id;
   await check('A02-onboarding-type-both', async () => { required('companyId'); await goto(p, '/onboarding/?step=type'); await p.getByRole('radio', { name: /ორივე|ყიდვა და გაყიდვა/ }).check(); await category(p); await next(p, 'details'); }, p);
   await check('A03-onboarding-details-minimal', async () => { required('companyId'); await goto(p, '/onboarding/?step=details'); await p.getByRole('textbox', { name: /საკონტაქტო პირი/ }).fill('[e2e] საკონტაქტო პირი'); await pick(p, /ქალაქი/, 'თბილისი'); await next(p, 'profile'); }, p);
-  await check('A04-onboarding-profile-logo', async () => { required('companyId'); await goto(p, '/onboarding/?step=profile'); await p.getByLabel('კომპანიის შესახებ', { exact: false }).fill(`${prefix} ვამზადებთ ავეჯს ბიზნესებისთვის თბილისში.`); await p.getByLabel(/^ლოგო.*დამატება$/).setInputFiles(png); await p.getByText('ფოტო შენახულია.', { exact: true }).waitFor({ timeout: 30000 }); await next(p, 'provide'); }, p);
-  await check('A05-onboarding-product-service', async () => { required('companyId'); await goto(p, '/onboarding/?step=provide'); await p.getByRole('button', { name: 'პროდუქტის დამატება', exact: true }).click(); await p.getByLabel('სახელი', { exact: true }).fill(`${prefix} მაგიდა`); await p.getByLabel('მოკლე აღწერა', { exact: true }).fill('[e2e] მიწოდებით'); await p.getByRole('textbox', { name: /^მომსახურებები/ }).fill(`${prefix} მონტაჟი`); await p.getByRole('textbox', { name: /^მომსახურებები/ }).press('Enter'); await next(p, 'need'); }, p);
+  await check('A04-onboarding-profile-logo', async () => { required('companyId'); await goto(p, '/onboarding/?step=profile'); await p.getByLabel('კომპანიის შესახებ', { exact: false }).fill(`${prefix} ვამზადებთ ავეჯს ბიზნესებისთვის თბილისში.`); await p.getByLabel(/^ლოგო.*დაამატეთ$/).setInputFiles(png); await p.getByText('ფოტო შენახულია.', { exact: true }).waitFor({ timeout: 30000 }); await next(p, 'provide'); }, p);
+  await check('A05-onboarding-product-service', async () => { required('companyId'); await goto(p, '/onboarding/?step=provide'); await p.getByRole('button', { name: 'დაამატეთ პროდუქტი', exact: true }).click(); await p.getByLabel('სახელი', { exact: true }).fill(`${prefix} მაგიდა`); await p.getByLabel('მოკლე აღწერა', { exact: true }).fill('[e2e] მიწოდებით'); await p.getByRole('textbox', { name: /^მომსახურებები/ }).fill(`${prefix} მონტაჟი`); await p.getByRole('textbox', { name: /^მომსახურებები/ }).press('Enter'); await next(p, 'need'); }, p);
   await check('A06-onboarding-xlsx-import', async () => {
     required('companyId'); await goto(p, '/onboarding/?step=provide');
     const download = p.waitForEvent('download'); await p.getByRole('link', { name: 'შაბლონის ჩამოტვირთვა (.xlsx)', exact: true }).click(); const file = await download; assert.equal(await file.failure(), null); assert(fs.statSync(await file.path()).size > 0);
@@ -307,7 +308,7 @@ try {
   await check('B01-hotel-close-old-e2e-requests', async () => {
     await login('hotel', hotel);
     const account = ledger.accounts.hotel, email = account.email || 'demo-hotel@meetany.ge';
-    const old = await sql("select r.id from public.requests r join public.profiles p on p.id=r.owner_id where p.email=$1 and r.title ilike '%e2e-%' and meetany_private.request_state(r)='open'", [email]);
+    const old = await sql("select r.id from public.requests r join public.profiles p on p.id=r.owner_id where p.email=$1 and (r.title ilike '%e2e-%' or r.title ~ '^ხის მაგიდების შესყიდვა [0-9]{13}$') and meetany_private.request_state(r)='open'", [email]);
     for (const row of old) { await goto(h, `/requests/view/?id=${row.id}`); await h.getByText('სხვა მოქმედებები', { exact: true }).click(); await h.getByRole('button', { name: 'მოთხოვნის დახურვა', exact: true }).click(); await h.getByRole('dialog').getByRole('button', { name: 'მოთხოვნის დახურვა', exact: true }).click(); await h.getByRole('dialog').waitFor({ state: 'hidden' }); }
     const ownerId = (await sql('select id from public.profiles where email=$1', [email]))[0]?.id;
     assert(ownerId, 'hotel profile required for quota cleanup');
