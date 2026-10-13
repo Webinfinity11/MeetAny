@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { CategoryChips, ImageUpload, ChipsInput } from '../ui';
 import type { Store } from '../../lib/market-client';
 import { VerificationDocuments, VerificationSummary } from './VerificationDocuments';
+import { ProductsImport } from './ProductsImport';
+import type { ProductUnit } from '../../lib/products-import';
 import { Avatar } from '../ui/Avatar';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -85,7 +87,8 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
   </>;
   if (step === 'need') return <><Card title="რას ყიდულობთ"><Categories count={p.need_categories.length ? `არჩეულია ${p.need_categories.length}` : undefined} values={p.need_categories} onChange={need_categories => patch({ need_categories })} /></Card><Card title="კონკრეტული ერთეულები" hint="არასავალდებულო"><Items rows label="რას ეძებთ" values={p.seeks || []} onChange={seeks => patch({ seeks })} /></Card><p className={s.muted}><Icon name="info" />ეს არ არის მოთხოვნა — არჩევანი დაგეხმარებათ შესაბამისი მომწოდებლების პოვნაში.</p></>;
   if (step === 'provide') return <Card title="პროდუქტები და მომსახურებები" hint={`${products.length} / 100`}>
-    {/* ProductsImport mount */}
+    <ProductsImport existing={products.map(({ unit, ...rest }) => ({ ...rest, unit: unit as ProductUnit | undefined }))} gallery={p.gallery}
+      onConfirm={async next => { const saved = await store.setMyProducts(next); setProducts((Array.isArray(saved) ? saved : next).map(item => ({ ...item, note: item.note || '' }))); }} />
     {products.length > 10 && <Field label="პროდუქტის ძიება სახელით" value={search} onChange={setSearch} />}
     <div className={s.productList} data-compact={products.length > 10 || undefined}>
     {products.map((item, index) => search && !item.name.toLocaleLowerCase('ka').includes(search.toLocaleLowerCase('ka')) ? null : index === expanded ? <div className={s.productEditor} key={index}>
