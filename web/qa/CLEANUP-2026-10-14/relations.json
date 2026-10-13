@@ -1,0 +1,578 @@
+{
+  "candidates": [
+    {
+      "id": "a1b3d831-b513-4d96-a4ff-b7cdf19d8f17",
+      "email": "e2e+1791543795353-client-0@meetany.local",
+      "blocked": true,
+      "company": "QA რეგისტრაცია",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "2314ad31-cddf-4f03-9444-b89338856f12",
+      "email": "e2e+1791544041565-company-2@meetany.local",
+      "blocked": true,
+      "company": "QA 1791544041565",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "00f283bd-8a4c-4047-ab57-e0908507445d",
+      "email": "e2e+1790276755145-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790276755145-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "d578e0f4-547d-48f3-a5ae-e6aabef917b5",
+      "email": "e2e+1790677953780-password-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790677953780-password]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "ab660790-4da9-4ac9-8cea-3e3ffacc59c6",
+      "email": "e2e+1791543795353-client-1@meetany.local",
+      "blocked": true,
+      "company": "QA რეგისტრაცია",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "dced80aa-62b8-449f-8c5c-c69c600e5e0e",
+      "email": "e2e+1790681404609-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790681404609-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "91e5e293-6457-4720-8e1a-8169756e93d3",
+      "email": "e2e+1790273772670-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e 1790273772670-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "f0a8b56c-9baf-448e-bb49-df66c7b6b9ba",
+      "email": "e2e+1790775806890-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790775806890-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "463d5536-1040-4ca2-be84-164fd56b6f83",
+      "email": "e2e+1790840603000-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790840603000-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "59d9615b-ba17-4844-b6b2-152d8091cd82",
+      "email": "e2e+1790844719213-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790844719213-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "3ac87aab-9b46-4ae1-a9ec-d40bd8b60306",
+      "email": "e2e+1790272582086-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e 1790272582086-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "c7587302-5998-4dae-a450-f92d1549aae3",
+      "email": "e2e+1790275301743-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790275301743-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "c5888741-642a-4273-b08f-bddbb6a45d8f",
+      "email": "e2e+1790278824902-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790278824902-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "a38d5ece-8ec2-4015-9eb1-24df13f49b35",
+      "email": "e2e+1790669700000-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790669700000-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "6a893664-020b-451d-a623-1c09a96b1ed5",
+      "email": "e2e+1790681404609-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790681404609-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "1eea8de0-537c-46e6-964c-605a31509bc5",
+      "email": "e2e+1790775806890-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790775806890-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "0c33dcc0-6b9e-40ca-bdab-8f258b7fd673",
+      "email": "e2e+1790840603000-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790840603000-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "80d6d454-31e6-4d08-8b6a-5968c50f1999",
+      "email": "e2e+1790273123900-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e 1790273123900-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "9d7cdf83-8dd8-4167-b041-25dfa2381931",
+      "email": "e2e+1790275301743-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790275301743-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "3723c5e0-f4ef-42e0-ad07-b214a13cfbb1",
+      "email": "e2e+1790278824902-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790278824902-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "7c3fcdef-c077-4fe6-a78b-639a46e83204",
+      "email": "e2e+1790273123900-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e 1790273123900-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "5f2a8413-d8c9-4f6c-8f7b-11fe5a27f847",
+      "email": "e2e+1790669700000-registration-company@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790669700000-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "767c765b-f867-4c74-8280-543d8d52c695",
+      "email": "e2e+1790273772670-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e 1790273772670-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "0fe9dce5-6923-491b-8dc5-56121654858d",
+      "email": "e2e+1790276755145-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790276755145-registration]",
+      "onboarding_completed_at": null
+    },
+    {
+      "id": "c95ab182-277e-45b5-839b-7359e1ec8d57",
+      "email": "e2e+1790844719213-registration-client@meetany.local",
+      "blocked": true,
+      "company": "მიწოდების ჯგუფი [e2e:1790844719213-registration]",
+      "onboarding_completed_at": null
+    }
+  ],
+  "orphan_contacts": [
+    {
+      "id": "e7211d40-a381-479c-b997-1e186b84234d",
+      "actor_id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "target_id": "58caa46e-d4e4-4fd2-a743-1c6a6df11786",
+      "target_kind": "request"
+    },
+    {
+      "id": "3ddffef7-4040-4e58-b7a7-a06b1455ed87",
+      "actor_id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "target_id": "a59b4fe6-c9ff-4fc7-a8d9-a6e7bd980bb0",
+      "target_kind": "request"
+    },
+    {
+      "id": "7946c958-443d-496f-aeca-f15498e2d07d",
+      "actor_id": null,
+      "target_id": "a96618c0-5ab5-41a5-8ecf-718aea3df71f",
+      "target_kind": "request"
+    },
+    {
+      "id": "c5f757b4-88ea-4e0d-9115-741cad11c3d1",
+      "actor_id": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+      "target_id": "c2fe18aa-bad4-48c9-a969-6b83c5145815",
+      "target_kind": "request"
+    }
+  ],
+  "drafts": [
+    {
+      "title": "",
+      "owner_id": "bef8acbe-9b2c-46cc-a111-184ddade342d",
+      "updated_at": "2026-10-13T11:58:27.657994+04:00"
+    },
+    {
+      "title": "",
+      "owner_id": "d53baf36-958f-4700-8b0d-74502a895635",
+      "updated_at": "2026-10-13T12:50:38.773202+04:00"
+    }
+  ],
+  "uploads": [
+    {
+      "id": "045c19fd-3281-4321-9d48-a9e7d6e095f1",
+      "kind": "request_draft",
+      "owner_id": "bef8acbe-9b2c-46cc-a111-184ddade342d",
+      "target_id": "1b2ec496-8475-41b0-9a34-875a5953d20f",
+      "created_at": "2026-10-13T11:54:33.843512+04:00",
+      "completed_id": "e3f01722-bf97-459a-a050-ccdd7c6abb00",
+      "expired_at_cutoff": false
+    }
+  ],
+  "orphan_attachments": [],
+  "orphan_notifications": [],
+  "orphan_conversations": [],
+  "orphan_drafts": [],
+  "registration_sessions": [
+    {
+      "id": "21ead4e8-2b34-499c-ac7f-4dff3daab339",
+      "stage": "form_open",
+      "event_id": "1a6306fc-c5e1-49d4-a2e1-c7572315bf94",
+      "profile_id": null
+    },
+    {
+      "id": "21ead4e8-2b34-499c-ac7f-4dff3daab339",
+      "stage": "form_started",
+      "event_id": "1f213d07-2b72-4690-916b-435b0c1a3134",
+      "profile_id": null
+    },
+    {
+      "id": "21ead4e8-2b34-499c-ac7f-4dff3daab339",
+      "stage": "form_submitted",
+      "event_id": "8198ff67-aefa-4ebb-a662-c9fb6fbd5d30",
+      "profile_id": null
+    },
+    {
+      "id": "21ead4e8-2b34-499c-ac7f-4dff3daab339",
+      "stage": "profile_created",
+      "event_id": "b15063c7-9f86-4180-af93-df50fe6c182d",
+      "profile_id": "2314ad31-cddf-4f03-9444-b89338856f12"
+    }
+  ],
+  "references:meetany_private.deal_events.deal_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_events.actor_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.company_reviews.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.company_reviews.author_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.company_reviews.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:public.requests.owner_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:public.requests.chosen_offer_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.company_plans.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.company_business.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.company_products.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deals.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deals.offer_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deals.buyer_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deals.supplier_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.contact_events.actor_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.contact_events.target_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.conversations.client_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.conversations.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.conversations.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.conversations.started_by": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.attachments.owner_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.attachments.target_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:public.offers.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:public.offers.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_updates.deal_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_updates.actor_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.file_uploads.owner_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.file_uploads.target_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.file_uploads.completed_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_proposals.deal_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_proposals.actor_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_issues.deal_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_issues.actor_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_issues.resolved_by": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.deal_reviews.deal_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.messages.conversation_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.messages.sender_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notifications.user_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notifications.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notifications.offer_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notifications.deal_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.registration_events.session_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.registration_events.profile_id": [
+    {
+      "count": 1
+    }
+  ],
+  "references:meetany_private.request_alert_preferences.user_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_alert_preferences.generation": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.reports.reporter_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.reports.target_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.reports.target_owner_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.reports.context_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.reports.handled_by": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_alert_email_items.notification_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_alert_email_items.job_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_drafts.owner_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notification_preferences.user_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.plan_requests.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_alert_emails.user_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_alert_emails.lease_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.request_preferences.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.saved_companies.user_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.saved_companies.company_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.saved_requests.user_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.saved_requests.request_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notification_outbox.notification_id": [
+    {
+      "count": 0
+    }
+  ],
+  "references:meetany_private.notification_outbox.lease_id": [
+    {
+      "count": 0
+    }
+  ]
+}

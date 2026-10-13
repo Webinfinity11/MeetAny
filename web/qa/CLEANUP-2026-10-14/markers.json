@@ -1,0 +1,329 @@
+{
+    "marked_offers": [
+    ],
+    "demo_companies": [
+        {
+            "id": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+            "company": "რბილი სივრცე"
+        },
+        {
+            "id": "f7b2fa99-7d1f-4428-a5e1-fe399ea138f4",
+            "company": "კოლხეთის ტვირთი"
+        },
+        {
+            "id": "1a5b8b24-3854-434e-9081-e48e122c5918",
+            "company": "სუფთა სივრცე"
+        },
+        {
+            "id": "74cc28fc-47de-45cb-9563-93735b86855e",
+            "company": "ხის ხაზი"
+        },
+        {
+            "id": "a5e8fc96-994d-4a70-9191-ad8a699898f9",
+            "company": "სტუდია ვები"
+        },
+        {
+            "id": "85509946-985a-409d-86ad-26c87c185546",
+            "company": "მთის ბაღი"
+        },
+        {
+            "id": "f08e2f75-3eec-442a-8fa9-eb3aca4d945a",
+            "company": "კოდის ხიდი"
+        },
+        {
+            "id": "cdb14451-5727-454e-9d04-6d47cf1d070e",
+            "company": "რეგიონის მომარაგება"
+        },
+        {
+            "id": "6e3709d3-2a3a-4819-9243-0d08cf512bc7",
+            "company": "კახეთის მშენებელი"
+        },
+        {
+            "id": "ff0def53-f3f9-43a5-8121-aade9a8e9cab",
+            "company": "ახალი ხედი"
+        }
+    ],
+    "marked_profiles": [
+        {
+            "id": "a1b3d831-b513-4d96-a4ff-b7cdf19d8f17",
+            "name": "QA რეგისტრაცია",
+            "email": "e2e+1791543795353-client-0@meetany.local",
+            "company": "QA რეგისტრაცია"
+        },
+        {
+            "id": "2314ad31-cddf-4f03-9444-b89338856f12",
+            "name": "QA რეგისტრაცია",
+            "email": "e2e+1791544041565-company-2@meetany.local",
+            "company": "QA 1791544041565"
+        },
+        {
+            "id": "00f283bd-8a4c-4047-ab57-e0908507445d",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790276755145-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790276755145-registration]"
+        },
+        {
+            "id": "d578e0f4-547d-48f3-a5ae-e6aabef917b5",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790677953780-password-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790677953780-password]"
+        },
+        {
+            "id": "ab660790-4da9-4ac9-8cea-3e3ffacc59c6",
+            "name": "QA რეგისტრაცია",
+            "email": "e2e+1791543795353-client-1@meetany.local",
+            "company": "QA რეგისტრაცია"
+        },
+        {
+            "id": "dced80aa-62b8-449f-8c5c-c69c600e5e0e",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790681404609-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790681404609-registration]"
+        },
+        {
+            "id": "91e5e293-6457-4720-8e1a-8169756e93d3",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790273772670-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e 1790273772670-registration]"
+        },
+        {
+            "id": "f0a8b56c-9baf-448e-bb49-df66c7b6b9ba",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790775806890-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790775806890-registration]"
+        },
+        {
+            "id": "463d5536-1040-4ca2-be84-164fd56b6f83",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790840603000-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790840603000-registration]"
+        },
+        {
+            "id": "59d9615b-ba17-4844-b6b2-152d8091cd82",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790844719213-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790844719213-registration]"
+        },
+        {
+            "id": "3ac87aab-9b46-4ae1-a9ec-d40bd8b60306",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790272582086-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e 1790272582086-registration]"
+        },
+        {
+            "id": "c7587302-5998-4dae-a450-f92d1549aae3",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790275301743-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790275301743-registration]"
+        },
+        {
+            "id": "c5888741-642a-4273-b08f-bddbb6a45d8f",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790278824902-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790278824902-registration]"
+        },
+        {
+            "id": "a38d5ece-8ec2-4015-9eb1-24df13f49b35",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790669700000-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790669700000-registration]"
+        },
+        {
+            "id": "6a893664-020b-451d-a623-1c09a96b1ed5",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790681404609-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790681404609-registration]"
+        },
+        {
+            "id": "1eea8de0-537c-46e6-964c-605a31509bc5",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790775806890-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790775806890-registration]"
+        },
+        {
+            "id": "0c33dcc0-6b9e-40ca-bdab-8f258b7fd673",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790840603000-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790840603000-registration]"
+        },
+        {
+            "id": "80d6d454-31e6-4d08-8b6a-5968c50f1999",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790273123900-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e 1790273123900-registration]"
+        },
+        {
+            "id": "9d7cdf83-8dd8-4167-b041-25dfa2381931",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790275301743-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790275301743-registration]"
+        },
+        {
+            "id": "3723c5e0-f4ef-42e0-ad07-b214a13cfbb1",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790278824902-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790278824902-registration]"
+        },
+        {
+            "id": "7c3fcdef-c077-4fe6-a78b-639a46e83204",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790273123900-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e 1790273123900-registration]"
+        },
+        {
+            "id": "5f2a8413-d8c9-4f6c-8f7b-11fe5a27f847",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790669700000-registration-company@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790669700000-registration]"
+        },
+        {
+            "id": "767c765b-f867-4c74-8280-543d8d52c695",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790273772670-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e 1790273772670-registration]"
+        },
+        {
+            "id": "0fe9dce5-6923-491b-8dc5-56121654858d",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790276755145-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790276755145-registration]"
+        },
+        {
+            "id": "c95ab182-277e-45b5-839b-7359e1ec8d57",
+            "name": "ნინო ბერიძე",
+            "email": "e2e+1790844719213-registration-client@meetany.local",
+            "company": "მიწოდების ჯგუფი [e2e:1790844719213-registration]"
+        }
+    ],
+    "marked_requests": [
+    ],
+    "bracket_requests": [
+    ],
+    "auth_accounts_remaining": [
+        {
+            "id": "a1b3d831-b513-4d96-a4ff-b7cdf19d8f17",
+            "email": "e2e+1791543795353-client-0@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "2314ad31-cddf-4f03-9444-b89338856f12",
+            "email": "e2e+1791544041565-company-2@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "00f283bd-8a4c-4047-ab57-e0908507445d",
+            "email": "e2e+1790276755145-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "d578e0f4-547d-48f3-a5ae-e6aabef917b5",
+            "email": "e2e+1790677953780-password-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "ab660790-4da9-4ac9-8cea-3e3ffacc59c6",
+            "email": "e2e+1791543795353-client-1@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "dced80aa-62b8-449f-8c5c-c69c600e5e0e",
+            "email": "e2e+1790681404609-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "91e5e293-6457-4720-8e1a-8169756e93d3",
+            "email": "e2e+1790273772670-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "f0a8b56c-9baf-448e-bb49-df66c7b6b9ba",
+            "email": "e2e+1790775806890-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "463d5536-1040-4ca2-be84-164fd56b6f83",
+            "email": "e2e+1790840603000-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "59d9615b-ba17-4844-b6b2-152d8091cd82",
+            "email": "e2e+1790844719213-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "3ac87aab-9b46-4ae1-a9ec-d40bd8b60306",
+            "email": "e2e+1790272582086-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "c7587302-5998-4dae-a450-f92d1549aae3",
+            "email": "e2e+1790275301743-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "c5888741-642a-4273-b08f-bddbb6a45d8f",
+            "email": "e2e+1790278824902-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "a38d5ece-8ec2-4015-9eb1-24df13f49b35",
+            "email": "e2e+1790669700000-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "6a893664-020b-451d-a623-1c09a96b1ed5",
+            "email": "e2e+1790681404609-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "1eea8de0-537c-46e6-964c-605a31509bc5",
+            "email": "e2e+1790775806890-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "0c33dcc0-6b9e-40ca-bdab-8f258b7fd673",
+            "email": "e2e+1790840603000-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "80d6d454-31e6-4d08-8b6a-5968c50f1999",
+            "email": "e2e+1790273123900-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "9d7cdf83-8dd8-4167-b041-25dfa2381931",
+            "email": "e2e+1790275301743-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "3723c5e0-f4ef-42e0-ad07-b214a13cfbb1",
+            "email": "e2e+1790278824902-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "7c3fcdef-c077-4fe6-a78b-639a46e83204",
+            "email": "e2e+1790273123900-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "5f2a8413-d8c9-4f6c-8f7b-11fe5a27f847",
+            "email": "e2e+1790669700000-registration-company@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "767c765b-f867-4c74-8280-543d8d52c695",
+            "email": "e2e+1790273772670-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "0fe9dce5-6923-491b-8dc5-56121654858d",
+            "email": "e2e+1790276755145-registration-client@meetany.local",
+            "auth_present": true
+        },
+        {
+            "id": "c95ab182-277e-45b5-839b-7359e1ec8d57",
+            "email": "e2e+1790844719213-registration-client@meetany.local",
+            "auth_present": true
+        }
+    ]
+}

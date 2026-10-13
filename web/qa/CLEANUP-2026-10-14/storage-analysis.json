@@ -1,0 +1,1823 @@
+[
+  {
+    "table": "meetany_private.attachments",
+    "defined_or_referenced_in": [
+      "db/migrations/20261012-perf-attachments-batch.sql",
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "owner_id": {
+        "source_occurrences": 28,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "kind": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "target_id": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "slot": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "name": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "mime": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "content": {
+        "source_occurrences": 7,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.business_audit",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261007-onboarding.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20261012-review-gate.sql",
+      "db/migrations/20261002-admin-overview.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261009-design-settings.sql",
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "target_id": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "action": {
+        "source_occurrences": 16,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "detail": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.company_business",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-distribution.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "columns": {
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "distributor": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "dist_categories": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_channels": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_brands": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_warehouse": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_transport": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_cold_chain": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_min_order": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      },
+      "dist_exclusive": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261001-distribution.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.company_plans",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-distribution.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "columns": {
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "plan": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "expires_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261012-home-stats.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.company_products",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-products.sql",
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "columns": {
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "items": {
+        "source_occurrences": 21,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.company_reviews",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261012-review-gate.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "author_id": {
+        "source_occurrences": 7,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "rating": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "reason": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.contact_events",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-contact-events.sql",
+      "db/migrations/20261007-contact-visibility.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "actor_role": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261007-contact-visibility.sql"
+      },
+      "target_kind": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "target_id": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "kind": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "source": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.conversations",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20260923-messaging.sql",
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "client_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "context_key": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "last_message_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "client_last_read_at": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20260923-messaging.sql"
+      },
+      "company_last_read_at": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20260923-messaging.sql"
+      },
+      "started_by": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.deal_events",
+    "defined_or_referenced_in": [
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "deal_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "revision": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "action": {
+        "source_occurrences": 16,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.deal_issues",
+    "defined_or_referenced_in": [
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "deal_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "reason": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "resolved_at": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "resolved_by": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "resolution": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "outcome": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261012-admin-management.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.deal_proposals",
+    "defined_or_referenced_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "deal_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "revision": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "previous": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "proposed": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.deal_reviews",
+    "defined_or_referenced_in": [
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "deal_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "scores": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "would_again": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.deal_updates",
+    "defined_or_referenced_in": [
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "deal_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.deals",
+    "defined_or_referenced_in": [
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261007-contact-visibility.sql",
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261013-company-deal-stats.sql",
+      "db/migrations/20261012-review-gate.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-home-stats.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "offer_id": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "buyer_id": {
+        "source_occurrences": 7,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "supplier_id": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "stage": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "selected_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "discuss_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "terms_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "progress_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "complete_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "cancelled_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "revision": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "total_price": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "quantity": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "unit": {
+        "source_occurrences": 13,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "delivery_days": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "delivery_date": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "delivery_place": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "payment_terms": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "includes": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "buyer_confirmed_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "supplier_confirmed_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "rating": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "review": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "rated_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.file_uploads",
+    "defined_or_referenced_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "owner_id": {
+        "source_occurrences": 28,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "kind": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "target_id": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "slot": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "name": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "mime": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "expected_size": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "content": {
+        "source_occurrences": 7,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "completed_id": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.messages",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "conversation_id": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "sender_id": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "read_at": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.moderation_audit",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20261002-admin-overview.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261002-admin-management.sql",
+      "db/migrations/20261013-admin-photo-remove.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "actor_id": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "target_type": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "target_id": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "action": {
+        "source_occurrences": 16,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "reason": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "old_flags": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      },
+      "new_flags": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-admin-photo-remove.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.notification_outbox",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "notification_id": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "attempts": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "available_at": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "lease_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "locked_until": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "sent_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "last_error": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "first_attempt_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "payload": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.notification_preferences",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "columns": {
+      "user_id": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "email_offers": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.notifications",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "user_id": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "offer_id": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "kind": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "read_at": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "deal_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "deal_action": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261012-admin-management.sql"
+      },
+      "deal_revision": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261012-admin-management.sql"
+      },
+      "detail": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.plan_requests",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-distribution.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "plan": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "note": {
+        "source_occurrences": 13,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.registration_events",
+    "defined_or_referenced_in": [
+      "db/migrations/20261002-registration-analytics.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "session_id": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261002-registration-analytics.sql"
+      },
+      "stage": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "profile_id": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261002-registration-analytics.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.registration_sessions",
+    "defined_or_referenced_in": [
+      "db/migrations/20261002-registration-analytics.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "role": {
+        "source_occurrences": 38,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "source": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      },
+      "device": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261002-registration-analytics.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "last_event_at": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261002-registration-analytics.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.reports",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20261013-contact-change.sql",
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "reporter_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      },
+      "target_kind": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "target_id": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "target_owner_id": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "target_label": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "context_id": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      },
+      "reason": {
+        "source_occurrences": 18,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "resolution": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "resolution_reason": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "handled_by": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      },
+      "handled_at": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "payload": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.request_alert_email_items",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql"
+    ],
+    "columns": {
+      "notification_id": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "job_id": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.request_alert_emails",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20260929-categories.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "user_id": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "bucket": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "mode": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "available_at": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "attempts": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "lease_id": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "locked_until": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "first_attempt_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "sent_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      },
+      "payload": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-contact-change-admin.sql"
+      },
+      "frozen_ids": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20260923-request-alerts.sql"
+      },
+      "last_error": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-engagement.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.request_alert_preferences",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20260929-categories.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql"
+    ],
+    "columns": {
+      "user_id": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "enabled": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "generation": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "categories": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "cities": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "email_mode": {
+        "source_occurrences": 7,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.request_drafts",
+    "defined_or_referenced_in": [
+      "db/migrations/20261013-request-drafts.sql"
+    ],
+    "columns": {
+      "owner_id": {
+        "source_occurrences": 28,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "data": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-matching-v2.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.request_preferences",
+    "defined_or_referenced_in": [
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql",
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "columns": {
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "preferences": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.saved_companies",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "columns": {
+      "user_id": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.saved_requests",
+    "defined_or_referenced_in": [
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "columns": {
+      "user_id": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260929-request-alerts-default-on.sql"
+      },
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.settings",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261002-registration-analytics.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql"
+    ],
+    "columns": {
+      "key": {
+        "source_occurrences": 21,
+        "example_source": "db/migrations/20261013-report-result-note.sql"
+      },
+      "value": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.site_content",
+    "defined_or_referenced_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "content": {
+        "source_occurrences": 7,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "meetany_private.site_design",
+    "defined_or_referenced_in": [
+      "db/migrations/20261009-design-settings.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "config": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261009-design-settings.sql"
+      },
+      "version": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "public.offers",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20261007-contact-visibility.sql",
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20261002-admin-overview.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20260923-addresses.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261002-admin-management.sql",
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-home-stats.sql",
+      "db/migrations/20261001-market-metrics.sql",
+      "db/migrations/20261007-offer-terms.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "request_id": {
+        "source_occurrences": 26,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "company_id": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "price": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "updated_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "price_type": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "vat_included": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "delivery_days": {
+        "source_occurrences": 6,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "delivery_included": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      },
+      "payment_terms": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "valid_until": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "commercial_terms": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "viewed_at": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261013-offer-status-dashboard.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "public.profiles",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20260923-contact-events.sql",
+      "db/migrations/20260929-categories.sql",
+      "db/migrations/20261007-contact-visibility.sql",
+      "db/migrations/20261007-onboarding.sql",
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20261013-contact-change.sql",
+      "db/migrations/20261001-distribution.sql",
+      "db/migrations/20261013-request-drafts.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20261013-company-deal-stats.sql",
+      "db/migrations/20261002-company-approval.sql",
+      "db/migrations/20261012-review-gate.sql",
+      "db/migrations/20261002-admin-overview.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20260923-addresses.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20261009-design-settings.sql",
+      "db/migrations/20261002-registration-analytics.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20260923-messaging.sql",
+      "db/migrations/20261007-matching.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql",
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261008-matching-fix.sql",
+      "db/migrations/20260924-company-logo.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql",
+      "db/migrations/20261002-admin-management.sql",
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261013-admin-photo-remove.sql",
+      "db/migrations/20261012-home-stats.sql",
+      "db/migrations/20261001-products.sql",
+      "db/migrations/20261013-qa-round.sql",
+      "db/migrations/20261001-market-metrics.sql",
+      "db/migrations/20260930-company-gallery.sql",
+      "db/migrations/20261007-offer-terms.sql",
+      "db/migrations/20261013-matching-intent.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "role": {
+        "source_occurrences": 38,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "name": {
+        "source_occurrences": 24,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "company": {
+        "source_occurrences": 40,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "phone": {
+        "source_occurrences": 15,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "email": {
+        "source_occurrences": 21,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "city": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "industry": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "verified": {
+        "source_occurrences": 22,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "blocked": {
+        "source_occurrences": 38,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "about": {
+        "source_occurrences": 12,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "offers": {
+        "source_occurrences": 25,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "seeks": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "service_cities": {
+        "source_occurrences": 14,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "verified_at": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "blocked_reason": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-admin-api.sql"
+      },
+      "address": {
+        "source_occurrences": 9,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "lat": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "lng": {
+        "source_occurrences": 8,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "logo_url": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "gallery": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "provide_categories": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "need_categories": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "account_intent": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "employee_band": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "founded_year": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "markets": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261007-onboarding.sql"
+      },
+      "languages": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261007-onboarding.sql"
+      },
+      "legal_name": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "registration_code": {
+        "source_occurrences": 5,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "legal_form": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "contact_position": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261012-admin-management.sql"
+      },
+      "website": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261012-admin-management.sql"
+      },
+      "business_tags": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261013-matching-v2.sql"
+      },
+      "certificates": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "verification_documents_status": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "onboarding_completed_at": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261013-qa-round.sql"
+      },
+      "verification_note": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261012-admin-management.sql"
+      },
+      "catalog_hidden": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261014-admin-actions.sql"
+      },
+      "catalog_hidden_reason": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261014-admin-actions.sql"
+      },
+      "anonymized_at": {
+        "source_occurrences": 1,
+        "example_source": "db/migrations/20261014-admin-actions.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  },
+  {
+    "table": "public.requests",
+    "defined_or_referenced_in": [
+      "db/schema.sql",
+      "db/migrations/20261014-admin-actions.sql",
+      "db/migrations/20260923-contact-events.sql",
+      "db/migrations/20260929-categories.sql",
+      "db/migrations/20261007-contact-visibility.sql",
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20261012-review-gate.sql",
+      "db/migrations/20261002-admin-overview.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20260923-addresses.sql",
+      "db/migrations/20261013-matching-v2.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20260923-messaging.sql",
+      "db/migrations/20261007-matching.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql",
+      "db/migrations/20261009-short-request-titles.sql",
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261008-matching-fix.sql",
+      "db/migrations/20261002-admin-management.sql",
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-home-stats.sql",
+      "db/migrations/20261001-market-metrics.sql",
+      "db/migrations/20261007-offer-terms.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "columns": {
+      "id": {
+        "source_occurrences": 47,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "owner_id": {
+        "source_occurrences": 28,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "title": {
+        "source_occurrences": 29,
+        "example_source": "db/migrations/20260930-company-gallery.sql"
+      },
+      "body": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261009-flow-completion.sql"
+      },
+      "category": {
+        "source_occurrences": 19,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "city": {
+        "source_occurrences": 20,
+        "example_source": "db/migrations/20261013-matching-intent.sql"
+      },
+      "photo_url": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "status": {
+        "source_occurrences": 23,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "hidden": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "chosen_offer_id": {
+        "source_occurrences": 15,
+        "example_source": "db/migrations/20261001-market-metrics.sql"
+      },
+      "created_at": {
+        "source_occurrences": 31,
+        "example_source": "db/migrations/20260924-empty-conversations.sql"
+      },
+      "expires_at": {
+        "source_occurrences": 11,
+        "example_source": "db/migrations/20261012-home-stats.sql"
+      },
+      "quantity": {
+        "source_occurrences": 10,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "unit": {
+        "source_occurrences": 13,
+        "example_source": "db/migrations/20261007-offer-terms.sql"
+      },
+      "needed_by": {
+        "source_occurrences": 4,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "hidden_reason": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20260923-admin-api.sql"
+      },
+      "address_note": {
+        "source_occurrences": 3,
+        "example_source": "db/migrations/20261002-admin-management.sql"
+      },
+      "budget_type": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      },
+      "budget_min": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      },
+      "budget_max": {
+        "source_occurrences": 2,
+        "example_source": "db/migrations/20261013-public-budget-saved-requests.sql"
+      }
+    },
+    "decision": "დატოვებულია: მოქმედი სქემა/მიგრაციები იყენებს ცხრილს; მკვდარი სვეტი არ დასტურდება."
+  }
+]

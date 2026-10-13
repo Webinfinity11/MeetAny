@@ -1,0 +1,150 @@
+[
+    {
+        "count": 1,
+        "table_name": "meetany_private.attachments"
+    },
+    {
+        "count": 7,
+        "table_name": "meetany_private.business_audit"
+    },
+    {
+        "count": 2,
+        "table_name": "meetany_private.company_business"
+    },
+    {
+        "count": 4,
+        "table_name": "meetany_private.company_plans"
+    },
+    {
+        "count": 5,
+        "table_name": "meetany_private.company_products"
+    },
+    {
+        "count": 6,
+        "table_name": "meetany_private.company_reviews"
+    },
+    {
+        "count": 72,
+        "table_name": "meetany_private.contact_events"
+    },
+    {
+        "count": 24,
+        "table_name": "meetany_private.conversations"
+    },
+    {
+        "count": 42,
+        "table_name": "meetany_private.deal_events"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.deal_issues"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.deal_proposals"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.deal_reviews"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.deal_updates"
+    },
+    {
+        "count": 10,
+        "table_name": "meetany_private.deals"
+    },
+    {
+        "count": 1,
+        "table_name": "meetany_private.file_uploads"
+    },
+    {
+        "count": 39,
+        "table_name": "meetany_private.messages"
+    },
+    {
+        "count": 132,
+        "table_name": "meetany_private.moderation_audit"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.notification_outbox"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.notification_preferences"
+    },
+    {
+        "count": 134,
+        "table_name": "meetany_private.notifications"
+    },
+    {
+        "count": 2,
+        "table_name": "meetany_private.plan_requests"
+    },
+    {
+        "count": 33,
+        "table_name": "meetany_private.registration_events"
+    },
+    {
+        "count": 20,
+        "table_name": "meetany_private.registration_sessions"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.reports"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.request_alert_email_items"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.request_alert_emails"
+    },
+    {
+        "count": 1,
+        "table_name": "meetany_private.request_alert_preferences"
+    },
+    {
+        "count": 2,
+        "table_name": "meetany_private.request_drafts"
+    },
+    {
+        "count": 2,
+        "table_name": "meetany_private.request_preferences"
+    },
+    {
+        "count": 6,
+        "table_name": "meetany_private.saved_companies"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.saved_requests"
+    },
+    {
+        "count": 4,
+        "table_name": "meetany_private.settings"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.site_content"
+    },
+    {
+        "count": 0,
+        "table_name": "meetany_private.site_design"
+    },
+    {
+        "count": 90,
+        "table_name": "public.offers"
+    },
+    {
+        "count": 56,
+        "table_name": "public.profiles"
+    },
+    {
+        "count": 42,
+        "table_name": "public.requests"
+    }
+]

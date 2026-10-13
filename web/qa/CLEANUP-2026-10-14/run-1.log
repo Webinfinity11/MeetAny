@@ -1,0 +1,77 @@
+BEGIN
+SET
+SET
+CREATE TABLE
+INSERT 0 25
+SELECT 25
+DO
+            locked_profile
+--------------------------------------
+ a1b3d831-b513-4d96-a4ff-b7cdf19d8f17
+ 2314ad31-cddf-4f03-9444-b89338856f12
+ 00f283bd-8a4c-4047-ab57-e0908507445d
+ d578e0f4-547d-48f3-a5ae-e6aabef917b5
+ ab660790-4da9-4ac9-8cea-3e3ffacc59c6
+ dced80aa-62b8-449f-8c5c-c69c600e5e0e
+ 91e5e293-6457-4720-8e1a-8169756e93d3
+ f0a8b56c-9baf-448e-bb49-df66c7b6b9ba
+ 463d5536-1040-4ca2-be84-164fd56b6f83
+ 59d9615b-ba17-4844-b6b2-152d8091cd82
+ 3ac87aab-9b46-4ae1-a9ec-d40bd8b60306
+ c7587302-5998-4dae-a450-f92d1549aae3
+ c5888741-642a-4273-b08f-bddbb6a45d8f
+ a38d5ece-8ec2-4015-9eb1-24df13f49b35
+ 6a893664-020b-451d-a623-1c09a96b1ed5
+ 1eea8de0-537c-46e6-964c-605a31509bc5
+ 0c33dcc0-6b9e-40ca-bdab-8f258b7fd673
+ 80d6d454-31e6-4d08-8b6a-5968c50f1999
+ 9d7cdf83-8dd8-4167-b041-25dfa2381931
+ 3723c5e0-f4ef-42e0-ad07-b214a13cfbb1
+ 7c3fcdef-c077-4fe6-a78b-639a46e83204
+ 5f2a8413-d8c9-4f6c-8f7b-11fe5a27f847
+ 767c765b-f867-4c74-8280-543d8d52c695
+ 0fe9dce5-6923-491b-8dc5-56121654858d
+ c95ab182-277e-45b5-839b-7359e1ec8d57
+(25 rows)
+
+DO
+CREATE TABLE
+SELECT 1
+DO
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+       category        | deleted
+-----------------------+---------
+ contact_events        |       1
+ profiles              |      25
+ registration_events   |       4
+ registration_sessions |       1
+(4 rows)
+
+ remaining_reviewed_profiles
+-----------------------------
+                           0
+(1 row)
+
+ remaining_reviewed_orphan
+---------------------------
+                         0
+(1 row)
+
+ protected_profiles
+--------------------
+                 22
+(1 row)
+
+     retained     | count
+------------------+-------
+ requests         |    42
+ offers           |    90
+ moderation_audit |   132
+ business_audit   |     7
+ request_drafts   |     2
+(5 rows)
+
+COMMIT

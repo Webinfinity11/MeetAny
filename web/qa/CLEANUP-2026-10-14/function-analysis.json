@@ -1,0 +1,2544 @@
+[
+  {
+    "signature": "meetany_private.account_notice(uuid, text, jsonb)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.admin_apply_verified(uuid, uuid, boolean, text)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.admin_page_cursor(jsonb)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.can_view_company(uuid)",
+    "defined_in": [
+      "db/migrations/20261002-company-approval.sql",
+      "db/migrations/20261014-admin-actions.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.can_write()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "policy deals_parties on table meetany_private.deals"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.categories()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260929-categories.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/components/HomeBusinessScene.tsx",
+      "web/app/components/SegmentedSearch.tsx",
+      "web/app/lib/market-store.js",
+      "web/app/lib/search-suggestions.ts",
+      "web/app/lib/distribution-filter.js",
+      "web/app/lib/distribution.ts",
+      "web/app/lib/home-data.ts",
+      "web/app/lib/onboarding-client.ts",
+      "web/app/lib/categories.ts",
+      "web/app/lib/categories-data.js",
+      "web/app/og/route.tsx",
+      "web/app/dev/ui/page.tsx",
+      "web/app/components/ui/CategoryChips.tsx",
+      "web/app/components/ui/CategoryIcon.tsx",
+      "web/app/components/ui/CityChips.tsx",
+      "web/app/components/market/DealCollaboration.tsx",
+      "web/app/components/market/OnboardPage.tsx",
+      "web/app/components/market/PostRequestPage.tsx",
+      "web/app/components/market/SimilarCompanies.tsx",
+      "web/app/components/market/MakeOfferPageContent.tsx",
+      "web/app/components/market/RequestViewPageContent.tsx",
+      "web/app/components/market/OnboardFields.tsx",
+      "web/app/components/market/FacetList.tsx",
+      "web/app/components/market/RequestFormSheet.tsx",
+      "web/app/components/market/AuthForms.tsx",
+      "web/app/components/market/EngagementPanels.tsx",
+      "web/app/components/market/CompanyProfilePageContent.tsx",
+      "web/app/components/market/CompaniesPageContent.tsx",
+      "web/app/components/market/DealTermsForm.tsx",
+      "web/app/components/market/Inbox.tsx",
+      "web/app/components/market/OpportunityCard.tsx",
+      "web/app/components/market/RequestsPageContent.tsx",
+      "web/app/components/market/AdminEditPanel.tsx",
+      "web/app/components/market/RequestCatalogCover.tsx",
+      "web/app/components/market/RequestRow.tsx",
+      "web/app/components/market/CategoryOptions.tsx",
+      "web/app/components/market/CompanyListingCard.tsx",
+      "web/app/components/market/SavedRequests.tsx",
+      "web/app/components/market/RequestAlertSettings.tsx",
+      "web/app/components/market/DealShell.tsx",
+      "web/app/components/market/CompareOffersPageContent.tsx",
+      "web/app/components/market/AdminPageContent.tsx",
+      "web/app/components/market/AdminDealDetail.tsx",
+      "web/app/components/market/DealViewPageContent.tsx",
+      "web/app/components/market/OnboardSteps.tsx",
+      "web/app/components/market/AdminOverview.tsx",
+      "web/app/components/market/AdminDetail.tsx",
+      "web/app/components/market/AdminMarketMetrics.tsx",
+      "web/app/components/market/CompaniesMap.tsx",
+      "web/app/components/market/Distribution.tsx",
+      "web/app/components/market/AdminPhotos.tsx",
+      "web/app/components/market/matching/FullMatchingFeed.tsx",
+      "web/app/components/market/post/MatchingSuppliers.tsx",
+      "web/app/components/market/catalog/CatalogFilters.tsx",
+      "web/app/components/market/account/MyRequests.tsx",
+      "web/app/components/market/account/shared.tsx",
+      "web/app/components/market/account/Profile.tsx",
+      "web/app/components/market/account/MyOffers.tsx",
+      "web/app/components/market/account/CompanyUpgrade.tsx",
+      "web/app/components/market/messaging/ChatParts.tsx",
+      "web/app/(requests-new)/requests/new/page.tsx",
+      "web/app/(company-view)/companies/view/page.tsx",
+      "web/app/(request-view)/requests/view/page.tsx"
+    ],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint request_alert_preferences_categories_check on table meetany_private.request_alert_preferences"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.category_group_members(text)",
+    "defined_in": [
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.category_groups()",
+    "defined_in": [
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.category_map(text)",
+    "defined_in": [
+      "db/migrations/20260929-categories.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.check_terms(numeric, text, date, date)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.cities()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/components/HomeBusinessScene.tsx",
+      "web/app/components/SegmentedSearch.tsx",
+      "web/app/lib/market-store.js",
+      "web/app/lib/search-suggestions.ts",
+      "web/app/lib/categories.ts",
+      "web/app/og/route.tsx",
+      "web/app/components/ui/CityChips.tsx",
+      "web/app/components/market/PostRequestPage.tsx",
+      "web/app/components/market/SimilarCompanies.tsx",
+      "web/app/components/market/MakeOfferPageContent.tsx",
+      "web/app/components/market/RequestViewPageContent.tsx",
+      "web/app/components/market/RequestFormSheet.tsx",
+      "web/app/components/market/AuthForms.tsx",
+      "web/app/components/market/EngagementPanels.tsx",
+      "web/app/components/market/CompanyProfilePageContent.tsx",
+      "web/app/components/market/CompaniesPageContent.tsx",
+      "web/app/components/market/OpportunityCard.tsx",
+      "web/app/components/market/RequestsPageContent.tsx",
+      "web/app/components/market/AdminEditPanel.tsx",
+      "web/app/components/market/CompanyListingCard.tsx",
+      "web/app/components/market/SavedRequests.tsx",
+      "web/app/components/market/RequestAlertSettings.tsx",
+      "web/app/components/market/DealShell.tsx",
+      "web/app/components/market/CompareOffersPageContent.tsx",
+      "web/app/components/market/AdminPageContent.tsx",
+      "web/app/components/market/DealViewPageContent.tsx",
+      "web/app/components/market/OnboardSteps.tsx",
+      "web/app/components/market/AdminDetail.tsx",
+      "web/app/components/market/AdminMarketMetrics.tsx",
+      "web/app/components/market/CompaniesMap.tsx",
+      "web/app/components/market/Distribution.tsx",
+      "web/app/components/market/matching/FullMatchingFeed.tsx",
+      "web/app/components/market/post/MatchingSuppliers.tsx",
+      "web/app/components/market/catalog/CatalogFilters.tsx",
+      "web/app/components/market/account/MyRequests.tsx",
+      "web/app/components/market/account/Profile.tsx",
+      "web/app/components/market/account/MyOffers.tsx",
+      "web/app/components/market/messaging/ChatParts.tsx",
+      "web/app/(company-view)/companies/view/page.tsx",
+      "web/app/(request-view)/requests/view/page.tsx"
+    ],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint request_alert_preferences_cities_check on table meetany_private.request_alert_preferences"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.claim_notification_email(text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.claim_request_alert_email(text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-request-alerts.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.clear_moderation_reason()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger profiles_blocked_reason on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "trigger requests_hidden_reason on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.deal_event(meetany_private.deals, text)",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.default_request_alert_preferences(profiles)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql",
+      "db/migrations/20261013-matching-intent.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.delete_request_conversations()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger requests_delete_conversations on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.fail(text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-addresses.sql",
+      "db/migrations/20260924-company-logo.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20260930-company-gallery.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.file_scope(text, uuid, boolean)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.finish_notification_email(uuid, uuid, boolean, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.finish_request_alert_email(uuid, uuid, boolean, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-request-alerts.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.flow_fail(text)",
+    "defined_in": [
+      "db/migrations/20261007-offer-terms.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.guard_deal_collaboration()",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger guard_deal_collaboration on table meetany_private.deals"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.is_admin()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "policy deals_parties on table meetany_private.deals"
+      },
+      {
+        "type": "n",
+        "object": "policy offers_select_sealed on table offers"
+      },
+      {
+        "type": "n",
+        "object": "policy profiles_select_public on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "policy requests_select_visible on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.is_category(text)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_industry_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint requests_category_check on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.is_city(text)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_city_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint requests_city_check on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.is_request_owner(uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "policy offers_select_sealed on table offers"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.is_test_profile(uuid)",
+    "defined_in": [
+      "db/migrations/20261012-home-stats.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.is_unit(text)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint deals_unit_check on table meetany_private.deals"
+      },
+      {
+        "type": "n",
+        "object": "constraint requests_quantity_unit_check on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.jwt()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/auth-session-preload.js",
+      "web/app/lib/db.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/blob-upload-handler.js",
+      "web/app/lib/neon-jwt.js",
+      "web/app/api/products-import/route.ts",
+      "web/app/api/files/route.ts",
+      "web/app/api/analytics/registration/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.match_words(text)",
+    "defined_in": [
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.matching_suppliers(text, uuid)",
+    "defined_in": [
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [
+      "web/app/lib/matching-client.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.messaging_context_guard()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger messaging_context_guard on table meetany_private.conversations"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.moderation_reason(text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.normalize_phone(text)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.notify_matching_request()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql",
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger notify_matching_request on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.notify_offer()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20261013-offer-status-dashboard.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger notify_chosen_offer on table requests"
+      },
+      {
+        "type": "n",
+        "object": "trigger notify_new_offer on table offers"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.open_count(uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.own_request(uuid, profiles)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.photo_origin()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.profiles_verified_at()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger profiles_verified_at on table profiles"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.reject_audit_mutation()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger moderation_audit_immutable on table meetany_private.moderation_audit"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.report_fail(text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-reports.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.request_state(requests)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.require_admin()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.require_conversation(uuid, uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.require_user()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.reset_offer_viewed()",
+    "defined_in": [
+      "db/migrations/20261013-offer-status-dashboard.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "trigger reset_offer_viewed on table offers"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.today()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/components/market/PostRequestPage.tsx",
+      "web/app/components/market/AdminAuditTable.tsx",
+      "web/app/components/market/RequestFormSheet.tsx",
+      "web/app/components/market/EngagementPanels.tsx",
+      "web/app/components/market/DealViewPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.uid()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db.js",
+      "web/app/lib/blob-upload-handler.js"
+    ],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "policy deals_parties on table meetany_private.deals"
+      },
+      {
+        "type": "n",
+        "object": "policy offers_select_sealed on table offers"
+      },
+      {
+        "type": "n",
+        "object": "policy profiles_select_public on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "policy requests_select_visible on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.units()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/categories.ts",
+      "web/app/components/market/DealCollaboration.tsx",
+      "web/app/components/market/PostRequestPage.tsx",
+      "web/app/components/market/MakeOfferPageContent.tsx",
+      "web/app/components/market/RequestViewPageContent.tsx",
+      "web/app/components/market/RequestFormSheet.tsx",
+      "web/app/components/market/EngagementPanels.tsx",
+      "web/app/components/market/DealTermsForm.tsx",
+      "web/app/components/market/OpportunityCard.tsx",
+      "web/app/components/market/RequestRow.tsx",
+      "web/app/components/market/DealShell.tsx",
+      "web/app/components/market/AdminDealDetail.tsx",
+      "web/app/components/market/DealViewPageContent.tsx",
+      "web/app/components/market/matching/FullMatchingFeed.tsx",
+      "web/app/components/market/account/MyRequests.tsx",
+      "web/app/components/market/account/MyOffers.tsx",
+      "web/app/components/market/messaging/ChatParts.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.valid_cities(text[])",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_public_fields_check on table profiles"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.valid_flow_categories(text[])",
+    "defined_in": [
+      "db/migrations/20261007-matching.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_need_categories_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint profiles_provide_categories_check on table profiles"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.valid_gallery(text[], uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260930-company-gallery.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_gallery_check on table profiles"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.valid_items(text[])",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_business_tags_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint profiles_certificates_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint profiles_languages_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint profiles_markets_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint profiles_public_fields_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint deals_includes_check on table meetany_private.deals"
+      },
+      {
+        "type": "n",
+        "object": "constraint offers_commercial_terms_check on table offers"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.valid_photo_url(text, uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [],
+    "dependents": [
+      {
+        "type": "n",
+        "object": "constraint profiles_logo_url_check on table profiles"
+      },
+      {
+        "type": "n",
+        "object": "constraint requests_photo_url_check on table requests"
+      }
+    ]
+  },
+  {
+    "signature": "meetany_private.valid_request_preferences(jsonb)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "meetany_private.word_hits(text[], text[])",
+    "defined_in": [
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "public.add_deal_update(uuid, integer, text, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealCollaboration.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_anonymize_user(uuid, text)",
+    "defined_in": [
+      "db/migrations/20261014-admin-actions.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_apply_contact_change(uuid, text)",
+    "defined_in": [
+      "db/migrations/20261013-contact-change-admin.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminReports.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_business_audit(integer, integer)",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_business_queue(text, integer)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_comment_deal_issue(uuid, text)",
+    "defined_in": [
+      "db/migrations/20261014-admin-actions.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminIssueComment.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_company_settings(uuid)",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_contact_events(jsonb, text, text, timestamp with time zone, timestamp with time zone, integer)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-contact-events.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_contact_stats(text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-contact-events.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_conversation_messages(uuid, jsonb)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminReportContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_deal_issues()",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminDealIssues.tsx",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_delete_offer(uuid, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260929-admin-v2.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_delete_request(uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_delete_request_v2(uuid, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_edit_offer(uuid, jsonb, text)",
+    "defined_in": [
+      "db/migrations/20261014-admin-actions.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminOfferEditPanel.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_edit_profile(uuid, jsonb)",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_edit_request(uuid, jsonb)",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_audit(jsonb, integer)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/use-admin-data.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_audit_v2(jsonb, integer, text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminAuditTable.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_conversations(jsonb)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_deals(text, text, jsonb, integer)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/admin-deals.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_reports(text, integer)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20261013-contact-change-admin.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_reviews(text, text, text, integer)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminReviews.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_list_users()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_manage_plan(uuid, text, timestamp with time zone)",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_market_metrics()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-market-metrics.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_message_stats()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_moderate_review(uuid, text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_overview()",
+    "defined_in": [
+      "db/migrations/20261002-admin-overview.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_registration_analytics(integer, text)",
+    "defined_in": [
+      "db/migrations/20261002-registration-analytics.sql"
+    ],
+    "code_references": [
+      "web/app/api/analytics/registration/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_remove_company_photo(uuid, text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-admin-photos.sql",
+      "db/migrations/20261013-admin-photo-remove.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/blob-upload-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_resolve_deal_issue(uuid, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_resolve_deal_issue(uuid, text, text)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_resolve_plan(uuid, boolean, integer, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_resolve_report(uuid, text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-reports.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261013-contact-change-admin.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_save_site_content(jsonb)",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_save_site_design(jsonb, integer)",
+    "defined_in": [
+      "db/migrations/20261009-design-settings.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_search_offers(text, text, jsonb, integer, boolean)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_search_requests(text, text, text, jsonb, integer)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_search_users(text, text, boolean, boolean, jsonb, integer, text)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_blocked(uuid, boolean, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_company_hidden(uuid, boolean, text)",
+    "defined_in": [
+      "db/migrations/20261014-admin-actions.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_deal_stage(uuid, text, text)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_document_status(uuid, text)",
+    "defined_in": [
+      "db/migrations/20261007-onboarding.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/VerificationDocuments.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_hidden(uuid, boolean, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_request_preferences(uuid, jsonb)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminRequestExtras.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_role(uuid, text, text)",
+    "defined_in": [
+      "db/migrations/20261014-admin-actions.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_verified(uuid, boolean)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_set_verified(uuid, boolean, text)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.admin_stats()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-admin-api.sql",
+      "db/migrations/20260929-admin-v2.sql",
+      "db/migrations/20261002-admin-overview.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/market-bootstrap.js",
+      "web/app/api/analytics/registration/route.ts",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.advance_deal(uuid, text, integer)",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealViewPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.append_file_chunk(uuid, integer, bytea)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/api/files/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.become_company(text, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261013-matching-intent.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/account/CompanyUpgrade.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.become_company(text, text, text)",
+    "defined_in": [
+      "db/migrations/20261013-matching-intent.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/account/CompanyUpgrade.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.begin_file_upload(text, uuid, text, text, integer, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/api/files/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.bind_draft_files(text, uuid, uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/SendOfferForm.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.cancel_company_plan_request()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.choose_offer(uuid, timestamp with time zone)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.close_request(uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.company_business_features()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.company_distribution_profiles()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-distribution.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.company_products(uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-products.sql",
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.company_public_stats(uuid)",
+    "defined_in": [
+      "db/migrations/20261013-company-deal-stats.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/company/CompanyReviews.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.company_reviews(uuid, integer)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.company_stats(uuid[])",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/public-snapshot.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/market-bootstrap.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.compare_offers(uuid)",
+    "defined_in": [
+      "db/migrations/20261007-offer-terms.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/CompareOffersPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.complete_onboarding()",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/OnboardPage.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.complete_profile(text, text, text, text, text, text)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.confirm_deal_terms(uuid, integer)",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealViewPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.contact_for_request(uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261007-contact-visibility.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/phones.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/market-bootstrap.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.count_matching_suppliers(text, text)",
+    "defined_in": [
+      "db/migrations/20261013-matching-intent.sql",
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [
+      "web/app/lib/matching-client.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.create_request(text, text, text, text, text, numeric, text, date, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-addresses.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/blob-upload-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.create_request_full(text, text, text, text, text, numeric, text, date, text, jsonb, uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.delete_request(uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.delete_request_draft()",
+    "defined_in": [
+      "db/migrations/20261013-request-drafts.sql"
+    ],
+    "code_references": [
+      "web/app/lib/request-draft.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.engagement_state()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20261012-admin-management.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/market-bootstrap.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.extend_request(uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.finish_file_upload(uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/api/files/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.get_attachment(uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/api/files/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.get_deal(uuid)",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/deal-client.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/EngagementPanels.tsx",
+      "web/app/components/market/AdminDealDetail.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.get_deal_contact(uuid)",
+    "defined_in": [
+      "db/migrations/20261007-contact-visibility.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/phones.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealShell.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.home_stats()",
+    "defined_in": [
+      "db/migrations/20261012-home-stats.sql"
+    ],
+    "code_references": [
+      "web/app/lib/public-snapshot.js",
+      "web/app/lib/db-handler.js",
+      "web/app/components/home/HomeSections.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_attachments(text, uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_attachments_many(text, uuid[])",
+    "defined_in": [
+      "db/migrations/20261012-perf-attachments-batch.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_companies()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-addresses.sql",
+      "db/migrations/20260924-company-logo.sql",
+      "db/migrations/20260930-company-gallery.sql"
+    ],
+    "code_references": [
+      "web/app/lib/public-snapshot.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_matching(uuid, text, integer, integer)",
+    "defined_in": [
+      "db/migrations/20261007-matching.sql",
+      "db/migrations/20261008-matching-fix.sql",
+      "db/migrations/20261013-matching-v2.sql"
+    ],
+    "code_references": [
+      "web/app/lib/matching-client.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/matching/FullMatchingFeed.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_matching_feed(text, text, integer, integer)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/matching/FullMatchingFeed.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_messages(uuid, timestamp with time zone)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_my_conversations()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_my_deals()",
+    "defined_in": [
+      "db/migrations/20261013-offer-status-dashboard.sql"
+    ],
+    "code_references": [
+      "web/app/lib/deal-client.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/account/MyDeals.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_notifications(jsonb)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_saved_companies(jsonb)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.list_saved_requests(jsonb)",
+    "defined_in": [
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/SavedRequests.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.log_contact_event(text, uuid, text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-contact-events.sql",
+      "db/migrations/20261007-contact-visibility.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.mark_notification_read(uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.mark_read(uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.mark_request_offers_viewed(uuid)",
+    "defined_in": [
+      "db/migrations/20261013-offer-status-dashboard.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/lib/use-request-detail.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.my_business_settings()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261001-distribution.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.my_company_review_targets(uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261012-review-gate.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.my_profile()",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/onboarding-client.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/market-bootstrap.js",
+      "web/app/lib/blob-upload-handler.js",
+      "web/app/lib/neon-jwt.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.my_request_draft()",
+    "defined_in": [
+      "db/migrations/20261013-request-drafts.sql"
+    ],
+    "code_references": [
+      "web/app/lib/request-draft.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.offer_counts(uuid[])",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/public-snapshot.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/market-bootstrap.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.open_deal_issue(uuid, integer, text, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealCollaboration.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.propose_deal_terms(uuid, integer, numeric, numeric, text, integer, date, text, text, text[])",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealViewPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.rate_deal(uuid, integer, text, integer)",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql",
+      "db/migrations/20261012-review-gate.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.rate_deal_full(uuid, integer, integer[], boolean, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealViewPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.record_registration_event(uuid, uuid, text, text, text, text)",
+    "defined_in": [
+      "db/migrations/20261002-registration-analytics.sql"
+    ],
+    "code_references": [
+      "web/app/api/analytics/registration/route.ts"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.reject_deal_proposal(uuid, integer, uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/DealCollaboration.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.remove_attachment(uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/FileAttachments.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.report_content(text, uuid, text, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-reports.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.request_alert_preferences()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260929-request-alerts-default-on.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.request_company_plan(text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.request_contact_change(text, text, text)",
+    "defined_in": [
+      "db/migrations/20261013-contact-change-admin.sql",
+      "db/migrations/20261013-contact-change.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/account/Profile.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.request_preferences(uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/SendOfferForm.tsx",
+      "web/app/components/market/RequestPreferences.tsx",
+      "web/app/components/market/AdminRequestExtras.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.review_verification(uuid, text)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.review_verification(uuid, text, text)",
+    "defined_in": [
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/AdminPageContent.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.save_company_review(uuid, integer, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql",
+      "db/migrations/20261002-admin-management.sql",
+      "db/migrations/20261012-review-gate.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.save_request_draft(jsonb)",
+    "defined_in": [
+      "db/migrations/20261013-request-drafts.sql"
+    ],
+    "code_references": [
+      "web/app/lib/request-draft.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/PostRequestPage.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.select_offer_deal(uuid, timestamp with time zone)",
+    "defined_in": [
+      "db/migrations/20261007-deals.sql"
+    ],
+    "code_references": [
+      "web/app/lib/deal-client.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.send_message(uuid, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.send_offer(uuid, text, numeric, text, boolean, integer, boolean)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_company_distributor(boolean)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_matching_categories(text[], text[])",
+    "defined_in": [
+      "db/migrations/20261007-matching.sql"
+    ],
+    "code_references": [
+      "web/app/lib/onboarding-client.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/OnboardPage.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_my_distribution(text[], text[], text[], text, text, boolean, text, boolean, text[])",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-distribution.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_my_gallery(text[])",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260930-company-gallery.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/blob-upload-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_my_products(jsonb)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20261001-products.sql",
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_notification_email(boolean)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_offer_terms(uuid, text, date, text[], timestamp with time zone)",
+    "defined_in": [
+      "db/migrations/20261007-offer-terms.sql"
+    ],
+    "code_references": [
+      "web/app/lib/offer-terms-client.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_onboarding_details(text, text, integer, text[], text[], text, text, text, text, text, text[], text[])",
+    "defined_in": [
+      "db/migrations/20261007-onboarding.sql"
+    ],
+    "code_references": [
+      "web/app/lib/onboarding-client.ts",
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/account/Profile.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_request_alert_preferences(boolean, text[], text[], text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-request-alerts.sql",
+      "db/migrations/20260929-categories.sql",
+      "db/migrations/20260930-business-features.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_request_preferences(uuid, jsonb)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/RequestPreferences.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_saved_company(uuid, boolean)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-engagement.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.set_saved_request(uuid, boolean)",
+    "defined_in": [
+      "db/migrations/20261013-public-budget-saved-requests.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.site_content()",
+    "defined_in": [
+      "db/migrations/20261002-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.site_design()",
+    "defined_in": [
+      "db/migrations/20261009-design-settings.sql"
+    ],
+    "code_references": [],
+    "dependents": []
+  },
+  {
+    "signature": "public.start_conversation(uuid, uuid)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql",
+      "db/migrations/20260924-empty-conversations.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.submit_verification()",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/VerificationDocuments.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.unread_message_count()",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-messaging.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.update_my_profile(text, text, text, text, text, text[], text[], text[], text, double precision, double precision, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260924-company-logo.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js",
+      "web/app/lib/blob-upload-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.update_request(uuid, text, text, text, text, numeric, text, date, text)",
+    "defined_in": [
+      "db/schema.sql",
+      "db/migrations/20260923-addresses.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.verification_record(uuid)",
+    "defined_in": [
+      "db/migrations/20261009-flow-completion.sql",
+      "db/migrations/20261012-admin-management.sql"
+    ],
+    "code_references": [
+      "web/app/lib/db-handler.js",
+      "web/app/components/market/VerificationDocuments.tsx"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.verification_requirements()",
+    "defined_in": [
+      "db/migrations/20261013-qa-round.sql"
+    ],
+    "code_references": [
+      "web/app/lib/onboarding-client.ts",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  },
+  {
+    "signature": "public.withdraw_offer(uuid)",
+    "defined_in": [
+      "db/schema.sql"
+    ],
+    "code_references": [
+      "web/app/lib/market-store.js",
+      "web/app/lib/db-handler.js"
+    ],
+    "dependents": []
+  }
+]

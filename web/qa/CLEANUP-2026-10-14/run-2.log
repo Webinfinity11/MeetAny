@@ -1,0 +1,52 @@
+BEGIN
+SET
+SET
+CREATE TABLE
+INSERT 0 25
+SELECT 0
+DO
+ locked_profile
+----------------
+(0 rows)
+
+DO
+CREATE TABLE
+SELECT 0
+DO
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+       category        | deleted
+-----------------------+---------
+ contact_events        |       0
+ profiles              |       0
+ registration_events   |       0
+ registration_sessions |       0
+(4 rows)
+
+ remaining_reviewed_profiles
+-----------------------------
+                           0
+(1 row)
+
+ remaining_reviewed_orphan
+---------------------------
+                         0
+(1 row)
+
+ protected_profiles
+--------------------
+                 22
+(1 row)
+
+     retained     | count
+------------------+-------
+ requests         |    42
+ offers           |    90
+ moderation_audit |   132
+ business_audit   |     7
+ request_drafts   |     2
+(5 rows)
+
+COMMIT

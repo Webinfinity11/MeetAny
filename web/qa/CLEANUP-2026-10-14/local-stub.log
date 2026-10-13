@@ -1,0 +1,20 @@
+DO
+psql:db/tests/stub_neon.sql:29: NOTICE:  role "authenticator" has already been granted membership in role "anonymous" by role "kapana"
+psql:db/tests/stub_neon.sql:29: NOTICE:  role "authenticator" has already been granted membership in role "authenticated" by role "kapana"
+GRANT ROLE
+GRANT
+ALTER DEFAULT PRIVILEGES
+ALTER DEFAULT PRIVILEGES
+ALTER DEFAULT PRIVILEGES
+CREATE SCHEMA
+GRANT
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+GRANT
+psql:db/tests/stub_neon.sql:67: NOTICE:  schema "neon_auth" already exists, skipping
+CREATE SCHEMA
+REVOKE
+psql:db/tests/stub_neon.sql:82: NOTICE:  relation "user" already exists, skipping
+CREATE TABLE
