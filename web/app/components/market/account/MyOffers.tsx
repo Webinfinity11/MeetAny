@@ -69,7 +69,7 @@ export function MyOffers({ offers, store, me }: { offers: (OfferItem & { body?: 
           <Status tone={offerTone(offer)}>{offerLabel(offer.status, offer.viewedAt)}</Status>
         </button>{offer.status === "sent" && request && store.requestState(request) === "open" ? <Button variant="secondary" href={`/offers/new/?requestId=${encodeURIComponent(offer.requestId)}`}><Icon name="pencil"/>რედაქტირება</Button> : null}</li>;
       })}</ul> : offers.length ? <EmptyState icon="send" text="ამ სტატუსით შეთავაზება არ არის." action={<Button variant="secondary" onClick={() => setStatus("all")}>ყველა შეთავაზების ნახვა</Button>}/> : <EmptyState icon="send" title="შეთავაზებები ჯერ არ გაგიგზავნიათ" text="შეარჩიეთ თქვენთვის შესაფერისი მოთხოვნა და გაუგზავნეთ შეთავაზება." action={<Button href="/matching/"><Icon name="inbox"/>შესაძლებლობების ნახვა</Button>}/>}
-      {selected ? <aside className={styles.offerAside} aria-label="შეთავაზების დეტალები"><section className={styles.offerDetail}>{detail}</section>{isChosen ? null : <p className={styles.contactNote}>{contactNote}</p>}</aside> : null}
+      {selected ? <section className={styles.offerAside} aria-label="შეთავაზების დეტალები"><section className={styles.offerDetail}>{detail}</section>{isChosen ? null : <p className={styles.contactNote}>{contactNote}</p>}</section> : null}
     </div>
     <Sheet open={!!selected && mobileId === selected.id} onClose={() => setMobileId(null)} title="შეთავაზების დეტალები">{detail}{isChosen ? null : <p className={styles.contactNote}>{contactNote}</p>}</Sheet>
   </section>;

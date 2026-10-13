@@ -565,7 +565,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-filter-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);padding-bottom:var(--space-1);max-width:100%}
 .account-filter-chips>.ma-btn{flex:0 1 auto;min-width:0;white-space:normal}
 .account-filter-label{min-width:0;overflow-wrap:anywhere}
-.account-filter-chips>.ma-btn span:last-child{color:inherit;opacity:.75;font-weight:var(--fw-regular);flex:none}
+.account-filter-chips>.ma-btn span:last-child{color:inherit;opacity:var(--filter-count-opacity);font-weight:var(--fw-regular);flex:none}
 .account-page .account-rows{display:grid;gap:var(--space-3);border:0;min-width:0}
 .account-request-card,.account-offer-card,.account-offer-detail,.account-profile-status,.account-recommendations>li,.account-panel,.account-main--profile>.account-section{padding:var(--space-4);border:var(--size-1) solid var(--ink-200);border-radius:var(--size-12);background:var(--white);min-width:0}
 .account-request-card{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--space-3) var(--space-4);align-items:center}

@@ -1,0 +1,58 @@
+{
+  "baselineCommit": "aba39735a6b1020645f888583d2bdbd55b40dda1",
+  "commands": {
+    "node qa/a11y-audit.mjs --role all": 0,
+    "menus supplemental audit": 0,
+    "360px guest/client/company audits": 0,
+    "npx tsc --noEmit": 0,
+    "npx eslint app": 0,
+    "npm run lint:design": 0,
+    "npm test": 0,
+    "node --check qa/a11y-audit.mjs": 0,
+    "git diff --check": 0
+  },
+  "unitTests": {
+    "pass": 127,
+    "fail": 0
+  },
+  "eslint": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "axe": {
+    "before": {
+      "critical": 0,
+      "serious": 86,
+      "moderate": 49,
+      "minor": 0
+    },
+    "after": {
+      "critical": 0,
+      "serious": 0,
+      "moderate": 20,
+      "minor": 0
+    },
+    "scans": 214,
+    "byRole": {
+      "admin": 60,
+      "client": 56,
+      "company": 52,
+      "guest": 46
+    }
+  },
+  "keyboard": {
+    "passed": 46,
+    "total": 46
+  },
+  "mobile360": {
+    "scans": 44,
+    "keyboardPassed": 20,
+    "keyboardTotal": 20,
+    "violations": {}
+  },
+  "overflowPages": 0,
+  "runtimeOrNavigationErrors": 0,
+  "protectedFilesUnchanged": true,
+  "migrations": [],
+  "overlayAudit": "skipped: Header unchanged"
+}

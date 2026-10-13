@@ -1,0 +1,73 @@
+| გვერდი | თემა | სიგანე | impact | წესი | ელემენტები |
+|---|---|---|---|---|---|
+| guest / (page) | blue | 1440 | serious | aria-prohibited-attr | 6 |
+| guest /requests/ (page) | blue | 1440 | moderate | heading-order | 1 |
+| guest /companies/ (page) | blue | 1440 | serious | aria-prohibited-attr | 12 |
+| guest /companies/ (page) | blue | 1440 | moderate | heading-order | 1 |
+| guest /companies/ (page) | blue | 1440 | serious | scrollable-region-focusable | 1 |
+| guest /how-it-works/ (page) | blue | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| guest / (page) | blue | 390 | serious | aria-prohibited-attr | 6 |
+| guest /requests/ (page) | blue | 390 | moderate | heading-order | 1 |
+| guest /companies/ (page) | blue | 390 | serious | aria-prohibited-attr | 12 |
+| guest /companies/ (page) | blue | 390 | moderate | heading-order | 1 |
+| guest /companies/ (page) | blue | 390 | serious | scrollable-region-focusable | 1 |
+| guest /how-it-works/ (page) | blue | 390 | moderate | landmark-complementary-is-top-level | 1 |
+| guest / (page) | classic | 1440 | serious | aria-prohibited-attr | 6 |
+| guest /requests/ (page) | classic | 1440 | moderate | heading-order | 1 |
+| guest /companies/ (page) | classic | 1440 | serious | aria-prohibited-attr | 12 |
+| guest /companies/ (page) | classic | 1440 | moderate | heading-order | 1 |
+| guest /companies/ (page) | classic | 1440 | serious | scrollable-region-focusable | 1 |
+| guest /how-it-works/ (page) | classic | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| guest / (page) | classic | 390 | serious | aria-prohibited-attr | 6 |
+| guest /requests/ (page) | classic | 390 | moderate | heading-order | 1 |
+| guest /companies/ (page) | classic | 390 | serious | aria-prohibited-attr | 12 |
+| guest /companies/ (page) | classic | 390 | moderate | heading-order | 1 |
+| guest /companies/ (page) | classic | 390 | serious | scrollable-region-focusable | 1 |
+| guest /how-it-works/ (page) | classic | 390 | moderate | landmark-complementary-is-top-level | 1 |
+| client /account/?tab=overview (chat) | blue | 1440 | moderate | landmark-no-duplicate-banner | 1 |
+| client /account/?tab=overview (chat) | blue | 1440 | moderate | landmark-unique | 1 |
+| client /account/?tab=requests (page) | blue | 1440 | serious | color-contrast | 1 |
+| client /account/?tab=messages (page) | blue | 1440 | moderate | heading-order | 1 |
+| client /account/?tab=notifications (page) | blue | 1440 | serious | color-contrast | 2 |
+| client /account/?tab=requests (page) | blue | 390 | serious | color-contrast | 1 |
+| client /account/?tab=notifications (page) | blue | 390 | serious | color-contrast | 2 |
+| client /account/?tab=overview (chat) | classic | 1440 | moderate | landmark-no-duplicate-banner | 1 |
+| client /account/?tab=overview (chat) | classic | 1440 | moderate | landmark-unique | 1 |
+| client /account/?tab=messages (page) | classic | 1440 | moderate | heading-order | 1 |
+| company /account/?tab=opportunities (page) | blue | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /account/?tab=opportunities (chat) | blue | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /account/?tab=opportunities (chat) | blue | 1440 | moderate | landmark-no-duplicate-banner | 1 |
+| company /account/?tab=opportunities (chat) | blue | 1440 | moderate | landmark-unique | 1 |
+| company /account/?tab=offers (page) | blue | 1440 | serious | color-contrast | 2 |
+| company /account/?tab=offers (page) | blue | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /matching/ (page) | blue | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /account/?tab=offers (page) | blue | 390 | serious | color-contrast | 2 |
+| company /account/?tab=opportunities (page) | classic | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /account/?tab=opportunities (chat) | classic | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /account/?tab=opportunities (chat) | classic | 1440 | moderate | landmark-no-duplicate-banner | 1 |
+| company /account/?tab=opportunities (chat) | classic | 1440 | moderate | landmark-unique | 1 |
+| company /account/?tab=offers (page) | classic | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| company /matching/ (page) | classic | 1440 | moderate | landmark-complementary-is-top-level | 1 |
+| admin /admin/?tab=requests (page) | blue | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=companies (page) | blue | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=offers (page) | blue | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=audit (page) | blue | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=requests (page) | blue | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=companies (page) | blue | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=offers (page) | blue | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=users (page) | blue | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=audit (page) | blue | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=requests (page) | classic | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=companies (page) | classic | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=offers (page) | classic | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=users (page) | classic | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=audit (page) | classic | 1440 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=requests (page) | classic | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=companies (page) | classic | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=offers (page) | classic | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=users (page) | classic | 390 | moderate | landmark-unique | 1 |
+| admin /admin/?tab=audit (page) | classic | 390 | moderate | landmark-unique | 1 |
+
+კლავიატურა: 28/48
+
+{"serious":86,"moderate":49}

@@ -20,7 +20,7 @@ export function CatalogFilters({ category, city, verified, companies = false, co
       <span>{label}</span>{count && <small>{count("category", id)}</small>}
     </Button>;
   return <div className={styles.requestFilters}>
-    <section><h3>კატეგორიები</h3><ul>
+    <section><h2>კატეგორიები</h2><ul>
       <li>{row("", "ყველა")}</li>
       {categoryGroups.map(group => {
         const expanded = category === group.id || groupOf[category] === group.id;
@@ -33,7 +33,7 @@ export function CatalogFilters({ category, city, verified, companies = false, co
         </li>;
       })}
     </ul></section>
-    <section><h3>ადგილმდებარეობა</h3><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
+    <section><h2>ადგილმდებარეობა</h2><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={city === id}
         onChange={() => onChange({ city: city === id ? "" : id })} /><span>{label}</span>{count && <small>{count("city", id)}</small>}</label></li>
     )}</ul></section>

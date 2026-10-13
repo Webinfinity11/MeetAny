@@ -49,7 +49,7 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
     <header className={styles.companyIdentity}>
       {image ? <Image unoptimized={!optimizable(image)} className={`${styles.logo}${isLogo ? ` ${styles.containedLogo}` : ""}`} src={image} alt="" width={56} height={56} loading="lazy" /> : <Avatar name={c.name} size={56} className={styles.logo} />}
       <div className={styles.companyDetails}>
-        <h3><Link href={href}>{c.name}</Link>{c.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
+        <h3><Link href={href}>{c.name}</Link>{c.verified && <span role="img" aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
         <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
         {isDemo ? <Badge className={styles.demoLabel}>სადემო კომპანია</Badge> : null}
       </div>

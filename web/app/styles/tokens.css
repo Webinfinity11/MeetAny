@@ -114,6 +114,8 @@
   --fs-button:15px;
   --lh-button:20px;
   --fw-regular:400;
+  /* Counts retain the control text contrast in both themes. */
+  --filter-count-opacity:1;
   --fw-medium:500;
   --fw-semibold:600;
   --fw-bold:700;

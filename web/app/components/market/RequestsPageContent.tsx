@@ -210,7 +210,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
       <CategoryIcon id={id} tile /><span>{label}</span><small>{facetCount("category", id)}</small>
     </Button>;
   const requestFilters = (mobile = false) => <div className={`${styles.requestFilters} ${mobile ? styles.mobileRequestFilters : ""}`}>
-    <section><h3>კატეგორიები</h3><ul>
+    <section><h2>კატეგორიები</h2><ul>
       <li>{categoryRow("", "ყველა")}</li>
       {categoryGroups.map(group => {
         const expanded = category === group.id || groupOf[category] === group.id;
@@ -224,16 +224,16 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         </li>;
       })}
     </ul></section>
-    <section><h3>ადგილმდებარეობა</h3><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
+    <section><h2>ადგილმდებარეობა</h2><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={city === id}
         onChange={() => setFilters({ city: city === id ? "" : id })} /><span>{label}</span><small>{facetCount("city", id)}</small></label></li>
     )}</ul></section>
-    <section><h3>ვადა</h3><ul>{[["7", "7 დღემდე"], ["30", "30 დღემდე"], ["later", "30 დღეზე მეტი"]].map(([id, label]) =>
+    <section><h2>ვადა</h2><ul>{[["7", "7 დღემდე"], ["30", "30 დღემდე"], ["later", "30 დღეზე მეტი"]].map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-deadline" : undefined} checked={deadline === id}
         onChange={() => setFilters({ deadline: deadline === id ? "" : id })} /><span>{label}</span><small>{facetCount("deadline", id)}</small></label></li>
     )}</ul></section>
     {/* No request with a public budget: the facet would only offer zeros. */}
-    {showBudget ? <section><h3>ბიუჯეტი</h3><ul>{budgetOptions.map(([id, label]) =>
+    {showBudget ? <section><h2>ბიუჯეტი</h2><ul>{budgetOptions.map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-budget" : undefined} checked={budget === id}
         onChange={() => setFilters({ budget: budget === id ? "" : id })} /><span>{label}</span><small>{facetCount("budget", id)}</small></label></li>
     )}</ul></section> : null}

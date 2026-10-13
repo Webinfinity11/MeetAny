@@ -247,7 +247,8 @@ export function AdminPageContent() {
     if (history.length) next.set("before", JSON.stringify(history)); else next.delete("before");
     router.replace(`/admin/?${next}`, { scroll: false });
   };
-  const pagination = admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">
+  // The same pager sits above and below the list; distinct names keep the two landmarks apart for screen readers.
+  const pagination = (place: "top" | "bottom") => admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label={place === "top" ? "ჩანაწერების გვერდები — სიის დასაწყისი" : "ჩანაწერების გვერდები — სიის ბოლო"}>
     <Button type="button" variant="secondary" disabled={!cursor} onClick={() => changePage(false)}>წინა</Button>
     <span>{admin.page.items.length ? previousCursors.length * 25 + 1 : 0}–{previousCursors.length * 25 + admin.page.items.length} / სულ {admin.page.filteredTotal}</span>
     <Button type="button" variant="secondary" disabled={!admin.page.hasMore || !admin.page.nextCursor} onClick={() => changePage(true)}>შემდეგი</Button>
@@ -279,7 +280,7 @@ export function AdminPageContent() {
         {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი{adminNote}</p> : <span />}
         <Button type="button" variant="secondary" onClick={exportCsv} disabled={exporting}><Icon name="download" />{exporting ? "მზადდება…" : "CSV ექსპორტი"}</Button></div>
         : admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი</p> : null}
-      {pagination}
+      {pagination("top")}
       {peopleTab && canShowRecords && visibleIds.length ? <div className={styles.selectPage}><label><input type="checkbox" className={styles.check} checked={allSelected} ref={input=>{if(input)input.indeterminate=selected.length>0&&!allSelected;}} onChange={()=>setSelected(allSelected?[]:visibleIds)}/>ყველას მონიშვნა ამ გვერდზე ({visibleIds.length})</label><span role="status">მონიშნულია: {selected.length}</span></div> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "ready" && admin.error ? <p className="ma-field__error" role="status">{admin.error} <Button variant="ghost" onClick={admin.reload}>ხელახლა ცდა</Button></p> : null}
@@ -386,7 +387,7 @@ export function AdminPageContent() {
           onClick={() => setPendingAction({ kind: peopleTab ? "users" : "requests", action: b.action, id: ids[0], ids, label: `${ids.length} ჩანაწერი` })}>{b.label}{ids.length !== selected.length ? ` (${ids.length})` : ""}</Button>; })}
         <Button type="button" variant="ghost" onClick={() => setSelected([])}>მონიშვნის მოხსნა</Button>
       </div> : null}
-      {pagination}
+      {pagination("bottom")}
       </section> : null}
       {tab === "audit" ? <AdminBusinessAudit store={store!} /> : null}
       </div>

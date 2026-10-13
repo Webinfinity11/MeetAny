@@ -163,7 +163,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
     {!wide ? <button ref={back} type="button" className={styles["inbox-back"]} onClick={onBack}><Icon name="chevron-left"/><span>უკან</span></button> : null}
       <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
       <div className={styles["inbox-head__text"]}>
-        <h3 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h3><p className={styles["inbox-head__context"]}>{d.context}{offer?.price != null ? ` · შეთავაზება: ${money(Number(offer.price))}` : ""}</p>
+        <h2 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h2><p className={styles["inbox-head__context"]}>{d.context}{offer?.price != null ? ` · შეთავაზება: ${money(Number(offer.price))}` : ""}</p>
 
       </div>
       {d.requestId ? <Button variant="secondary" size="sm" href={`/requests/view/?id=${encodeURIComponent(d.requestId)}`}>მოთხოვნის ნახვა</Button> : null}

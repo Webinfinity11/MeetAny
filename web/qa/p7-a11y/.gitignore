@@ -1,0 +1,7 @@
+shots/
+*.png
+# სრული axe JSON მხოლოდ ლოკალურად; results.md/before.md/checks.json რჩება
+before.json
+results.json
+menus.json
+mobile-360.json

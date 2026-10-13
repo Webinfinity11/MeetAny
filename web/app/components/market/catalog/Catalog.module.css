@@ -103,7 +103,7 @@
 
 /* Request facets adapt to the sidebar and mobile sheet. */
 .requestFilters { display: grid; gap: var(--space-8); }
-.requestFilters h3 { margin: 0 0 var(--space-3); font-size: var(--size-14); line-height: var(--lh-sm); color: var(--text); }
+.requestFilters h2 { margin: 0 0 var(--space-3); font-size: var(--size-14); line-height: var(--lh-sm); color: var(--text); }
 .requestFilters ul { list-style: none; margin: 0; padding: 0; }
 .requestFilters li + li { margin-top: var(--size-2); }
 .requestFilters .categoryRow { display: flex; width: 100%; min-height: var(--tap-min); height: auto; gap: var(--size-6); padding: var(--size-8) var(--size-10) var(--size-8) var(--size-6); border: 0; border-radius: var(--size-8); background: transparent; box-shadow: none; color: var(--text-2); font-size: var(--size-14); line-height: var(--lh-sm); font-weight: var(--fw-regular); text-align: start; white-space: normal; }
@@ -154,7 +154,7 @@
 .requestResults :global(.catalog-sort) { display: flex; align-items: center; gap: var(--size-6); margin: 0; font-size: var(--size-14); line-height: var(--lh-sm); }
 .requestResults :global(.catalog-sort .ma-select) { width: auto; min-width: 0; height: auto; min-height: var(--field-h); padding-left: 0; border: 0; background-color: transparent; font-weight: var(--fw-semibold); box-shadow: none; }
 .mobileRequestFilters { gap: var(--size-24); }
-.mobileRequestFilters h3 { font-weight: var(--fw-bold); }
+.mobileRequestFilters h2 { font-weight: var(--fw-bold); }
 .mobileRequestFilters section:first-child > ul { display: flex; flex-wrap: wrap; gap: var(--size-8); }
 .mobileRequestFilters li + li { margin-top: 0; }
 .mobileRequestFilters .categoryRow { width: auto; min-height: var(--tap-min); padding: var(--size-6) var(--size-12); border: var(--size-1) solid var(--ink-200); border-radius: var(--btn-radius); font-size: var(--btn-fs); font-weight: var(--btn-weight); gap: var(--size-6); }

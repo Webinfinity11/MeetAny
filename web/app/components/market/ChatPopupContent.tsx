@@ -84,7 +84,7 @@ function ChatList({ store, owner, role, onSelect, onClose }: { store: Store; own
   const dialog = useChatDialog(true);
   const { current, retry } = useConversationList(store, owner);
   return <dialog ref={dialog} className={`ma-chat ma-chat--dock ${styles.dock}`} aria-labelledby="ma-chat-list-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
-    <header className="ma-chat__head"><div><h2 id="ma-chat-list-title">მიმოწერები</h2><span>ყველა საუბარი ერთ სივრცეში</span></div><button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x" /></button></header>
+    <div className="ma-chat__head"><div><h2 id="ma-chat-list-title">მიმოწერები</h2><span>ყველა საუბარი ერთ სივრცეში</span></div><button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x" /></button></div>
     <nav className={styles.threadTabs} aria-label="მიმოწერის ხედი"><span aria-current="page"><Icon name="message-square"/>ყველა საუბარი</span><Link href="/account/?tab=messages" onClick={onClose}><Icon name="external-link"/>სრულად გახსნა</Link></nav>
     <div className="ma-chat-list" aria-busy={!current}>
       {!current ? <p className="ma-chat-list__note" role="status">მიმოწერები იტვირთება…</p> : current.error && !current.items ? <div className="ma-chat-list__note" role="alert"><p>მიმოწერები ვერ ჩაიტვირთა.</p><Button type="button" variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : !current.items?.length ? <div className="ma-chat-list__note"><p>მიმოწერები ჯერ არ გაქვთ.</p><Button variant="secondary" href={role === "company" ? "/requests/" : "/companies/"}><Icon name={role === "company" ? "clipboard-list" : "building-2"} />{role === "company" ? "მოთხოვნების ნახვა" : "კომპანიების ნახვა"}</Button></div> : <ul>{current.items.map((c: Conversation) => {
@@ -130,14 +130,14 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
     if (await deliver(body, () => { atBottom.current = true; })) { setBody(""); if (dialog.current?.open) input.current?.focus(); }
   }
   return <dialog ref={dialog} className={`ma-chat ma-chat--dock ${styles.dock}`} aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
-    <header className={`ma-chat__head ${styles.threadHead}`}>
+    <div className={`ma-chat__head ${styles.threadHead}`}>
       <div className={styles.threadIdentity}><CompanyAvatar name={name} logoUrl={logoUrl}/><h2 id="ma-chat-title" title={name}>{isCompany ? <Link className="ma-chat__peer-link" href={`/companies/view/?id=${encodeURIComponent(otherId)}`} onClick={onClose}>{name}</Link> : name}</h2></div>
       <button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" title="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button>
-    </header>
+    </div>
     <nav className={styles.threadTabs} aria-label="მიმოწერის ხედი"><button type="button" onClick={onBack}><Icon name="chevron-left"/>ყველა საუბარი</button>{conversation ? <Link href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose}><Icon name="external-link"/>სრულად გახსნა</Link> : null}</nav>
     {conversation ? <details><summary style={{minHeight:"var(--tap-min)",padding:"var(--space-3)"}}>საუბრის მოქმედებები</summary><ReportButton kind="conversation" targetId={conversation.id}/></details> : null}
     <ChatContext store={store} requestId={requestId} companyId={conversation?.companyId || target.companyId}/>
-    <div className="ma-chat__messages" ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
+    <div className="ma-chat__messages" tabIndex={0} ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყეთ საუბარი</h3><p>მოიკითხეთ დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : <ChatMessages messages={messages} owner={owner} name={name} now={now}/>}
     </div>
     {lastSent ? <small className="ma-note" role="status">ბოლო შეტყობინება · {lastSent.readAt ? "წაკითხულია" : "გაგზავნილია"}</small> : null}

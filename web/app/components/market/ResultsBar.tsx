@@ -53,6 +53,7 @@ export function ResultsBar({
 }) {
   return (
     <div className="catalog-results-bar">
+      <h2 className="ma-sr-only">ძიების შედეგები</h2>
       <p className="catalog-count" role="status">{count}</p>
       <div className="catalog-results-controls">
         {filterButton}

@@ -44,7 +44,7 @@ export default function HowItWorksPage() {
       <p className={styles.eyebrow}>ნდობა და უსაფრთხოება</p><h2 id="trust-title">ვერიფიკაცია</h2>
       <div className={styles.cards}><article className={styles.card}><Icon name="file-text" /><h3>რა დოკუმენტებია საჭირო</h3><p>ვერიფიკაციისთვის ატვირთეთ კომპანიის რეგისტრაციის ამონაწერი და საგადასახადო დოკუმენტი; სურვილისამებრ — სერტიფიკატები.</p><Link href="/how-it-works/#help">მხარდაჭერასთან დაკავშირება</Link></article>
         <article className={styles.card}><Icon name="badge-check" /><h3>განხილვა და დადასტურება</h3><p>განხილვა 1–2 სამუშაო დღე გრძელდება. მონაცემების გადამოწმების შემდეგ გუნდი კომპანიას „ვერიფიცირებული“ ნიშნით აღნიშნავს კატალოგსა და პროფილზე.</p></article></div>
-      <aside className={styles.contact}><Icon name="lock" /><div><h3>კონტაქტის წესი</h3><p>ტელეფონი და ელფოსტა ჩანს მხოლოდ გარიგების მხარეებისთვის: მოთხოვნის ავტორისთვის და კომპანიისთვის, ვისი შეთავაზებაც აირჩიეს.</p></div></aside>
+      <div className={styles.contact}><Icon name="lock" /><div><h3>კონტაქტის წესი</h3><p>ტელეფონი და ელფოსტა ჩანს მხოლოდ გარიგების მხარეებისთვის: მოთხოვნის ავტორისთვის და კომპანიისთვის, ვისი შეთავაზებაც აირჩიეს.</p></div></div>
     </section>
     <section className={styles.section} id="help" aria-labelledby="help-title"><h2 id="help-title">დახმარება</h2><div className={styles.cards}>
       <article className={styles.card}><h3>კონტაქტის შეცვლა</h3><p>გახსენით პროფილი → კონტაქტი → შეცვლა. მიუთითეთ ახალი კონტაქტი და შენიშვნა — მოთხოვნას გუნდი განიხილავს.</p><Link href="/account/?tab=profile">პროფილის გახსნა</Link></article>
