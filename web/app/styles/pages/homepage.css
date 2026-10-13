@@ -70,10 +70,10 @@
 .ma .home-hero .home-search-seg--what { grid-column: 1; margin: 0; }
 .ma .home-hero .home-search-seg--city { grid-column: 2; }
 .ma .home-hero .home-search-seg--city::before { content: none; }
-.ma .home-hero .home-search-entry--framed .ma-input { height: var(--size-40); padding: 0 var(--size-24) 0 var(--size-32); font-size: var(--size-13); border: 0; border-radius: var(--radius-sm); background: transparent; box-shadow: none; }
+.ma .home-hero .home-search-entry--framed .ma-input { height: var(--size-40); padding: 0 var(--size-24) 0 var(--size-32); font-size: var(--field-fs); border: 0; border-radius: var(--radius-sm); background: transparent; box-shadow: none; }
 .ma .home-hero .home-search-entry--framed .catalog-search__input > .icon { display: block; left: var(--size-10); width: var(--size-16); height: var(--size-16); color: var(--ink-500); }
 .ma .home-hero .home-search-entry--framed .catalog-search__clear { height: var(--size-40); width: var(--size-24); }
-.ma .home-hero .home-search-entry--framed .home-search-city { width: 100%; min-width: 0; height: var(--size-40); padding: 0 var(--size-20) 0 var(--size-6); border: 0; border-radius: 0; background-color: transparent; background-position: right var(--size-4) center; font-size: var(--size-12); }
+.ma .home-hero .home-search-entry--framed .home-search-city { width: 100%; min-width: 0; height: var(--size-40); padding: 0 var(--size-20) 0 var(--size-6); border: 0; border-radius: 0; background-color: transparent; background-position: right var(--size-4) center; font-size: var(--field-fs); }
 .ma .home-hero .home-search-entry--framed .home-search-submit { grid-column: 3; grid-row: 1; justify-content: center; width: var(--size-40); min-width: 0; height: var(--size-40); padding: 0; border-radius: var(--radius-sm); background: var(--action-strong); color: var(--white); }
 .ma .home-hero .home-search-submit span { position: absolute; width: var(--size-1); height: var(--size-1); overflow: hidden; clip-path: inset(50%); }
 .ma .home-hero .home-search-entry--framed:focus-within { border-color: var(--ink-500); }
@@ -159,10 +159,9 @@
   .hero-actions .ma-btn { width: 100%; }
   .market-search-types label { min-width: var(--size-28); }
   .market-search-types .duo-icon { width: var(--size-16); height: var(--size-16); }
-  .ma .home-hero .home-search-entry--framed { grid-template-columns: minmax(0, 1fr) var(--size-84) var(--size-36); }
+  .ma .home-hero .home-search-entry--framed { grid-template-columns: minmax(0, 1fr) var(--size-104) var(--size-36); }
   .ma .home-hero .home-search-entry--framed .home-search-submit { width: var(--size-36); }
-  .ma .home-hero .home-search-entry--framed .ma-input { font-size: var(--size-16); }
-  .ma .home-hero .home-search-entry--framed .home-search-city { font-size: var(--size-11); }
+  .ma .home-hero .home-search-entry--framed .ma-input { font-size: var(--field-fs); }
   /* Phones keep both columns of the strip: narrower cards, a shorter photo. */
   .hero-scene__photos { --fade: var(--size-40); gap: var(--size-10); height: var(--size-360); padding-inline: var(--size-2); }
   .hero-scene__group { gap: var(--size-10); padding-bottom: var(--size-10); }
@@ -186,7 +185,7 @@
 }
 
 @media (min-width: 1200px) {
-  .market-search-types label { display: flex; gap: var(--size-4); padding-inline: var(--size-6); font-size: var(--size-11); }
+  .market-search-types label { display: flex; gap: var(--size-4); padding-inline: var(--size-6); font-size: var(--fs-meta); }
   .market-search-types label > span { position: static; width: auto; height: auto; clip-path: none; }
 }
 /* The entire segment is the native radio's hit target, including touch and keyboard use. */

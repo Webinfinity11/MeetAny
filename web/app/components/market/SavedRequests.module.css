@@ -1,6 +1,6 @@
 /* Rows, toggle and empty state come from engagement.module.css (shared with saved companies). */
 .section { margin-bottom: var(--space-8); }
-.meta { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; color: var(--text-2); font-size: var(--fs-sm); }
+.meta { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .meta li { display: inline-flex; align-items: center; gap: var(--space-1); }
 .meta svg { width: var(--size-14); height: var(--size-14); flex: none; }
 /* Closed or expired: dim the text only, the toggle stays fully active. */

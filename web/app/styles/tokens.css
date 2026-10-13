@@ -91,17 +91,18 @@
   --fs-h2:24px;
   --lh-h2:32px;
   --fs-h3:20px;
-  --lh-h3:28px;
+  --lh-h3:26px;
   --fs-title:18px;
-  --lh-title:26px;
+  --lh-title:24px;
   --fs-body-lg:17px;
   --lh-body-lg:28px;
   --fs-body:16px;
   --lh-body:26px;
   --fs-sm:14px;
   --lh-sm:22px;
-  --fs-xs:12px;
-  --lh-xs:18px;
+  /* Smallest readable size (owner, 2026-10-13): meta, chips and badges are never under 13px. */
+  --fs-xs:13px;
+  --lh-xs:20px;
   --fs-eyebrow:13px;
   --lh-eyebrow:18px;
   --ls-eyebrow:0;
@@ -116,7 +117,14 @@
   --fw-medium:500;
   --fw-semibold:600;
   --fw-bold:700;
-  --measure:68ch;
+  /* Comfortable reading: paragraphs ≤65ch; text line-height 1.55–1.7, headings 1.2–1.35. */
+  --measure:65ch;
+  --lh-text:1.6;
+  --lh-heading:1.3;
+  --lh-meta:20px;
+  /* Secondary paragraphs (hints, notes, card descriptions): 16/26 desktop, 15/24 phone. */
+  --fs-copy:16px;
+  --lh-copy:26px;
   --space-0:0;
   --space-1:4px;
   --space-2:8px;
@@ -530,7 +538,7 @@
   --field-fs:var(--fs-body);
   --field-error:var(--danger-600);
   --badge-radius:var(--radius-sm);
-  --badge-fs:var(--fs-xs);
+  --badge-fs:var(--fs-meta);
   --badge-weight:var(--fw-medium);
   --badge-fill:var(--white);
   --badge-tint:0%;
@@ -581,7 +589,7 @@
 }
 /* Breakpoints (min-width): 480 / 768 / 1024 / 1280. Mobile values are the defaults above for
    layout tokens; the type scale is desktop-first as in the source file. */
-@media (max-width:767px){:root{--fs-display:32px;--lh-display:40px;--fs-h1:24px;--lh-h1:32px;--fs-h2:21px;--lh-h2:28px;--fs-h3:18px;--lh-h3:26px}}
+@media (max-width:767px){:root{--fs-display:32px;--lh-display:40px;--fs-h1:24px;--lh-h1:32px;--fs-h2:21px;--lh-h2:28px;--fs-h3:18px;--lh-h3:24px;--fs-copy:15px;--lh-copy:24px}}
 @media (min-width:768px){:root{--card-pad:20px;--header-h:64px;--gutter:24px}}
 @media (min-width:1024px){:root{--section-gap:80px}}
 @media (min-width:1280px){:root{--gutter:32px}}

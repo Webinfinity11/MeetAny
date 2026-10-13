@@ -29,6 +29,7 @@
   place-items: center;
   color: var(--text-3);
   font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
   background: var(--bg-subtle);
   z-index: 500;
 }
@@ -150,6 +151,7 @@
 .map-popup__link {
   margin-top: var(--space-2);
   font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
   font-weight: var(--fw-semibold);
   color: var(--text-link) !important;
   text-decoration: none;
@@ -177,7 +179,8 @@
   border-top-left-radius: var(--size-6);
   background: color-mix(in srgb, var(--white) 92%, transparent);
   color: var(--text-3);
-  font-size: var(--size-10);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-meta);
 }
 .companies-map .leaflet-control-attribution a {
   color: var(--text-2);
@@ -196,7 +199,8 @@
   box-shadow: none;
 }
 .companies-map--compact .leaflet-control-attribution {
-  font-size: var(--size-9);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-meta);
 }
 .companies-map--compact .companies-map__tile-status {
   right: var(--space-3);

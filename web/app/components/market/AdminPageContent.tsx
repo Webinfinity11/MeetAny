@@ -227,7 +227,7 @@ export function AdminPageContent() {
     : filteredRequests.filter(r => selected.includes(r.id) && (action === "hide" ? !r.hidden : r.hidden)).map(r => r.id);
   const visibleIds = peopleTab ? filteredUsers.filter(u => u.role !== "admin").map(u => u.id) : filteredRequests.map(r => r.id);
   const allSelected = visibleIds.length > 0 && visibleIds.every(id => selected.includes(id));
-  const selectAll = <input type="checkbox" className={styles.check} aria-label="ყველას მონიშვნა ამ გვერდზე" checked={allSelected} onChange={() => setSelected(allSelected ? [] : visibleIds)} />;
+  const selectAll = <label className={styles.checkHit}><input type="checkbox" className={styles.check} aria-label="ყველას მონიშვნა ამ გვერდზე" checked={allSelected} onChange={() => setSelected(allSelected ? [] : visibleIds)} /></label>;
   const listTab = tab === "requests" || peopleTab || tab === "offers" || tab === "audit";
 
   return (
@@ -288,7 +288,7 @@ export function AdminPageContent() {
                 const count = admin.mode === "ready" ? r.offerCount ?? 0 : store?.offerCount(r.id) ?? 0;
                 return (
                   <tr key={r.id} data-selected={selected.includes(r.id) || undefined}>
-                    <td className={styles.checkCell}><input type="checkbox" className={styles.check} aria-label={`მონიშვნა: ${r.title}`} checked={selected.includes(r.id)} onChange={() => toggleSelected(r.id)} /></td>
+                    <td className={styles.checkCell}><label className={styles.checkHit}><input type="checkbox" className={styles.check} aria-label={`მონიშვნა: ${r.title}`} checked={selected.includes(r.id)} onChange={() => toggleSelected(r.id)} /></label></td>
                     <td data-label="მოთხოვნა">
                       <button type="button" className={styles.rowLink} onClick={() => setDetail({ kind: "request", id: r.id })}>
                         {r.title}
@@ -331,7 +331,7 @@ export function AdminPageContent() {
             <tbody>
               {filteredUsers.map((u) => (
                 <tr key={u.id} data-selected={selected.includes(u.id) || undefined}>
-                  <td className={styles.checkCell}>{u.role !== "admin" ? <input type="checkbox" className={styles.check} aria-label={`მონიშვნა: ${u.company || u.name}`} checked={selected.includes(u.id)} onChange={() => toggleSelected(u.id)} /> : null}</td>
+                  <td className={styles.checkCell}>{u.role !== "admin" ? <label className={styles.checkHit}><input type="checkbox" className={styles.check} aria-label={`მონიშვნა: ${u.company || u.name}`} checked={selected.includes(u.id)} onChange={() => toggleSelected(u.id)} /></label> : null}</td>
                   <td data-label={tab === "companies" ? "კომპანია" : "მომხმარებელი"}>
                     <button type="button" className={styles.rowLink} onClick={() => setDetail({ kind: "user", id: u.id })}>{u.company || u.name}</button>
                     <small>{[u.name !== (u.company || u.name) ? u.name : null, cities[u.city] || u.city, tab === "companies" ? categories[u.industry || ""] || u.industry : null].filter(Boolean).join(" · ")}</small>

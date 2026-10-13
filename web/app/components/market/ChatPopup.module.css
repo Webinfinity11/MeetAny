@@ -41,7 +41,7 @@
 .dock :global(.ma-chat__head){background:var(--white);color:var(--ink-950);border-bottom:var(--size-1) solid var(--ink-200)}
 .dock :global(.ma-chat__messages){background:var(--ink-50);gap:var(--space-4)}
 .dock :global(.ma-chat__composer){display:grid;grid-template-columns:minmax(0,1fr) var(--size-44);align-items:end;gap:var(--space-2);padding:var(--space-3);padding-bottom:max(var(--space-3),env(safe-area-inset-bottom));border-top:var(--size-1) solid var(--ink-200)}
-.dock :global(.ma-chat__composer) textarea{width:100%;min-width:0;height:var(--size-44);min-height:var(--size-44);max-height:var(--size-112);resize:none;border-radius:var(--size-8);padding:var(--space-3);font-size:var(--fs-sm)}
+.dock :global(.ma-chat__composer) textarea{width:100%;min-width:0;height:var(--size-44);min-height:var(--size-44);max-height:var(--size-112);resize:none;border-radius:var(--size-8);padding:var(--space-2) var(--space-3);font-size:var(--field-fs);line-height:var(--lh-body)}
 .dock :global(.ma-chat__composer-foot){grid-column:2;grid-row:1;margin:0;padding:0}
 .dock :global(.ma-field__error){grid-column:1/-1}
 @media(max-width:767px){.dock{border-radius:0}}

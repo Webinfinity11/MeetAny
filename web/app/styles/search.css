@@ -73,7 +73,7 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  font-size: var(--fs-sm);
+  font-size: var(--field-fs);
   color: var(--text);
 }
 .home-search-seg .ma-input:focus,
@@ -99,6 +99,7 @@
   background: var(--btn-accent-bg);
   color: var(--btn-accent-text);
   font-size: var(--fs-body);
+  line-height: var(--lh-body);
   font-weight: var(--fw-semibold);
   font-feature-settings: var(--ff-button);
   letter-spacing: var(--ls-button);
@@ -200,7 +201,7 @@
   background-color: transparent;
   background-position: right 0 center;
   box-shadow: none;
-  font-size: var(--fs-sm);
+  font-size: var(--field-fs);
   color: var(--text);
 }
 .home-search-seg .home-search-city[aria-expanded="true"] {
@@ -230,6 +231,7 @@
 }
 .search-suggestions__none strong {
   font-size: var(--fs-body);
+  line-height: var(--lh-body);
   font-weight: var(--fw-semibold);
   overflow-wrap: anywhere;
 }
@@ -324,8 +326,8 @@
     border: 0;
     border-radius: var(--size-13);
     background-position: right var(--size-12) center;
-    font-size: var(--size-14);
-    line-height: var(--size-22);
+    font-size: var(--field-fs);
+    line-height: var(--lh-control);
   }
   .ma .home-search-entry--framed .search-suggestions {
     top: calc(100% + var(--size-8));
@@ -344,6 +346,7 @@
     background: var(--blue-700);
     color: var(--white);
     font-size: var(--size-16);
+    line-height: var(--lh-body);
   }
   .ma .home-search-entry--framed .home-search-submit:hover { background: var(--blue-900); }
   .ma .home-search-entry--framed .home-search-submit span {

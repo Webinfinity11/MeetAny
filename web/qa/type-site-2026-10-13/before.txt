@@ -1,0 +1,1140 @@
+page                    1440   390  overflow  console
+404                        3     2   0/0      0/0
+home                       3     2   0/0      0/0
+requests                  97    57   0/0      0/0
+request-view              20    18   0/0      0/0
+companies                 72    36   0/0      0/0
+company-view              27    22   0/0      0/0
+how-it-works              23    20   0/0      0/0
+terms                      6     3   0/0      0/0
+ideas                     30    28   0/0      0/0
+idea-view                 22    14   0/0      0/0
+login                      6     4   0/0      0/0
+register                  10     9   0/0      0/0
+requests-new-1            26    24   0/0      0/0
+requests-new-2            20    20   0/0      0/0
+requests-new-3            13    14   0/0      0/0
+header-menu                4     3   0/0      0/0
+user-overview             15     9   0/0      0/0
+user-requests             25    18   0/0      0/0
+user-offers               15     9   0/0      0/0
+user-deals                11     5   0/0      0/0
+user-saved                 9     4   0/0      0/0
+user-messages             28    17   0/0      0/0
+user-notifications        22    16   0/0      0/0
+user-profile              16     8   0/0      0/0
+company-overview          13     9   0/0      0/0
+company-opportunities      6     3   0/0      0/0
+company-offers            14     7   0/0      0/0
+company-deals              6     3   0/0      0/0
+company-saved              6     4   0/0      0/0
+company-messages          22    13   0/0      0/0
+company-notifications      9     5   0/0      0/0
+company-profile           20    15   0/0      0/0
+company-business           6     4   0/0      0/0
+matching                   6     3   0/0      0/0
+offers-new                10     8   0/0      0/0
+deal-1                    31    12   0/0      0/0
+deal-2                    33    13   0/0      0/0
+deal-3                    31    12   0/0      0/0
+admin-overview            75    72   0/0      0/0
+admin-users              143   107   0/0      0/0
+admin-companies          153    94   0/0      0/0
+admin-requests           111    93   0/0      0/0
+admin-offers              86    97   0/0      0/0
+admin-deals               48    33   0/0      0/0
+admin-reports             14     3   0/0      0/0
+admin-reviews             37    26   0/0      0/0
+admin-photos              21     7   0/0      0/0
+admin-contacts            61    30   0/0      0/0
+admin-content             13     2   0/0      0/0
+admin-audit              104    89   0/0      0/0
+
+by rule: {
+  'text ≥16px': 111,
+  'contrast AA': 165,
+  'text ≥15px': 99,
+  'measure ≤ ~75ch': 40,
+  'meta ≥13px': 1419,
+  'heading line-height 1.2–1.35': 37,
+  'wrapped label line-height 1.3–1.7': 127,
+  'input ≥16px': 26,
+  'tap target ≥44px': 593,
+  'text line-height 1.55–1.7': 55,
+  'field label ≥14px': 56
+} 
+total issues: 2728 
+blocked writes: POST /api/analytics/registration, POST start_conversation
+
+=== 404 1440  (/no-such-page-type-audit/) sizes 13×6 14×12 15×3 17×1 32×1
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== 404 390  (/no-such-page-type-audit/) sizes 13×5 14×9 15×1 17×1 24×1
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== home 1440  (/) sizes 13×93 14×35 15×20 16×42 17×1 18×10 22×2 26×7 27.28×1 28×2 34×1 44×1
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== home 390  (/) sizes 13×59 14×20 15×17 16×29 18×7 21×1 22×7 26×3 30×1
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== requests 1440  (/requests/) sizes 11×8 12×48 13×30 14×40 15×19 36×1
+  text ≥16px | main › catalog-heading > p.catalog-description | 15 ×1  «ბიზნესების რეალური საჭიროებები — გაუგზავ»
+  measure ≤ ~75ch | main › catalog-heading > p.catalog-description | 160 ×1  «ბიზნესების რეალური საჭიროებები — გაუგზავ»
+  meta ≥13px | main › ma-btn > small | 12 ×14  «8»
+  contrast AA | main › ma-btn > small | 3.48 ×1  «8»
+  meta ≥13px | main › Catalog-module__Ktkn0G_ > small | 12 ×7  «4»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span.ma-badge.ma-badge--warning | 12 ×3  «სასწრაფო»
+  heading line-height 1.2–1.35 | main › a.Aqb6ea_ | 1.47 ×6  «კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea__body > span.Aqb6ea_ | 12 ×8  «ავეჯი»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span | 11 ×8  «სლ»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span.Aqb6ea_ | 12 ×3  «3 დღე დარჩა»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span | 12 ×13  «0 შეთავაზება»
+  wrapped label line-height 1.3–1.7 | main › OpportunityCard-module__Aqb6ea__body > p.Aqb6ea_ | 2 ×1  «სტომატოლოგიური კლინიკა „დენტა-ლაინი“»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › catalog-search_ > input.ma-input | 14 ×1  «მოძებნეთ პროდუქტი, მომსახურება, კომპანია ან კატეგორია»
+  tap target ≥44px | main › button.ma-btn.ma-btn--ghost | 40 ×10  «ყველა8»
+  tap target ≥44px | main › Catalog-module__Ktkn0G_ > input | 18 ×7  «»
+  tap target ≥44px | main › Catalog-module__Ktkn0G_ > button | 36 ×2  «ბადე»
+  tap target ≥44px | main › OpportunityCard-module__Aqb6ea_ > button.save | 32 ×8  «მოთხოვნის შენახვა»
+
+=== requests 390  (/requests/) sizes 11×8 12×27 13×30 14×11 15×17 28×1
+  text line-height 1.55–1.7 | main › catalog-heading > p.catalog-description | 1.47 ×1  «ბიზნესების რეალური საჭიროებები — გაუგზავ»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span.ma-badge.ma-badge--warning | 12 ×3  «სასწრაფო»
+  heading line-height 1.2–1.35 | main › a.Aqb6ea_ | 1.47 ×4  «კაფისთვის 4 ხის მაგიდა ადგილზე აწყობით»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea__body > span.Aqb6ea_ | 12 ×8  «ავეჯი»
+  wrapped label line-height 1.3–1.7 | main › OpportunityCard-module__Aqb6ea__body > p.Aqb6ea_ | 2 ×4  «სასტუმრო „ლეგენდა“»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span | 11 ×8  «სლ»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span.Aqb6ea_ | 12 ×3  «3 დღე დარჩა»
+  meta ≥13px | main › OpportunityCard-module__Aqb6ea_ > span | 12 ×13  «0 შეთავაზება»
+  wrapped label line-height 1.3–1.7 | main › OpportunityCard-module__Aqb6ea_ > span.Aqb6ea_ | 2.17 ×1  «2 დღე დარჩა»
+  wrapped label line-height 1.3–1.7 | main › OpportunityCard-module__Aqb6ea_ > span | 2.17 ×1  «3 შეთავაზება»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › catalog-search_ > input.ma-input | 14 ×1  «მოძებნეთ პროდუქტი, მომსახურება, კომპანია ან კატეგორია»
+  tap target ≥44px | main › OpportunityCard-module__Aqb6ea_ > button.save | 32 ×8  «მოთხოვნის შენახვა»
+
+=== request-view 1440  (/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043) sizes 12×10 13×21 14×16 15×6 16×7 24×1 32×1
+  meta ≥13px | main › detail-brief-meta > span.ma-badge.ma-badge--success | 12 ×1  «ღიაა»
+  meta ≥13px | main › detail-brief-meta > span.detail-category | 12 ×1  «ავეჯი»
+  meta ≥13px | main › detail-brief-meta > span | 12 ×1  «გამოქვეყნდა 11 დღის წინ»
+  meta ≥13px | main › dt | 12 ×5  «რაოდენობა»
+  text ≥16px | main › request-description-content > p.ma-prose | 15 ×1  «გვჭირდება ოთხი ხის მაგიდა ზომით 70×70 სმ»
+  text line-height 1.55–1.7 | main › request-description-content > p.ma-prose | 1.8 ×1  «გვჭირდება ოთხი ხის მაგიდა ზომით 70×70 სმ»
+  measure ≤ ~75ch | main › request-description-content > p.ma-prose | 97 ×1  «გვჭირდება ოთხი ხის მაგიდა ზომით 70×70 სმ»
+  meta ≥13px | main › dd.date | 12 ×1  «16 ოქტ. 2026»
+  text ≥16px | main › request-submit-card > p.note | 14 ×1  «მყიდველის კონტაქტი და მისამართი იხსნება »
+  text line-height 1.55–1.7 | main › request-submit-card > p.note | 1.86 ×1  «მყიდველის კონტაქტი და მისამართი იხსნება »
+  meta ≥13px | main › request-secondary-actions > button.detail-link.report-link | 12 ×1  «დარღვევის შეტყობინება»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › detail-breadcrumb > a | 26 ×2  «მოთხოვნები»
+
+=== request-view 390  (/requests/view/?id=f04784a3-5684-4fb9-8e30-7fcd9f4ba043) sizes 12×10 13×20 14×13 15×4 16×7 24×1 26×1
+  meta ≥13px | main › detail-brief-meta > span.ma-badge.ma-badge--success | 12 ×1  «ღიაა»
+  meta ≥13px | main › detail-brief-meta > span.detail-category | 12 ×1  «ავეჯი»
+  meta ≥13px | main › detail-brief-meta > span | 12 ×1  «გამოქვეყნდა 11 დღის წინ»
+  meta ≥13px | main › dt | 12 ×5  «რაოდენობა»
+  text line-height 1.55–1.7 | main › request-description-content > p.ma-prose | 1.8 ×1  «გვჭირდება ოთხი ხის მაგიდა ზომით 70×70 სმ»
+  meta ≥13px | main › dd.date | 12 ×1  «16 ოქტ. 2026»
+  text ≥15px | main › request-submit-card > p.note | 14 ×1  «მყიდველის კონტაქტი და მისამართი იხსნება »
+  text line-height 1.55–1.7 | main › request-submit-card > p.note | 1.86 ×1  «მყიდველის კონტაქტი და მისამართი იხსნება »
+  meta ≥13px | main › request-secondary-actions > button.detail-link.report-link | 12 ×1  «დარღვევის შეტყობინება»
+  heading line-height 1.2–1.35 | main › RequestDetail-module__cXwmiG_ > h2 | 1.08 ×1  «მსგავსი მოთხოვნები»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › detail-breadcrumb > a | 26 ×2  «მოთხოვნები»
+
+=== companies 1440  (/companies/) sizes 12×36 13×6 14×49 15×9 16×6 36×1
+  text ≥16px | main › catalog-heading > p.catalog-description | 15 ×1  «კომპანიები და მომსახურება მთელი საქართვე»
+  measure ≤ ~75ch | main › catalog-heading > p.catalog-description | 160 ×1  «კომპანიები და მომსახურება მთელი საქართვე»
+  meta ≥13px | main › ma-btn > small | 12 ×14  «6»
+  contrast AA | main › ma-btn > small | 3.48 ×1  «6»
+  meta ≥13px | main › Catalog-module__Ktkn0G_ > small | 12 ×4  «6»
+  wrapped label line-height 1.3–1.7 | main › Catalog-module__Ktkn0G_ > span | 2 ×1  «მხოლოდ ვერიფიცირებული»
+  text ≥16px | main › Catalog-module__Ktkn0G_ > p.Ktkn0G_ | 14 ×6  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  text line-height 1.55–1.7 | main › Catalog-module__Ktkn0G_ > p.Ktkn0G_ | 1.86 ×6  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  measure ≤ ~75ch | main › Catalog-module__Ktkn0G_ > p.Ktkn0G_ | 129 ×6  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  meta ≥13px | main › Catalog-module__Ktkn0G_ > li | 12 ×18  «მაგიდებისა და სკამების დამზადება»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › catalog-search_ > input.ma-input | 14 ×1  «მოძებნეთ კომპანია ან მომსახურება»
+  tap target ≥44px | main › button.ma-btn.ma-btn--ghost | 40 ×6  «ყველა6»
+  tap target ≥44px | main › Catalog-module__Ktkn0G_ > input | 18 ×4  «»
+
+=== companies 390  (/companies/) sizes 12×18 13×4 14×27 15×7 16×6 28×1
+  text line-height 1.55–1.7 | main › catalog-heading > p.catalog-description | 1.47 ×1  «კომპანიები და მომსახურება მთელი საქართვე»
+  text ≥15px | main › Catalog-module__Ktkn0G_ > p.Ktkn0G_ | 14 ×6  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  text line-height 1.55–1.7 | main › Catalog-module__Ktkn0G_ > p.Ktkn0G_ | 1.86 ×6  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  meta ≥13px | main › Catalog-module__Ktkn0G_ > li | 12 ×18  «მაგიდებისა და სკამების დამზადება»
+  wrapped label line-height 1.3–1.7 | main › Catalog-module__Ktkn0G_ > p | 1.86 ×2  «ხილი, ბოსტნეული და ხორცი · თბილისი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › catalog-search_ > input.ma-input | 14 ×1  «მოძებნეთ კომპანია ან მომსახურება»
+
+=== company-view 1440  (/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e) sizes 12×13 13×14 14×23 15×5 16×5 24×1
+  text ≥16px | main › p.company-profile-description | 15 ×1  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  text line-height 1.55–1.7 | main › p.company-profile-description | 1.87 ×1  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > span | 12 ×4  «მაგიდებისა და სკამების დამზადება»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > p | 12 ×2  «ხის ზედაპირი; დამზადება ზომის მიხედვით.»
+  meta ≥13px | main › span.2shn0W_ | 12 ×3  «სლ»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > time | 12 ×3  «2 ოქტ. 2026»
+  text ≥16px | main › CompanyProfile-module__2shn0W_ > p | 14 ×3  «კომუნიკაცია იყო დროული და შეთავაზებაში ყ»
+  measure ≤ ~75ch | main › CompanyProfile-module__2shn0W_ > p | 111 ×3  «კომუნიკაცია იყო დროული და შეთავაზებაში ყ»
+  wrapped label line-height 1.3–1.7 | main › dt | 2 ×1  «მომსახურების ქალაქები»
+  wrapped label line-height 1.3–1.7 | main › dd | 2 ×2  «აკაკი წერეთლის გამზ. 116»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > button.detail-link.report-link | 12 ×1  «დარღვევის შეტყობინება»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-view 390  (/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e) sizes 12×13 13×13 14×20 15×3 16×5 24×1
+  text line-height 1.55–1.7 | main › p.company-profile-description | 1.87 ×1  «ვამზადებთ ხის ავეჯს კაფეების, სასტუმროებ»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > span | 12 ×4  «მაგიდებისა და სკამების დამზადება»
+  heading line-height 1.2–1.35 | main › CompanyProfile-module__2shn0W_ > h3 | 1.54 ×1  «კაფის ხის მაგიდა 70×70»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > p | 12 ×2  «ხის ზედაპირი; დამზადება ზომის მიხედვით.»
+  meta ≥13px | main › span.2shn0W_ | 12 ×3  «სლ»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > time | 12 ×3  «2 ოქტ. 2026»
+  text ≥15px | main › CompanyProfile-module__2shn0W_ > p | 14 ×3  «კომუნიკაცია იყო დროული და შეთავაზებაში ყ»
+  wrapped label line-height 1.3–1.7 | main › dt | 2 ×1  «მომსახურების ქალაქები»
+  wrapped label line-height 1.3–1.7 | main › dd | 2 ×1  «ხის მასალის მომწოდებლები · ავეჯის ფურნიტ»
+  meta ≥13px | main › CompanyProfile-module__2shn0W_ > button.detail-link.report-link | 12 ×1  «დარღვევის შეტყობინება»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== how-it-works 1440  (/how-it-works/) sizes 12×8 13×8 14×21 15×4 16×15 17×13 32×5 40×1
+  measure ≤ ~75ch | main › How-module__DQSpha__hero > p | 89 ×1  «ერთი მოთხოვნა — რამდენიმე შეთავაზება. აღ»
+  meta ≥13px | main › p.DQSpha_ | 12 ×4  «0 1»
+  text ≥16px | main › p | 14 ×9  «მიუთითეთ, რა, რამდენი, სად და როდის გჭირ»
+  meta ≥13px | main › span.meta | 12 ×4  «მოთხოვნა»
+  measure ≤ ~75ch | main › p | 140 ×2  «ტელეფონი და ელფოსტა ჩანს მხოლოდ გარიგები»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== how-it-works 390  (/how-it-works/) sizes 12×8 13×7 14×18 15×2 16×15 17×13 24×5 32×1
+  meta ≥13px | main › p.DQSpha_ | 12 ×4  «0 1»
+  text ≥15px | main › p | 14 ×9  «მიუთითეთ, რა, რამდენი, სად და როდის გჭირ»
+  meta ≥13px | main › span.meta | 12 ×4  «მოთხოვნა»
+  heading line-height 1.2–1.35 | main › summary | 1.63 ×1  «შემიძლია შეთავაზების შეცვლა ან გაუქმება?»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== terms 1440  (/terms/) sizes 13×5 14×19 15×2 16×25 20×7 32×1
+  measure ≤ ~75ch | main › Terms-module__wW_K2q__page > p.lead | 95 ×1  «პლატფორმის გამოყენების წესები, ანგარიშის»
+  measure ≤ ~75ch | main › p | 89 ×2  «MeetAny აკავშირებს ბიზნესებს: მყიდველი ა»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== terms 390  (/terms/) sizes 13×4 14×16 16×25 18×7 24×1
+  heading line-height 1.2–1.35 | main › h2 | 1.44 ×1  «3. მოთხოვნები და შეთავაზებები»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== ideas 1440  (/ideas/) sizes 12×6 13×12 14×18 15×8 16×1 19×6 40×1
+  meta ≥13px | main › idea-card__body > p | 12 ×6  «მომარაგება»
+  wrapped label line-height 1.3–1.7 | main › idea-card__body > p | 1.8 ×3  «მომარაგება»
+  heading line-height 1.2–1.35 | main › a | 1.6 ×3  «ოფისების რეგულარული მომარაგება»
+  text ≥16px | main › idea-card__body > p | 14 ×6  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  text line-height 1.55–1.7 | main › idea-card__body > p | 1.8 ×6  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › a | 23 ×3  «შეფუთვა მცირე ბრენდებისთვის»
+
+=== ideas 390  (/ideas/) sizes 12×6 13×11 14×15 15×6 16×1 19×6 28×1
+  text line-height 1.55–1.7 | main › ideas-heading > span | 1.8 ×1  «შეარჩიე მიმართულება, გაეცანი პირველ ნაბი»
+  meta ≥13px | main › idea-card__body > p | 12 ×6  «მომარაგება»
+  heading line-height 1.2–1.35 | main › a | 1.6 ×5  «ოფისების რეგულარული მომარაგება»
+  text ≥15px | main › idea-card__body > p | 14 ×6  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  text line-height 1.55–1.7 | main › idea-card__body > p | 1.8 ×6  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  wrapped label line-height 1.3–1.7 | main › idea-card__body > p | 1.8 ×1  «მომარაგება»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › a | 23 ×1  «სამუშაო სივრცეების მოვლა»
+
+=== idea-view 1440  (/ideas/office-supply/) sizes 12×1 13×6 14×22 15×10 16×2 20×4 34×1
+  heading line-height 1.2–1.35 | main › h1 | 1.5 ×1  «ოფისების რეგულარული მომარაგება»
+  text line-height 1.55–1.7 | main › p | 1.8 ×1  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  measure ≤ ~75ch | main › p | 79 ×1  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  text ≥16px | main › p | 15 ×5  «მცირე ოფისები, სტუდიები და სამუშაო სივრც»
+  measure ≤ ~75ch | main › p | 106 ×1  «მცირე ოფისები, სტუდიები და სამუშაო სივრც»
+  measure ≤ ~75ch | main › p | 83 ×1  «დაელაპარაკე რამდენიმე ოფისს: რა ეწურებათ»
+  measure ≤ ~75ch | main › p | 82 ×1  «შეადგინე მცირე, გასაგები ასორტიმენტი და »
+  measure ≤ ~75ch | main › p | 86 ×1  «რეალური შეკვეთების მიხედვით მოაწესრიგე მ»
+  text ≥16px | main › idea-questions > li | 14 ×1  «როგორ მოიქცევი, თუ პროდუქტი მარაგში აღარ»
+  text line-height 1.55–1.7 | main › idea-questions > li | 1.8 ×1  «როგორ მოიქცევი, თუ პროდუქტი მარაგში აღარ»
+  text ≥16px | main › idea-resources > p | 15 ×1  «ნახე შესაბამისი კომპანიები და შეადარე მა»
+  text line-height 1.55–1.7 | main › idea-resources > p | 1.85 ×1  «ნახე შესაბამისი კომპანიები და შეადარე მა»
+  text ≥16px | main › idea-detail > p.note | 12 ×1  «ეს არის იდეის დასამუშავებელი საწყისი გეგ»
+  text line-height 1.55–1.7 | main › idea-detail > p.note | 1.8 ×1  «ეს არის იდეის დასამუშავებელი საწყისი გეგ»
+  measure ≤ ~75ch | main › idea-detail > p.note | 127 ×1  «ეს არის იდეის დასამუშავებელი საწყისი გეგ»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== idea-view 390  (/ideas/office-supply/) sizes 12×1 13×5 14×19 15×8 16×2 20×4 26×1
+  heading line-height 1.2–1.35 | main › h1 | 1.5 ×1  «ოფისების რეგულარული მომარაგება»
+  text line-height 1.55–1.7 | main › p | 1.8 ×1  «ერთი შეკვეთით მიაწოდე ოფისებს ყოველდღიურ»
+  text line-height 1.55–1.7 | main › p | 1.85 ×5  «მცირე ოფისები, სტუდიები და სამუშაო სივრც»
+  text ≥15px | main › idea-questions > li | 14 ×1  «როგორ მოიქცევი, თუ პროდუქტი მარაგში აღარ»
+  text line-height 1.55–1.7 | main › idea-questions > li | 1.8 ×1  «როგორ მოიქცევი, თუ პროდუქტი მარაგში აღარ»
+  text line-height 1.55–1.7 | main › idea-resources > p | 1.85 ×1  «ნახე შესაბამისი კომპანიები და შეადარე მა»
+  text ≥15px | main › idea-detail > p.note | 12 ×1  «ეს არის იდეის დასამუშავებელი საწყისი გეგ»
+  text line-height 1.55–1.7 | main › idea-detail > p.note | 1.8 ×1  «ეს არის იდეის დასამუშავებელი საწყისი გეგ»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== login 1440  (/account/) sizes 13×6 14×17 15×3 20×1
+  wrapped label line-height 1.3–1.7 | main › auth-registration > p | 1.86 ×1  «ჯერ არ გაქვთ ანგარიში?»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › ma-field > button.auth-link.auth-forgot | 26 ×1  «დაგავიწყდათ?»
+  tap target ≥44px | main › button | 26 ×1  «რეგისტრაცია»
+
+=== login 390  (/account/) sizes 13×5 14×14 15×1 20×1
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › ma-field > button.auth-link.auth-forgot | 26 ×1  «დაგავიწყდათ?»
+  tap target ≥44px | main › button | 26 ×1  «რეგისტრაცია»
+
+=== register 1440  (/account/?tab=register) sizes 12×1 13×5 14×22 15×3 16×4 26×1
+  text ≥16px | main › auth-card > p.auth-lead | 14 ×1  «რამდენიმე ველი — და მოთხოვნის განთავსება»
+  measure ≤ ~75ch | main › auth-card > p.auth-lead | 93 ×1  «რამდენიმე ველი — და მოთხოვნის განთავსება»
+  meta ≥13px | main › ma-field_ > span.opt | 12 ×1  «მინიმუმ 8 სიმბოლო»
+  field label ≥14px | main › ma-field_ > span.opt | 12 ×1  «მინიმუმ 8 სიმბოლო»
+  text ≥16px | main › a | 14 ×1  «წესებსა და პერსონალური მონაცემების დამუშ»
+  wrapped label line-height 1.3–1.7 | main › auth-registration > p | 1.86 ×1  «უკვე გაქვთ ანგარიში?»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › button | 26 ×1  «შესვლა»
+
+=== register 390  (/account/?tab=register) sizes 12×1 13×4 14×19 15×1 16×4 24×1
+  text ≥15px | main › auth-card > p.auth-lead | 14 ×1  «რამდენიმე ველი — და მოთხოვნის განთავსება»
+  meta ≥13px | main › ma-field_ > span.opt | 12 ×1  «მინიმუმ 8 სიმბოლო»
+  field label ≥14px | main › ma-field_ > span.opt | 12 ×1  «მინიმუმ 8 სიმბოლო»
+  wrapped label line-height 1.3–1.7 | main › ma-check > span | 1.86 ×1  «ვეთანხმები»
+  text ≥15px | main › a | 14 ×1  «წესებსა და პერსონალური მონაცემების დამუშ»
+  text line-height 1.55–1.7 | main › a | 1.86 ×1  «წესებსა და პერსონალური მონაცემების დამუშ»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › button | 26 ×1  «შესვლა»
+
+=== requests-new-1 1440  (/requests/new/) sizes 12×7 13×9 14×26 15×5 16×8 30×1
+  meta ≥13px | main › is-current > span.post-steps_ | 12 ×1  «1»
+  meta ≥13px | main › span.post-steps_ | 12 ×2  «2»
+  contrast AA | main › span.post-steps_ | 2.77 ×2  «2»
+  text ≥16px | main › post-guest > span | 14 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  contrast AA | main › span | 3.16 ×5  «*»
+  wrapped label line-height 1.3–1.7 | main › ma-field > label | 1.86 ×1  «აღწერა»
+  meta ≥13px | main › small | 12 ×1  «0 / 2000»
+  field label ≥14px | main › small | 12 ×1  «0 / 2000»
+  contrast AA | main › small | 3.16 ×1  «0 / 2000»
+  meta ≥13px | main › span.fMZMXG_ | 12 ×1  «კატეგორია»
+  meta ≥13px | main › p | 12 ×2  «მყიდველი · თბილისი»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › ma-field > input.ma-input | 15 ×2  «მაგ. 100 კომპლექტი თეთრეული»
+  input ≥16px | main › ma-field > textarea.ma-textarea | 15 ×2  «აღწერეთ, რა გჭირდებათ და მიუთითეთ მნიშვნელოვანი დეტალები»
+  input ≥16px | main › Post-module__fMZMXG_ > input.ma-input | 15 ×1  «quantity»
+
+=== requests-new-1 390  (/requests/new/) sizes 12×5 13×5 14×24 15×3 16×8 26×1
+  meta ≥13px | main › span | 12 ×1  «ნაბიჯი 1 / 3»
+  text ≥15px | main › post-guest > span | 14 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  text line-height 1.55–1.7 | main › post-guest > span | 1.86 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  contrast AA | main › span | 3.16 ×5  «*»
+  wrapped label line-height 1.3–1.7 | main › ma-field > label | 1.86 ×2  «კატეგორია»
+  meta ≥13px | main › small | 12 ×1  «0 / 2000»
+  field label ≥14px | main › small | 12 ×1  «0 / 2000»
+  contrast AA | main › small | 3.16 ×1  «0 / 2000»
+  heading line-height 1.2–1.35 | main › h2 | 1.5 ×1  «სპეციფიკაცია და მომწოდებელი»
+  meta ≥13px | main › span.fMZMXG_ | 12 ×1  «კატეგორია»
+  meta ≥13px | main › p | 12 ×2  «მყიდველი · თბილისი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › ma-field > input.ma-input | 15 ×2  «მაგ. 100 კომპლექტი თეთრეული»
+  input ≥16px | main › ma-field > textarea.ma-textarea | 15 ×2  «აღწერეთ, რა გჭირდებათ და მიუთითეთ მნიშვნელოვანი დეტალები»
+  input ≥16px | main › Post-module__fMZMXG_ > input.ma-input | 15 ×1  «quantity»
+
+=== requests-new-2 1440  (/requests/new/?title=%E1%83%A1%E1%83%90%E1%83%9D%E1%83%A4%E1%83%98%E1%83%A1%E1%83%94+%E1%83%A1%E1%83%99%E1%83%90%E1%83%9B%E1%83%94%E1%83%91%E1%83%98+20+%E1%83%AA%E1%83%90%E1%83%9A%E1%83%98&category=furniture&city=tbilisi) sizes 12×7 13×9 14×22 15×7 16×5 30×1
+  meta ≥13px | main › is-current > span.post-steps_ | 12 ×1  «2»
+  meta ≥13px | main › span.post-steps_ | 12 ×1  «3»
+  contrast AA | main › span.post-steps_ | 2.77 ×1  «3»
+  text ≥16px | main › post-guest > span | 14 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  contrast AA | main › span | 3.16 ×3  «*»
+  meta ≥13px | main › small | 12 ×1  «არასავალდებულო»
+  field label ≥14px | main › small | 12 ×1  «არასავალდებულო»
+  contrast AA | main › small | 3.16 ×1  «არასავალდებულო»
+  meta ≥13px | main › span.fMZMXG_ | 12 ×1  «ავეჯი»
+  meta ≥13px | main › p | 12 ×2  «მყიდველი · თბილისი»
+  meta ≥13px | main › post-actions_ > p.fMZMXG_ | 12 ×1  «შენახულია ამ ბრაუზერში · 13:42»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › ma-field > input.ma-input | 15 ×3  «რაიონი / ორიენტირი»
+
+=== requests-new-2 390  (/requests/new/?title=%E1%83%A1%E1%83%90%E1%83%9D%E1%83%A4%E1%83%98%E1%83%A1%E1%83%94+%E1%83%A1%E1%83%99%E1%83%90%E1%83%9B%E1%83%94%E1%83%91%E1%83%98+20+%E1%83%AA%E1%83%90%E1%83%9A%E1%83%98&category=furniture&city=tbilisi) sizes 12×6 13×5 14×20 15×4 16×5 26×1
+  meta ≥13px | main › span | 12 ×1  «ნაბიჯი 2 / 3»
+  text ≥15px | main › post-guest > span | 14 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  text line-height 1.55–1.7 | main › post-guest > span | 1.86 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  contrast AA | main › span | 3.16 ×3  «*»
+  wrapped label line-height 1.3–1.7 | main › ma-field > label | 1.86 ×1  «მისამართი»
+  meta ≥13px | main › small | 12 ×1  «არასავალდებულო»
+  field label ≥14px | main › small | 12 ×1  «არასავალდებულო»
+  contrast AA | main › small | 3.16 ×1  «არასავალდებულო»
+  heading line-height 1.2–1.35 | main › h2 | 1.5 ×1  «ბიუჯეტი და გადახდა»
+  meta ≥13px | main › span.fMZMXG_ | 12 ×1  «ავეჯი»
+  meta ≥13px | main › p | 12 ×2  «მყიდველი · თბილისი»
+  meta ≥13px | main › post-actions_ > p.fMZMXG_ | 12 ×1  «შენახულია ამ ბრაუზერში · 13:42»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › ma-field > input.ma-input | 15 ×3  «რაიონი / ორიენტირი»
+
+=== requests-new-3 1440  (/requests/new/?title=%E1%83%A1%E1%83%90%E1%83%9D%E1%83%A4%E1%83%98%E1%83%A1%E1%83%94+%E1%83%A1%E1%83%99%E1%83%90%E1%83%9B%E1%83%94%E1%83%91%E1%83%98+20+%E1%83%AA%E1%83%90%E1%83%9A%E1%83%98&category=furniture&city=tbilisi) sizes 12×4 13×13 14×19 15×8 16×2 18×1 30×1
+  meta ≥13px | main › is-current > span.post-steps_ | 12 ×1  «3»
+  text ≥16px | main › post-guest > span | 14 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  meta ≥13px | main › span.fMZMXG_ | 12 ×1  «ავეჯი»
+  text ≥16px | main › post-card > p.fMZMXG_ | 14 ×1  «გვჭირდება 20 ერგონომიული სკამი ოფისისთვი»
+  measure ≤ ~75ch | main › post-card > p.fMZMXG_ | 101 ×1  «გვჭირდება 20 ერგონომიული სკამი ოფისისთვი»
+  wrapped label line-height 1.3–1.7 | main › dd | 1.86 ×1  «27 ოქტ. 2026»
+  meta ≥13px | main › small | 12 ×1  «გამოქვეყნებიდან 14 დღე»
+  text ≥16px | main › Post-module__fMZMXG_ > p | 13 ×1  «ვერიფიცირებული მომწოდებელი ჯერ არ არის; »
+  text line-height 1.55–1.7 | main › Post-module__fMZMXG_ > p | 2 ×1  «ვერიფიცირებული მომწოდებელი ჯერ არ არის; »
+  meta ≥13px | main › post-actions_ > p.fMZMXG_ | 12 ×1  «შენახულია ამ ბრაუზერში · 13:42»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== requests-new-3 390  (/requests/new/?title=%E1%83%A1%E1%83%90%E1%83%9D%E1%83%A4%E1%83%98%E1%83%A1%E1%83%94+%E1%83%A1%E1%83%99%E1%83%90%E1%83%9B%E1%83%94%E1%83%91%E1%83%98+20+%E1%83%AA%E1%83%90%E1%83%9A%E1%83%98&category=furniture&city=tbilisi) sizes 12×4 13×9 14×18 15×4 16×2 18×1 26×1
+  meta ≥13px | main › span | 12 ×1  «ნაბიჯი 3 / 3»
+  text ≥15px | main › post-guest > span | 14 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  text line-height 1.55–1.7 | main › post-guest > span | 1.86 ×1  «გამოსაქვეყნებლად . შევსებული ტექსტი შენა»
+  heading line-height 1.2–1.35 | main › h2 | 1.5 ×1  «საოფისე სკამები 20 ცალი»
+  meta ≥13px | main › span.fMZMXG_ | 12 ×1  «ავეჯი»
+  text ≥15px | main › post-card > p.fMZMXG_ | 14 ×1  «გვჭირდება 20 ერგონომიული სკამი ოფისისთვი»
+  text line-height 1.55–1.7 | main › post-card > p.fMZMXG_ | 1.86 ×1  «გვჭირდება 20 ერგონომიული სკამი ოფისისთვი»
+  wrapped label line-height 1.3–1.7 | main › dd | 1.86 ×1  «27 ოქტ. 2026»
+  meta ≥13px | main › small | 12 ×1  «გამოქვეყნებიდან 14 დღე»
+  text ≥15px | main › Post-module__fMZMXG_ > p | 13 ×1  «ვერიფიცირებული მომწოდებელი ჯერ არ არის; »
+  text line-height 1.55–1.7 | main › Post-module__fMZMXG_ > p | 2 ×1  «ვერიფიცირებული მომწოდებელი ჯერ არ არის; »
+  meta ≥13px | main › post-actions_ > p.fMZMXG_ | 12 ×1  «შენახულია ამ ბრაუზერში · 13:42»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== header-menu 1440  (/) sizes 12×1 13×93 14×42 15×19 16×42 17×1 18×10 22×2 26×7 27.28×1 28×2 34×1 44×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== header-menu 390  (/) sizes 12×1 13×59 14×21 15×19 16×29 17×10 18×7 21×1 22×7 26×3 30×1
+  meta ≥13px | main › Header-module__9fWxfa__ma-mnav_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== user-overview 1440  (/account/?tab=overview) sizes 12×9 13×7 14×26 15×4 18×1 24×4 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×2  «5»
+  meta ≥13px | main › account-module___JGDBW_ > span.ma-badge.ma-badge--info | 12 ×2  «მომწოდებელი»
+  meta ≥13px | main › account-module___JGDBW_ > p | 12 ×2  «ტვირთის გადაზიდვა · თბილისი»
+  meta ≥13px | main › account-module___JGDBW_ > span | 12 ×2  «ტვირთის გადაზიდვა»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › account-feed-heading > a | 26 ×1  «ყველა კომპანია»
+
+=== user-overview 390  (/account/?tab=overview) sizes 12×6 13×6 14×19 15×3 18×1 21×4 26×1
+  meta ≥13px | main › account-module___JGDBW_ > span.ma-badge.ma-badge--info | 12 ×2  «მომწოდებელი»
+  meta ≥13px | main › account-module___JGDBW_ > p | 12 ×2  «ტვირთის გადაზიდვა · თბილისი»
+  meta ≥13px | main › account-module___JGDBW_ > span | 12 ×2  «ტვირთის გადაზიდვა»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › account-feed-heading > a | 26 ×1  «ყველა კომპანია»
+
+=== user-requests 1440  (/account/?tab=requests) sizes 12×19 13×5 14×24 15×15 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 3.16 ×1  «5»
+  contrast AA | main › small | 2.95 ×1  «5»
+  meta ≥13px | main › p | 12 ×5  «6 ცალი · თბილისი»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--neutral | 12 ×2  «დასრულებული»
+  meta ≥13px | main › account-request-count > span.account-request-partner | 12 ×3  «ხის ხაზი»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--success | 12 ×1  «ღია»
+  meta ≥13px | main › account-request-summary > span.account-request-count | 12 ×2  «0 შეთავაზება»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--dark | 12 ×1  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--info | 12 ×1  «შეთავაზებების განხილვა»
+  wrapped label line-height 1.3–1.7 | main › account-request-summary > span.account-request-count | 2.17 ×1  «2 შეთავაზება»
+  meta ≥13px | main › account-request-count > strong | 12 ×1  «+ 2»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== user-requests 390  (/account/?tab=requests) sizes 12×16 13×4 14×17 15×14 26×1
+  meta ≥13px | main › p | 12 ×5  «6 ცალი · თბილისი»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--neutral | 12 ×2  «დასრულებული»
+  meta ≥13px | main › account-request-count > span.account-request-partner | 12 ×3  «ხის ხაზი»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--success | 12 ×1  «ღია»
+  meta ≥13px | main › account-request-summary > span.account-request-count | 12 ×2  «0 შეთავაზება»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--dark | 12 ×1  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › account-request-summary > span.ma-badge.ma-badge--info | 12 ×1  «შეთავაზებების განხილვა»
+  meta ≥13px | main › account-request-count > strong | 12 ×1  «+ 2»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== user-offers 1440  (/account/?tab=offers) sizes 12×9 13×7 14×26 15×4 18×1 24×4 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×2  «5»
+  meta ≥13px | main › account-module___JGDBW_ > span.ma-badge.ma-badge--info | 12 ×2  «მომწოდებელი»
+  meta ≥13px | main › account-module___JGDBW_ > p | 12 ×2  «ტვირთის გადაზიდვა · თბილისი»
+  meta ≥13px | main › account-module___JGDBW_ > span | 12 ×2  «ტვირთის გადაზიდვა»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › account-feed-heading > a | 26 ×1  «ყველა კომპანია»
+
+=== user-offers 390  (/account/?tab=offers) sizes 12×6 13×6 14×19 15×3 18×1 21×4 26×1
+  meta ≥13px | main › account-module___JGDBW_ > span.ma-badge.ma-badge--info | 12 ×2  «მომწოდებელი»
+  meta ≥13px | main › account-module___JGDBW_ > p | 12 ×2  «ტვირთის გადაზიდვა · თბილისი»
+  meta ≥13px | main › account-module___JGDBW_ > span | 12 ×2  «ტვირთის გადაზიდვა»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › account-feed-heading > a | 26 ×1  «ყველა კომპანია»
+
+=== user-deals 1440  (/account/?tab=deals) sizes 12×6 13×5 14×25 15×7 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×2  «5»
+  meta ≥13px | main › account-module___JGDBW__deal > span.ma-badge.ma-badge--success | 12 ×2  «დასრულებული»
+  meta ≥13px | main › account-module___JGDBW__deal > span.ma-badge.ma-badge--info | 12 ×1  «დეტალების განხილვა»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== user-deals 390  (/account/?tab=deals) sizes 12×3 13×4 14×19 15×6 26×1
+  meta ≥13px | main › account-module___JGDBW__deal > span.ma-badge.ma-badge--success | 12 ×2  «დასრულებული»
+  meta ≥13px | main › account-module___JGDBW__deal > span.ma-badge.ma-badge--info | 12 ×1  «დეტალების განხილვა»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== user-saved 1440  (/account/?tab=saved) sizes 12×3 13×5 14×22 15×5 16×1 18×2 20×2 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×2  «5»
+  text ≥16px | main › ma-empty > p.text | 14 ×1  «მონიშნეთ საინტერესო მოთხოვნები და აქ მარ»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== user-saved 390  (/account/?tab=saved) sizes 13×4 14×16 15×4 16×1 18×4 26×1
+  heading line-height 1.2–1.35 | main › ma-empty > h3.ma-empty_ | 1.5 ×1  «შენახული მოთხოვნები ჯერ არ გაქვთ»
+  text ≥15px | main › ma-empty > p.text | 14 ×1  «მონიშნეთ საინტერესო მოთხოვნები და აქ მარ»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== user-messages 1440  (/account/?tab=messages) sizes 11×1 12×19 13×12 14×28 15×3 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×2  «5»
+  meta ≥13px | main › engagement-module__0Ym49q_ > time | 12 ×7  «5 დღის წინ»
+  meta ≥13px | main › engagement-module__0Ym49q__inbox-row__text > span.inbox-row_ | 12 ×7  «[ux-audit] სასტუმროს ტექსტილი»
+  meta ≥13px | main › engagement-module__0Ym49q__inbox-head__text > p.inbox-head_ | 12 ×1  «[ux-audit] სასტუმროს ტექსტილი · შეთავაზე»
+  meta ≥13px | main › engagement-module__0Ym49q_ > p.day | 12 ×1  «8 ოქტ. 2026»
+  meta ≥13px | main › ChatParts-module__nI5tjG_ > time | 11 ×1  «15:47»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › engagement-module__0Ym49q_ > input | 14 ×1  «ძიება»
+  input ≥16px | main › engagement-module__0Ym49q_ > textarea.ma-textarea | 14 ×1  «დაწერეთ შეტყობინება…»
+  tap target ≥44px | main › engagement-module__0Ym49q__inbox-head__name > a | 17 ×1  «ხის ხაზი»
+
+=== user-messages 390  (/account/?tab=messages) sizes 12×14 13×11 14×20 26×1
+  meta ≥13px | main › engagement-module__0Ym49q_ > time | 12 ×7  «5 დღის წინ»
+  meta ≥13px | main › engagement-module__0Ym49q__inbox-row__text > span.inbox-row_ | 12 ×7  «[ux-audit] სასტუმროს ტექსტილი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › engagement-module__0Ym49q_ > input | 14 ×1  «ძიება»
+
+=== user-notifications 1440  (/account/?tab=notifications) sizes 12×14 13×13 14×35 15×17 16×1 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×1  «5»
+  contrast AA | main › small | 3.16 ×1  «5»
+  meta ≥13px | main › engagement-module__0Ym49q_ > h2.0Ym49q_ | 12 ×3  «გუშინ»
+  meta ≥13px | main › engagement-module__0Ym49q_ > time.0Ym49q_ | 12 ×8  «15:57»
+  text ≥16px | main › engagement-module__0Ym49q_ > strong.0Ym49q_ | 14 ×1  «გარიგება გადავიდა ეტაპზე „დეტალების განხ»
+  text ≥16px | main › engagement-module__0Ym49q_ > span.0Ym49q_ | 13 ×2  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== user-notifications 390  (/account/?tab=notifications) sizes 12×11 13×12 14×21 15×15 26×1
+  meta ≥13px | main › engagement-module__0Ym49q_ > h2.0Ym49q_ | 12 ×3  «გუშინ»
+  meta ≥13px | main › engagement-module__0Ym49q_ > time.0Ym49q_ | 12 ×8  «15:57»
+  text ≥15px | main › engagement-module__0Ym49q_ > strong.0Ym49q_ | 14 ×1  «გარიგება გადავიდა ეტაპზე „დეტალების განხ»
+  text ≥15px | main › engagement-module__0Ym49q_ > span.0Ym49q_ | 13 ×2  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== user-profile 1440  (/account/?tab=profile) sizes 12×4 13×5 14×31 15×4 16×2 18×1 20×2 30×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  meta ≥13px | main › small | 12 ×2  «5»
+  contrast AA | main › small | 2.95 ×2  «5»
+  text ≥16px | main › ProfileForm-module__apxRQW_ > p.account-hint | 14 ×1  «სახელი და კომპანია ჩანს თქვენს მოთხოვნებ»
+  measure ≤ ~75ch | main › ProfileForm-module__apxRQW_ > p.account-hint | 128 ×1  «სახელი და კომპანია ჩანს თქვენს მოთხოვნებ»
+  text ≥16px | main › account-form-group > p.help.help | 14 ×1  «კონტაქტს მხოლოდ გარიგების მეორე მხარე ხე»
+  measure ≤ ~75ch | main › account-form-group > p.help.help | 128 ×1  «კონტაქტს მხოლოდ გარიგების მეორე მხარე ხე»
+  text ≥16px | main › p | 14 ×1  «ამავე ანგარიშით გაყიდეთ პროდუქტები და მო»
+  measure ≤ ~75ch | main › p | 115 ×1  «ამავე ანგარიშით გაყიდეთ პროდუქტები და მო»
+  meta ≥13px | main › ma-field_ > span.opt | 12 ×1  «8–128 სიმბოლო»
+  field label ≥14px | main › ma-field_ > span.opt | 12 ×1  «8–128 სიმბოლო»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== user-profile 390  (/account/?tab=profile) sizes 12×1 13×4 14×24 15×3 16×2 18×3 26×1
+  text ≥15px | main › ProfileForm-module__apxRQW_ > p.account-hint | 14 ×1  «სახელი და კომპანია ჩანს თქვენს მოთხოვნებ»
+  text ≥15px | main › account-form-group > p.help.help | 14 ×1  «კონტაქტს მხოლოდ გარიგების მეორე მხარე ხე»
+  text ≥15px | main › p | 14 ×1  «ამავე ანგარიშით გაყიდეთ პროდუქტები და მო»
+  text line-height 1.55–1.7 | main › p | 1.86 ×1  «ამავე ანგარიშით გაყიდეთ პროდუქტები და მო»
+  meta ≥13px | main › ma-field_ > span.opt | 12 ×1  «8–128 სიმბოლო»
+  field label ≥14px | main › ma-field_ > span.opt | 12 ×1  «8–128 სიმბოლო»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-overview 1440  (/account/?tab=overview) sizes 12×4 13×8 14×28 15×4 16×1 18×1 24×4 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  heading line-height 1.2–1.35 | main › h2 | 1.86 ×1  «ვერიფიკაცია»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×1  «ვერიფიცირებული»
+  text ≥16px | main › p | 13 ×1  «კომპანიის პროფილზე ვერიფიკაციის ნიშანი ჩ»
+  meta ≥13px | main › account-progress-heading > a | 12 ×1  «პროფილის შევსება»
+  text ≥16px | main › p | 12 ×1  «დარჩა: რეკვიზიტები, მიწოდება, საჭიროებებ»
+  text ≥16px | main › ma-empty > p.text | 14 ×1  «შეავსეთ ინტერესები და საქმიანობის კატეგო»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › account-progress-heading > a | 26 ×1  «პროფილის შევსება»
+  tap target ≥44px | main › account-feed-heading > a | 26 ×1  «ყველა შესაძლებლობა»
+
+=== company-overview 390  (/account/?tab=overview) sizes 12×3 13×7 14×20 15×4 16×1 18×1 21×4 26×1
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×1  «ვერიფიცირებული»
+  text ≥15px | main › p | 13 ×1  «კომპანიის პროფილზე ვერიფიკაციის ნიშანი ჩ»
+  meta ≥13px | main › account-progress-heading > a | 12 ×1  «პროფილის შევსება»
+  text ≥15px | main › p | 12 ×1  «დარჩა: რეკვიზიტები, მიწოდება, საჭიროებებ»
+  text ≥15px | main › ma-empty > p.text | 14 ×1  «შეავსეთ ინტერესები და საქმიანობის კატეგო»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › account-progress-heading > a | 26 ×1  «პროფილის შევსება»
+  tap target ≥44px | main › account-feed-heading > a | 26 ×1  «ყველა შესაძლებლობა»
+
+=== company-opportunities 1440  (/account/?tab=opportunities) sizes 12×1 13×8 14×24 15×1 16×3 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  text ≥16px | main › ma-empty > p.text | 14 ×1  «შეავსეთ ინტერესები და საქმიანობის კატეგო»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-opportunities 390  (/account/?tab=opportunities) sizes 13×7 14×16 15×1 16×3 26×1
+  text ≥15px | main › ma-empty > p.text | 14 ×1  «შეავსეთ ინტერესები და საქმიანობის კატეგო»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-offers 1440  (/account/?tab=offers) sizes 12×9 13×11 14×23 15×6 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 3.16 ×1  «1»
+  meta ≥13px | main › account-offer-copy > span.account-offer-buyer | 12 ×1  «სატესტო მომხმარებელი»
+  meta ≥13px | main › account-offer-copy > span.account-offer-facts | 12 ×1  «· 1 დღე»
+  meta ≥13px | main › account-offer-facts > strong | 12 ×1  «შეთანხმებით»
+  meta ≥13px | main › account-offer-facts > span.account-offer-activity | 12 ×1  «· გაიგზავნა · 29 სექტ. 2026»
+  meta ≥13px | main › account-offer-card > span.ma-badge.ma-badge--warning | 12 ×1  «მოლოდინში»
+  meta ≥13px | main › span.ma-badge.ma-badge--warning | 12 ×1  «მოლოდინში»
+  meta ≥13px | main › p | 12 ×1  «თბილისი»
+  text ≥16px | main › account-module___JGDBW_ > p.JGDBW_ | 12 ×1  «არჩევამდე მყიდველის კონტაქტი დაფარულია —»
+  text line-height 1.55–1.7 | main › account-module___JGDBW_ > p.JGDBW_ | 1.83 ×1  «არჩევამდე მყიდველის კონტაქტი დაფარულია —»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-offers 390  (/account/?tab=offers) sizes 12×5 13×6 14×14 15×5 26×1
+  meta ≥13px | main › account-offer-copy > span.account-offer-buyer | 12 ×1  «სატესტო მომხმარებელი»
+  meta ≥13px | main › account-offer-copy > span.account-offer-facts | 12 ×1  «· 1 დღე»
+  meta ≥13px | main › account-offer-facts > strong | 12 ×1  «შეთანხმებით»
+  meta ≥13px | main › account-offer-facts > span.account-offer-activity | 12 ×1  «· გაიგზავნა · 29 სექტ. 2026»
+  meta ≥13px | main › account-offer-card > span.ma-badge.ma-badge--warning | 12 ×1  «მოლოდინში»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-deals 1440  (/account/?tab=deals) sizes 12×1 13×7 14×21 15×1 16×1 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  text ≥16px | main › ma-empty > p.text | 14 ×1  «როცა კლიენტი თქვენს შეთავაზებას აირჩევს,»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-deals 390  (/account/?tab=deals) sizes 13×6 14×14 15×1 16×1 26×1
+  text ≥15px | main › ma-empty > p.text | 14 ×1  «როცა კლიენტი თქვენს შეთავაზებას აირჩევს,»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-saved 1440  (/account/?tab=saved) sizes 12×1 13×7 14×22 15×3 16×1 18×1 20×2 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  text ≥16px | main › ma-empty > p.text | 14 ×1  «მონიშნეთ საინტერესო მოთხოვნები და აქ მარ»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-saved 390  (/account/?tab=saved) sizes 13×6 14×15 15×3 16×1 18×3 26×1
+  heading line-height 1.2–1.35 | main › ma-empty > h3.ma-empty_ | 1.5 ×1  «შენახული მოთხოვნები ჯერ არ გაქვთ»
+  text ≥15px | main › ma-empty > p.text | 14 ×1  «მონიშნეთ საინტერესო მოთხოვნები და აქ მარ»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-messages 1440  (/account/?tab=messages) sizes 11×2 12×14 13×12 14×28 15×2 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  meta ≥13px | main › engagement-module__0Ym49q_ > time | 12 ×5  «5 დღის წინ»
+  meta ≥13px | main › engagement-module__0Ym49q__inbox-row__text > span.inbox-row_ | 12 ×5  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  text ≥16px | main › engagement-module__0Ym49q__inbox-head__text > p.inbox-head_ | 12 ×1  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  meta ≥13px | main › engagement-module__0Ym49q_ > p.day | 12 ×2  «2 ოქტ. 2026»
+  meta ≥13px | main › ChatParts-module__nI5tjG_ > time | 11 ×2  «13:16»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › engagement-module__0Ym49q_ > input | 14 ×1  «ძიება»
+  input ≥16px | main › engagement-module__0Ym49q_ > textarea.ma-textarea | 14 ×1  «დაწერეთ შეტყობინება…»
+
+=== company-messages 390  (/account/?tab=messages) sizes 12×10 13×11 14×18 26×1
+  meta ≥13px | main › engagement-module__0Ym49q_ > time | 12 ×5  «5 დღის წინ»
+  meta ≥13px | main › engagement-module__0Ym49q__inbox-row__text > span.inbox-row_ | 12 ×5  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  input ≥16px | main › engagement-module__0Ym49q_ > input | 14 ×1  «ძიება»
+
+=== company-notifications 1440  (/account/?tab=notifications) sizes 12×3 13×8 14×25 15×6 16×1 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  meta ≥13px | main › engagement-module__0Ym49q_ > h2.0Ym49q_ | 12 ×1  «29 სექტ. 2026»
+  text ≥16px | main › engagement-module__0Ym49q_ > span.0Ym49q_ | 13 ×1  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  meta ≥13px | main › engagement-module__0Ym49q_ > time.0Ym49q_ | 12 ×1  «15:06»
+  heading line-height 1.2–1.35 | main › engagement-module__0Ym49q_ > h2 | 1.63 ×1  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-notifications 390  (/account/?tab=notifications) sizes 12×2 13×7 14×15 15×5 26×1
+  meta ≥13px | main › engagement-module__0Ym49q_ > h2.0Ym49q_ | 12 ×1  «29 სექტ. 2026»
+  text ≥15px | main › engagement-module__0Ym49q_ > span.0Ym49q_ | 13 ×1  «საწყობიდან 24 ყუთის ტრანსპორტირება თბილი»
+  meta ≥13px | main › engagement-module__0Ym49q_ > time.0Ym49q_ | 12 ×1  «15:06»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-profile 1440  (/account/?tab=profile) sizes 12×6 13×7 14×50 15×6 16×9 18×1 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  text ≥16px | main › ProfileForm-module__apxRQW_ > p.account-hint | 14 ×1  «ეს ინფორმაცია ჩანს საჯარო პროფილზე და კო»
+  measure ≤ ~75ch | main › ProfileForm-module__apxRQW_ > p.account-hint | 128 ×1  «ეს ინფორმაცია ჩანს საჯარო პროფილზე და კო»
+  meta ≥13px | main › ma-field_ > span.opt | 12 ×5  «0 / 8»
+  text ≥16px | main › account-form-group > p.help.help | 14 ×1  «კონტაქტს მხოლოდ გარიგების მეორე მხარე ხე»
+  measure ≤ ~75ch | main › account-form-group > p.help.help | 128 ×1  «კონტაქტს მხოლოდ გარიგების მეორე მხარე ხე»
+  field label ≥14px | main › ma-field_ > span.opt | 12 ×4  «72 /1000»
+  text ≥16px | main › ma-field > p.help | 14 ×1  «ჩანს საჯარო პროფილზე ბმულით „მისამართი რ»
+  measure ≤ ~75ch | main › ma-field > p.help | 128 ×1  «ჩანს საჯარო პროფილზე ბმულით „მისამართი რ»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-profile 390  (/account/?tab=profile) sizes 12×5 13×6 14×42 15×6 16×9 18×1 26×1
+  wrapped label line-height 1.3–1.7 | main › company-profile-sections > a | 1.86 ×1  «მონაცემები და ფოტოები»
+  text ≥15px | main › ProfileForm-module__apxRQW_ > p.account-hint | 14 ×1  «ეს ინფორმაცია ჩანს საჯარო პროფილზე და კო»
+  meta ≥13px | main › ma-field_ > span.opt | 12 ×5  «0 / 8»
+  text ≥15px | main › account-form-group > p.help.help | 14 ×1  «კონტაქტს მხოლოდ გარიგების მეორე მხარე ხე»
+  field label ≥14px | main › ma-field_ > span.opt | 12 ×4  «72 /1000»
+  text ≥15px | main › ma-field > p.help | 14 ×1  «ჩანს საჯარო პროფილზე ბმულით „მისამართი რ»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== company-business 1440  (/account/?tab=business) sizes 12×1 13×7 14×25 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  text ≥16px | main › ma-notice > div.body | 14 ×1  «ხილვადობის პაკეტები ამ ეტაპზე არ არის ხე»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== company-business 390  (/account/?tab=business) sizes 13×6 14×17 26×1
+  wrapped label line-height 1.3–1.7 | main › company-profile-sections > a | 1.86 ×1  «მონაცემები და ფოტოები»
+  text ≥15px | main › ma-notice > div.body | 14 ×1  «ხილვადობის პაკეტები ამ ეტაპზე არ არის ხე»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== matching 1440  (/matching/) sizes 12×1 13×8 14×24 15×2 16×3 30×1
+  meta ≥13px | main › small | 12 ×1  «1»
+  contrast AA | main › small | 2.95 ×1  «1»
+  text ≥16px | main › ma-empty > p.text | 14 ×1  «შეავსეთ ინტერესები და საქმიანობის კატეგო»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== matching 390  (/matching/) sizes 13×7 14×16 15×2 16×3 26×1
+  text ≥15px | main › ma-empty > p.text | 14 ×1  «შეავსეთ ინტერესები და საქმიანობის კატეგო»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== offers-new 1440  (/offers/new/?requestId=f04784a3-5684-4fb9-8e30-7fcd9f4ba043) sizes 12×4 13×7 13.3333×1 14×27 15×14 16×10 18×1 32×1
+  meta ≥13px | main › ma-field > small | 12 ×1  «0 /2000 · რეკომენდებულია 500 სიმბოლომდე.»
+  meta ≥13px | main › files-module__SY_-YG_ > small | 12 ×1  «PDF, JPG, PNG, WEBP · მაქსიმუმ 10 მბ»
+  text ≥16px | main › MakeOffer-module__uHnoWW_ > p.uHnoWW_ | 12 ×1  «თქვენი კონტაქტი მყიდველს გაეხსნება მხოლო»
+  measure ≤ ~75ch | main › MakeOffer-module__uHnoWW_ > p.uHnoWW_ | 138 ×1  «თქვენი კონტაქტი მყიდველს გაეხსნება მხოლო»
+  meta ≥13px | main › p | 12 ×1  «ბათუმი»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › MakeOffer-module__uHnoWW_ > a | 26 ×2  «შესაძლებლობები»
+
+=== offers-new 390  (/offers/new/?requestId=f04784a3-5684-4fb9-8e30-7fcd9f4ba043) sizes 12×4 13×6 13.3333×1 14×24 15×14 16×10 18×1 21×1
+  meta ≥13px | main › ma-field > small | 12 ×1  «0 /2000 · რეკომენდებულია 500 სიმბოლომდე.»
+  meta ≥13px | main › files-module__SY_-YG_ > small | 12 ×1  «PDF, JPG, PNG, WEBP · მაქსიმუმ 10 მბ»
+  text ≥15px | main › MakeOffer-module__uHnoWW_ > p.uHnoWW_ | 12 ×1  «თქვენი კონტაქტი მყიდველს გაეხსნება მხოლო»
+  meta ≥13px | main › p | 12 ×1  «ბათუმი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+  tap target ≥44px | main › MakeOffer-module__uHnoWW_ > a | 26 ×2  «შესაძლებლობები»
+
+=== deal-1 1440  (/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3) sizes 11×5 12×13 13×20 14×28 15×4 16×7 32×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  text ≥16px | main › p | 14 ×1  «მყიდველმა დაადასტურა შეკვეთის მიღება. აქ»
+  measure ≤ ~75ch | main › p | 91 ×1  «მყიდველმა დაადასტურა შეკვეთის მიღება. აქ»
+  meta ≥13px | main › span | 12 ×5  «მომწოდებელი არჩეულია»
+  wrapped label line-height 1.3–1.7 | main › span | 2.17 ×5  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › small | 11 ×5  «12 ოქტ. 2026»
+  meta ≥13px | main › small | 12 ×5  «12 ოქტ. 2026»
+  text ≥16px | main › deals-module__j2TpfG__card > p.note | 13 ×1  «შეფასება გამოჩნდება მომწოდებლის პროფილზე»
+  measure ≤ ~75ch | main › deals-module__j2TpfG__card > p.note | 117 ×1  «შეფასება გამოჩნდება მომწოდებლის პროფილზე»
+  meta ≥13px | main › deals-module__j2TpfG_ > span.j2TpfG_ | 12 ×1  «12 ოქტ. 2026»
+  wrapped label line-height 1.3–1.7 | main › dd | 2 ×1  «1 920 ₾ · 320 ₾ / ცალი»
+  meta ≥13px | main › p.note | 12 ×1  «მომწოდებელი · თბილისი»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== deal-1 390  (/deals/view/?id=43dca6aa-e0a7-481e-bc28-17ddfd2b8bd3) sizes 12×7 13×8 14×25 15×3 16×8 21×1
+  text ≥15px | main › p | 14 ×1  «მყიდველმა დაადასტურა შეკვეთის მიღება. აქ»
+  meta ≥13px | main › small | 12 ×6  «ეტაპი 5 / 5»
+  heading line-height 1.2–1.35 | main › span | 1.63 ×1  «შეთანხმებული პირობები»
+  text ≥15px | main › deals-module__j2TpfG__card > p.note | 13 ×1  «შეფასება გამოჩნდება მომწოდებლის პროფილზე»
+  meta ≥13px | main › p.note | 12 ×1  «მომწოდებელი · თბილისი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== deal-2 1440  (/deals/view/?id=d8cba06d-5136-409d-bc21-68d81c5be4d4) sizes 11×5 12×18 13×7 14×23 15×5 16×7 32×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  text ≥16px | main › p | 14 ×1  «შეათანხმეთ ფასი, ვადა და პირობები. როცა »
+  measure ≤ ~75ch | main › p | 91 ×1  «შეათანხმეთ ფასი, ვადა და პირობები. როცა »
+  meta ≥13px | main › span | 12 ×5  «მომწოდებელი არჩეულია»
+  wrapped label line-height 1.3–1.7 | main › span | 2.17 ×5  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › small | 11 ×5  «8 ოქტ. 2026»
+  meta ≥13px | main › span.j2TpfG_ | 12 ×4  «2»
+  meta ≥13px | main › deals-module__j2TpfG_ > span.j2TpfG_ | 12 ×1  «არჩეული შეთავაზებიდან»
+  meta ≥13px | main › dt | 12 ×4  «ფასი»
+  meta ≥13px | main › deals-module__j2TpfG_ > span.ma-badge.ma-badge--warning | 12 ×1  «მოლოდინში»
+  meta ≥13px | main › p.note | 12 ×1  «მომწოდებელი · თბილისი»
+  meta ≥13px | main › deals-module__j2TpfG_ > button.ma-btn.ma-btn--ghost | 12 ×1  «გარიგების გაუქმება»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== deal-2 390  (/deals/view/?id=d8cba06d-5136-409d-bc21-68d81c5be4d4) sizes 12×10 13×6 14×21 15×4 16×7 21×1
+  text ≥15px | main › p | 14 ×1  «შეათანხმეთ ფასი, ვადა და პირობები. როცა »
+  meta ≥13px | main › small | 12 ×1  «ეტაპი 2 / 5»
+  meta ≥13px | main › deals-module__j2TpfG_ > small | 12 ×1  «შემდეგი: პირობების დადასტურება»
+  meta ≥13px | main › deals-module__j2TpfG_ > span.j2TpfG_ | 12 ×1  «არჩეული შეთავაზებიდან»
+  meta ≥13px | main › dt | 12 ×4  «ფასი»
+  meta ≥13px | main › deals-module__j2TpfG_ > span.ma-badge.ma-badge--warning | 12 ×1  «მოლოდინში»
+  meta ≥13px | main › p.note | 12 ×1  «მომწოდებელი · თბილისი»
+  meta ≥13px | main › deals-module__j2TpfG_ > button.ma-btn.ma-btn--ghost | 12 ×1  «გარიგების გაუქმება»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== deal-3 1440  (/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed) sizes 11×5 12×13 13×20 14×28 15×4 16×7 32×1
+  meta ≥13px | header › Header-module__9fWxfa__ma-menu_ > span.ma-avatar.ma-header_ | 12 ×1  «სმ»
+  text ≥16px | main › p | 14 ×1  «მყიდველმა დაადასტურა შეკვეთის მიღება. აქ»
+  measure ≤ ~75ch | main › p | 91 ×1  «მყიდველმა დაადასტურა შეკვეთის მიღება. აქ»
+  meta ≥13px | main › span | 12 ×5  «მომწოდებელი არჩეულია»
+  wrapped label line-height 1.3–1.7 | main › span | 2.17 ×5  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › small | 11 ×5  «12 ოქტ. 2026»
+  meta ≥13px | main › small | 12 ×5  «12 ოქტ. 2026»
+  text ≥16px | main › deals-module__j2TpfG__card > p.note | 13 ×1  «შეფასება გამოჩნდება მომწოდებლის პროფილზე»
+  measure ≤ ~75ch | main › deals-module__j2TpfG__card > p.note | 117 ×1  «შეფასება გამოჩნდება მომწოდებლის პროფილზე»
+  meta ≥13px | main › deals-module__j2TpfG_ > span.j2TpfG_ | 12 ×1  «12 ოქტ. 2026»
+  wrapped label line-height 1.3–1.7 | main › dd | 2 ×1  «1 920 ₾ · 320 ₾ / ცალი»
+  meta ≥13px | main › p.note | 12 ×1  «მომწოდებელი · თბილისი»
+  text ≥16px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×2  «© 2026 MeetAny · საქართველო»
+
+=== deal-3 390  (/deals/view/?id=5eeebcbe-64fa-4ab3-b88e-49bfea1f48ed) sizes 12×7 13×8 14×25 15×3 16×8 21×1
+  text ≥15px | main › p | 14 ×1  «მყიდველმა დაადასტურა შეკვეთის მიღება. აქ»
+  meta ≥13px | main › small | 12 ×6  «ეტაპი 5 / 5»
+  heading line-height 1.2–1.35 | main › span | 1.63 ×1  «შეთანხმებული პირობები»
+  text ≥15px | main › deals-module__j2TpfG__card > p.note | 13 ×1  «შეფასება გამოჩნდება მომწოდებლის პროფილზე»
+  meta ≥13px | main › p.note | 12 ×1  «მომწოდებელი · თბილისი»
+  text ≥15px | footer › Footer-module__nhiC3q_ > p | 14 ×1  «ბიზნესი წერს, რა სჭირდება — სხვა ბიზნესე»
+  contrast AA | footer › Footer-module__nhiC3q_ > span | 3.44 ×1  «© 2026 MeetAny · საქართველო»
+
+=== admin-overview 1440  (/admin/?tab=overview) sizes 12×57 14×56 15×8 16×3 20×2 28×3 30×6 32×7
+  meta ≥13px | main › admin-module__9KbAIa__kpi > span.9KbAIa_ | 12 ×6  «მოთხოვნების ნახვა»
+  meta ≥13px | main › analytics-module__BRE10G_ > span | 12 ×12  «წინა 30 დღეში:»
+  meta ≥13px | main › strong | 12 ×6  «1»
+  meta ≥13px | main › analytics-module__BRE10G_ > span.BRE10G_ | 12 ×2  «29-ით მეტი»
+  meta ≥13px | main › small | 12 ×2  «30 დღეში»
+  meta ≥13px | main › analytics-module__BRE10G__axis > span | 12 ×6  «14 სექ»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.note | 12 ×2  «ბოლო 30 დღე · დამალული მოთხოვნების გარეშ»
+  meta ≥13px | main › span | 12 ×3  «8»
+  meta ≥13px | main › admin-module__9KbAIa_ > small | 12 ×9  «საბითუმო მომარაგება»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «ნაჩვენებია 6 კომპანია 8 -დან.»
+  meta ≥13px | main › admin-module__9KbAIa_ > a.9KbAIa_ | 12 ×1  «ყველა კომპანიის ნახვა»
+  heading line-height 1.2–1.35 | main › admin-module__9KbAIa_ > summary | 1.86 ×1  «3+ დღე უპასუხოდ»
+  meta ≥13px | main › analytics-module__BRE10G__step > span.BRE10G_ | 12 ×4  «1»
+  wrapped label line-height 1.3–1.7 | main › admin-module__9KbAIa_ > small | 2.17 ×2  «ამჟამად ღია · ხილული მოთხოვნები აქტიური »
+  text ≥16px | main › admin-module__9KbAIa_ > p.note | 12 ×1  «მომწოდებლის არჩევა გადახდილ ან მიწოდებულ»
+  measure ≤ ~75ch | main › admin-module__9KbAIa_ > p.note | 178 ×1  «მომწოდებლის არჩევა გადახდილ ან მიწოდებულ»
+  meta ≥13px | main › span.9KbAIa_ | 12 ×1  «10 მიმართულება»
+  meta ≥13px | main › admin-module__9KbAIa_ > summary | 12 ×1  «როგორ ითვლება ეს მაჩვენებლები?»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a.9KbAIa_ | 38 ×1  «ყველა კომპანიის ნახვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > summary | 34 ×1  «როგორ ითვლება ეს მაჩვენებლები?»
+
+=== admin-overview 390  (/admin/?tab=overview) sizes 12×63 14×37 15×8 16×3 18×2 24×1 28×9 30×6
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa__kpi > span.9KbAIa_ | 12 ×12  «ღია მოთხოვნები»
+  meta ≥13px | main › analytics-module__BRE10G_ > span | 12 ×12  «წინა 30 დღეში:»
+  meta ≥13px | main › strong | 12 ×6  «1»
+  meta ≥13px | main › analytics-module__BRE10G_ > span.BRE10G_ | 12 ×2  «29-ით მეტი»
+  meta ≥13px | main › small | 12 ×2  «30 დღეში»
+  meta ≥13px | main › analytics-module__BRE10G__axis > span | 12 ×6  «14 სექ»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.note | 12 ×2  «ბოლო 30 დღე · დამალული მოთხოვნების გარეშ»
+  heading line-height 1.2–1.35 | main › admin-module__9KbAIa_ > summary | 1.86 ×3  «ვერიფიკაციის მოლოდინში»
+  meta ≥13px | main › span | 12 ×3  «8»
+  meta ≥13px | main › admin-module__9KbAIa_ > small | 12 ×9  «საბითუმო მომარაგება»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «ნაჩვენებია 6 კომპანია 8 -დან.»
+  meta ≥13px | main › admin-module__9KbAIa_ > a.9KbAIa_ | 12 ×1  «ყველა კომპანიის ნახვა»
+  meta ≥13px | main › analytics-module__BRE10G__step > span.BRE10G_ | 12 ×4  «1»
+  wrapped label line-height 1.3–1.7 | main › analytics-module__BRE10G__step > span | 1.86 ×1  «პროფილი შეიქმნა»
+  wrapped label line-height 1.3–1.7 | main › admin-module__9KbAIa_ > small | 2.17 ×2  «ამჟამად ღია · ხილული მოთხოვნები აქტიური »
+  wrapped label line-height 1.3–1.7 | main › admin-module__9KbAIa_ > span | 1.86 ×1  «პირველ შეთავაზებამდე საშუალო დრო»
+  text ≥15px | main › admin-module__9KbAIa_ > p.note | 12 ×1  «მომწოდებლის არჩევა გადახდილ ან მიწოდებულ»
+  meta ≥13px | main › admin-module__9KbAIa_ > summary | 12 ×1  «როგორ ითვლება ეს მაჩვენებლები?»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a.9KbAIa_ | 38 ×1  «ყველა კომპანიის ნახვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > summary | 34 ×1  «როგორ ითვლება ეს მაჩვენებლები?»
+
+=== admin-users 1440  (/admin/?tab=users) sizes 12×77 14×90 15×52 16×3 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×2  «როლი»
+  field label ≥14px | main › label | 12 ×2  «როლი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «52 ჩანაწერი · 1 ადმინი»
+  meta ≥13px | main › th | 12 ×4  «მომხმარებელი»
+  meta ≥13px | main › small | 12 ×25  «ლუკა კაპანაზე · თბილისი»
+  meta ≥13px | main › admin-module__9KbAIa_ > a | 12 ×25  «lukakapanadze313@gmail.com»
+  wrapped label line-height 1.3–1.7 | main › admin-module__9KbAIa_ > a | 1.83 ×20  «lukakapanadze313@gmail.com»
+  meta ≥13px | main › admin-status-module__4AEB4q_ > small.4AEB4q_ | 12 ×19  «ავტომატური შემოწმება დასრულდა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > input.9KbAIa_ | 18 ×25  «ყველას მონიშვნა ამ გვერდზე»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×6  «ლუკა»
+
+=== admin-users 390  (/admin/?tab=users) sizes 12×74 14×27 15×52 16×3 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×2  «როლი»
+  field label ≥14px | main › label | 12 ×2  «როლი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «52 ჩანაწერი · 1 ადმინი»
+  meta ≥13px | main › small | 12 ×25  «ლუკა კაპანაზე · თბილისი»
+  meta ≥13px | main › td | 12 ×25  «კომპანია»
+  meta ≥13px | main › admin-status-module__4AEB4q_ > small.4AEB4q_ | 12 ×19  «ავტომატური შემოწმება დასრულდა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > input.9KbAIa_ | 18 ×24  «მონიშვნა: ლუკა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×6  «ლუკა»
+
+=== admin-companies 1440  (/admin/?tab=companies) sizes 12×70 14×90 15×52 16×2 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «ვერიფიკაცია»
+  field label ≥14px | main › label | 12 ×1  «ვერიფიკაცია»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «28 ჩანაწერი»
+  meta ≥13px | main › th | 12 ×4  «კომპანია»
+  meta ≥13px | main › small | 12 ×25  «ლუკა კაპანაზე · თბილისი · ხილი, ბოსტნეულ»
+  wrapped label line-height 1.3–1.7 | main › small | 1.83 ×14  «ლუკა კაპანაზე · თბილისი · ხილი, ბოსტნეულ»
+  meta ≥13px | main › admin-module__9KbAIa_ > a | 12 ×25  «lukakapanadze313@gmail.com»
+  wrapped label line-height 1.3–1.7 | main › admin-module__9KbAIa_ > a | 1.83 ×14  «lukakapanadze313@gmail.com»
+  meta ≥13px | main › admin-status-module__4AEB4q_ > small.4AEB4q_ | 12 ×13  «ავტომატური შემოწმება დასრულდა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > input.9KbAIa_ | 18 ×26  «ყველას მონიშვნა ამ გვერდზე»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×15  «ლუკა»
+
+=== admin-companies 390  (/admin/?tab=companies) sizes 12×42 14×27 15×52 16×2 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «ვერიფიკაცია»
+  field label ≥14px | main › label | 12 ×1  «ვერიფიკაცია»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «28 ჩანაწერი»
+  meta ≥13px | main › small | 12 ×25  «ლუკა კაპანაზე · თბილისი · ხილი, ბოსტნეულ»
+  wrapped label line-height 1.3–1.7 | main › small | 1.83 ×10  «ლუკა კაპანაზე · თბილისი · ხილი, ბოსტნეულ»
+  meta ≥13px | main › admin-status-module__4AEB4q_ > small.4AEB4q_ | 12 ×13  «ავტომატური შემოწმება დასრულდა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > input.9KbAIa_ | 18 ×25  «მონიშვნა: ლუკა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×15  «ლუკა»
+
+=== admin-requests 1440  (/admin/?tab=requests) sizes 12×57 14×90 15×27 16×2 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «სტატუსი»
+  field label ≥14px | main › label | 12 ×1  «სტატუსი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «31 ჩანაწერი»
+  meta ≥13px | main › th | 12 ×4  «მოთხოვნა»
+  meta ≥13px | main › small | 12 ×25  «ავეჯი · 12 ოქტომბერი 2026»
+  meta ≥13px | main › span.ma-badge.ma-badge--neutral | 12 ×16  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×9  «ღია»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > input.9KbAIa_ | 18 ×26  «ყველას მონიშვნა ამ გვერდზე»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×14  «QA გარიგება — მუხის მაგიდები»
+
+=== admin-requests 390  (/admin/?tab=requests) sizes 12×54 14×77 15×27 16×2 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «სტატუსი»
+  field label ≥14px | main › label | 12 ×1  «სტატუსი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «31 ჩანაწერი»
+  meta ≥13px | main › small | 12 ×25  «ავეჯი · 12 ოქტომბერი 2026»
+  meta ≥13px | main › span.ma-badge.ma-badge--neutral | 12 ×16  «მომწოდებელი არჩეულია»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×9  «ღია»
+  wrapped label line-height 1.3–1.7 | main › small | 1.83 ×3  «ხილი, ბოსტნეული და ხორცი · 8 ოქტომბერი 2»
+  tap target ≥44px | main › admin-module__9KbAIa_ > input.9KbAIa_ | 18 ×25  «მონიშვნა: QA გარიგება — მუხის »
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×9  «QA გარიგება — მუხის მაგიდები»
+
+=== admin-offers 1440  (/admin/?tab=offers) sizes 12×34 14×140 15×26 16×2 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «სტატუსი»
+  field label ≥14px | main › label | 12 ×1  «სტატუსი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «55 ჩანაწერი»
+  text ≥16px | main › admin-module__9KbAIa_ > p.note | 12 ×1  «არჩეული შეთავაზება არ იშლება: მის ნაცვლა»
+  measure ≤ ~75ch | main › admin-module__9KbAIa_ > p.note | 178 ×1  «არჩეული შეთავაზება არ იშლება: მის ნაცვლა»
+  meta ≥13px | main › th | 12 ×5  «შეთავაზება»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×11  «არჩეული»
+  meta ≥13px | main › span.ma-badge.ma-badge--neutral | 12 ×14  «გაგზავნილი»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×37  «1 920 ₾»
+
+=== admin-offers 390  (/admin/?tab=offers) sizes 12×30 14×102 15×26 16×2 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «სტატუსი»
+  field label ≥14px | main › label | 12 ×1  «სტატუსი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «55 ჩანაწერი»
+  text ≥15px | main › admin-module__9KbAIa_ > p.note | 12 ×1  «არჩეული შეთავაზება არ იშლება: მის ნაცვლა»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×11  «არჩეული»
+  meta ≥13px | main › span.ma-badge.ma-badge--neutral | 12 ×14  «გაგზავნილი»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×65  «1 920 ₾»
+
+=== admin-deals 1440  (/admin/?tab=deals) sizes 12×30 14×43 15×7 16×3 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > p.note | 12 ×1  «გარიგების პრობლემები ახლა არ არის.»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «ეტაპი»
+  field label ≥14px | main › label | 12 ×1  «ეტაპი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «7 გარიგება»
+  meta ≥13px | main › th | 12 ×5  «გარიგება»
+  meta ≥13px | main › small | 12 ×14  «# 43dca6aa»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×5  «დასრულებული»
+  meta ≥13px | main › span.ma-badge.ma-badge--info | 12 ×2  «დეტალების განხილვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×4  «QA გარიგება — მუხის მაგიდები»
+
+=== admin-deals 390  (/admin/?tab=deals) sizes 12×26 14×23 15×7 16×3 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.note | 12 ×1  «გარიგების პრობლემები ახლა არ არის.»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×1  «ეტაპი»
+  field label ≥14px | main › label | 12 ×1  «ეტაპი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «7 გარიგება»
+  meta ≥13px | main › small | 12 ×14  «# 43dca6aa»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×5  «დასრულებული»
+  meta ≥13px | main › span.ma-badge.ma-badge--info | 12 ×2  «დეტალების განხილვა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×5  «QA გარიგება — მუხის მაგიდები»
+
+=== admin-reports 1440  (/admin/?tab=reports) sizes 12×1 14×16 16×3 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «სტატუსი»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «სტატუსი»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+
+=== admin-reports 390  (/admin/?tab=reports) sizes 12×2 14×3 16×3 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «სტატუსი»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «სტატუსი»
+
+=== admin-reviews 1440  (/admin/?tab=reviews) sizes 12×16 14×51 15×6 16×3 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×2  «სტატუსი»
+  field label ≥14px | main › label | 12 ×2  «სტატუსი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «6 შეფასება»
+  meta ≥13px | main › th | 12 ×6  «შეფასება»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×6  «გამოქვეყნებული»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×6  «ხის ხაზი»
+
+=== admin-reviews 390  (/admin/?tab=reviews) sizes 12×11 14×38 15×6 16×3 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  field label ≥14px | main › admin-module__9KbAIa_ > label | 12 ×1  «ძიება»
+  meta ≥13px | main › label | 12 ×2  «სტატუსი»
+  field label ≥14px | main › label | 12 ×2  «სტატუსი»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «6 შეფასება»
+  meta ≥13px | main › span.ma-badge.ma-badge--success | 12 ×6  «გამოქვეყნებული»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×12  «ხის ხაზი»
+
+=== admin-photos 1440  (/admin/?tab=photos) sizes 12×6 14×15 15×5 16×6 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «5 ფოტო · 5 კომპანია»
+  meta ≥13px | main › admin-module__9KbAIa_ > small | 12 ×5  «გალერეა 1 · ხილი, ბოსტნეული და ხორცი»
+  wrapped label line-height 1.3–1.7 | main › admin-module__9KbAIa_ > small | 2.17 ×3  «გალერეა 1 · ხილი, ბოსტნეული და ხორცი»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+
+=== admin-photos 390  (/admin/?tab=photos) sizes 12×7 14×2 15×5 16×6 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «5 ფოტო · 5 კომპანია»
+  meta ≥13px | main › admin-module__9KbAIa_ > small | 12 ×5  «გალერეა 1 · ხილი, ბოსტნეული და ხორცი»
+
+=== admin-contacts 1440  (/admin/?tab=contacts) sizes 12×36 14×199 15×1 16×4 20×10 32×1
+  meta ≥13px | main › admin-module__9KbAIa_ > summary | 12 ×1  «როგორ ითვლება»
+  meta ≥13px | main › label | 12 ×3  «მოქმედება»
+  field label ≥14px | main › label | 12 ×3  «მოქმედება»
+  meta ≥13px | main › dt | 12 ×9  «ნომრის ნახვა»
+  meta ≥13px | main › th | 12 ×11  «კომპანია»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «ნაჩვენებია 25 · ფილტრებით სულ 65 .»
+  meta ≥13px | main › small | 12 ×11  «ალექსანდრე მაისურაძე»
+  wrapped label line-height 1.3–1.7 | main › small | 1.83 ×9  «ალექსანდრე მაისურაძე»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › admin-module__9KbAIa_ > summary | 34 ×1  «როგორ ითვლება»
+
+=== admin-contacts 390  (/admin/?tab=contacts) sizes 12×26 14×186 15×1 16×4 18×1 20×9 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › admin-module__9KbAIa_ > summary | 12 ×1  «როგორ ითვლება»
+  meta ≥13px | main › label | 12 ×3  «მოქმედება»
+  field label ≥14px | main › label | 12 ×3  «მოქმედება»
+  meta ≥13px | main › dt | 12 ×9  «ნომრის ნახვა»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «ნაჩვენებია 25 · ფილტრებით სულ 65 .»
+  meta ≥13px | main › small | 12 ×11  «ალექსანდრე მაისურაძე»
+  tap target ≥44px | main › admin-module__9KbAIa_ > summary | 34 ×1  «როგორ ითვლება»
+
+=== admin-content 1440  (/admin/?tab=content) sizes 14×30 15×2 16×8 20×2 32×1
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › admin-edit-module__wQ7F0q_ > summary | 26 ×1  «კომპანიების კატალოგის ფოტოები»
+
+=== admin-content 390  (/admin/?tab=content) sizes 12×1 14×17 15×2 16×8 18×2 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  tap target ≥44px | main › admin-edit-module__wQ7F0q_ > summary | 26 ×1  «კომპანიების კატალოგის ფოტოები»
+
+=== admin-audit 1440  (/admin/?tab=audit) sizes 12×78 14×115 15×1 16×4 32×1
+  meta ≥13px | main › label | 12 ×2  «მოქმედება»
+  field label ≥14px | main › label | 12 ×2  «მოქმედება»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «81 ჩანაწერი»
+  meta ≥13px | main › th | 12 ×4  «მოქმედება»
+  meta ≥13px | main › time.9KbAIa_ | 12 ×25  «12 ოქტომბერი 2026 · 15:05»
+  meta ≥13px | main › small | 12 ×46  «კომპანია»
+  tap target ≥44px | main › admin-module__9KbAIa_ > a | 40 ×12  «მიმოხილვა»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×11  «[ux-audit] სასტუმროს ტექსტილი»
+  tap target ≥44px | main › admin-edit-module__wQ7F0q_ > summary | 26 ×1  «შეფასებები, საჩივრები და შიგთა»
+
+=== admin-audit 390  (/admin/?tab=audit) sizes 12×75 14×102 15×1 16×4 24×1
+  meta ≥13px | main › admin-module__9KbAIa_ > span.9KbAIa_ | 12 ×1  «განყოფილებები»
+  meta ≥13px | main › label | 12 ×2  «მოქმედება»
+  field label ≥14px | main › label | 12 ×2  «მოქმედება»
+  meta ≥13px | main › admin-module__9KbAIa_ > p.9KbAIa_ | 12 ×1  «81 ჩანაწერი»
+  meta ≥13px | main › time.9KbAIa_ | 12 ×25  «12 ოქტომბერი 2026 · 15:05»
+  meta ≥13px | main › small | 12 ×46  «კომპანია»
+  tap target ≥44px | main › button.9KbAIa_ | 22 ×11  «[ux-audit] სასტუმროს ტექსტილი»
+  tap target ≥44px | main › admin-edit-module__wQ7F0q_ > summary | 26 ×1  «შეფასებები, საჩივრები და შიგთა»
