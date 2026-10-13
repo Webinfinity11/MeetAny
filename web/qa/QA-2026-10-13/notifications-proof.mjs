@@ -1,0 +1,6 @@
+import fs from 'node:fs';import path from 'node:path';import {actor,goto,capture,state,check,finish,assert,dir} from './harness.mjs';
+const buyer=await actor('hotel'),wood=await actor('wood');
+try{
+await check('mobile report result has no visible outcome after click',async()=>{await goto(buyer.p,'/account/?tab=notifications');await buyer.p.setViewportSize({width:390,height:844});const row=buyer.p.getByRole('button',{name:/საჩივარი განხილულია/}).first();await row.click();const detail=buyer.p.locator('aside[aria-label="შეტყობინების დეტალი"]');assert.equal(await detail.isVisible(),false);await capture(buyer.p,'hotel-report-clicked-mobile');return {detailVisible:false,route:buyer.p.url()};});
+await check('deal notification retains old offer price',async()=>{await goto(wood.p,'/account/?tab=notifications');const row=wood.p.locator('article').filter({hasText:'სასტუმროს მისაღებისთვის ხის დახლი'}).first();await row.locator('a').first().click();const data={row:await row.innerText(),detail:await wood.p.locator('aside[aria-label="შეტყობინების დეტალი"]').innerText()};fs.writeFileSync(path.join(dir,'shots/flows/notification-price-mismatch.json'),JSON.stringify(data,null,2));await capture(wood.p,'wood-notification-price-mismatch');assert(data.row.includes('800')&&data.detail.includes('400'));return data;});
+}finally{await finish();}
