@@ -23,7 +23,7 @@ Browser scripts use private demo credentials from the ignored local credentials 
 
 ## 2026-10-01 validation
 
-Current completion record: [qa/STATUS-2026-10-01.md](qa/STATUS-2026-10-01.md).
+Current completion record: [qa/archive/STATUS-2026-10-01.md](qa/archive/STATUS-2026-10-01.md).
 `npm run lint` includes shared-button/CSS-token checks. New scenarios:
 
 ```sh
