@@ -41,12 +41,13 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
   const cityIds = [...new Set((c.serviceCities.filter(Boolean).length ? c.serviceCities : [c.city]).filter(Boolean))];
   const places = cityIds.slice(0, 2).map(id => cities[id] || id).join(", ") + (cityIds.length > 2 ? ` +${cityIds.length - 2}` : "");
   const image = companyImage(c.name, c.logoUrl, c.gallery);
+  const isLogo = !!c.logoUrl && !c.gallery?.[0];
   const isDemo = c.about.startsWith("სადემო კომპანია.");
   const description = isDemo ? c.about.replace(/^სადემო კომპანია\. ინფორმაცია და ფოტოები საილუსტრაციოა\.\s*/, "") : c.about;
   const entrance = entranceIndex != null && entranceIndex < 12;
   if (catalog) return <article className={`${styles.company}${catalogLayout === "list" ? ` ${styles.companyRow}` : ""}`}>
     <header className={styles.companyIdentity}>
-      {image ? <Image unoptimized={!optimizable(image)} className={styles.logo} src={image} alt="" width={56} height={56} loading="lazy" /> : <Avatar name={c.name} size={56} className={styles.logo} />}
+      {image ? <Image unoptimized={!optimizable(image)} className={`${styles.logo}${isLogo ? ` ${styles.containedLogo}` : ""}`} src={image} alt="" width={56} height={56} loading="lazy" /> : <Avatar name={c.name} size={56} className={styles.logo} />}
       <div className={styles.companyDetails}>
         <h3><Link href={href}>{c.name}</Link>{c.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
         <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
@@ -61,7 +62,7 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
   </article>;
   return (
     <article className={`company-card${catalog ? " company-card--catalog" : ""}`} data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>
-      <Link className="company-card__media" href={href} tabIndex={-1} aria-hidden="true">
+      <Link className={`company-card__media${isLogo ? ` ${styles.logoMedia}` : ""}`} href={href} tabIndex={-1} aria-hidden="true">
         {image ? <Image src={image} alt="" loading="lazy" width={480} height={360} sizes="(max-width: 720px) 100vw, 480px" unoptimized={!optimizable(image)} /> : <span className="company-card__initials">{catalog ? avatarInitials(c.name) : <Icon name="building-2" />}</span>}
       </Link>
       {c.feature?.plan && catalog ? <Badge className="company-card__plan" status={c.feature.plan === "vip" ? "dark" : "neutral"}>{c.feature.plan === "vip" ? "VIP" : "Premium"}</Badge> : c.feature?.plan ? <span className="company-card__plan" data-plan={c.feature.plan}>{c.feature.plan === "vip" ? "VIP" : "Premium"}</span> : null}

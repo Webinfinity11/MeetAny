@@ -1,0 +1,100 @@
+[
+  {
+    "role": "guest",
+    "width": 1440,
+    "path": "/requests/",
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "შეთავაზების გაგზავნა",
+      "შეთავაზების გაგზავნა",
+      "შეთავაზების გაგზავნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 12,
+    "scrolledPrimary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "შეთავაზების გაგზავნა",
+      "შეთავაზების გაგზავნა",
+      "შეთავაზების გაგზავნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 390,
+    "path": "/requests/",
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 12,
+    "scrolledPrimary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "შეთავაზების გაგზავნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 360,
+    "path": "/requests/",
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 12,
+    "scrolledPrimary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "შეთავაზების გაგზავნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "company",
+    "width": 1440,
+    "path": "/requests/",
+    "primary": [
+      "შეთავაზების გაგზავნა",
+      "შეთავაზების გაგზავნა"
+    ],
+    "overflow": 0,
+    "offerActions": 10,
+    "cards": 12,
+    "scrolledPrimary": [
+      "შეთავაზების გაგზავნა",
+      "შეთავაზების გაგზავნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "company",
+    "width": 390,
+    "path": "/requests/",
+    "primary": [],
+    "overflow": 0,
+    "offerActions": 10,
+    "cards": 12,
+    "scrolledPrimary": [],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "company",
+    "width": 360,
+    "path": "/requests/",
+    "primary": [],
+    "overflow": 0,
+    "offerActions": 10,
+    "cards": 12,
+    "scrolledPrimary": [],
+    "cardClick": true,
+    "errors": []
+  }
+]

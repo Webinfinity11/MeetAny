@@ -1,0 +1,173 @@
+[
+  {
+    "role": "guest",
+    "width": 1440,
+    "path": "/requests/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 12,
+    "scrolledPrimary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 1440,
+    "path": "/companies/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 0,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 1440,
+    "path": "/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "მოთხოვნის განთავსება"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 13,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 390,
+    "path": "/requests/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 12,
+    "scrolledPrimary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 390,
+    "path": "/companies/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 0,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 390,
+    "path": "/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "მოთხოვნის განთავსება"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 13,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 360,
+    "path": "/requests/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 12,
+    "scrolledPrimary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 360,
+    "path": "/companies/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 0,
+    "errors": []
+  },
+  {
+    "role": "guest",
+    "width": 360,
+    "path": "/",
+    "maxPrimary": 1,
+    "primary": [
+      "მოთხოვნის განთავსებამოთხოვნა",
+      "მოთხოვნის განთავსება"
+    ],
+    "overflow": 0,
+    "offerActions": 0,
+    "cards": 13,
+    "errors": []
+  },
+  {
+    "role": "company",
+    "width": 1440,
+    "path": "/requests/",
+    "maxPrimary": 0,
+    "primary": [],
+    "overflow": 0,
+    "offerActions": 10,
+    "cards": 12,
+    "scrolledPrimary": [],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "company",
+    "width": 390,
+    "path": "/requests/",
+    "maxPrimary": 0,
+    "primary": [],
+    "overflow": 0,
+    "offerActions": 10,
+    "cards": 12,
+    "scrolledPrimary": [],
+    "cardClick": true,
+    "errors": []
+  },
+  {
+    "role": "company",
+    "width": 360,
+    "path": "/requests/",
+    "maxPrimary": 0,
+    "primary": [],
+    "overflow": 0,
+    "offerActions": 10,
+    "cards": 12,
+    "scrolledPrimary": [],
+    "cardClick": true,
+    "errors": []
+  }
+]

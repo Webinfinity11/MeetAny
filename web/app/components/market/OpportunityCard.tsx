@@ -38,7 +38,7 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
   const category = categories[currentCategory(r.category)] || r.category;
   const budget = budgetLabel(r);
   const deadline = `${Math.max(0, r.daysLeft)} დღე დარჩა`;
-  return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full} ${horizontal ? styles.horizontal : ""}`}`} data-request-id={r.id}>
+  return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full} ${!r.photo || failed === r.photo ? styles.noPhoto : ""} ${horizontal ? styles.horizontal : ""}`}`} data-request-id={r.id}>
     <div className={styles.visual}>
       {r.photo && failed !== r.photo ? <Image unoptimized={!optimizable(r.photo)} src={r.photo} alt="" width={480} height={300} sizes="(max-width: 720px) 100vw, 480px" loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />}
       {compact ? r.isNew && <Badge status="success" className={styles.new}>ახალი</Badge> : (r.isNew || r.daysLeft <= 5) && <Badge status={r.isNew ? "success" : "warning"} className={styles.new}>{r.isNew ? "ახალი" : "სასწრაფო"}</Badge>}
@@ -50,7 +50,7 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
       {!compact && <><span className={styles.category}>{category}</span>{buyer && <p className={styles.buyer}><span aria-hidden="true">{avatarInitials(buyer.name)}</span>{buyer.name}{buyer.verified && <span aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</p>}</>}
       <ul className={styles.facts}><li><Icon name="map-pin" />{r.cityLabel || cities[r.city] || r.city}</li>{r.quantity != null && <li><Icon name="package" />{formatNumber(r.quantity)} {r.unit ? units[r.unit] || r.unit : ""}</li>}{budget && !(compact && offers !== undefined) && <li><Icon name="wallet" />{budget}</li>}</ul>
       {compact && offers !== undefined && <p className={styles.price}><strong className={budget ? undefined : styles.muted}>{budget ?? "ფასი შეთანხმებით"}</strong><span><Icon name="message-square" />{offers} შეთავაზება</span></p>}
-      {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div><div className={styles.actions}>{canOffer || guest ? <Button href={guest ? `/account/?${new URLSearchParams({ next: `/offers/new/?requestId=${encodeURIComponent(r.id)}`, intent: "offer", context: r.title })}` : `/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზების გაგზავნა</Button> : <Button variant="secondary" href={href}>მოთხოვნის ნახვა</Button>}</div></div>}
+      {!compact && <div className={styles.bottom}><div className={styles.summary}><span className={r.daysLeft <= 5 ? styles.warning : ""}><Icon name="calendar" />{deadline}</span>{offers !== undefined && <span><Icon name="message-square" />{offers} შეთავაზება</span>}</div>{(canOffer || guest) && <div className={styles.actions}><Button variant="ghost" href={guest ? `/account/?${new URLSearchParams({ next: `/offers/new/?requestId=${encodeURIComponent(r.id)}`, intent: "offer", context: r.title })}` : `/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზების გაგზავნა<Icon name="arrow-right" /></Button></div>}</div>}
     </div>
   </article>;
 }

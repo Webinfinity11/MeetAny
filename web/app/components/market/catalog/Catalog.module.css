@@ -189,3 +189,8 @@
 .companyActions{position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-top:auto}
 .companyRow .companyActions{grid-column:2;grid-row:1;align-self:center;margin-top:0}
 @media(max-width:639px){.companyRow .companyActions{grid-column:1;grid-row:auto}}
+
+/* Uploaded marks keep their proportions; gallery photos retain their crop. */
+.logo.containedLogo { object-fit: contain; padding: var(--size-12); background: var(--white); }
+.logoMedia.logoMedia { display: grid; place-items: center; padding: var(--size-16); background: var(--white); }
+.logoMedia.logoMedia > img { position: static; width: 100%; height: 60%; object-fit: contain; }
