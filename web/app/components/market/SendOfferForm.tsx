@@ -13,11 +13,13 @@ import { attachmentDraft } from "../../lib/attachment-draft";
 import { money } from '../../lib/deal-client';
 import { dateShort } from '../../lib/format';
 import { Icon } from '../Icon';
+import { DeliveryDaysField } from './offer/DeliveryDaysField';
+import { PaymentTermsField } from './offer/PaymentTermsField';
+import { readOfferDraft, type PendingTerms } from './offer/offer-draft';
 import { toast } from '../Toasts';
 import styles from './MakeOffer.module.css';
 
 type Values = { body: string; price: string; priceType: string; vatIncluded: boolean; deliveryIncluded: boolean; deliveryDays: string; paymentTerms: string; validUntil: string; commercialTerms: string };
-type PendingTerms = { id: string; updatedAt: string; terms: OfferTerms };
 const valuesFrom = (o?: Partial<StoredOffer> | OfferCardData): Values => ({ body: o?.body || '', price: o?.price != null ? String(o.price) : '', priceType: o?.priceType || 'total', vatIncluded: !!o?.vatIncluded, deliveryIncluded: !!o?.deliveryIncluded, deliveryDays: o?.deliveryDays != null ? String(o.deliveryDays) : '', paymentTerms: o?.paymentTerms || '', validUntil: o?.validUntil || '', commercialTerms: o?.commercialTerms?.join('\n') || '' });
 
 export function SendOfferForm({ requestId, existing, onDone, onCancel, standalone = false }: { requestId: string; existing?: OfferCardData; standalone?: boolean; onDone: (editing: boolean) => void; onCancel: () => void }) {
@@ -28,8 +30,10 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   const [values, setValues] = useState<Values>(() => valuesFrom(existing));
   const [customTerm, setCustomTerm] = useState('');
   const [showCustom, setShowCustom] = useState(false);
-  const [otherDelivery, setOtherDelivery] = useState(false);
-  const [otherPayment, setOtherPayment] = useState(false);
+  const [draftNotice, setDraftNotice] = useState('');
+  const [restored, setRestored] = useState(false);
+  const draftKey = useRef('');
+  const initialValues = useRef<Values>(valuesFrom(existing));
   const [loaded, setLoaded] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
@@ -43,23 +47,34 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   const v = useFieldErrors();
   const owner = sessionReady ? store?.currentUser()?.id : undefined;
   const key = owner ? `meetany.offerDraft.${owner}.${requestId}` : '';
-  const { ensureRequest, myOffers, currentUser } = store || {};
+  const { ensureRequest, myOffers, currentUser, callRpc } = store || {};
   useEffect(() => {
     if (!key || !ensureRequest) return;
     let active = true;
     const source = { ensureRequest, myOffers, currentUser };
-    void readOwnOffer(source, requestId).then(offer => {
+    void readOwnOffer(source, requestId).then(async offer => {
       if (!active) return;
       if (offer && !hasOfferTerms(offer)) throw new Error('პირობები სრულად ვერ ჩაიტვირთა. შენახვა დროებით მიუწვდომელია.');
-      let draft: Partial<Values> & { pendingTerms?: PendingTerms } = {};
-      try { draft = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
+      let draft: Record<string, unknown> & { pendingTerms?: PendingTerms } = {};
+      let stale = false;
+      draftKey.current = '';
+      try { const loadedDraft = readOfferDraft(localStorage, key, offer); draft = loadedDraft.draft; stale = loadedDraft.stale; draftKey.current = loadedDraft.key; } catch {}
       const next = valuesFrom(offer);
       if (!offer) {
+        const preferences = await callRpc('request_preferences', { p_request_id: requestId }).catch(() => null);
+        if (!active) return;
+        next.paymentTerms = preferences?.payment || '';
+      }
+      initialValues.current = { ...next };
+      {
         for (const name of Object.keys(next) as (keyof Values)[]) {
           if (typeof draft[name] === typeof next[name]) Object.assign(next, { [name]: draft[name] });
         }
         if (!['negotiable', 'unit', 'total'].includes(next.priceType)) next.priceType = 'negotiable';
       }
+      const recovered = JSON.stringify(next) !== JSON.stringify(initialValues.current);
+      setRestored(recovered);
+      setDraftNotice(stale ? 'შეთავაზება განახლდა სხვაგან — ძველი შეუნახავი ცვლილებები გაუქმდა.' : recovered ? 'აღდგენილია შეუნახავი ცვლილებები' : '');
       setOfferId(offer?.id||'');
       setFileDraft(attachmentDraft(`meetany.offerFiles.${owner}.${requestId}`));
       baseRevision.current = offer?.updatedAt;
@@ -74,17 +89,18 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
       setLoaded(key);
     }).catch(err => { if (active) setError(err.message?.startsWith('პირობები') ? err.message : flowError(err)); });
     return () => { active = false; };
-  }, [key, ensureRequest, myOffers, currentUser, requestId, revision,owner]);
+  }, [key, ensureRequest, myOffers, currentUser, requestId, revision,owner,callRpc]);
   useEffect(() => {
-    if (!key || loaded !== key || completed) return;
-    try { localStorage.setItem(key, JSON.stringify({ ...values, pendingTerms: partial })); } catch {}
+    if (!key || !draftKey.current || loaded !== key || completed) return;
+    if (!partial && JSON.stringify(values) === JSON.stringify(initialValues.current)) { try { localStorage.removeItem(draftKey.current); } catch {} return; }
+    try { localStorage.setItem(draftKey.current, JSON.stringify({ ...values, pendingTerms: partial })); } catch {}
   }, [key, loaded, values, partial, completed]);
   function change<K extends keyof Values>(name: K, value: Values[K]) { setValues(old => ({ ...old, [name]: value })); v.clear(`of-${name}`); }
   async function reload() {
     if (busy.current) return;
     // An explicit review discards the old revision; it never retries a stale write.
     setPartial(undefined); setConflict(false); setLoaded(''); setCompleted(false);
-    try { if (key) localStorage.setItem(key, JSON.stringify(values)); } catch {}
+    try { if (draftKey.current) localStorage.removeItem(draftKey.current); } catch {}
     setRevision(n => n + 1);
   }
   async function submit(e: React.FormEvent) {
@@ -92,7 +108,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
     if (!store || fileBusy || busy.current || !key || loaded !== key || conflict || completed) return;
     const errors: FieldErrors = {};
     if (values.body.trim().length < 10 || values.body.length > 2000) errors['of-body'] = values.body.trim() ? 'აღწერა მინიმუმ 10 სიმბოლო უნდა იყოს.' : 'აღწერეთ შეთავაზება მოკლედ.';
-    if (!values.deliveryDays.trim()) errors['of-deliveryDays'] = otherDelivery ? 'მიუთითეთ მიწოდების დღეების რაოდენობა.' : 'აირჩიეთ მიწოდების ვადა.';
+    if (!values.deliveryDays.trim()) errors['of-deliveryDays'] = 'მიუთითეთ მიწოდების ვადა.';
     else if (!Number.isInteger(Number(values.deliveryDays)) || Number(values.deliveryDays) < 0 || Number(values.deliveryDays) > 365) errors['of-deliveryDays'] = 'მიწოდების ვადა 0-დან 365 დღემდე უნდა იყოს.';
     if (values.priceType !== 'negotiable' && (!/^\d+(?:[.,]\d{1,2})?$/.test(values.price.trim()) || Number(values.price.replace(',', '.')) <= 0 || Number(values.price.replace(',', '.')) > 1e9)) errors['of-price'] = values.price.trim() ? 'ფასი მიუთითეთ რიცხვით, მაგ. 1250 ან 1250,50.' : 'მიუთითეთ ფასი.';
     const terms: OfferTerms = { paymentTerms: values.paymentTerms.trim() || null, validUntil: values.validUntil || null, commercialTerms: values.commercialTerms.split('\n').map(t => t.trim()).filter(Boolean) };
@@ -115,12 +131,12 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
         saved = { id: sent.id, updatedAt: sent.updatedAt, terms };
         setPartial(saved);
         // Persist before RPC 2: navigation or a lost reply can recover without sending RPC 1 again.
-        try { localStorage.setItem(key, JSON.stringify({ ...values, pendingTerms: saved })); } catch {}
+        try { localStorage.setItem(draftKey.current, JSON.stringify({ ...values, pendingTerms: saved })); } catch {}
         await setOfferTerms(store, saved, terms);
       }
       if(saved&&fileDraft)await store.callRpc('bind_draft_files',{p_kind:'offer',p_draft:fileDraft,p_target:saved.id});
       setPartial(undefined); setCompleted(true);
-      try { localStorage.removeItem(key); } catch {}
+      try { localStorage.removeItem(draftKey.current); } catch {}
       await store.refresh();
       if (editing) toast({ title: 'შეთავაზება განახლდა', tone: 'success' });
       onDone(editing);
@@ -138,24 +154,23 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   const total = values.priceType === 'negotiable' || !values.price || !Number.isFinite(price) ? null : values.priceType === 'unit' ? quantity > 0 ? price * quantity : null : price;
   const selectedTerms = values.commercialTerms.split('\n').map(t => t.trim()).filter(Boolean);
   const presets = ['ნიმუში წარმოებამდე', 'გარანტია', 'შეფუთვა შედის'];
-  const payments = ['წინასწარ', 'მიწოდებისას', '30%–70%'];
   const toggleTerm = (term: string) => change('commercialTerms', (selectedTerms.includes(term) ? selectedTerms.filter(t => t !== term) : [...selectedTerms, term]).join('\n'));
-  const deliveryOptions = ['3', '5', '7', '10', '14', '21', '30'];
   const validityDate = (days: number) => { const date = new Date(`${store?.todayDate()}T12:00:00Z`); date.setUTCDate(date.getUTCDate() + days); return date.toISOString().slice(0, 10); };
   const disabled = pending || !!partial || conflict || !key || loaded !== key || completed;
   return <form className={`${styles.form} ${standalone ? styles.standalone : styles.embedded}`} onSubmit={submit} noValidate aria-label="შეთავაზების ფორმა">
+    {draftNotice ? <div className={styles.notice} role="status"><p>{draftNotice}</p>{restored && !partial ? <Button variant="secondary" disabled={pending} onClick={() => { setValues({ ...initialValues.current }); setRestored(false); setDraftNotice('შეუნახავი ცვლილებები გაუქმდა'); }}>ცვლილებების გაუქმება</Button> : null}</div> : null}
     <fieldset disabled={disabled} className={styles.fields}>
-      <section className={styles.formCard}><h2>ფასი</h2><div className={styles.chips} role="group" aria-label="ფასის ტიპი">{[['total', 'ჯამური'], ['unit', 'ერთეულის'], ['negotiable', 'შეთანხმებით']].map(([value, label]) => <Button key={value} variant={values.priceType === value ? 'primary' : 'secondary'} aria-pressed={values.priceType === value} onClick={() => change('priceType', value)}>{label}</Button>)}</div>
+      <section className={styles.formCard}><h2>ფასი</h2><div className={styles.chips} role="group" aria-label="ფასის ტიპი">{[['total', 'ჯამური'], ['unit', 'ერთეულის'], ['negotiable', 'შეთანხმებით']].map(([value, label]) => <Button key={value} variant="secondary" aria-pressed={values.priceType === value} onClick={() => change('priceType', value)}>{label}</Button>)}</div>
       {values.priceType !== 'negotiable' ? <><div className="ma-field"><label htmlFor="of-price">თანხა ლარში (₾) *</label><div className={styles.currency}><input className="ma-input" inputMode="decimal" required value={values.price} onChange={e => change('price', e.target.value)} {...v.control('of-price')}/><span>₾</span></div>{v.message('of-price')}{quantity > 0 && total != null ? <small>= {money(total / quantity)} / {store?.getRequest(requestId)?.unit === 'pcs' ? 'ცალი' : 'ერთეული'} · {quantity} {store?.getRequest(requestId)?.unit === 'pcs' ? 'ც.' : 'ერთ.'}</small> : null}</div><label className="ma-check"><input type="checkbox" checked={values.vatIncluded} onChange={e => change('vatIncluded', e.target.checked)}/>დღგ ფასში შედის</label></> : null}</section>
-      <section className={styles.formCard}><h2>მიწოდების ვადა</h2><div className={styles.two}><div className="ma-field"><label htmlFor="of-deliveryDays">მიწოდების ვადა *</label><CustomSelect required value={otherDelivery || (values.deliveryDays && !deliveryOptions.includes(values.deliveryDays)) ? 'other' : values.deliveryDays} onChange={e => { setOtherDelivery(e.target.value === 'other'); if (e.target.value !== 'other') change('deliveryDays', e.target.value); }} {...v.control('of-deliveryDays')}><option value="" disabled>აირჩიეთ ვადა</option>{deliveryOptions.map(days => <option key={days} value={days}>{days} სამუშაო დღე</option>)}<option value="other">სხვა</option></CustomSelect>{otherDelivery || (values.deliveryDays && !deliveryOptions.includes(values.deliveryDays)) ? <input className="ma-input" aria-label="მიწოდების დღეების რაოდენობა" inputMode="numeric" value={values.deliveryDays} onChange={e => change('deliveryDays', e.target.value)}/> : null}{v.message('of-deliveryDays')}</div><div className="ma-field"><label htmlFor="of-validUntil">შეთავაზება ძალაშია</label><CustomSelect value={values.validUntil} onChange={e => change('validUntil', e.target.value)} {...v.control('of-validUntil')}><option value="">აირჩიეთ ვადა</option>{values.validUntil && ![14, 30, 60].some(days => validityDate(days) === values.validUntil) ? <option value={values.validUntil}>{dateShort(values.validUntil)}</option> : null}{[14, 30, 60].map(days => <option key={days} value={validityDate(days)}>{days} დღე · {dateShort(validityDate(days))}</option>)}</CustomSelect>{v.message('of-validUntil')}</div></div><label className="ma-check"><input type="checkbox" checked={values.deliveryIncluded} onChange={e => change('deliveryIncluded', e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label></section>
-      <section className={styles.formCard}><h2>გადახდის პირობები</h2><div className={styles.chips} role="group" aria-label="გადახდის პირობები">{payments.map(term => <Button key={term} variant={values.paymentTerms === term && !otherPayment ? 'primary' : 'secondary'} aria-pressed={values.paymentTerms === term && !otherPayment} onClick={() => { change('paymentTerms', term); setOtherPayment(false); }}>{term}</Button>)}<Button variant={otherPayment || !!values.paymentTerms && !payments.includes(values.paymentTerms) ? 'primary' : 'secondary'} onClick={() => setOtherPayment(true)}>სხვა</Button></div>{otherPayment || !!values.paymentTerms && !payments.includes(values.paymentTerms) ? <div className="ma-field"><label htmlFor="of-paymentTerms">სხვა პირობები</label><input className="ma-input" maxLength={500} value={values.paymentTerms} onChange={e => change('paymentTerms', e.target.value)} {...v.control('of-paymentTerms')}/></div> : null}{v.message('of-paymentTerms')}</section>
-      <section className={styles.formCard}><h2>კომერციული პირობები</h2><div className={styles.chips} role="group" aria-label="კომერციული პირობები">{Array.from(new Set([...presets, ...selectedTerms])).map(term => <Button key={term} variant={selectedTerms.includes(term) ? 'primary' : 'secondary'} aria-pressed={selectedTerms.includes(term)} disabled={!selectedTerms.includes(term) && selectedTerms.length >= 8} onClick={() => toggleTerm(term)}>{selectedTerms.includes(term) ? <Icon name="check"/> : null}{term}</Button>)}<Button variant="secondary" aria-expanded={showCustom} onClick={() => setShowCustom(v => !v)}><Icon name="plus"/>საკუთარი</Button></div>{showCustom ? <div className="ma-field"><label htmlFor="of-commercialTerms">საკუთარი პირობა</label><div className={styles.addTerm}><input className="ma-input" maxLength={120} value={customTerm} onChange={e => setCustomTerm(e.target.value)} {...v.control('of-commercialTerms')}/><Button variant="secondary" disabled={!customTerm.trim() || selectedTerms.length >= 8} onClick={() => { if (!selectedTerms.includes(customTerm.trim())) toggleTerm(customTerm.trim()); setCustomTerm(''); }}>დამატება</Button></div>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div> : null}</section>
+      <section className={styles.formCard}><h2>მიწოდების ვადა</h2><div className={styles.two}><div className="ma-field"><label htmlFor="of-deliveryDays">მიწოდების ვადა *</label><DeliveryDaysField value={values.deliveryDays} onChange={value => change('deliveryDays', value)} {...v.control('of-deliveryDays')}/>{v.message('of-deliveryDays')}</div><div className="ma-field"><label htmlFor="of-validUntil">შეთავაზება ძალაშია</label><CustomSelect value={values.validUntil} onChange={e => change('validUntil', e.target.value)} {...v.control('of-validUntil')}><option value="">აირჩიეთ ვადა</option>{values.validUntil && ![14, 30, 60].some(days => validityDate(days) === values.validUntil) ? <option value={values.validUntil}>{dateShort(values.validUntil)}</option> : null}{[14, 30, 60].map(days => <option key={days} value={validityDate(days)}>{days} დღე · {dateShort(validityDate(days))}</option>)}</CustomSelect>{v.message('of-validUntil')}</div></div><label className="ma-check"><input type="checkbox" checked={values.deliveryIncluded} onChange={e => change('deliveryIncluded', e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label></section>
+      <section className={styles.formCard}><h2>გადახდის პირობები</h2><div className="ma-field"><label htmlFor="of-paymentTerms">გადახდის პირობები — არასავალდებულო</label><PaymentTermsField value={values.paymentTerms} onChange={value => change('paymentTerms', value)} {...v.control('of-paymentTerms')}/>{v.message('of-paymentTerms')}</div></section>
+      <section className={styles.formCard}><h2>კომერციული პირობები</h2><div className={styles.chips} role="group" aria-label="კომერციული პირობები">{Array.from(new Set([...presets, ...selectedTerms])).map(term => <Button key={term} variant="secondary" aria-pressed={selectedTerms.includes(term)} disabled={!selectedTerms.includes(term) && selectedTerms.length >= 8} onClick={() => toggleTerm(term)}>{selectedTerms.includes(term) ? <Icon name="check"/> : null}{term}</Button>)}<Button variant="secondary" aria-expanded={showCustom} onClick={() => setShowCustom(v => !v)}><Icon name="plus"/>საკუთარი</Button></div>{showCustom ? <div className="ma-field"><label htmlFor="of-commercialTerms">საკუთარი პირობა</label><div className={styles.addTerm}><input className="ma-input" maxLength={120} value={customTerm} onChange={e => setCustomTerm(e.target.value)} {...v.control('of-commercialTerms')}/><Button variant="secondary" disabled={!customTerm.trim() || selectedTerms.length >= 8} onClick={() => { if (!selectedTerms.includes(customTerm.trim())) toggleTerm(customTerm.trim()); setCustomTerm(''); }}>დამატება</Button></div>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div> : null}</section>
       <section className={styles.formCard}><h2>მოკლე აღწერა</h2><div className="ma-field"><label htmlFor="of-body">მოკლე აღწერა *</label><textarea className="ma-textarea" minLength={10} maxLength={2000} required value={values.body} onChange={e => change('body', e.target.value)} {...v.control('of-body')}/>{v.message('of-body')}<small>{values.body.length}/2000 · რეკომენდებულია 500 სიმბოლომდე.</small></div></section>
       {store&&fileDraft?<section className={styles.formCard}><FileAttachments key={offerId||fileDraft} store={store} kind={offerId?"offer":"offer_draft"} target={offerId||fileDraft} editable onBusy={setFileBusy}/>{offerId?<FileAttachments store={store} kind="offer_draft" target={fileDraft} label="მონახაზის ფაილები"/>:null}</section>:null}
     </fieldset>
     <div className={styles.submitArea}>
     {error ? <div className={styles.notice} role="alert"><p>{error}</p>{conflict || partial || loaded !== key ? <Button variant="secondary" disabled={pending} onClick={() => void reload()}>ბოლო ვერსიის ჩატვირთვა</Button> : null}</div> : null}
     {completed ? <p role="status">შეთავაზება და პირობები შენახულია.</p> : null}
-    <div className={styles.actions}><Button variant="secondary" disabled={pending||fileBusy} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={fileBusy||!key || loaded !== key || conflict || completed}>{partial ? 'შენახვის დასრულება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div><p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p></div>
+    <div className="ma-form-bar"><p className={styles.sendSummary}>{values.priceType === 'negotiable' ? 'ფასი შეთანხმებით' : total == null ? 'ფასი დასაზუსტებელია' : money(total)} · {values.deliveryDays ? `${values.deliveryDays} დღე` : 'ვადა დასაზუსტებელია'} · {values.paymentTerms || 'გადახდა დასაზუსტებელია'}</p><div className={styles.actions}><Button variant="secondary" disabled={pending||fileBusy} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={fileBusy||!key || loaded !== key || conflict || completed}>{partial ? 'შენახვის დასრულება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div></div><p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p></div>
   </form>;
 }
