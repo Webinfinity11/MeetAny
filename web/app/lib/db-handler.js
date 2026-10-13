@@ -22,7 +22,7 @@ const RPCS = new Set([
   'company_business_features','company_reviews','my_company_review_targets','save_company_review',
   'my_business_settings','set_company_distributor','request_company_plan','cancel_company_plan_request',
   'admin_business_audit', 'admin_business_queue','admin_moderate_review','admin_resolve_plan',
-  'request_contact_change', 'report_content', 'admin_list_reports', 'admin_resolve_report',
+  'report_content', 'admin_list_reports', 'admin_resolve_report', 'request_contact_change', 'admin_apply_contact_change',
   'my_profile', 'complete_profile', 'update_my_profile', 'set_my_gallery', 'list_companies', 'company_stats', 'offer_counts',
   'create_request', 'update_request', 'close_request', 'extend_request', 'delete_request',
   'send_offer', 'withdraw_offer', 'choose_offer', 'contact_for_request', 'log_contact_event',
@@ -59,7 +59,7 @@ const PUBLIC_WRITES = new Set([
   'send_offer', 'withdraw_offer', 'choose_offer', 'update_my_profile', 'set_my_gallery', 'complete_profile',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
   // Resolving a report may hide a request, delete an offer or block a company; filing one changes nothing public.
-  'admin_resolve_report',
+  'admin_resolve_report', 'admin_apply_contact_change',
   // Selecting an offer closes the request publicly; onboarding changes public company fields.
   'select_offer_deal', 'set_onboarding_details', 'set_matching_categories',
   // Admin: the public budget and company deal counts.
