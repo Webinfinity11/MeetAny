@@ -45,6 +45,8 @@ const RPCS = new Set([
   'home_stats',
   // Admin management v2 (migration 20261012-admin-management): deals, budget, reviews list; site design save.
   'admin_list_deals', 'admin_set_deal_stage', 'admin_set_request_preferences', 'admin_list_reviews', 'admin_save_site_design',
+  // Admin photo moderation (migration 20260930-admin-photos).
+  'admin_remove_company_photo',
 ]);
 // Only writes to public catalog data (requests, offers, company profiles) drop the SSR snapshot;
 // personal state (saved, notifications, alerts, messages) and reads never do.
@@ -62,6 +64,8 @@ const PUBLIC_WRITES = new Set([
   'select_offer_deal', 'set_onboarding_details', 'set_matching_categories',
   // Admin: the public budget and company deal counts.
   'admin_set_request_preferences', 'admin_set_deal_stage', 'admin_resolve_deal_issue', 'admin_set_document_status',
+  // Removing a company logo or gallery photo changes its public profile.
+  'admin_remove_company_photo',
 ]);
 
 const MAX_BODY = 64 * 1024;
