@@ -34,9 +34,9 @@ const ledger = JSON.parse(fs.readFileSync(path.join(root, 'DEMO-ACCOUNTS.local.m
 const secrets = Object.values(ledger.accounts).map(a => a.password).filter(Boolean);
 const redact = text => secrets.reduce((s, password) => s.replaceAll(password, '[REDACTED]'), String(text).replace(/\u001b\[[0-9;]*m/g, '')).replace(/(postgres(?:ql)?:\/\/)[^\s]+/g, '$1[REDACTED]');
 const ts = Date.now(), prefix = `[e2e] ${ts}`;
-const state = { run: ts, phone: `+995 5${String(ts).slice(-8)}`, email: `e2e+${ts}@meetany.local`, title: `${prefix} ხის მაგიდები` };
+const state = { run: ts, phone: `+995 5${String(ts).slice(-8)}`, email: `e2e+${ts}@meetany.local`, title: `ხის მაგიდები e2e-${ts}` };
 const results = [], actors = new Map(), seeds = [];
-let activePages = new Set(), lastAuth = 0;
+let activePages = new Set(), lastAuth = 0, lastStepFinished = 0;
 fs.mkdirSync(shotsDir, { recursive: true });
 const db = new pg.Client({ connectionString: env.DATABASE_URL, connectionTimeoutMillis: 15000, query_timeout: 15000 });
 await db.connect();
@@ -83,7 +83,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const save = () => fs.writeFileSync(path.join(out, 'e2e-report.json'), JSON.stringify(results, null, 2) + '\n');
 function touch(p) { activePages.add(p); return p; }
 async function actor(role, fresh = false) {
-  if (!fresh && actors.has(role)) return actors.get(role);
+  if (actors.has(role)) return actors.get(role);
   const file = `/tmp/e2e-${role}.json`;
   console.log(`CONTEXT ${role}`);
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, locale: 'ka-GE', reducedMotion: 'reduce', ...(role !== 'newcompany' && !fresh && fs.existsSync(file) ? { storageState: file } : {}) });
@@ -148,7 +148,35 @@ async function pick(p, label, value) { await p.getByRole('combobox', { name: lab
 async function select(p, id, value) { await p.locator(`#${id}`).click(); await p.getByRole('option', { name: value, exact: true }).click(); }
 async function next(p, step) { await p.getByRole('button', { name: /^(შემდეგი|გადახედვა|დასრულება)$/ }).click(); await p.waitForURL(url => step === 'account' ? url.pathname === '/account/' : url.searchParams.get('step') === step, { timeout: 25000 }); }
 async function category(p) { let b = p.getByRole('button', { name: 'ავეჯი', exact: true }); if (!await b.count()) await p.getByRole('button', { name: /ყველა კატეგორია/ }).click(); b = p.getByRole('button', { name: 'ავეჯი', exact: true }); if (await b.getAttribute('aria-pressed') !== 'true') await b.click(); }
+// Keep the same role sessions across attempts; only guest scenarios create contexts.
+// Retry evidence remains in JSON even when the last attempt succeeds.
 async function check(step, fn, fallback) {
+  await sleep(Math.max(0, 3000 - (Date.now() - lastStepFinished)));
+  const started = Date.now(), attempts = [], pages = new Set();
+  let row;
+  for (let attempt = 0; attempt <= 2; attempt++) {
+    row = await checkAttempt(step, fn, fallback, attempt);
+    attempts.push({ ...row });
+    for (const page of activePages) pages.add(page);
+    if (!row.http.some(response => response.status === 429) || attempt === 2) break;
+    console.log(`RETRY ${step}: HTTP 429; waiting 60s (${attempt + 1}/2)`);
+    // A failed rate-limited login can resume; authenticated roles reuse storage/session.
+    for (const actor of actors.values()) {
+      if (!actor.authenticated && row.http.some(response => response.role === actor.role && response.status === 429)) actor.attempted = false;
+    }
+    await sleep(60000);
+  }
+  row.attempts = attempts;
+  row.ms = Date.now() - started;
+  results.push(row); save(); console.log(`${row.status} ${step}: ${row.reason.slice(0, 350)}`);
+  for (const actor of [...actors.values()]) {
+    if (actor.transient && pages.has(actor.p)) {
+      await actor.context.close(); actors.delete(actor.role);
+    }
+  }
+  lastStepFinished = Date.now();
+}
+async function checkAttempt(step, fn, fallback, attempt) {
   console.log(`START ${step}`);
   const started = Date.now(); activePages = new Set(fallback ? [fallback] : []);
   const offsets = new Map([...actors.values()].map(a => [a, a.errors.length]));
@@ -171,7 +199,7 @@ async function check(step, fn, fallback) {
         const overflow = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
         if (overflow > 0) reasons.push(`${a?.role}: document overflow ${overflow}px at ${width}`);
         if (width !== 360) {
-          const file = `${String(results.length + 1).padStart(2, '0')}-${step.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase()}-${a?.role || 'page'}-${width}.png`;
+          const file = `${String(results.length + 1).padStart(2, '0')}-${step.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase()}-${a?.role || 'page'}-attempt${attempt + 1}-${width}.png`;
           await p.screenshot({ path: path.join(shotsDir, file), fullPage: true, timeout: 15000, mask: [p.locator('input[type=password]')] }); shots.push(`shots/e2e/${file}`);
         }
       } catch (error) { reasons.push(`capture ${width}: ${redact(error.message)}`); }
@@ -183,11 +211,7 @@ async function check(step, fn, fallback) {
   const http = [...actors.values()].flatMap(a => a.http.slice(httpOffsets.get(a) || 0));
   reasons.push(...http.map(r => `${r.role}: HTTP ${r.status} ${r.method} ${r.url} RPC=${r.rpc || '(none)'} body=${r.body}`));
   const row = { http, seeds: seeds.slice(seedOffset), step, status: reasons.length ? 'FAIL' : 'PASS', reason: [...new Set(reasons)].join(' | ') || 'UI და შემოწმებები წარმატებულია', shots, ms: Date.now() - started };
-  results.push(row); save(); console.log(`${row.status} ${step}: ${row.reason.slice(0, 350)}`);
-  // A finished guest scenario must not keep polling Auth during later roles' steps.
-  for (const actor of [...actors.values()]) {
-    if (actor.transient && activePages.has(actor.p)) { await actor.context.close(); actors.delete(actor.role); }
-  }
+  return row;
 }
 const company = await actor('newcompany'), hotel = await actor('hotel'), wood = await actor('wood'), admin = await actor('owner_admin');
 const p = company.p, h = hotel.p, w = wood.p, a = admin.p;
@@ -283,7 +307,7 @@ try {
   await check('B01-hotel-close-old-e2e-requests', async () => {
     await login('hotel', hotel);
     const account = ledger.accounts.hotel, email = account.email || 'demo-hotel@meetany.ge';
-    const old = await sql("select r.id from public.requests r join public.profiles p on p.id=r.owner_id where p.email=$1 and r.title like '[e2e]%' and meetany_private.request_state(r)='open'", [email]);
+    const old = await sql("select r.id from public.requests r join public.profiles p on p.id=r.owner_id where p.email=$1 and r.title ilike '%e2e-%' and meetany_private.request_state(r)='open'", [email]);
     for (const row of old) { await goto(h, `/requests/view/?id=${row.id}`); await h.getByText('სხვა მოქმედებები', { exact: true }).click(); await h.getByRole('button', { name: 'მოთხოვნის დახურვა', exact: true }).click(); await h.getByRole('dialog').getByRole('button', { name: 'მოთხოვნის დახურვა', exact: true }).click(); await h.getByRole('dialog').waitFor({ state: 'hidden' }); }
     const ownerId = (await sql('select id from public.profiles where email=$1', [email]))[0]?.id;
     assert(ownerId, 'hotel profile required for quota cleanup');
