@@ -237,8 +237,9 @@
           ],
           "id" : "T5.1",
           "priority" : "high",
+          "status" : "done",
           "title" : "ასწიე მოთხოვნის განთავსების ღილაკი ზემოთ (/requests/new/)",
-          "updatedAt" : "2026-10-13T11:38:00Z"
+          "updatedAt" : "2026-10-13T12:26:16Z"
         },
         {
           "acceptance" : [
@@ -256,8 +257,9 @@
           ],
           "id" : "T5.2",
           "priority" : "high",
+          "status" : "done",
           "title" : "გაასწორე: ახალი მოთხოვნა არ ჩანს სიაში განთავსების შემდეგ",
-          "updatedAt" : "2026-10-13T11:38:08Z"
+          "updatedAt" : "2026-10-13T12:26:16Z"
         },
         {
           "acceptance" : [
@@ -272,8 +274,9 @@
           ],
           "id" : "T5.3",
           "priority" : "high",
+          "status" : "done",
           "title" : "აჩვენე „შეთავაზების გაგზავნა“ მოთხოვნის გვერდზე ყველა შესაბამის მომხმარებელს",
-          "updatedAt" : "2026-10-13T11:38:12Z"
+          "updatedAt" : "2026-10-13T12:26:17Z"
         },
         {
           "acceptance" : [
@@ -290,8 +293,9 @@
           ],
           "id" : "T5.4",
           "priority" : "high",
+          "status" : "doing",
           "title" : "დარგი მხოლოდ ერთხელ იკითხე onboarding-ში",
-          "updatedAt" : "2026-10-13T11:38:18Z"
+          "updatedAt" : "2026-10-13T12:14:04Z"
         },
         {
           "acceptance" : [
@@ -306,8 +310,9 @@
             "web/app/components/market/OnboardFields.tsx"
           ],
           "id" : "T5.5",
+          "status" : "done",
           "title" : "გაამარტივე დარგის ამომრჩევი (ჯგუფის სათაურები)",
-          "updatedAt" : "2026-10-13T11:38:24Z"
+          "updatedAt" : "2026-10-13T12:14:04Z"
         },
         {
           "acceptance" : [
@@ -323,8 +328,9 @@
             "web/app/components/market/onboarding.module.css"
           ],
           "id" : "T5.6",
+          "status" : "doing",
           "title" : "გაამარტივე სერტიფიკატების და ტეგების შეყვანა",
-          "updatedAt" : "2026-10-13T11:38:30Z"
+          "updatedAt" : "2026-10-13T12:14:05Z"
         },
         {
           "acceptance" : [
@@ -345,8 +351,9 @@
           ],
           "id" : "T5.7",
           "priority" : "high",
+          "status" : "doing",
           "title" : "გაზარდე პროდუქციის ლიმიტი 100-მდე და გაასწორე „შემდეგი“-ს ჩაკეტვა",
-          "updatedAt" : "2026-10-13T11:38:38Z"
+          "updatedAt" : "2026-10-13T12:14:06Z"
         },
         {
           "acceptance" : [
@@ -362,19 +369,497 @@
           ],
           "detail" : "სლ.6 (s6-products.png): კომპანიამ პროდუქცია ერთიანად შაბლონიდან ატვირთოს, rs.ge-ს მოდელით: კოდი, დასახელება, ერთეული (კგ, ცალი, მეტრი…), ერთეულის ფასი. ჩამოსატვირთი .xlsx შაბლონი, ატვირთვისას წინასწარი ნახვა შეცდომებით, დადასტურება. ფასი — არასავალდებულო ველი (ბრიფის მიხედვით ფასი შეთავაზებაშია).",
           "files" : [
-            "web/app/components/market/OnboardFields.tsx",
-            "web/app/components/market/account/Profile.tsx",
+            "web/app/components/market/ProductsImport.tsx",
+            "web/app/components/market/CompanyProducts.tsx",
+            "web/app/lib/products-import.ts",
+            "web/app/lib/xlsx-lite.js",
+            "web/app/api/products-import/route.ts",
+            "web/scripts/make-products-template.mjs",
             "web/public/templates/meetany-products.xlsx",
-            "db/migrations/20261013-products-fields.sql"
+            "web/qa/unit/products-import.test.mjs"
           ],
           "id" : "T5.8",
+          "status" : "done",
           "title" : "დაამატე პროდუქციის ატვირთვა Excel შაბლონით (rs.ge-ს მოდელი)",
-          "updatedAt" : "2026-10-13T11:38:45Z"
+          "updatedAt" : "2026-10-13T12:31:06Z"
         }
       ],
       "title" : "P5 მფლობელის ხარვეზები (PPTX, 2026-10-13)"
+    },
+    {
+      "id" : "P6",
+      "tasks" : [
+        {
+          "acceptance" : [
+            "/dev/ui/ სამივე კომპონენტი 1440/390",
+            "OnboardSteps.tsx და Profile.tsx უცვლელად აწყობს (wrapper-ები)",
+            "tsc/eslint/lint:design/unit 0"
+          ],
+          "createdAt" : "2026-10-13T11:53:06Z",
+          "detail" : "T5.5/T5.6-ის და პროფილის/onboarding-ის საფუძველი. ჯგუფების სათაურები არა გათიშულ ვარიანტებად; ერთი ველი ჩიპებით (Enter/„,“/ღილაკი), „დამატება“ აქტიური როცა ტექსტია; ერთი ატვირთვის კომპონენტი ლოგოსა და გალერეისთვის. PUB-011/CO-20 (44px × ღილაკები).",
+          "files" : [
+            "web/app/components/ui/CategoryChips.tsx",
+            "web/app/components/ui/ChipsInput.tsx",
+            "web/app/components/ui/ImageUpload.tsx",
+            "web/app/components/ui/CustomSelect.tsx",
+            "web/app/components/market/OnboardFields.tsx",
+            "web/app/components/market/ProfileItems.tsx",
+            "web/app/components/market/PhotoField.tsx"
+          ],
+          "id" : "T6.1",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "შექმენი საერთო კომპონენტები: CategoryChips, ChipsInput, ImageUpload, CustomSelect სათაურები",
+          "updatedAt" : "2026-10-13T12:14:00Z"
+        },
+        {
+          "acceptance" : [
+            "NECESSITY.md ცხრილი ყველა ველზე, ატვირთვები ≤1 ნაბიჯზე",
+            "FLOWS.md: ყოველი ხარვეზი ფაქტით, მტკიცებულებით, სიმძიმით, ფაილით, acceptance-ით"
+          ],
+          "createdAt" : "2026-10-13T11:53:12Z",
+          "detail" : "ველი → ახლა სად → სჭირდება თუ არა → გადაწყვეტა → წყარო ყველა ნაკადზე; რეალური ნაკადები ლოკალურ ბაზაზე (სტუმარი→რეგისტრაცია→onboarding→დაფა; კლიენტი→მოთხოვნა→შეთავაზებები→გარიგება→შეფასება; კომპანია; ადმინი), 1440/390/360; ხარვეზები QA-xx ID-ებით.",
+          "files" : [
+            "web/qa/QA-2026-10-13/NECESSITY.md",
+            "web/qa/QA-2026-10-13/FLOWS.md"
+          ],
+          "id" : "T6.2",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "ჩაწერე NECESSITY.md და გაიარე QA ნაკადები (FLOWS.md)",
+          "updatedAt" : "2026-10-13T11:54:22Z"
+        },
+        {
+          "acceptance" : [
+            "დრაფტის აღდგენაზე ფოტო ან რჩება ან ცალსახად წერია, რომ არ ინახება",
+            "რაოდენობა/თარიღი შექმნასა და რედაქტირებაში ერთნაირია",
+            "ცარიელ submit-ზე ზედა შეჯამება ბმულებით"
+          ],
+          "createdAt" : "2026-10-13T11:53:18Z",
+          "detail" : "CL-01 (P1: ფოტო დრაფტის აღდგენისას იკარგება, „შენახულია“ წერია), CL-07/CL-08 (რედაქტირების წესები და შეცდომის ადგილი), CL-10 (ნაბიჯი 1 მობილურზე 3.9 ეკრანი — სპეციფიკაცია დაკეცილი), CL-11 (შეცდომების შეჯამება). T5.1/T5.2-თან ერთად.",
+          "files" : [
+            "web/app/components/market/PostRequestPage.tsx",
+            "web/app/components/market/RequestFormSheet.tsx",
+            "web/app/lib/request-draft.ts"
+          ],
+          "id" : "T6.3",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "დაიცავი მოთხოვნის ფოტო დრაფტში და შეათანხმე შექმნა/რედაქტირება",
+          "updatedAt" : "2026-10-13T12:26:17Z"
+        },
+        {
+          "acceptance" : [
+            "1440/390 ორივე როლი: ველები მინიმუმია, როლი იცვლება ფორმის თავში",
+            "ცარიელი submit → შეჯამება + ინლაინ ქართულად",
+            "/account/?role=company&next=… ხსნის შესვლას"
+          ],
+          "createdAt" : "2026-10-13T11:53:25Z",
+          "detail" : "PUB-006 (როლის შეცვლა ფორმიდან), PUB-007 (ქალაქი ჩუმად თბილისი), PUB-010 (შეჯამება), CO-23 (role=company&next → რეგისტრაცია login-ის ნაცვლად), PUB-005 (login გვერდზე მოქმედების კონტექსტი). კლიენტს „კომპანია“ ველი აღარ; ლოგო/ფოტო არა. NECESSITY.md.",
+          "files" : [
+            "web/app/components/market/AuthForms.tsx",
+            "web/app/styles/pages/account.css"
+          ],
+          "id" : "T6.4",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "გაამარტივე რეგისტრაცია: როლის გადამრთველი, მინიმალური ველები, ქალაქი არჩევით, დარგი ჩიპებით",
+          "updatedAt" : "2026-10-13T12:14:00Z"
+        },
+        {
+          "acceptance" : [
+            "ყველა ნაბიჯზე ≤1 ატვირთვის კონტროლი",
+            "details-ზე „შემდეგი“ მხოლოდ სახელითა და ქალაქით გადის",
+            "Back/შიდა ბმულზე დრაფტი აღდგება, „აღდგენილია“ ნოტისი + გაუქმება",
+            "review აჩვენებს ნაკლულს „შეცვლა“ ბმულით",
+            "1440/390 ყველა ნაბიჯი"
+          ],
+          "createdAt" : "2026-10-13T11:53:33Z",
+          "detail" : "PUB-001 (P1 დრაფტი Back-ზე იკარგება — patch onboarding-draft-wip.patch დაასრულე), PUB-002 (გასვლა ბლოკავს), PUB-003 (readOnly კონტაქტი ახსნით), PUB-009 (review ნაკლული), PUB-016/CO-13 (ვერიფიკაციის ზუსტი ჩამონათვალი), CO-04 (about 1000, არასავალდებულო), CO-22 („შენახვა და გასვლა“ + უარყოფა), PUB-008 (დუბლირებული პროდუქტი/მომსახურება). T5.4/T5.6/T5.7 იმავე ნაკადში.",
+          "files" : [
+            "web/app/components/market/OnboardPage.tsx",
+            "web/app/components/market/OnboardSteps.tsx",
+            "web/app/lib/onboarding-client.ts",
+            "web/app/components/market/onboarding.module.css",
+            "web/app/components/market/VerificationDocuments.tsx",
+            "web/qa/unit/onboarding-draft.test.mjs"
+          ],
+          "id" : "T6.5",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "გაამარტივე onboarding: დრაფტის დაცვა, ერთი ატვირთვა ნაბიჯზე, არასავალდებულო იურიდიული ველები, review-ში ნაკლული",
+          "updatedAt" : "2026-10-13T12:14:00Z"
+        },
+        {
+          "acceptance" : [
+            "390-ზე შეცვლისას შენახვის ზოლი ეკრანზეა „შეუნახავი ცვლილებები“ სტატუსით",
+            "სხვა ტაბზე გასვლისას დარჩენა/შენახვა/უარყოფა",
+            "კატეგორია CategoryChips-ით, ლოგო+ფოტოები ImageUpload-ით",
+            "პროფილის ნავიგაციაში იურიდიული მონაცემები და დოკუმენტები"
+          ],
+          "createdAt" : "2026-10-13T11:53:42Z",
+          "detail" : "CO-01/CL-03 (P1 შეუნახავი იკარგება შიდა ბმულზე), CO-07 (შენახვა 4.6 ეკრანზე ქვემოთ), CO-11 (კონტაქტის შეცვლის რეალური გზა), CO-03 (იურიდიული/დოკუმენტები პროფილის ნავიგაციაში), CO-09/CO-10 (პროდუქტების ინგლისური native ვალიდაცია, disabled მიზეზი), CL-17 (უცვლელი შენახვა), CO-06 (ქალაქები ერთი რედაქტორი/ახსნა). owner-profile-form.png, owner-logo-photos.png.",
+          "files" : [
+            "web/app/components/market/account/Profile.tsx",
+            "web/app/components/market/account/ProfileForm.module.css",
+            "web/app/components/market/account/nav.ts",
+            "web/app/lib/use-unsaved-draft.ts"
+          ],
+          "id" : "T6.6",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "გადააკეთე კომპანიის პროფილის ფორმა: ერთი შენახვის ზოლი, dirty-ის დაცვა, ჩიპები, ერთი ატვირთვა, კონტაქტი ტექსტად",
+          "updatedAt" : "2026-10-13T12:14:00Z"
+        },
+        {
+          "acceptance" : [
+            "უცვლელი terms-ის submit თანხმობას არ ცვლის (ტესტი)",
+            "რედაქტირების დრაფტი reload-ს უძლებს",
+            "ყველა ვალიდაცია ქართულად ველთან, native tooltip არა",
+            "1440/390 სკრინშოტები"
+          ],
+          "createdAt" : "2026-10-13T11:53:51Z",
+          "detail" : "CL-02 (P1 უცვლელი „ცვლილების შეთავაზება“ თანხმობას შლის), CO-02 (P1 გაგზავნილის რედაქტირების დრაფტი reload-ზე იკარგება), CL-04/CL-05/CL-06 (DealTermsForm: გაუქმება, native ინგლისური, სავალდებულოობა), CL-12 (შედარება მობილურზე კომპაქტური), CL-18 (გადახდის შაბლონები ორივეგან), CO-15 (მოთხოვნის რეზიუმე ფორმის თავში + შეჯამება გაგზავნასთან), CO-16 (შეთავაზების პირდაპირი რედაქტირება), CO-17 (ვადა „სხვა“), CO-18 (ვისი თანხმობა აკლია).",
+          "files" : [
+            "web/app/components/market/SendOfferForm.tsx",
+            "web/app/components/market/MakeOfferPageContent.tsx",
+            "web/app/components/market/DealTermsForm.tsx",
+            "web/app/components/market/DealViewPageContent.tsx",
+            "web/app/components/market/CompareOffersPageContent.tsx",
+            "web/app/components/market/account/MyOffers.tsx"
+          ],
+          "id" : "T6.7",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "გაასწორე შეთავაზებისა და გარიგების ფორმები: უცვლელი submit no-op, ქართული ვალიდაცია, რედაქტირების დრაფტი",
+          "updatedAt" : "2026-10-13T12:14:01Z"
+        },
+        {
+          "acceptance" : [
+            "ყოველი ID-ზე 1440/390 სკრინშოტი „მანამდე/შემდეგ“",
+            "tsc/eslint/unit 0"
+          ],
+          "createdAt" : "2026-10-13T11:54:00Z",
+          "detail" : "CL-09 (რედაქტირების შეზღუდვის მიზეზი ხილული), CL-13 (44px ბმულები დაფაზე/შედარებაში), CL-14 (შეტყობინებების დაჯგუფება + კომპანია), CL-15 (tab=offers გადამისამართება), CL-16 (რიცხვიდან გაფილტრული სია), CL-19 (გაგზავნის დადასტურება ჩატში), CO-12 (მფლობელს ხილვადობის სტატუსი), CO-14 (ერთი ვერიფიკაციის ტერმინი), CO-19 (matching „არ მაინტერესებს“ ან ახსნა), CO-21 (სათაური ორ ხაზზე); საჯარო: PUB-004 (მოდალის სათაური „მისწეროთ“), PUB-012 (მხარდაჭერის რეალური არხი), PUB-013 (ფასის მოთხოვნა — კომპანიის კონტექსტი), PUB-015 (მობილურზე pagination ზემოთ), PUB-017 (კომპანიის შენახვა სტუმრისთვის).",
+          "files" : [
+            "web/app/components/market/account/Dashboard.tsx",
+            "web/app/components/market/account/MyRequests.tsx",
+            "web/app/components/market/EngagementPanels.tsx",
+            "web/app/components/market/CompanyProfilePageContent.tsx",
+            "web/app/components/market/modals",
+            "web/app/components/market/matching",
+            "web/app/(how)/how-it-works/page.tsx"
+          ],
+          "id" : "T6.8",
+          "title" : "გაასწორე ანგარიშის სივრცე და საჯარო გვერდები (აუდიტის P2)",
+          "updatedAt" : "2026-10-13T12:14:08Z"
+        },
+        {
+          "acceptance" : [
+            "ყოველი ID-ზე 1440/390 სკრინშოტი",
+            "ადმინის მართვის ტესტები (qa/admin-*.mjs, unit) მწვანე"
+          ],
+          "createdAt" : "2026-10-13T11:54:08Z",
+          "detail" : "AD-02/03/04 (კომპანიის რედაქტირება: სავალდებულოობის ნიშნები, ქართული ვალიდაცია, ტელეფონის ტიპი), AD-05/06 (კონტენტი: ზედა შენახვის მდგომარეობა, უცვლელი no-op), AD-07 (მობილურზე „ყველას მონიშვნა“), AD-08 (ბეიჯი 390), AD-09 (შეფასება სრულად მოდერაციამდე), AD-10 (გვერდების კონტროლი ზემოთ), AD-11 (ჟურნალში ძიება + პერიოდი), AD-12 (პერიოდი URL-ში). AD-01 უკვე გასწორდა (e1d94fd).",
+          "files" : [
+            "web/app/components/market/AdminEditPanel.tsx",
+            "web/app/components/market/AdminContentEditor.tsx",
+            "web/app/components/market/AdminAuditTable.tsx",
+            "web/app/components/market/AdminReviews.tsx",
+            "web/app/components/market/AdminOverview.tsx",
+            "web/app/components/market/AdminFilters.tsx",
+            "web/app/components/market/admin.module.css"
+          ],
+          "id" : "T6.9",
+          "status" : "doing",
+          "title" : "გაასწორე ადმინის ფორმები და სიები (AD-02…AD-12)",
+          "updatedAt" : "2026-10-13T12:14:02Z"
+        },
+        {
+          "acceptance" : [
+            "bash db/tests/run.sh მწვანე",
+            "მიგრაცია ლოკალურ ბაზაზე გადის იდემპოტენტურად"
+          ],
+          "createdAt" : "2026-10-13T11:54:13Z",
+          "detail" : "T5.7 ლიმიტი 100; T5.8 ველები code/unit/price, photoUrl არასავალდებულო; submit_verification ლოგოს აღარ ითხოვს (PUB-016/CO-13); verification_requirements() ზუსტი ნაკლული სიისთვის; about 1000; იურიდიული ველები null-ით დასაშვები. RPCS allowlist.",
+          "files" : [
+            "db/migrations/20261013-qa-round.sql",
+            "db/tests/qa_round_tests.sql",
+            "db/tests/run.sh",
+            "web/app/lib/db-handler.js"
+          ],
+          "id" : "T6.10",
+          "priority" : "high",
+          "status" : "done",
+          "title" : "დაამატე ბაზის მიგრაცია 20261013-qa-round: პროდუქტები 100 + ველები, ვერიფიკაცია ლოგოს გარეშე, verification_requirements",
+          "updatedAt" : "2026-10-13T12:00:24Z"
+        },
+        {
+          "acceptance" : [
+            "npm run lint 0",
+            "ცხრილები ≤4 სვეტი"
+          ],
+          "createdAt" : "2026-10-13T11:54:17Z",
+          "detail" : "სივრცის სკალა, კომპონენტების სიმაღლეები, ლოგო/მინიატურა/ხატულა, ფორმის განლაგება, 44px, რადიუსები — ტოკენი→მნიშვნელობა→სად; lint: ტოკენი სკალის გარეთ, calc ნედლი px, inline ზომები — შეცდომა.",
+          "files" : [
+            "DESIGN-SYSTEM.md",
+            "web/scripts/lint-design.mjs",
+            "web/app/styles/tokens.css"
+          ],
+          "id" : "T6.11",
+          "status" : "done",
+          "title" : "ჩაწერე ზომების ცხრილები DESIGN-SYSTEM.md-ში და სკალის შემოწმება lint:design-ში",
+          "updatedAt" : "2026-10-13T12:01:08Z"
+        },
+        {
+          "acceptance" : [
+            "BASE=http://localhost:<port> node web/qa/e2e-full.mjs ყველა ნაბიჯი PASS ორივე სიგანეზე ინტეგრირებულ კოდზე",
+            "e2e-report.json ნაბიჯი→სტატუსი ცხრილით"
+          ],
+          "createdAt" : "2026-10-13T12:04:03Z",
+          "detail" : "მფლობელი: აგენტებმა სრული ციკლი უნდა გაიარონ. სტუმარი→რეგისტრაცია→onboarding→დაფა; კლიენტი: მოთხოვნა→სიაში ჩანს; კომპანია: შეთავაზება→გაუქმება→ხელახლა; შედარება→არჩევა→discuss→terms→progress→complete→შეფასება→პროფილზე; ადმინი: დოკუმენტების დაბრუნება/დამტკიცება, შეფასების დამალვა, საჩივარი, კონტენტი; guest→login→next. ყოველ ნაბიჯზე 1440/390 სკრინშოტი, console 0, overflow 0. ყოველი FAIL → FLOWS.md QA-xx → გასწორება → ხელახლა გაშვება.",
+          "files" : [
+            "web/qa/e2e-full.mjs",
+            "web/qa/QA-2026-10-13/e2e-report.json",
+            "web/qa/QA-2026-10-13/FLOWS.md"
+          ],
+          "id" : "T6.12",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "დაწერე მუდმივი E2E სკრიპტი web/qa/e2e-full.mjs და გაიარე ყველა ნაკადი ბოლომდე",
+          "updatedAt" : "2026-10-13T12:14:02Z"
+        },
+        {
+          "acceptance" : [
+            "6 პროცესი ნაბიჯ-ნაბიჯ ცხრილებით, სკრინშოტებით",
+            "ჩეკლისტი ყველა ეკრანზე",
+            "სხვაობების სია სიმძიმითა და acceptance-ით"
+          ],
+          "createdAt" : "2026-10-13T12:06:14Z",
+          "detail" : "მფლობელი: პროცესები სიღრმისეულად, დიზაინი/ფუნქციონალი/დეტალები; ინფო რეგისტრაციაში მეორდება. ეკრანი | მიზანი | საჭირო/ზედმეტი ინფო | მთავარი მოქმედება | მეორადი | მდგომარეობები | მობილური | ახლა რა არის | გადაწყვეტა | წყარო. ბოლოს ჩეკლისტი ეკრანი×პუნქტი და სხვაობების სია J-xx → P6 დავალებები.",
+          "files" : [
+            "web/qa/QA-2026-10-13/JOURNEYS.md"
+          ],
+          "id" : "T6.13",
+          "priority" : "high",
+          "status" : "doing",
+          "title" : "დაწერე JOURNEYS.md — ყველა პროცესის ეტალონი და მიკრო-დეტალების ჩეკლისტი",
+          "updatedAt" : "2026-10-13T12:14:03Z"
+        },
+        {
+          "acceptance" : [
+            "ფოტოს გარეშე დრაფტის აღდგენაზე ნოტისი არ ჩანს",
+            "ფოტოიან დრაფტზე ჩანს"
+          ],
+          "createdAt" : "2026-10-13T12:26:08Z",
+          "detail" : "T5.1-ის შემდეგ ყველა აღდგენილ დრაფტზე ჩანს ნოტისი „თუ ფოტო გქონდათ არჩეული, აირჩიეთ ხელახლა“. დრაფტში შეინახოს hadPhoto ნიშანი (request-draft.ts) და ნოტისი მხოლოდ მასზე გამოჩნდეს. P3.",
+          "files" : [
+            "web/app/components/market/PostRequestPage.tsx",
+            "web/app/lib/request-draft.ts"
+          ],
+          "id" : "T6.14",
+          "title" : "აჩვენე „ფოტო არ ინახება მონახაზში“ ნოტისი მხოლოდ მაშინ, როცა დრაფტს ფოტო ჰქონდა",
+          "updatedAt" : "2026-10-13T12:26:08Z"
+        }
+      ],
+      "title" : "P6 QA ხარვეზები (2026-10-13)"
+    },
+    {
+      "id" : "P7",
+      "summary" : "რაც P5/P6-ის გარეთ დარჩა: დღის განმავლობაში ნაპოვნი, ჯერ დაუწერელი საქმეები. P6-ის დასრულების შემდეგ.",
+      "tasks" : [
+        {
+          "acceptance" : [
+            "რეალური სატესტო ელფოსტაზე OTP მოდის ≤1 წუთში",
+            "დაუდასტურებლის რეგისტრაცია პროფილს არ ქმნის",
+            "არსებული მომხმარებლების შესვლა არ ირღვევა"
+          ],
+          "createdAt" : "2026-10-13T11:56:36Z",
+          "detail" : "ახლა require_email_verification='off' (ROLES-AUDIT 4.1, FULLSTACK-AUDIT #1): ნებისმიერს შეუძლია სხვისი ელფოსტით ანგარიშის შექმნა. ჯერ შემოწმდეს Neon Auth OTP წერილის რეალური მიწოდება (ქართული ტექსტი, spam-ში არ ხვდება), მერე ჩაირთოს ბაზაშიც და REQUIRE_EMAIL_VERIFICATION env-შიც.",
+          "files" : [
+            "web/app/lib/neon-jwt.js",
+            "web/app/components/market/AuthForms.tsx"
+          ],
+          "id" : "T7.1",
+          "priority" : "high",
+          "title" : "ჩართე ელფოსტის დადასტურება production-ზე",
+          "updatedAt" : "2026-10-13T11:56:36Z"
+        },
+        {
+          "acceptance" : [
+            "პაროლი იცვლება გასვლის გარეშე",
+            "შეცდომები ქართულად, ველის ქვეშ",
+            "1440/390"
+          ],
+          "createdAt" : "2026-10-13T11:56:42Z",
+          "detail" : "შესულ მომხმარებელს პაროლის შეცვლა მხოლოდ გასვლით და „დაგავიწყდათ?“-ით შეუძლია (ROLES-AUDIT 4.5). პროფილში „უსაფრთხოება“: მიმდინარე + ახალი პაროლი, ან OTP-ით.",
+          "files" : [
+            "web/app/components/market/AccountPageContent.tsx",
+            "web/app/components/market/AuthForms.tsx"
+          ],
+          "id" : "T7.2",
+          "title" : "დაამატე პაროლის შეცვლა ანგარიშიდან",
+          "updatedAt" : "2026-10-13T11:56:42Z"
+        },
+        {
+          "acceptance" : [
+            "6 მოქმედება მუშაობს ადმინიდან მიზეზით",
+            "ყოველი ჩაწერილია moderation_audit-ში",
+            "db ტესტები + RPCS allowlist"
+          ],
+          "createdAt" : "2026-10-13T11:56:49Z",
+          "detail" : "PERFECTION REPORT-ში დარჩენილი: მომხმარებლის როლის შეცვლა, მომხმარებლის წაშლა/ანონიმიზაცია, კომპანიის დამალვა დაბლოკვის გარეშე, შეთავაზების რედაქტირება, საჩივარი შეფასებაზე/ჩატზე, კომენტარი გარიგების პრობლემაზე. თითოს — მიზეზის ველი და ჟურნალში ჩანაწერი.",
+          "files" : [
+            "web/app/components/market/AdminPageContent.tsx",
+            "web/app/components/market/AdminDetail.tsx",
+            "db/migrations/20261014-admin-actions.sql"
+          ],
+          "id" : "T7.3",
+          "title" : "დაამატე ადმინის 6 დაკლებული ფუნქცია",
+          "updatedAt" : "2026-10-13T11:56:49Z"
+        },
+        {
+          "acceptance" : [
+            "ეკრანზე ერთი primary",
+            "ბარათის ნებისმიერი ადგილი ხსნის დეტალს",
+            "ლოგო არ იჭიმება",
+            "1440/390"
+          ],
+          "createdAt" : "2026-10-13T11:56:56Z",
+          "detail" : "ყოველ ბარათს სრული სიგანის ლურჯი ღილაკი აქვს (6–8 primary ერთ ეკრანზე); ფოტოს გარეშე ბარათზე დიდი ღია ლურჯი ყუთია; კომპანიის ლოგო ფოტოს ადგილას იჭიმება (Monero). ბარათი თავად ბმული, ღილაკი მსუბუქი; ფოტოს გარეშე — კომპაქტური; ლოგო ცენტრში თეთრზე.",
+          "files" : [
+            "web/app/components/market/OpportunityCard.tsx",
+            "web/app/components/market/OpportunityCard.module.css",
+            "web/app/components/market/RequestCatalogCover.tsx"
+          ],
+          "id" : "T7.4",
+          "title" : "გაამარტივე მოთხოვნების ბარათი კატალოგში",
+          "updatedAt" : "2026-10-13T11:56:56Z"
+        },
+        {
+          "acceptance" : [
+            "ჰედერში აღარ არის",
+            "თემის შეცვლა კვლავ შესაძლებელია",
+            "overlay-audit 0"
+          ],
+          "createdAt" : "2026-10-13T11:57:01Z",
+          "detail" : "ჰედერში შავი წრე ღილაკში მნიშვნელოვან ადგილს იკავებს და გაუგებარია. პროფილის მენიუში ან ფუტერში, წარწერით.",
+          "files" : [
+            "web/app/components/Header.tsx",
+            "web/app/components/Footer.tsx"
+          ],
+          "id" : "T7.5",
+          "priority" : "low",
+          "title" : "გადაიტანე თემის გადამრთველი ჰედერიდან",
+          "updatedAt" : "2026-10-13T11:57:01Z"
+        },
+        {
+          "acceptance" : [
+            "მობილური throttled ready <2.5 წმ ორივე გვერდზე",
+            "before/after ცხრილი"
+          ],
+          "createdAt" : "2026-10-13T11:57:06Z",
+          "detail" : "perf-2026-10-12/after.md: request-view და company-view მობილურზე სრულად მზადაა 4.7 წმ-ში. მიზანი <2.5 წმ: SSR მონაცემი, ზედმეტი RPC-ების გაერთიანება, სურათები.",
+          "files" : [
+            "web/app/components/market/RequestViewPageContent.tsx",
+            "web/app/components/market/CompanyProfilePageContent.tsx",
+            "web/app/lib/use-request-detail.ts"
+          ],
+          "id" : "T7.6",
+          "title" : "დააჩქარე მოთხოვნისა და კომპანიის გვერდები მობილურზე",
+          "updatedAt" : "2026-10-13T11:57:06Z"
+        },
+        {
+          "acceptance" : [
+            "serious/critical დარღვევები 0",
+            "მოდალები კლავიატურით იხსნება/იხურება, ფოკუსი ბრუნდება"
+          ],
+          "createdAt" : "2026-10-13T11:57:12Z",
+          "detail" : "ყველა მთავარ გვერდზე axe-core: კონტრასტი, ლეიბლები, ფოკუსის რიგი, aria, კლავიატურით ნავიგაცია მოდალებში. მუდმივი სკრიპტი qa/a11y-audit.mjs.",
+          "files" : [
+            "web/qa/a11y-audit.mjs"
+          ],
+          "id" : "T7.7",
+          "title" : "ჩაატარე ხელმისაწვდომობის აუდიტი (axe) და გაასწორე",
+          "updatedAt" : "2026-10-13T11:57:12Z"
+        },
+        {
+          "acceptance" : [
+            "ყველა საჯარო გვერდს უნიკალური title/description",
+            "OG სურათი გაზიარებისას ჩანს",
+            "sitemap-ში 404 არ არის"
+          ],
+          "createdAt" : "2026-10-13T11:57:19Z",
+          "detail" : "თითო გვერდს სწორი title/description ქართულად, მოთხოვნისა და კომპანიის გვერდებზე დინამიკური OG სურათი, structured data (Organization/Product), sitemap-ში მხოლოდ საჯარო და ცოცხალი გვერდები.",
+          "files" : [
+            "web/app/sitemap.ts",
+            "web/app/(request-view)",
+            "web/app/(company-view)"
+          ],
+          "id" : "T7.8",
+          "title" : "გააუმჯობესე SEO: სათაურები, აღწერები, OG სურათები",
+          "updatedAt" : "2026-10-13T11:57:19Z"
+        },
+        {
+          "acceptance" : [
+            "საჯარო სიებში სატესტო სათაური 0",
+            "hero თქვენობით",
+            "ცვლილებები შექცევადია (დამალვა, არა წაშლა)"
+          ],
+          "createdAt" : "2026-10-13T11:57:26Z",
+          "detail" : "ადმინში ჩანს [strict-qa], [ux-audit], [gap-audit] ჩანაწერები; ყველა კომპანიაზე „სადემო კომპანია“; hero-ს ტექსტი site_content-ში შენობითაა. სატესტოები დამალოს (არ წაიშალოს), hero ტექსტი თქვენობით, „სადემო“ ნიშნის პოლიტიკა რეალური კომპანიების დამატებამდე.",
+          "id" : "T7.9",
+          "title" : "გაასუფთავე სადემო და სატესტო მონაცემები production-ზე",
+          "updatedAt" : "2026-10-13T11:57:26Z"
+        },
+        {
+          "acceptance" : [
+            "რეალური კონტაქტი ჩანს და mailto/tel მუშაობს"
+          ],
+          "createdAt" : "2026-10-13T11:57:30Z",
+          "detail" : "/terms/-ზე და ფუტერში ოფიციალური ელფოსტა/ტელეფონი. საჭიროა მფლობელისგან მონაცემი — მანამდე blocked.",
+          "files" : [
+            "web/app/(terms)/terms/page.tsx",
+            "web/app/components/Footer.tsx"
+          ],
+          "id" : "T7.10",
+          "status" : "blocked",
+          "title" : "შეავსე წესების გვერდის კონტაქტი",
+          "updatedAt" : "2026-10-13T11:57:30Z"
+        },
+        {
+          "acceptance" : [
+            "ახალი სკრინშოტები git-ში აღარ შედის",
+            "lint warnings 0",
+            "tsc/test გადის"
+          ],
+          "createdAt" : "2026-10-13T11:57:36Z",
+          "detail" : "git-ში ~170MB QA სკრინშოტი შევიდა (PERFECTION after/ და სხვ.) — .gitignore-ში, ისტორიიდან არა. წაიშალოს მკვდარი კომპონენტები (ROLES-AUDIT 4.4), 16 lint warning `<img>` → next/image ან ui/Avatar.",
+          "files" : [
+            ".gitignore",
+            "web/app/components/market/CompanyRow.tsx"
+          ],
+          "id" : "T7.11",
+          "priority" : "low",
+          "title" : "დაალაგე რეპო: QA სკრინშოტები git-იდან, მკვდარი კოდი, <img>-ები",
+          "updatedAt" : "2026-10-13T11:57:36Z"
+        },
+        {
+          "acceptance" : [
+            "git push origin design-refresh წარმატებულია"
+          ],
+          "createdAt" : "2026-10-13T11:57:40Z",
+          "detail" : "git push 403: ანგარიშს kapana22 Webinfinity11/MeetAny-ში წერის უფლება არ აქვს. საიტი Vercel CLI-ით ეშვება, მაგრამ ბოლო კომიტები მხოლოდ ლოკალურადაა. საჭიროა მფლობელის მოქმედება (წვდომა ან სწორი ანგარიში).",
+          "id" : "T7.12",
+          "priority" : "high",
+          "status" : "blocked",
+          "title" : "აღადგინე GitHub-ზე ატვირთვა",
+          "updatedAt" : "2026-10-13T11:57:40Z"
+        }
+      ],
+      "title" : "P7 შემდეგი გაუმჯობესებები (უსაფრთხოება, ადმინი, სიჩქარე, SEO, სისუფთავე)"
     }
   ],
-  "updatedAt" : "2026-10-13T11:38:45Z",
+  "updatedAt" : "2026-10-13T12:31:06Z",
   "version" : 1
 }
