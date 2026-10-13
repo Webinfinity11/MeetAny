@@ -45,42 +45,23 @@ async function readPublicSnapshot() {
   }
 }
 
-// Public data only: never retain caller claims, profiles' emails or private offers.
-// Fresh for 30 s; after that the stale copy (up to 10 min old) is served at once while a single
-// background read refreshes it. A public write drops the copy, so the next page waits for fresh
-// data. Failed reads are not cached; concurrent requests share one read.
-// Next compiles pages and Route Handlers into separate module graphs. Share the
-// public cache on the process global so a handler invalidates the page's copy too.
-const FRESH_MS = 30_000, STALE_MS = 600_000, RETRY_MS = 5_000;
+// Share only an in-flight read, never a completed snapshot. A process-global TTL
+// cannot be invalidated by writes handled in another Next worker or instance.
+// Reading again for each page request makes a committed request visible immediately
+// on a new tab/reload; database outages use the existing unavailable/retry UI.
 const key = Symbol.for('meetany.publicSnapshot');
-const state = globalThis[key] ??= { cached: null, expires: 0, pending: null, revision: 0 };
-state.staleUntil ??= 0;
+const state = globalThis[key] ??= { pending: null, revision: 0 };
 export function invalidatePublicSnapshot() {
-  state.cached = null;
-  state.expires = 0;
-  state.staleUntil = 0;
   state.pending = null;
   state.revision++;
 }
-function refresh() {
+export async function loadPublicSnapshot() {
   if (!state.pending) {
     const started = state.revision;
     state.pending = readPublicSnapshot().then(snapshot => {
-      // A read started before a committed write must never repopulate the cache.
-      if (started !== state.revision) return loadPublicSnapshot();
-      if (snapshot) {
-        state.cached = snapshot;
-        state.expires = Date.now() + FRESH_MS;
-        state.staleUntil = Date.now() + STALE_MS;
-      } else if (state.cached) state.expires = Date.now() + RETRY_MS; // keep serving the stale copy
-      return snapshot ?? state.cached;
+      // A read started before a local committed write must not win the race.
+      return started === state.revision ? snapshot : loadPublicSnapshot();
     }).finally(() => { if (started === state.revision) state.pending = null; });
   }
   return state.pending;
-}
-export async function loadPublicSnapshot() {
-  const now = Date.now();
-  if (state.cached && now < state.expires) return state.cached;
-  if (state.cached && now < state.staleUntil) { refresh(); return state.cached; }
-  return refresh();
 }

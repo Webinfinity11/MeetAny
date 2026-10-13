@@ -89,3 +89,15 @@ test('readRequestDraftAt returns the session save time or 0', () => {
  data.clear();
  assert.equal(api.readRequestDraftAt(), 0);
 });
+
+test('server draft keeps uploaded attachment references but never serializes a local photo', async () => {
+ const { api } = setup();
+ const store = mockStore();
+ const attachmentDraft = '00000000-0000-4000-8000-000000000001';
+ await api.saveServerDraft(store, { ...empty, title: 'თეთრეული', attachmentDraft, photo: { name: 'photo.jpg', bytes: 'local file' } });
+ assert.equal(store.calls[0][1].p_data.attachmentDraft, attachmentDraft);
+ assert.equal(Object.hasOwn(store.calls[0][1].p_data, 'photo'), false);
+ const restored = await api.loadServerDraft(mockStore({ my_request_draft: { data: store.calls[0][1].p_data } }));
+ assert.equal(restored.attachmentDraft, attachmentDraft);
+ assert.equal(Object.hasOwn(restored, 'photo'), false);
+});

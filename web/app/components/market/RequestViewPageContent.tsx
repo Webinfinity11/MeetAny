@@ -33,20 +33,12 @@ import { ReportButton } from "./ReportButton";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
 import { useCompanyFeatures } from "../../lib/business-client";
 import { categories, cities, units } from "../../lib/categories";
-import { AuthModal } from "./modals/AuthModal";
 import { Badge } from "../ui/Badge";
 import { OpportunityCard, budgetLabel, type OpportunityRequest } from "./OpportunityCard";
 import { SaveRequestButton } from "./SaveRequestButton";
 import styles from "./request/RequestDetail.module.css";
 import { addressLabel, dateLong, dateShort, postedLabel } from "../../lib/format";
 
-// Same wording as lib/onboarding-client.ts verificationHint/verificationAction (company stream); switch to those
-// helpers once both land in one tree. An unverified company gets the next step instead of a dead-end "send offer".
-function verificationStep(status?: string | null): { hint: string; action: { label: string; href: string } | null } {
-  if (status === "pending") return { hint: "ადმინისტრატორი ამოწმებს დოკუმენტებს. შედეგს შეტყობინებით მიიღებთ.", action: null };
-  if (status === "rejected" || status === "returned") return { hint: "შეასწორეთ დოკუმენტები და ხელახლა გაგზავნეთ.", action: { label: "დოკუმენტების შესწორება", href: "/onboarding/?step=verify" } };
-  return { hint: "ატვირთეთ რეგისტრაციის ამონაწერი და საგადასახადო დოკუმენტი, შემდეგ გაგზავნეთ განსახილველად.", action: { label: "დოკუმენტების ატვირთვა", href: "/onboarding/?step=verify" } };
-}
 
 export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, sessionReady, available } = useMarketStore(initial);
@@ -55,7 +47,6 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const detail = useRequestDetail(store, sessionReady, available, id);
   const business = useCompanyFeatures(store, ready && available);
   const router = useRouter();
-  const [authOpen, setAuthOpen] = useState(false);
   const [editRequest, setEditRequest] = useState(false);
   const [editOffer, setEditOffer] = useState(false);
   const [actionPending, setActionPending] = useState(false);
@@ -183,14 +174,14 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     ...(r.neededBy ? [["calendar", "მიწოდების ვადა", dateLong(r.neededBy)] as [string, string, string]] : []),
   ];
   const lockNote = isOwner ? (r.chosenOfferId ? "" : "კომპანიის კონტაქტი იხსნება შეთავაზების არჩევის შემდეგ")
-    : me && me.role !== "company" && me.role !== "admin" ? "შეთავაზებებს კომპანიები აგზავნიან"
     : contact ? "" : "მყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ";
   const similar: OpportunityRequest[] = (store?.listRequests({ category: r.category }) || []).filter((item: OpportunityRequest) => item.id !== r.id).slice(0, 3).map((item: OpportunityRequest) => ({ ...item, daysLeft: store?.daysLeft(item) ?? 0 }));
   const offerHref = `/offers/new/?requestId=${encodeURIComponent(r.id)}`;
-  const offerAction = !me ? { onClick: () => setAuthOpen(true) } : { href: offerHref };
-  const verification = me?.role === "company" && !me.verified ? verificationStep(me.verificationDocumentsStatus) : null;
-  // Guests and verified companies without an offer get "send offer"; an unverified company gets its verification step.
-  const canSend = sessionReady && !isOwner && state === "open" && (!me || (me.role === "company" && !myOffer && !!me.verified));
+  const offerAction = !sessionReady || isOwner || closed || myOffer || me?.role === "admin" ? null
+    : !me ? { label: "შედით, რომ გაგზავნოთ შეთავაზება", href: `/account/?${new URLSearchParams({ next: offerHref, intent: "offer", context: r.title })}`, hint: "შეთავაზების გაგზავნა ვერიფიცირებული კომპანიის ანგარიშით შეგიძლიათ." }
+    : me.role !== "company" ? { label: "შეთავაზების გასაგზავნად გახდით კომპანია", href: "/account/?tab=profile", hint: "პროფილი გადაიქცევა კომპანიის ანგარიშად. შეთავაზების გაგზავნამდე საჭიროა ვერიფიკაცია." }
+    : !me.verified ? { label: "ვერიფიკაციის დასრულება", href: "/onboarding/?step=verify", hint: "შეთავაზების გასაგზავნად ატვირთეთ კომპანიის დოკუმენტები და დაასრულეთ ვერიფიკაცია." }
+    : { label: "შეთავაზების გაგზავნა", href: offerHref, hint: "თქვენს შეთავაზებას მხოლოდ მოთხოვნის ავტორი ნახავს." };
   const shareUrl = origin ? `${origin}/requests/view/?id=${encodeURIComponent(r.id)}` : "";
   async function action(kind: "extend" | "close" | "delete" | "withdraw") {
     if (!store || actionPending) return;
@@ -273,8 +264,6 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               </div> : null}
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
-          ) : !me.verified ? (
-            <div className="ma-stack" id="send-offer"><h2 className="ma-h3">საჭიროა ვერიფიკაცია</h2><p className="ma-note">შეთავაზებას ვერიფიცირებული კომპანიები აგზავნიან. {verification?.hint}</p>{verification?.action ? <Button variant="primary" href={verification.action.href}>{verification.action.label}</Button> : null}</div>
           ) : closed ? (
             <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           ) : (
@@ -285,14 +274,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             </>
           )}
         </section>
-      ) : closed ? (<p className="detail-aside__text">მოთხოვნა შეთავაზებებს აღარ იღებს. <Link className="detail-link" href="/requests/">ღია მოთხოვნების ნახვა</Link></p>) : me ? (
-        <section className="detail-aside__block" aria-label="შეთავაზებები">
-          <p className="detail-aside__text">თქვენც გჭირდებათ მსგავსი?</p>
-          <Button variant="secondary" className="detail-aside__primary" href={`/requests/new/?${new URLSearchParams({ category: r.category, city: r.city })}`}>
-            მოთხოვნის განთავსება
-          </Button>
-        </section>
-      ) : null);
+      ) : closed ? (<p className="detail-aside__text">მოთხოვნა შეთავაზებებს აღარ იღებს. <Link className="detail-link" href="/requests/">ღია მოთხოვნების ნახვა</Link></p>) : null);
 
   return (
     <div className="ma-page request-detail detail-page request-workspace" data-owner={isOwner || undefined}>
@@ -329,14 +311,14 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <div><dt>{state === "open" ? "მიღება სრულდება" : "სტატუსი"}</dt><dd>{state === "open" ? (daysLeft > 0 ? `${daysLeft} დღეში` : "დღეს") : statusText}</dd>{state === "open" ? <dd className="request-summary-facts__date">{dateShort(r.expiresAt)}</dd> : null}</div>
             <div><dt>შეთავაზებები</dt><dd>{offerCount ? `${offerCount} მიღებულია` : "ჯერ არ არის"}</dd></div>
           </dl>
-          {canSend ? <Button variant="primary" className="request-submit-cta" {...offerAction}><Icon name="send"/>შეთავაზების გაგზავნა</Button> : null}{isOwner && offerCount > 0 ? <Button variant={r.chosenOfferId ? "secondary" : "primary"} className="request-submit-cta" href={compareHref(r.id)}>შეთავაზებების შედარება</Button> : null}{lockNote ? <p className={styles.note}><Icon name="lock"/>{lockNote}</p> : null}</section>
+          {offerAction ? <><Button variant="primary" className="request-submit-cta" href={offerAction.href}><Icon name="send"/>{offerAction.label}</Button><p className={styles.note}>{offerAction.hint}</p></> : null}{isOwner && offerCount > 0 ? <Button variant={r.chosenOfferId ? "secondary" : "primary"} className="request-submit-cta" href={compareHref(r.id)}>შეთავაზებების შედარება</Button> : null}{lockNote ? <p className={styles.note}><Icon name="lock"/>{lockNote}</p> : null}</section>
           {owner && !isOwner ? (
             <section className="request-author"><p className="detail-label">მყიდველი</p>
               <div className="request-author-identity"><span className="detail-buyer-avatar" aria-hidden="true">{owner.logoUrl ? <img src={owner.logoUrl} alt=""/> : avatarInitials(owner.company || owner.name || "მყიდველი")}</span><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{cities[owner.city] || owner.city}</p>{owner.verified ? <Badge status="success"><Icon name="shield-check"/>ვერიფიცირებული</Badge> : null}</div></div>
               {owner.role === "company" ? <Button variant="secondary" style={{ width: "100%" }} href={`/companies/view/?id=${encodeURIComponent(owner.id)}`}>პროფილის ნახვა</Button> : null}
             </section>
           ) : null}
-          {me && !isOwner && me.role !== "admin" && me.role !== "company" ? responsePanel : null}
+          {closed && me?.role !== "company" && !isOwner && me?.role !== "admin" ? responsePanel : null}
 
           {isOwner ? <section className="request-management"><h2><Icon name="settings"/>მოთხოვნის მართვა</h2><p className="request-management-note">{state === "open" ? "მოთხოვნა აქტიურია და კომპანიების პასუხებს იღებს." : statusText}</p>
             {offerCount === 0 && ["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" onClick={() => setEditRequest(true)}><Icon name="pencil"/>რედაქტირება</Button> : null}
@@ -356,14 +338,13 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             {!isOwner && me?.role !== "admin" ? <ReportButton kind="request" targetId={r.id} /> : null}
           </div>
         </aside>
-        {!isOwner && me?.role === "company" && (myOffer || !me.verified || closed) ? <div className="request-company-response">{responsePanel}</div> : null}
+        {!isOwner && me?.role === "company" && (myOffer || closed) ? <div className="request-company-response">{responsePanel}</div> : null}
       </div>
 
-      {canSend ? <div className="detail-actionbar"><Button variant="primary" {...offerAction}><Icon name="send"/>შეთავაზების გაგზავნა</Button></div>
-        : sessionReady && state === "open" && verification?.action && !myOffer ? <div className="detail-actionbar"><Button variant="primary" href={verification.action.href}>{verification.action.label}</Button></div> : null}
+      {offerAction ? <div className="detail-actionbar"><Button variant="primary" href={offerAction.href}><Icon name="send"/>{offerAction.label}</Button></div> : null}
       {isOwner && offerCount > 0 ? <div className="detail-actionbar">{r.chosenOfferId && dealId ? <Button variant="primary" href={dealHref(dealId)}>გარიგების ნახვა</Button> : <Button variant="primary" href={compareHref(r.id)}>შეთავაზებების შედარება</Button>}</div> : null}
       {similar.length > 0 && <section className={styles.similar}><header className={styles.similarHead}><h2>მსგავსი მოთხოვნები</h2><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>ყველა მოთხოვნა</Link></header><div>{similar.map(item => <OpportunityCard key={item.id} request={item} compact />)}</div></section>}
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onSuccess={() => { const user = store?.currentUser(); if (user?.role === "company") router.push(user.verified ? offerHref : "/account/?tab=profile"); else if (user?.role === "admin") router.push("/admin/"); }} intent="offer" context={r.title} next={offerHref} />
+
       <ConfirmSheet
         id="request-confirm"
         open={!!confirmKind}

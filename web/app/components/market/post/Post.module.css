@@ -112,3 +112,18 @@
 /* Back is an icon on phones: the bar holds at most two labelled buttons. */
 @media (max-width: 39.99rem) { .page .backButton { flex: none; width: var(--tap-min); padding-inline: 0; } }
 .matchingPreview p { font-size: var(--fs-copy); line-height: var(--lh-copy); color: var(--ink-600); }
+
+/* Keep the actions in the page flow and against the visual viewport, including the keyboard. */
+.page :global(.post-actions) { position: sticky; inset: auto; bottom: var(--keyboard-inset, 0); z-index: var(--z-sticky); margin-top: var(--space-6); flex: none; }
+.page :global(.post-content) { padding-bottom: var(--space-6); }
+.specification { border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); }
+.specification summary { min-height: var(--tap-min); padding: var(--space-4); cursor: pointer; font-weight: var(--fw-semibold); }
+.specification summary span { display: inline-block; margin-left: var(--space-2); color: var(--text-3); font-weight: var(--fw-regular); font-size: var(--fs-xs); }
+.specification > div { padding: var(--space-4); border-top: var(--size-1) solid var(--ink-200); }
+.errorSummary { scroll-margin-top: calc(var(--header-h) + var(--space-4)); padding: var(--space-4); margin-block: var(--space-4); border: var(--size-2) solid var(--danger-600); border-radius: var(--radius-md); background: var(--white); }
+.errorSummary h2 { font-size: var(--fs-body); }
+.errorSummary ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); }
+.errorSummary a { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--danger-600); text-decoration: underline; }
+@media (max-width: 39.99rem) { .preview { display: none; } }
+
+.catalogLink { display: inline-flex; align-items: center; min-height: var(--tap-min); margin-top: var(--space-4); text-decoration: underline; }

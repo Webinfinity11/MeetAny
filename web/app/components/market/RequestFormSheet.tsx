@@ -35,24 +35,6 @@ function addDay(iso: string, days = 1) {
   return `${next.getUTCFullYear()}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}`;
 }
 
-function DateField({ id, text, onText, min, max, field }: { id: string; text: string; onText: (text: string) => void; min?: string; max?: string; field: Record<string, unknown> }) {
-  const native = useRef<HTMLInputElement>(null);
-  function open() {
-    const input = native.current;
-    if (!input) return;
-    input.value = textToIso(text) || "";
-    try {input.showPicker();} catch {input.focus(); input.click();}
-  }
-  return (
-    <div className="request-date">
-      <input className="ma-input ma-input--num" id={id} inputMode="numeric" autoComplete="off" placeholder="დღ.თთ.წწწწ" maxLength={10} value={text} onChange={(e) => onText(e.target.value)} onBlur={() => {const iso = textToIso(text); if (iso) onText(isoToText(iso));}} {...field} />
-      <button type="button" className="request-date__button" aria-label="კალენდრის გახსნა" onClick={open}>
-        <Icon name="calendar" />
-      </button>
-      <input ref={native} className="request-date__native" type="date" tabIndex={-1} aria-hidden="true" min={min} max={max} onChange={(e) => {if (e.target.value) onText(isoToText(e.target.value));}} />
-    </div>
-  );
-}
 
 export function RequestFormSheet({
   open,
@@ -154,10 +136,14 @@ export function RequestFormSheet({
     if (!city) errors.city = "აირჩიეთ ქალაქი";
     if (b.length < 10) errors.body = b ? "აღწერა მინიმუმ 10 სიმბოლო უნდა იყოს" : "აღწერეთ, რა გჭირდებათ";
     const neededBy = neededByText.trim() ? textToIso(neededByText) : "";
-    if (neededBy === null) errors.neededBy = "მიუთითეთ თარიღი დღ.თთ.წწწწ ფორმატით";
-    else if (neededBy && neededBy !== existing?.neededBy && tomorrow && neededBy < tomorrow) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
-    else if (neededBy && neededBy !== existing?.neededBy && max && neededBy > max) errors.neededBy = `თარიღი არაუგვიანეს ${isoToText(max)}`;
-    if (!v.check(errors, ["title", "category", "city", "body", "neededBy"])) return;
+    const n = Number(quantity.trim().replace(/\s+/g, "").replace(",", "."));
+    if (!quantity.trim() || !Number.isFinite(n) || n <= 0 || Math.round(n * 1000) <= 0) errors.quantity = "მიუთითეთ რაოდენობა";
+    else if (n > 1e9) errors.quantity = "რაოდენობა ძალიან დიდია";
+    if (!neededByText.trim()) errors.neededBy = "აირჩიეთ სასურველი თარიღი";
+    else if (neededBy === null) errors.neededBy = "მიუთითეთ თარიღი დღ.თთ.წწწწ ფორმატით";
+    else if (neededBy && tomorrow && neededBy < tomorrow) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
+    else if (neededBy && max && neededBy > max) errors.neededBy = `თარიღი არაუგვიანეს ${isoToText(max)}`;
+    if (!v.check(errors, ["title", "category", "city", "body", "quantity", "neededBy"])) return;
     setPending(true);
     try {
       const input = {
@@ -283,20 +269,21 @@ export function RequestFormSheet({
           </section>
           <section className="request-form__group" aria-labelledby="request-group-details">
             <h3 className="request-form__group-title" id="request-group-details">
-              დეტალები <span className="request-form__group-opt">არასავალდებულო</span>
+              დეტალები
             </h3>
             <div className="request-form__grid">
               <div className="ma-field">
                 <label className="ma-field__label" htmlFor="quantity">
-                  რაოდენობა
+                  რაოდენობა *
                 </label>
                 <div className="request-form__qty" role="group" aria-label="რაოდენობა და ერთეული">
                   <input
-                    id="quantity"
+                    required
+                    {...v.control("quantity")}
                     className="ma-input ma-input--num"
                     inputMode="decimal"
                     value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => { setQuantity(e.target.value); v.clear("quantity"); }}
                   />
                   <CustomSelect className="ma-select" aria-label="რაოდენობის ერთეული" value={unit} onChange={(e) => setUnit(e.target.value)}>
                     {Object.entries(units).map(([id, label]) => (
@@ -306,12 +293,13 @@ export function RequestFormSheet({
                     ))}
                   </CustomSelect>
                 </div>
+                {v.message("quantity")}
               </div>
               <div className="ma-field">
                 <label className="ma-field__label" htmlFor="neededBy">
-                  საჭიროა თარიღამდე
+                  სასურველი თარიღი *
                 </label>
-                <DateField id="neededBy" text={neededByText} onText={(text) => {setNeededByText(text); v.clear("neededBy");}} min={tomorrow} max={max} field={v.control("neededBy")} />
+                <input className="ma-input" required type="date" value={textToIso(neededByText) || ""} onChange={e => { setNeededByText(isoToText(e.target.value)); v.clear("neededBy"); }} min={tomorrow} max={max} {...v.control("neededBy")} />
                 {v.message("neededBy")}
               </div>
               <div className="ma-field request-form__wide">

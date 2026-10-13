@@ -76,6 +76,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const [saved, setSaved] = useState<{ where: "server" | "browser"; at: string } | null>(null);
   const clock = () => new Date().toLocaleTimeString("ka-GE", { timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false });
   const [photo, setPhoto] = useState<File | null>(null);
+  const [restoredDraft, setRestoredDraft] = useState(!!draft);
   const [pending, setPending] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState("");
@@ -118,6 +119,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       if (!server) return;
       const serverAt = server.updatedAt ? Date.parse(server.updatedAt) : 0;
       if (draft ? !(serverAt > sessionAt) : latest.current.hasContent) return;
+      setRestoredDraft(true);
       setTitle(server.title); setCategory(server.category); setPreferences(server.preferences || {}); setBody(server.body);
       setQuantity(server.quantity); setUnit(server.unit); setCity(server.city); setAddressNote(server.addressNote);
       setNeededBy(draftDate(server.neededByText)); setFurthest(furthestFor(server));
@@ -138,7 +140,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       await queueServer(() => saveServerDraft(store, current));
       saveRequestDraft(current);
       setSaved({ where: "server", at: clock() });
-      toast({ title: "მონახაზი შენახულია", sub: "მონახაზი ინახება თქვენს ანგარიშში.", tone: "success" });
+      toast({ title: "მონახაზი შენახულია", sub: "ტექსტი ინახება თქვენს ანგარიშში. ფოტო არ ინახება მონახაზში.", tone: "success" });
     } catch (err) { toast({ title: "მონახაზი ვერ შეინახა", sub: (err as { userMessage?: string })?.userMessage || "ტექსტი ამ ბრაუზერში შენარჩუნდა. სცადეთ ხელახლა.", tone: "danger" }); }
     finally { setSavingDraft(false); }
   }
@@ -211,19 +213,24 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     }
     return errors;
   }
+  function checkFields(errors: FieldErrors, order: string[]) {
+    const valid = v.check(errors, order);
+    if (!valid) requestAnimationFrame(() => document.getElementById("post-errors")?.focus());
+    return valid;
+  }
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (submitting.current || published || fileBusy) return;
     if (step < 3) {
       if(step===2&&preferenceError(preferences)){setError(preferenceError(preferences));return;}
-      if (!v.check(errorsFor(step), step === 1 ? detailFields : deliveryFields)) return;
+      if (!checkFields(errorsFor(step), step === 1 ? detailFields : deliveryFields)) return;
       setFurthest(Math.max(furthest, step + 1)); go(step + 1); return;
     }
     for (const part of [1, 2]) {
       const errors = errorsFor(part);
       if (Object.keys(errors).length) {
         go(part);
-        requestAnimationFrame(() => v.check(errors, part === 1 ? detailFields : deliveryFields));
+        requestAnimationFrame(() => checkFields(errors, part === 1 ? detailFields : deliveryFields));
         return;
       }
     }
@@ -260,12 +267,14 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
           <FormCard title="რა ხდება ახლა"><ol className={styles.timeline}>
             <li><Icon name="check" /><div><strong>მოთხოვნა გამოქვეყნდა</strong><time dateTime={published.createdAt}>{dateTime(published.createdAt)}</time></div></li>
             {[['მომწოდებლებს ეცნობათ', 'შესაბამისი კომპანიები გაეცნობიან მოთხოვნას.'], ['პირველი შეთავაზებები', 'მიღებული შეთავაზებები გამოჩნდება თქვენს ანგარიშში.'], ['შედარება და არჩევა', 'შეადარეთ ფასი, ვადა და პირობები.']].map(([label, description]) => <li className={styles.future} key={label}><span className={styles.timelineCircle} aria-hidden="true"/><div><strong>{label}</strong><p>{description}</p></div></li>)}
-          </ol></FormCard>
+          </ol><Link className={styles.catalogLink} href={`/requests/?${new URLSearchParams({ q: published.title })}`}>გამოქვეყნებული მოთხოვნა სიაში</Link></FormCard>
         </div>
         <aside className={styles.aside}><FormCard title="შესაბამისი მომწოდებლები"><MatchingSuppliers store={store} requestId={published.id} /></FormCard></aside>
       </div>
     </> : <>
       {sessionStatus === "loading" ? <p className="post-guest" role="status"><Icon name="info" /><span>ანგარიში მოწმდება. მოთხოვნის შევსება ამასობაში შეგიძლიათ.</span></p> : sessionStatus === "error" ? <div className={styles.connectionNotice} role="status"><p>კავშირი ვერ დამყარდა. შევსებული ტექსტი შენარჩუნდება.</p><Button variant="secondary" size="sm" loading={retrying} onClick={async () => { setRetrying(true); try { await store.refresh(); } finally { setRetrying(false); } }}>ხელახლა ცდა</Button></div> : sessionStatus === "profile" ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>დაასრულეთ პროფილი</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : !signedIn ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედით ანგარიშში</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : null}
+      {restoredDraft ? <p className="post-guest" role="status"><Icon name="info"/><span>მონახაზი აღდგენილია. ფოტო არ ინახება მონახაზში — თუ ფოტო გქონდათ არჩეული, აირჩიეთ ხელახლა.</span></p> : null}
+      {Object.keys(v.errors).length ? <section id="post-errors" tabIndex={-1} className={styles.errorSummary} role="alert" aria-labelledby="post-errors-title"><h2 id="post-errors-title">შეასწორეთ მონიშნული ველები</h2><ul>{Object.entries(v.errors).map(([field, message]) => <li key={field}><a href={`#${field}`} onClick={event => { event.preventDefault(); document.getElementById(field)?.focus(); }}>{message}</a></li>)}</ul></section> : null}
       <form id="post-request-form" noValidate onSubmit={submit} aria-busy={pending}>
         <fieldset disabled={pending} className="post-layout">
           <div className="post-content">
@@ -282,8 +291,8 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
                   </div>{v.message("quantity")}
                 </div>
               </FormCard>
-              <FormCard title="სპეციფიკაცია და მომწოდებელი" optional><RequestPreferenceFields part="specification" value={preferences} onChange={setPreferences}/></FormCard>
-              {signedIn ? <><FormCard title="ფოტო" optional><PhotoField file={photo} onChange={setPhoto} variant="tile" /></FormCard><FormCard title="ფაილები" optional><FileAttachments store={store} kind="request_draft" showTitle={false} target={attachmentDraft} editable onBusy={setFileBusy}/></FormCard></> : null}
+              <details className={styles.specification}><summary>სპეციფიკაცია და მომწოდებელი <span>არასავალდებულო</span></summary><div><RequestPreferenceFields part="specification" value={preferences} onChange={setPreferences}/></div></details>
+              {signedIn ? <><FormCard title="ფოტო" optional><PhotoField file={photo} onChange={setPhoto} variant="tile" /><p className="ma-note">ფოტო არ ინახება მონახაზში.</p></FormCard><FormCard title="ფაილები" optional><FileAttachments store={store} kind="request_draft" showTitle={false} target={attachmentDraft} editable onBusy={setFileBusy}/></FormCard></> : null}
             </> : step === 2 ? <><FormCard title="მიწოდება" className={styles.deliveryCard}>
               <div className={styles.deliveryFields}>
                 <div className="ma-field"><label id="city-label">ქალაქი / რეგიონი <span>*</span></label>
@@ -311,7 +320,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       </form>
       <div className="post-actions" ref={actions}><div className="post-actions__inner">
         {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
-        {saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `შენახულია · ${saved.at}` : `შენახულია ამ ბრაუზერში · ${saved.at}`}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null}
+        {saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `ტექსტი შენახულია · ${saved.at}` : `ტექსტი შენახულია ამ ბრაუზერში · ${saved.at}`}{photo ? <span> · ფოტო არ ინახება მონახაზში</span> : null}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null}
         <div className="post-actions__buttons">{step > 1 ? <Button variant="secondary" size="lg" className={styles.backButton} aria-label="უკან" title="უკან" disabled={pending||fileBusy} onClick={() => go(step - 1)}><Icon name="arrow-left"/><span className={styles.long}>უკან</span></Button> : null}
           {signedIn ? <Button variant="secondary" size="lg" disabled={pending||fileBusy||!hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}><span className={styles.long}>მონახაზად შენახვა</span><span className={styles.short}>მონახაზი</span></Button> : null}
 
