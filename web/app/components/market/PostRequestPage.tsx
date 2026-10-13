@@ -142,7 +142,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       await queueServer(() => saveServerDraft(store, current));
       saveRequestDraft(current);
       setSaved({ where: "server", at: clock() });
-      toast({ title: "მონახაზი შენახულია", sub: "ტექსტი ინახება თქვენს ანგარიშში. ფოტო არ ინახება მონახაზში.", tone: "success" });
+      toast({ title: "მონახაზი შენახულია", sub: photo ? "ტექსტი ინახება თქვენს ანგარიშში. ფოტო არ ინახება მონახაზში." : "ტექსტი ინახება თქვენს ანგარიშში.", tone: "success" });
     } catch (err) { toast({ title: "მონახაზი ვერ შეინახა", sub: (err as { userMessage?: string })?.userMessage || "ტექსტი ამ ბრაუზერში შენარჩუნდა. სცადეთ ხელახლა.", tone: "danger" }); }
     finally { setSavingDraft(false); }
   }
