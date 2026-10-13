@@ -3,8 +3,9 @@
 import { optimizable } from "../../lib/image";
 import Image from "next/image";
 import { useState } from "react";
+import type { ImportProduct } from "../../lib/products-import";
 
-export type ProductCardData = { name: string; photoUrl?: string | null; note?: string };
+export type ProductCardData = ImportProduct;
 
 export function ProductCard({ name, photoUrl, note: rawNote, preview = false }: ProductCardData & { preview?: boolean }) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);

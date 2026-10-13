@@ -1009,7 +1009,7 @@ export function createMarketStore({initial=null,background=true}={}){
 
  return {categories,cities,units,priceTypes,todayDate,maxNeededBy,stateLabels,EXTEND_DAYS,
   companyProducts:id=>rpc('company_products',{p_company_id:id}),
-  setMyProducts:async items=>{const data=await rpc('set_my_products',{p_items:items});await refresh();warnStale(dataStale);return data;},
+  setMyProducts:async items=>{try{const data=await rpc('set_my_products',{p_items:items});await refresh();warnStale(dataStale);return data;}catch(err){if(err.code==='MA622')err.userMessage='დაამატეთ მაქსიმუმ 100 პროდუქტი: დასახელება 2–80 სიმბოლო, კოდი 40-მდე, აღწერა 200-მდე; ფასი 0–1 000 000 000. ფოტო არასავალდებულოა და თქვენი გალერეიდან უნდა იყოს.';throw err;}},
   adminMarketMetrics:()=>rpc('admin_market_metrics'),
   companyDistributionProfiles:()=>rpc('company_distribution_profiles'),
   setMyDistribution:args=>mutate('set_my_distribution',args),
