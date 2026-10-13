@@ -10,3 +10,12 @@
 .count{color:var(--text-2);font-size:var(--fs-sm)}
 .root[data-compact] .groups{gap:var(--space-3)}
 .groups{grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--size-260)),1fr));align-items:start}
+
+@media(max-width:600px){
+.root[data-compact] .groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2)}
+.root[data-compact] .group{gap:var(--space-1)}
+.root[data-compact] .heading{font-size:var(--fs-xs);line-height:var(--lh-meta)}
+.root[data-compact] .chips{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-1)}
+.root[data-compact] .chip{font-size:var(--fs-xs);gap:var(--space-1)}
+.root[data-compact] .chip>span:first-child{display:none}
+}

@@ -6,3 +6,8 @@
 .similarHead a { flex-shrink: 0; display: inline-flex; align-items: center; min-height: var(--tap-min); font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-semibold); }
 .similar > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
 @media (max-width: 767px) { .similar > div { grid-template-columns: minmax(0, 1fr); } }
+
+.breadcrumbs.breadcrumbs{display:flex;flex-wrap:nowrap;align-items:center;white-space:nowrap;overflow:hidden}
+.breadcrumbs>*{flex-shrink:0}
+.breadcrumbs>*:last-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:600px){.breadcrumbs>a:nth-of-type(2),.breadcrumbs>span:first-of-type{display:none}}

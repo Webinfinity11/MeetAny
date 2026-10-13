@@ -275,7 +275,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
   return (
     <div className="ma-page request-detail detail-page request-workspace" data-owner={isOwner || undefined}>
-      <nav className="detail-breadcrumb" aria-label="ნავიგაცია">{isOwner ? <Link href="/account/?tab=requests">ჩემი მოთხოვნები</Link> : <><Link href="/requests/">მოთხოვნები</Link><span>/</span><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>{categories[r.category] || r.category}</Link></>}<span>/</span><span>{r.title}</span></nav>
+      <nav className={`detail-breadcrumb ${styles.breadcrumbs}`} aria-label="ნავიგაცია">{isOwner ? <Link href="/account/?tab=requests">ჩემი მოთხოვნები</Link> : <><Link href="/requests/">მოთხოვნები</Link><span>/</span><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>{categories[r.category] || r.category}</Link></>}<span>/</span><span>{r.title}</span></nav>
       <div className="request-detail-grid">
         <div className="request-detail-main">
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
