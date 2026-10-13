@@ -147,7 +147,7 @@ async function login(role, a, preserveRoute = false) {
 }
 async function pick(p, label, value) { await p.getByRole('combobox', { name: label }).click(); await p.getByRole('option', { name: value, exact: true }).click(); }
 // Follow the visible upload action: it stays disabled until the attachment list loads.
-// Setting a hidden input directly can race that initial read and is not a user path.
+// Setting a hidden input directly bypasses that loading guard and can race the initial read.
 async function attach(p, label, file) {
   const [chooser] = await Promise.all([
     p.waitForEvent('filechooser'),

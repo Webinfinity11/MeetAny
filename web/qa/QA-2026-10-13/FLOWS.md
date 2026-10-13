@@ -1,5 +1,9 @@
 # რეალური მომხმარებლის ნაკადები — 2026-10-13
 
+**მიმდინარე გადამოწმება:** ნაბიჯი → PASS/FAIL ცხრილი და ხანგრძლივობა არის ამ დოკუმენტის ბოლოს, „მუდმივი E2E“ სექციაში. პირველი აუდიტის ქვემოთ მოცემული ხარვეზები ისტორიულია; განახლებული UI-ის სკრიპტის მიზეზები ცალკე გადამოწმებულია.
+
+## თავდაპირველი აუდიტი — ისტორიული
+
 **შედეგი: ახალი hotel → request → offer → select ციკლი დაბლოკილია 5 ღია მოთხოვნის ლიმიტით.** დარჩენილი ნაბიჯები არ არის ამ ახალი ციკლის წარმატებად გასაღებული: hotel–wood-ის უკვე არსებული `selected` გარიგება UI-ით მივიყვანე დასრულებამდე და შეფასებამდე. ახალი კომპანიის რეგისტრაცია, onboarding-ის შენახვა, ვერიფიკაციის სრული ადმინისტრაციული ციკლი, საჩივარი, შეფასების დამალვა და owner_company-ის პროფილის შევსება რეალურად შესრულდა.
 
 **11 ხარვეზი: P1 — 1; P2 — 10; P3 — 0.** პროდუქტის კოდი არ შეცვლილა. [NECESSITY.md](NECESSITY.md) ცალკე, პირველი commit-ით (`0d880f1`) დასრულდა; იქ აღწერილი „შემდეგ“ ამ ტესტში ჯერ დანერგილი არ არის.
@@ -112,9 +116,24 @@ QA სკრიპტების `node --check`, Markdown evidence link-ებ�
 - მფლობელმა უნდა გადაამოწმოს ინტეგრირებული checkout და გამოიყენოს `agent integrate 213AE477-7ED8-4D9E-9CEF-DD1BB3ECB5F0`. ამ worker-ის ანგარიშში ინტეგრაცია შესრულებულად არ ცხადდება.
 
 
-## მუდმივი E2E — 2026-10-13T13:33:47.870Z
+## E2E-ის ფესვების გადამოწმება — განახლებული UI
 
-გაშვება: `cd web && npm run dev -- --port 3402 --webpack`, შემდეგ `cd web && npm run e2e`. BASE: http://localhost:3402. ხანგრძლივობა: 326.9 წმ. PASS: 20; FAIL: 18. SQL seed: 0 (გამოძახებები: []). [სრული ანგარიში](e2e-report.json). FAIL დამოკიდებულება მიუთითებს შეუსრულებელ წინაპირობაზე და არა დადასტურებულ დამოუკიდებელ პროდუქტის ხარვეზზე.
+| ნაბიჯი | დადასტურებული მიზეზი | შესწორება / მტკიცებულება | კლასიფიკაცია |
+|---|---|---|---|
+| A01 | დარგი აღარ არის combobox; „ავეჯი“ მოკლე სიაში არ ჩანს. რეგისტრაციის submit ტექსტია „დარეგისტრირდით“. | `AuthForms.tsx:237`, `ui/CategoryChips.tsx:16`; runner ხსნის ყველა კატეგორიას და ირჩევს radiogroup „დარგი“ → radio „ავეჯი“. | სკრიპტის სელექტორი |
+| A04–A09 | ლოგოს input-ის სახელი მთავრდება „დაამატეთ“; პროდუქტის ღილაკია „დაამატეთ პროდუქტი“, ბოლო ნაბიჯები — „გადახედეთ“ / „დაასრულეთ“. | `ui/ImageUpload.tsx:58`, `OnboardSteps.tsx:105`, `OnboardPage.tsx:219`; მიმდინარე E2E ანგარიში. | სკრიპტის სელექტორი |
+| A08 | დამალულ input-ზე პირდაპირი setInputFiles შესაძლებელი იყო სიის პირველი ჩატვირთვის დასრულებამდე; tax ფაილი ბაზაში აიტვირთა (checklist შესრულებული), მაგრამ სიის პასუხმა ახალ ელემენტს გადააწერა. | `FileAttachments.tsx:12`, `:16`, `:19`; runner ახლა ხილული „დამატება“ ღილაკით ხსნის file chooser-ს. ღილაკი სიის ჩატვირთვამდე disabled-ია; ამ რეალურ UI გზაზე A08 PASS. | სკრიპტი გვერდს უვლიდა UI-ის readiness-ს |
+| B04 | `HomeLive.tsx:21` ფილტრავს სათაურში `/ტესტ\|test\|e2e/i`-ს; ძველი `ხის მაგიდები e2e-…` მუდმივად იფილტრებოდა. | `HomeLive.tsx:21–22,45`: ღია მოთხოვნები newest-first, მაქს. 9; პირველი 5 „ახალი მოთხოვნები“, შემდეგი 4 live strip. ფოტოს, ვერიფიცირებული მყიდველისა და კატეგორიის დამატებითი ფილტრი აქ არ არის. საბაზო `market-store.js:608–623` ასევე გამორიცხავს შიდა ტესტურ ანგარიშებს/სათაურებს. ახალი ნეიტრალური უნიკალური სათაური B03/B04-ს გადის. | სატესტო მონაცემი; არა ISR-ის ხარვეზი |
+| B04 / T5.2 | გვერდი `connection()`-ს იყენებს; დასრულებული snapshot აღარ ქეშდება. | `app/(home)/page.tsx:17–18`, `lib/public-snapshot.js:48–66`: მხოლოდ მიმდინარე read ერთიანდება, დასრულებისას იწმინდება. მიმდინარე JSON-ის `observations` შეიცავს navigationToVisibleMs და sincePublishConfirmedMs-ს. ეს ზედა ზღვრის გაზომვაა (goto-ს ჩატვირთვის ლოდინით), არა ქეშის TTL. | ქეშის ხარვეზი არ დადასტურდა |
+| B06 | ვადა გახდა `7 დღე` preset; გადახდა — CustomSelect-ის `100% მიწოდებისას`. | `offer/DeliveryDaysField.tsx:10`, `offer/PaymentTermsField.tsx:11`; B06–B15 რეალური ახალი მოთხოვნის/გარიგების ციკლს გადის. | სკრიპტის სელექტორი |
+| D01 | შესვლის submit ტექსტია „შედით“; შენახული hotel/wood/admin სესიები ამ სელექტორს არ იყენებდა, ახალი კომპანიის პირველი login კი ძველ „შესვლა“-ს ელოდა. | `AuthForms.tsx:99–100`; მესამე რაუნდი 352.8 წმ, 37 PASS / 1 FAIL. სელექტორი შესწორდა; საბოლოო სრული განმეორებითი გაშვება 38 PASS / 0 FAIL-ით დასრულდა. | სკრიპტის სელექტორი |
+
+შუალედური რაუნდი ქსელის გათიშვით დასრულდა: 4700.2 წმ, 25 PASS / 13 FAIL; ლოგში `ERR_INTERNET_DISCONNECTED` და შეჩერებული ტაიმერები. ეს პროდუქტის რეგრესიის მტკიცებულება არ არის. იმ რაუნდში დამალული შეფასება ადმინისტრატორის UI-ით აღდგა. ქვემოთ მოცემული სრული განმეორებითი გაშვება არის საბოლოო შედეგის წყარო; ზემოთ არსებული პირველი აუდიტი ისტორიულია.
+
+
+## მუდმივი E2E — 2026-10-13T15:28:33.872Z
+
+გაშვება: `cd web && npm run dev -- --port 3402 --webpack`, შემდეგ `cd web && npm run e2e`. BASE: http://localhost:3402. ხანგრძლივობა: 338.4 წმ. PASS: 38; FAIL: 0. SQL seed: 0 (გამოძახებები: []). [სრული ანგარიში](e2e-report.json). FAIL დამოკიდებულება მიუთითებს შეუსრულებელ წინაპირობაზე და არა დადასტურებულ დამოუკიდებელ პროდუქტის ხარვეზზე.
 
 | ნაბიჯი | შედეგი |
 |---|---|
@@ -130,52 +149,41 @@ QA სკრიპტების `node --check`, Markdown evidence link-ებ�
 | A09-onboarding-review-dashboard | PASS |
 | B01-hotel-close-old-e2e-requests | PASS |
 | B02-hotel-publish-request-photo | PASS |
-| B03-guest-request-list | FAIL |
-| B04-guest-home | FAIL |
+| B03-guest-request-list | PASS |
+| B04-guest-home | PASS |
 | B05-wood-matching | PASS |
-| B06-wood-offer-file | FAIL |
-| B07-wood-withdraw-offer | FAIL |
-| B08-wood-resend-offer | FAIL |
-| B09-hotel-compare-select | FAIL |
-| B10-deal-discuss-both-directions | FAIL |
-| B11-deal-terms-both-confirm | FAIL |
-| B12-deal-progress-file-download | FAIL |
-| B13-deal-complete | FAIL |
-| B14-deal-review | FAIL |
-| B15-review-public-profile | FAIL |
-| C01-admin-return-documents | FAIL |
-| C02-company-return-reason | FAIL |
+| B06-wood-offer-file | PASS |
+| B07-wood-withdraw-offer | PASS |
+| B08-wood-resend-offer | PASS |
+| B09-hotel-compare-select | PASS |
+| B10-deal-discuss-both-directions | PASS |
+| B11-deal-terms-both-confirm | PASS |
+| B12-deal-progress-file-download | PASS |
+| B13-deal-complete | PASS |
+| B14-deal-review | PASS |
+| B15-review-public-profile | PASS |
+| C01-admin-return-documents | PASS |
+| C02-company-return-reason | PASS |
 | C03-company-resubmit-documents | PASS |
 | C04-admin-approve-verification | PASS |
 | C05-company-public-verification-badge | PASS |
-| C06-admin-hide-review | FAIL |
-| C07-admin-restore-review | FAIL |
+| C06-admin-hide-review | PASS |
+| C07-admin-restore-review | PASS |
 | C08-hotel-complaint | PASS |
 | C09-admin-resolve-complaint | PASS |
-| C10-hotel-complaint-result-georgian | FAIL |
-| C11-admin-catalog-image-public | FAIL |
+| C10-hotel-complaint-result-georgian | PASS |
+| C11-admin-catalog-image-public | PASS |
 | C12-admin-catalog-image-restore | PASS |
 | D01-guest-request-login-context | PASS |
 
 | ID | ფაქტი | მტკიცებულება | სიმძიმე | ფაილი | acceptance |
 |---|---|---|---|---|---|
-| QA-14 | B06-wood-offer-file: locator.fill: Timeout 12000ms exceeded. Call log:   - waiting for locator('#of-body')  \| wood: console error: Failed to load resource: the server responded with a status of 429 () \| wood: console error: MarketStore: refresh failed Error: Too many requests. Please try again later.     at authFetch (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:245:23)     at async eval (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:272:48)     at async loadUserJwt (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:293:20)     at async load (webpack-internal:///(app-pages-browser)/./app/lib/market-store.js:834:55) \| wood: HTTP 429 GET https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session RPC=(none) body={"message":"Too many requests. Please try again later."} | [კადრი](shots/e2e/16-b06-wood-offer-file-wood-1440.png), [კადრი](shots/e2e/16-b06-wood-offer-file-wood-390.png); e2e-report.json | P2 / დასაკვლევი | web/app/components/market/SendOfferForm.tsx; RequestViewPageContent.tsx; runner: web/qa/e2e-full.mjs (B06-wood-offer-file); root cause დასადგენია | შესაბამისი ნაბიჯი სრულდება UI-ით, console/pageerror/overflow = 0 |
-| QA-15 | C01-admin-return-documents: owner_admin: console error: Failed to load resource: the server responded with a status of 429 () \| owner_admin: HTTP 429 GET https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session RPC=(none) body={"message":"Too many requests. Please try again later."} | [კადრი](shots/e2e/26-c01-admin-return-documents-owner_admin-1440.png), [კადრი](shots/e2e/26-c01-admin-return-documents-owner_admin-390.png); e2e-report.json | P2 / დასაკვლევი | web/app/components/market/VerificationDocuments.tsx; AdminReviews.tsx; AdminReports.tsx; runner: web/qa/e2e-full.mjs (C01-admin-return-documents); root cause დასადგენია | შესაბამისი ნაბიჯი სრულდება UI-ით, console/pageerror/overflow = 0 |
-| QA-16 | C02-company-return-reason: newcompany: console error: Failed to load resource: the server responded with a status of 429 () \| newcompany: HTTP 429 GET https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session RPC=(none) body={"message":"Too many requests. Please try again later."} | [კადრი](shots/e2e/27-c02-company-return-reason-newcompany-1440.png), [კადრი](shots/e2e/27-c02-company-return-reason-newcompany-390.png); e2e-report.json | P2 / დასაკვლევი | web/app/components/market/VerificationDocuments.tsx; AdminReviews.tsx; AdminReports.tsx; runner: web/qa/e2e-full.mjs (C02-company-return-reason); root cause დასადგენია | შესაბამისი ნაბიჯი სრულდება UI-ით, console/pageerror/overflow = 0 |
-| QA-17 | C10-hotel-complaint-result-georgian: Complaint status must be Georgian; displayed: rejected | [კადრი](shots/e2e/35-c10-hotel-complaint-result-georgian-hotel-1440.png), [კადრი](shots/e2e/35-c10-hotel-complaint-result-georgian-hotel-390.png); e2e-report.json | P2 / დასაკვლევი | web/app/components/market/EngagementPanels.tsx (NoticeDetail); runner: web/qa/e2e-full.mjs (C10-hotel-complaint-result-georgian); root cause დასადგენია | შესაბამისი ნაბიჯი სრულდება UI-ით, console/pageerror/overflow = 0 |
-| QA-18 | C11-admin-catalog-image-public: page.waitForFunction: Timeout 12000ms exceeded. | [კადრი](shots/e2e/36-c11-admin-catalog-image-public-owner_admin-1440.png), [კადრი](shots/e2e/36-c11-admin-catalog-image-public-owner_admin-390.png), [კადრი](shots/e2e/36-c11-admin-catalog-image-public-content-guest-1440.png), [კადრი](shots/e2e/36-c11-admin-catalog-image-public-content-guest-390.png); e2e-report.json | P2 / დასაკვლევი | web/app/components/market/AdminContentEditor.tsx; CompaniesPageContent.tsx; runner: web/qa/e2e-full.mjs (C11-admin-catalog-image-public); root cause დასადგენია | შესაბამისი ნაბიჯი სრულდება UI-ით, console/pageerror/overflow = 0 |
-| QA-19 | დამოკიდებული ნაბიჯები — იხ. e2e-report.json (11 ნაბიჯი) | [ანგარიში](e2e-report.json) | დამოკიდებულება | web/qa/e2e-full.mjs | ფესვური ბლოკერების გასწორების შემდეგ ნაბიჯები სრულდება |
 
 
-დარჩენილი: B03-guest-request-list, B04-guest-home, B06-wood-offer-file, B07-wood-withdraw-offer, B08-wood-resend-offer, B09-hotel-compare-select, B10-deal-discuss-both-directions, B11-deal-terms-both-confirm, B12-deal-progress-file-download, B13-deal-complete, B14-deal-review, B15-review-public-profile, C01-admin-return-documents, C02-company-return-reason, C06-admin-hide-review, C07-admin-restore-review, C10-hotel-complaint-result-georgian, C11-admin-catalog-image-public. სკრინშოტები ადგილობრივია, git-ში არ დაამატოთ.
+დარჩენილი: არ არის. სკრინშოტები ადგილობრივია, git-ში არ დაამატოთ.
 
-გაშვების დამატებითი დიაგნოსტიკა:
+პროდუქტის დადასტურებული ხარვეზები ამ 38-ნაბიჯიან ციკლში: **არ არის**. HTTP შეცდომები, console/pageerror, document overflow (1440/390/360): 0; 429 retry: 0; SQL seed: 0.
 
-- A01-ის საწყისი `complete_profile` HTTP 400 იყო `MA405` — განმეორებით გამოყენებული ტელეფონის ნომერი. ყოველი გაშვების უნიკალური ნომრით A01 და სრული onboarding ახლა PASS-ია; ცარიელი დასრულების ფორმის fallback შენარჩუნებულია.
-- B03/B04: `listRequests({includeTests:false})` და `isInternalTestRequest` საჯაროდ ფილტრავს `[e2e]` მოთხოვნებს (`market-store.js`, `catalog-visibility.js`). მოთხოვნა B02-ში შეიქმნა და B05 matching-ში გამოჩნდა. მოთხოვნილი პრეფიქსი შენარჩუნებულია.
-- B06, C01, C02 და B04: Neon Auth `get-session` HTTP 429; ზუსტი URL და პასუხის ტექსტი ზემოთ და JSON-ის `http` ველშია. B06-ის შემდეგ 11 ნაბიჯი დამოკიდებულების გამო FAIL-ია. ეს 11 ცალკე პროდუქტის ხარვეზი არ არის.
-- C10: შედეგი აჩვენებს ინგლისურ `rejected`-ს. C11: გამოქვეყნებული კატალოგის ფოტო `/companies/` გვერდის სურათებში არ გამოჩნდა. C12-ით თავდაპირველი ფოტოს ბაიტები აღდგა.
-- B01: UI-ით გასუფთავება საკმარისი აღმოჩნდა; `freeRequestQuota` SQL seed არ შესრულებულა. მისი SQL ლოკალურ PostgreSQL-ში `EXPLAIN`-ით შემოწმდა, მონაცემების ცვლილების გარეშე.
-- საბოლოო გაშვება: 326.9 წმ, 20 PASS / 18 FAIL, 7 დამოუკიდებელი FAIL-რიგი და 11 დამოკიდებული ნაბიჯი. წინამორბედ დიაგნოსტიკურ გაშვებაში შესრულდა გარიგების terms/progress/download/complete და შეფასების მოდერაცია; საბოლოო ანგარიშში მათი შედეგი არ გადმოტანილა.
+B04 საბოლოო გაზომვა: პირველი ნავიგაციიდან ხილვადობის დადასტურებამდე **2.381 წმ**; გამოქვეყნების დადასტურებიდან **14.000 წმ**. მეორე რიცხვი მოიცავს B02/B03-ის კადრებსა და ნაბიჯებს შორის ≥3 წმ პაუზებს; ეს არ არის ქეშის TTL ან რეალური დაგვიანების ქვედა ზღვარი.
 
-სკრიპტის ბოლო ცვლილება (ხელახლა გაშვების გარეშე): საჯარო `[e2e]` ფილტრი პროდუქტის განზრახ წესია, ამიტომ B03/B04-ის ხარვეზის რიგები ამოღებულია. ახალი სათაურია `ხის მაგიდები e2e-<ts>`; cleanup ეძებს hotel-ის `title ilike '%e2e-%'` ღია მოთხოვნებს. ზემოთ არსებული ნაბიჯების ცხრილი და JSON წინა გაშვების ისტორიული შედეგებია. ახალი ვერსია როლის context-ს ხელახლა იყენებს, ნაბიჯებს შორის მინიმუმ 3 წამს იცდის და HTTP 429-ზე ნაბიჯს 60 წამის შემდეგ მაქსიმუმ ორჯერ იმეორებს; ყველა მცდელობის მტკიცებულება JSON-ის `attempts` ველში ინახება. ახალი შედეგები ინტეგრირებულ აპზე ორკესტრატორის გაშვებას ელოდება.
+შემოწმდა `BASE=http://localhost:3402 npm run e2e` (exit 0), `node --check web/qa/e2e-full.mjs`, `git diff --check`. კადრები ვიზუალურად დათვალიერდა რეგისტრაციის/onboarding-ის, მთავარის, ვერიფიცირებული პროფილისა და საბოლოო შეთავაზების ფორმისთვის. PNG-ები git-ში არ შედის. პროდუქტის კოდი არ შეცვლილა. ინტეგრაციასა და სამიზნე checkout-ის გადამოწმებას ასრულებს გამხსნელი ორკესტრატორი: `agent integrate 7C38C6A8-43F3-4B49-BE6F-8B927E5E27DC`.
