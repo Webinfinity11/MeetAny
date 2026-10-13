@@ -1,5 +1,5 @@
 "use client";
-import { DuoIcon } from "../ui/DuoIcon";
+import { CategoryIcon } from "../ui/CategoryIcon";
 import { Button } from "../ui/Button";
 
 
@@ -204,22 +204,22 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     <input type="checkbox" role="switch" checked={verified} onChange={e => setFilters({ verified: e.target.checked ? "1" : "" })} />
     <span className={styles.switchTrack} aria-hidden="true" /><span>მხოლოდ ვერიფიცირებული</span>
   </label>;
-  const categoryRow = (id: string, label: string, icon: string, expanded?: boolean) =>
+  const categoryRow = (id: string, label: string, expanded?: boolean) =>
     <Button variant="ghost" className={styles.categoryRow} aria-pressed={category === id} aria-expanded={expanded}
       onClick={() => setFilters({ category: category === id ? "" : id })}>
-      {!id ? <Icon name={icon} /> : <DuoIcon family="category" name={categoryGroups.find(g => g.id === id)?.items[0]?.[0] || id} size={15} />}<span>{label}</span><small>{facetCount("category", id)}</small>
+      <CategoryIcon id={id} tile /><span>{label}</span><small>{facetCount("category", id)}</small>
     </Button>;
   const requestFilters = (mobile = false) => <div className={`${styles.requestFilters} ${mobile ? styles.mobileRequestFilters : ""}`}>
     <section><h3>კატეგორიები</h3><ul>
-      <li>{categoryRow("", "ყველა", "layout-grid")}</li>
+      <li>{categoryRow("", "ყველა")}</li>
       {categoryGroups.map(group => {
         const expanded = category === group.id || groupOf[category] === group.id;
         const hasChildren = group.items.some(([id]) => id !== group.id);
         return <li key={group.id}>
           {/* One label everywhere (sidebar, sheet, chips): the group's full name. */}
-          {categoryRow(group.id, group.name, group.icon, hasChildren ? expanded : undefined)}
+          {categoryRow(group.id, group.name, hasChildren ? expanded : undefined)}
           {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
-            <li key={id}>{categoryRow(id, label, group.icon)}</li>
+            <li key={id}>{categoryRow(id, label)}</li>
           )}</ul>}
         </li>;
       })}

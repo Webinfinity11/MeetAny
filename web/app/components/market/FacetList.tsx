@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { categoryGroups } from "../../lib/categories";
+import { CategoryIcon } from "../ui/CategoryIcon";
 import { DuoIcon } from "../ui/DuoIcon";
 
 // One tap = one result: a row filters, and a group's categories open under it while the group or
@@ -8,7 +10,7 @@ import { DuoIcon } from "../ui/DuoIcon";
 export type Facet = { id: string; label: string; count: number; icon?: string; children?: Facet[] };
 
 const VISIBLE = 8;
-const groupGlyphs: Record<string,string> = {food:"food_fresh",construction:"renovation",interior:"furniture",production:"packaging",logistics:"freight",trade:"wholesale",facility:"cleaning",it:"software_web",marketing:"advertising",business:"consulting",finance:"business_finance",tourism:"hotel_services",other:"other"};
+const categoryGroupIds = new Set(categoryGroups.map(g => g.id));
 
 export function FacetList({
   all,
@@ -40,7 +42,7 @@ export function FacetList({
       aria-pressed={activeId === f.id}
       onClick={() => onSelect(f.id)}
     >
-      {child ? null : <DuoIcon family={groupGlyphs[f.id] ? "category" : "solar"} name={groupGlyphs[f.id] || f.icon || (f.id ? "map-pin" : "layout-grid")} size={20} className="catalog-facet__icon" />}
+      {child ? null : !f.id || categoryGroupIds.has(f.id) ? <CategoryIcon id={f.id} tile className="catalog-facet__icon" /> : <DuoIcon name={f.icon || "map-pin"} size={20} className="catalog-facet__icon" />}
       <span className="catalog-facet__label">{f.label}</span>
       <span className="catalog-facet__count">{!loading && f.count >= 0 ? f.count : ""}</span>
     </button>

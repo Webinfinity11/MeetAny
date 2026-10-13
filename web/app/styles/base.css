@@ -46,5 +46,30 @@ body.ma{margin:0;min-width:var(--size-320);font-family:var(--font-sans);font-siz
   color: var(--action);
 }
 
+/* Category marks (components/ui/CategoryIcon, Phosphor Duotone sprite): brand line + 20% fill in a
+   rounded tinted square. On a pressed (brand-filled) row the square turns white, so the mark keeps its contrast. */
+.category-glyph {
+  flex: none;
+}
+.category-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-28);
+  height: var(--size-28);
+  border-radius: var(--radius-sm);
+  background: var(--blue-50);
+  color: var(--action);
+  transition: background-color var(--motion-fast) var(--motion-ease), color var(--motion-fast) var(--motion-ease);
+}
+.category-icon .category-glyph {
+  width: var(--size-18);
+  height: var(--size-18);
+}
+[aria-pressed="true"] > .category-icon {
+  background: var(--white);
+  color: var(--action-strong);
+}
+
 /* TT (FiraGO's Georgian case feature) is shared by headings and action buttons.
    Paragraphs, field values, metadata and informational badges retain regular letters. */

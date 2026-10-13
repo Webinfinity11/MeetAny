@@ -7,6 +7,7 @@ import { Button } from "./ui/Button";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./Icon";
+import { CategoryIcon } from "./ui/CategoryIcon";
 import { DuoIcon } from "./ui/DuoIcon";
 import type { SearchSuggestion } from "../lib/search-suggestions";
 
@@ -58,7 +59,7 @@ export function SearchCombobox({ id, label, placeholder, value, onChange, sugges
           return <Fragment key={s.id}>{heading}<button type="button" role="option" aria-selected={active === index} id={`${id}-option-${index}`} tabIndex={-1}
             className={`search-suggestion search-suggestion--${s.kind}`} onMouseDown={e => e.preventDefault()} onPointerMove={() => setActive(index)} onClick={() => pick(index)}>
             {s.kind === "category"
-              ? <span className="search-suggestion__category-icon"><DuoIcon family="category" name={s.category} size={18} /></span>
+              ? <span className="search-suggestion__category-icon"><CategoryIcon id={s.category} size={18} /></span>
               : s.image ? <Image className="search-suggestion__thumb" src={s.image} alt="" loading="lazy" width={36} height={36} unoptimized={!optimizable(s.image)} />
               : <span className="search-suggestion__thumb search-suggestion__thumb--initials" aria-hidden="true">{s.href.startsWith("/companies/") ? <DuoIcon name="building-2" size={20} /> : <DuoIcon name="file-text" size={20} />}</span>}
             <span><strong><Highlight text={s.label} query={value} /></strong><small>{s.detail}</small></span>

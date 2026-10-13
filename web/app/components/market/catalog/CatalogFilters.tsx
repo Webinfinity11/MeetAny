@@ -1,8 +1,7 @@
 "use client";
 import { categoryGroups, cities, groupOf } from "../../../lib/categories";
 import { Button } from "../../ui/Button";
-import { DuoIcon } from "../../ui/DuoIcon";
-import { Icon } from "../../Icon";
+import { CategoryIcon } from "../../ui/CategoryIcon";
 import styles from "./Catalog.module.css";
 
 export const majorCities = ["tbilisi", "batumi", "kutaisi"];
@@ -14,22 +13,22 @@ export function CatalogFilters({ category, city, verified, companies = false, co
   onChange: (values: Record<string, string>) => void;
 }) {
   const categoryKey = companies ? "industry" : "category";
-  const row = (id: string, label: string, icon: string, expanded?: boolean) =>
+  const row = (id: string, label: string, expanded?: boolean) =>
     <Button variant="ghost" className={styles.categoryRow} aria-pressed={category === id} aria-expanded={expanded}
       onClick={() => onChange({ [categoryKey]: category === id ? "" : id })}>
-      {!id ? <Icon name={icon} /> : <DuoIcon family="category" name={categoryGroups.find(g => g.id === id)?.items[0]?.[0] || id} size={15} />}
+      <CategoryIcon id={id} tile />
       <span>{label}</span>{count && <small>{count("category", id)}</small>}
     </Button>;
   return <div className={styles.requestFilters}>
     <section><h3>კატეგორიები</h3><ul>
-      <li>{row("", "ყველა", "layout-grid")}</li>
+      <li>{row("", "ყველა")}</li>
       {categoryGroups.map(group => {
         const expanded = category === group.id || groupOf[category] === group.id;
         const hasChildren = group.items.some(([id]) => id !== group.id);
         return <li key={group.id}>
-          {row(group.id, group.name, group.icon, hasChildren ? expanded : undefined)}
+          {row(group.id, group.name, hasChildren ? expanded : undefined)}
           {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
-            <li key={id}>{row(id, label, group.icon)}</li>
+            <li key={id}>{row(id, label)}</li>
           )}</ul>}
         </li>;
       })}

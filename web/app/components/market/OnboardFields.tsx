@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Button } from '../ui/Button';
+import { CategoryIcon } from '../ui/CategoryIcon';
 import { CustomSelect } from '../ui/CustomSelect';
 import { Icon } from '../Icon';
 import { categories, featuredCategories } from '../../lib/categories';
@@ -57,7 +58,7 @@ export function OnboardCategories({ values, onChange, compact = false, limit = 3
   const keys = all ? Object.keys(categories) : [...new Set([...featuredCategories, ...values])];
   const label = (key: string) => categories[key as keyof typeof categories] || key;
   return <><div className={compact ? s.chips : s.categoryGrid}>{keys.map(key => <Button variant={values.includes(key)?"primary":"secondary"} key={key} title={label(key)} aria-pressed={values.includes(key)} className={values.includes(key) ? s.selected : ''} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><use href={`/icons-categories.svg#${key}`} /></svg><span>{label(key)}</span>{!compact && values.includes(key) && <Icon name="check" />}
+    <CategoryIcon id={key} size={16} /><span>{label(key)}</span>{!compact && values.includes(key) && <Icon name="check" />}
   </Button>)}</div>
   <Button variant="ghost" size="sm" className={s.allCategories} aria-expanded={all} onClick={() => setAll(!all)}><Icon name={all ? 'chevron-up' : 'chevron-down'} />{all ? 'მხოლოდ ძირითადი კატეგორიები' : `ყველა კატეგორია (${Object.keys(categories).length})`}</Button></>;
 }

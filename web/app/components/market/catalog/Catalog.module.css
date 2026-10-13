@@ -106,9 +106,11 @@
 .requestFilters h3 { margin: 0 0 var(--space-3); font-size: var(--size-14); color: var(--text); }
 .requestFilters ul { list-style: none; margin: 0; padding: 0; }
 .requestFilters li + li { margin-top: var(--size-2); }
-.requestFilters .categoryRow { display: flex; width: 100%; min-height: var(--size-40); height: auto; gap: var(--size-10); padding: var(--size-8) var(--size-10); border: 0; border-radius: var(--size-8); background: transparent; box-shadow: none; color: var(--text-2); font-size: var(--size-14); font-weight: var(--fw-regular); text-align: start; white-space: normal; }
-.categoryRow > span,.filterCheck > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.categoryRow > svg { width: var(--size-17); height: var(--size-17); flex: none; }
+.requestFilters .categoryRow { display: flex; width: 100%; min-height: var(--size-40); height: auto; gap: var(--size-6); padding: var(--size-8) var(--size-10) var(--size-8) var(--size-6); border: 0; border-radius: var(--size-8); background: transparent; box-shadow: none; color: var(--text-2); font-size: var(--size-14); font-weight: var(--fw-regular); text-align: start; white-space: normal; }
+/* The label grows; the icon tile (aria-hidden) keeps its size. `:not(:global(...))` is dropped by the CSS-modules compiler. */
+.categoryRow > span:not([aria-hidden]),.filterCheck > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.requestFilters .categoryRow :global(.category-icon) { width: var(--size-24); height: var(--size-24); }
+.requestFilters .categoryRow :global(.category-icon .category-glyph) { width: var(--size-16); height: var(--size-16); }
 .categoryRow small,.filterCheck small { flex: none; color: var(--text-3); font-size: var(--size-12); font-weight: var(--fw-regular); }
 .requestFilters .categoryRow:hover { background: var(--white); }
 .requestFilters .categoryRow[aria-pressed="true"] { background: var(--action-strong); color: var(--white); font-weight: var(--fw-semibold); }
@@ -156,7 +158,9 @@
 .mobileRequestFilters section:first-child > ul { display: flex; flex-wrap: wrap; gap: var(--size-8); }
 .mobileRequestFilters li + li { margin-top: 0; }
 .mobileRequestFilters .categoryRow { width: auto; min-height: var(--tap-min); padding: var(--size-6) var(--size-12); border: var(--size-1) solid var(--ink-200); border-radius: var(--btn-radius); font-size: var(--btn-fs); font-weight: var(--btn-weight); gap: var(--size-6); }
-.mobileRequestFilters .categoryRow > svg { width: var(--size-15); height: var(--size-15); }
+.mobileRequestFilters .categoryRow { padding-left: var(--size-6); }
+.mobileRequestFilters .categoryRow :global(.category-icon) { width: var(--size-28); height: var(--size-28); }
+.mobileRequestFilters .categoryRow :global(.category-icon .category-glyph) { width: var(--size-18); height: var(--size-18); }
 .mobileRequestFilters .categoryRow small { display: none; }
 .mobileRequestFilters .categoryRow[aria-pressed="true"] { border-color: var(--action-strong); background: var(--action-strong); color: var(--white); }
 .mobileRequestFilters .subcategories { display: flex; flex-wrap: wrap; gap: var(--size-8); margin: var(--size-8) 0; }
