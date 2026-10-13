@@ -1,4 +1,5 @@
 "use client";
+import { CategoryChips, ChipsInput, ImageUpload, type ImageUploadItem } from "../../components/ui";
 import { useState } from "react";
 import { Modal, type ModalTone } from "../../components/ui/Modal";
 import { ConfirmSheet } from "../../components/ui/ConfirmSheet";
@@ -14,10 +15,23 @@ import toastStyles from "../../components/Toasts.module.css";
 export default function UIPage() {
   const [modal, setModal] = useState<ModalTone | null>(null);
   const [confirm, setConfirm] = useState(false);
+  const [category, setCategory] = useState<string[]>([]), [categories, setCategories] = useState(['food_fresh', 'beverages']);
+  const [chips, setChips] = useState<string[]>([]), [full, setFull] = useState(['მიწოდება', 'შეფუთვა']);
+  const [logo, setLogo] = useState<ImageUploadItem[]>([]), [gallery, setGallery] = useState<ImageUploadItem[]>([]);
   if (process.env.NODE_ENV === "production") notFound();
   return <main className="ma-container ma-stack">
     <h1>MeetAny UI</h1>
     <p>ღილაკები და სტატუსის ნიშნები იყენებს საერთო ფერებს, ზომებსა და ფოკუსის წესებს.</p>
+    <h2>კატეგორიები — ერთი არჩევანი</h2>
+    <CategoryChips id="demo-single" label="დარგი" value={category} onChange={setCategory} />
+    <h2>კატეგორიები — რამდენიმე არჩევანი, ლიმიტი</h2>
+    <CategoryChips id="demo-multiple" label="მომარაგება" value={categories} onChange={setCategories} multiple limit={2} compact />
+    <h2>პუნქტების დამატება</h2>
+    <div className="ui-preview-grid"><ChipsInput id="demo-chips" label="რას ვთავაზობთ" values={chips} onChange={setChips} suggestions={['მიწოდება', 'მონტაჟი']} />
+    <ChipsInput id="demo-limit" label="ლიმიტი" values={full} onChange={setFull} max={2} /></div>
+    <h2>ლოგო და გალერეა</h2>
+    <div className="ui-preview-grid"><ImageUpload id="demo-logo" label="ლოგო" kind="logo" items={logo} onChange={setLogo} />
+    <ImageUpload id="demo-gallery" label="ფოტოები" kind="gallery" items={gallery} onChange={setGallery} /></div>
     <h2>მოდალური ფანჯრები</h2>
     <div>{(["neutral", "success", "warning", "danger", "info"] as const).map(tone => <Button key={tone} variant="secondary" onClick={() => setModal(tone)}>Modal {tone}</Button>)}<Button variant="secondary" onClick={() => setConfirm(true)}>დასტურის ფანჯარა</Button></div>
     <Modal open={modal !== null} onClose={() => setModal(null)} title="შეთავაზების გაგზავნა" lead="გადაამოწმეთ დეტალები გაგზავნამდე." tone={modal || "neutral"} icon={{ neutral: "file-text", success: "circle-check", warning: "triangle-alert", danger: "circle-alert", info: "info" }[modal || "neutral"]}

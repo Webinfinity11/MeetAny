@@ -7,3 +7,6 @@ export { Sheet, type SheetProps } from "./Sheet";
 export { Modal, type ModalProps, type ModalTone } from "./Modal";
 export { Notice, type NoticeProps, type NoticeTone } from "./Notice";
 export { ConfirmSheet } from "./ConfirmSheet";
+export { CategoryChips, type CategoryChipsProps } from "./CategoryChips";
+export { ChipsInput, type ChipsInputProps } from "./ChipsInput";
+export { ImageUpload, type ImageUploadProps, type ImageUploadItem } from "./ImageUpload";

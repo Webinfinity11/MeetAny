@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Button } from '../ui/Button';
-import { CategoryIcon } from '../ui/CategoryIcon';
+import { CategoryChips } from '../ui/CategoryChips';
+import { ChipsInput } from '../ui/ChipsInput';
 import { CustomSelect } from '../ui/CustomSelect';
 import { Icon } from '../Icon';
-import { categories, featuredCategories } from '../../lib/categories';
 import s from './onboarding.module.css';
 
 // Lucide shopping-cart from the artboard source; absent from the shared sprite.
@@ -41,24 +41,16 @@ export function OnboardItems({ label, values, onChange, suggestions = [], checkb
   const id = useId(), [text, setText] = useState(''), [adding, setAdding] = useState(!checkboxes);
   const [customOptions, setCustomOptions] = useState(values);
   const add = () => { const value = text.trim(); if (value && values.length < 8 && !values.includes(value)) { onChange([...values, value]); setCustomOptions(previous => [...new Set([...previous, value])]); setText(''); } };
+  if (!checkboxes) return <ChipsInput id={id} label={label} values={values} onChange={onChange} suggestions={suggestions} compact={rows} />;
   const customButton = <Button variant="secondary" className={s.customAdd} aria-label={`${label} — საკუთარი`} aria-expanded={adding} disabled={values.length >= 8} onClick={() => setAdding(!adding)}><Icon name="plus" />საკუთარი</Button>;
   return <div className={s.items} role="group" aria-label={label}>
-    {!checkboxes && <div className={s.cardHeading}><label htmlFor={id}>{label}</label><span>{values.length} / 8</span></div>}
-    {checkboxes ? <div className={s.checkboxes}>{[...new Set([...suggestions, ...customOptions, ...values])].map(value => <label key={value}><input type="checkbox" checked={values.includes(value)} disabled={!values.includes(value) && values.length >= 8} onChange={() => onChange(values.includes(value) ? values.filter(item => item !== value) : [...values, value])} />{value}</label>)}{customButton}</div>
-      : <div className={rows ? s.itemRows : s.chips}>{values.map((value, index) => <Button variant="secondary" className={s.selected} key={index} onClick={() => onChange(values.filter((_, i) => i !== index))} aria-label={`${value} — წაშლა`}>{rows && <span className={s.reviewIcon}><Icon name="package" /></span>}<span>{value}</span><Icon name="x" /></Button>)}
-      {suggestions.filter(value => !values.includes(value)).map(value => <Button key={value} variant="secondary" disabled={values.length >= 8} onClick={() => onChange([...values, value])}>{value}<Icon name="plus" /></Button> )}</div>}
+    <div className={s.checkboxes}>{[...new Set([...suggestions, ...customOptions, ...values])].map(value => <label key={value}><input type="checkbox" checked={values.includes(value)} disabled={!values.includes(value) && values.length >= 8} onChange={() => onChange(values.includes(value) ? values.filter(item => item !== value) : [...values, value])} />{value}</label>)}{customButton}</div>
     {adding && <div className={s.addItem}><input id={id} aria-label={label} value={text} maxLength={120} placeholder="დაამატეთ" onChange={e => setText(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} /><Button variant="secondary" disabled={!text.trim() || values.length >= 8 || values.includes(text.trim())} onClick={add}>დამატება</Button></div>}
     {adding && text.trim() && <small>ჩანაწერის შესანახად დააჭირეთ „დამატებას“.</small>}
   </div>;
 }
 /** Steps 1 (what you supply) and 5 (what you buy) pick from the same list with the same names:
  *  the featured categories first, every other one under "all categories". */
-export function OnboardCategories({ values, onChange, compact = false, limit = 34, count }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number; count?: string }) {
-  const [all, setAll] = useState(false);
-  const keys = all ? Object.keys(categories) : [...new Set([...featuredCategories, ...values])];
-  const label = (key: string) => categories[key as keyof typeof categories] || key;
-  return <><div className={s.categoryGrid} data-compact={compact || undefined}>{keys.map(key => <Button variant="secondary" key={key} title={label(key)} aria-pressed={values.includes(key)} disabled={!values.includes(key) && values.length >= limit} onClick={() => onChange(values.includes(key) ? values.filter(v => v !== key) : [...values, key])}>
-    <CategoryIcon id={key} tile /><span>{label(key)}</span><span className={s.chipCheck} aria-hidden="true"><Icon name="check" /></span>
-  </Button>)}</div>
-  <div className={s.categoryFooter}><Button variant="ghost" size="sm" className={s.allCategories} aria-expanded={all} onClick={() => setAll(!all)}><Icon name={all ? 'chevron-up' : 'chevron-down'} />{all ? 'მხოლოდ ძირითადი კატეგორიები' : `ყველა კატეგორია (${Object.keys(categories).length})`}</Button>{count && <span className={s.categoryCount} aria-live="polite">{count}</span>}</div></>;
+export function OnboardCategories({ values, onChange, compact = false, limit, count }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number; count?: string }) {
+  return <CategoryChips multiple value={values} onChange={onChange} compact={compact} limit={limit} count={count} />;
 }

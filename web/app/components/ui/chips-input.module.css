@@ -1,0 +1,14 @@
+.root{min-width:0}
+.chips,.suggestions{display:flex;flex-wrap:wrap;gap:var(--space-2);list-style:none;padding:0;margin:0}
+.chips:empty{display:none}
+.chips li{display:flex;align-items:center;gap:var(--space-2);max-width:100%;padding-left:var(--space-3);border:var(--size-1) solid var(--border);border-radius:var(--field-radius);background:var(--bg-subtle);font-size:var(--fs-sm);font-weight:var(--fw-regular);font-feature-settings:normal}
+.chips li>span{min-width:0;overflow-wrap:anywhere}
+.chips li>svg{flex:none}
+.root .remove{flex:none;min-width:var(--tap-min);min-height:var(--tap-min);padding:0}
+.root .suggestion{--ff-button:normal;height:auto;min-height:var(--tap-min);max-width:100%;white-space:normal;font-feature-settings:normal;font-weight:var(--fw-regular);letter-spacing:normal}
+.control{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
+.control input{flex:1;min-width:0;width:100%}
+.control button{flex:none}
+@media(max-width:480px){.control input{flex-basis:100%}}
+
+.root :global(.ma-field__label){display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-2)}

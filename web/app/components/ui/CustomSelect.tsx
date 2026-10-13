@@ -133,7 +133,7 @@ export function CustomSelect({ children, className = "", id, ref, value, default
     <span ref={panel} id={menuId} role="listbox" popover="manual" className="ma-select-menu"
       aria-label={props["aria-label"] || undefined} aria-labelledby={props["aria-label"] ? undefined : controlId}
       onPointerDown={event => event.preventDefault()}>
-      {options.map((option, index) => <span key={`${option.value}-${index}`} id={`${menuId}-${index}`} role="option"
+      {options.map((option, index) => option.disabled && option.value.startsWith("__") ? <span key={`${option.value}-${index}`} role="presentation" style={{ padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--fs-xs)', color: 'var(--text-2)', fontWeight: 'var(--fw-regular)', fontFeatureSettings: 'normal' }}>{option.label}</span> : <span key={`${option.value}-${index}`} id={`${menuId}-${index}`} role="option"
         aria-selected={index === selected} aria-disabled={option.disabled || undefined}
         data-active={index === active || undefined} className="ma-select-menu__option"
         onPointerMove={() => { if (!option.disabled) setActive(index); }} onClick={event => { event.preventDefault(); event.stopPropagation(); pick(index); }}>
