@@ -21,7 +21,7 @@ select public.admin_resolve_report(t.get('rn_reject'),'reject','  დარღ�
 select t.as_user('rn_a');
 select t.ok(exists(select 1 from jsonb_array_elements(public.list_notifications()->'items') n
  where n->>'kind'='report_resolved' and n->'detail'->>'report_id'=t.get('rn_reject')::text
- and n->'detail'->>'resolution'='rejected' and n->'detail'->>'resolution_reason'='დარღვევა არ დადასტურდა'),
+ and n->'detail'->>'result'='rejected' and n->'detail'->>'note'='დარღვევა არ დადასტურდა'),
  'RN rejected reason and result reach reporter through list_notifications');
 select t.as_user('rn_b');
 select t.ok(not exists(select 1 from jsonb_array_elements(public.list_notifications()->'items') n
@@ -35,12 +35,12 @@ select t.as_user('rp_admin');
 select public.admin_resolve_report(t.get('rn_hide_a'),'hide',repeat('ა',500));
 select t.as_user('rn_a');
 select t.ok(exists(select 1 from jsonb_array_elements(public.list_notifications()->'items') n
- where n->'detail'->>'report_id'=t.get('rn_hide_a')::text and n->'detail'->>'resolution'='hidden'
- and n->'detail'->>'resolution_reason'=repeat('ა',500)),'RN hide reason preserves 500 Unicode characters');
+ where n->'detail'->>'report_id'=t.get('rn_hide_a')::text and n->'detail'->>'result'='hidden'
+ and n->'detail'->>'note'=repeat('ა',500)),'RN hide reason preserves 500 Unicode characters');
 select t.as_user('rn_b');
 select t.ok(exists(select 1 from jsonb_array_elements(public.list_notifications()->'items') n
- where n->'detail'->>'report_id'=t.get('rn_hide_b')::text and n->'detail'->>'resolution'='hidden'
- and n->'detail'->>'resolution_reason'=repeat('ა',500)),'RN bulk close notifies every reporter');
+ where n->'detail'->>'report_id'=t.get('rn_hide_b')::text and n->'detail'->>'result'='hidden'
+ and n->'detail'->>'note'=repeat('ა',500)),'RN bulk close notifies every reporter');
 select t.ok(not exists(select 1 from jsonb_array_elements(public.list_notifications()->'items') n
  where n->'detail'->>'report_id'=t.get('rn_hide_a')::text),'RN each reporter gets only their own report id');
 select t.as_user('rn_owner');
@@ -50,6 +50,6 @@ select t.as_super();
 select t.ok((select hidden from public.requests where id=t.get('rn_request')),'RN original hide action still executes');
 select t.ok((select count(*)=3 from meetany_private.reports where target_id=t.get('rn_request') and status='handled'),'RN all reports retain handled state');
 select t.ok((select count(*)=2 from meetany_private.business_audit where target_id in(t.get('rn_reject'),t.get('rn_hide_a')) and action like 'report_%'),'RN audit trail preserved');
-select t.ok(not exists(select 1 from meetany_private.notifications where user_id in(t.uid('rn_a'),t.uid('rn_b')) and length(detail->>'resolution_reason')>500),'RN notification reasons are bounded');
+select t.ok(not exists(select 1 from meetany_private.notifications where user_id in(t.uid('rn_a'),t.uid('rn_b')) and length(detail->>'note')>500),'RN notification reasons are bounded');
 \o
 select 'Report result note tests: '||(count(*)-(select n from t.report_result_note_start))||' passed' from t.passed;
