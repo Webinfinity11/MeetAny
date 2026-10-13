@@ -80,6 +80,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const [pending, setPending] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState("");
+  const [limitError, setLimitError] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [published, setPublished] = useState<{ id: string; title: string; createdAt: string } | null>(null);
   const actions = useRef<HTMLDivElement>(null);
@@ -101,6 +102,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const user = store.currentUser();
   const city = otherCity ? cityChoice : cityChoice || (user?.city && Object.hasOwn(cities, user.city) ? user.city : "tbilisi");
   const signedIn = sessionStatus === "ready" && !!user;
+  const openRequestCount = signedIn ? store.listRequests({ ownerId: user.id, state: "open" }).length : 0;
   const current: RequestDraft = { title, category, city, addressNote, quantity, unit, neededByText: draftText(neededBy), body, preferences, attachmentDraft };
   const hasContent = hasRequestDraftContent(current);
   const latest = useRef({ hasContent });
@@ -236,7 +238,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
     }
     if (preferenceError(preferences)) { go(2);setError(preferenceError(preferences));return; }
     if (!signedIn || sessionStatus !== "ready") return;
-    submitting.current = true; setPending(true); setError("");
+    submitting.current = true; setPending(true); setError(""); setLimitError(false);
     try {
       const created = await store.createRequest({ title, category, city, addressNote: addressNote.trim() || null, quantity, unit, neededBy, body, photo,preferences,attachmentDraft });
       clearRequestDraft();
@@ -245,6 +247,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
       setPublished({ id: created.id, title: created.title, createdAt: created.createdAt });
       window.scrollTo({ top: 0 });
     } catch (err) {
+      setLimitError((err as { code?: string })?.code === "MA105");
       setError((err as { userMessage?: string })?.userMessage || "მოთხოვნა ვერ გამოქვეყნდა. სცადეთ ხელახლა.");
     } finally { submitting.current = false; setPending(false); }
   }
@@ -255,6 +258,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
 
   return <div className={`post-page ${styles.page}`} style={{ '--post-actions-height': `${published ? 0 : actionsHeight}px` } as CSSProperties}>
     {!published ? <header className="post-heading"><h1 ref={heading} tabIndex={-1}>მოთხოვნის განთავსება</h1></header> : null}
+    {!published && openRequestCount >= 5 ? <div className={styles.connectionNotice} role="status"><p>თქვენ გაქვთ {openRequestCount} ღია მოთხოვნა — დახურეთ ერთი, რომ ახალი გამოაქვეყნოთ.</p><Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button></div> : null}
     {!published ? <StepBar step={step} /> : null}
     {published ? <>
       <section className="post-published">
@@ -319,7 +323,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
         </fieldset>
       </form>
       <div className="post-actions" ref={actions}><div className="post-actions__inner">
-        {error ? <p className="ma-field__error" role="alert">{error}</p> : null}
+        {error ? <div className="ma-field__error" role="alert"><p>{error}</p>{limitError ? <Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button> : null}</div> : null}
         {saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `ტექსტი შენახულია · ${saved.at}` : `ტექსტი შენახულია ამ ბრაუზერში · ${saved.at}`}{photo ? <span> · ფოტო არ ინახება მონახაზში</span> : null}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null}
         <div className="post-actions__buttons">{step > 1 ? <Button variant="secondary" size="lg" className={styles.backButton} aria-label="უკან" title="უკან" disabled={pending||fileBusy} onClick={() => go(step - 1)}><Icon name="arrow-left"/><span className={styles.long}>უკან</span></Button> : null}
           {signedIn ? <Button variant="secondary" size="lg" disabled={pending||fileBusy||!hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}><span className={styles.long}>მონახაზად შენახვა</span><span className={styles.short}>მონახაზი</span></Button> : null}

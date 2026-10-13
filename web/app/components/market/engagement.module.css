@@ -243,3 +243,5 @@
 .noticeGroup{padding:var(--space-4);border-bottom:var(--size-1) solid var(--border)}
 .groupHeading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
 .noticeGroup summary{min-height:var(--tap-min);padding:var(--space-3) 0;cursor:pointer}
+
+.noticeSheet .noticeDetail{display:block;border:0;padding:0}

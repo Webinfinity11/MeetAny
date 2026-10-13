@@ -25,3 +25,20 @@ test('expanded group preserves each notification for reading and navigation',()=
  assert.equal(result.grouped.length,2);
  assert.equal(result.groups.size,0);
 });
+
+test('deal notices use agreed totals and never the original offer while loading',()=>{
+ const {notificationTerms}=context.exports;
+ const offer={price:2800,deliveryDays:18};
+ const deal={total_price:2400,delivery_days:12};
+ assert.equal(notificationTerms({deal_id:'deal'},deal,offer).price,2400);
+ assert.equal(notificationTerms({deal_id:'deal'},deal,offer).days,12);
+ assert.equal(notificationTerms({deal_id:'deal'},undefined,offer).price,undefined);
+ assert.equal(notificationTerms({deal_id:'deal'},null,offer).days,undefined);
+ assert.equal(notificationTerms({},undefined,offer).price,2800);
+});
+test('report outcomes never expose an internal enum',()=>{
+ const {reportResolutionLabel}=context.exports;
+ assert.equal(reportResolutionLabel('rejected'),'უარყოფილია');
+ assert.equal(reportResolutionLabel('hidden'),'დაკმაყოფილდა');
+ assert.equal(reportResolutionLabel('future-enum'),'საჩივარი განხილულია');
+});
