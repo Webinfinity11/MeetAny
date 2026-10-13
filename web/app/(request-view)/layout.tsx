@@ -8,6 +8,7 @@ import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/requests/view/" },
   title: "მოთხოვნა — MeetAny",
   description: "ბიზნესის მოთხოვნა და კომპანიების შეთავაზებები MeetAny-ზე.",
   icons: siteIcons,

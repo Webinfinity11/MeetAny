@@ -1,3 +1,5 @@
+import { JsonLd } from "../components/JsonLd";
+import { siteUrl } from "../lib/site-url";
 import Link from "next/link";
 import Image from "next/image";
 import { connection } from "next/server";
@@ -67,5 +69,12 @@ export default async function HomePage() {
     <HomeSupplier />
     <HomeFaq />
     <HomeCta />
+    <JsonLd data={{ "@context": "https://schema.org", "@graph": [
+      { "@type": "WebSite", name: "MeetAny", url: `${siteUrl()}/`, potentialAction: {
+        "@type": "SearchAction", target: `${siteUrl()}/requests/?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      } },
+      { "@type": "Organization", name: "MeetAny", url: `${siteUrl()}/`, logo: `${siteUrl()}/assets/favicon.png` },
+    ] }} />
   </>;
 }

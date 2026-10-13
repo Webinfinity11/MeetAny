@@ -1,0 +1,92 @@
+[
+  {
+    "width": 1440,
+    "path": "/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "path": "/requests/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "path": "/companies/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "path": "/companies/view/?id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "path": "/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "path": "/requests/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "path": "/companies/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "path": "/companies/view/?id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 360,
+    "path": "/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 360,
+    "path": "/requests/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 360,
+    "path": "/companies/",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 360,
+    "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+    "overflow": 0,
+    "errors": []
+  },
+  {
+    "width": 360,
+    "path": "/companies/view/?id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "overflow": 0,
+    "errors": []
+  }
+]

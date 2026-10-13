@@ -1,0 +1,232 @@
+
+> web@0.1.0 test
+> node --test qa/unit/*.test.mjs
+
+✔ offer groups retain latest position and all sender rows without mutating input (66.0395ms)
+✔ unknown request and deal notifications are never collapsed into request offers (0.32225ms)
+✔ expanded group preserves each notification for reading and navigation (2.05975ms)
+✔ deal notices use agreed totals and never the original offer while loading (0.655875ms)
+✔ report outcomes never expose an internal enum (0.154875ms)
+(node:24650) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/admin-user-filters.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pending company filter targets unverified, unblocked companies for list and export (3.083584ms)
+✔ verification document statuses filter unverified companies by their documents (0.157792ms)
+✔ existing user statuses keep their meaning (10.885708ms)
+
+Interrupted while running:
+
+⚠ qa/unit/auth-bootstrap.test.mjs (qa/unit/auth-bootstrap.test.mjs:1:1)
+⚠ qa/unit/auth-config.test.mjs (qa/unit/auth-config.test.mjs:1:1)
+⚠ qa/unit/auth-mode-intent.test.mjs (qa/unit/auth-mode-intent.test.mjs:1:1)
+⚠ qa/unit/auth-redirect.test.mjs (qa/unit/auth-redirect.test.mjs:1:1)
+⚠ qa/unit/auth-session-cache.test.mjs (qa/unit/auth-session-cache.test.mjs:1:1)
+⚠ qa/unit/avatar.test.mjs (qa/unit/avatar.test.mjs:1:1)
+⚠ qa/unit/catalog.test.mjs (qa/unit/catalog.test.mjs:1:1)
+⚠ qa/unit/category-groups.test.mjs (qa/unit/category-groups.test.mjs:1:1)
+⚠ qa/unit/distribution.test.mjs (qa/unit/distribution.test.mjs:1:1)
+⚠ qa/unit/lint-design.test.mjs (qa/unit/lint-design.test.mjs:1:1)
+⚠ qa/unit/mobile-phone.test.mjs (qa/unit/mobile-phone.test.mjs:1:1)
+⚠ qa/unit/offer-deal-terms.test.mjs (qa/unit/offer-deal-terms.test.mjs:1:1)
+⚠ qa/unit/onboarding-draft.test.mjs (qa/unit/onboarding-draft.test.mjs:1:1)
+⚠ qa/unit/pending-company-profile.test.mjs (qa/unit/pending-company-profile.test.mjs:1:1)
+⚠ qa/unit/products-import.test.mjs (qa/unit/products-import.test.mjs:1:1)
+⚠ qa/unit/public-snapshot.test.mjs (qa/unit/public-snapshot.test.mjs:1:1)
+⚠ qa/unit/read-timeout.test.mjs (qa/unit/read-timeout.test.mjs:1:1)
+⚠ qa/unit/registration-event.test.mjs (qa/unit/registration-event.test.mjs:1:1)
+⚠ qa/unit/request-draft.test.mjs (qa/unit/request-draft.test.mjs:1:1)
+⚠ qa/unit/rpc-value.test.mjs (qa/unit/rpc-value.test.mjs:1:1)
+(node:24651) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24651) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✖ qa/unit/auth-bootstrap.test.mjs (166600.47475ms)
+(node:24652) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/next.config.ts?auth-configured is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser Auth URL and CSP both come from the server Auth environment (675.536458ms)
+✔ missing Auth configuration does not silently sign users into the demo environment (5.1535ms)
+(node:24653) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/auth-redirect.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ company role and an offer return path do not imply registration (14.484667ms)
+✔ offer copy preserves text context with a 120 character limit (0.407125ms)
+(node:24654) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/auth-redirect.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ next preserves local filters and anchors (19.588375ms)
+✔ next rejects remote and browser-normalized remote paths (14.537667ms)
+(node:24655) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/auth-session-preload.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ten page loads reuse persisted session, memory and JWT until exp minus 60 seconds (306.463333ms)
+✔ logout clears persistence, pending preload and notifies another tab (2.596542ms)
+✔ 429 uses still-valid JWT during safety minute and retries exactly once after 30 seconds (23.138708ms)
+(node:24655) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ 429 without usable cache has Georgian message and one successful delayed retry (4.681834ms)
+✔ logout while get-session is pending prevents old session repopulation (1.44575ms)
+✔ generated preload uses persisted session and only fetches bootstrap (3.720459ms)
+✔ expired JWT is removed and never used as a 429 fallback (1.09825ms)
+✔ a missed cross-tab invalidation is detected on the next page load (0.611625ms)
+✖ qa/unit/auth-session-cache.test.mjs (166587.849209ms)
+(node:24656) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/avatar-initials.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ quotes and punctuation never count as letters (194.401167ms)
+✔ legal forms are skipped, with or without punctuation (10.658625ms)
+✔ Georgian stays mkhedruli, Latin is upper-cased (0.290625ms)
+✔ names without letters fall back to a question mark (0.181292ms)
+(node:24657) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/read-all-rows.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+MarketStore: { message: 'not found', code: 'PGRST205' }
+(node:24657) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ UUID pagination returns every row, including an exact full final page (9.618875ms)
+✔ pagination rejects a repeated page or failed page instead of publishing incomplete data (26.560042ms)
+✔ table cursor remains parameterized and column/table/order injection is rejected (48.004625ms)
+✔ store retains old owned requests, all companies, and offers beyond row 1000 (1101.261208ms)
+✔ company detail works without the catalog, distinguishes missing/error, and ignores stale responses (156.956208ms)
+✔ saving products preserves the complete JSON array, including empty lists (521.29025ms)
+✔ public discovery omits internal fixtures while owners and admin can inspect them (1.55025ms)
+✔ route detail cache reuses a completed session, while explicit reads stay fresh (1087.882583ms)
+✔ listRequests finds a request by its owner name and mapRequest carries the public budget (185.522167ms)
+(node:24661) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/categories-data.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ database category groups equal the JS category groups (1.487958ms)
+(node:24668) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/distribution-filter.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ distributor brands and combined catalog filters (2.401375ms)
+✔ სკალა: 4px 64-მდე, შემდეგ 8px; ახალი გამონაკლისი ვერ გაივლის (122.107166ms)
+✔ ბმულები და calc მოწმდება; არარსებული და ციკლური ბმულები ვერ გაივლის (10.808291ms)
+✔ რადიუსები ფიქსირებული სიით და ძველი გამონაკლისი ზუსტი მნიშვნელობით (1.453875ms)
+✔ ნედლი px calc-ში ყველა განლაგების თვისებაზე იძლევა ფაილსა და ხაზს (53.507584ms)
+✔ კონტროლის სიმაღლე სკალაზე და მინიმუმ 44px; შიდა ხატულა და ფსევდოელემენტი ცალკეა (12.819791ms)
+✔ TSX inline რიცხვები იკრძალება; Image props და SVG ნებადართულია (38.539458ms)
+✔ არსებული gradient, ნედლი ფერი და Button წესები შენარჩუნებულია (3.376167ms)
+(node:24670) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/mobile-phone.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Georgian local and international mobile numbers have one storage format (13.046667ms)
+✔ A country prefix, incomplete mobile number or landline is not a registration phone (0.335083ms)
+✔ offer comparison retains exact semantics, including nulls and ordered commercial terms (8.544583ms)
+✔ unchanged deal terms do not require a new revision; insignificant outer whitespace is ignored (0.210167ms)
+✔ deal comparison detects a real change in p_total_price (0.129583ms)
+✔ deal comparison detects a real change in p_quantity (0.101917ms)
+✔ deal comparison detects a real change in p_unit (0.093458ms)
+✔ deal comparison detects a real change in p_delivery_days (0.07725ms)
+✔ deal comparison detects a real change in p_delivery_date (0.093875ms)
+✔ deal comparison detects a real change in p_delivery_place (0.10225ms)
+✔ deal comparison detects a real change in p_payment_terms (0.110625ms)
+✔ deal comparison detects a real change in p_includes (0.231334ms)
+✔ deal comparison detects a real change in comment (0.110958ms)
+✔ editing draft is restored only for its exact offer and server revision (0.50075ms)
+✔ new draft survives reload and another request draft is untouched (0.157958ms)
+✔ partial save recovery survives RPC 1 revision changes without re-sending the main offer (0.188375ms)
+✔ a conflicting partial draft is discarded instead of overwriting newer terms (0.151083ms)
+✔ malformed drafts do not prevent form loading (0.184917ms)
+✔ known payment aliases select one preset; additional conditions stay custom (0.293125ms)
+✔ a current revision draft takes precedence over older partial-save recovery (0.166875ms)
+✔ returning to an unfinished later step does not submit its invalid hidden draft (1.916667ms)
+✔ leaving onboarding includes later drafts so navigation cannot discard them (0.211041ms)
+✔ saving an earlier step keeps later legal, profile and product drafts (0.438167ms)
+✔ the onboarding steps follow the account intent (0.20475ms)
+✔ writes only cover the steps of the current intent (0.20875ms)
+✔ serialize includes only dirty fields and product strings, without files or server flags (0.795458ms)
+✔ restore never overwrites a step without dirty changes or server-owned media and flags (2.173375ms)
+✔ expired, foreign, future, malformed and identical drafts are ignored (0.736292ms)
+✔ type categories and products restore while saved steps can be removed independently (0.566458ms)
+✔ invalid editable data and injected non-dirty properties do not replace persisted values (0.361625ms)
+✔ progressive profiling allows blank optional legal and profile fields (0.482083ms)
+✔ products allow 100 rows and optional photos; empty rows do not block continuation (0.535ms)
+✔ draft round-trip retains imported product code, unit, price and optional photo (0.328125ms)
+✔ save filters blank products and normalizes optional strings to null (34.399125ms)
+✔ verification requirements use true as fulfilled and reject malformed RPC responses (0.570208ms)
+(node:24673) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24673) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✖ qa/unit/pending-company-profile.test.mjs (165680.473ms)
+(node:24676) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/xlsx-lite.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ template is a readable XLSX and preserves leading zero codes and optional price (5.638625ms)
+✔ empty name, unknown unit and textual price get Georgian row/column errors (0.352917ms)
+✔ 100 rows fit; 101 rows exceed the final catalog limit (7.255083ms)
+✔ updates replace fields, preserve gallery photos and do not count against the limit (0.23125ms)
+✔ duplicate file keys report both source row numbers (0.100125ms)
+✔ CSV accepts BOM, separators, CRLF, quoted decimal comma and multiline escaped quotes (0.42025ms)
+✔ limits, malformed archives and incorrect headers fail clearly (113.637042ms)
+✔ stored ZIP/data descriptors, inline rich text, entities, sparse rows and scientific numbers (40.388708ms)
+✔ a committed request is visible on the next page read even when another worker handles the write (25.104208ms)
+✔ public updates and removals do not remain in a previously read page snapshot (18.140625ms)
+(node:24690) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/read-timeout.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ a hung read aborts and releases its caller even when transport ignores abort (18.06825ms)
+✔ the timeout covers the response body and successful reads leave no abort (188.959042ms)
+(node:24691) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/registration-event.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ registration event accepts only the bounded privacy-safe schema (1.343792ms)
+✔ untouched form defaults do not create an unfinished request (52.790958ms)
+✔ meaningful content survives navigation, and erasing it clears the draft (1.577667ms)
+✔ expired and malformed drafts are ignored (1.978625ms)
+✔ disabled storage does not break the request form (2.015625ms)
+✔ specification and budget-only drafts survive navigation without legacy text (5.205625ms)
+✔ server draft: load normalizes the row and ignores empty drafts (3.259417ms)
+✔ server draft: save sends only allowed keys and returns updatedAt; delete calls the rpc (96.079167ms)
+✔ readRequestDraftAt returns the session save time or 0 (2.598375ms)
+✔ server draft keeps uploaded attachment references but never serializes a local photo (1.183083ms)
+(node:24696) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/lib/rpc-value.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ JSON lists, empty lists and nested values use JSON, not PostgreSQL array syntax (0.913125ms)
+✔ SQL text arrays keep their native parameter form (0.073666ms)
+ℹ tests 106
+ℹ suites 0
+ℹ pass 103
+ℹ fail 0
+ℹ cancelled 3
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 166631.139042
+
+✖ failing tests:
+
+test at qa/unit/auth-bootstrap.test.mjs:1:1
+✖ qa/unit/auth-bootstrap.test.mjs (166600.47475ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at qa/unit/auth-session-cache.test.mjs:1:1
+✖ qa/unit/auth-session-cache.test.mjs (166587.849209ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at qa/unit/pending-company-profile.test.mjs:1:1
+✖ qa/unit/pending-company-profile.test.mjs (165680.473ms)
+  'Promise resolution is still pending but the event loop has already resolved'

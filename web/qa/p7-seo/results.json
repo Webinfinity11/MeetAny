@@ -1,0 +1,83 @@
+{
+  "sitemapCount": 62,
+  "rows": [
+    {
+      "url": "http://localhost:3705/",
+      "title": "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
+      "description": "ერთი მოთხოვნა — რამდენიმე შეთავაზება. აღწერეთ საჭიროება და შეადარეთ ვერიფიცირებული კომპანიების შეთავაზებები.",
+      "length": 108,
+      "types": "WebSite, Organization"
+    },
+    {
+      "url": "http://localhost:3705/requests/",
+      "title": "ღია მოთხოვნები — MeetAny",
+      "description": "ბიზნესების ღია მოთხოვნები: გაუგზავნეთ შეთავაზება ან განათავსეთ საკუთარი მოთხოვნა და მიიღეთ კომპანიების შეთავაზებები.",
+      "length": 116,
+      "types": ""
+    },
+    {
+      "url": "http://localhost:3705/companies/",
+      "title": "კომპანიები — MeetAny",
+      "description": "MeetAny-ზე დარეგისტრირებული მომწოდებლები და მომსახურების კომპანიები: რას სთავაზობენ და სად მუშაობენ.",
+      "length": 100,
+      "types": ""
+    },
+    {
+      "url": "http://localhost:3705/how-it-works/",
+      "title": "როგორ მუშაობს — MeetAny",
+      "description": "როგორ იპოვოთ მომწოდებელი ან მიიღოთ შეკვეთები MeetAny-ზე: ნაბიჯები მყიდველისა და კომპანიისთვის, ნდობა და ხშირი კითხვები.",
+      "length": 119,
+      "types": ""
+    },
+    {
+      "url": "http://localhost:3705/terms/",
+      "title": "წესები და კონფიდენციალურობა — MeetAny",
+      "description": "MeetAny-ს გამოყენების წესები და პერსონალური მონაცემების დამუშავება.",
+      "length": 67,
+      "types": ""
+    },
+    {
+      "url": "http://localhost:3705/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "title": "ხის მაგიდების შესყიდვა 1791905313872 — MeetAny",
+      "description": "თბილისი. [e2e] 1791905313872 გვჭირდება 12 ხის მაგიდა სასტუმროსთვის, თბილისში მიწოდებით და აწყობით.",
+      "length": 98,
+      "types": "BreadcrumbList, Demand"
+    },
+    {
+      "url": "http://localhost:3705/requests/view/?id=ed931c31-b6c4-44c1-ba1d-7a0ad4e98af1",
+      "title": "ხის მაგიდების შესყიდვა 1791904926341 — MeetAny",
+      "description": "თბილისი. [e2e] 1791904926341 გვჭირდება 12 ხის მაგიდა სასტუმროსთვის, თბილისში მიწოდებით და აწყობით.",
+      "length": 98,
+      "types": "BreadcrumbList, Demand"
+    },
+    {
+      "url": "http://localhost:3705/requests/view/?id=2d72f9f1-30ce-4788-ac9a-bb9ef1a86908",
+      "title": "ხის მაგიდების შესყიდვა 1791899932067 — MeetAny",
+      "description": "თბილისი. [e2e] 1791899932067 გვჭირდება 12 ხის მაგიდა სასტუმროსთვის, თბილისში მიწოდებით და აწყობით.",
+      "length": 98,
+      "types": "BreadcrumbList, Demand"
+    },
+    {
+      "url": "http://localhost:3705/companies/view/?id=1877f069-837f-49fa-b4c6-91b79de45601",
+      "title": "[e2e] 1791905313872 კომპანია — MeetAny",
+      "description": "ავეჯი · თბილისი. [e2e] 1791905313872 ვამზადებთ ავეჯს ბიზნესებისთვის თბილისში.",
+      "length": 77,
+      "types": "Organization"
+    },
+    {
+      "url": "http://localhost:3705/companies/view/?id=010b3204-1ca1-4ca9-bd22-601ea36a942b",
+      "title": "[e2e] 1791904926341 კომპანია — MeetAny",
+      "description": "ავეჯი · თბილისი. [e2e] 1791904926341 ვამზადებთ ავეჯს ბიზნესებისთვის თბილისში.",
+      "length": 77,
+      "types": "Organization"
+    },
+    {
+      "url": "http://localhost:3705/companies/view/?id=64c86d01-83a5-4f47-945b-93a9d3e89985",
+      "title": "[e2e] 1791898427870 კომპანია — MeetAny",
+      "description": "ავეჯი · თბილისი. [e2e] 1791898427870 ვამზადებთ ავეჯს ბიზნესებისთვის თბილისში.",
+      "length": 77,
+      "types": "Organization"
+    }
+  ],
+  "failures": []
+}

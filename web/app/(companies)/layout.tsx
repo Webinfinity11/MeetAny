@@ -8,6 +8,7 @@ import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/companies/" },
   title: "კომპანიები — MeetAny",
   description:
     "MeetAny-ზე დარეგისტრირებული მომწოდებლები და მომსახურების კომპანიები: რას სთავაზობენ და სად მუშაობენ.",

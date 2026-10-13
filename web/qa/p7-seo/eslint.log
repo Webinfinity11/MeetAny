@@ -1,0 +1,32 @@
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/(ideas)/ideas/[slug]/page.tsx
+  13:239  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/BusinessIdeas.tsx
+  11:433  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/market/AdminContentEditor.tsx
+  28:152  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/market/AdminEditPanel.tsx
+  42:180   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  43:3430  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/market/AdminPhotos.tsx
+  20:109  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/market/CompanyProducts.tsx
+  143:180  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/market/PhotoField.tsx
+   54:9   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  100:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/market/RequestViewPageContent.tsx
+  314:130  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/kapana/Library/Application Support/ThreadRig/engine/AFAC28E2-3393-4209-B354-5EAB51817F1D/workspace/checkout/web/app/components/ui/ImageUpload.tsx
+  23:214  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+✖ 11 problems (0 errors, 11 warnings)
+

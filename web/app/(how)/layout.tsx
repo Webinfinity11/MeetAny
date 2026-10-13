@@ -10,6 +10,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/how-it-works/" },
   title: "როგორ მუშაობს — MeetAny",
   description: "როგორ იპოვოთ მომწოდებელი ან მიიღოთ შეკვეთები MeetAny-ზე: ნაბიჯები მყიდველისა და კომპანიისთვის, ნდობა და ხშირი კითხვები.",
   icons: {

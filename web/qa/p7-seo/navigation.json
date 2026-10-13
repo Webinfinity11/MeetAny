@@ -1,0 +1,14 @@
+[
+  {
+    "kind": "requests",
+    "href": "/requests/view/?id=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+    "url": "http://localhost:3705/requests/view/?id=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+    "errors": []
+  },
+  {
+    "kind": "companies",
+    "href": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "url": "http://localhost:3705/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+    "errors": []
+  }
+]

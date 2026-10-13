@@ -10,6 +10,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/" },
   title: "MeetAny — იპოვეთ თქვენი ბიზნესპარტნიორი",
   description: "ერთი მოთხოვნა — რამდენიმე შეთავაზება. აღწერეთ საჭიროება და შეადარეთ ვერიფიცირებული კომპანიების შეთავაზებები.",
   icons: {

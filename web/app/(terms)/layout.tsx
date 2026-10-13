@@ -7,6 +7,7 @@ import { SiteShell } from "../components/SiteShell";
 import { siteIcons, siteViewport } from "../lib/site-metadata";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms/" },
   title: "წესები და კონფიდენციალურობა — MeetAny",
   description: "MeetAny-ს გამოყენების წესები და პერსონალური მონაცემების დამუშავება.",
   icons: siteIcons,

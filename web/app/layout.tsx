@@ -1,3 +1,4 @@
+import { siteUrl } from "./lib/site-url";
 import type { ReactNode } from "react";
 import { RootDocument } from "./components/RootDocument";
 import "./styles/tokens.css";
@@ -6,7 +7,12 @@ import "./styles/primitives.css";
 import "./styles/patterns.css";
 import { siteIcons, siteViewport } from "./lib/site-metadata";
 
-export const metadata = { icons: siteIcons };
+export const metadata = {
+  metadataBase: new URL(siteUrl()),
+  icons: siteIcons,
+  openGraph: { siteName: "MeetAny", locale: "ka_GE", type: "website" as const },
+  twitter: { card: "summary_large_image" as const },
+};
 // resizes-content: Android shrinks the layout with the keyboard, so sticky/fixed bars stay above it.
 export const viewport = { ...siteViewport, interactiveWidget: "resizes-content" as const };
 
