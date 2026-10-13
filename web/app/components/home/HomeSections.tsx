@@ -21,24 +21,24 @@ export function HomeHeroStats({ stats }: { stats?: HomeStatsData | null }) {
   </li>)}</ul>;
 }
 
-/** Under the hero: the two ways in (buyer / supplier) and the counters the photo cards do not show. */
+/** Under the hero: the two ways in (buyer / supplier). Each card carries the one live number that backs it
+ *  (completed deals for buyers, open requests for suppliers) instead of a separate counter column. */
 export function HomeAudience({ stats }: { stats?: HomeStatsData | null }) {
-  const labels: Partial<Record<StatKey, [string, string | null]>> = { openRequests: ["ღია მოთხოვნა", "/requests/"], completedDeals: ["დასრულებული გარიგება", null] };
-  const items = counted(stats, ["openRequests", "completedDeals"]);
+  const [deals] = counted(stats, ["completedDeals"]);
+  const [open] = counted(stats, ["openRequests"]);
   return <section className={`home-wrap ${styles.audience}`} aria-label="ვისთვის არის MeetAny">
     <Link className={styles.path} href="/requests/new/">
       <span className={styles.pathIcon}><Icon name="building-2" /></span>
-      <span><strong>მჭირდება მომწოდებელი ან პარტნიორი</strong><span>აღწერეთ საჭიროება და მიიღეთ შეთავაზებები გადამოწმებული კომპანიებისგან.</span></span>
+      <span className={styles.pathCopy}><strong>მჭირდება მომწოდებელი ან პარტნიორი</strong><span>აღწერეთ საჭიროება და მიიღეთ შეთავაზებები გადამოწმებული კომპანიებისგან.</span>
+        {deals && <span className={styles.pathProof}><b>{formatNumber(deals[1], 0)}</b> დასრულებული გარიგება</span>}</span>
       <Icon name="arrow-right" className={styles.pathArrow} />
     </Link>
     <Link className={`${styles.path} ${styles.pathSupplier}`} href="/requests/">
       <span className={styles.pathIcon}><Icon name="users" /></span>
-      <span><strong>ვეძებ კლიენტებს</strong><span>ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზავნეთ შეთავაზება.</span></span>
+      <span className={styles.pathCopy}><strong>ვეძებ კლიენტებს</strong><span>ნახეთ, რა სჭირდებათ ბიზნესებს, და გაუგზავნეთ შეთავაზება.</span>
+        {open && <span className={`${styles.pathProof} ${styles.pathLive}`}><b>{formatNumber(open[1], 0)}</b> ღია მოთხოვნა ახლა</span>}</span>
       <Icon name="arrow-right" className={styles.pathArrow} />
     </Link>
-    {items.length > 0 && <dl className={styles.counters}>{items.map(([key, value]) => <div key={key}>
-      <dt>{labels[key]![1] ? <Link href={labels[key]![1]!}>{labels[key]![0]}</Link> : labels[key]![0]}</dt><dd>{formatNumber(value, 0)}</dd>
-    </div>)}</dl>}
   </section>;
 }
 

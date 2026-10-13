@@ -85,9 +85,9 @@
 .heroStat strong { color: var(--ink-950); font-size: var(--size-22); font-weight: var(--fw-bold); line-height: 1.15; font-variant-numeric: tabular-nums; }
 .heroStat > span:last-child { color: var(--ink-600); font-size: var(--fs-meta); line-height: var(--lh-eyebrow); }
 
-/* Two ways in under the hero, with the remaining counters beside them. */
-.audience { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: var(--size-16); align-items: stretch; margin-top: var(--size-32); }
-.path { display: grid; grid-template-columns: var(--size-48) minmax(0, 1fr) var(--size-20); gap: var(--size-16); align-items: center; min-width: 0; padding: var(--size-20); border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); color: var(--ink-950); text-decoration: none; transition: border-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease); }
+/* Two ways in under the hero; each card ends with the live number that backs it. */
+.audience { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); align-items: stretch; margin-top: var(--size-32); }
+.path { display: grid; grid-template-columns: var(--size-48) minmax(0, 1fr) var(--size-20); gap: var(--size-16); align-items: start; min-width: 0; padding: var(--size-20); border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); color: var(--ink-950); text-decoration: none; transition: border-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease); }
 .path:hover { border-color: var(--ink-400); box-shadow: var(--shadow-2); }
 .path:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .path strong { display: block; color: var(--ink-950); font-size: var(--fs-title); line-height: 1.35; }
@@ -97,12 +97,12 @@
 .pathIcon svg { width: var(--size-22); height: var(--size-22); }
 .pathArrow { width: var(--size-18); height: var(--size-18); color: var(--ink-500); transition: transform var(--motion-fast) var(--motion-ease); }
 .path:hover .pathArrow { transform: translateX(var(--size-2)); color: var(--ink-950); }
-.counters { display: flex; margin: 0; }
-.counters > div { display: flex; flex-direction: column-reverse; justify-content: center; gap: var(--size-2); min-width: 0; padding-inline: var(--size-24); border-left: var(--size-1) solid var(--ink-200); }
-.counters dd { margin: 0; color: var(--ink-950); font-size: var(--size-28); font-weight: var(--fw-bold); line-height: 1.2; font-variant-numeric: tabular-nums; }
-.counters dt { color: var(--ink-600); font-size: var(--fs-sm); line-height: var(--lh-sm); }
-.counters dt a { color: inherit; text-decoration: none; }
-.counters dt a:hover { color: var(--active-text); text-decoration: underline; text-underline-offset: var(--size-4); }
+.pathArrow { align-self: center; }
+.pathCopy { display: flex; flex-direction: column; min-width: 0; }
+/* The proof line: a quiet figure at the foot of the card, not a stat block of its own. */
+.pathProof { display: inline-flex; align-items: center; gap: var(--size-6); margin-top: var(--size-14); color: var(--ink-600); font-size: var(--fs-sm); line-height: var(--lh-sm); font-variant-numeric: tabular-nums; }
+.pathProof b { color: var(--ink-950); font-size: var(--fs-body); font-weight: var(--fw-bold); }
+.pathLive::before { content: ""; flex: none; width: var(--size-8); height: var(--size-8); border-radius: var(--radius-pill); background: var(--success-600); box-shadow: 0 0 0 var(--size-3) var(--success-50); }
 
 /* The live strip (requests placed / offers arriving) with its explanation. */
 .live { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: var(--size-56); align-items: center; }
@@ -149,9 +149,6 @@
 .supplier { margin-top: var(--size-80); }
 
 @media (max-width: 1023px) {
-  .audience { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .counters { grid-column: 1 / -1; padding-top: var(--size-8); }
-  .counters > div:first-child { border-left: 0; padding-left: 0; }
   .live { grid-template-columns: 1fr; gap: var(--size-24); }
   .rules { grid-template-columns: 1fr; }
   .rules li { display: grid; grid-template-columns: var(--size-44) minmax(0, 1fr); column-gap: var(--size-16); }
@@ -170,9 +167,7 @@
   .audience { grid-template-columns: 1fr; gap: var(--size-12); margin-top: var(--size-24); }
   .path { grid-template-columns: var(--size-44) minmax(0, 1fr) var(--size-18); gap: var(--size-14); padding: var(--size-16); }
   .pathIcon { width: var(--size-44); height: var(--size-44); }
-  .counters { padding-top: var(--size-4); }
-  .counters > div { flex: 1; padding-inline: var(--size-16); }
-  .counters dd { font-size: var(--size-26); }
+  .pathProof { margin-top: var(--size-12); }
   /* Phones: the two cards side by side along the photo's bottom edge. */
   .heroStats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; inset: auto var(--size-10) var(--size-10) var(--size-10); gap: var(--size-8); }
   /* The 13px label gets the card's full width; the icon is decoration and goes first on a phone. */
