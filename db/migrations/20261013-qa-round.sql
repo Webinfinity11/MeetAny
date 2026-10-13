@@ -73,7 +73,7 @@ language plpgsql security definer set search_path='' as $$
 declare me public.profiles:=meetany_private.require_user();
 begin
  if me.role<>'company' then perform meetany_private.flow_fail('MA901'); end if;
- if length(btrim(coalesce(me.company,'')))<2 or length(btrim(coalesce(me.about,'')))<10 then perform meetany_private.flow_fail('MA902'); end if;
+ if length(btrim(coalesce(me.company,'')))<2 then perform meetany_private.flow_fail('MA902'); end if;
  update public.profiles set onboarding_completed_at=coalesce(onboarding_completed_at,now()) where id=me.id returning * into me;
  return me;
 end $$;

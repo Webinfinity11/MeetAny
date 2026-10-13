@@ -40,7 +40,8 @@ select t.ok(public.verification_requirements()='{"legal_name":false,"registratio
 select t.ok((public.set_onboarding_details('both',null,null,'{}','{}',null,null,null,null,null,'{}','{}')).legal_name is null,'QA onboarding details accepts null legal fields');
 select t.ok((public.update_my_profile('QA Company','QA Company','tbilisi','other',repeat('a',1000))).about=repeat('a',1000),'QA about 1000 characters accepted');
 select t.throws($q$select public.update_my_profile('QA Company','QA Company','tbilisi','other',repeat('a',1001))$q$,'MA410','QA about 1001 characters rejected');
-select t.ok((public.complete_onboarding()).onboarding_completed_at is not null,'QA onboarding completes without any legal fields');
+select public.update_my_profile('QA Company','QA Company','tbilisi','other','');
+select t.ok((public.complete_onboarding()).onboarding_completed_at is not null and (select about='' from public.my_profile()),'QA onboarding completes with empty about and without any legal fields');
 select t.ok((select legal_name is null and registration_code is null and legal_form is null and employee_band is null and founded_year is null and not verified from public.my_profile()),'QA optional fields stay null and completion does not verify');
 select t.throws('select public.submit_verification()','MA902','QA legal fields still required for verification');
 select public.set_onboarding_details('both',null,null,'{}','{}','QA Legal',null,null,null,null,'{}','{}');

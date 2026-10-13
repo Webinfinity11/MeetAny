@@ -192,7 +192,7 @@ select t.throws($q$select public.become_company('Admin Company','other')$q$,'MA9
 -- Verification requires private legal files; submission locks them until admin review.
 select t.as_user('fc_b');
 select t.throws('select public.submit_verification()','MA902','FC incomplete verification rejected');
-select t.throws('select public.complete_onboarding()','MA902','FC incomplete company cannot complete onboarding');
+select t.ok((public.complete_onboarding()).onboarding_completed_at is not null and (select about='' from public.my_profile()),'FC company with empty about can complete onboarding');
 select t.as_super();
 update public.profiles set logo_url=null,about='A complete company description' where id=t.uid('fc_b');
 select t.as_user('fc_b');
