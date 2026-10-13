@@ -1,0 +1,2492 @@
+{
+ "origin": "http://127.0.0.1:3708",
+ "at": "2026-10-13T20:29:38.788Z",
+ "runs": 1,
+ "signedIn": true,
+ "pages": {
+  "request-view/desktop": {
+   "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+   "profile": "desktop",
+   "ttfb": 132,
+   "fcp": 360,
+   "lcp": 512,
+   "ready": 1006,
+   "load": 597,
+   "requests": 98,
+   "jsFiles": 31,
+   "jsTransferKB": 302.9,
+   "jsDecodedKB": 949.6,
+   "htmlKB": 59.7,
+   "imgFiles": 6,
+   "imgKB": 106.9,
+   "api": [
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 234,
+     "end": 253,
+     "ms": 19,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 562,
+     "end": 661,
+     "ms": 98,
+     "kb": 132.9
+    },
+    {
+     "url": "/api/db/rpc/unread_message_count",
+     "start": 826,
+     "end": 893,
+     "ms": 67,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_detail_extras",
+     "start": 892,
+     "end": 918,
+     "ms": 26,
+     "kb": 2
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "lcpNode": {
+      "tag": "P",
+      "class": "ma-prose",
+      "text": "სასტუმროსთვის გვჭირდება კვირაში 3 პალეტის თეთრეულისა და ჰიგიენური საშუალებების გადაზიდვა თბილისის საწყობიდან ბათუმში. ვე",
+      "url": ""
+     },
+     "longTasks": [
+      {
+       "start": 392.19999998807907,
+       "duration": 108
+      }
+     ],
+     "resources": [
+      {
+       "name": "/_next/static/css/e967102ed73aea84.css",
+       "start": 158,
+       "end": 177,
+       "transfer": 14951,
+       "decoded": 93005
+      },
+      {
+       "name": "/_next/static/css/76ce1c3ee0575260.css",
+       "start": 159,
+       "end": 178,
+       "transfer": 16085,
+       "decoded": 80877
+      },
+      {
+       "name": "/_next/static/css/bcd0d49fff016d7b.css",
+       "start": 159,
+       "end": 176,
+       "transfer": 1559,
+       "decoded": 4285
+      },
+      {
+       "name": "/_next/static/css/273fd2240ff12ccb.css",
+       "start": 159,
+       "end": 178,
+       "transfer": 9654,
+       "decoded": 64689
+      },
+      {
+       "name": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+       "start": 160,
+       "end": 176,
+       "transfer": 1818,
+       "decoded": 6104
+      },
+      {
+       "name": "/_next/static/css/45948d4eca5a1c86.css",
+       "start": 160,
+       "end": 177,
+       "transfer": 1543,
+       "decoded": 4957
+      },
+      {
+       "name": "/_next/static/css/ac7b9fe432e751b5.css",
+       "start": 160,
+       "end": 185,
+       "transfer": 5950,
+       "decoded": 34791
+      },
+      {
+       "name": "/_next/static/css/6d4fe2fe707ad8d0.css",
+       "start": 160,
+       "end": 184,
+       "transfer": 2099,
+       "decoded": 8422
+      },
+      {
+       "name": "/_next/static/css/abefc691cdb571a8.css",
+       "start": 160,
+       "end": 184,
+       "transfer": 810,
+       "decoded": 1360
+      },
+      {
+       "name": "/_next/static/css/f05892141ab715f5.css",
+       "start": 160,
+       "end": 185,
+       "transfer": 3663,
+       "decoded": 17784
+      },
+      {
+       "name": "/_next/static/css/b11c1961bfc47449.css",
+       "start": 160,
+       "end": 186,
+       "transfer": 8389,
+       "decoded": 49697
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+       "start": 162,
+       "end": 214,
+       "transfer": 2392,
+       "decoded": 2092
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+       "start": 162,
+       "end": 218,
+       "transfer": 1646,
+       "decoded": 1346
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+       "start": 162,
+       "end": 279,
+       "transfer": 2150,
+       "decoded": 1850
+      },
+      {
+       "name": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+       "start": 163,
+       "end": 280,
+       "transfer": 782,
+       "decoded": 482
+      },
+      {
+       "name": "/_next/static/chunks/webpack-28c4809a61ecfaff.js",
+       "start": 163,
+       "end": 274,
+       "transfer": 2893,
+       "decoded": 5327
+      },
+      {
+       "name": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+       "start": 163,
+       "end": 290,
+       "transfer": 63672,
+       "decoded": 201058
+      },
+      {
+       "name": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+       "start": 163,
+       "end": 293,
+       "transfer": 66799,
+       "decoded": 241480
+      },
+      {
+       "name": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+       "start": 163,
+       "end": 281,
+       "transfer": 3861,
+       "decoded": 8661
+      },
+      {
+       "name": "/_next/static/chunks/app/global-error-51b8ddff4d6e0a9d.js",
+       "start": 163,
+       "end": 295,
+       "transfer": 1462,
+       "decoded": 2459
+      },
+      {
+       "name": "/_next/static/chunks/4577-946d97d2e1e20ff2.js",
+       "start": 163,
+       "end": 296,
+       "transfer": 22048,
+       "decoded": 66901
+      },
+      {
+       "name": "/_next/static/chunks/app/layout-0df709fe6eea326c.js",
+       "start": 163,
+       "end": 296,
+       "transfer": 1865,
+       "decoded": 3957
+      },
+      {
+       "name": "/_next/static/chunks/852-7c150fa1080179b9.js",
+       "start": 163,
+       "end": 296,
+       "transfer": 4039,
+       "decoded": 9543
+      },
+      {
+       "name": "/_next/static/chunks/5201-24022607fa85bafa.js",
+       "start": 163,
+       "end": 301,
+       "transfer": 3470,
+       "decoded": 9567
+      },
+      {
+       "name": "/_next/static/chunks/5582-bbe068a9de999574.js",
+       "start": 163,
+       "end": 301,
+       "transfer": 5783,
+       "decoded": 14290
+      },
+      {
+       "name": "/_next/static/chunks/2402-cb9fa2b6f5986fb3.js",
+       "start": 163,
+       "end": 302,
+       "transfer": 5863,
+       "decoded": 13710
+      },
+      {
+       "name": "/_next/static/chunks/app/(ideas)/layout-c63e1dd1654edda0.js",
+       "start": 163,
+       "end": 302,
+       "transfer": 638,
+       "decoded": 338
+      },
+      {
+       "name": "/_next/static/chunks/6833-ed516ac0b254167a.js",
+       "start": 163,
+       "end": 302,
+       "transfer": 5469,
+       "decoded": 16676
+      },
+      {
+       "name": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+       "start": 163,
+       "end": 303,
+       "transfer": 9783,
+       "decoded": 33137
+      },
+      {
+       "name": "/_next/static/chunks/app/(request-view)/error-c594c9b772d7c3ef.js",
+       "start": 163,
+       "end": 305,
+       "transfer": 1362,
+       "decoded": 2209
+      },
+      {
+       "name": "/_next/static/css/05e0cfccf77e39c9.css",
+       "start": 163,
+       "end": 185,
+       "transfer": 831,
+       "decoded": 1455
+      },
+      {
+       "name": "http://127.0.0.1:3718/get-session",
+       "start": 234,
+       "end": 253,
+       "transfer": 0,
+       "decoded": 0
+      },
+      {
+       "name": "/icons.svg#search",
+       "start": 282,
+       "end": 307,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+       "start": 287,
+       "end": 322,
+       "transfer": 40216,
+       "decoded": 39916
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Medium-ge.woff2",
+       "start": 288,
+       "end": 322,
+       "transfer": 40296,
+       "decoded": 39996
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Regular-ge.woff2",
+       "start": 350,
+       "end": 372,
+       "transfer": 39732,
+       "decoded": 39432
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Bold-ge.woff2",
+       "start": 365,
+       "end": 390,
+       "transfer": 40400,
+       "decoded": 40100
+      },
+      {
+       "name": "/_next/static/chunks/1905-f46e33c4f1adf90d.js",
+       "start": 497,
+       "end": 513,
+       "transfer": 8412,
+       "decoded": 27475
+      },
+      {
+       "name": "/_next/static/chunks/6318-574eb1f0c57b3a08.js",
+       "start": 498,
+       "end": 513,
+       "transfer": 6690,
+       "decoded": 20394
+      },
+      {
+       "name": "/_next/static/chunks/4625-79289d57aa18b38a.js",
+       "start": 498,
+       "end": 513,
+       "transfer": 6355,
+       "decoded": 15267
+      },
+      {
+       "name": "/_next/static/chunks/4900-346438146a60b91c.js",
+       "start": 498,
+       "end": 515,
+       "transfer": 5845,
+       "decoded": 14692
+      },
+      {
+       "name": "/_next/static/chunks/7735-8a400e6ff4f21548.js",
+       "start": 499,
+       "end": 515,
+       "transfer": 3071,
+       "decoded": 8423
+      },
+      {
+       "name": "/_next/static/chunks/app/(request-view)/requests/view/page-b9cc1c765747c3bc.js",
+       "start": 499,
+       "end": 516,
+       "transfer": 10418,
+       "decoded": 35029
+      },
+      {
+       "name": "/api/db/bootstrap",
+       "start": 562,
+       "end": 661,
+       "transfer": 136434,
+       "decoded": 136134
+      },
+      {
+       "name": "/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 725,
+       "end": 748,
+       "transfer": 468,
+       "decoded": 266
+      },
+      {
+       "name": "/requests/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 726,
+       "end": 749,
+       "transfer": 476,
+       "decoded": 327
+      },
+      {
+       "name": "/companies/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 726,
+       "end": 749,
+       "transfer": 477,
+       "decoded": 329
+      },
+      {
+       "name": "/how-it-works/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 726,
+       "end": 749,
+       "transfer": 631,
+       "decoded": 832
+      },
+      {
+       "name": "/icons.svg#chevron-down",
+       "start": 739,
+       "end": 763,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/icons.svg#bell",
+       "start": 802,
+       "end": 874,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/requests/?focus=search&_rsc=PLIBLt6-pjCXHSCo",
+       "start": 812,
+       "end": 876,
+       "transfer": 486,
+       "decoded": 340
+      },
+      {
+       "name": "/requests/new/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 814,
+       "end": 878,
+       "transfer": 484,
+       "decoded": 383
+      },
+      {
+       "name": "/account/?tab=register&role=company&_rsc=PLIBLt6-pjCXHSCo",
+       "start": 815,
+       "end": 879,
+       "transfer": 686,
+       "decoded": 1101
+      },
+      {
+       "name": "/_next/static/css/e321a489414a012c.css",
+       "start": 817,
+       "end": 881,
+       "transfer": 3212,
+       "decoded": 14412
+      },
+      {
+       "name": "/_next/static/css/1610e7dcf2558b66.css",
+       "start": 818,
+       "end": 881,
+       "transfer": 1968,
+       "decoded": 7698
+      },
+      {
+       "name": "/_next/static/css/888e8e2f853ed8a2.css",
+       "start": 818,
+       "end": 886,
+       "transfer": 3438,
+       "decoded": 14182
+      },
+      {
+       "name": "/_next/static/css/f9c41be2fcfbabb6.css",
+       "start": 818,
+       "end": 888,
+       "transfer": 1824,
+       "decoded": 5542
+      },
+      {
+       "name": "/terms/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 819,
+       "end": 888,
+       "transfer": 588,
+       "decoded": 665
+      },
+      {
+       "name": "/api/db/rpc/unread_message_count",
+       "start": 826,
+       "end": 893,
+       "transfer": 301,
+       "decoded": 1
+      },
+      {
+       "name": "/api/db/rpc/request_detail_extras",
+       "start": 892,
+       "end": 918,
+       "transfer": 2310,
+       "decoded": 2010
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Ffurniture.jpg&w=128&q=75",
+       "start": 907,
+       "end": 914,
+       "transfer": 1226,
+       "decoded": 926
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Fconstruction.jpg&w=128&q=75",
+       "start": 907,
+       "end": 914,
+       "transfer": 4054,
+       "decoded": 3754
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Fwholesale.jpg&w=128&q=75",
+       "start": 907,
+       "end": 915,
+       "transfer": 5046,
+       "decoded": 4746
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Fport.jpg&w=128&q=75",
+       "start": 907,
+       "end": 915,
+       "transfer": 3200,
+       "decoded": 2900
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Fcleaning.jpg&w=128&q=75",
+       "start": 907,
+       "end": 915,
+       "transfer": 1798,
+       "decoded": 1498
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2Fdebb7d06-549b-49a7-be89-6122a2fb1c63%2Fdemo-delivery-0xOeGXZG00xKkeFyxmh2apvCrW9a0K.jpg&w=640&q=75",
+       "start": 907,
+       "end": 917,
+       "transfer": 95932,
+       "decoded": 95632
+      },
+      {
+       "name": "/?_rsc=I3JJyWD33F36RDvL",
+       "start": 930,
+       "end": 944,
+       "transfer": 1204,
+       "decoded": 1735
+      },
+      {
+       "name": "/requests/?_rsc=I3JJyWD33F36RDvL",
+       "start": 932,
+       "end": 947,
+       "transfer": 1194,
+       "decoded": 1832
+      },
+      {
+       "name": "/_next/static/css/661ea8bf2545e591.css",
+       "start": 933,
+       "end": 947,
+       "transfer": 3461,
+       "decoded": 18120
+      },
+      {
+       "name": "/_next/static/css/a539d4bf3ea20de9.css",
+       "start": 933,
+       "end": 947,
+       "transfer": 2963,
+       "decoded": 10514
+      },
+      {
+       "name": "/_next/static/css/cf3a1f2cf0a283cb.css",
+       "start": 933,
+       "end": 948,
+       "transfer": 5549,
+       "decoded": 28896
+      },
+      {
+       "name": "/_next/static/css/64566c753a5d115e.css",
+       "start": 933,
+       "end": 948,
+       "transfer": 7784,
+       "decoded": 44409
+      },
+      {
+       "name": "/_next/static/css/4149f5be2ec00b4a.css",
+       "start": 933,
+       "end": 949,
+       "transfer": 1683,
+       "decoded": 5426
+      },
+      {
+       "name": "/companies/?_rsc=I3JJyWD33F36RDvL",
+       "start": 934,
+       "end": 953,
+       "transfer": 1193,
+       "decoded": 1764
+      },
+      {
+       "name": "/_next/static/css/51c6d6d7061c91b2.css",
+       "start": 970,
+       "end": 984,
+       "transfer": 827,
+       "decoded": 1460
+      },
+      {
+       "name": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e&_rsc=PLIBLt6-pjCXHSCo",
+       "start": 970,
+       "end": 982,
+       "transfer": 522,
+       "decoded": 425
+      },
+      {
+       "name": "/requests/compare/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9&_rsc=PLIBLt6-pjCXHSCo",
+       "start": 972,
+       "end": 986,
+       "transfer": 604,
+       "decoded": 751
+      },
+      {
+       "name": "/account/?tab=requests&_rsc=r4u8PrbbPpNxmLwW",
+       "start": 973,
+       "end": 987,
+       "transfer": 3408,
+       "decoded": 7587
+      },
+      {
+       "name": "/account/?tab=requests&_rsc=l-QvzxiG-3rqvHli",
+       "start": 976,
+       "end": 987,
+       "transfer": 2948,
+       "decoded": 10765
+      },
+      {
+       "name": "/icons.svg#star",
+       "start": 997,
+       "end": 1002,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e&_rsc=I3JJyWD33F36RDvL",
+       "start": 1010,
+       "end": 1046,
+       "transfer": 1435,
+       "decoded": 3469
+      },
+      {
+       "name": "/_next/static/css/ed671be5e12dc1d6.css",
+       "start": 1011,
+       "end": 1023,
+       "transfer": 4843,
+       "decoded": 25702
+      },
+      {
+       "name": "/requests/compare/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9&_rsc=gZdYOvQHsmTVmqXJ",
+       "start": 1011,
+       "end": 1020,
+       "transfer": 2588,
+       "decoded": 8474
+      },
+      {
+       "name": "/_next/static/chunks/4602-2a7e63d17b93b5d6.js",
+       "start": 1012,
+       "end": 1026,
+       "transfer": 4095,
+       "decoded": 11396
+      },
+      {
+       "name": "/_next/static/chunks/5799-228cfa156810f4c0.js",
+       "start": 1012,
+       "end": 1028,
+       "transfer": 11738,
+       "decoded": 35704
+      },
+      {
+       "name": "/_next/static/chunks/663-c79352ef779df140.js",
+       "start": 1012,
+       "end": 1027,
+       "transfer": 4893,
+       "decoded": 12675
+      },
+      {
+       "name": "/_next/static/chunks/2425-114ef40b4e97e0ca.js",
+       "start": 1012,
+       "end": 1029,
+       "transfer": 8366,
+       "decoded": 24125
+      },
+      {
+       "name": "/_next/static/chunks/app/(account)/account/page-a1b6602cb4aee2d6.js",
+       "start": 1013,
+       "end": 1039,
+       "transfer": 28514,
+       "decoded": 106205
+      },
+      {
+       "name": "/how-it-works/?_rsc=kiuK9OWx7QKo_h_h",
+       "start": 1015,
+       "end": 1039,
+       "transfer": 5277,
+       "decoded": 23968
+      },
+      {
+       "name": "/_next/static/chunks/app/(account)/error-7db4de197d374fec.js",
+       "start": 1033,
+       "end": 1061,
+       "transfer": 1362,
+       "decoded": 2209
+      },
+      {
+       "name": "/requests/new/?_rsc=I3JJyWD33F36RDvL",
+       "start": 1034,
+       "end": 1062,
+       "transfer": 1187,
+       "decoded": 1775
+      },
+      {
+       "name": "/_next/static/chunks/app/(compare-offers)/requests/compare/page-cd77cbc481173c71.js",
+       "start": 1039,
+       "end": 1063,
+       "transfer": 8091,
+       "decoded": 25237
+      },
+      {
+       "name": "/_next/static/chunks/app/(compare-offers)/error-1b33d4902840d476.js",
+       "start": 1039,
+       "end": 1063,
+       "transfer": 1365,
+       "decoded": 2209
+      },
+      {
+       "name": "/account/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 1040,
+       "end": 1061,
+       "transfer": 686,
+       "decoded": 1101
+      },
+      {
+       "name": "/_next/static/chunks/app/(how)/how-it-works/page-9f2c1799e7528ed8.js",
+       "start": 1046,
+       "end": 1065,
+       "transfer": 1153,
+       "decoded": 1550
+      },
+      {
+       "name": "/requests/compare/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 1047,
+       "end": 1073,
+       "transfer": 604,
+       "decoded": 751
+      },
+      {
+       "name": "/companies/view/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 1057,
+       "end": 1077,
+       "transfer": 487,
+       "decoded": 385
+      }
+     ],
+     "ttfb": 132,
+     "dcl": 388,
+     "load": 597,
+     "fcp": 360,
+     "lcp": 512,
+     "ready": 1006,
+     "htmlKB": 59.7,
+     "jsFiles": 31,
+     "jsTransferKB": 302.9,
+     "jsDecodedKB": 949.6,
+     "imgFiles": 6,
+     "imgKB": 106.9,
+     "requests": 98,
+     "errors": []
+    }
+   ]
+  },
+  "request-view/mobile": {
+   "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+   "profile": "mobile",
+   "ttfb": 61,
+   "fcp": 1916,
+   "lcp": 1916,
+   "ready": 7225,
+   "load": 4667,
+   "requests": 78,
+   "jsFiles": 30,
+   "jsTransferKB": 301.8,
+   "jsDecodedKB": 948.1,
+   "htmlKB": 59.7,
+   "imgFiles": 2,
+   "imgKB": 4.6,
+   "api": [
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 1455,
+     "end": 1475,
+     "ms": 20,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1825,
+     "end": 4670,
+     "ms": 2845,
+     "kb": 132.9
+    },
+    {
+     "url": "/api/db/rpc/unread_message_count",
+     "start": 5584,
+     "end": 5806,
+     "ms": 222,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_detail_extras",
+     "start": 6328,
+     "end": 6732,
+     "ms": 404,
+     "kb": 2
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "lcpNode": {
+      "tag": "P",
+      "class": "ma-prose",
+      "text": "სასტუმროსთვის გვჭირდება კვირაში 3 პალეტის თეთრეულისა და ჰიგიენური საშუალებების გადაზიდვა თბილისის საწყობიდან ბათუმში. ვე",
+      "url": ""
+     },
+     "longTasks": [
+      {
+       "start": 1461.199999988079,
+       "duration": 315
+      },
+      {
+       "start": 3098.399999976158,
+       "duration": 81
+      },
+      {
+       "start": 3326.699999988079,
+       "duration": 507
+      },
+      {
+       "start": 3931.199999988079,
+       "duration": 87
+      },
+      {
+       "start": 4053,
+       "duration": 51
+      },
+      {
+       "start": 4483.899999976158,
+       "duration": 76
+      },
+      {
+       "start": 4723.899999976158,
+       "duration": 143
+      },
+      {
+       "start": 5142.100000023842,
+       "duration": 58
+      },
+      {
+       "start": 5202.800000011921,
+       "duration": 115
+      },
+      {
+       "start": 5391,
+       "duration": 55
+      },
+      {
+       "start": 5771.5,
+       "duration": 329
+      },
+      {
+       "start": 6652.399999976158,
+       "duration": 62
+      },
+      {
+       "start": 6766.600000023842,
+       "duration": 74
+      },
+      {
+       "start": 6845.399999976158,
+       "duration": 98
+      },
+      {
+       "start": 7059.300000011921,
+       "duration": 165
+      },
+      {
+       "start": 7723.800000011921,
+       "duration": 58
+      },
+      {
+       "start": 7881.699999988079,
+       "duration": 57
+      },
+      {
+       "start": 8411,
+       "duration": 108
+      },
+      {
+       "start": 9331.300000011921,
+       "duration": 58
+      },
+      {
+       "start": 9466.100000023842,
+       "duration": 77
+      }
+     ],
+     "resources": [
+      {
+       "name": "/_next/static/css/e967102ed73aea84.css",
+       "start": 421,
+       "end": 1074,
+       "transfer": 14951,
+       "decoded": 93005
+      },
+      {
+       "name": "/_next/static/css/76ce1c3ee0575260.css",
+       "start": 421,
+       "end": 1076,
+       "transfer": 16085,
+       "decoded": 80877
+      },
+      {
+       "name": "/_next/static/css/bcd0d49fff016d7b.css",
+       "start": 421,
+       "end": 808,
+       "transfer": 1559,
+       "decoded": 4285
+      },
+      {
+       "name": "/_next/static/css/273fd2240ff12ccb.css",
+       "start": 421,
+       "end": 965,
+       "transfer": 9654,
+       "decoded": 64689
+      },
+      {
+       "name": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+       "start": 423,
+       "end": 871,
+       "transfer": 1818,
+       "decoded": 6104
+      },
+      {
+       "name": "/_next/static/css/45948d4eca5a1c86.css",
+       "start": 423,
+       "end": 871,
+       "transfer": 1543,
+       "decoded": 4957
+      },
+      {
+       "name": "/_next/static/css/ac7b9fe432e751b5.css",
+       "start": 424,
+       "end": 1074,
+       "transfer": 5950,
+       "decoded": 34791
+      },
+      {
+       "name": "/_next/static/css/6d4fe2fe707ad8d0.css",
+       "start": 424,
+       "end": 1122,
+       "transfer": 2099,
+       "decoded": 8422
+      },
+      {
+       "name": "/_next/static/css/f05892141ab715f5.css",
+       "start": 424,
+       "end": 1122,
+       "transfer": 3663,
+       "decoded": 17784
+      },
+      {
+       "name": "/_next/static/css/b11c1961bfc47449.css",
+       "start": 425,
+       "end": 1204,
+       "transfer": 8389,
+       "decoded": 49697
+      },
+      {
+       "name": "/_next/static/css/abefc691cdb571a8.css",
+       "start": 425,
+       "end": 1448,
+       "transfer": 810,
+       "decoded": 1360
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+       "start": 429,
+       "end": 1449,
+       "transfer": 1646,
+       "decoded": 1346
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+       "start": 431,
+       "end": 1449,
+       "transfer": 2392,
+       "decoded": 2092
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+       "start": 432,
+       "end": 1716,
+       "transfer": 2150,
+       "decoded": 1850
+      },
+      {
+       "name": "/_next/static/chunks/webpack-28c4809a61ecfaff.js",
+       "start": 432,
+       "end": 1711,
+       "transfer": 2893,
+       "decoded": 5327
+      },
+      {
+       "name": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+       "start": 434,
+       "end": 3206,
+       "transfer": 63672,
+       "decoded": 201058
+      },
+      {
+       "name": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+       "start": 434,
+       "end": 3304,
+       "transfer": 66799,
+       "decoded": 241480
+      },
+      {
+       "name": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+       "start": 434,
+       "end": 1712,
+       "transfer": 782,
+       "decoded": 482
+      },
+      {
+       "name": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+       "start": 434,
+       "end": 1782,
+       "transfer": 3861,
+       "decoded": 8661
+      },
+      {
+       "name": "/_next/static/chunks/app/global-error-51b8ddff4d6e0a9d.js",
+       "start": 434,
+       "end": 1974,
+       "transfer": 1462,
+       "decoded": 2459
+      },
+      {
+       "name": "/_next/static/chunks/852-7c150fa1080179b9.js",
+       "start": 434,
+       "end": 2032,
+       "transfer": 4039,
+       "decoded": 9543
+      },
+      {
+       "name": "/_next/static/chunks/4577-946d97d2e1e20ff2.js",
+       "start": 434,
+       "end": 2472,
+       "transfer": 22048,
+       "decoded": 66901
+      },
+      {
+       "name": "/_next/static/chunks/app/layout-0df709fe6eea326c.js",
+       "start": 434,
+       "end": 3461,
+       "transfer": 1865,
+       "decoded": 3957
+      },
+      {
+       "name": "/_next/static/chunks/5582-bbe068a9de999574.js",
+       "start": 434,
+       "end": 3583,
+       "transfer": 5783,
+       "decoded": 14290
+      },
+      {
+       "name": "/_next/static/chunks/5201-24022607fa85bafa.js",
+       "start": 434,
+       "end": 3582,
+       "transfer": 3470,
+       "decoded": 9567
+      },
+      {
+       "name": "/_next/static/chunks/2402-cb9fa2b6f5986fb3.js",
+       "start": 434,
+       "end": 3683,
+       "transfer": 5863,
+       "decoded": 13710
+      },
+      {
+       "name": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+       "start": 434,
+       "end": 3771,
+       "transfer": 9783,
+       "decoded": 33137
+      },
+      {
+       "name": "/_next/static/chunks/6833-ed516ac0b254167a.js",
+       "start": 434,
+       "end": 3894,
+       "transfer": 5469,
+       "decoded": 16676
+      },
+      {
+       "name": "/_next/static/chunks/app/(ideas)/layout-c63e1dd1654edda0.js",
+       "start": 434,
+       "end": 3829,
+       "transfer": 638,
+       "decoded": 338
+      },
+      {
+       "name": "/_next/static/chunks/app/(request-view)/error-c594c9b772d7c3ef.js",
+       "start": 434,
+       "end": 3829,
+       "transfer": 1362,
+       "decoded": 2209
+      },
+      {
+       "name": "/_next/static/css/05e0cfccf77e39c9.css",
+       "start": 435,
+       "end": 1449,
+       "transfer": 831,
+       "decoded": 1455
+      },
+      {
+       "name": "http://127.0.0.1:3718/get-session",
+       "start": 1455,
+       "end": 1475,
+       "transfer": 0,
+       "decoded": 0
+      },
+      {
+       "name": "/icons.svg#search",
+       "start": 1456,
+       "end": 3922,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Regular-ge.woff2",
+       "start": 1595,
+       "end": 3057,
+       "transfer": 39732,
+       "decoded": 39432
+      },
+      {
+       "name": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+       "start": 1649,
+       "end": 3316,
+       "transfer": 40216,
+       "decoded": 39916
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Medium-ge.woff2",
+       "start": 1649,
+       "end": 3384,
+       "transfer": 40296,
+       "decoded": 39996
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Bold-ge.woff2",
+       "start": 1649,
+       "end": 3604,
+       "transfer": 40400,
+       "decoded": 40100
+      },
+      {
+       "name": "/api/db/bootstrap",
+       "start": 1825,
+       "end": 4670,
+       "transfer": 136434,
+       "decoded": 136134
+      },
+      {
+       "name": "/_next/static/chunks/1905-f46e33c4f1adf90d.js",
+       "start": 3712,
+       "end": 4282,
+       "transfer": 8412,
+       "decoded": 27475
+      },
+      {
+       "name": "/_next/static/chunks/6318-574eb1f0c57b3a08.js",
+       "start": 3713,
+       "end": 4214,
+       "transfer": 6690,
+       "decoded": 20394
+      },
+      {
+       "name": "/_next/static/chunks/4625-79289d57aa18b38a.js",
+       "start": 3714,
+       "end": 4212,
+       "transfer": 6355,
+       "decoded": 15267
+      },
+      {
+       "name": "/_next/static/chunks/4900-346438146a60b91c.js",
+       "start": 3714,
+       "end": 4282,
+       "transfer": 5845,
+       "decoded": 14692
+      },
+      {
+       "name": "/_next/static/chunks/7735-8a400e6ff4f21548.js",
+       "start": 3714,
+       "end": 4229,
+       "transfer": 3071,
+       "decoded": 8423
+      },
+      {
+       "name": "/_next/static/chunks/app/(request-view)/requests/view/page-b9cc1c765747c3bc.js",
+       "start": 3715,
+       "end": 4537,
+       "transfer": 10418,
+       "decoded": 35029
+      },
+      {
+       "name": "/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 4625,
+       "end": 4862,
+       "transfer": 468,
+       "decoded": 266
+      },
+      {
+       "name": "/requests/new/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 4625,
+       "end": 4862,
+       "transfer": 484,
+       "decoded": 383
+      },
+      {
+       "name": "/icons.svg#chevron-down",
+       "start": 4778,
+       "end": 5202,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/?_rsc=I3JJyWD33F36RDvL",
+       "start": 5201,
+       "end": 5415,
+       "transfer": 1203,
+       "decoded": 1735
+      },
+      {
+       "name": "/requests/new/?_rsc=I3JJyWD33F36RDvL",
+       "start": 5335,
+       "end": 5603,
+       "transfer": 1190,
+       "decoded": 1775
+      },
+      {
+       "name": "/icons.svg#bell",
+       "start": 5415,
+       "end": 5680,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/api/db/rpc/unread_message_count",
+       "start": 5584,
+       "end": 5806,
+       "transfer": 301,
+       "decoded": 1
+      },
+      {
+       "name": "/icons.svg#upload",
+       "start": 5780,
+       "end": 6343,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Ffurniture.jpg&w=128&q=75",
+       "start": 6307,
+       "end": 6731,
+       "transfer": 1226,
+       "decoded": 926
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fphotos%2Fcompanies%2Fconstruction.jpg&w=128&q=75",
+       "start": 6307,
+       "end": 6682,
+       "transfer": 4054,
+       "decoded": 3754
+      },
+      {
+       "name": "/account/?tab=requests&_rsc=PLIBLt6-pjCXHSCo",
+       "start": 6315,
+       "end": 6655,
+       "transfer": 686,
+       "decoded": 1101
+      },
+      {
+       "name": "/requests/compare/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9&_rsc=PLIBLt6-pjCXHSCo",
+       "start": 6315,
+       "end": 6655,
+       "transfer": 604,
+       "decoded": 751
+      },
+      {
+       "name": "/api/db/rpc/request_detail_extras",
+       "start": 6328,
+       "end": 6732,
+       "transfer": 2310,
+       "decoded": 2010
+      },
+      {
+       "name": "/_next/static/css/661ea8bf2545e591.css",
+       "start": 6995,
+       "end": 7455,
+       "transfer": 3461,
+       "decoded": 18120
+      },
+      {
+       "name": "/_next/static/css/a539d4bf3ea20de9.css",
+       "start": 6995,
+       "end": 7436,
+       "transfer": 2963,
+       "decoded": 10514
+      },
+      {
+       "name": "/_next/static/css/cf3a1f2cf0a283cb.css",
+       "start": 6996,
+       "end": 7484,
+       "transfer": 5549,
+       "decoded": 28896
+      },
+      {
+       "name": "/_next/static/css/64566c753a5d115e.css",
+       "start": 6996,
+       "end": 7497,
+       "transfer": 7784,
+       "decoded": 44409
+      },
+      {
+       "name": "/_next/static/css/4149f5be2ec00b4a.css",
+       "start": 6996,
+       "end": 7413,
+       "transfer": 1683,
+       "decoded": 5426
+      },
+      {
+       "name": "/account/?tab=requests&_rsc=r4u8PrbbPpNxmLwW",
+       "start": 7015,
+       "end": 7437,
+       "transfer": 3408,
+       "decoded": 7587
+      },
+      {
+       "name": "/account/?tab=requests&_rsc=l-QvzxiG-3rqvHli",
+       "start": 7016,
+       "end": 7808,
+       "transfer": 2948,
+       "decoded": 10765
+      },
+      {
+       "name": "/_next/static/css/ed671be5e12dc1d6.css",
+       "start": 7020,
+       "end": 7860,
+       "transfer": 4843,
+       "decoded": 25702
+      },
+      {
+       "name": "/requests/compare/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9&_rsc=gZdYOvQHsmTVmqXJ",
+       "start": 7022,
+       "end": 7824,
+       "transfer": 2588,
+       "decoded": 8474
+      },
+      {
+       "name": "/icons.svg#star",
+       "start": 7045,
+       "end": 7853,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/_next/static/chunks/4602-2a7e63d17b93b5d6.js",
+       "start": 7452,
+       "end": 7878,
+       "transfer": 4095,
+       "decoded": 11396
+      },
+      {
+       "name": "/_next/static/chunks/5799-228cfa156810f4c0.js",
+       "start": 7455,
+       "end": 7929,
+       "transfer": 11738,
+       "decoded": 35704
+      },
+      {
+       "name": "/_next/static/chunks/663-c79352ef779df140.js",
+       "start": 7459,
+       "end": 8164,
+       "transfer": 4893,
+       "decoded": 12675
+      },
+      {
+       "name": "/_next/static/chunks/2425-114ef40b4e97e0ca.js",
+       "start": 7469,
+       "end": 8218,
+       "transfer": 8366,
+       "decoded": 24125
+      },
+      {
+       "name": "/_next/static/chunks/app/(account)/account/page-a1b6602cb4aee2d6.js",
+       "start": 7475,
+       "end": 8404,
+       "transfer": 28514,
+       "decoded": 106205
+      },
+      {
+       "name": "/_next/static/chunks/app/(account)/error-7db4de197d374fec.js",
+       "start": 7852,
+       "end": 8164,
+       "transfer": 1362,
+       "decoded": 2209
+      },
+      {
+       "name": "/account/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 7878,
+       "end": 8112,
+       "transfer": 686,
+       "decoded": 1101
+      },
+      {
+       "name": "/_next/static/chunks/app/(compare-offers)/requests/compare/page-cd77cbc481173c71.js",
+       "start": 8041,
+       "end": 8329,
+       "transfer": 8091,
+       "decoded": 25237
+      },
+      {
+       "name": "/_next/static/chunks/app/(compare-offers)/error-1b33d4902840d476.js",
+       "start": 8044,
+       "end": 8329,
+       "transfer": 1365,
+       "decoded": 2209
+      },
+      {
+       "name": "/requests/compare/?_rsc=PLIBLt6-pjCXHSCo",
+       "start": 8052,
+       "end": 8338,
+       "transfer": 604,
+       "decoded": 751
+      }
+     ],
+     "ttfb": 61,
+     "dcl": 1792,
+     "load": 4667,
+     "fcp": 1916,
+     "lcp": 1916,
+     "ready": 7225,
+     "htmlKB": 59.7,
+     "jsFiles": 30,
+     "jsTransferKB": 301.8,
+     "jsDecodedKB": 948.1,
+     "imgFiles": 2,
+     "imgKB": 4.6,
+     "requests": 78,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/desktop": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "desktop",
+   "ttfb": 30,
+   "fcp": 144,
+   "lcp": 488,
+   "ready": 750,
+   "load": 602,
+   "requests": 66,
+   "jsFiles": 20,
+   "jsTransferKB": 219.3,
+   "jsDecodedKB": 688.9,
+   "htmlKB": 76.9,
+   "imgFiles": 1,
+   "imgKB": 9.7,
+   "api": [
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 59,
+     "end": 96,
+     "ms": 37,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 454,
+     "end": 518,
+     "ms": 64,
+     "kb": 132.9
+    },
+    {
+     "url": "/api/db/rpc/unread_message_count",
+     "start": 678,
+     "end": 697,
+     "ms": 19,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_detail_extras",
+     "start": 701,
+     "end": 723,
+     "ms": 22,
+     "kb": 3.8
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "lcpNode": {
+      "tag": "P",
+      "class": "company-profile-description",
+      "text": "ვამზადებთ ხის ავეჯს კაფეებისთვის, სასტუმროებისა და მაღაზიებისთვის: მაგიდებს, სკამებსა და სავაჭრო თაროებს. სამუშაო იწყება",
+      "url": ""
+     },
+     "longTasks": [
+      {
+       "start": 163.89999997615814,
+       "duration": 170
+      },
+      {
+       "start": 357.7999999523163,
+       "duration": 69
+      },
+      {
+       "start": 465.2999999523163,
+       "duration": 69
+      }
+     ],
+     "resources": [
+      {
+       "name": "/_next/static/css/e967102ed73aea84.css",
+       "start": 35,
+       "end": 50,
+       "transfer": 14951,
+       "decoded": 93005
+      },
+      {
+       "name": "/_next/static/css/bcd0d49fff016d7b.css",
+       "start": 35,
+       "end": 48,
+       "transfer": 1559,
+       "decoded": 4285
+      },
+      {
+       "name": "/_next/static/css/76ce1c3ee0575260.css",
+       "start": 35,
+       "end": 50,
+       "transfer": 16085,
+       "decoded": 80877
+      },
+      {
+       "name": "/_next/static/css/273fd2240ff12ccb.css",
+       "start": 35,
+       "end": 51,
+       "transfer": 9654,
+       "decoded": 64689
+      },
+      {
+       "name": "/_next/static/css/e321a489414a012c.css",
+       "start": 36,
+       "end": 51,
+       "transfer": 3212,
+       "decoded": 14412
+      },
+      {
+       "name": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+       "start": 36,
+       "end": 51,
+       "transfer": 1818,
+       "decoded": 6104
+      },
+      {
+       "name": "/_next/static/css/45948d4eca5a1c86.css",
+       "start": 36,
+       "end": 55,
+       "transfer": 1543,
+       "decoded": 4957
+      },
+      {
+       "name": "/_next/static/css/ac7b9fe432e751b5.css",
+       "start": 36,
+       "end": 55,
+       "transfer": 5950,
+       "decoded": 34791
+      },
+      {
+       "name": "/_next/static/css/b11c1961bfc47449.css",
+       "start": 36,
+       "end": 56,
+       "transfer": 8389,
+       "decoded": 49697
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+       "start": 37,
+       "end": 56,
+       "transfer": 1646,
+       "decoded": 1346
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+       "start": 37,
+       "end": 56,
+       "transfer": 2392,
+       "decoded": 2092
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+       "start": 37,
+       "end": 62,
+       "transfer": 2150,
+       "decoded": 1850
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=64&q=75",
+       "start": 37,
+       "end": 62,
+       "transfer": 1326,
+       "decoded": 1026
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=640&q=75",
+       "start": 37,
+       "end": 72,
+       "transfer": 39024,
+       "decoded": 38724
+      },
+      {
+       "name": "/_next/static/chunks/webpack-28c4809a61ecfaff.js",
+       "start": 38,
+       "end": 71,
+       "transfer": 2893,
+       "decoded": 5327
+      },
+      {
+       "name": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+       "start": 38,
+       "end": 87,
+       "transfer": 63672,
+       "decoded": 201058
+      },
+      {
+       "name": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+       "start": 38,
+       "end": 86,
+       "transfer": 66799,
+       "decoded": 241480
+      },
+      {
+       "name": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+       "start": 38,
+       "end": 68,
+       "transfer": 782,
+       "decoded": 482
+      },
+      {
+       "name": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+       "start": 38,
+       "end": 72,
+       "transfer": 3861,
+       "decoded": 8661
+      },
+      {
+       "name": "/_next/static/chunks/app/global-error-51b8ddff4d6e0a9d.js",
+       "start": 38,
+       "end": 76,
+       "transfer": 1462,
+       "decoded": 2459
+      },
+      {
+       "name": "/_next/static/chunks/852-7c150fa1080179b9.js",
+       "start": 38,
+       "end": 80,
+       "transfer": 4039,
+       "decoded": 9543
+      },
+      {
+       "name": "/_next/static/chunks/4577-946d97d2e1e20ff2.js",
+       "start": 38,
+       "end": 84,
+       "transfer": 22048,
+       "decoded": 66901
+      },
+      {
+       "name": "/_next/static/chunks/app/layout-0df709fe6eea326c.js",
+       "start": 38,
+       "end": 81,
+       "transfer": 1865,
+       "decoded": 3957
+      },
+      {
+       "name": "/_next/static/chunks/5582-bbe068a9de999574.js",
+       "start": 38,
+       "end": 88,
+       "transfer": 5783,
+       "decoded": 14290
+      },
+      {
+       "name": "/_next/static/chunks/5201-24022607fa85bafa.js",
+       "start": 38,
+       "end": 90,
+       "transfer": 3470,
+       "decoded": 9567
+      },
+      {
+       "name": "/_next/static/chunks/2402-cb9fa2b6f5986fb3.js",
+       "start": 38,
+       "end": 91,
+       "transfer": 5863,
+       "decoded": 13710
+      },
+      {
+       "name": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+       "start": 38,
+       "end": 92,
+       "transfer": 9783,
+       "decoded": 33137
+      },
+      {
+       "name": "/_next/static/chunks/6833-ed516ac0b254167a.js",
+       "start": 38,
+       "end": 92,
+       "transfer": 5469,
+       "decoded": 16676
+      },
+      {
+       "name": "/_next/static/css/05e0cfccf77e39c9.css",
+       "start": 38,
+       "end": 55,
+       "transfer": 831,
+       "decoded": 1455
+      },
+      {
+       "name": "/_next/static/chunks/app/(ideas)/layout-c63e1dd1654edda0.js",
+       "start": 38,
+       "end": 91,
+       "transfer": 638,
+       "decoded": 338
+      },
+      {
+       "name": "/_next/static/chunks/app/(company-view)/error-88ebba2b743c55a6.js",
+       "start": 38,
+       "end": 92,
+       "transfer": 1365,
+       "decoded": 2209
+      },
+      {
+       "name": "http://127.0.0.1:3718/get-session",
+       "start": 59,
+       "end": 96,
+       "transfer": 0,
+       "decoded": 0
+      },
+      {
+       "name": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+       "start": 100,
+       "end": 152,
+       "transfer": 40216,
+       "decoded": 39916
+      },
+      {
+       "name": "/icons.svg#search",
+       "start": 160,
+       "end": 167,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/_next/static/chunks/1905-f46e33c4f1adf90d.js",
+       "start": 309,
+       "end": 421,
+       "transfer": 8412,
+       "decoded": 27475
+      },
+      {
+       "name": "/_next/static/chunks/663-c79352ef779df140.js",
+       "start": 309,
+       "end": 418,
+       "transfer": 4893,
+       "decoded": 12675
+      },
+      {
+       "name": "/_next/static/chunks/app/(company-view)/companies/view/page-e27ba02d01d80ab4.js",
+       "start": 310,
+       "end": 421,
+       "transfer": 10363,
+       "decoded": 33951
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Regular-ge.woff2",
+       "start": 366,
+       "end": 432,
+       "transfer": 39732,
+       "decoded": 39432
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Medium-ge.woff2",
+       "start": 372,
+       "end": 432,
+       "transfer": 40296,
+       "decoded": 39996
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Bold-ge.woff2",
+       "start": 372,
+       "end": 456,
+       "transfer": 40400,
+       "decoded": 40100
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=640&q=75",
+       "start": 426,
+       "end": 486,
+       "transfer": 10200,
+       "decoded": 9900
+      },
+      {
+       "name": "/api/db/bootstrap",
+       "start": 454,
+       "end": 518,
+       "transfer": 136434,
+       "decoded": 136134
+      },
+      {
+       "name": "/icons.svg#chevron-down",
+       "start": 667,
+       "end": 685,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/api/db/rpc/unread_message_count",
+       "start": 678,
+       "end": 697,
+       "transfer": 301,
+       "decoded": 1
+      },
+      {
+       "name": "/api/db/rpc/company_detail_extras",
+       "start": 701,
+       "end": 723,
+       "transfer": 4233,
+       "decoded": 3933
+      },
+      {
+       "name": "/icons.svg#star",
+       "start": 725,
+       "end": 756,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 756,
+       "end": 774,
+       "transfer": 468,
+       "decoded": 266
+      },
+      {
+       "name": "/requests/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 756,
+       "end": 774,
+       "transfer": 476,
+       "decoded": 327
+      },
+      {
+       "name": "/companies/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 756,
+       "end": 774,
+       "transfer": 477,
+       "decoded": 329
+      },
+      {
+       "name": "/how-it-works/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 756,
+       "end": 774,
+       "transfer": 631,
+       "decoded": 832
+      },
+      {
+       "name": "/requests/?focus=search&_rsc=CP71fjRsMrkpUGbv",
+       "start": 777,
+       "end": 836,
+       "transfer": 486,
+       "decoded": 340
+      },
+      {
+       "name": "/requests/new/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 778,
+       "end": 839,
+       "transfer": 484,
+       "decoded": 383
+      },
+      {
+       "name": "/requests/new/?category=furniture&company=74cc28fc-47de-45cb-9563-93735b86855e&_rsc=CP71fjRsMrkpUGbv",
+       "start": 779,
+       "end": 840,
+       "transfer": 538,
+       "decoded": 447
+      },
+      {
+       "name": "/_next/static/css/1610e7dcf2558b66.css",
+       "start": 782,
+       "end": 851,
+       "transfer": 1968,
+       "decoded": 7698
+      },
+      {
+       "name": "/_next/static/css/888e8e2f853ed8a2.css",
+       "start": 782,
+       "end": 851,
+       "transfer": 3438,
+       "decoded": 14182
+      },
+      {
+       "name": "/_next/static/css/f9c41be2fcfbabb6.css",
+       "start": 782,
+       "end": 851,
+       "transfer": 1824,
+       "decoded": 5542
+      },
+      {
+       "name": "/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 784,
+       "end": 870,
+       "transfer": 1203,
+       "decoded": 1735
+      },
+      {
+       "name": "/requests/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 847,
+       "end": 883,
+       "transfer": 1195,
+       "decoded": 1832
+      },
+      {
+       "name": "/companies/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 848,
+       "end": 883,
+       "transfer": 1192,
+       "decoded": 1764
+      },
+      {
+       "name": "/how-it-works/?_rsc=KHnuVz3SjwSbIbqs",
+       "start": 849,
+       "end": 882,
+       "transfer": 3163,
+       "decoded": 7093
+      },
+      {
+       "name": "/how-it-works/?_rsc=L8EeKvBU7vwX7fb3",
+       "start": 880,
+       "end": 893,
+       "transfer": 5277,
+       "decoded": 23968
+      },
+      {
+       "name": "/requests/?focus=search&_rsc=Y4oBO2iavX1nHeuw",
+       "start": 885,
+       "end": 900,
+       "transfer": 1222,
+       "decoded": 1868
+      },
+      {
+       "name": "/requests/new/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 888,
+       "end": 900,
+       "transfer": 1189,
+       "decoded": 1775
+      },
+      {
+       "name": "/requests/new/?category=furniture&company=74cc28fc-47de-45cb-9563-93735b86855e&_rsc=Y4oBO2iavX1nHeuw",
+       "start": 888,
+       "end": 900,
+       "transfer": 1265,
+       "decoded": 1921
+      },
+      {
+       "name": "/_next/static/chunks/app/(how)/how-it-works/page-9f2c1799e7528ed8.js",
+       "start": 897,
+       "end": 903,
+       "transfer": 1153,
+       "decoded": 1550
+      }
+     ],
+     "ttfb": 30,
+     "dcl": 430,
+     "load": 602,
+     "fcp": 144,
+     "lcp": 488,
+     "ready": 750,
+     "htmlKB": 76.9,
+     "jsFiles": 20,
+     "jsTransferKB": 219.3,
+     "jsDecodedKB": 688.9,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 66,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/mobile": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "mobile",
+   "ttfb": 28,
+   "fcp": 1660,
+   "lcp": 2684,
+   "ready": 5661,
+   "load": 4804,
+   "requests": 54,
+   "jsFiles": 19,
+   "jsTransferKB": 218.2,
+   "jsDecodedKB": 687.4,
+   "htmlKB": 76.9,
+   "imgFiles": 1,
+   "imgKB": 9.7,
+   "api": [
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 1311,
+     "end": 1357,
+     "ms": 46,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/bootstrap",
+     "start": 2039,
+     "end": 4848,
+     "ms": 2809,
+     "kb": 132.9
+    },
+    {
+     "url": "/api/db/rpc/unread_message_count",
+     "start": 5310,
+     "end": 5564,
+     "ms": 254,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_detail_extras",
+     "start": 5389,
+     "end": 5609,
+     "ms": 219,
+     "kb": 3.8
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "lcpNode": {
+      "tag": "P",
+      "class": "company-profile-description",
+      "text": "ვამზადებთ ხის ავეჯს კაფეებისთვის, სასტუმროებისა და მაღაზიებისთვის: მაგიდებს, სკამებსა და სავაჭრო თაროებს. სამუშაო იწყება",
+      "url": ""
+     },
+     "longTasks": [
+      {
+       "start": 1294.1000000238419,
+       "duration": 60
+      },
+      {
+       "start": 1405.6000000238419,
+       "duration": 243
+      },
+      {
+       "start": 1710.699999988079,
+       "duration": 216
+      },
+      {
+       "start": 1931.1000000238419,
+       "duration": 77
+      },
+      {
+       "start": 2089.900000035763,
+       "duration": 62
+      },
+      {
+       "start": 3370.699999988079,
+       "duration": 698
+      },
+      {
+       "start": 4215.600000023842,
+       "duration": 87
+      },
+      {
+       "start": 4414,
+       "duration": 51
+      },
+      {
+       "start": 4886.300000011921,
+       "duration": 64
+      },
+      {
+       "start": 5011.300000011921,
+       "duration": 158
+      },
+      {
+       "start": 5169.800000011921,
+       "duration": 50
+      }
+     ],
+     "resources": [
+      {
+       "name": "/_next/static/css/e967102ed73aea84.css",
+       "start": 510,
+       "end": 1205,
+       "transfer": 14951,
+       "decoded": 93005
+      },
+      {
+       "name": "/_next/static/css/76ce1c3ee0575260.css",
+       "start": 510,
+       "end": 1206,
+       "transfer": 16085,
+       "decoded": 80877
+      },
+      {
+       "name": "/_next/static/css/bcd0d49fff016d7b.css",
+       "start": 511,
+       "end": 952,
+       "transfer": 1559,
+       "decoded": 4285
+      },
+      {
+       "name": "/_next/static/css/273fd2240ff12ccb.css",
+       "start": 511,
+       "end": 1080,
+       "transfer": 9654,
+       "decoded": 64689
+      },
+      {
+       "name": "/_next/static/css/e321a489414a012c.css",
+       "start": 514,
+       "end": 1008,
+       "transfer": 3212,
+       "decoded": 14412
+      },
+      {
+       "name": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+       "start": 515,
+       "end": 953,
+       "transfer": 1818,
+       "decoded": 6104
+      },
+      {
+       "name": "/_next/static/css/45948d4eca5a1c86.css",
+       "start": 515,
+       "end": 1173,
+       "transfer": 1543,
+       "decoded": 4957
+      },
+      {
+       "name": "/_next/static/css/ac7b9fe432e751b5.css",
+       "start": 546,
+       "end": 1255,
+       "transfer": 5950,
+       "decoded": 34791
+      },
+      {
+       "name": "/_next/static/css/b11c1961bfc47449.css",
+       "start": 546,
+       "end": 1291,
+       "transfer": 8389,
+       "decoded": 49697
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+       "start": 554,
+       "end": 1382,
+       "transfer": 1646,
+       "decoded": 1346
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+       "start": 554,
+       "end": 1386,
+       "transfer": 2392,
+       "decoded": 2092
+      },
+      {
+       "name": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+       "start": 555,
+       "end": 1680,
+       "transfer": 2150,
+       "decoded": 1850
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=64&q=75",
+       "start": 555,
+       "end": 1680,
+       "transfer": 1326,
+       "decoded": 1026
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=640&q=75",
+       "start": 555,
+       "end": 2566,
+       "transfer": 39024,
+       "decoded": 38724
+      },
+      {
+       "name": "/_next/static/chunks/webpack-28c4809a61ecfaff.js",
+       "start": 555,
+       "end": 1744,
+       "transfer": 2893,
+       "decoded": 5327
+      },
+      {
+       "name": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+       "start": 555,
+       "end": 1914,
+       "transfer": 782,
+       "decoded": 482
+      },
+      {
+       "name": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+       "start": 555,
+       "end": 2040,
+       "transfer": 3861,
+       "decoded": 8661
+      },
+      {
+       "name": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+       "start": 555,
+       "end": 3213,
+       "transfer": 63672,
+       "decoded": 201058
+      },
+      {
+       "name": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+       "start": 555,
+       "end": 3365,
+       "transfer": 66799,
+       "decoded": 241480
+      },
+      {
+       "name": "/_next/static/chunks/app/global-error-51b8ddff4d6e0a9d.js",
+       "start": 555,
+       "end": 2196,
+       "transfer": 1462,
+       "decoded": 2459
+      },
+      {
+       "name": "/_next/static/chunks/4577-946d97d2e1e20ff2.js",
+       "start": 555,
+       "end": 3405,
+       "transfer": 22048,
+       "decoded": 66901
+      },
+      {
+       "name": "/_next/static/chunks/852-7c150fa1080179b9.js",
+       "start": 562,
+       "end": 3663,
+       "transfer": 4039,
+       "decoded": 9543
+      },
+      {
+       "name": "/_next/static/chunks/app/layout-0df709fe6eea326c.js",
+       "start": 562,
+       "end": 3630,
+       "transfer": 1865,
+       "decoded": 3957
+      },
+      {
+       "name": "/_next/static/chunks/5582-bbe068a9de999574.js",
+       "start": 562,
+       "end": 3797,
+       "transfer": 5783,
+       "decoded": 14290
+      },
+      {
+       "name": "/_next/static/chunks/5201-24022607fa85bafa.js",
+       "start": 562,
+       "end": 3905,
+       "transfer": 3470,
+       "decoded": 9567
+      },
+      {
+       "name": "/_next/static/chunks/2402-cb9fa2b6f5986fb3.js",
+       "start": 562,
+       "end": 3972,
+       "transfer": 5863,
+       "decoded": 13710
+      },
+      {
+       "name": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+       "start": 565,
+       "end": 4216,
+       "transfer": 9783,
+       "decoded": 33137
+      },
+      {
+       "name": "/_next/static/chunks/6833-ed516ac0b254167a.js",
+       "start": 565,
+       "end": 4233,
+       "transfer": 5469,
+       "decoded": 16676
+      },
+      {
+       "name": "/_next/static/chunks/app/(ideas)/layout-c63e1dd1654edda0.js",
+       "start": 565,
+       "end": 4172,
+       "transfer": 638,
+       "decoded": 338
+      },
+      {
+       "name": "/_next/static/chunks/app/(company-view)/error-88ebba2b743c55a6.js",
+       "start": 565,
+       "end": 4272,
+       "transfer": 1365,
+       "decoded": 2209
+      },
+      {
+       "name": "/_next/static/css/05e0cfccf77e39c9.css",
+       "start": 566,
+       "end": 1291,
+       "transfer": 831,
+       "decoded": 1455
+      },
+      {
+       "name": "http://127.0.0.1:3718/get-session",
+       "start": 1311,
+       "end": 1357,
+       "transfer": 0,
+       "decoded": 0
+      },
+      {
+       "name": "/icons.svg#search",
+       "start": 1382,
+       "end": 4383,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+       "start": 1427,
+       "end": 2972,
+       "transfer": 40216,
+       "decoded": 39916
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Regular-ge.woff2",
+       "start": 1813,
+       "end": 3339,
+       "transfer": 39732,
+       "decoded": 39432
+      },
+      {
+       "name": "/api/db/bootstrap",
+       "start": 2039,
+       "end": 4848,
+       "transfer": 136434,
+       "decoded": 136134
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Medium-ge.woff2",
+       "start": 2500,
+       "end": 4070,
+       "transfer": 40296,
+       "decoded": 39996
+      },
+      {
+       "name": "/assets/fonts/FiraGO-Bold-ge.woff2",
+       "start": 2501,
+       "end": 4272,
+       "transfer": 40400,
+       "decoded": 40100
+      },
+      {
+       "name": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=640&q=75",
+       "start": 2595,
+       "end": 4640,
+       "transfer": 10200,
+       "decoded": 9900
+      },
+      {
+       "name": "/_next/static/chunks/1905-f46e33c4f1adf90d.js",
+       "start": 3832,
+       "end": 4640,
+       "transfer": 8412,
+       "decoded": 27475
+      },
+      {
+       "name": "/_next/static/chunks/663-c79352ef779df140.js",
+       "start": 3843,
+       "end": 4580,
+       "transfer": 4893,
+       "decoded": 12675
+      },
+      {
+       "name": "/_next/static/chunks/app/(company-view)/companies/view/page-e27ba02d01d80ab4.js",
+       "start": 3847,
+       "end": 4722,
+       "transfer": 10363,
+       "decoded": 33951
+      },
+      {
+       "name": "/icons.svg#chevron-down",
+       "start": 5139,
+       "end": 5380,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 5237,
+       "end": 5416,
+       "transfer": 468,
+       "decoded": 266
+      },
+      {
+       "name": "/requests/new/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 5238,
+       "end": 5425,
+       "transfer": 484,
+       "decoded": 383
+      },
+      {
+       "name": "/api/db/rpc/unread_message_count",
+       "start": 5310,
+       "end": 5564,
+       "transfer": 301,
+       "decoded": 1
+      },
+      {
+       "name": "/api/db/rpc/company_detail_extras",
+       "start": 5389,
+       "end": 5609,
+       "transfer": 4233,
+       "decoded": 3933
+      },
+      {
+       "name": "/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 5465,
+       "end": 5642,
+       "transfer": 1202,
+       "decoded": 1735
+      },
+      {
+       "name": "/companies/?_rsc=CP71fjRsMrkpUGbv",
+       "start": 5541,
+       "end": 5913,
+       "transfer": 477,
+       "decoded": 329
+      },
+      {
+       "name": "/requests/new/?category=furniture&company=74cc28fc-47de-45cb-9563-93735b86855e&_rsc=CP71fjRsMrkpUGbv",
+       "start": 5541,
+       "end": 5914,
+       "transfer": 538,
+       "decoded": 447
+      },
+      {
+       "name": "/requests/new/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 5558,
+       "end": 5914,
+       "transfer": 1188,
+       "decoded": 1775
+      },
+      {
+       "name": "/icons.svg#star",
+       "start": 5623,
+       "end": 5941,
+       "transfer": 4862,
+       "decoded": 17193
+      },
+      {
+       "name": "/companies/?_rsc=Y4oBO2iavX1nHeuw",
+       "start": 5926,
+       "end": 6282,
+       "transfer": 1191,
+       "decoded": 1764
+      }
+     ],
+     "ttfb": 28,
+     "dcl": 2188,
+     "load": 4804,
+     "fcp": 1660,
+     "lcp": 2684,
+     "ready": 5661,
+     "htmlKB": 76.9,
+     "jsFiles": 19,
+     "jsTransferKB": 218.2,
+     "jsDecodedKB": 687.4,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 54,
+     "errors": []
+    }
+   ]
+  }
+ }
+}

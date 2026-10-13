@@ -405,8 +405,72 @@ export function createMarketStore({initial=null,background=true}={}){
  const readyPromise=background&&typeof window!=='undefined'?(configured?refresh():Promise.resolve().then(()=>{isReady=true;sessionReady=true;sessionLoadError=UNAVAILABLE;emit();})):Promise.resolve();
 
  function client(){if(!configured)fail(UNAVAILABLE);}
- async function rpc(name,args={}){client();return db('/rpc/'+name,{method:'POST',body:args});}
- async function mutate(name,args,map){const data=one(await rpc(name,args))||null;await refresh();warnStale(dataStale);return map&&data?map(data):data;}
+ // Detail-only read-through batching. Existing consumers keep their own contracts and
+ // error UI. Cache keys include the caller revision; writes discard completed reads.
+ // A short coalescing window covers sibling effects (including offer attachments),
+ // but never turns this into a long-lived cache of mutable preferences or files.
+ const detailReads=new Map();
+ const missingDetailRpcs=new Set();
+ function detailRoute(){
+  if(!background||typeof window==='undefined'||!window.location)return null;
+  const url=new URL(window.location.href),id=url.searchParams.get('id');
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||''))return null;
+  if(url.pathname.replace(/\/$/,'')==='/requests/view')return {kind:'request',id};
+  if(url.pathname.replace(/\/$/,'')==='/companies/view')return {kind:'company',id};
+  return null;
+ }
+ function detailField(route,name,args){
+  if(route.kind==='request'){
+   if(name==='request_preferences'&&args.p_request_id===route.id)return ['preferences'];
+   if(name==='company_business_features')return ['businessFeatures'];
+   if(name==='list_attachments'){
+    if(args.p_kind==='request'&&args.p_target===route.id)return ['attachments'];
+    if(args.p_kind==='offer'&&cache.offers.some(o=>o.id===args.p_target&&o.requestId===route.id))return ['offerAttachments',args.p_target];
+   }
+  }else if(args.p_company_id===route.id){
+   if(name==='company_products')return ['products'];
+   if(name==='company_reviews'&&!(args.p_offset||0))return ['reviews'];
+   if(name==='company_public_stats')return ['stats'];
+  }
+  return null;
+ }
+ async function detailRead(route){
+  // Public SSR data can make a product section ready before the caller's
+  // bootstrap. Join that load before choosing the caller/data cache key.
+  if(!sessionReady)await readyPromise;
+  const name=route.kind+'_detail_extras';
+  if(missingDetailRpcs.has(name))return null;
+  const revision=authRevision,key=[name,route.id,revision,dataRevision].join(':');
+  for(const [k,v] of detailReads)if(v.until<Date.now())detailReads.delete(k);
+  if(!detailReads.has(key)){
+   const entry={until:Infinity,promise:null};
+   entry.promise=db('/rpc/'+name,{method:'POST',body:route.kind==='request'?{p_request_id:route.id}:{p_id:route.id}})
+    .then(data=>{entry.until=Date.now()+1000;return data;},err=>{
+     detailReads.delete(key);
+     if(err?.code==='PGRST202'){missingDetailRpcs.add(name);return null;}
+     // Optional sections keep their individual errors: one unreadable section
+     // must not suppress all the other legacy reads.
+     return null;
+    });
+   detailReads.set(key,entry);
+  }
+  const data=await detailReads.get(key).promise;
+  return revision===authRevision?data:null;
+ }
+ async function rpc(name,args={}){
+  client();
+  const route=detailRoute(),field=route&&detailField(route,name,args);
+  if(field){
+   const data=await detailRead(route);
+   if(data){let value=data;for(const key of field)value=value?.[key];if(value!==undefined)return value;}
+  }
+  const writes=/^(set_|remove_|finish_|bind_|save_|admin_(moderate|resolve|set|edit|delete|manage)|request_company_plan|cancel_company_plan_request)/.test(name);
+  if(writes)detailReads.clear();
+  const value=await db('/rpc/'+name,{method:'POST',body:args});
+  if(writes)detailReads.clear();
+  return value;
+ }
+ async function mutate(name,args,map){const data=one(await rpc(name,args))||null;detailReads.clear();await refresh();warnStale(dataStale);return map&&data?map(data):data;}
 
  /* ---------- auth ---------- */
  function currentUser(){return cache.me;}
@@ -945,8 +1009,16 @@ export function createMarketStore({initial=null,background=true}={}){
  // read. A target missing from its answer (not readable) or a server without the batch RPC
  // falls back to list_attachments, so errors and results stay exactly per target.
  const attachmentBatches=new Map();let attachmentsBatch=true;
- const listAttachment=(kind,target)=>rpc('list_attachments',{p_kind:kind,p_target:target});
+ const listAttachment=(kind,target)=>{client();return db('/rpc/list_attachments',{method:'POST',body:{p_kind:kind,p_target:target}});};
  function listAttachments(kind,target){
+  const route=detailRoute(),field=route&&detailField(route,'list_attachments',{p_kind:kind,p_target:target});
+  if(field)return detailRead(route).then(data=>{
+   let value=data;for(const key of field)value=value?.[key];
+   return value===undefined||value===null?legacyListAttachments(kind,target):value;
+  });
+  return legacyListAttachments(kind,target);
+ }
+ function legacyListAttachments(kind,target){
   if(!attachmentsBatch)return listAttachment(kind,target);
   return new Promise((resolve,reject)=>{
    let batch=attachmentBatches.get(kind);

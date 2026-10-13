@@ -1,0 +1,424 @@
+{
+ "origin": "http://127.0.0.1:3708",
+ "at": "2026-10-13T20:05:46.373Z",
+ "runs": 3,
+ "signedIn": false,
+ "pages": {
+  "request-view/desktop": {
+   "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+   "profile": "desktop",
+   "ttfb": 64,
+   "fcp": 268,
+   "lcp": 352,
+   "ready": 254,
+   "load": 432,
+   "requests": 86,
+   "jsFiles": 29,
+   "jsTransferKB": 295.9,
+   "jsDecodedKB": 935.4,
+   "htmlKB": 61.2,
+   "imgFiles": 4,
+   "imgKB": 113.5,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 95,
+     "end": 181,
+     "ms": 86,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 98,
+     "end": 133,
+     "ms": 35,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_preferences",
+     "start": 414,
+     "end": 437,
+     "ms": 24,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_business_features",
+     "start": 414,
+     "end": 448,
+     "ms": 34,
+     "kb": 1.7
+    },
+    {
+     "url": "/api/db/rpc/list_attachments",
+     "start": 418,
+     "end": 456,
+     "ms": 38,
+     "kb": 0
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 396,
+     "dcl": 638,
+     "load": 884,
+     "fcp": 708,
+     "lcp": 708,
+     "ready": 610,
+     "htmlKB": 61.2,
+     "jsFiles": 29,
+     "jsTransferKB": 295.9,
+     "jsDecodedKB": 935.4,
+     "imgFiles": 4,
+     "imgKB": 113.5,
+     "requests": 86,
+     "errors": []
+    },
+    {
+     "ttfb": 64,
+     "dcl": 180,
+     "load": 387,
+     "fcp": 164,
+     "lcp": 352,
+     "ready": 172,
+     "htmlKB": 61.2,
+     "jsFiles": 29,
+     "jsTransferKB": 295.9,
+     "jsDecodedKB": 935.4,
+     "imgFiles": 4,
+     "imgKB": 113.5,
+     "requests": 88,
+     "errors": []
+    },
+    {
+     "ttfb": 25,
+     "dcl": 292,
+     "load": 432,
+     "fcp": 268,
+     "lcp": 268,
+     "ready": 254,
+     "htmlKB": 61.2,
+     "jsFiles": 29,
+     "jsTransferKB": 295.9,
+     "jsDecodedKB": 935.4,
+     "imgFiles": 4,
+     "imgKB": 113.5,
+     "requests": 83,
+     "errors": []
+    }
+   ]
+  },
+  "request-view/mobile": {
+   "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+   "profile": "mobile",
+   "ttfb": 46,
+   "fcp": 1468,
+   "lcp": 1468,
+   "ready": 1194,
+   "load": 4301,
+   "requests": 58,
+   "jsFiles": 23,
+   "jsTransferKB": 243.8,
+   "jsDecodedKB": 766.7,
+   "htmlKB": 61.2,
+   "imgFiles": 3,
+   "imgKB": 75.7,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1125,
+     "end": 3639,
+     "ms": 2514,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 1127,
+     "end": 1134,
+     "ms": 6,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_preferences",
+     "start": 4630,
+     "end": 5034,
+     "ms": 404,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_business_features",
+     "start": 4630,
+     "end": 5228,
+     "ms": 598,
+     "kb": 1.7
+    },
+    {
+     "url": "/api/db/rpc/list_attachments",
+     "start": 4631,
+     "end": 5228,
+     "ms": 597,
+     "kb": 0
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 51,
+     "dcl": 1497,
+     "load": 4301,
+     "fcp": 1556,
+     "lcp": 1556,
+     "ready": 1208,
+     "htmlKB": 61.2,
+     "jsFiles": 23,
+     "jsTransferKB": 243.8,
+     "jsDecodedKB": 766.7,
+     "imgFiles": 3,
+     "imgKB": 75.7,
+     "requests": 58,
+     "errors": []
+    },
+    {
+     "ttfb": 46,
+     "dcl": 1394,
+     "load": 4280,
+     "fcp": 1468,
+     "lcp": 1468,
+     "ready": 1194,
+     "htmlKB": 61.2,
+     "jsFiles": 23,
+     "jsTransferKB": 243.8,
+     "jsDecodedKB": 766.7,
+     "imgFiles": 3,
+     "imgKB": 75.7,
+     "requests": 58,
+     "errors": []
+    },
+    {
+     "ttfb": 28,
+     "dcl": 1407,
+     "load": 4549,
+     "fcp": 1264,
+     "lcp": 1456,
+     "ready": 1144,
+     "htmlKB": 61.2,
+     "jsFiles": 23,
+     "jsTransferKB": 243.8,
+     "jsDecodedKB": 766.7,
+     "imgFiles": 3,
+     "imgKB": 75.7,
+     "requests": 58,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/desktop": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "desktop",
+   "ttfb": 48,
+   "fcp": 336,
+   "lcp": 336,
+   "ready": 640,
+   "load": 389,
+   "requests": 80,
+   "jsFiles": 27,
+   "jsTransferKB": 284.5,
+   "jsDecodedKB": 899.9,
+   "htmlKB": 72.1,
+   "imgFiles": 2,
+   "imgKB": 18.4,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 63,
+     "end": 94,
+     "ms": 31,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 64,
+     "end": 70,
+     "ms": 6,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_products",
+     "start": 236,
+     "end": 263,
+     "ms": 27,
+     "kb": 1.2
+    },
+    {
+     "url": "/api/db/rpc/company_reviews",
+     "start": 236,
+     "end": 261,
+     "ms": 25,
+     "kb": 2.6
+    },
+    {
+     "url": "/api/db/rpc/company_public_stats",
+     "start": 237,
+     "end": 261,
+     "ms": 25,
+     "kb": 0
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 126,
+     "dcl": 288,
+     "load": 389,
+     "fcp": 336,
+     "lcp": 336,
+     "ready": 640,
+     "htmlKB": 72.1,
+     "jsFiles": 27,
+     "jsTransferKB": 284.5,
+     "jsDecodedKB": 899.9,
+     "imgFiles": 2,
+     "imgKB": 18.4,
+     "requests": 80,
+     "errors": []
+    },
+    {
+     "ttfb": 48,
+     "dcl": 448,
+     "load": 555,
+     "fcp": 488,
+     "lcp": 488,
+     "ready": 706,
+     "htmlKB": 72.1,
+     "jsFiles": 27,
+     "jsTransferKB": 284.5,
+     "jsDecodedKB": 899.9,
+     "imgFiles": 2,
+     "imgKB": 18.4,
+     "requests": 79,
+     "errors": []
+    },
+    {
+     "ttfb": 36,
+     "dcl": 146,
+     "load": 211,
+     "fcp": 176,
+     "lcp": 176,
+     "ready": 279,
+     "htmlKB": 72.1,
+     "jsFiles": 27,
+     "jsTransferKB": 284.5,
+     "jsDecodedKB": 899.9,
+     "imgFiles": 2,
+     "imgKB": 18.4,
+     "requests": 80,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/mobile": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "mobile",
+   "ttfb": 30,
+   "fcp": 1276,
+   "lcp": 1340,
+   "ready": 4675,
+   "load": 4306,
+   "requests": 56,
+   "jsFiles": 20,
+   "jsTransferKB": 226.6,
+   "jsDecodedKB": 712.6,
+   "htmlKB": 72.1,
+   "imgFiles": 2,
+   "imgKB": 18.4,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1126,
+     "end": 4258,
+     "ms": 3133,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 1129,
+     "end": 1136,
+     "ms": 6,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_products",
+     "start": 4333,
+     "end": 4591,
+     "ms": 258,
+     "kb": 1.2
+    },
+    {
+     "url": "/api/db/rpc/company_reviews",
+     "start": 4334,
+     "end": 4598,
+     "ms": 264,
+     "kb": 2.6
+    },
+    {
+     "url": "/api/db/rpc/company_public_stats",
+     "start": 4334,
+     "end": 4592,
+     "ms": 258,
+     "kb": 0
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 122,
+     "dcl": 1250,
+     "load": 4362,
+     "fcp": 1276,
+     "lcp": 1340,
+     "ready": 4749,
+     "htmlKB": 72.1,
+     "jsFiles": 20,
+     "jsTransferKB": 226.6,
+     "jsDecodedKB": 712.6,
+     "imgFiles": 2,
+     "imgKB": 18.4,
+     "requests": 55,
+     "errors": []
+    },
+    {
+     "ttfb": 27,
+     "dcl": 1385,
+     "load": 4306,
+     "fcp": 1284,
+     "lcp": 1396,
+     "ready": 4675,
+     "htmlKB": 72.1,
+     "jsFiles": 20,
+     "jsTransferKB": 226.6,
+     "jsDecodedKB": 712.6,
+     "imgFiles": 2,
+     "imgKB": 18.4,
+     "requests": 56,
+     "errors": []
+    },
+    {
+     "ttfb": 30,
+     "dcl": 1202,
+     "load": 4255,
+     "fcp": 1228,
+     "lcp": 1324,
+     "ready": 4637,
+     "htmlKB": 72.1,
+     "jsFiles": 20,
+     "jsTransferKB": 226.6,
+     "jsDecodedKB": 712.6,
+     "imgFiles": 2,
+     "imgKB": 18.4,
+     "requests": 56,
+     "errors": []
+    }
+   ]
+  }
+ }
+}

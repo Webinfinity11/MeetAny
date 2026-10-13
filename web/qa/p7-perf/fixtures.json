@@ -1,0 +1,13 @@
+{
+ "database": "meetany_preview_p7_perf",
+ "origin": "http://127.0.0.1:3708",
+ "auth": "http://127.0.0.1:3718",
+ "guestRequest": "012ca27c-5913-46e2-899f-254785bd3d23",
+ "ownerRequest": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+ "owner": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+ "company": "74cc28fc-47de-45cb-9563-93735b86855e",
+ "editableRequest": "9bb4fc42-e88b-4fe9-bc80-13d142899365",
+ "guestSelection": "anonymous RLS-visible, status=open, not hidden, expires_at>now(), photo_url present, newest; one offer, already chosen",
+ "originalGuestRequest": "3c6c7198-9e2c-4950-9dfb-f32a1545ec26",
+ "originalGuestExcludedReason": "hidden=true; anonymous RLS returns no row"
+}

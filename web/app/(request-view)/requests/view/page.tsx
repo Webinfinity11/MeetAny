@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { cities } from "../../../lib/categories";
-import { loadPublicSnapshot } from "../../../lib/public-snapshot";
+import { loadPublicSnapshot, loadPublicRequest } from "../../../lib/public-snapshot";
 import { RequestViewPageContent } from "../../../components/market/RequestViewPageContent";
 import { isUuid } from "../../../lib/ids";
 
@@ -50,9 +50,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 // renders in the first paint instead of after the token → ensureRequest → profiles chain.
 export default async function RequestViewPage({ searchParams }: Props) {
   await connection();
-  const initial = await loadPublicSnapshot();
   const raw = (await searchParams).id;
   const id = Array.isArray(raw) ? raw[0] : raw;
+  const initial = await loadPublicRequest(id);
   const item = (initial?.requests as SnapshotRequest[] | undefined)?.find(row => row.id === id);
   const url = `${siteUrl()}/requests/view/?id=${id}`;
   return (

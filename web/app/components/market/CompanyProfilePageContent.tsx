@@ -96,7 +96,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
       <Link className="ma-back" href="/companies/"><Icon name="chevron-left" />კომპანიები</Link>
       {ownProfile && (!c.verified || c.blocked || isInternalTestAccount(c)) ? <Notice>ეს გვერდი სტუმრისთვის არ ჩანს — მიზეზი: {!c.verified ? "ვერიფიკაცია არ არის" : "დამალულია"}.</Notice> : null}
       <header className={styles.hero}>
-        <span className={styles.avatar}>{logo ? <Image src={logo} alt="" width={160} height={160} unoptimized={!optimizable(logo)} /> : <Icon name="building-2"/>}
+        <span className={styles.avatar}>{logo ? <Image src={logo} alt="" width={160} height={160} sizes="64px" priority unoptimized={!optimizable(logo)} /> : <Icon name="building-2"/>}
           {c.verified ? <span className={styles.verified} role="img" aria-label="ვერიფიცირებული კომპანია"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 14.4 4l3.1-.3.9 3 2.7 1.6-1 3 1 3-2.7 1.6-.9 3-3.1-.3L12 22l-2.4-2-3.1.3-.9-3L2.9 15.7l1-3-1-3 2.7-1.6.9-3 3.1.3L12 2Z"/><path className={styles.verifiedCheck} d="m8.5 12.2 2.3 2.3 4.7-4.9"/></svg></span> : null}
         </span>
         <div className={styles.identity}>

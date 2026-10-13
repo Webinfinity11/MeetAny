@@ -41,7 +41,7 @@ const RPCS = new Set([
   'company_public_stats', 'list_saved_requests', 'set_saved_request', 'mark_request_offers_viewed', 'list_my_deals',
   'count_matching_suppliers', 'my_request_draft', 'save_request_draft', 'delete_request_draft',
   // Performance (migration 20261012-perf-attachments-batch): one file-list read for many offers.
-  'list_attachments_many',
+  'list_attachments_many', 'request_detail_extras', 'company_detail_extras',
   // Home page counters (migration 20261012-home-stats).
   'home_stats',
   // Admin management v2 (migration 20261012-admin-management): deals, budget, reviews list; site design save.

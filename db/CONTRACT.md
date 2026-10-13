@@ -971,3 +971,10 @@ Offer patch keys: body, price, price_type, vat_included, delivery_days, delivery
 Issue comments trim body to a validated 3–1000 characters (`MA902`), insert an `admin_comment` deal update, increment revision and use `deal_event` to notify both parties. Missing issue returns `MA901`. Comments do not resolve the issue or change the deal stage.
 
 API allowlist: all five new admin RPCs in RPCS; role, anonymize, company_hidden and offer_edit also in PUBLIC_WRITES for public snapshot invalidation. Report resolution was already a public write.
+
+### დეტალის გაერთიანებული წაკითხვა (20261014-detail-extras)
+
+- `request_detail_extras(p_request_id uuid) → jsonb`: `preferences`, `attachments`, `offerAttachments` (offer UUID → file metadata array), `businessFeatures`.
+- `company_detail_extras(p_id uuid) → jsonb`: `products`, `reviews` (first page), `stats` (completed deals).
+- ორივე `STABLE SECURITY INVOKER`, anonymous/authenticated execute; PUBLIC execute გაუქმებულია. Offers-ის SELECT caller-ის RLS-ს ექვემდებარება. Preferences და files არსებული RPC-ების წვდომის შემოწმებასა და პირადი ბიუჯეტის ფილტრს იყენებს. ფაილის ბინარული შიგთავსი არ ბრუნდება.
+- ძველი RPC-ები რჩება. კლიენტი მხოლოდ დეტალის მარშრუტზე აერთიანებს შესაბამის წაკითხვებს, caller/data revision-ის გასაღებითა და 1-წამიანი გაერთიანების ფანჯრით; ცვლილების შემდეგ ქეში უქმდება. `PGRST202`-ზე იმ store-ისთვის შესაბამისი aggregate ითიშება და ძველი წაკითხვები გრძელდება. სხვა aggregate შეცდომისას ცალკეული სექციების ძველი RPC-ები ინარჩუნებს საკუთარ შეცდომის/ხელახალი ცდის UI-ს.

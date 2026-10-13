@@ -1,0 +1,25 @@
+{
+  "build": "pass",
+  "unit": {
+    "pass": 127,
+    "fail": 0
+  },
+  "detailExtrasUnit": {
+    "pass": 8,
+    "fail": 0
+  },
+  "tscErrors": 0,
+  "eslint": {
+    "errors": 0,
+    "warnings": 11
+  },
+  "design": "pass",
+  "sqlAssertions": 2203,
+  "newSqlAssertions": 20,
+  "consecutiveSqlPasses": 2,
+  "visualCases": 12,
+  "overflow": 0,
+  "pageerrors": 0,
+  "busy": 0,
+  "targetMet": false
+}

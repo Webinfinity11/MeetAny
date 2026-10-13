@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { categories, cities } from "../../../lib/categories";
-import { loadPublicSnapshot } from "../../../lib/public-snapshot";
+import { loadPublicSnapshot, loadPublicCompany } from "../../../lib/public-snapshot";
 import { CompanyProfilePageContent } from "../../../components/market/CompanyProfilePageContent";
 import { isUuid } from "../../../lib/ids";
 
@@ -44,9 +44,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 // Use the same public snapshot for SSR and the first client render.
 export default async function CompanyViewPage({ searchParams }: Props) {
   await connection();
-  const initial = await loadPublicSnapshot();
   const raw = (await searchParams).id;
   const id = Array.isArray(raw) ? raw[0] : raw;
+  const initial = await loadPublicCompany(id);
   const item = (initial?.companies as SnapshotCompany[] | undefined)?.find(row => row.id === id);
   const url = `${siteUrl()}/companies/view/?id=${id}`;
   return (

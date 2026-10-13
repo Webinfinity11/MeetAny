@@ -21,11 +21,11 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import { toast } from "../Toasts";
-import { RequestFormSheet } from "./RequestFormSheet";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { ConfirmSheet } from "../ui/ConfirmSheet";
 import { OfferCard, offerPrice, type OfferCardData } from "./OfferCard";
-import { ChooseOfferSheet } from "./ChooseOfferSheet";
+
 import { CallButton } from "./CallButton";
 import { MessageButton } from "./ChatPopup";
 import { ReportButton } from "./ReportButton";
@@ -38,6 +38,9 @@ import { SaveRequestButton } from "./SaveRequestButton";
 import styles from "./request/RequestDetail.module.css";
 import { addressLabel, dateLong, dateShort, postedLabel } from "../../lib/format";
 
+
+const RequestFormSheet = dynamic(() => import("./RequestFormSheet").then(m => m.RequestFormSheet));
+const ChooseOfferSheet = dynamic(() => import("./ChooseOfferSheet").then(m => m.ChooseOfferSheet));
 
 export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }) {
   const { store, ready, sessionReady, available } = useMarketStore(initial);
@@ -293,7 +296,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           </section>
           {r.photo ? <section className="detail-media-card"><h2 className="detail-section-title">ფოტო</h2>
             <a className="request-photo-file" href={r.photo} target="_blank" rel="noopener noreferrer" download aria-label="ფოტოს ჩამოტვირთვა — მყიდველის მაგალითი">
-              <Image src={r.photo} alt="" width={112} height={70} unoptimized={!optimizable(r.photo)}/>
+              <Image src={r.photo} alt="" width={112} height={70} sizes="112px" unoptimized={!optimizable(r.photo)}/>
               <span><strong>მოთხოვნის ფოტო</strong><small>მყიდველის მაგალითი</small></span>
               <Icon name="download"/>
             </a>
@@ -357,7 +360,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <p>{confirmKind === "extend" ? (closed ? "მოთხოვნა ხელახლა გაიხსნება და შეთავაზებებს 7 დღე მიიღებს." : "შეთავაზებების მიღების ვადა 7 დღით გაგრძელდება.") : confirmKind === "delete" ? "მოთხოვნა და მისი ყველა შეთავაზება სამუდამოდ წაიშლება." : confirmKind === "close" ? "მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს. მოგვიანებით შეგიძლიათ ხელახლა გახსნა." : "მყიდველი თქვენს შეთავაზებას ვეღარ ნახავს. ხელახლა გაგზავნა შესაძლებელია, სანამ მოთხოვნა ღიაა."}</p>
       </ConfirmSheet>
       {editRequest ? <RequestFormSheet key={r.id} open existing={r} onClose={() => setEditRequest(false)} /> : null}
-      <ChooseOfferSheet
+      {chooseId ? <ChooseOfferSheet
         open={!!chooseId}
         companyName={chosenCard?.companyName || ""}
         offer={chosenCard ? { logoUrl: chosenCard.logoUrl, priceLabel: offerPrice(chosenCard), deliveryDays: chosenCard.deliveryDays } : undefined}
@@ -370,7 +373,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           setChooseId(null);
           setChooseError(null);
         }}
-      />
+      /> : null}
     </div>
   );
 }

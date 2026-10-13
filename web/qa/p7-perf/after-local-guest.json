@@ -1,0 +1,368 @@
+{
+ "origin": "http://127.0.0.1:3708",
+ "at": "2026-10-13T20:26:47.903Z",
+ "runs": 3,
+ "signedIn": false,
+ "pages": {
+  "request-view/desktop": {
+   "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+   "profile": "desktop",
+   "ttfb": 32,
+   "fcp": 208,
+   "lcp": 208,
+   "ready": 171,
+   "load": 383,
+   "requests": 88,
+   "jsFiles": 29,
+   "jsTransferKB": 293.7,
+   "jsDecodedKB": 922.8,
+   "htmlKB": 61.8,
+   "imgFiles": 4,
+   "imgKB": 113.5,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 75,
+     "end": 111,
+     "ms": 36,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 75,
+     "end": 89,
+     "ms": 14,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_detail_extras",
+     "start": 583,
+     "end": 597,
+     "ms": 14,
+     "kb": 1.8
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 62,
+     "dcl": 240,
+     "load": 339,
+     "fcp": 240,
+     "lcp": 240,
+     "ready": 233,
+     "htmlKB": 61.8,
+     "jsFiles": 29,
+     "jsTransferKB": 293.7,
+     "jsDecodedKB": 922.8,
+     "imgFiles": 4,
+     "imgKB": 113.5,
+     "requests": 88,
+     "errors": []
+    },
+    {
+     "ttfb": 14,
+     "dcl": 166,
+     "load": 383,
+     "fcp": 196,
+     "lcp": 196,
+     "ready": 166,
+     "htmlKB": 61.8,
+     "jsFiles": 29,
+     "jsTransferKB": 293.7,
+     "jsDecodedKB": 922.8,
+     "imgFiles": 4,
+     "imgKB": 113.5,
+     "requests": 86,
+     "errors": []
+    },
+    {
+     "ttfb": 32,
+     "dcl": 171,
+     "load": 446,
+     "fcp": 208,
+     "lcp": 208,
+     "ready": 171,
+     "htmlKB": 61.8,
+     "jsFiles": 29,
+     "jsTransferKB": 293.7,
+     "jsDecodedKB": 922.8,
+     "imgFiles": 4,
+     "imgKB": 113.5,
+     "requests": 88,
+     "errors": []
+    }
+   ]
+  },
+  "request-view/mobile": {
+   "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+   "profile": "mobile",
+   "ttfb": 31,
+   "fcp": 1468,
+   "lcp": 1856,
+   "ready": 1436,
+   "load": 4565,
+   "requests": 56,
+   "jsFiles": 22,
+   "jsTransferKB": 234.9,
+   "jsDecodedKB": 733.5,
+   "htmlKB": 61.8,
+   "imgFiles": 3,
+   "imgKB": 75.7,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1267,
+     "end": 3683,
+     "ms": 2416,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 1280,
+     "end": 1286,
+     "ms": 5,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/request_detail_extras",
+     "start": 4520,
+     "end": 4891,
+     "ms": 371,
+     "kb": 1.8
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 91,
+     "dcl": 1981,
+     "load": 4600,
+     "fcp": 1776,
+     "lcp": 2104,
+     "ready": 1559,
+     "htmlKB": 61.8,
+     "jsFiles": 22,
+     "jsTransferKB": 234.9,
+     "jsDecodedKB": 733.5,
+     "imgFiles": 3,
+     "imgKB": 75.7,
+     "requests": 56,
+     "errors": []
+    },
+    {
+     "ttfb": 31,
+     "dcl": 1575,
+     "load": 4565,
+     "fcp": 1468,
+     "lcp": 1856,
+     "ready": 1273,
+     "htmlKB": 61.8,
+     "jsFiles": 22,
+     "jsTransferKB": 234.9,
+     "jsDecodedKB": 733.5,
+     "imgFiles": 3,
+     "imgKB": 75.7,
+     "requests": 56,
+     "errors": []
+    },
+    {
+     "ttfb": 22,
+     "dcl": 1555,
+     "load": 4452,
+     "fcp": 1452,
+     "lcp": 1592,
+     "ready": 1436,
+     "htmlKB": 61.8,
+     "jsFiles": 22,
+     "jsTransferKB": 234.9,
+     "jsDecodedKB": 733.5,
+     "imgFiles": 3,
+     "imgKB": 75.7,
+     "requests": 56,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/desktop": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "desktop",
+   "ttfb": 24,
+   "fcp": 184,
+   "lcp": 184,
+   "ready": 401,
+   "load": 308,
+   "requests": 79,
+   "jsFiles": 26,
+   "jsTransferKB": 278.7,
+   "jsDecodedKB": 884.3,
+   "htmlKB": 76.9,
+   "imgFiles": 1,
+   "imgKB": 9.7,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 45,
+     "end": 69,
+     "ms": 23,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 46,
+     "end": 51,
+     "ms": 6,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_detail_extras",
+     "start": 269,
+     "end": 276,
+     "ms": 6,
+     "kb": 3.8
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 21,
+     "dcl": 174,
+     "load": 315,
+     "fcp": 320,
+     "lcp": 320,
+     "ready": 401,
+     "htmlKB": 76.9,
+     "jsFiles": 26,
+     "jsTransferKB": 278.7,
+     "jsDecodedKB": 884.3,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 78,
+     "errors": []
+    },
+    {
+     "ttfb": 35,
+     "dcl": 198,
+     "load": 308,
+     "fcp": 184,
+     "lcp": 184,
+     "ready": 416,
+     "htmlKB": 76.9,
+     "jsFiles": 26,
+     "jsTransferKB": 278.7,
+     "jsDecodedKB": 884.3,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 79,
+     "errors": []
+    },
+    {
+     "ttfb": 24,
+     "dcl": 102,
+     "load": 211,
+     "fcp": 156,
+     "lcp": 156,
+     "ready": 321,
+     "htmlKB": 76.9,
+     "jsFiles": 26,
+     "jsTransferKB": 278.7,
+     "jsDecodedKB": 884.3,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 79,
+     "errors": []
+    }
+   ]
+  },
+  "company-view/mobile": {
+   "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+   "profile": "mobile",
+   "ttfb": 29,
+   "fcp": 1636,
+   "lcp": 2112,
+   "ready": 5720,
+   "load": 4787,
+   "requests": 54,
+   "jsFiles": 19,
+   "jsTransferKB": 218.2,
+   "jsDecodedKB": 687.4,
+   "htmlKB": 76.9,
+   "imgFiles": 1,
+   "imgKB": 9.7,
+   "api": [
+    {
+     "url": "/api/db/bootstrap",
+     "start": 1568,
+     "end": 4145,
+     "ms": 2577,
+     "kb": 91.8
+    },
+    {
+     "url": "http://127.0.0.1:3718/get-session",
+     "start": 1572,
+     "end": 1581,
+     "ms": 8,
+     "kb": 0
+    },
+    {
+     "url": "/api/db/rpc/company_detail_extras",
+     "start": 5178,
+     "end": 5609,
+     "ms": 431,
+     "kb": 3.8
+    }
+   ],
+   "errors": [],
+   "samples": [
+    {
+     "ttfb": 29,
+     "dcl": 1567,
+     "load": 4601,
+     "fcp": 1484,
+     "lcp": 2164,
+     "ready": 5720,
+     "htmlKB": 76.9,
+     "jsFiles": 19,
+     "jsTransferKB": 218.2,
+     "jsDecodedKB": 687.4,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 54,
+     "errors": []
+    },
+    {
+     "ttfb": 23,
+     "dcl": 1848,
+     "load": 4787,
+     "fcp": 1636,
+     "lcp": 1980,
+     "ready": 5702,
+     "htmlKB": 76.9,
+     "jsFiles": 19,
+     "jsTransferKB": 218.2,
+     "jsDecodedKB": 687.4,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 54,
+     "errors": []
+    },
+    {
+     "ttfb": 36,
+     "dcl": 1972,
+     "load": 4978,
+     "fcp": 1736,
+     "lcp": 2112,
+     "ready": 5745,
+     "htmlKB": 76.9,
+     "jsFiles": 19,
+     "jsTransferKB": 218.2,
+     "jsDecodedKB": 687.4,
+     "imgFiles": 1,
+     "imgKB": 9.7,
+     "requests": 53,
+     "errors": []
+    }
+   ]
+  }
+ }
+}

@@ -65,3 +65,30 @@ export async function loadPublicSnapshot() {
   }
   return state.pending;
 }
+
+// Detail pages serialize only their own public records. Parameterized UUIDs and the
+// anonymous caller preserve the catalog's RLS and public profile projection.
+async function readPublicDetail(id, company) {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id || ''))) return null;
+  const requestFilter = company
+    ? "owner_id=$1::uuid and not hidden and chosen_offer_id is null and status<>'closed' and expires_at>now()"
+    : 'id=$1::uuid';
+  const sql = `with r as materialized (select * from public.requests where ${requestFilter} order by created_at desc),
+    c as materialized (select * from public.list_companies() where id=$1::uuid and $2::boolean)
+  select json_build_object(
+    'requests', (select coalesce(json_agg(r), '[]'::json) from r),
+    'companies', (select coalesce(json_agg(c), '[]'::json) from c),
+    'companyStats', (select coalesce(json_agg(t), '[]'::json) from public.company_stats(ids => array(select id from c)) t),
+    'counts', (select coalesce(json_agg(t), '[]'::json) from public.offer_counts(ids => array(select id from r)) t),
+    'profiles', (select coalesce(json_agg(t), '[]'::json) from (select ${PUBLIC_PROFILE} from public.profiles
+      where id in (select owner_id from r union select id from c)) t)
+  ) as j`;
+  try {
+    return await asCaller({ role: 'anonymous' }, async db => (await db.query(sql, [id, company])).rows[0].j);
+  } catch (err) {
+    console.error('Public detail failed:', err.code || 'database error');
+    return null;
+  }
+}
+export const loadPublicRequest = id => readPublicDetail(id, false);
+export const loadPublicCompany = id => readPublicDetail(id, true);
