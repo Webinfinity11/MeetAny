@@ -140,5 +140,5 @@ function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(item
 
 function ProductPreview({product}:{product:ProductCardData}) {
  const [loaded,setLoaded]=useState<string|null>(null),[failed,setFailed]=useState<string|null>(null);
- return <div className={styles.productEditorPreview} role="img" aria-label={product.name || "პროდუქტის ფოტო"}><Icon name="image"/>{product.photoUrl && failed!==product.photoUrl ? <img src={product.photoUrl} alt="" width={120} height={90} loading="lazy" style={{opacity:loaded===product.photoUrl?1:0}} onLoad={()=>setLoaded(product.photoUrl!)} onError={()=>setFailed(product.photoUrl!)}/> : null}</div>;
+ return <div className={styles.productEditorPreview} role="img" aria-label={product.name || "პროდუქტის ფოტო"}><Icon name="image"/>{product.photoUrl && failed!==product.photoUrl ? <Image src={product.photoUrl} unoptimized={!optimizable(product.photoUrl)} alt="" width={120} height={90} loading="lazy" style={{opacity:loaded===product.photoUrl?1:0}} onLoad={()=>setLoaded(product.photoUrl!)} onError={()=>setFailed(product.photoUrl!)}/> : null}</div>;
 }

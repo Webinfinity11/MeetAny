@@ -14,3 +14,11 @@ archive/scripts-local/
 
 DEMO-FEATURES.local.json
 DEMO-PHOTOS.local.json
+
+# QA screenshots stay local evidence; tracked history is untouched
+web/qa/**/*.png
+web/qa/**/*.jpg
+web/qa/**/*.jpeg
+web/qa/**/*.webp
+!web/qa/ref-mobbin/**
+web/qa/**/shots/

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { Button } from "../ui/Button";
 
 
@@ -51,7 +52,7 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
   if (variant === "tile") return <div className="post-photos">
     <div className="post-photos__tiles">
       {file && previewUrl && !broken ? <div className="post-photos__tile">
-        <img src={previewUrl} width={88} height={88} alt="არჩეული ფოტო" onError={() => { setBroken(true); onChange(null); }} />
+        <Image unoptimized src={previewUrl} width={88} height={88} alt="არჩეული ფოტო" onError={() => { setBroken(true); onChange(null); }} />
         <Button variant="ghost" className="post-photos__remove" aria-label="ფოტოს წაშლა" onClick={remove}><Icon name="x" /></Button>
       </div> : null}
       <label className={`ma-drop post-photos__add${isOver ? " is-over" : ""}`}
@@ -97,7 +98,7 @@ export function PhotoField({ file, onChange, variant = "drop" }: { file: File | 
       {file && !broken ? (
         <div className="ma-proto-preview">
           {previewUrl ? (
-            <img alt="" width={96} height={72} src={previewUrl} onError={() => setBroken(true)} />
+            <Image unoptimized alt="" width={96} height={72} src={previewUrl} onError={() => setBroken(true)} />
           ) : null}
           <Button variant="ghost" type="button" onClick={remove}>
             <Icon name="trash-2" />

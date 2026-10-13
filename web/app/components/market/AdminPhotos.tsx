@@ -1,4 +1,7 @@
 "use client";
+import Image from "next/image";
+import { Avatar } from "../ui/Avatar";
+import { optimizable } from "../../lib/image";
 import { Button } from "../ui/Button";
 import { useState } from "react";
 import type { Store } from "../../lib/market-client";
@@ -14,10 +17,10 @@ export type PhotoTarget = { userId: string; url: string; label: string };
 const uploaded = (url?: string | null) => !!url && /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\//.test(url);
 
 /** A photo that cannot load says so (the file was removed or the link expired) instead of an empty box. */
-function Photo({ url, label }: { url: string; label: string }) {
+function Photo({ url, label, logo }: { url: string; label: string; logo: boolean }) {
   const [failed, setFailed] = useState(false);
   return <a href={url} target="_blank" rel="noopener noreferrer" className={styles.photoImage} aria-label={`${label}, სრული ზომით`}>
-    {failed ? <span className={styles.photoMissing}>ფოტო ვერ ჩაიტვირთა<small>ბმულის გახსნა</small></span> : <img src={url} alt="" loading="lazy" onError={() => setFailed(true)} />}
+    {logo ? <Avatar name={label} logoUrl={url} style={{width:"100%",height:"100%",borderRadius:0}} /> : failed ? <span className={styles.photoMissing}>ფოტო ვერ ჩაიტვირთა<small>ბმულის გახსნა</small></span> : <Image src={url} width={400} height={300} unoptimized={!optimizable(url)} alt="" loading="lazy" onError={() => setFailed(true)} />}
   </a>;
 }
 
@@ -33,7 +36,7 @@ export function AdminPhotos({ store, onRemove, onOpen }: { store: Store; onRemov
     <p className={styles.count} role="status">{photos.length} ფოტო · {new Set(photos.map(p => p.company.id)).size} კომპანია</p>
     <ul className={styles.photoGrid}>
       {photos.map(({ company, url, kind, logo }) => <li key={url} className={styles.photoCard} data-logo={logo || undefined}>
-        <Photo url={url} label={`${company.company || company.name} — ${kind}`} />
+        <Photo logo={logo} url={url} label={`${company.company || company.name} — ${kind}`} />
         <div className={styles.photoMeta}>
           <button type="button" className={styles.rowLink} onClick={() => onOpen({ kind: "user", id: company.id })}>{company.company || company.name}</button>
           <small>{logo ? <span className="ma-badge ma-badge--info">ლოგო</span> : kind}{categories[company.industry || ""] ? ` · ${categories[company.industry || ""]}` : ""}</small>

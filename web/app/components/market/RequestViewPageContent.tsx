@@ -14,7 +14,7 @@ import { useRequestDetail } from "../../lib/use-request-detail";
 import { isUuid } from "../../lib/ids";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 import { EmptyState } from "../ui/Structure";
-import { avatarInitials } from "../../lib/avatar-initials";
+import { Avatar } from "../ui/Avatar";
 
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -311,7 +311,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           {offerAction ? <><Button variant="primary" className="request-submit-cta" href={offerAction.href}><Icon name="send"/>{offerAction.label}</Button><p className={styles.note}>{offerAction.hint}</p></> : null}{isOwner && offerCount > 0 ? <Button variant={r.chosenOfferId ? "secondary" : "primary"} className="request-submit-cta" href={compareHref(r.id)}>შეთავაზებების შედარება</Button> : null}{lockNote ? <p className={styles.note}><Icon name="lock"/>{lockNote}</p> : null}</section>
           {owner && !isOwner ? (
             <section className="request-author"><p className="detail-label">მყიდველი</p>
-              <div className="request-author-identity"><span className="detail-buyer-avatar" aria-hidden="true">{owner.logoUrl ? <img src={owner.logoUrl} alt=""/> : avatarInitials(owner.company || owner.name || "მყიდველი")}</span><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{cities[owner.city] || owner.city}</p>{owner.verified ? <Badge status="success"><Icon name="shield-check"/>ვერიფიცირებული</Badge> : null}</div></div>
+              <div className="request-author-identity"><Avatar className="detail-buyer-avatar" name={owner.company || owner.name || "მყიდველი"} logoUrl={owner.logoUrl} size={48} symbol={owner.role === "company" ? "building-2" : "user-round"} /><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{cities[owner.city] || owner.city}</p>{owner.verified ? <Badge status="success"><Icon name="shield-check"/>ვერიფიცირებული</Badge> : null}</div></div>
               {owner.role === "company" ? <Button variant="secondary" style={{ width: "100%" }} href={`/companies/view/?id=${encodeURIComponent(owner.id)}`}>პროფილის ნახვა</Button> : null}
             </section>
           ) : null}
