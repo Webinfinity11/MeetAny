@@ -87,7 +87,6 @@
 .buyer strong{display:block;font-size:var(--fs-sm);line-height:var(--lh-sm);overflow-wrap:anywhere}
 .buyer p{margin:var(--space-1) 0 0;font-size:var(--fs-xs);line-height:var(--lh-meta);color:var(--ink-600);overflow-wrap:anywhere}
 .buyer a{color:inherit}
-.buyerAvatar{display:grid;place-items:center;flex:none;width:var(--size-36);height:var(--size-36);border-radius:var(--size-8);background:var(--avatar-bg);color:var(--white);font-size:var(--fs-xs);font-weight:var(--fw-semibold)}
 .contactOpen{display:flex;align-items:center;gap:var(--space-2);margin:0;padding:var(--space-2) var(--space-3);border-radius:var(--size-8);background:var(--success-50);color:var(--success-700);font-size:var(--fs-xs);line-height:var(--lh-meta)}
 .contactOpen :global(.icon){flex:none;width:var(--size-16);height:var(--size-16)}
 .contactNote{margin:var(--space-4) 0 0;font-size:var(--fs-copy);line-height:var(--lh-copy);color:var(--ink-600)}

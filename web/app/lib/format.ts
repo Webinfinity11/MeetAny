@@ -53,14 +53,6 @@ export function dateTime(value: string | null | undefined): string {
 /** @deprecated Use dateLong. */
 export const dateLabel: (value: string) => string = dateLong;
 
-const SINCE_MONTHS = ["იანვრიდან", "თებერვლიდან", "მარტიდან", "აპრილიდან", "მაისიდან", "ივნისიდან", "ივლისიდან", "აგვისტოდან", "სექტემბრიდან", "ოქტომბრიდან", "ნოემბრიდან", "დეკემბრიდან"];
-
-// "2026 წლის სექტემბრიდან" — month and year of a timestamp, for "on the site since".
-export function sinceMonthLabel(value: string): string | null {
-  const [y, m] = String(value || "").slice(0, 7).split("-").map(Number);
-  return y && m ? `${y} წლის ${SINCE_MONTHS[m - 1]}` : null;
-}
-
 // "დღეს" / "გუშინ" / "3 დღის წინ" — calendar days between a timestamp and `now` (local time).
 export function postedLabel(value: string, now: number): string | null {
   const created = Date.parse(value);

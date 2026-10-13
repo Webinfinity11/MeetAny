@@ -113,7 +113,6 @@ export const DECLARATION_EXCEPTIONS = new Set([
   ["app/components/market/engagement.module.css",".alertChoice input","height","var(--size-18)"], // app/components/market/engagement.module.css:52
   ["app/components/market/engagement.module.css",".chatSearch input","height","var(--size-24)"], // app/components/market/engagement.module.css:115
   ["app/components/market/onboarding.module.css",".checkboxes input","height","var(--space-4)"], // app/components/market/onboarding.module.css:102
-  ["app/components/ui/compact-multiselect.module.css",".option input","height","var(--size-16)"], // app/components/ui/compact-multiselect.module.css:5
   ["app/styles/pages/account.css",".gallery-field__tools button","height","var(--size-28)"], // app/styles/pages/account.css:452
   ["app/styles/pages/catalog.css",".catalog-header--center .home-search-seg .ma-input","height","var(--size-26)"], // app/styles/pages/catalog.css:306
   ["app/styles/pages/catalog.css",".filter-switch input","height","var(--size-1)"], // app/styles/pages/catalog.css:400

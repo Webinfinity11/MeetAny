@@ -129,7 +129,6 @@ export function LogoField({ name, logoUrl, file, onChange, onRemove, disabled, u
 }
 
 export type GalleryItem = ImageUploadItem;
-export const GALLERY_MAX = 8;
 export function GalleryField({ items, onChange, disabled, uploading, compact = false }: {
   items: GalleryItem[]; onChange: (items: GalleryItem[]) => void; disabled: boolean; uploading: boolean; compact?: boolean;
 }) {

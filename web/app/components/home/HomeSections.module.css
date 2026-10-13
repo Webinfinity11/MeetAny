@@ -19,7 +19,6 @@
 .number { margin: var(--size-20) 0 var(--size-4); font-size: var(--fs-meta); font-weight: var(--fw-semibold); color: var(--ink-600); }
 .steps h3 { margin: 0; font-size: var(--fs-title); line-height: 1.35; }
 .stepText { max-width: 65ch; margin: var(--size-8) 0 0; color: var(--ink-600); font-size: var(--fs-body); line-height: var(--lh-body); }
-.stepMeta { display: inline-flex; margin-top: var(--size-16); border: var(--size-1) solid var(--ink-200); border-radius: var(--radius-pill); background: var(--white); padding: var(--size-4) var(--size-10); color: var(--ink-700); font-size: var(--fs-meta); font-weight: var(--fw-semibold); }
 .supplier { display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; border-radius: var(--size-20); background: var(--ink-950); color: var(--white); }
 .supplierCopy { position: relative; z-index: 1; padding: var(--size-48); }
 .supplier .eyebrow { color: var(--ink-400); }
@@ -56,7 +55,7 @@
   /* Phones: body copy one step down (15px) so cards keep a comfortable measure. */
   .stepText, .rules p, .intro p, .path strong + span, .faq details p, .cta p, .supplier li, .companies > article > div > p { font-size: var(--fs-control-copy); line-height: var(--lh-body); }
   .supplierLead { font-size: var(--fs-body); line-height: var(--lh-body); }
-  .number, .stepMeta { display: none; }
+  .number { display: none; }
   .stepText { margin-top: var(--size-4); }
   .supplierCopy { padding: var(--size-32); }
   .supplierActions { flex-direction: column; align-items: stretch; }

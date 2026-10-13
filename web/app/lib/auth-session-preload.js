@@ -1,5 +1,4 @@
 export const SESSION_HINT_KEY = 'meetany.session';
-export const SESSION_CACHE_KEY = 'meetany.session.v1';
 export const GUEST_SESSION_TTL = 300000;
 // Self-contained so the early inline script and hydrated store use exactly the same cache.
 export function createSessionCache(env, endpoint) {

@@ -87,9 +87,6 @@
 .productsEditorHead { display: flex; align-items: center; gap: var(--space-3); }
 .productsEditorHead h2 { font-size: var(--fs-title); }
 .productsEditorHead > span, .productsHelp { color: var(--ink-600); font-size: var(--fs-sm); line-height: var(--lh-sm); }
-.productsEmpty { display: grid; justify-items: start; gap: var(--space-3); padding-block: var(--space-3); }
-.productsEmpty > svg { width: var(--size-32); height: var(--size-32); color: var(--ink-500); }
-.productsEmpty p { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--ink-600); }
 .productsEditorActions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
 .productsEditorActions > :global(.ma-btn) { width: auto; }
 /* Product catalog editor and spreadsheet import. */

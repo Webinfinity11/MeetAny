@@ -24,12 +24,11 @@
 .summary dd{margin:0;overflow-wrap:anywhere}
 .notice{display:grid;gap:var(--space-3);padding:var(--space-5);background:var(--warning-50);border:var(--space-hairline) solid var(--warning-100);border-radius:var(--card-radius);font-size:var(--fs-sm);line-height:var(--lh-sm);overflow-wrap:anywhere}
 .buyer{display:flex;gap:var(--space-3);align-items:center;border-top:var(--space-hairline) solid var(--border);margin-top:var(--space-5);padding-top:var(--space-5);font-size:var(--fs-sm);line-height:var(--lh-sm)}.buyer>div{min-width:0;overflow-wrap:anywhere}.buyer p{color:var(--text-3);font-size:var(--fs-xs);line-height:var(--lh-meta)}
-.formCard,.offerSummary{display:grid;gap:var(--space-4);padding:var(--space-6);border:var(--space-hairline) solid var(--border);border-radius:var(--card-radius);background:var(--white);min-width:0;overflow-wrap:anywhere}
-.formCard h2,.offerSummary h2{font-size:var(--fs-title);margin:0}.formCard input{max-width:100%;min-width:0}.formCard :global(.ma-check){min-height:var(--size-44)}
+.formCard{display:grid;gap:var(--space-4);padding:var(--space-6);border:var(--space-hairline) solid var(--border);border-radius:var(--card-radius);background:var(--white);min-width:0;overflow-wrap:anywhere}
+.formCard h2{font-size:var(--fs-title);margin:0}.formCard input{max-width:100%;min-width:0}.formCard :global(.ma-check){min-height:var(--size-44)}
 .chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}.chips button{white-space:normal}
-.offerSummary{position:sticky;top:var(--size-88);font-size:var(--fs-sm);line-height:var(--lh-sm)}.offerSummary>strong{font-size:var(--fs-h2)}.offerSummary ul{padding-left:var(--space-5);margin:0}.offerSummary ul:empty{display:none}
 .addTerm{display:flex;gap:var(--space-2)}.addTerm input{min-width:0;flex:1}
-.embedded{grid-template-columns:minmax(0,1fr)}.embedded .offerSummary{position:static}
+.embedded{grid-template-columns:minmax(0,1fr)}
 @media(max-width:29.99rem){.panel{padding:var(--space-5)}.panel h1{font-size:var(--fs-h2)}.two{grid-template-columns:minmax(0,1fr)}.addTerm{flex-wrap:wrap}.addTerm input{flex-basis:100%}}
 
 .formCard { padding: var(--space-5) 0; border: 0; border-radius: 0; border-top: var(--space-hairline) solid var(--ink-150); background: transparent; }

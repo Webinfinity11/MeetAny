@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useMarketStore } from "../../lib/market-client";
-import { useBusinessResource, businessError } from "../../lib/business-client";
-import { categories, cities } from "../../lib/categories";
+import { businessError } from "../../lib/business-client";
 import { distributionChannels, warehouses, transports, emptyDistribution, type Distribution } from "../../lib/distribution";
 import { Button } from "../ui/Button";
 import { CustomSelect } from "../ui/CustomSelect";
@@ -36,13 +35,4 @@ export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;o
  <Button type="submit" loading={pending}>შეინახეთ</Button>
  {saved?<p className="account-save-feedback" role="status">დისტრიბუციის პროფილი შენახულია.</p>:null}
  </form>;
-}
-export function DistributionProfile({companyId}:{companyId:string}) {
- const {store,ready}=useMarketStore();
- const resource=useBusinessResource<Distribution[]>(ready?store?.companyDistributionProfiles:undefined,"distribution");
- const d=resource.data?.find(p=>p.id===companyId);
- if(!d)return null;
- return <section className="company-detail-section" id="distribution"><h2>დისტრიბუცია</h2><dl className="distribution-facts">
- {[["რეგიონები",d.regions.map(x=>cities[x]||x).join(", ")],["პროდუქტები",d.categories.map(x=>categories[x]||x).join(", ")],["არხები",d.channels.map(x=>distributionChannels[x]||x).join(", ")],["ბრენდები",d.brands.join(", ")],["საწყობი",d.warehouse==='none'?'':warehouses[d.warehouse]],["ტრანსპორტი",d.transport==='none'?'':transports[d.transport]],["მინიმალური შეკვეთა",d.minOrder],["მიწოდება",d.coldChain?'გაცივებული / გაყინული':''],["თანამშრომლობა",d.exclusive?'ექსკლუზივიც შესაძლებელია':'']].filter(([,text])=>text).map(([label,text])=><div key={label}><dt>{label}</dt><dd>{text}</dd></div>)}
- </dl>{d.brands.length?<p className="business-fineprint">ბრენდები მითითებულია კომპანიის მიერ; ოფიციალურ წარმომადგენლობას არ ადასტურებს.</p>:null}</section>;
 }
