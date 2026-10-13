@@ -6,7 +6,6 @@ import { Button } from "../ui/Button";
 
 import { FileAttachments } from "./FileAttachments";
 import { RequestPreferenceRecord } from "./RequestPreferences";
-import { SendOfferForm } from "./SendOfferForm";
 import { compareHref, dealHref, listMyDeals, selectOfferDeal, flowCode, staleReview } from "../../lib/deal-client";
 import { CustomSelect } from "../ui/CustomSelect";
 import { DetailSkeleton } from "./Skeletons";
@@ -48,7 +47,6 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   const business = useCompanyFeatures(store, ready && available);
   const router = useRouter();
   const [editRequest, setEditRequest] = useState(false);
-  const [editOffer, setEditOffer] = useState(false);
   const [actionPending, setActionPending] = useState(false);
   const [actionError, setActionError] = useState("");
   const [offerSort, setOfferSort] = useState("newest");
@@ -259,8 +257,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
               <h2 className="ma-h3">თქვენი შეთავაზება</h2>
               <OfferCard store={store!} o={myOffer} canChoose={false} messageTarget={{ companyId: me.id, requestId: r.id }} />
               {me.verified && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
-                <div className="ma-cluster"><Button variant="secondary" type="submit" aria-label="შეთავაზების რედაქტირება" onClick={() => setEditOffer(!editOffer)}><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
-                {editOffer ? <SendOfferForm key={myOffer.id} requestId={r.id} existing={myOffer} onDone={() => setEditOffer(false)} onCancel={() => setEditOffer(false)}/> : null}
+                <div className="ma-cluster"><Button variant="secondary" href={offerHref} aria-label="შეთავაზების რედაქტირება"><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
               </div> : null}
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
