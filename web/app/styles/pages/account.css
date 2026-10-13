@@ -662,6 +662,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-register .ma-form__row > .ma-field { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; }
 .auth-register .ma-field__label { align-self: end; line-height: var(--lh-sm); }
 .auth-register .ma-form__row .ma-field__label { margin-bottom: var(--space-2); }
+.auth-register .ma-form__row > .auth-category-field { margin-top: var(--space-5); }
 .auth-register .auth-field-message:empty { display: none; }
 .auth-register .auth-field-message:not(:empty) { margin-top: var(--space-2); }
 .auth-register .ma-check { align-items: start; gap: var(--space-3); line-height: var(--lh-body); }
@@ -674,6 +675,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
  .auth-register .ma-form__row { grid-template-rows: none; row-gap: var(--space-4); }
  .auth-register .ma-form__row > .ma-field { grid-row: auto; grid-template-rows: none; row-gap: var(--space-2); }
  .auth-register .ma-form__row .ma-field__label { margin-bottom: 0; }
+ .auth-register .ma-form__row > .auth-category-field { margin-top: 0; }
 }
 
 .auth-input-icon > .icon { top: 50%; transform: translateY(-50%); }
