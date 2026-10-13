@@ -239,3 +239,7 @@
 .savedRow>:global(.ma-btn){position:relative;z-index:2;flex:none}
 @media(max-width:767px){.notificationHead>:global(.ma-btn){width:100%}}
 .noticeButton{width:100%;border:0;background:transparent;font:inherit;color:inherit;text-align:left;cursor:pointer}
+
+.noticeGroup{padding:var(--space-4);border-bottom:var(--size-1) solid var(--border)}
+.groupHeading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.noticeGroup summary{min-height:var(--tap-min);padding:var(--space-3) 0;cursor:pointer}

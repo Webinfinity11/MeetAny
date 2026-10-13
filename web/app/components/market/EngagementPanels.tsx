@@ -17,7 +17,7 @@ import { dateShort, money } from "../../lib/format";
 import { EmptyState } from "../ui/Structure";
 import { Notice as InlineNotice } from "../ui/Notice";
 type Cursor = { created_at: string; id: string; asOf: string } | null;
-type Notice = { deal_id?: string | null; deal_action?: string | null; deal_revision?: number | null; id: string; kind: string; title: string; request_id: string | null; created_at: string; detail?: { title?: string; status?: string; note?: string; resolution?: string; kind?: string } | null; read_at: string | null; category?: string; city?: string; needed_by?: string | null };
+type Notice = { deal_id?: string | null; deal_action?: string | null; deal_revision?: number | null; id: string; kind: string; title: string; request_id: string | null; created_at: string; detail?: { company_id?: string; company_name?: string; title?: string; status?: string; note?: string; resolution?: string; kind?: string } | null; read_at: string | null; category?: string; city?: string; needed_by?: string | null };
 type Saved = { company_id: string; company: string; city: string; industry: string };
 type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
 // Store statuses: idle (not loaded yet) → ready | unavailable (feature off) | error (request failed).
@@ -45,10 +45,21 @@ const noticeSubject = (n: Notice, requestTitle?: string) => n.kind === "verifica
 /** Where a notice leads; null when there is nowhere to go (resolved reports, unknown kinds without a request). */
 const noticeHref = (n: Notice): string | null => n.deal_id ? dealHref(n.deal_id) : n.kind === "verification_reviewed" ? "/onboarding/" : n.kind === "verify_to_respond" ? "/onboarding/?step=verify" : n.kind === "report_resolved" || !n.request_id ? null : n.kind === "offer_received" ? `/requests/compare/?id=${encodeURIComponent(n.request_id)}` : `/requests/view/?id=${encodeURIComponent(n.request_id)}`;
 const actionLabel = (n: Notice) => n.kind === "offer_received" && !n.deal_id ? "შედარება" : n.kind === "verification_reviewed" ? "პროფილის გახსნა" : n.kind === "verify_to_respond" ? "ვერიფიკაციის გავლა" : "ნახვა";
-function NoticeRows({ items, limit, store, compact = false }: { items: Notice[]; limit?: number; store?: Store; compact?: boolean }) {
+export function groupOfferNotifications(items: Notice[], ungrouped = false) {
+ const groups = new Map<string, Notice[]>();
+ const grouped = items.filter(n => {
+  if (ungrouped || n.kind !== "offer_received" || !n.request_id || n.deal_id) return true;
+  const existing = groups.get(n.request_id);
+  if (existing) { existing.push(n); return false; }
+  groups.set(n.request_id, [n]); return true;
+ });
+ return { groups, grouped };
+}
+function NoticeRows({ items, limit, store, compact = false, ungrouped = false }: { items: Notice[]; limit?: number; store?: Store; compact?: boolean; ungrouped?: boolean }) {
  const [now] = useState(() => Date.now());
  const [selectedId, setSelectedId] = useState<string | null>(null);
- const rows = limit ? items.slice(0, limit) : items;
+ const { groups, grouped } = groupOfferNotifications(items, ungrouped);
+ const rows = limit ? grouped.slice(0, limit) : grouped;
  const selected = rows.find(n => n.id === selectedId) || rows[0];
  const dayBand = (value: string) => { const days = Math.round((tbilisiDay(now) - tbilisiDay(value)) / 86400000); return days <= 0 ? "დღეს" : days === 1 ? "გუშინ" : dateShort(new Date(tbilisiDay(value)).toISOString().slice(0, 10)); };
  const acknowledge = (n: Notice) => { if (store && !n.read_at) void store.markNotificationRead(n.id).catch(() => toastError("წაკითხვის მონიშვნა ვერ შესრულდა.")); };
@@ -57,10 +68,15 @@ function NoticeRows({ items, limit, store, compact = false }: { items: Notice[];
   const day = dayBand(n.created_at);
   const request = n.request_id ? store?.getRequest(n.request_id) : null;
   const href = noticeHref(n);
+  const group = n.kind === "offer_received" && !n.deal_id && n.request_id ? groups.get(n.request_id) : undefined;
+  if (group && group.length > 1) return <section className={styles.noticeGroup} key={n.id}>
+   <div className={styles.groupHeading}><strong>ახალი შეთავაზება ×{group.length} — {request?.title || n.title}</strong><Button variant="secondary" size="sm" href={href || undefined} onClick={() => group.forEach(acknowledge)}>შედარება</Button></div>
+   <details><summary>სრული სია ({group.length})</summary><NoticeRows items={group} store={store} compact ungrouped/></details>
+  </section>;
   const chosen = n.kind === "offer_chosen" && request?.chosenOfferId ? store?.visibleOffers(request.id).find((offer: { id: string }) => offer.id === request.chosenOfferId) : null;
-  const company = chosen ? store?.userById(chosen.companyUserId) : null;
+  const company = chosen ? store?.userById(chosen.companyUserId) : n.detail?.company_id ? store?.userById(n.detail.company_id) : null;
   // Received notices do not identify their sender or offer; never guess from the latest offer.
-  const title = !n.deal_id && company ? `${company.company || company.name} — შეთავაზება აირჩიეს` : noticeLabel(n);
+  const title = !n.deal_id && chosen && company ? `${company.company || company.name} — შეთავაზება აირჩიეს` : [noticeLabel(n), n.detail?.company_name || company?.company || company?.name].filter(Boolean).join(" — ");
   const subtitle = [noticeSubject(n, request?.title), chosen?.price != null ? money(Number(chosen.price)) : null, chosen?.deliveryDays != null ? `${chosen.deliveryDays} დღე` : null].filter(Boolean).join(" · ");
   return <Fragment key={n.id}>
    {!compact && (!index || dayBand(rows[index - 1].created_at) !== day) ? <h2 className={styles.dayHeading}>{day}</h2> : null}

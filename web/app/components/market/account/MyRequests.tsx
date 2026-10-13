@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "../../ui/Button";
 import { Icon } from "../../Icon";
 import { openChat } from "../ChatPopup";
@@ -20,7 +21,10 @@ import styles from "./account.module.css";
 
 export function MyRequests({ requests, store, me, now, seen }: { requests: RequestItem[]; store: Store; me: AnyUser; now: number; seen: Record<string, string> }) {
   const deals = useAccountDeals(store, me.id);
-  const [filter, setFilter] = useState("all");
+  const params = useSearchParams();
+  const router = useRouter();
+  const filter = params.get("filter") || "all";
+  const setFilter = (value: string) => { const next = new URLSearchParams(params.toString()); next.set("filter", value); router.replace(`/account/?${next}`, { scroll: false }); };
   const [pending, setPending] = useState<string | null>(null);
   // Account content mounts after the client session check, like the request form.
   const [localDraft, setLocalDraft] = useState(readRequestDraft);
@@ -44,7 +48,9 @@ export function MyRequests({ requests, store, me, now, seen }: { requests: Reque
   };
   const labels: Record<string, string> = { open: "ღია", chosen: "არჩეული", complete: "დასრულებული", closed: "დახურული", cancelled: "გარიგება გაუქმდა", draft: "მონახაზი", expired: "ვადაგასული", hidden: "დამალული" };
   const filters = ["open", "chosen", "complete", "closed", "cancelled", "draft", "expired", "hidden"].map(key => ({ key, label: labels[key], count: key === "draft" ? Number(!!draft) : requests.filter(request => requestState(request) === key).length })).filter(item => item.count > 0);
-  const visible = requests.filter(request => filter === "all" || requestState(request) === filter);
+  const hasNewOffers = (request: RequestItem) => requestState(request) === "open" && (store.visibleOffers(request.id, me) as OfferItem[]).some(offer => offer.status === "sent" && !offer.viewedAt);
+  filters.push({ key: "new-offers", label: "ახალი შეთავაზებები", count: requests.filter(hasNewOffers).length });
+  const visible = requests.filter(request => filter === "all" || (filter === "new-offers" ? hasNewOffers(request) : requestState(request) === filter));
   const showDraft = draft && (filter === "all" || filter === "draft");
   const meta = (quantity: number | string | null | undefined, unit: string | null | undefined, category: string, city: string) => [quantity != null && quantity !== "" ? `${formatNumber(Number(quantity))} ${store.units[unit || ""] || ""}` : categories[category], cities[city] || city].filter(Boolean).join(" · ");
   async function removeDraft() {

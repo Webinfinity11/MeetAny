@@ -107,3 +107,5 @@
 
 /* Companies without a picture show their avatar filling the media slot. */
 .symbol>:global(.ma-avatar),.detailPhoto>:global(.ma-avatar){width:100%;height:100%;border-radius:inherit}
+
+.fullFeed .copy strong,.fullFeed .detail h2,.fullDetail h2{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden}

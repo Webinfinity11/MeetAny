@@ -13,6 +13,7 @@ import catalogStyles from '../catalog/Catalog.module.css';
 import accountStyles from '../account/account.module.css';
 import { useMarketStore } from '../../../lib/market-client';
 import { flowError, listMatching, matchingPageSize, validRequestId, type MatchingItem } from '../../../lib/matching-client';
+import { verificationLabel, verificationHint } from '../../../lib/onboarding-client';
 import { Button } from '../../ui/Button';
 import { CustomSelect } from '../../ui/CustomSelect';
 import { EmptyState } from '../../ui/Structure';
@@ -37,6 +38,16 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
   const own = !!target && target.ownerId === me?.id;
   const closed = own && (target.hidden || store?.requestState(target) !== 'open');
   const allowed = !closed && ready && !!me && !me.blocked && me.role !== 'admin' && (!requestId || own);
+  const [dismissed, setDismissed] = useState<Record<string, string[]>>(() => {
+    try { const parsed = JSON.parse(localStorage.getItem('meetany.dismissedMatching') || '{}'); return parsed && typeof parsed === 'object' ? Object.fromEntries(Object.entries(parsed).filter((entry): entry is [string, string[]] => Array.isArray(entry[1]) && entry[1].every(id => typeof id === 'string'))) : {}; } catch { return {}; }
+  });
+  const hidden = dismissed[me?.id || ''] || [];
+  const updateHidden = (ids: string[]) => {
+    if (!me) return;
+    const next = { ...dismissed, [me.id]: ids };
+    setDismissed(next);
+    try { localStorage.setItem('meetany.dismissedMatching', JSON.stringify(next)); } catch { /* Keep this session usable when storage is unavailable. */ }
+  };
   const [city, setCity] = useState('');
   const [tab, setTab] = useState<FeedKind>(requestId ? 'suppliers' : kind || 'recommended');
   const [sort, setSort] = useState('recommended');
@@ -80,7 +91,7 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
   const requestFor = (item: FeedItem) => supplier(item) ? null : store?.getRequest(item.id);
   const ownerFor = (item: FeedItem) => store?.userById(supplier(item) ? item.id : requestFor(item)?.ownerId);
   const createdFor = (item: FeedItem) => item.created_at || requestFor(item)?.createdAt || ownerFor(item)?.createdAt;
-  const items = (current?.items || []).filter(item => !verified || item.verified || ownerFor(item)?.verified).sort((a, b) => {
+  const items = (current?.items || []).filter(item => !hidden.includes(itemKey(item)) && (!verified || item.verified || ownerFor(item)?.verified)).sort((a, b) => {
     if (sort === 'recommended') return (b.score || 0) - (a.score || 0);
     if (sort === 'deadline') return (Date.parse(requestFor(a)?.neededBy || requestFor(a)?.expiresAt) || Infinity) - (Date.parse(requestFor(b)?.neededBy || requestFor(b)?.expiresAt) || Infinity);
     return (Date.parse(createdFor(b)) || 0) - (Date.parse(createdFor(a)) || 0);
@@ -110,9 +121,10 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
       {(active.category || active.industry) && <li><Icon name="check"/>{categories[active.category || active.industry || ''] || active.category || active.industry}</li>}
       {request?.neededBy && <li><Icon name="calendar"/>მიწოდება: {dateLabel(request.neededBy)}</li>}
     </ul>
-    {(identity || active.company) && <div className={styles.identity}><CompanyAvatar name={identity?.company || identity?.name || active.company || title(active)} logoUrl={identity?.logoUrl}/><div><strong>{identity?.company || identity?.name || active.company}</strong><p>{cities[active.city] || active.city}</p></div>{(identity?.verified || active.verified) && <span title="ვერიფიცირებული"><Icon name="badge-check"/></span>}</div>}
+    {(identity || active.company) && <div className={styles.identity}><CompanyAvatar name={identity?.company || identity?.name || active.company || title(active)} logoUrl={identity?.logoUrl}/><div><strong>{identity?.company || identity?.name || active.company}</strong><p>{cities[active.city] || active.city}</p></div>{(identity?.verified || active.verified) && <span title={verificationHint(identity?.verificationDocumentsStatus, !!(identity?.verified || active.verified))} aria-label={verificationLabel(identity?.verificationDocumentsStatus, !!(identity?.verified || active.verified))}><Icon name="badge-check"/></span>}</div>}
     <Button href={actionHref(active)}><Icon name={supplier(active) ? 'building-2' : 'send'}/>{actionLabel(active)}</Button>
-    {supplier(active) ? <><Button variant="secondary" href={`/requests/new/?category=${encodeURIComponent(active.industry || active.category || '')}`}>ფასის მოთხოვნა</Button><SaveCompanyButton id={active.id}/></> : <Button variant="secondary" href={viewHref(active)}>მოთხოვნის ნახვა</Button>}
+    {supplier(active) ? <><Button variant="secondary" href={`/requests/new/?category=${encodeURIComponent(active.industry || active.category || '')}&company=${encodeURIComponent(active.id)}`}>ფასის მოთხოვნა</Button><SaveCompanyButton id={active.id}/></> : <Button variant="secondary" href={viewHref(active)}>მოთხოვნის ნახვა</Button>}
+    <Button variant="ghost" onClick={() => { updateHidden([...hidden, itemKey(active)]); setMobileOpen(false); }}>არ მაინტერესებს</Button>
   </> : null;
   const reset = () => { setOffset(0); setSelected(undefined); setMobileOpen(false); };
   return <section className={`${styles.feed} ${styles.fullFeed}`} aria-label="თქვენთვის შერჩეული შესაძლებლობები">
@@ -120,6 +132,7 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
       <nav className={styles.tabs} style={{ maxWidth: "100%" }} aria-label="შესაძლებლობები">{(requestId ? [['suppliers', 'მომწოდებლები']] : [['recommended', 'რეკომენდებული'], ['requests', 'ყიდვის მოთხოვნები'], ['suppliers', 'მომწოდებლები']]).map(([value, text]) => <Button variant="ghost" key={value} aria-current={tab === value ? 'page' : undefined} onClick={() => { setTab(value as FeedKind); setSort('recommended'); reset(); }}>{text}</Button>)}</nav>
       <div className={styles.feedControls} style={{ flexWrap: "wrap" }}><label className={catalogStyles.requestVerified}><input type="checkbox" role="switch" checked={verified} onChange={event => setVerified(event.target.checked)}/><span className={catalogStyles.switchTrack} aria-hidden="true"/><span>ვერიფიცირებული</span></label><CustomSelect aria-label="ქალაქი" value={city} onChange={event => { setCity(event.target.value); reset(); }}><option value="">ყველა ქალაქი</option>{Object.entries(cities).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</CustomSelect><CustomSelect aria-label="დალაგება" value={sort} onChange={event => setSort(event.target.value)}><option value="recommended">შესაბამისობით</option><option value="newest">უახლესი</option>{tab === 'requests' && !requestId && <option value="deadline">ვადა ახლოს</option>}</CustomSelect></div>
     </div>}
+    {me.role === 'company' && !me.verified && <Notice><strong>{verificationLabel(me.verificationDocumentsStatus, me.verified)}</strong> — {verificationHint(me.verificationDocumentsStatus, me.verified)}</Notice>}
     {current?.error && <Notice tone="error" action={<Button variant="secondary" size="sm" onClick={() => setRetry(value => value + 1)}>ხელახლა ცდა</Button>}>სია ვერ ჩაიტვირთა. {current.error}</Notice>}
     {!compact && !loading && me.role === 'company' && tab === 'recommended' && !!items.length && items.every(supplier) ? <Notice action={<Button variant="secondary" size="sm" href="/onboarding/?step=provide">მიწოდების მითითება</Button>}>მოთხოვნები რეკომენდებულში გამოჩნდება, როცა მიუთითებთ, რას აწვდით.</Notice> : null}
     {!!items.length && (compact ? <ul className={accountStyles.matchGrid}>{items.slice(0, 4).map(item => <li key={itemKey(item)} className={accountStyles.matchCard}>
@@ -128,6 +141,7 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
       <span className={styles.symbol}>{visual(item, 100, 76)}</span><span className={styles.copy}>{badge(item)}<strong>{title(item)}</strong>{description(item) && <span className={styles.excerpt}>{description(item)}</span>}<span className={styles.cardMeta}>{meta(item)}</span></span>
     </Button></li>)}</ul><aside className={styles.detail} aria-label="შესაძლებლობის დეტალი">{detail}</aside></div>)}
     {loading ? <ListSkeleton compact label="შესაძლებლობები იტვირთება…"/> : !current?.error && !items.length && <EmptyState icon="search" title="შესაბამისი შედეგები ჯერ არ არის" text={verified ? 'ჩატვირთულ შედეგებში ვერიფიცირებული კომპანია ვერ მოიძებნა.' : 'შეავსეთ ინტერესები და საქმიანობის კატეგორიები ან შეცვალეთ ქალაქი.'} action={city ? <Button variant="secondary" onClick={() => { setCity(''); reset(); }}>ქალაქის გასუფთავება</Button> : <Button variant="secondary" href={me.role === 'company' ? '/onboarding/?step=type' : '/account/?tab=profile'}>პროფილის შევსება</Button>}/>}
+    {!!hidden.length && <Button variant="ghost" onClick={() => updateHidden([])}>დამალული შესაძლებლობების აღდგენა ({hidden.length})</Button>}
     {!compact && current?.more && !current.error && offset + matchingPageSize <= 10000 && <Button variant="secondary" disabled={loading} onClick={() => setOffset(value => value + matchingPageSize)}>მეტის ჩატვირთვა</Button>}
     {!compact && <Sheet open={mobileOpen && !!active} onClose={() => setMobileOpen(false)} title={active ? title(active) : 'შესაძლებლობა'}><div className={`${styles.sheetDetail} ${styles.fullDetail}`}>{detail}</div></Sheet>}
   </section>;

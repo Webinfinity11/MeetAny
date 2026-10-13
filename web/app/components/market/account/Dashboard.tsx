@@ -70,9 +70,9 @@ function DashboardBody({ me, store, space }: { me: AnyUser; store: Store; space:
   const dealsStat = <Stat value={activeDeals} label="აქტიური გარიგებები" href={`/account/?space=${space}&tab=deals`}/>;
   let stats;
   if (space === "buy") {
-    const openRequests = store.listRequests({ ownerId: me.id }) as { id: string }[];
+    const openRequests = store.listRequests({ ownerId: me.id, state: "open" }) as { id: string }[];
     const freshOffers = openRequests.reduce((n, request) => n + (store.visibleOffers(request.id, me) as OfferItem[]).filter(offer => offer.status === "sent" && !offer.viewedAt).length, 0);
-    stats = <><Stat value={openRequests.length} label="ღია მოთხოვნები" href="/account/?space=buy&tab=requests"/><Stat value={freshOffers} label="ახალი შეთავაზებები" href="/account/?space=buy&tab=requests" attention={freshOffers > 0}/>{dealsStat}{messages}</>;
+    stats = <><Stat value={openRequests.length} label="ღია მოთხოვნები" href="/account/?space=buy&tab=requests&filter=open"/><Stat value={freshOffers} label="ახალი შეთავაზებები" href="/account/?space=buy&tab=requests&filter=new-offers" attention={freshOffers > 0}/>{dealsStat}{messages}</>;
   } else {
     const offers = store.myOffers(me) as OfferItem[];
     stats = <><Stat value={offers.filter(offer => offer.status === "sent").length} label="შეთავაზებები მოლოდინში" href="/account/?space=sell&tab=offers"/><Stat value={offers.filter(offer => offer.status === "chosen").length} label="არჩეული შეთავაზებები" href="/account/?space=sell&tab=offers"/>{dealsStat}{messages}</>;
