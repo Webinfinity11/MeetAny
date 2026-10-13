@@ -24,6 +24,7 @@ const PAGE = 20;
 /** Reviews as one list: who reviewed whom, stars, date, source and status; hiding needs a reason. */
 export function AdminReviews({ store, revision, onOpen, onAction }: { store: Store; revision: number; onOpen: (target: AdminTarget) => void; onAction: (action: AdminAction) => void }) {
   const [status, setStatus] = useState(""), [source, setSource] = useState(""), [query, setQuery] = useState(""), [offset, setOffset] = useState(0);
+  const [expanded,setExpanded]=useState<string[]>([]);
   const [retry, setRetry] = useState(0);
   const [state, setState] = useState<{ key: string; page?: Page; error?: string }>({ key: "" });
   const key = JSON.stringify([status, source, query, offset, revision, retry]);
@@ -60,7 +61,7 @@ export function AdminReviews({ store, revision, onOpen, onAction }: { store: Sto
           <thead><tr>{["შეფასება", "ავტორი", "ქულა", "თარიღი", "წყარო", "სტატუსი"].map(label => <th scope="col" key={label}>{label}</th>)}<th scope="col"><span className="ma-sr-only">მოქმედება</span></th></tr></thead>
           <tbody>{page.items.map(r => <tr key={r.id}>
             <td data-label="შეფასება"><button type="button" className={styles.rowLink} onClick={() => onOpen({ kind: "user", id: r.company_id })}>{r.company}</button>
-              {r.body ? <p className={styles.excerpt}>{r.body}</p> : null}
+              {r.body ? <><p id={`review-body-${r.id}`} className={expanded.includes(r.id)?styles.reviewBody:styles.excerpt}>{r.body}</p><Button type="button" variant="ghost" aria-expanded={expanded.includes(r.id)} aria-controls={`review-body-${r.id}`} onClick={()=>setExpanded(ids=>ids.includes(r.id)?ids.filter(id=>id!==r.id):[...ids,r.id])}>{expanded.includes(r.id)?"შეკეცვა":"სრულად"}</Button></> : null}
               {r.scores?.length ? <small>{r.scores.map((s, i) => `${criteria[i]} ${s}`).join(" · ")}{r.would_again ? " · კვლავ ითანამშრომლებს" : ""}</small> : null}
               {r.status === "hidden" && r.reason ? <small>დამალვის მიზეზი: {r.reason}</small> : null}</td>
             <td data-label="ავტორი"><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "user", id: r.author_id })}>{r.author}</button></td>
@@ -69,8 +70,8 @@ export function AdminReviews({ store, revision, onOpen, onAction }: { store: Sto
             <td data-label="წყარო">{r.deal_id ? <button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "deal", id: r.deal_id! })}>{sources.deal}</button> : sources[r.source]}</td>
             <td data-label="სტატუსი"><span className={`ma-badge ma-badge--${statuses[r.status][1]}`}>{statuses[r.status][0]}</span></td>
             <td data-label="მოქმედება">{r.status === "hidden"
-              ? <Button type="button" variant="secondary" onClick={() => onAction({ kind: "reviews", action: "publishReview", id: r.id, label: `${r.company} · ${r.author}` })}>აღდგენა…</Button>
-              : <Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "reviews", action: "hideReview", id: r.id, label: `${r.company} · ${r.author}` })}>დამალვა…</Button>}</td>
+              ? <Button type="button" variant="secondary" onClick={() => onAction({ kind: "reviews", action: "publishReview", id: r.id, label: `${r.company} · ${r.author}`, reviewBody: r.body })}>აღდგენა…</Button>
+              : <Button type="button" variant="danger-quiet" onClick={() => onAction({ kind: "reviews", action: "hideReview", id: r.id, label: `${r.company} · ${r.author}`, reviewBody: r.body })}>დამალვა…</Button>}</td>
           </tr>)}</tbody>
         </table></div>
         {page.total > PAGE ? <nav className={styles.pagination} aria-label="შეფასებების გვერდები">

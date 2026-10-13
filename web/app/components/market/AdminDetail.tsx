@@ -20,6 +20,7 @@ import styles from "./admin.module.css";
 export type AdminTarget = { kind: "user" | "request" | "offer" | "deal"; id: string } | null;
 /** One moderation request: what, on which record, shown to the admin as `label`. */
 export type AdminAction = {
+  reviewBody?: string;
   kind: "requests" | "users" | "offers" | "photos" | "reports" | "reviews" | "deals" | "issues";
   action: string; id: string; label: string; ids?: string[]; url?: string; choice?: ModerationChoice;
 };

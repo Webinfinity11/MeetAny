@@ -47,7 +47,7 @@ export function AdminPageContent() {
     if (value) next.set(key, value); else next.delete(key);
     if (key === "status" && value === "unverified") next.set("role", "company");
     if (key === "role" && value !== "company" && status === "unverified") next.delete("status");
-    if (key !== "cursor") next.delete("cursor");
+    if (key !== "cursor" || !value) { next.delete("cursor"); next.delete("before"); }
     router.replace(`/admin/?${next}`, { scroll: false });
   }
   const selectedTab = searchParams.get("tab");
@@ -55,6 +55,7 @@ export function AdminPageContent() {
   const tab: AdminSection = selectedTab && Object.hasOwn(adminSections, selectedTab) ? selectedTab as AdminSection : "overview";
   const cursor = searchParams.get("cursor") || "";
   const auditAction = tab === "audit" ? searchParams.get("action") || "" : "";
+  const auditPeriod = tab === "audit" ? searchParams.get("period") || "" : "";
   const auditTarget = tab === "audit" ? searchParams.get("target") || "" : "";
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [detail, setDetail] = useState<AdminTarget>(null);
@@ -230,6 +231,23 @@ export function AdminPageContent() {
   const selectAll = <label className={styles.checkHit}><input type="checkbox" className={styles.check} aria-label="ყველას მონიშვნა ამ გვერდზე" checked={allSelected} onChange={() => setSelected(allSelected ? [] : visibleIds)} /></label>;
   const listTab = tab === "requests" || peopleTab || tab === "offers" || tab === "audit";
 
+  let previousCursors: string[] = [];
+  try { const parsed: unknown = JSON.parse(searchParams.get("before") || "[]"); if (Array.isArray(parsed) && parsed.every(value => typeof value === "string")) previousCursors = parsed; } catch { /* A copied cursor can still return to the first page. */ }
+  const changePage = (forward: boolean) => {
+    const next = new URLSearchParams(searchParams.toString());
+    const history = [...previousCursors];
+    const value = forward ? (typeof admin.page?.nextCursor === "string" ? admin.page.nextCursor : JSON.stringify(admin.page?.nextCursor)) : history.pop() || "";
+    if (forward) history.push(cursor);
+    if (value) next.set("cursor", value); else next.delete("cursor");
+    if (history.length) next.set("before", JSON.stringify(history)); else next.delete("before");
+    router.replace(`/admin/?${next}`, { scroll: false });
+  };
+  const pagination = admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">
+    <Button type="button" variant="secondary" disabled={!cursor} onClick={() => changePage(false)}>წინა</Button>
+    <span>{admin.page.items.length ? previousCursors.length * 25 + 1 : 0}–{previousCursors.length * 25 + admin.page.items.length} / სულ {admin.page.filteredTotal}</span>
+    <Button type="button" variant="secondary" disabled={!admin.page.hasMore || !admin.page.nextCursor} onClick={() => changePage(true)}>შემდეგი</Button>
+  </nav> : null;
+
   return (
     <div className={`ma-page ${styles.workspace}`}>
       <AdminNavigation tab={tab} reports={reportCount} issues={issueCount} offersEnabled={v2} />
@@ -246,8 +264,8 @@ export function AdminPageContent() {
       {tab === "contacts" ? <AdminContacts store={store!} kind={searchParams.get("kind") || ""} target={searchParams.get("target") || ""} period={searchParams.get("period") || "month"} cursor={cursor} onChange={setFilter} onClear={clearFilters} /> : null}
       {listTab ? <section className={styles.listSurface} aria-label="ჩანაწერების მართვა">
       {tab !== "audit" && (tab !== "offers" || v2) ? <AdminFilters lockRole={tab === "companies"} tab={tab === "companies" ? "companies" : tab} query={query} status={status} role={role} onChange={setFilter} /> : null}
-      {tab === "audit" && v2 ? <AdminAuditFilters action={auditAction} target={auditTarget} onChange={setFilter} /> : null}
-      {hasFilters && (tab !== "offers" || v2) ? <Button type="button" variant="secondary" className={styles.clear} onClick={clearFilters}>ფილტრების გასუფთავება</Button> : null}
+      {tab === "audit" && v2 ? <AdminAuditFilters action={auditAction} target={auditTarget} query={query} period={auditPeriod} onChange={setFilter} /> : null}
+      {(hasFilters || (tab === "audit" && !!(query || auditPeriod || auditAction || auditTarget))) && (tab !== "offers" || v2) ? <Button type="button" variant="secondary" className={styles.clear} onClick={clearFilters}>ფილტრების გასუფთავება</Button> : null}
       {admin.mode === "legacy" && (tab === "requests" || peopleTab) ? <>
         <p className={styles.count} role="status">ნაჩვენებია {tab === "requests" ? filteredRequests.length : filteredUsers.length} / {tab === "requests" ? requests.length : users.length} ჩატვირთული ჩანაწერი{adminNote}.</p>
         <p className={styles.note}>{tab === "requests" ? "ძიება მოიცავს ჩატვირთულ მოთხოვნებს — მაქსიმუმ ბოლო 1 000 ჩანაწერს. ზედა მაჩვენებლები მთელ პლატფორმას ასახავს." : "ძიება მოიცავს ამჟამად ჩატვირთულ მომხმარებლებს. განახლებული მონაცემებისთვის განაახლეთ გვერდი."}</p>
@@ -256,6 +274,8 @@ export function AdminPageContent() {
         {admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი{adminNote}</p> : <span />}
         <Button type="button" variant="secondary" onClick={exportCsv} disabled={exporting}><Icon name="download" />{exporting ? "მზადდება…" : "CSV ექსპორტი"}</Button></div>
         : admin.mode === "ready" && admin.page ? <p className={styles.count} role="status">{admin.page.filteredTotal} ჩანაწერი</p> : null}
+      {pagination}
+      {peopleTab && canShowRecords && visibleIds.length ? <div className={styles.selectPage}><label><input type="checkbox" className={styles.check} checked={allSelected} ref={input=>{if(input)input.indeterminate=selected.length>0&&!allSelected;}} onChange={()=>setSelected(allSelected?[]:visibleIds)}/>ყველას მონიშვნა ამ გვერდზე ({visibleIds.length})</label><span role="status">მონიშნულია: {selected.length}</span></div> : null}
       {admin.mode === "loading" ? <ListSkeleton compact kind="records" label="ჩანაწერები იტვირთება…" /> : null}
       {admin.mode === "ready" && admin.error ? <p className="ma-field__error" role="status">{admin.error} <Button variant="ghost" onClick={admin.reload}>ხელახლა ცდა</Button></p> : null}
       {admin.mode === "error" ? <AdminState error title="ჩანაწერები ვერ ჩაიტვირთა" text={admin.error || undefined} onRetry={admin.reload} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
@@ -264,7 +284,7 @@ export function AdminPageContent() {
         title={hasFilters || auditAction || auditTarget ? "ამ ფილტრებით ჩანაწერები ვერ მოიძებნა" : cursor ? "ამ გვერდზე ჩანაწერები აღარ არის" : "ჩანაწერები ჯერ არ არის"}
         text={hasFilters || auditAction || auditTarget ? "შეცვალეთ ძიება ან გაასუფთავეთ ფილტრები." : "ახალი ჩანაწერები აქ გამოჩნდება."}
         onClear={hasFilters || auditAction || auditTarget ? clearFilters : undefined} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
-      {tab === "audit" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminAuditTable events={admin.page.items as unknown as AdminAuditEvent[]} onOpen={setDetail} /> : null}
+      {tab === "audit" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminAuditTable events={admin.page.items as unknown as AdminAuditEvent[]} query={query} period={auditPeriod} onOpen={setDetail} /> : null}
       {tab === "offers" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminOffersTable offers={admin.page.items as unknown as AdminOffer[]} onOpen={setDetail}
         onDelete={offer => setPendingAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "კომპანია"} · ${offer.request_title || offer.body.slice(0, 80)}` })} /> : null}
       {canShowRecords && tab === "requests" && filteredRequests.length > 0 ? (
@@ -361,10 +381,7 @@ export function AdminPageContent() {
           onClick={() => setPendingAction({ kind: peopleTab ? "users" : "requests", action: b.action, id: ids[0], ids, label: `${ids.length} ჩანაწერი` })}>{b.label}{ids.length !== selected.length ? ` (${ids.length})` : ""}</Button>; })}
         <Button type="button" variant="ghost" onClick={() => setSelected([])}>მონიშვნის მოხსნა</Button>
       </div> : null}
-      {admin.mode === "ready" && admin.page && (cursor || admin.page.hasMore) ? <nav className={styles.pagination} aria-label="ჩანაწერების გვერდები">
-        {cursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", "")}>პირველი გვერდი</Button> : null}
-        {admin.page.hasMore && admin.page.nextCursor ? <Button type="button" variant="secondary" onClick={() => setFilter("cursor", typeof admin.page!.nextCursor === "string" ? admin.page!.nextCursor : JSON.stringify(admin.page!.nextCursor))}>შემდეგი გვერდი</Button> : null}
-      </nav> : null}
+      {pagination}
       </section> : null}
       {tab === "audit" ? <AdminBusinessAudit store={store!} /> : null}
       </div>
@@ -372,6 +389,7 @@ export function AdminPageContent() {
       <ModerationSheet
         open={!!pendingAction}
         subject={pendingAction?.label || ""}
+        reviewBody={pendingAction?.reviewBody}
         action={pendingAction?.action || ""}
         choice={pendingAction?.choice}
         pending={busy}
@@ -387,4 +405,4 @@ export function AdminPageContent() {
   );
 }
 
-const requestStates: Record<string, string> = { open: "ღია", chosen: "მომწოდებელი არჩეულია", expired: "ვადაგასული", closed: "დახურული", hidden: "დამალული" };
+const requestStates: Record<string, string> = { open: "ღია", chosen: "არჩეულია", expired: "ვადაგასული", closed: "დახურული", hidden: "დამალული" };

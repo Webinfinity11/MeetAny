@@ -37,6 +37,7 @@ export function ModerationSheet({
   subject,
   action,
   pending,
+  reviewBody,
   requireDeleteReason = false,
   error,
   choice,
@@ -45,6 +46,7 @@ export function ModerationSheet({
 }: {
   open: boolean;
   subject: string;
+  reviewBody?: string;
   action: string;
   pending: boolean;
   requireDeleteReason?: boolean;
@@ -104,6 +106,7 @@ export function ModerationSheet({
       </header>
       <div className="ma-sheet__body">
         <p className={styles.subject}>{subject}</p>
+        {reviewBody ? <section aria-label="შეფასების სრული ტექსტი"><h3>შეფასება</h3><p className={styles.reviewBody}>{reviewBody}</p></section> : null}
         {meta?.consequence ? <p className={styles.consequence}>{meta.consequence}</p> : null}
         {choice ? <div className={styles.reason}><label htmlFor="moderation-choice">{choice.label}</label>
           <select id="moderation-choice" className="ma-select" name="choice" required defaultValue={choice.value || choice.options[0]?.[0]} disabled={pending}>

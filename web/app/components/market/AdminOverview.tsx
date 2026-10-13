@@ -3,6 +3,7 @@ import { Button } from "../ui/Button";
 
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Icon } from "../Icon";
 import type { AdminOverviewData } from "../../lib/admin-overview";
@@ -29,7 +30,10 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
   const revision = store.dataRevision();
   const loadOverview = store.adminOverview;
   const actorId = store.currentUser()?.id as string;
-  const [activityPeriod, setActivityPeriod] = useState<7 | 30>(30);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const activityPeriod = searchParams.get("period") === "7" ? 7 : 30;
+  const setActivityPeriod = (period: 7 | 30) => { const params = new URLSearchParams(searchParams.toString()); params.set("period", String(period)); router.replace(`/admin/?${params}`, { scroll: false }); };
   useEffect(() => {
     let cancelled = false;
     loadOverview().then((data: AdminOverviewData) => {

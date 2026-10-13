@@ -42,7 +42,7 @@
 .workspace :global(.ma-table .ma-badge) { white-space: nowrap; }
 @media(min-width:768px) { .workspace :global(.ma-table) td[data-label="მოქმედება"] { min-width: var(--size-180); } }
 .workspace :global(.ma-table) tbody tr:hover td { background: var(--bg-subtle); }
-.workspace :global(.ma-table-wrap) { min-width: 0; overflow-x: auto; }
+.workspace :global(.ma-table-wrap) { position: relative; min-width: 0; overflow-x: auto; }
 .workspace :global(.ma-table .ma-proto-tableactions) { flex-wrap: wrap; }
 .workspace :global(.ma-table .ma-btn) { min-height:var(--btn-h); padding: var(--space-1) var(--space-3); font-size:var(--btn-fs); font-feature-settings: normal; }
 .workspace :global(.ma-table) small { margin-top: var(--space-1); font-size: var(--fs-xs); line-height: var(--lh-meta); }
@@ -148,7 +148,7 @@
   .mobileNavigation > svg { flex: none; width: var(--size-20); height: var(--size-20); color: var(--text-3); }
   .mobileNavigation > svg:last-child { margin-left: auto; width: var(--size-16); height: var(--size-16); }
   .mobileNavigation[aria-expanded=true] > svg:last-child { transform: rotate(180deg); }
-  .mobileNavigation strong { font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-medium); }
+  .mobileNavigation strong { min-width: 0; overflow-wrap: anywhere; font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-medium); }
   .navigation { display: none; overflow: visible; padding: var(--space-4); border-top: var(--size-1) solid var(--border-subtle); }
   .sidebar[data-open] .navigation { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-1) var(--space-4); }
   .navigation a { min-height: var(--tap-min); }
@@ -449,3 +449,9 @@
 .workspace :global(.ma-table) td[data-label="მოქმედება"] :global(.ma-btn) { white-space: nowrap; }
 .checkHit { display: inline-grid; place-items: center; width: var(--tap-min); height: var(--tap-min); margin: calc(-1 * var(--space-3)); cursor: pointer; }
 .content .rowLink, .content .detailLink { min-width: var(--tap-min); }
+
+.reviewBody { white-space: pre-wrap; overflow-wrap: anywhere; }
+.selectPage { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); min-height: var(--tap-min); margin-block: var(--space-3); }
+.selectPage label { display: flex; align-items: center; gap: var(--space-2); min-height: var(--tap-min); cursor: pointer; }
+
+@media (max-width: 35rem) { .mobileNavigationHint { display: none; } }
