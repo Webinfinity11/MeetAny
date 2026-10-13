@@ -1,8 +1,6 @@
 "use client";
+import dynamic from "next/dynamic";
 import { Button } from "../ui/Button";
-import { AdminContentEditor } from "./AdminContentEditor";
-import { AdminReviews } from "./AdminReviews";
-import { AdminDeals } from "./AdminDeals";
 import { AccountSkeleton, ListSkeleton } from "./Skeletons";
 import { ServiceUnavailable } from "./ServiceUnavailable";
 
@@ -12,18 +10,15 @@ import { toast, toastError } from "../Toasts";
 import { Icon } from "../Icon";
 import { adminErrorMessage, useAdminData } from "../../lib/use-admin-data";
 import { adminUserFilterParams, adminUserMatchesStatus } from "../../lib/admin-user-filters";
-import { AdminBusinessAudit } from "./AdminBusinessAudit";
 import { AdminAuditTable, AdminAuditFilters, type AdminAuditEvent } from "./AdminAuditTable";
 import { AdminState } from "./AdminState";
 import { AdminOffersTable, type AdminOffer } from "./AdminOffersTable";
-import { AdminContacts } from "./AdminContacts";
 import { PageBand } from "./PageBand";
 import { AdminUserStatus } from "./AdminUserStatus";
 import { AdminFilters } from "./AdminFilters";
 import { AdminOverview } from "./AdminOverview";
 import { AdminNavigation } from "./AdminNavigation";
 import { adminSections, type AdminSection } from "../../lib/admin-sections";
-import { AdminPhotos } from "./AdminPhotos";
 import { AdminReports, type ReportAction } from "./AdminReports";
 import { AdminDetail, type AdminTarget, type AdminAction } from "./AdminDetail";
 import { adminActionResult, downloadCsv, readAllAdminPages } from "../../lib/admin-helpers";
@@ -32,6 +27,13 @@ import { ModerationSheet } from "./ModerationSheet";
 import { useMarketStore } from "../../lib/market-client";
 import { categories, cities } from "../../lib/categories";
 import { dateLabel } from "../../lib/format";
+
+const AdminContentEditor = dynamic(() => import("./AdminContentEditor").then(m => m.AdminContentEditor));
+const AdminReviews = dynamic(() => import("./AdminReviews").then(m => m.AdminReviews));
+const AdminDeals = dynamic(() => import("./AdminDeals").then(m => m.AdminDeals));
+const AdminBusinessAudit = dynamic(() => import("./AdminBusinessAudit").then(m => m.AdminBusinessAudit));
+const AdminContacts = dynamic(() => import("./AdminContacts").then(m => m.AdminContacts));
+const AdminPhotos = dynamic(() => import("./AdminPhotos").then(m => m.AdminPhotos));
 
 type PendingAction = AdminAction | null;
 
