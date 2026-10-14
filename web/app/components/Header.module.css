@@ -59,15 +59,15 @@
 @media (min-width:480px){.ma-mnav{width:var(--size-400);border-radius:var(--radius-xl) 0 0 var(--radius-xl)}}
 .ma-mnav__head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex:none;height:var(--header-h);padding:0 var(--gutter);border-bottom:var(--size-1) solid var(--border-subtle)}
 .ma-mnav__close{display:grid;place-items:center;width:var(--control-h);height:var(--control-h);padding:0;border:var(--size-1) solid var(--border);border-radius:var(--radius-md);background:var(--white);color:var(--text);cursor:pointer}
-.ma-mnav__body{flex:1;overflow-y:auto;padding:var(--space-4) var(--gutter) var(--space-6);display:grid;align-content:start;gap:var(--space-6)}
+.ma-mnav__body{flex:1;overflow-y:auto;padding:var(--stack-gap) var(--gutter);display:grid;align-content:start;gap:var(--block-gap)}
 .ma-mnav__group{display:grid;gap:var(--space-half)}
 .ma-mnav__group :global(.ma-eyebrow){padding:0 var(--space-3) var(--space-compact)}
-.ma-mnav__link{display:flex;align-items:center;gap:var(--space-3);min-height:var(--size-52);padding:0 var(--space-3);border:0;border-radius:var(--radius-md);background:none;color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body-lg);line-height:var(--lh-title);font-weight:var(--fw-medium);text-align:left;text-decoration:none;cursor:pointer;width:100%}
+.ma-mnav__link{display:flex;align-items:center;gap:var(--space-3);min-height:var(--tap-min);padding:0 var(--space-3);border:0;border-radius:var(--radius-md);background:none;color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body-lg);line-height:var(--lh-title);font-weight:var(--fw-medium);text-align:left;text-decoration:none;cursor:pointer;width:100%}
 .ma-mnav__link :global(.icon){color:var(--text-3)}
 .ma-mnav__link:hover{background:var(--bg-subtle)}
 .ma-mnav__link[aria-current="page"]{background:var(--blue-50);color:var(--blue-700);font-weight:var(--fw-semibold)}
 .ma-mnav__link[aria-current="page"] :global(.icon){color:var(--blue-700)}
-.ma-mnav__foot{flex:none;display:grid;gap:var(--space-2);padding:var(--space-4) var(--gutter) calc(var(--space-4) + env(safe-area-inset-bottom));border-top:var(--size-1) solid var(--border-subtle)}
+.ma-mnav__foot{flex:none;display:grid;gap:var(--space-2);padding:var(--stack-gap) var(--gutter) calc(var(--stack-gap) + env(safe-area-inset-bottom));border-top:var(--size-1) solid var(--border-subtle)}
 html:has(.ma-mnav[open]){overflow:hidden}
 @media (prefers-reduced-motion:reduce){.ma-header *,.ma-mnav,.ma-mnav::backdrop{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}}
 .ma-header :focus-visible{transition:box-shadow var(--dur-fast) var(--ease)}

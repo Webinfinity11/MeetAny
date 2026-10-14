@@ -11,7 +11,7 @@ type StatKey = keyof HomeStatsData;
 /** Real counters only (home_stats); a zero counter is left out rather than shown. */
 const counted = (stats: HomeStatsData | null | undefined, keys: StatKey[]) => stats ? keys.filter(key => Number(stats[key]) > 0).map(key => [key, Number(stats[key])] as const) : [];
 
-/** Two white cards on the hero photo: who answers and how much they answer. */
+/** Existing real counters follow the hero copy in normal document flow. */
 export function HomeHeroStats({ stats }: { stats?: HomeStatsData | null }) {
   const labels: Partial<Record<StatKey, [string, string]>> = { verifiedCompanies: ["building-2", "ვერიფიცირებული კომპანია"], offersSent: ["inbox", "გაგზავნილი შეთავაზება"] };
   const items = counted(stats, ["verifiedCompanies", "offersSent"]);

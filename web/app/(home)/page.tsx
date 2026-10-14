@@ -37,13 +37,13 @@ export default async function HomePage() {
             <li><Icon name="wallet" />განთავსება უფასოა</li>
             <li><Icon name="lock" />კონტაქტი — არჩევის შემდეგ</li>
           </ul>
+          <HomeHeroStats stats={stats} />
         </div>
         {/* One photo, reserved by aspect-ratio (no layout shift) and preloaded from <head>: it is the LCP
             on every viewport. (fetchPriority="high" was measured too: it raced the CSS and fonts and delayed FCP by ~150 ms.)
             Phones get the 640w file (about 2× density, 22 KB) instead of 1080w: on a slow line every KB is LCP time. */}
         <div className="hero-media">
           <Image src="/assets/photos/hero-partners.jpg" alt="" fill preload sizes="(max-width: 639px) 50vw, (max-width: 1023px) calc(100vw - 48px), 600px" />
-          <HomeHeroStats stats={stats} />
         </div>
       </div>
     </section>
