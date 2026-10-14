@@ -1,0 +1,1463 @@
+{
+  "results": [
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1896,
+      "overflow": 0,
+      "title": {
+        "x": 392,
+        "y": 88,
+        "width": 218.53125,
+        "height": 37.5,
+        "bottom": 125.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": {
+        "x": 409,
+        "y": 1060.5,
+        "width": 542,
+        "height": 61,
+        "bottom": 1121.5
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "გააგრძელეთ",
+          "height": 44,
+          "width": 142.296875,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1999,
+      "overflow": 0,
+      "title": {
+        "x": 145,
+        "y": 215,
+        "width": 726,
+        "height": 43.1875,
+        "bottom": 258.1875
+      },
+      "firstField": {
+        "x": 424,
+        "y": 209,
+        "width": 592,
+        "height": 44,
+        "bottom": 253
+      },
+      "form": null,
+      "panel": null,
+      "footer": null,
+      "actions": [],
+      "violations": []
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1716,
+      "overflow": 0,
+      "title": {
+        "x": 360,
+        "y": 96,
+        "width": 640,
+        "height": 39,
+        "bottom": 135
+      },
+      "firstField": {
+        "x": 381,
+        "y": 346.390625,
+        "width": 339.484375,
+        "height": 44,
+        "bottom": 390.390625
+      },
+      "form": {
+        "x": 360,
+        "y": 260.59375,
+        "width": 640,
+        "height": 917.796875,
+        "bottom": 1178.390625
+      },
+      "panel": {
+        "x": 1032,
+        "y": 96,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 917.96875
+      },
+      "footer": {
+        "x": 360,
+        "y": 1262.390625,
+        "width": 640,
+        "height": 61,
+        "bottom": 1323.390625
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 103.9375,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1506,
+      "overflow": 0,
+      "title": {
+        "x": 360,
+        "y": 96,
+        "width": 640,
+        "height": 39,
+        "bottom": 135
+      },
+      "firstField": null,
+      "form": {
+        "x": 360,
+        "y": 260.59375,
+        "width": 640,
+        "height": 707.796875,
+        "bottom": 968.390625
+      },
+      "panel": {
+        "x": 1032,
+        "y": 96,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 917.96875
+      },
+      "footer": {
+        "x": 360,
+        "y": 1052.390625,
+        "width": 640,
+        "height": 61,
+        "bottom": 1113.390625
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 103.9375,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1364,
+      "overflow": 0,
+      "title": {
+        "x": 360,
+        "y": 96,
+        "width": 640,
+        "height": 39,
+        "bottom": 135
+      },
+      "firstField": null,
+      "form": {
+        "x": 360,
+        "y": 260.59375,
+        "width": 640,
+        "height": 565.578125,
+        "bottom": 826.171875
+      },
+      "panel": {
+        "x": 1032,
+        "y": 96,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 917.96875
+      },
+      "footer": {
+        "x": 360,
+        "y": 910.171875,
+        "width": 640,
+        "height": 61,
+        "bottom": 971.171875
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": true,
+          "unobscured": true
+        },
+        {
+          "label": "განთავსება",
+          "height": 44,
+          "width": 131.765625,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 1280,
+      "scrollHeight": 1896,
+      "overflow": 0,
+      "title": {
+        "x": 312,
+        "y": 88,
+        "width": 218.53125,
+        "height": 37.5,
+        "bottom": 125.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": {
+        "x": 329,
+        "y": 1060.5,
+        "width": 542,
+        "height": 61,
+        "bottom": 1121.5
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "გააგრძელეთ",
+          "height": 44,
+          "width": 142.296875,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 1280,
+      "scrollHeight": 1999,
+      "overflow": 0,
+      "title": {
+        "x": 65,
+        "y": 215,
+        "width": 726,
+        "height": 43.1875,
+        "bottom": 258.1875
+      },
+      "firstField": {
+        "x": 344,
+        "y": 209,
+        "width": 592,
+        "height": 44,
+        "bottom": 253
+      },
+      "form": null,
+      "panel": null,
+      "footer": null,
+      "actions": [],
+      "violations": []
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 1280,
+      "scrollHeight": 1716,
+      "overflow": 0,
+      "title": {
+        "x": 304,
+        "y": 96,
+        "width": 592,
+        "height": 39,
+        "bottom": 135
+      },
+      "firstField": {
+        "x": 325,
+        "y": 346.390625,
+        "width": 311.484375,
+        "height": 44,
+        "bottom": 390.390625
+      },
+      "form": {
+        "x": 304,
+        "y": 260.59375,
+        "width": 592,
+        "height": 917.796875,
+        "bottom": 1178.390625
+      },
+      "panel": {
+        "x": 928,
+        "y": 96,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 917.96875
+      },
+      "footer": {
+        "x": 304,
+        "y": 1262.390625,
+        "width": 592,
+        "height": 61,
+        "bottom": 1323.390625
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 103.9375,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 1280,
+      "scrollHeight": 1506,
+      "overflow": 0,
+      "title": {
+        "x": 304,
+        "y": 96,
+        "width": 592,
+        "height": 39,
+        "bottom": 135
+      },
+      "firstField": null,
+      "form": {
+        "x": 304,
+        "y": 260.59375,
+        "width": 592,
+        "height": 707.796875,
+        "bottom": 968.390625
+      },
+      "panel": {
+        "x": 928,
+        "y": 96,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 917.96875
+      },
+      "footer": {
+        "x": 304,
+        "y": 1052.390625,
+        "width": 592,
+        "height": 61,
+        "bottom": 1113.390625
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 103.9375,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 1280,
+      "scrollHeight": 1364,
+      "overflow": 0,
+      "title": {
+        "x": 304,
+        "y": 96,
+        "width": 592,
+        "height": 39,
+        "bottom": 135
+      },
+      "firstField": null,
+      "form": {
+        "x": 304,
+        "y": 260.59375,
+        "width": 592,
+        "height": 565.578125,
+        "bottom": 826.171875
+      },
+      "panel": {
+        "x": 928,
+        "y": 96,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 917.96875
+      },
+      "footer": {
+        "x": 304,
+        "y": 910.171875,
+        "width": 592,
+        "height": 61,
+        "bottom": 971.171875
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": true,
+          "unobscured": true
+        },
+        {
+          "label": "განთავსება",
+          "height": 44,
+          "width": 131.765625,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 1024,
+      "scrollHeight": 1922,
+      "overflow": 0,
+      "title": {
+        "x": 296,
+        "y": 88,
+        "width": 218.53125,
+        "height": 37.5,
+        "bottom": 125.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": {
+        "x": 313,
+        "y": 1086.5,
+        "width": 318,
+        "height": 61,
+        "bottom": 1147.5
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "გააგრძელეთ",
+          "height": 44,
+          "width": 142.296875,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 1024,
+      "scrollHeight": 2026,
+      "overflow": 0,
+      "title": {
+        "x": 49,
+        "y": 215,
+        "width": 502,
+        "height": 43.1875,
+        "bottom": 258.1875
+      },
+      "firstField": {
+        "x": 216,
+        "y": 209,
+        "width": 592,
+        "height": 44,
+        "bottom": 253
+      },
+      "form": null,
+      "panel": null,
+      "footer": null,
+      "actions": [],
+      "violations": []
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 1024,
+      "scrollHeight": 1814,
+      "overflow": 0,
+      "title": {
+        "x": 24,
+        "y": 194,
+        "width": 624,
+        "height": 39,
+        "bottom": 233
+      },
+      "firstField": {
+        "x": 45,
+        "y": 444.390625,
+        "width": 330.15625,
+        "height": 44,
+        "bottom": 488.390625
+      },
+      "form": {
+        "x": 24,
+        "y": 358.59375,
+        "width": 624,
+        "height": 917.796875,
+        "bottom": 1276.390625
+      },
+      "panel": {
+        "x": 680,
+        "y": 194,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 1015.96875
+      },
+      "footer": {
+        "x": 24,
+        "y": 1360.390625,
+        "width": 624,
+        "height": 61,
+        "bottom": 1421.390625
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 103.9375,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 1024,
+      "scrollHeight": 1604,
+      "overflow": 0,
+      "title": {
+        "x": 24,
+        "y": 194,
+        "width": 624,
+        "height": 39,
+        "bottom": 233
+      },
+      "firstField": null,
+      "form": {
+        "x": 24,
+        "y": 358.59375,
+        "width": 624,
+        "height": 707.796875,
+        "bottom": 1066.390625
+      },
+      "panel": {
+        "x": 680,
+        "y": 194,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 1015.96875
+      },
+      "footer": {
+        "x": 24,
+        "y": 1150.390625,
+        "width": 624,
+        "height": 61,
+        "bottom": 1211.390625
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 103.9375,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 1024,
+      "scrollHeight": 1462,
+      "overflow": 0,
+      "title": {
+        "x": 24,
+        "y": 194,
+        "width": 624,
+        "height": 39,
+        "bottom": 233
+      },
+      "firstField": null,
+      "form": {
+        "x": 24,
+        "y": 358.59375,
+        "width": 624,
+        "height": 565.578125,
+        "bottom": 924.171875
+      },
+      "panel": {
+        "x": 680,
+        "y": 194,
+        "width": 320,
+        "height": 821.96875,
+        "bottom": 1015.96875
+      },
+      "footer": {
+        "x": 24,
+        "y": 1008.171875,
+        "width": 624,
+        "height": 61,
+        "bottom": 1069.171875
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "განთავსება",
+          "height": 44,
+          "width": 131.765625,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2826,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 169,
+        "width": 189.390625,
+        "height": 32.5,
+        "bottom": 201.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": {
+        "x": 33,
+        "y": 1168.5,
+        "width": 324,
+        "height": 69,
+        "bottom": 1237.5
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "გააგრძელეთ",
+          "height": 44,
+          "width": 142.296875,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 3868,
+      "overflow": 0,
+      "title": {
+        "x": 37,
+        "y": 195,
+        "width": 316,
+        "height": 70.1875,
+        "bottom": 265.1875
+      },
+      "firstField": {
+        "x": 16,
+        "y": 151,
+        "width": 358,
+        "height": 44,
+        "bottom": 195
+      },
+      "form": null,
+      "panel": null,
+      "footer": null,
+      "actions": [],
+      "violations": []
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2443,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 358,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": {
+        "x": 33,
+        "y": 431.59375,
+        "width": 324,
+        "height": 44,
+        "bottom": 475.59375
+      },
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 358,
+        "height": 1015.390625,
+        "bottom": 1369.1875
+      },
+      "panel": {
+        "x": 16,
+        "y": 1477.1875,
+        "width": 358,
+        "height": 52,
+        "bottom": 1529.1875
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 390,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 296.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2239,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 358,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 358,
+        "height": 811.59375,
+        "bottom": 1165.390625
+      },
+      "panel": {
+        "x": 16,
+        "y": 1273.390625,
+        "width": 358,
+        "height": 52,
+        "bottom": 1325.390625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 390,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 296.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2169,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 358,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 358,
+        "height": 740.96875,
+        "bottom": 1094.765625
+      },
+      "panel": {
+        "x": 16,
+        "y": 1202.765625,
+        "width": 358,
+        "height": 52,
+        "bottom": 1254.765625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 390,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "განთავსება",
+          "height": 44,
+          "width": 296.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2880,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 169,
+        "width": 189.390625,
+        "height": 32.5,
+        "bottom": 201.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": {
+        "x": 33,
+        "y": 1168.5,
+        "width": 294,
+        "height": 69,
+        "bottom": 1237.5
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "გააგრძელეთ",
+          "height": 44,
+          "width": 142.296875,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 3921,
+      "overflow": 0,
+      "title": {
+        "x": 37,
+        "y": 223,
+        "width": 286,
+        "height": 70.1875,
+        "bottom": 293.1875
+      },
+      "firstField": {
+        "x": 16,
+        "y": 151,
+        "width": 328,
+        "height": 44,
+        "bottom": 195
+      },
+      "form": null,
+      "panel": null,
+      "footer": null,
+      "actions": [],
+      "violations": []
+    },
+    {
+      "name": "preview-expanded",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 3160,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 328,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": {
+        "x": 33,
+        "y": 431.59375,
+        "width": 294,
+        "height": 44,
+        "bottom": 475.59375
+      },
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 328,
+        "height": 1035.390625,
+        "bottom": 1389.1875
+      },
+      "panel": {
+        "x": 16,
+        "y": 1497.1875,
+        "width": 328,
+        "height": 720.46875,
+        "bottom": 2217.65625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 360,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 266.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2491,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 328,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": {
+        "x": 33,
+        "y": 431.59375,
+        "width": 294,
+        "height": 44,
+        "bottom": 475.59375
+      },
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 328,
+        "height": 1035.390625,
+        "bottom": 1389.1875
+      },
+      "panel": {
+        "x": 16,
+        "y": 1497.1875,
+        "width": 328,
+        "height": 52,
+        "bottom": 1549.1875
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 360,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 266.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2291,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 328,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 328,
+        "height": 835.59375,
+        "bottom": 1189.390625
+      },
+      "panel": {
+        "x": 16,
+        "y": 1297.390625,
+        "width": 328,
+        "height": 52,
+        "bottom": 1349.390625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 360,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 266.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2220,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 328,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 16,
+        "y": 353.796875,
+        "width": 328,
+        "height": 764.359375,
+        "bottom": 1118.15625
+      },
+      "panel": {
+        "x": 16,
+        "y": 1226.15625,
+        "width": 328,
+        "height": 52,
+        "bottom": 1278.15625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 360,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "განთავსება",
+          "height": 44,
+          "width": 266.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 320,
+      "scrollHeight": 2952,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 169,
+        "width": 189.390625,
+        "height": 32.5,
+        "bottom": 201.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": {
+        "x": 33,
+        "y": 1240.5,
+        "width": 254,
+        "height": 69,
+        "bottom": 1309.5
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 73.328125,
+          "visible": false,
+          "unobscured": false
+        },
+        {
+          "label": "გააგრძელეთ",
+          "height": 44,
+          "width": 142.296875,
+          "visible": false,
+          "unobscured": false
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 320,
+      "scrollHeight": 3942,
+      "overflow": 0,
+      "title": {
+        "x": 37,
+        "y": 223,
+        "width": 246,
+        "height": 70.1875,
+        "bottom": 293.1875
+      },
+      "firstField": {
+        "x": 16,
+        "y": 155,
+        "width": 288,
+        "height": 44,
+        "bottom": 199
+      },
+      "form": null,
+      "panel": null,
+      "footer": null,
+      "actions": [],
+      "violations": []
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 320,
+      "scrollHeight": 2541,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 288,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": {
+        "x": 33,
+        "y": 481.59375,
+        "width": 254,
+        "height": 44,
+        "bottom": 525.59375
+      },
+      "form": {
+        "x": 16,
+        "y": 403.796875,
+        "width": 288,
+        "height": 1035.390625,
+        "bottom": 1439.1875
+      },
+      "panel": {
+        "x": 16,
+        "y": 1547.1875,
+        "width": 288,
+        "height": 52,
+        "bottom": 1599.1875
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 320,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 226.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 320,
+      "scrollHeight": 2315,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 288,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 16,
+        "y": 377.796875,
+        "width": 288,
+        "height": 835.59375,
+        "bottom": 1213.390625
+      },
+      "panel": {
+        "x": 16,
+        "y": 1321.390625,
+        "width": 288,
+        "height": 52,
+        "bottom": 1373.390625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 320,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "შემდეგი",
+          "height": 44,
+          "width": 226.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 320,
+      "scrollHeight": 2244,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 156,
+        "width": 288,
+        "height": 33.796875,
+        "bottom": 189.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 16,
+        "y": 377.796875,
+        "width": 288,
+        "height": 764.359375,
+        "bottom": 1142.15625
+      },
+      "panel": {
+        "x": 16,
+        "y": 1250.15625,
+        "width": 288,
+        "height": 52,
+        "bottom": 1302.15625
+      },
+      "footer": {
+        "x": 0,
+        "y": 775,
+        "width": 320,
+        "height": 69,
+        "bottom": 844
+      },
+      "actions": [
+        {
+          "label": "უკან",
+          "height": 44,
+          "width": 53.328125,
+          "visible": true,
+          "unobscured": false
+        },
+        {
+          "label": "განთავსება",
+          "height": 44,
+          "width": 226.671875,
+          "visible": true,
+          "unobscured": true
+        }
+      ],
+      "violations": []
+    }
+  ],
+  "errors": [],
+  "rechecks": [
+    {
+      "width": 360,
+      "source": "../recheck-360/results.json",
+      "reason": "Attachment loading and enabled-button color transition settled before axe."
+    }
+  ]
+}

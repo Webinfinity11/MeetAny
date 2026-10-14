@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "client: required validation and error summary",
+    "client: local photo preview and removal",
+    "client: browser draft restored after reload",
+    "client: server draft restored in a fresh tab",
+    "client: review primary action visible without scrolling",
+    "client: three steps → real local publication",
+    "client: published request visible in catalog",
+    "client: published request visible in account",
+    "client: account → edit sheet open, close, save",
+    "client: five-open-request notice and account link",
+    "CompanyUpgrade: validation, close/reopen, entered values retained",
+    "company: required validation and error summary",
+    "company: local photo preview and removal",
+    "company: browser draft restored after reload",
+    "company: server draft restored in a fresh tab",
+    "company: review primary action visible without scrolling",
+    "company: three steps → real local publication",
+    "company: published request visible in catalog",
+    "company: published request visible in account",
+    "company: account → edit sheet open, close, save"
+  ],
+  "created": [
+    "95f3c156-6b68-4e27-954a-c1572e3ea80c",
+    "cef9b534-ea80-456a-a2a0-8206b7bd3e8f"
+  ],
+  "errors": [],
+  "cleaned": 2
+}

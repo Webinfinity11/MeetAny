@@ -1,0 +1,21 @@
+{
+  "tsc": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "eslint": {
+    "command": "npx eslint app",
+    "exitCode": 0,
+    "warnings": 0
+  },
+  "design": {
+    "command": "npm run lint:design",
+    "exitCode": 0
+  },
+  "unit": {
+    "command": "PATH=/opt/homebrew/opt/node@22/bin:$PATH npm test",
+    "exitCode": 0,
+    "passed": 133,
+    "failed": 0
+  }
+}

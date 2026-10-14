@@ -1,0 +1,365 @@
+{
+  "results": [
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1854,
+      "overflow": 0,
+      "title": {
+        "x": 152,
+        "y": 88,
+        "width": 1136,
+        "height": 39,
+        "bottom": 127
+      },
+      "firstField": {
+        "x": 177,
+        "y": 374.796875,
+        "width": 400.15625,
+        "height": 44,
+        "bottom": 418.796875
+      },
+      "form": {
+        "x": 152,
+        "y": 259,
+        "width": 1136,
+        "height": 1007.796875,
+        "bottom": 1266.796875
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1558,
+      "overflow": 0,
+      "title": {
+        "x": 152,
+        "y": 88,
+        "width": 1136,
+        "height": 39,
+        "bottom": 127
+      },
+      "firstField": null,
+      "form": {
+        "x": 152,
+        "y": 259,
+        "width": 1136,
+        "height": 711.796875,
+        "bottom": 970.796875
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1476,
+      "overflow": 0,
+      "title": {
+        "x": 152,
+        "y": 88,
+        "width": 1136,
+        "height": 39,
+        "bottom": 127
+      },
+      "firstField": null,
+      "form": {
+        "x": 152,
+        "y": 259,
+        "width": 1136,
+        "height": 629.578125,
+        "bottom": 888.578125
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1791,
+      "overflow": 0,
+      "title": {
+        "x": 392,
+        "y": 88,
+        "width": 218.53125,
+        "height": 37.5,
+        "bottom": 125.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 1440,
+      "scrollHeight": 1999,
+      "overflow": 0,
+      "title": {
+        "x": 145,
+        "y": 215,
+        "width": 726,
+        "height": 43.1875,
+        "bottom": 258.1875
+      },
+      "firstField": {
+        "x": 424,
+        "y": 213,
+        "width": 592,
+        "height": 44,
+        "bottom": 257
+      },
+      "form": null,
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2608,
+      "overflow": 0,
+      "title": {
+        "x": 20,
+        "y": 80,
+        "width": 350,
+        "height": 33.796875,
+        "bottom": 113.796875
+      },
+      "firstField": {
+        "x": 45,
+        "y": 417.59375,
+        "width": 300,
+        "height": 44,
+        "bottom": 461.59375
+      },
+      "form": {
+        "x": 20,
+        "y": 301.796875,
+        "width": 350,
+        "height": 1207.390625,
+        "bottom": 1509.1875
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2388,
+      "overflow": 0,
+      "title": {
+        "x": 20,
+        "y": 80,
+        "width": 350,
+        "height": 33.796875,
+        "bottom": 113.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 20,
+        "y": 301.796875,
+        "width": 350,
+        "height": 987.59375,
+        "bottom": 1289.390625
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2459,
+      "overflow": 0,
+      "title": {
+        "x": 20,
+        "y": 80,
+        "width": 350,
+        "height": 33.796875,
+        "bottom": 113.796875
+      },
+      "firstField": null,
+      "form": {
+        "x": 20,
+        "y": 301.796875,
+        "width": 350,
+        "height": 1057.953125,
+        "bottom": 1359.75
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 2789,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 169,
+        "width": 189.390625,
+        "height": 32.5,
+        "bottom": 201.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 390,
+      "scrollHeight": 3868,
+      "overflow": 0,
+      "title": {
+        "x": 37,
+        "y": 195,
+        "width": 316,
+        "height": 70.1875,
+        "bottom": 265.1875
+      },
+      "firstField": {
+        "x": 16,
+        "y": 163,
+        "width": 358,
+        "height": 44,
+        "bottom": 207
+      },
+      "form": null,
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step1",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2694,
+      "overflow": 0,
+      "title": {
+        "x": 20,
+        "y": 80,
+        "width": 320,
+        "height": 67.59375,
+        "bottom": 147.59375
+      },
+      "firstField": {
+        "x": 45,
+        "y": 475.390625,
+        "width": 270,
+        "height": 44,
+        "bottom": 519.390625
+      },
+      "form": {
+        "x": 20,
+        "y": 359.59375,
+        "width": 320,
+        "height": 1207.390625,
+        "bottom": 1566.984375
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step2",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2474,
+      "overflow": 0,
+      "title": {
+        "x": 20,
+        "y": 80,
+        "width": 320,
+        "height": 67.59375,
+        "bottom": 147.59375
+      },
+      "firstField": null,
+      "form": {
+        "x": 20,
+        "y": 359.59375,
+        "width": 320,
+        "height": 987.59375,
+        "bottom": 1347.1875
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "step3",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2545,
+      "overflow": 0,
+      "title": {
+        "x": 20,
+        "y": 80,
+        "width": 320,
+        "height": 67.59375,
+        "bottom": 147.59375
+      },
+      "firstField": null,
+      "form": {
+        "x": 20,
+        "y": 359.59375,
+        "width": 320,
+        "height": 1057.953125,
+        "bottom": 1417.546875
+      },
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "company-upgrade",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 2817,
+      "overflow": 0,
+      "title": {
+        "x": 16,
+        "y": 169,
+        "width": 189.390625,
+        "height": 32.5,
+        "bottom": 201.5
+      },
+      "firstField": null,
+      "form": null,
+      "panel": null,
+      "footer": null
+    },
+    {
+      "name": "edit",
+      "role": "client",
+      "width": 360,
+      "scrollHeight": 3921,
+      "overflow": 0,
+      "title": {
+        "x": 37,
+        "y": 223,
+        "width": 286,
+        "height": 70.1875,
+        "bottom": 293.1875
+      },
+      "firstField": {
+        "x": 16,
+        "y": 163,
+        "width": 328,
+        "height": 44,
+        "bottom": 207
+      },
+      "form": null,
+      "panel": null,
+      "footer": null
+    }
+  ],
+  "errors": []
+}

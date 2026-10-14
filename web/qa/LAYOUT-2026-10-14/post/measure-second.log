@@ -1,0 +1,10 @@
+client 1440 requests-new-1: 1716px (1.72 scr) empty 17.6% overflow 0 pageerrors 0
+client 1440 requests-new-2: 1506px (1.51 scr) empty 18.3% overflow 0 pageerrors 0
+client 1440 requests-new-3: 1364px (1.36 scr) empty 21.1% overflow 0 pageerrors 0
+client 390 requests-new-1: 2443px (2.89 scr) empty 18.2% overflow 0 pageerrors 0
+client 390 requests-new-2: 2239px (2.65 scr) empty 22.3% overflow 0 pageerrors 0
+client 390 requests-new-3: 2169px (2.57 scr) empty 24.1% overflow 0 pageerrors 0
+client 360 requests-new-1: 2491px (2.95 scr) empty 16.2% overflow 0 pageerrors 0
+client 360 requests-new-2: 2291px (2.71 scr) empty 21.8% overflow 0 pageerrors 0
+client 360 requests-new-3: 2220px (2.63 scr) empty 22.2% overflow 0 pageerrors 0
+done: 9 measurements, 0 errors, 0 pageerrors
