@@ -411,3 +411,6 @@ html:has(.ma-sheet[open]){overflow:hidden}
 .ma-theme-toggle{flex:none;width:var(--tap-min);min-height:var(--tap-min);height:var(--tap-min);padding:0;border-color:var(--ink-300)}
 .ma-theme-toggle__swatch{display:block;width:var(--size-18);height:var(--size-18);flex:none;border:var(--size-1) solid var(--ink-300);border-radius:var(--radius-circle);background:var(--theme-swatch)}
 .ma-theme-toggle.ma-btn--secondary[aria-pressed=true]{border-color:var(--action);background:var(--selected-bg);color:var(--selected-text)}
+
+/* Offer form route: grey page background down to the footer, edge to edge. */
+.ma-frame[data-market-page="make-offer"] .ma-main { background: var(--bg-subtle); }
