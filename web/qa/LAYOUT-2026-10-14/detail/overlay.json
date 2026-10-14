@@ -1,0 +1,183 @@
+{
+  "pages": [],
+  "overlays": [
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "request-view-own",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "request-view-own",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "compare-offers",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "compare-offers",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "deal-view",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "deal-view",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "request-view-own",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "request-view-own",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "compare-offers",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "compare-offers",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "deal-view",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "deal-view",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "slug": "request-view-own",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "slug": "compare-offers",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "slug": "deal-view",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    }
+  ],
+  "checks": [],
+  "pageErrors": [],
+  "failures": []
+}

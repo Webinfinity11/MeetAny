@@ -1,0 +1,427 @@
+{
+  "at": "2026-10-14T07:52:11.764Z",
+  "base": "http://127.0.0.1:3443",
+  "role": "guest",
+  "depth": 4,
+  "pages": [
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 1440,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1417,
+      "scrollWidth": 1440,
+      "viewports": 1.42,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1080
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 56,
+          "y": 586,
+          "above": "div.request-detail-main",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 300,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 222,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1282,
+        "width": 1162,
+        "rightMargin": 158,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 320,
+          "left": 1000,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 417,
+        "pctOfScroll": 29.4,
+        "pctOfMain": 38.6,
+        "top5": [
+          {
+            "px": 65,
+            "y": 832,
+            "above": "span",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 47,
+            "y": 297,
+            "above": "p.RequestDetail_posted__hJEZR",
+            "below": "h2"
+          },
+          {
+            "px": 45,
+            "y": 975,
+            "above": "p",
+            "below": "button.ma-btn.ma-btn--ghost"
+          },
+          {
+            "px": 34,
+            "y": 64,
+            "above": "main-start",
+            "below": "a"
+          },
+          {
+            "px": 34,
+            "y": 561,
+            "above": "p.ma-prose",
+            "below": "a.ma-btn.ma-btn--primary"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          158
+        ],
+        "fitInFirstScreen": 1,
+        "firstTop": 706
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 136,
+        "bottom": 222
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 390,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2057,
+      "scrollWidth": 390,
+      "viewports": 2.44,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1584
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 1329,
+          "above": "aside.request-detail-aside#request-contact",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 96,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 363,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 739,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 259,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 390,
+        "width": 374,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1584
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 732,
+        "pctOfScroll": 35.6,
+        "pctOfMain": 46.2,
+        "top5": [
+          {
+            "px": 67,
+            "y": 719,
+            "above": "p.ma-prose",
+            "below": "dt"
+          },
+          {
+            "px": 55,
+            "y": 1071,
+            "above": "p.RequestDetail_note__i2i1i",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 48,
+            "y": 1592,
+            "above": "span",
+            "below": "main-end"
+          },
+          {
+            "px": 43,
+            "y": 1434,
+            "above": "a",
+            "below": "img"
+          },
+          {
+            "px": 42,
+            "y": 830,
+            "above": "dd",
+            "below": "dt"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          156
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1464
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 112,
+        "bottom": 217
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 360,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2181,
+      "scrollWidth": 360,
+      "viewports": 2.58,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1688
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 1432,
+          "above": "aside.request-detail-aside#request-contact",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 96,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 398,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 774,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 294,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 360,
+        "width": 344,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1688
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 724,
+        "pctOfScroll": 33.2,
+        "pctOfMain": 42.9,
+        "top5": [
+          {
+            "px": 67,
+            "y": 754,
+            "above": "p.ma-prose",
+            "below": "dt"
+          },
+          {
+            "px": 55,
+            "y": 1174,
+            "above": "p.RequestDetail_note__i2i1i",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 48,
+            "y": 1696,
+            "above": "span",
+            "below": "main-end"
+          },
+          {
+            "px": 43,
+            "y": 1538,
+            "above": "a",
+            "below": "img"
+          },
+          {
+            "px": 42,
+            "y": 865,
+            "above": "dd",
+            "below": "dt"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          156
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1568
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 112,
+        "bottom": 252
+      },
+      "pageErrors": []
+    }
+  ],
+  "errors": []
+}

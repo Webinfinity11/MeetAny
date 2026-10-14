@@ -1,0 +1,817 @@
+{
+  "at": "2026-10-14T07:52:22.725Z",
+  "base": "http://127.0.0.1:3443",
+  "role": "client",
+  "depth": 4,
+  "pages": [
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "path": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "width": 1440,
+      "finalUrl": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1615,
+      "scrollWidth": 1440,
+      "viewports": 1.61,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1278
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.deals_page__ZU8Co",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 37,
+          "y": 246,
+          "above": "header.deals_header__kUNgO",
+          "below": "ol",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 246,
+          "above": "header.deals_header__kUNgO",
+          "below": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 342,
+          "above": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "below": "div.deals_grid__5pdRh",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 152,
+        "right": 1269,
+        "width": 1117,
+        "rightMargin": 171,
+        "leftMargin": 152
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "asides": [
+        {
+          "sel": "aside.deals_aside__7dCRg",
+          "width": 320,
+          "left": 968,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 541,
+        "pctOfScroll": 33.5,
+        "pctOfMain": 42.3,
+        "top5": [
+          {
+            "px": 65,
+            "y": 1277,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 63,
+            "y": 322,
+            "above": "small",
+            "below": "h2"
+          },
+          {
+            "px": 44,
+            "y": 64,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 43,
+            "y": 242,
+            "above": "p",
+            "below": "span"
+          },
+          {
+            "px": 33,
+            "y": 769,
+            "above": "dd",
+            "below": "button.ma-btn.ma-btn--primary"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 152,
+        "bottom": 192
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "width": 1440,
+      "finalUrl": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 2556,
+      "scrollWidth": 1440,
+      "viewports": 2.56,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2219
+      },
+      "headerHeight": 64,
+      "footerHeight": 61,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 56,
+          "y": 1779,
+          "above": "div.request-detail-main",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 258,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 180,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1299,
+        "width": 1179,
+        "rightMargin": 141,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 320,
+          "left": 1000,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 1114,
+        "pctOfScroll": 43.6,
+        "pctOfMain": 50.2,
+        "top5": [
+          {
+            "px": 84,
+            "y": 1758,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2"
+          },
+          {
+            "px": 69,
+            "y": 2033,
+            "above": "span",
+            "below": "img"
+          },
+          {
+            "px": 66,
+            "y": 1181,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "a.ma-ocard__name"
+          },
+          {
+            "px": 64,
+            "y": 2219,
+            "above": "span",
+            "below": "main-end"
+          },
+          {
+            "px": 55,
+            "y": 897,
+            "above": "a.ma-btn.ma-btn--primary",
+            "below": "h2.ma-h3"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.ma-ocard.ma-ocard--chosen",
+        "heights": [
+          557
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1222
+      },
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 136,
+        "bottom": 179
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "path": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "width": 390,
+      "finalUrl": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2039,
+      "scrollWidth": 390,
+      "viewports": 2.42,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1566
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.deals_page__ZU8Co",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 33,
+          "y": 274,
+          "above": "header.deals_header__kUNgO",
+          "below": "div.deals_mobileSteps__1TNo7",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 274,
+          "above": "header.deals_header__kUNgO",
+          "below": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 508,
+          "above": "div.deals_mobileOnly__oA1JJ",
+          "below": "div.deals_grid__5pdRh",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1354,
+          "above": "div.deals_main___Zxq1",
+          "below": "aside.deals_aside__7dCRg",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 218,
+          "above": "div",
+          "below": "div.deals_actions__HopHI",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 353,
+        "width": 333,
+        "rightMargin": 37,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.deals_page__ZU8Co",
+        "width": 350,
+        "left": 20,
+        "right": 370,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1566
+      },
+      "asides": [
+        {
+          "sel": "aside.deals_aside__7dCRg",
+          "width": 350,
+          "left": 20,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 734,
+        "pctOfScroll": 36,
+        "pctOfMain": 46.9,
+        "top5": [
+          {
+            "px": 61,
+            "y": 376,
+            "above": "small",
+            "below": "span"
+          },
+          {
+            "px": 57,
+            "y": 1203,
+            "above": "p.deals_note__omOGq",
+            "below": "p"
+          },
+          {
+            "px": 52,
+            "y": 1096,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "h2"
+          },
+          {
+            "px": 51,
+            "y": 1337,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "img"
+          },
+          {
+            "px": 49,
+            "y": 1573,
+            "above": "svg.icon",
+            "below": "main-end"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 116,
+        "bottom": 142
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "width": 390,
+      "finalUrl": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 3390,
+      "scrollWidth": 390,
+      "viewports": 4.02,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2917
+      },
+      "headerHeight": 56,
+      "footerHeight": 57,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 2318,
+          "above": "aside.request-detail-aside#request-contact",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 96,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 328,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1852,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 224,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 382,
+        "width": 366,
+        "rightMargin": 8,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2917
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1489,
+        "pctOfScroll": 43.9,
+        "pctOfMain": 51,
+        "top5": [
+          {
+            "px": 69,
+            "y": 2055,
+            "above": "dd",
+            "below": "h2"
+          },
+          {
+            "px": 64,
+            "y": 1835,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "dt"
+          },
+          {
+            "px": 63,
+            "y": 1174,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "a.ma-ocard__name"
+          },
+          {
+            "px": 57,
+            "y": 2581,
+            "above": "span",
+            "below": "img"
+          },
+          {
+            "px": 57,
+            "y": 2753,
+            "above": "span",
+            "below": "img"
+          }
+        ]
+      },
+      "rows": {
+        "count": 4,
+        "sel": "article.ma-ocard.ma-ocard--chosen",
+        "heights": [
+          645,
+          156,
+          156,
+          156
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1207
+      },
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 112,
+        "bottom": 182
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "path": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "width": 360,
+      "finalUrl": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2079,
+      "scrollWidth": 360,
+      "viewports": 2.46,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1586
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.deals_page__ZU8Co",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 33,
+          "y": 294,
+          "above": "header.deals_header__kUNgO",
+          "below": "div.deals_mobileSteps__1TNo7",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 294,
+          "above": "header.deals_header__kUNgO",
+          "below": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 528,
+          "above": "div.deals_mobileOnly__oA1JJ",
+          "below": "div.deals_grid__5pdRh",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1374,
+          "above": "div.deals_main___Zxq1",
+          "below": "aside.deals_aside__7dCRg",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 238,
+          "above": "div",
+          "below": "div.deals_actions__HopHI",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 323,
+        "width": 303,
+        "rightMargin": 37,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.deals_page__ZU8Co",
+        "width": 320,
+        "left": 20,
+        "right": 340,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1586
+      },
+      "asides": [
+        {
+          "sel": "aside.deals_aside__7dCRg",
+          "width": 320,
+          "left": 20,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 728,
+        "pctOfScroll": 35,
+        "pctOfMain": 45.9,
+        "top5": [
+          {
+            "px": 61,
+            "y": 396,
+            "above": "small",
+            "below": "span"
+          },
+          {
+            "px": 57,
+            "y": 1223,
+            "above": "p.deals_note__omOGq",
+            "below": "p"
+          },
+          {
+            "px": 52,
+            "y": 1116,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "h2"
+          },
+          {
+            "px": 51,
+            "y": 1357,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "img"
+          },
+          {
+            "px": 49,
+            "y": 1593,
+            "above": "svg.icon",
+            "below": "main-end"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 116,
+        "bottom": 142
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "width": 360,
+      "finalUrl": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 3422,
+      "scrollWidth": 360,
+      "viewports": 4.05,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2929
+      },
+      "headerHeight": 56,
+      "footerHeight": 57,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 2330,
+          "above": "aside.request-detail-aside#request-contact",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 96,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 328,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1864,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 224,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 15,
+        "right": 360,
+        "width": 345,
+        "rightMargin": 0,
+        "leftMargin": 15
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2929
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1492,
+        "pctOfScroll": 43.6,
+        "pctOfMain": 50.9,
+        "top5": [
+          {
+            "px": 69,
+            "y": 2067,
+            "above": "dd",
+            "below": "h2"
+          },
+          {
+            "px": 64,
+            "y": 1847,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "dt"
+          },
+          {
+            "px": 63,
+            "y": 1186,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "a.ma-ocard__name"
+          },
+          {
+            "px": 57,
+            "y": 2593,
+            "above": "span",
+            "below": "img"
+          },
+          {
+            "px": 57,
+            "y": 2765,
+            "above": "span",
+            "below": "img"
+          }
+        ]
+      },
+      "rows": {
+        "count": 4,
+        "sel": "article.ma-ocard.ma-ocard--chosen",
+        "heights": [
+          645,
+          156,
+          156,
+          156
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1219
+      },
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 112,
+        "bottom": 182
+      },
+      "pageErrors": []
+    }
+  ],
+  "errors": []
+}

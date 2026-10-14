@@ -1,0 +1,540 @@
+{
+  "pages": [
+    {
+      "role": "guest",
+      "width": 1440,
+      "slug": "request-view",
+      "overflow": 0,
+      "scrollHeight": 1417,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 320,
+          "position": "sticky"
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "width": 980,
+      "slug": "request-view",
+      "overflow": 0,
+      "scrollHeight": 1751,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 932,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "slug": "request-view",
+      "overflow": 0,
+      "scrollHeight": 2057,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 358,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "width": 360,
+      "slug": "request-view",
+      "overflow": 0,
+      "scrollHeight": 2181,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 328,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "width": 320,
+      "slug": "request-view",
+      "overflow": 0,
+      "scrollHeight": 2287,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 288,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "request-view-own",
+      "overflow": 0,
+      "scrollHeight": 2556,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 320,
+          "position": "sticky"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "compare-offers",
+      "overflow": 0,
+      "scrollHeight": 2267,
+      "h1": 172,
+      "panel": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "deal-view",
+      "overflow": 0,
+      "scrollHeight": 1615,
+      "h1": 152,
+      "panel": [
+        {
+          "width": 320,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "request-view-own",
+      "overflow": 0,
+      "scrollHeight": 3027,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 932,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "compare-offers",
+      "overflow": 0,
+      "scrollHeight": 2813,
+      "h1": 172,
+      "panel": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "deal-view",
+      "overflow": 0,
+      "scrollHeight": 1733,
+      "h1": 152,
+      "panel": [
+        {
+          "width": 916,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "slug": "request-view-own",
+      "overflow": 0,
+      "scrollHeight": 3390,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 358,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "slug": "compare-offers",
+      "overflow": 0,
+      "scrollHeight": 3188,
+      "h1": 124,
+      "panel": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "slug": "deal-view",
+      "overflow": 0,
+      "scrollHeight": 2039,
+      "h1": 116,
+      "panel": [
+        {
+          "width": 350,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "slug": "request-view-own",
+      "overflow": 0,
+      "scrollHeight": 3422,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 328,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "slug": "compare-offers",
+      "overflow": 0,
+      "scrollHeight": 3250,
+      "h1": 124,
+      "panel": []
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "slug": "deal-view",
+      "overflow": 0,
+      "scrollHeight": 2079,
+      "h1": 116,
+      "panel": [
+        {
+          "width": 320,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "slug": "request-view-own",
+      "overflow": 0,
+      "scrollHeight": 3559,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 288,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "slug": "compare-offers",
+      "overflow": 0,
+      "scrollHeight": 3755,
+      "h1": 124,
+      "panel": []
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "slug": "deal-view",
+      "overflow": 0,
+      "scrollHeight": 2212,
+      "h1": 116,
+      "panel": [
+        {
+          "width": 280,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1331,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 320,
+          "position": "sticky"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 1801,
+      "h1": 156,
+      "panel": [
+        {
+          "width": 320,
+          "position": "sticky"
+        }
+      ],
+      "formWidth": 598
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1637,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 932,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 1934,
+      "h1": 156,
+      "panel": [
+        {
+          "width": 932,
+          "position": "static"
+        }
+      ],
+      "formWidth": 890
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1865,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 358,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 2266,
+      "h1": 108,
+      "panel": [
+        {
+          "width": 358,
+          "position": "static"
+        }
+      ],
+      "formWidth": 324
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1976,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 328,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 2330,
+      "h1": 108,
+      "panel": [
+        {
+          "width": 328,
+          "position": "static"
+        }
+      ],
+      "formWidth": 294
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 2034,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 288,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 2468,
+      "h1": 108,
+      "panel": [
+        {
+          "width": 288,
+          "position": "static"
+        }
+      ],
+      "formWidth": 254
+    }
+  ],
+  "overlays": [
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "request-view-own",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "compare-offers",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "slug": "deal-view",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "request-view-own",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "compare-offers",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "slug": "deal-view",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "label": "პროფილი",
+      "hits": []
+    }
+  ],
+  "checks": [
+    {
+      "name": "compare-axe",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "compare-axe",
+      "width": 980,
+      "passed": true
+    },
+    {
+      "name": "compare-axe",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "request-editor-open-close",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "compare-axe",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "name": "compare-axe",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 980,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "editing-layout",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 320,
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "failures": []
+}

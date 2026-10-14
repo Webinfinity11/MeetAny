@@ -1,0 +1,1041 @@
+{
+  "at": "2026-10-14T08:05:28.750Z",
+  "base": "http://127.0.0.1:3443",
+  "axe": "4.13.0",
+  "ids": {
+    "client": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+    "company": "74cc28fc-47de-45cb-9563-93735b86855e",
+    "admin": "d2517b00-554d-4e6b-929a-ef3da51f3b47",
+    "request": "f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+    "deal": "8e6766e1-b67e-408a-a8c0-e9e6944e115b"
+  },
+  "pages": [
+    {
+      "role": "company",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-account-menu\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-account-menu\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-menu__trigger__BAusQ Header_ma-menu__trigger--compact__S9QZa\" title=\"პროფილი\" aria-label=\"პროფილი\" aria-haspopup=\"menu\" aria-controls=\"ma-account-menu\" aria-expanded=\"false\">",
+              "target": [
+                ".Header_ma-menu__trigger__BAusQ"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-account-menu\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-deliveryDays-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-deliveryDays"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-validUntil-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-validUntil"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-paymentTerms-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+              "target": [
+                "#of-paymentTerms"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>₾</span>",
+              "target": [
+                ".MakeOffer_currency__rdyR6 > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-deliveryDays"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-deliveryDays > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-validUntil"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-validUntil > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+                      "target": [
+                        "#of-paymentTerms"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span>",
+              "target": [
+                "#of-paymentTerms > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 46,
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "theme": "blue",
+      "width": 390,
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-deliveryDays-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-deliveryDays"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-validUntil-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-validUntil"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-paymentTerms-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+              "target": [
+                "#of-paymentTerms"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>₾</span>",
+              "target": [
+                ".MakeOffer_currency__rdyR6 > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-deliveryDays"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-deliveryDays > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-validUntil"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-validUntil > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+                      "target": [
+                        "#of-paymentTerms"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span>",
+              "target": [
+                "#of-paymentTerms > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-account-menu\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-account-menu\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-menu__trigger__BAusQ Header_ma-menu__trigger--compact__S9QZa\" title=\"პროფილი\" aria-label=\"პროფილი\" aria-haspopup=\"menu\" aria-controls=\"ma-account-menu\" aria-expanded=\"false\">",
+              "target": [
+                ".Header_ma-menu__trigger__BAusQ"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-account-menu\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-deliveryDays-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-deliveryDays"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-validUntil-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-validUntil"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-paymentTerms-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+              "target": [
+                "#of-paymentTerms"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>₾</span>",
+              "target": [
+                ".MakeOffer_currency__rdyR6 > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-deliveryDays"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-deliveryDays > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-validUntil"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-validUntil > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+                      "target": [
+                        "#of-paymentTerms"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span>",
+              "target": [
+                "#of-paymentTerms > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 46,
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "theme": "classic",
+      "width": 390,
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-deliveryDays-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-deliveryDays"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-deliveryDays-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-validUntil-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+              "target": [
+                "#of-validUntil"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-validUntil-options\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"of-paymentTerms-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+              "target": [
+                "#of-paymentTerms"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"of-paymentTerms-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>₾</span>",
+              "target": [
+                ".MakeOffer_currency__rdyR6 > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-deliveryDays\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"true\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-deliveryDays-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-deliveryDays"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-deliveryDays > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-validUntil\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-validUntil-options\"><span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span></button>",
+                      "target": [
+                        "#of-validUntil"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ ვადა</span>",
+              "target": [
+                "#of-validUntil > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"of-paymentTerms\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-required=\"false\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"of-paymentTerms-options\"><span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span></button>",
+                      "target": [
+                        "#of-paymentTerms"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">აირჩიეთ გადახდის პირობები</span>",
+              "target": [
+                "#of-paymentTerms > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    }
+  ],
+  "keyboard": [],
+  "failures": [],
+  "counts": {}
+}

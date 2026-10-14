@@ -1,0 +1,232 @@
+{
+  "at": "2026-10-14T08:08:14.013797+00:00",
+  "codeHead": "665d63c",
+  "database": "meetany_layout_detail",
+  "commands": [
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0
+    },
+    {
+      "command": "npx eslint app",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "command": "npm run lint:design",
+      "exitCode": 0
+    },
+    {
+      "command": "PATH=/opt/homebrew/opt/node@22/bin:$PATH npm test",
+      "exitCode": 0,
+      "passed": 133,
+      "failed": 0
+    }
+  ],
+  "a11y": {
+    "guest": {
+      "states": 4,
+      "violations": 0,
+      "overflow": 0,
+      "keyboardPassed": 0,
+      "failures": 0
+    },
+    "client": {
+      "states": 20,
+      "violations": 0,
+      "overflow": 0,
+      "keyboardPassed": 12,
+      "failures": 0
+    },
+    "company": {
+      "states": 4,
+      "violations": 0,
+      "overflow": 0,
+      "keyboardPassed": 0,
+      "failures": 0
+    }
+  },
+  "verify": {
+    "pages": 30,
+    "checks": 12,
+    "overlays": 10,
+    "pageErrors": 0,
+    "failures": 0,
+    "overflow": 0,
+    "overlaps": 0
+  },
+  "overlay": {
+    "pages": 0,
+    "checks": 0,
+    "overlays": 25,
+    "pageErrors": 0,
+    "failures": 0,
+    "overflow": 0,
+    "overlaps": 0
+  },
+  "flow": {
+    "pages": 0,
+    "checks": 5,
+    "overlays": 0,
+    "pageErrors": 0,
+    "failures": 0,
+    "overflow": 0,
+    "overlaps": 0
+  },
+  "form-final": {
+    "pages": 10,
+    "checks": 6,
+    "overlays": 12,
+    "pageErrors": 0,
+    "failures": 0,
+    "overflow": 0,
+    "overlaps": 0
+  },
+  "measurements": [
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "width": 1440,
+      "scrollHeight": 1615,
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 152,
+        "bottom": 192
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "width": 1440,
+      "scrollHeight": 2556,
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 136,
+        "bottom": 179
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "width": 390,
+      "scrollHeight": 2039,
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 116,
+        "bottom": 142
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "width": 390,
+      "scrollHeight": 3390,
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 112,
+        "bottom": 182
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "width": 360,
+      "scrollHeight": 2079,
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 116,
+        "bottom": 142
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "width": 360,
+      "scrollHeight": 3422,
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 112,
+        "bottom": 182
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "width": 1440,
+      "scrollHeight": 1807,
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 156,
+        "bottom": 198
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "width": 390,
+      "scrollHeight": 2266,
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 108,
+        "bottom": 135
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "width": 360,
+      "scrollHeight": 2330,
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 108,
+        "bottom": 135
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "width": 1440,
+      "scrollHeight": 1417,
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 136,
+        "bottom": 222
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "width": 390,
+      "scrollHeight": 2057,
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 112,
+        "bottom": 217
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "width": 360,
+      "scrollHeight": 2181,
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 112,
+        "bottom": 252
+      },
+      "hOverflow": 0
+    }
+  ]
+}

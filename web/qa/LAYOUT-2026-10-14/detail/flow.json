@@ -1,0 +1,30 @@
+{
+  "pages": [],
+  "overlays": [],
+  "checks": [
+    {
+      "name": "send-offer",
+      "request": "b69007dd-c2e2-46f0-8d77-72adb252ce47",
+      "passed": true
+    },
+    {
+      "name": "edit-offer",
+      "passed": true
+    },
+    {
+      "name": "offer-visible-in-comparison",
+      "passed": true
+    },
+    {
+      "name": "choose-offer-sheet-to-deal",
+      "url": "http://127.0.0.1:3443/deals/view/?id=af7cdb0c-d53c-428b-8100-5f631e9299cd",
+      "passed": true
+    },
+    {
+      "name": "deal-selected-to-discuss",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "failures": []
+}

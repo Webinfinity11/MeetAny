@@ -1,0 +1,235 @@
+{
+  "at": "2026-10-14T07:49:05.279Z",
+  "base": "http://127.0.0.1:3443",
+  "axe": "4.13.0",
+  "ids": {
+    "client": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+    "company": "74cc28fc-47de-45cb-9563-93735b86855e",
+    "admin": "d2517b00-554d-4e6b-929a-ef3da51f3b47",
+    "request": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+    "deal": "8e6766e1-b67e-408a-a8c0-e9e6944e115b"
+  },
+  "pages": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "violations": [],
+      "incomplete": [],
+      "passes": 44,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 44,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "violations": [],
+      "incomplete": [],
+      "passes": 44,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 44,
+      "overflow": 0
+    }
+  ],
+  "keyboard": [],
+  "failures": [],
+  "counts": {}
+}

@@ -1,0 +1,269 @@
+{
+  "pages": [
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1331,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 320,
+          "position": "sticky"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 1807,
+      "h1": 156,
+      "panel": [
+        {
+          "width": 320,
+          "position": "sticky"
+        }
+      ],
+      "formWidth": 598
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1637,
+      "h1": 136,
+      "panel": [
+        {
+          "width": 932,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 1940,
+      "h1": 156,
+      "panel": [
+        {
+          "width": 932,
+          "position": "static"
+        }
+      ],
+      "formWidth": 890
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1865,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 358,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 2266,
+      "h1": 108,
+      "panel": [
+        {
+          "width": 358,
+          "position": "static"
+        }
+      ],
+      "formWidth": 324
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 1976,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 328,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 2330,
+      "h1": 108,
+      "panel": [
+        {
+          "width": 328,
+          "position": "static"
+        }
+      ],
+      "formWidth": 294
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "slug": "request-view-company",
+      "overflow": 0,
+      "scrollHeight": 2034,
+      "h1": 112,
+      "panel": [
+        {
+          "width": 288,
+          "position": "static"
+        }
+      ]
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "slug": "offers-new-form",
+      "overflow": 0,
+      "scrollHeight": 2468,
+      "h1": 108,
+      "panel": [
+        {
+          "width": 288,
+          "position": "static"
+        }
+      ],
+      "formWidth": 254
+    }
+  ],
+  "overlays": [
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "request-view-company",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "slug": "offers-new-form",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "request-view-company",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "slug": "offers-new-form",
+      "label": "პროფილი",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "slug": "request-view-company",
+      "label": "შეტყობინებები",
+      "hits": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "slug": "offers-new-form",
+      "label": "შეტყობინებები",
+      "hits": []
+    }
+  ],
+  "checks": [
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 980,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "editing-layout",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "name": "external-submit-validation-and-live-preview",
+      "width": 320,
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "failures": []
+}

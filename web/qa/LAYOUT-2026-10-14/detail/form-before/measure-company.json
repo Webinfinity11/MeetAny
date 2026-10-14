@@ -1,0 +1,344 @@
+{
+  "at": "2026-10-14T08:02:59.630Z",
+  "base": "http://127.0.0.1:3443",
+  "role": "company",
+  "depth": 4,
+  "pages": [
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "width": 1440,
+      "finalUrl": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 2219,
+      "scrollWidth": 1440,
+      "viewports": 2.22,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1882
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.MakeOffer_page__yRqNG",
+        "paddingTop": 32,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 20,
+          "y": 140,
+          "above": "nav.MakeOffer_breadcrumbs__5tXHO",
+          "below": "div.MakeOffer_layout__ciJo6",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1249,
+        "width": 1129,
+        "rightMargin": 191,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "form": {
+        "sel": "form.MakeOffer_form__Iu3q_.undefined",
+        "width": 826,
+        "left": 145,
+        "height": 1384
+      },
+      "fieldMaxWidth": 826,
+      "asides": [
+        {
+          "sel": "aside.MakeOffer_summary__3bPr6",
+          "width": 300,
+          "left": 1020,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 989,
+        "pctOfScroll": 44.6,
+        "pctOfMain": 52.6,
+        "top5": [
+          {
+            "px": 109,
+            "y": 1837,
+            "above": "p.MakeOffer_privacy__v7OzX",
+            "below": "main-end"
+          },
+          {
+            "px": 86,
+            "y": 1547,
+            "above": "small",
+            "below": "p.MakeOffer_sendSummary__sxUjR"
+          },
+          {
+            "px": 60,
+            "y": 126,
+            "above": "a",
+            "below": "h1"
+          },
+          {
+            "px": 57,
+            "y": 678,
+            "above": "input",
+            "below": "h2"
+          },
+          {
+            "px": 57,
+            "y": 893,
+            "above": "input",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 185,
+        "bottom": 227
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "width": 390,
+      "finalUrl": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2950,
+      "scrollWidth": 390,
+      "viewports": 3.5,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2477
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.MakeOffer_page__yRqNG",
+        "paddingTop": 20,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 20,
+          "y": 120,
+          "above": "nav.MakeOffer_breadcrumbs__5tXHO",
+          "below": "div.MakeOffer_layout__ciJo6",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 353,
+        "width": 337,
+        "rightMargin": 37,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.MakeOffer_canvas__S_vTH",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2477
+      },
+      "form": {
+        "sel": "form.MakeOffer_form__Iu3q_.undefined",
+        "width": 316,
+        "left": 37,
+        "height": 1674
+      },
+      "fieldMaxWidth": 316,
+      "asides": [
+        {
+          "sel": "aside.MakeOffer_summary__3bPr6",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1260,
+        "pctOfScroll": 42.7,
+        "pctOfMain": 50.9,
+        "top5": [
+          {
+            "px": 100,
+            "y": 2433,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 86,
+            "y": 1838,
+            "above": "small",
+            "below": "p.MakeOffer_sendSummary__sxUjR"
+          },
+          {
+            "px": 75,
+            "y": 2171,
+            "above": "p.MakeOffer_privacy__v7OzX",
+            "below": "small"
+          },
+          {
+            "px": 65,
+            "y": 2348,
+            "above": "p",
+            "below": "svg.icon"
+          },
+          {
+            "px": 57,
+            "y": 773,
+            "above": "input",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 161,
+        "bottom": 188
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "path": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "width": 360,
+      "finalUrl": "/offers/new/?requestId=f6723c6b-823d-4f9d-9297-20cdfd86e4ab",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 3078,
+      "scrollWidth": 360,
+      "viewports": 3.65,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2585
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.MakeOffer_page__yRqNG",
+        "paddingTop": 20,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 20,
+          "y": 120,
+          "above": "nav.MakeOffer_breadcrumbs__5tXHO",
+          "below": "div.MakeOffer_layout__ciJo6",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 323,
+        "width": 307,
+        "rightMargin": 37,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.MakeOffer_canvas__S_vTH",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2585
+      },
+      "form": {
+        "sel": "form.MakeOffer_form__Iu3q_.undefined",
+        "width": 286,
+        "left": 37,
+        "height": 1782
+      },
+      "fieldMaxWidth": 286,
+      "asides": [
+        {
+          "sel": "aside.MakeOffer_summary__3bPr6",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1274,
+        "pctOfScroll": 41.4,
+        "pctOfMain": 49.3,
+        "top5": [
+          {
+            "px": 100,
+            "y": 2541,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 86,
+            "y": 1924,
+            "above": "small",
+            "below": "p.MakeOffer_sendSummary__sxUjR"
+          },
+          {
+            "px": 75,
+            "y": 2279,
+            "above": "p.MakeOffer_privacy__v7OzX",
+            "below": "small"
+          },
+          {
+            "px": 65,
+            "y": 2456,
+            "above": "p",
+            "below": "svg.icon"
+          },
+          {
+            "px": 57,
+            "y": 773,
+            "above": "input",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 161,
+        "bottom": 188
+      },
+      "pageErrors": []
+    }
+  ],
+  "errors": []
+}
