@@ -1,9 +1,9 @@
-.shell.shell{display:grid;grid-template-columns:var(--size-240) minmax(0,1fr);align-items:start;gap:var(--space-8);background:var(--ink-50)}
+.shell.shell{display:grid;grid-template-columns:var(--size-240) minmax(0,1fr);align-items:start;gap:var(--block-gap);background:var(--ink-50)}
 .full.full{grid-template-columns:minmax(0,1fr)}
 .shell :global(.account-records),.shell :global(.account-offers-layout){grid-template-columns:minmax(0,1fr)}
 .shell :global(.account-offer-list),.shell :global(.account-offer-list)>li{min-width:0}
-.main{display:grid;gap:var(--space-6);min-width:0}
-.sidebar{position:sticky;top:calc(var(--header-h) + var(--space-6));min-width:0}
+.main{display:grid;gap:var(--block-gap);min-width:0}
+.sidebar{position:sticky;top:var(--panel-top);min-width:0}
 .spaces{display:flex;gap:var(--space-1);padding:var(--space-1);border-radius:var(--radius-lg);background:var(--ink-150);font-size:var(--fs-eyebrow);line-height:var(--lh-meta);font-weight:var(--fw-semibold)}
 .spaces a,.spaces strong{display:flex;align-items:center;justify-content:center;flex:1;min-height:var(--tap-min);border-radius:var(--radius-md);color:var(--ink-600);text-decoration:none}
 .spaces [aria-current],.spaces strong{background:var(--white);box-shadow:var(--card-shadow);color:var(--ink-950)}
@@ -20,13 +20,13 @@
 .heading>a{flex:none}
 .shell :global(.account-filter-chips){overflow:visible;flex-wrap:wrap;max-width:100%;padding-bottom:var(--space-1)}
 .shell :global(.account-filter-chips button){flex:0 1 auto;min-width:0;min-height:var(--btn-h);white-space:normal}
-.deals{display:grid;gap:var(--space-3);list-style:none;margin:0;padding:0}
-.deal{position:relative;isolation:isolate;display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-4);padding:var(--space-4);border:var(--size-1) solid var(--ink-200);border-radius:var(--card-radius);background:var(--white);min-height:var(--size-96)}
+.deals{display:grid;gap:var(--block-gap);list-style:none;margin:0;padding:0}
+.deal{position:relative;isolation:isolate;display:flex;align-items:center;flex-wrap:wrap;gap:var(--stack-gap);padding:var(--card-pad-sm);border:var(--size-1) solid var(--ink-200);border-radius:var(--card-radius);background:var(--white);min-height:var(--size-96)}
 .deal>div{flex:1;min-width:0}
 .deal h2{margin:0;font-size:var(--fs-button)}
 .deal p,.deal time{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--ink-600)}
 @media(min-width:1024px){.shell :global(.account-offers-layout--detail){grid-template-columns:minmax(0,1fr) var(--size-340)}}
-@media(max-width:1023px){.shell.shell{grid-template-columns:minmax(0,1fr);gap:var(--space-5)}.sidebar{position:static}.nav{display:flex;overflow:auto;scrollbar-width:none;border-bottom:var(--size-1) solid var(--ink-200);gap:var(--space-5)}.nav a{flex:none;white-space:nowrap;padding:var(--space-2) 0;border-radius:0;border-bottom:var(--size-2) solid transparent}.nav a[aria-current]{background:transparent;box-shadow:none;border-bottom-color:var(--action-strong)}.nav svg,.nav small{display:none}}
+@media(max-width:1023px){.shell.shell{grid-template-columns:minmax(0,1fr);gap:var(--block-gap)}.sidebar{position:static}.nav{display:flex;overflow:auto;scrollbar-width:none;border-bottom:var(--size-1) solid var(--ink-200);gap:var(--space-5)}.nav a{flex:none;white-space:nowrap;padding:var(--space-2) 0;border-radius:0;border-bottom:var(--size-2) solid transparent}.nav a[aria-current]{background:transparent;box-shadow:none;border-bottom-color:var(--action-strong)}.nav svg,.nav small{display:none}}
 @media(max-width:767px){.heading{flex-direction:column;align-items:flex-start}.heading h1{font-size:var(--size-26)}.deal{display:grid;grid-template-columns:minmax(0,1fr)}.deal>a{width:100%}}
 
 .shell :global(.account-offer-copy)>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -39,7 +39,7 @@
 .status{width:fit-content;max-width:100%}
 
 /* Requests: mobile cards become five aligned columns from 900px. */
-.shell :global(.account-request-card){position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-3);padding:var(--space-3) var(--space-4);align-items:center}
+.shell :global(.account-request-card){position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-3);padding:var(--card-pad-sm);align-items:center}
 .shell :global(.account-item-heading){grid-column:1/-1;min-width:0;gap:var(--space-3)}
 .shell :global(.account-item-heading h2){margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shell :global(.account-item-heading p){margin:var(--space-1) 0 0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--ink-600)}
@@ -59,7 +59,7 @@
 }
 
 /* Three-line offer summaries and a 340px detail panel. */
-.shell :global(.account-offer-card){display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:0 var(--space-3);width:100%;align-items:start;padding:var(--space-3) var(--space-4);text-align:left;font:inherit;color:var(--ink-950);cursor:pointer}
+.shell :global(.account-offer-card){display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:0 var(--space-3);width:100%;align-items:start;padding:var(--card-pad-sm);text-align:left;font:inherit;color:var(--ink-950);cursor:pointer}
 .shell :global(.account-offer-card[aria-pressed=true]){border-color:var(--ink-950)}
 .shell :global(.account-offer-card:focus-visible){outline:var(--size-2) solid var(--ink-950);outline-offset:var(--space-1)}
 .shell :global(.account-offer-card .account-item-photo){grid-column:1;grid-row:1/4;width:var(--size-56);height:var(--size-56)}
@@ -70,9 +70,9 @@
 .shell :global(.account-offer-facts){grid-column:2/-1;grid-row:3;min-width:0;display:block;margin:0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--ink-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shell :global(.account-offer-facts)>strong{color:var(--ink-950);font-weight:var(--fw-semibold)}
 .shell :global(.account-offer-activity){display:inline;color:var(--ink-600);font-size:inherit;margin:0}
-.offerAside{min-width:0;position:sticky;top:calc(var(--header-h) + var(--space-6))}
-.offerDetail{padding:var(--space-5);border:var(--size-1) solid var(--ink-200);border-radius:var(--card-radius);background:var(--white)}
-.offerDetailContent{display:grid;gap:var(--space-4);min-width:0}
+.offerAside{min-width:0;position:sticky;top:var(--panel-top)}
+.offerDetail{padding:var(--card-pad);border:var(--size-1) solid var(--ink-200);border-radius:var(--card-radius);background:var(--white)}
+.offerDetailContent{display:grid;gap:var(--stack-gap);min-width:0}
 .offerDetailContent>header{display:flex;align-items:center;gap:var(--space-3);min-width:0}
 .offerDetailContent h2{flex:1;min-width:0;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold)}
 .offerDetailContent dl{margin:0;border-top:var(--size-1) solid var(--ink-150)}
@@ -109,7 +109,7 @@
 .shell :global(.account-verification p a){color:var(--action);font-weight:var(--fw-semibold)}
 .shell :global(.account-quick-actions){gap:var(--space-3)}
 .shell :global(.account-quick-actions) :global(.ma-btn){justify-content:flex-start;min-height:var(--btn-h);padding-inline:var(--space-3);white-space:nowrap;font-size:var(--btn-fs);}
-.shell :global(.account-feed-heading){display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-4)}
+.shell :global(.account-feed-heading){display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--stack-gap)}
 .shell :global(.account-feed-heading h2){margin:0;font-size:var(--fs-title);font-weight:var(--fw-bold)}
 .shell :global(.account-feed-heading a){font-size:var(--fs-sm);font-weight:var(--fw-semibold);color:var(--ink-950);display:inline-flex;align-items:center;min-height:var(--tap-min)}
 .matchGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3);margin:0;padding:0;list-style:none}
@@ -167,4 +167,14 @@
   :global(.account-shell--profile) .sidebar{position:static}
   :global(.account-shell--profile) .nav{display:flex;overflow:auto;gap:var(--stack-gap)}
   :global(.account-shell--profile) .nav a{flex:none}
+}
+.deal p { margin: var(--space-1) 0 0; }
+@media(max-width:767px){
+  .deal { grid-template-columns:minmax(0,1fr) auto; gap:var(--stack-gap); }
+  .deal > div, .deal > a { grid-column:1/-1; }
+  .deal > time { text-align:right; }
+  .shell :global(.account-request-card) { grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--stack-gap); }
+  .shell :global(.account-request-summary) { display:grid; gap:var(--space-1); grid-column:1; }
+  .shell :global(.account-request-card) > :global(.ma-btn) { grid-column:2; white-space:normal; }
+  .shell :global(.account-request-summary) > .status { white-space:normal; }
 }
