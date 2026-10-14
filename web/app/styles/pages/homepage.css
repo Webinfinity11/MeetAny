@@ -127,7 +127,8 @@
 .home-page h2 { margin: 0; font-size: var(--size-26); line-height: 1.35; font-weight: var(--fw-bold); color: var(--ink-950); }
 .home-text-link { flex: none; display: inline-flex; align-items: center; gap: var(--size-4); min-height: var(--tap-min); color: var(--active-text); font-size: var(--fs-control-copy); font-weight: var(--fw-semibold); text-decoration: none; }
 .home-text-link:hover { text-decoration: underline; text-underline-offset: var(--size-4); }
-.home-opportunities { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--block-gap); }
+.home-opportunities { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(var(--size-320), 1fr); gap: var(--block-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 0; padding-bottom: var(--space-2); }
+.home-opportunities > article { scroll-snap-align: start; }
 .home-opportunity { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); color: var(--ink-950); text-decoration: none; transition: box-shadow var(--motion-fast) var(--motion-ease); }
 .home-opportunity:hover { box-shadow: var(--shadow-3); }
 .home-opportunity:hover h3 { text-decoration: underline; text-underline-offset: var(--size-2); }
@@ -145,7 +146,6 @@
   .hero-scene { width: 100%; }
   .hero-scene__photos { height: var(--size-320); }
   .hero-media { aspect-ratio: 16 / 10; }
-  .home-opportunities { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
   .home-hero { padding-block: var(--hero-pad-y); }
