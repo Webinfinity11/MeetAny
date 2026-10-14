@@ -11,15 +11,23 @@
 - `npx tsc --noEmit`: 0 შეცდომა (`tsc.log`).
 - `npx eslint app`: 0 შეცდომა (`eslint.log`).
 - `npm run lint:design`: წარმატებული (`design.log`).
-- `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm test`: 130/130, ახალი 3 unit ტესტის ჩათვლით (`unit.log`). ნაგულისხმევი npm lifecycle Node 26-ს ირჩევდა და არსებული auth ტესტები აღარ სრულდებოდა; Node 22-ით ყველა დასრულდა.
+- `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm test`: 131/131, ახალი 4 unit ტესტის ჩათვლით (`unit.log`). ნაგულისხმევი npm lifecycle Node 26-ს ირჩევდა და არსებული auth ტესტები აღარ სრულდებოდა; Node 22-ით ყველა დასრულდა.
 - `bash db/tests/run.sh`: 2262 SQL assertion; სკრიპტის დროებითი ლოკალური ბაზა წაიშალა (`sql.log`).
 - `check.mjs`: 1440/390/360, single/multi ძიება, Enter/ისრები/Esc, ფოკუსის დაბრუნება, ლიმიტი, შექმნა, ქალაქების ექსკლუზიურობა, overflow 0. axe — `main`-ისა და მასში არსებული ღია სიების შემოწმება, გამორთული წესების გარეშე (`components.json`).
 - სტუმრის კომპანიის რეგისტრაცია სამივე ზომაზე: axe 0, overflow 0 (`after-pages.json`).
 - `before-register-*` გადაღებულია საწყისი `9e70953`-ის UI წყაროებით; გადაღების შემდეგ მიმდინარე ცვლილებები სრულად აღდგა. `after-register-*`, `after-single-*`, `after-multi-*` აჩვენებს შედეგს. მობილური Sheet-ის კადრები ვიზუალურად შემოწმებულია.
 
+## ტოკენების მეორე შემოწმება
+
+ტოკენები ახლა ჩვეულებრივ flex განლაგებაშია: სრული ტექსტი, 8px gap, ჩარჩოს გარეშე pill, ავტომატურად მზარდი ველი. ორ რიგში ჩატევის რაოდენობა ითვლება რეალური ზომებით; `+N` მხოლოდ ამის შემდეგ ჩანს. ისარი და ამოღების ღილაკები ზედა ხაზზეა.
+
+მთავარი სესიის მიერ მოწოდებული `company-local.storage.json` მუშაობს და `.gitignore`-ით გამორიცხულია. ხელახალი შესვლა არ შესრულებულა. `token-layout.mjs` რეალურ კომპანიის პროფილზე ამოწმებს 1440/390/360 ზომებს: ტოკენების გადაფარვა/ტექსტის მოჭრა 0, გვერდითი ჩარჩო 0, მაქსიმუმ ორი რიგი, ხილული ისარი ზედა ხაზზე, ძიება, Esc და ფოკუსის დაბრუნება. ღია პროფილის სიის axe 0. შედეგები: `token-layout.json`; კადრები: `after-profile-*`, `after-profile-tokens-*`, `after-profile-open-*`.
+
+პროფილი და onboarding-ის `need` ნაბიჯი სამივე ზომაზე შემოწმებულია: axe 0, overflow 0 (`after-company-pages.json`).
+
 ## დარჩენილი ბლოკერი
 
-კომპანიის რეალური პროფილი/onboarding/დისტრიბუციის before/after და მათი axe/interaction QA **არ დასრულებულა**. `/tmp/717E24C5-company.json` რეალურ Auth-ზე სტუმრად ბრუნდება. შესრულდა მხოლოდ ერთი ახალი შესვლის მცდელობა; QA-ს მოძველებული `.account-tabs` selector-ის ლოდინი ჩავარდა (ეს selector მიმდინარე JSX-ში აღარ არსებობს), ამიტომ ახალი storageState არ შენახულა. ხელახალი შესვლა აღარ შესრულებულა, თითო როლზე ერთი შესვლის შეზღუდვის დასაცავად. საჭიროა მოქმედი კომპანიის storageState; `QA_STORAGE_STATE` პარამეტრით `pages.mjs` გამოიყენებს მას. ავტორიზებული ეკრანის ნაცვლად გადაღებული სტუმრის კადრები წაშლილია და წარმატებად არ ითვლება.
+კომპანიას აქვს **მხოლოდ ყიდვის რეჟიმი** და **გამორთული დისტრიბუცია**. `/onboarding/?step=provide` რეალურად `type` ნაბიჯზე აბრუნებს; დისტრიბუციის განყოფილებაში მხოლოდ გამორთული switch ჩანს. ამიტომ ამ ორი ფორმის რეალური before/after/interaction QA კვლავ დაუმთავრებელია და ანგარიში მათ FAIL-ად აღნიშნავს. სადემო მონაცემები არ შეცვლილა; როლი/რეჟიმი/დისტრიბუცია არ ჩართულა. საჭირო იქნება შესაბამისი მდგომარეობის მქონე არსებული კომპანიის storageState ან შეთანხმებული, მხოლოდ ბრაუზერში მოქმედი QA fixture.
 
 სერვერი: `next dev --webpack -p 3430`; ლოკალური DATABASE_URL და MEETANY_LOCAL_DATABASE_URL: `postgresql://kapana@localhost:5432/meetany_perf_20261014`. Production DB/deploy და სადემო პროფილების შენახვა არ შესრულებულა. CompanyProfilePageContent/market-store/public-snapshot არ შეცვლილა.
 
@@ -30,7 +38,8 @@
 ```sh
 node qa/DROPDOWNS-2026-10-14/check.mjs
 QA_ROLE=guest node qa/DROPDOWNS-2026-10-14/pages.mjs
-QA_ROLE=company QA_STORAGE_STATE=/path/to/company-state.json node qa/DROPDOWNS-2026-10-14/pages.mjs
+QA_ROLE=company QA_STORAGE_STATE=qa/DROPDOWNS-2026-10-14/company-local.storage.json node qa/DROPDOWNS-2026-10-14/pages.mjs
+node qa/DROPDOWNS-2026-10-14/token-layout.mjs
 ```
 
 სკრიპტები ფორმებს არ აგზავნის და ბაზაში მონაცემებს არ ცვლის. მოქმედი სესიის გარეშე კომპანიის QA უნდა დარჩეს წარუმატებლად მონიშნული.

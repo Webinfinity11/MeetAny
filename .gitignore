@@ -22,3 +22,6 @@ web/qa/**/*.jpeg
 web/qa/**/*.webp
 !web/qa/ref-mobbin/**
 web/qa/**/shots/
+
+# Authenticated dropdown QA session (local only)
+web/qa/DROPDOWNS-2026-10-14/company-local.storage.json

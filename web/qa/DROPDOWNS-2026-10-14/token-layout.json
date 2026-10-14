@@ -1,0 +1,91 @@
+[
+  {
+    "width": 1440,
+    "id": "offers",
+    "status": "PASS",
+    "tokens": [
+      "საოფისე ავეჯი",
+      "კომერციული ინვენტარი"
+    ],
+    "height": 108
+  },
+  {
+    "width": 1440,
+    "id": "seeks",
+    "status": "PASS",
+    "tokens": [
+      "ბიზნესებთან თანამშრომლობა",
+      "QA ხის მასალა"
+    ],
+    "height": 108
+  },
+  {
+    "width": 1440,
+    "id": "profile-service-cities",
+    "status": "PASS",
+    "tokens": [
+      "თბილისი",
+      "რუსთავი"
+    ],
+    "height": 54
+  },
+  {
+    "width": 390,
+    "id": "offers",
+    "status": "PASS",
+    "tokens": [
+      "საოფისე ავეჯი",
+      "კომერციული ინვენტარი"
+    ],
+    "height": 108
+  },
+  {
+    "width": 390,
+    "id": "seeks",
+    "status": "PASS",
+    "tokens": [
+      "ბიზნესებთან თანამშრომლობა",
+      "QA ხის მასალა"
+    ],
+    "height": 108
+  },
+  {
+    "width": 390,
+    "id": "profile-service-cities",
+    "status": "PASS",
+    "tokens": [
+      "თბილისი",
+      "რუსთავი"
+    ],
+    "height": 54
+  },
+  {
+    "width": 360,
+    "id": "offers",
+    "status": "PASS",
+    "tokens": [
+      "საოფისე ავეჯი"
+    ],
+    "height": 54
+  },
+  {
+    "width": 360,
+    "id": "seeks",
+    "status": "PASS",
+    "tokens": [
+      "ბიზნესებთან თანამშრომლობა",
+      "QA ხის მასალა"
+    ],
+    "height": 130
+  },
+  {
+    "width": 360,
+    "id": "profile-service-cities",
+    "status": "PASS",
+    "tokens": [
+      "თბილისი",
+      "რუსთავი"
+    ],
+    "height": 108
+  }
+]

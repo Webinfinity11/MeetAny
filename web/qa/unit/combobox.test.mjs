@@ -18,3 +18,13 @@ test('creation trims text and rejects duplicate labels, values and oversized tex
  assert.equal(creationValue('abcd',options,[],3),'');
  assert.equal(creationValue(' ',options,[],120),'');
 });
+
+test('complete tokens wrap into two rows before showing an overflow count', async () => {
+ const { visibleTokenCount } = await import('../../app/components/ui/combobox-selection.js');
+ assert.equal(visibleTokenCount([120,120,120,120],260,8,40),4);
+ assert.equal(visibleTokenCount([240,240],260,8,40),2);
+ assert.equal(visibleTokenCount([240,240,240],260,8,40),1);
+ assert.equal(visibleTokenCount([90,90,90,90,90],260,8,40),4);
+ assert.equal(visibleTokenCount([400,90],260,8,40),2);
+ assert.equal(visibleTokenCount([],260,8,40),0);
+});

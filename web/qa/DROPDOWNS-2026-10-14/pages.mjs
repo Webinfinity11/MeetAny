@@ -11,13 +11,13 @@ try {
   p.on('pageerror',e=>report.push({role,error:e.message}));
   for(const width of [1440,390,360]) {
    await p.setViewportSize({width,height:900});
-   const routes=role==='guest'?[['register','/account/?tab=register&role=company','#reg-industry']]:[['profile','/account/?tab=profile','#industry'],['distribution','/account/?tab=profile&section=distribution','#distribution-cities'],['onboarding-type','/onboarding/?step=type','main form fieldset'],['onboarding-need','/onboarding/?step=need','main form fieldset']];
+   const routes=role==='guest'?[['register','/account/?tab=register&role=company','#reg-industry']]:[['profile','/account/?tab=profile','#industry'],['distribution','/account/?tab=profile&section=distribution','#distribution-cities'],['onboarding-provide','/onboarding/?step=provide','#onboard-services'],['onboarding-need','/onboarding/?step=need','main form fieldset']];
    for(const [name,route,selector]of routes) {
     try {
      await p.goto('http://localhost:3430'+route);
      await p.locator(selector).waitFor();
      await p.evaluate(()=>document.fonts.ready);
-     await p.screenshot({path:`${out}/${phase}-${name}-${width}.png`,fullPage:true});
+     await p.screenshot({path:`${out}/${phase}-${name}-${width}.png`,fullPage:true,animations:"disabled"});
      if(phase==='after') {
       await p.addScriptTag({path:'node_modules/axe-core/axe.min.js'});
       const axe=await p.evaluate(()=>axe.run(document.querySelector('main')));
@@ -30,6 +30,6 @@ try {
   }
   await c.close();
  }
-}finally {fs.writeFileSync(`${out}/${phase}-pages.json`,JSON.stringify(report,null,2));await b.close();}
+}finally {fs.writeFileSync(`${out}/${phase}-${process.env.QA_ROLE || "all"}-pages.json`,JSON.stringify(report,null,2));await b.close();}
 
 if(report.some(row=>row.error || row.axe?.length || row.overflow > 0)) process.exitCode=1;

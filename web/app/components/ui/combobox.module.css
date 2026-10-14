@@ -1,16 +1,19 @@
 .root { min-width: 0; width: 100%; }
 .control { position: relative; min-width: 0; }
 .trigger { width: 100%; justify-content: flex-start; min-height: var(--field-h); padding: var(--space-field-y) var(--space-affix) var(--space-field-y) var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--field-radius); color: var(--text); font-size: var(--fs-sm); }
-.trigger[data-tokens] { height: var(--field-h); padding-top: 0; padding-bottom: 0; }
+.root .trigger { background-image: none; }
+.arrow { position: absolute; right: var(--space-3); top: var(--space-3); pointer-events: none; color: var(--text-2); }
+.trigger[data-tokens] { position: absolute; inset: 0; height: 100%; padding: 0; background-position: right var(--space-3) top var(--space-3); }
 .value { display: flex; align-items: center; gap: var(--space-2); min-width: 0; overflow-wrap: anywhere; }
 .placeholder { color: var(--text-2); }
-.tokenSpace { display: flex; gap: var(--space-1); visibility: hidden; height: var(--size-40); overflow: hidden; }
-.tokenPlaceholder { max-width: var(--size-112); overflow: hidden; white-space: nowrap; }
-.tokens { position: absolute; inset: 0 var(--space-affix) 0 var(--space-2); display: flex; gap: var(--space-1); align-items: center; pointer-events: none; overflow: hidden; }
-.token { display: flex; align-items: center; min-width: 0; max-width: 45%; background: var(--bg-subtle); border-radius: var(--radius-control); padding-left: var(--space-2); font-size: var(--fs-xs); }
-.token > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.token button { pointer-events: auto; flex: none; width: var(--tap-min); min-height: var(--tap-min); padding: 0; }
-.more { white-space: nowrap; font-size: var(--fs-xs); }
+.tokenArea { position: relative; padding: var(--space-1) var(--space-affix) var(--space-1) var(--space-2); pointer-events: none; }
+.tokens { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: flex-start; min-width: 0; }
+.measure { position: absolute; top: var(--space-1); left: var(--space-2); right: var(--space-affix); visibility: hidden; }
+.token { display: inline-flex; flex: none; align-items: flex-start; min-width: 0; max-width: 100%; padding: 0 0 0 var(--space-3); border: 0; background: var(--bg-subtle); color: var(--text); border-radius: var(--radius-pill); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+.token > span:first-child { min-width: 0; padding-block: var(--space-3); white-space: normal; overflow-wrap: anywhere; }
+.token .tokenRemove { display: inline-flex; align-items: center; justify-content: center; flex: none; align-self: flex-start; width: var(--tap-min); height: var(--tap-min); min-height: var(--tap-min); padding: 0; margin: 0; border: 0; border-radius: var(--radius-pill); background: transparent; box-shadow: none; }
+.token button.tokenRemove { pointer-events: auto; }
+.more { display: inline-flex; align-items: center; min-height: var(--tap-min); padding-inline: var(--space-2); white-space: nowrap; font-size: var(--fs-sm); }
 .popover { position: fixed; inset: auto; margin: 0; padding: 0; border: var(--size-1) solid var(--border); border-radius: var(--field-radius); background: var(--white); color: var(--text); box-shadow: var(--shadow-3); overflow: hidden; }
 .popover:popover-open { display: flex; }
 .content { display: flex; flex-direction: column; min-height: 0; width: 100%; }

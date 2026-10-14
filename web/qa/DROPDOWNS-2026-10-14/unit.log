@@ -6,323 +6,323 @@ TAP version 13
 # Subtest: offer groups retain latest position and all sender rows without mutating input
 ok 1 - offer groups retain latest position and all sender rows without mutating input
   ---
-  duration_ms: 1.211917
+  duration_ms: 2.291541
   type: 'test'
   ...
 # Subtest: unknown request and deal notifications are never collapsed into request offers
 ok 2 - unknown request and deal notifications are never collapsed into request offers
   ---
-  duration_ms: 0.060459
+  duration_ms: 0.138125
   type: 'test'
   ...
 # Subtest: expanded group preserves each notification for reading and navigation
 ok 3 - expanded group preserves each notification for reading and navigation
   ---
-  duration_ms: 0.045041
+  duration_ms: 0.086917
   type: 'test'
   ...
 # Subtest: deal notices use agreed totals and never the original offer while loading
 ok 4 - deal notices use agreed totals and never the original offer while loading
   ---
-  duration_ms: 0.105458
+  duration_ms: 0.197
   type: 'test'
   ...
 # Subtest: report outcomes never expose an internal enum
 ok 5 - report outcomes never expose an internal enum
   ---
-  duration_ms: 0.04575
+  duration_ms: 0.091333
   type: 'test'
   ...
-# (node:3281) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/admin-user-filters.js is not specified and it doesn't parse as CommonJS.
+# (node:7047) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/admin-user-filters.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: pending company filter targets unverified, unblocked companies for list and export
 ok 6 - pending company filter targets unverified, unblocked companies for list and export
   ---
-  duration_ms: 2.265166
+  duration_ms: 1.048792
   type: 'test'
   ...
 # Subtest: verification document statuses filter unverified companies by their documents
 ok 7 - verification document statuses filter unverified companies by their documents
   ---
-  duration_ms: 0.346208
+  duration_ms: 0.129875
   type: 'test'
   ...
 # Subtest: existing user statuses keep their meaning
 ok 8 - existing user statuses keep their meaning
   ---
-  duration_ms: 0.265541
+  duration_ms: 0.120167
   type: 'test'
   ...
-# (node:3282) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
+# (node:7048) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: guest bootstrap needs no anonymous token and no dependent catalog requests
 ok 9 - guest bootstrap needs no anonymous token and no dependent catalog requests
   ---
-  duration_ms: 38.251208
+  duration_ms: 34.813625
   type: 'test'
   ...
 # Subtest: failed first session/bootstrap read exposes a recoverable state even with a public seed
 ok 10 - failed first session/bootstrap read exposes a recoverable state even with a public seed
   ---
-  duration_ms: 0.624459
+  duration_ms: 0.645292
   type: 'test'
   ...
 # Subtest: a valid session without a market profile finishes loading and requests profile completion
 ok 11 - a valid session without a market profile finishes loading and requests profile completion
   ---
-  duration_ms: 0.673834
+  duration_ms: 2.540666
   type: 'test'
   ...
 # Subtest: logout clears private data even when an old signed-in response arrives and guest refresh fails
 ok 12 - logout clears private data even when an old signed-in response arrives and guest refresh fails
   ---
-  duration_ms: 5.909458
+  duration_ms: 4.63925
   type: 'test'
   ...
 # Subtest: registration completes with session email when JWT omits email, without a second form
 ok 13 - registration completes with session email when JWT omits email, without a second form
   ---
-  duration_ms: 2.260333
+  duration_ms: 0.915833
   type: 'test'
   ...
 # Subtest: profile conflict retains submitted fields and retry completes existing account
 ok 14 - profile conflict retains submitted fields and retry completes existing account
   ---
-  duration_ms: 1.016792
+  duration_ms: 0.91575
   type: 'test'
   ...
 # Subtest: reload resumes a submitted profile without storing or asking for the password
 ok 15 - reload resumes a submitted profile without storing or asking for the password
   ---
-  duration_ms: 0.518875
+  duration_ms: 0.46425
   type: 'test'
   ...
 # Subtest: registration ignores a guest session response started before sign-up
 ok 16 - registration ignores a guest session response started before sign-up
   ---
-  duration_ms: 0.637083
+  duration_ms: 0.611291
   type: 'test'
   ...
 # Subtest: email verification keeps the code screen during a concurrent unfinished-profile refresh
 ok 17 - email verification keeps the code screen during a concurrent unfinished-profile refresh
   ---
-  duration_ms: 3.297834
+  duration_ms: 2.916375
   type: 'test'
   ...
 # Subtest: early session response is consumed once without a second Auth request
 ok 18 - early session response is consumed once without a second Auth request
   ---
-  duration_ms: 2.019416
+  duration_ms: 1.328542
   type: 'test'
   ...
 # Subtest: failed early session read falls back to the normal session check
 ok 19 - failed early session read falls back to the normal session check
   ---
-  duration_ms: 0.484625
+  duration_ms: 0.775292
   type: 'test'
   ...
 # Subtest: timed-out early session read does not repeat the hung request and can be retried
 ok 20 - timed-out early session read does not repeat the hung request and can be retried
   ---
-  duration_ms: 0.313959
+  duration_ms: 0.332417
   type: 'test'
   ...
 # Subtest: registration supersedes an early guest session read still in flight
 ok 21 - registration supersedes an early guest session read still in flight
   ---
-  duration_ms: 0.551875
+  duration_ms: 0.538125
   type: 'test'
   ...
-# (node:3283) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/next.config.ts?auth-configured is not specified and it doesn't parse as CommonJS.
+# (node:7049) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/next.config.ts?auth-configured is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: browser Auth URL and CSP both come from the server Auth environment
 ok 22 - browser Auth URL and CSP both come from the server Auth environment
   ---
-  duration_ms: 52.332875
+  duration_ms: 47.490666
   type: 'test'
   ...
 # Subtest: missing Auth configuration does not silently sign users into the demo environment
 ok 23 - missing Auth configuration does not silently sign users into the demo environment
   ---
-  duration_ms: 2.011708
+  duration_ms: 0.91475
   type: 'test'
   ...
-# (node:3284) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/auth-redirect.js is not specified and it doesn't parse as CommonJS.
+# (node:7050) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/auth-redirect.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: company role and an offer return path do not imply registration
 ok 24 - company role and an offer return path do not imply registration
   ---
-  duration_ms: 1.182459
+  duration_ms: 0.720166
   type: 'test'
   ...
 # Subtest: offer copy preserves text context with a 120 character limit
 ok 25 - offer copy preserves text context with a 120 character limit
   ---
-  duration_ms: 0.088833
+  duration_ms: 0.072125
   type: 'test'
   ...
-# (node:3285) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/auth-redirect.js is not specified and it doesn't parse as CommonJS.
+# (node:7051) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/auth-redirect.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: next preserves local filters and anchors
 ok 26 - next preserves local filters and anchors
   ---
-  duration_ms: 0.597167
+  duration_ms: 1.381333
   type: 'test'
   ...
 # Subtest: next rejects remote and browser-normalized remote paths
 ok 27 - next rejects remote and browser-normalized remote paths
   ---
-  duration_ms: 0.071292
+  duration_ms: 0.167417
   type: 'test'
   ...
-# (node:3286) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/auth-session-preload.js is not specified and it doesn't parse as CommonJS.
+# (node:7052) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/auth-session-preload.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: ten page loads reuse persisted session, memory and JWT until exp minus 60 seconds
 ok 28 - ten page loads reuse persisted session, memory and JWT until exp minus 60 seconds
   ---
-  duration_ms: 32.290667
+  duration_ms: 32.363042
   type: 'test'
   ...
 # Subtest: logout clears persistence, pending preload and notifies another tab
 ok 29 - logout clears persistence, pending preload and notifies another tab
   ---
-  duration_ms: 0.466125
+  duration_ms: 1.273541
   type: 'test'
   ...
 # Subtest: 429 uses still-valid JWT during safety minute and retries exactly once after 30 seconds
 ok 30 - 429 uses still-valid JWT during safety minute and retries exactly once after 30 seconds
   ---
-  duration_ms: 4.963292
+  duration_ms: 8.539208
   type: 'test'
   ...
 # Subtest: 429 without usable cache has Georgian message and one successful delayed retry
 ok 31 - 429 without usable cache has Georgian message and one successful delayed retry
   ---
-  duration_ms: 2.587042
+  duration_ms: 1.326291
   type: 'test'
   ...
 # Subtest: logout while get-session is pending prevents old session repopulation
 ok 32 - logout while get-session is pending prevents old session repopulation
   ---
-  duration_ms: 0.726416
+  duration_ms: 0.46575
   type: 'test'
   ...
 # Subtest: generated preload uses persisted session and only fetches bootstrap
 ok 33 - generated preload uses persisted session and only fetches bootstrap
   ---
-  duration_ms: 3.650709
+  duration_ms: 1.262166
   type: 'test'
   ...
 # Subtest: expired JWT is removed and never used as a 429 fallback
 ok 34 - expired JWT is removed and never used as a 429 fallback
   ---
-  duration_ms: 1.111875
+  duration_ms: 0.57675
   type: 'test'
   ...
 # Subtest: a missed cross-tab invalidation is detected on the next page load
 ok 35 - a missed cross-tab invalidation is detected on the next page load
   ---
-  duration_ms: 0.318125
+  duration_ms: 0.231333
   type: 'test'
   ...
 # Subtest: Data API 401 invalidates persisted session and obtains one replacement JWT
 ok 36 - Data API 401 invalidates persisted session and obtains one replacement JWT
   ---
-  duration_ms: 9.651459
+  duration_ms: 7.380542
   type: 'test'
   ...
 # Subtest: ten guest page loads reuse persisted null user for five minutes
 ok 37 - ten guest page loads reuse persisted null user for five minutes
   ---
-  duration_ms: 2.178292
+  duration_ms: 0.460333
   type: 'test'
   ...
 # Subtest: same-tab sign-in invalidation removes guest cache
 ok 38 - same-tab sign-in invalidation removes guest cache
   ---
-  duration_ms: 0.572833
+  duration_ms: 0.191916
   type: 'test'
   ...
 # Subtest: cross-tab sign-in event removes guest cache and notifies subscribers
 ok 39 - cross-tab sign-in event removes guest cache and notifies subscribers
   ---
-  duration_ms: 0.358375
+  duration_ms: 0.128166
   type: 'test'
   ...
 # Subtest: guest cache rejects a missed generation change or a different endpoint
 ok 40 - guest cache rejects a missed generation change or a different endpoint
   ---
-  duration_ms: 0.353958
+  duration_ms: 0.118917
   type: 'test'
   ...
 # Subtest: generated guest preload fetches bootstrap exactly once without get-session
 ok 41 - generated guest preload fetches bootstrap exactly once without get-session
   ---
-  duration_ms: 1.967708
+  duration_ms: 2.719917
   type: 'test'
   ...
 # Subtest: expired guest never bridges a 429 and reports the Georgian error
 ok 42 - expired guest never bridges a 429 and reports the Georgian error
   ---
-  duration_ms: 0.4215
+  duration_ms: 0.4795
   type: 'test'
   ...
 # Subtest: late guest write in the same generation preserves signed-in user
 ok 43 - late guest write in the same generation preserves signed-in user
   ---
-  duration_ms: 0.389708
+  duration_ms: 0.319875
   type: 'test'
   ...
 # Subtest: guest request started before sign-in cannot replace the new user cache
 ok 44 - guest request started before sign-in cannot replace the new user cache
   ---
-  duration_ms: 0.312292
+  duration_ms: 0.231292
   type: 'test'
   ...
 # Subtest: successful JSON null becomes a canonical guest response and persists across pages
 ok 45 - successful JSON null becomes a canonical guest response and persists across pages
   ---
-  duration_ms: 0.877791
+  duration_ms: 1.902042
   type: 'test'
   ...
-# (node:3287) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/avatar-initials.js is not specified and it doesn't parse as CommonJS.
+# (node:7053) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/avatar-initials.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: quotes and punctuation never count as letters
 ok 46 - quotes and punctuation never count as letters
   ---
-  duration_ms: 2.609583
+  duration_ms: 1.718791
   type: 'test'
   ...
 # Subtest: legal forms are skipped, with or without punctuation
 ok 47 - legal forms are skipped, with or without punctuation
   ---
-  duration_ms: 0.429792
+  duration_ms: 0.110625
   type: 'test'
   ...
 # Subtest: Georgian stays mkhedruli, Latin is upper-cased
 ok 48 - Georgian stays mkhedruli, Latin is upper-cased
   ---
-  duration_ms: 0.25575
+  duration_ms: 0.105542
   type: 'test'
   ...
 # Subtest: names without letters fall back to a question mark
 ok 49 - names without letters fall back to a question mark
   ---
-  duration_ms: 0.129417
+  duration_ms: 0.052458
   type: 'test'
   ...
 # MarketStore: { message: 'not found', code: 'PGRST205' }
@@ -334,538 +334,544 @@ ok 49 - names without letters fall back to a question mark
 # MarketStore: { message: 'not found', code: 'PGRST205' }
 # MarketStore: { message: 'not found', code: 'PGRST205' }
 # MarketStore: { message: 'not found', code: 'PGRST205' }
-# (node:3288) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/read-all-rows.js is not specified and it doesn't parse as CommonJS.
+# (node:7054) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/read-all-rows.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: UUID pagination returns every row, including an exact full final page
 ok 50 - UUID pagination returns every row, including an exact full final page
   ---
-  duration_ms: 5.892042
+  duration_ms: 6.752166
   type: 'test'
   ...
 # Subtest: pagination rejects a repeated page or failed page instead of publishing incomplete data
 ok 51 - pagination rejects a repeated page or failed page instead of publishing incomplete data
   ---
-  duration_ms: 2.418
+  duration_ms: 1.729625
   type: 'test'
   ...
 # Subtest: table cursor remains parameterized and column/table/order injection is rejected
 ok 52 - table cursor remains parameterized and column/table/order injection is rejected
   ---
-  duration_ms: 1.016958
+  duration_ms: 0.544541
   type: 'test'
   ...
 # Subtest: store retains old owned requests, all companies, and offers beyond row 1000
 ok 53 - store retains old owned requests, all companies, and offers beyond row 1000
   ---
-  duration_ms: 94.47675
+  duration_ms: 85.160041
   type: 'test'
   ...
 # Subtest: company detail works without the catalog, distinguishes missing/error, and ignores stale responses
 ok 54 - company detail works without the catalog, distinguishes missing/error, and ignores stale responses
   ---
-  duration_ms: 39.7825
+  duration_ms: 46.353917
   type: 'test'
   ...
 # Subtest: saving products preserves the complete JSON array, including empty lists
 ok 55 - saving products preserves the complete JSON array, including empty lists
   ---
-  duration_ms: 49.5385
+  duration_ms: 37.036917
   type: 'test'
   ...
 # Subtest: public discovery omits internal fixtures while owners and admin can inspect them
 ok 56 - public discovery omits internal fixtures while owners and admin can inspect them
   ---
-  duration_ms: 0.436083
+  duration_ms: 0.448292
   type: 'test'
   ...
 # Subtest: route detail cache reuses a completed session, while explicit reads stay fresh
 ok 57 - route detail cache reuses a completed session, while explicit reads stay fresh
   ---
-  duration_ms: 69.035083
+  duration_ms: 53.314709
   type: 'test'
   ...
 # Subtest: listRequests finds a request by its owner name and mapRequest carries the public budget
 ok 58 - listRequests finds a request by its owner name and mapRequest carries the public budget
   ---
-  duration_ms: 27.028625
+  duration_ms: 17.876625
   type: 'test'
   ...
-# (node:3289) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/categories-data.js is not specified and it doesn't parse as CommonJS.
+# (node:7055) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/categories-data.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: database category groups equal the JS category groups
 ok 59 - database category groups equal the JS category groups
   ---
-  duration_ms: 1.049583
+  duration_ms: 0.985084
   type: 'test'
   ...
-# (node:3290) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/components/ui/combobox-selection.js is not specified and it doesn't parse as CommonJS.
+# (node:7056) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/components/ui/combobox-selection.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: selection respects limits and allows removal at the limit
 ok 60 - selection respects limits and allows removal at the limit
   ---
-  duration_ms: 1.034334
+  duration_ms: 0.999084
   type: 'test'
   ...
 # Subtest: exclusive city clears other cities, and a city replaces the exclusive value
 ok 61 - exclusive city clears other cities, and a city replaces the exclusive value
   ---
-  duration_ms: 0.058
+  duration_ms: 0.050833
   type: 'test'
   ...
 # Subtest: creation trims text and rejects duplicate labels, values and oversized text
 ok 62 - creation trims text and rejects duplicate labels, values and oversized text
   ---
-  duration_ms: 0.093208
+  duration_ms: 0.081375
   type: 'test'
   ...
-# (node:3291) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/distribution-filter.js is not specified and it doesn't parse as CommonJS.
+# Subtest: complete tokens wrap into two rows before showing an overflow count
+ok 63 - complete tokens wrap into two rows before showing an overflow count
+  ---
+  duration_ms: 0.14425
+  type: 'test'
+  ...
+# (node:7057) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/distribution-filter.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: distributor brands and combined catalog filters
-ok 63 - distributor brands and combined catalog filters
+ok 64 - distributor brands and combined catalog filters
   ---
-  duration_ms: 0.651458
+  duration_ms: 0.611708
   type: 'test'
   ...
 # Subtest: სკალა: 4px 64-მდე, შემდეგ 8px; ახალი გამონაკლისი ვერ გაივლის
-ok 64 - სკალა: 4px 64-მდე, შემდეგ 8px; ახალი გამონაკლისი ვერ გაივლის
+ok 65 - სკალა: 4px 64-მდე, შემდეგ 8px; ახალი გამონაკლისი ვერ გაივლის
   ---
-  duration_ms: 7.549292
+  duration_ms: 5.347125
   type: 'test'
   ...
 # Subtest: ბმულები და calc მოწმდება; არარსებული და ციკლური ბმულები ვერ გაივლის
-ok 65 - ბმულები და calc მოწმდება; არარსებული და ციკლური ბმულები ვერ გაივლის
+ok 66 - ბმულები და calc მოწმდება; არარსებული და ციკლური ბმულები ვერ გაივლის
   ---
-  duration_ms: 1.21775
+  duration_ms: 2.793875
   type: 'test'
   ...
 # Subtest: რადიუსები ფიქსირებული სიით და ძველი გამონაკლისი ზუსტი მნიშვნელობით
-ok 66 - რადიუსები ფიქსირებული სიით და ძველი გამონაკლისი ზუსტი მნიშვნელობით
+ok 67 - რადიუსები ფიქსირებული სიით და ძველი გამონაკლისი ზუსტი მნიშვნელობით
   ---
-  duration_ms: 0.461334
+  duration_ms: 0.5225
   type: 'test'
   ...
 # Subtest: ნედლი px calc-ში ყველა განლაგების თვისებაზე იძლევა ფაილსა და ხაზს
-ok 67 - ნედლი px calc-ში ყველა განლაგების თვისებაზე იძლევა ფაილსა და ხაზს
+ok 68 - ნედლი px calc-ში ყველა განლაგების თვისებაზე იძლევა ფაილსა და ხაზს
   ---
-  duration_ms: 2.008
+  duration_ms: 0.942625
   type: 'test'
   ...
 # Subtest: კონტროლის სიმაღლე სკალაზე და მინიმუმ 44px; შიდა ხატულა და ფსევდოელემენტი ცალკეა
-ok 68 - კონტროლის სიმაღლე სკალაზე და მინიმუმ 44px; შიდა ხატულა და ფსევდოელემენტი ცალკეა
+ok 69 - კონტროლის სიმაღლე სკალაზე და მინიმუმ 44px; შიდა ხატულა და ფსევდოელემენტი ცალკეა
   ---
-  duration_ms: 0.889125
+  duration_ms: 0.511875
   type: 'test'
   ...
 # Subtest: TSX inline რიცხვები იკრძალება; Image props და SVG ნებადართულია
-ok 69 - TSX inline რიცხვები იკრძალება; Image props და SVG ნებადართულია
+ok 70 - TSX inline რიცხვები იკრძალება; Image props და SVG ნებადართულია
   ---
-  duration_ms: 2.391709
+  duration_ms: 2.353208
   type: 'test'
   ...
 # Subtest: არსებული gradient, ნედლი ფერი და Button წესები შენარჩუნებულია
-ok 70 - არსებული gradient, ნედლი ფერი და Button წესები შენარჩუნებულია
+ok 71 - არსებული gradient, ნედლი ფერი და Button წესები შენარჩუნებულია
   ---
-  duration_ms: 0.299416
+  duration_ms: 0.284875
   type: 'test'
   ...
-# (node:3293) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/mobile-phone.js is not specified and it doesn't parse as CommonJS.
+# (node:7059) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/mobile-phone.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: Georgian local and international mobile numbers have one storage format
-ok 71 - Georgian local and international mobile numbers have one storage format
+ok 72 - Georgian local and international mobile numbers have one storage format
   ---
-  duration_ms: 1.2245
+  duration_ms: 1.417125
   type: 'test'
   ...
 # Subtest: A country prefix, incomplete mobile number or landline is not a registration phone
-ok 72 - A country prefix, incomplete mobile number or landline is not a registration phone
+ok 73 - A country prefix, incomplete mobile number or landline is not a registration phone
   ---
-  duration_ms: 0.5385
+  duration_ms: 0.358709
   type: 'test'
   ...
 # Subtest: offer comparison retains exact semantics, including nulls and ordered commercial terms
-ok 73 - offer comparison retains exact semantics, including nulls and ordered commercial terms
+ok 74 - offer comparison retains exact semantics, including nulls and ordered commercial terms
   ---
-  duration_ms: 1.446041
+  duration_ms: 0.677375
   type: 'test'
   ...
 # Subtest: unchanged deal terms do not require a new revision; insignificant outer whitespace is ignored
-ok 74 - unchanged deal terms do not require a new revision; insignificant outer whitespace is ignored
+ok 75 - unchanged deal terms do not require a new revision; insignificant outer whitespace is ignored
   ---
-  duration_ms: 0.201
+  duration_ms: 0.090792
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_total_price
-ok 75 - deal comparison detects a real change in p_total_price
+ok 76 - deal comparison detects a real change in p_total_price
   ---
-  duration_ms: 0.104791
+  duration_ms: 0.046916
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_quantity
-ok 76 - deal comparison detects a real change in p_quantity
+ok 77 - deal comparison detects a real change in p_quantity
   ---
-  duration_ms: 0.068667
+  duration_ms: 0.031
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_unit
-ok 77 - deal comparison detects a real change in p_unit
+ok 78 - deal comparison detects a real change in p_unit
   ---
-  duration_ms: 0.063792
+  duration_ms: 0.030208
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_delivery_days
-ok 78 - deal comparison detects a real change in p_delivery_days
+ok 79 - deal comparison detects a real change in p_delivery_days
   ---
-  duration_ms: 0.056291
+  duration_ms: 0.02575
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_delivery_date
-ok 79 - deal comparison detects a real change in p_delivery_date
+ok 80 - deal comparison detects a real change in p_delivery_date
   ---
-  duration_ms: 0.151458
+  duration_ms: 0.067709
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_delivery_place
-ok 80 - deal comparison detects a real change in p_delivery_place
+ok 81 - deal comparison detects a real change in p_delivery_place
   ---
-  duration_ms: 0.056834
+  duration_ms: 0.026875
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_payment_terms
-ok 81 - deal comparison detects a real change in p_payment_terms
+ok 82 - deal comparison detects a real change in p_payment_terms
   ---
-  duration_ms: 0.394208
+  duration_ms: 0.191417
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in p_includes
-ok 82 - deal comparison detects a real change in p_includes
+ok 83 - deal comparison detects a real change in p_includes
   ---
-  duration_ms: 0.42925
+  duration_ms: 0.222
   type: 'test'
   ...
 # Subtest: deal comparison detects a real change in comment
-ok 83 - deal comparison detects a real change in comment
+ok 84 - deal comparison detects a real change in comment
   ---
-  duration_ms: 0.142041
+  duration_ms: 0.07225
   type: 'test'
   ...
 # Subtest: editing draft is restored only for its exact offer and server revision
-ok 84 - editing draft is restored only for its exact offer and server revision
+ok 85 - editing draft is restored only for its exact offer and server revision
   ---
-  duration_ms: 0.288666
+  duration_ms: 0.140792
   type: 'test'
   ...
 # Subtest: new draft survives reload and another request draft is untouched
-ok 85 - new draft survives reload and another request draft is untouched
+ok 86 - new draft survives reload and another request draft is untouched
   ---
-  duration_ms: 0.0795
+  duration_ms: 0.038416
   type: 'test'
   ...
 # Subtest: partial save recovery survives RPC 1 revision changes without re-sending the main offer
-ok 86 - partial save recovery survives RPC 1 revision changes without re-sending the main offer
+ok 87 - partial save recovery survives RPC 1 revision changes without re-sending the main offer
   ---
-  duration_ms: 0.105166
+  duration_ms: 0.052291
   type: 'test'
   ...
 # Subtest: a conflicting partial draft is discarded instead of overwriting newer terms
-ok 87 - a conflicting partial draft is discarded instead of overwriting newer terms
+ok 88 - a conflicting partial draft is discarded instead of overwriting newer terms
   ---
-  duration_ms: 0.156084
+  duration_ms: 0.07725
   type: 'test'
   ...
 # Subtest: malformed drafts do not prevent form loading
-ok 88 - malformed drafts do not prevent form loading
+ok 89 - malformed drafts do not prevent form loading
   ---
-  duration_ms: 0.093541
+  duration_ms: 0.042792
   type: 'test'
   ...
 # Subtest: known payment aliases select one preset; additional conditions stay custom
-ok 89 - known payment aliases select one preset; additional conditions stay custom
+ok 90 - known payment aliases select one preset; additional conditions stay custom
   ---
-  duration_ms: 0.158167
+  duration_ms: 0.074667
   type: 'test'
   ...
 # Subtest: a current revision draft takes precedence over older partial-save recovery
-ok 90 - a current revision draft takes precedence over older partial-save recovery
+ok 91 - a current revision draft takes precedence over older partial-save recovery
   ---
-  duration_ms: 0.105625
+  duration_ms: 0.0445
   type: 'test'
   ...
 # Subtest: returning to an unfinished later step does not submit its invalid hidden draft
-ok 91 - returning to an unfinished later step does not submit its invalid hidden draft
+ok 92 - returning to an unfinished later step does not submit its invalid hidden draft
   ---
-  duration_ms: 1.182792
+  duration_ms: 1.15375
   type: 'test'
   ...
 # Subtest: leaving onboarding includes later drafts so navigation cannot discard them
-ok 92 - leaving onboarding includes later drafts so navigation cannot discard them
+ok 93 - leaving onboarding includes later drafts so navigation cannot discard them
   ---
-  duration_ms: 0.053959
+  duration_ms: 0.054292
   type: 'test'
   ...
 # Subtest: saving an earlier step keeps later legal, profile and product drafts
-ok 93 - saving an earlier step keeps later legal, profile and product drafts
+ok 94 - saving an earlier step keeps later legal, profile and product drafts
   ---
-  duration_ms: 0.160584
+  duration_ms: 0.142834
   type: 'test'
   ...
 # Subtest: the onboarding steps follow the account intent
-ok 94 - the onboarding steps follow the account intent
+ok 95 - the onboarding steps follow the account intent
   ---
-  duration_ms: 0.0975
+  duration_ms: 0.093416
   type: 'test'
   ...
 # Subtest: writes only cover the steps of the current intent
-ok 95 - writes only cover the steps of the current intent
+ok 96 - writes only cover the steps of the current intent
   ---
-  duration_ms: 0.047292
+  duration_ms: 0.046333
   type: 'test'
   ...
 # Subtest: serialize includes only dirty fields and product strings, without files or server flags
-ok 96 - serialize includes only dirty fields and product strings, without files or server flags
+ok 97 - serialize includes only dirty fields and product strings, without files or server flags
   ---
-  duration_ms: 0.218542
+  duration_ms: 0.173042
   type: 'test'
   ...
 # Subtest: restore never overwrites a step without dirty changes or server-owned media and flags
-ok 97 - restore never overwrites a step without dirty changes or server-owned media and flags
+ok 98 - restore never overwrites a step without dirty changes or server-owned media and flags
   ---
-  duration_ms: 0.125
+  duration_ms: 0.12625
   type: 'test'
   ...
 # Subtest: expired, foreign, future, malformed and identical drafts are ignored
-ok 98 - expired, foreign, future, malformed and identical drafts are ignored
+ok 99 - expired, foreign, future, malformed and identical drafts are ignored
   ---
-  duration_ms: 0.174833
+  duration_ms: 0.201917
   type: 'test'
   ...
 # Subtest: type categories and products restore while saved steps can be removed independently
-ok 99 - type categories and products restore while saved steps can be removed independently
+ok 100 - type categories and products restore while saved steps can be removed independently
   ---
-  duration_ms: 0.276958
+  duration_ms: 0.271292
   type: 'test'
   ...
 # Subtest: invalid editable data and injected non-dirty properties do not replace persisted values
-ok 100 - invalid editable data and injected non-dirty properties do not replace persisted values
+ok 101 - invalid editable data and injected non-dirty properties do not replace persisted values
   ---
-  duration_ms: 0.254042
+  duration_ms: 0.257542
   type: 'test'
   ...
 # Subtest: progressive profiling allows blank optional legal and profile fields
-ok 101 - progressive profiling allows blank optional legal and profile fields
+ok 102 - progressive profiling allows blank optional legal and profile fields
   ---
-  duration_ms: 1.012
+  duration_ms: 0.689792
   type: 'test'
   ...
 # Subtest: products allow 100 rows and optional photos; empty rows do not block continuation
-ok 102 - products allow 100 rows and optional photos; empty rows do not block continuation
+ok 103 - products allow 100 rows and optional photos; empty rows do not block continuation
   ---
-  duration_ms: 0.339167
+  duration_ms: 0.133791
   type: 'test'
   ...
 # Subtest: draft round-trip retains imported product code, unit, price and optional photo
-ok 103 - draft round-trip retains imported product code, unit, price and optional photo
+ok 104 - draft round-trip retains imported product code, unit, price and optional photo
   ---
-  duration_ms: 0.103083
+  duration_ms: 0.058833
   type: 'test'
   ...
 # Subtest: save filters blank products and normalizes optional strings to null
-ok 104 - save filters blank products and normalizes optional strings to null
+ok 105 - save filters blank products and normalizes optional strings to null
   ---
-  duration_ms: 0.400792
+  duration_ms: 0.288
   type: 'test'
   ...
 # Subtest: verification requirements use true as fulfilled and reject malformed RPC responses
-ok 105 - verification requirements use true as fulfilled and reject malformed RPC responses
+ok 106 - verification requirements use true as fulfilled and reject malformed RPC responses
   ---
-  duration_ms: 0.178792
+  duration_ms: 0.131375
   type: 'test'
   ...
-# (node:3296) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
+# (node:7062) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/market-store.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: company profile survives failed completion and reload, then retries without another signup
-ok 106 - company profile survives failed completion and reload, then retries without another signup
+ok 107 - company profile survives failed completion and reload, then retries without another signup
   ---
-  duration_ms: 42.771
+  duration_ms: 41.98175
   type: 'test'
   ...
-# (node:3297) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/xlsx-lite.js is not specified and it doesn't parse as CommonJS.
+# (node:7063) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/xlsx-lite.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: template is a readable XLSX and preserves leading zero codes and optional price
-ok 107 - template is a readable XLSX and preserves leading zero codes and optional price
+ok 108 - template is a readable XLSX and preserves leading zero codes and optional price
   ---
-  duration_ms: 5.253584
+  duration_ms: 4.073
   type: 'test'
   ...
 # Subtest: empty name, unknown unit and textual price get Georgian row/column errors
-ok 108 - empty name, unknown unit and textual price get Georgian row/column errors
+ok 109 - empty name, unknown unit and textual price get Georgian row/column errors
   ---
-  duration_ms: 0.345875
+  duration_ms: 0.185917
   type: 'test'
   ...
 # Subtest: 100 rows fit; 101 rows exceed the final catalog limit
-ok 109 - 100 rows fit; 101 rows exceed the final catalog limit
+ok 110 - 100 rows fit; 101 rows exceed the final catalog limit
   ---
-  duration_ms: 6.013541
+  duration_ms: 5.354458
   type: 'test'
   ...
 # Subtest: updates replace fields, preserve gallery photos and do not count against the limit
-ok 110 - updates replace fields, preserve gallery photos and do not count against the limit
+ok 111 - updates replace fields, preserve gallery photos and do not count against the limit
   ---
-  duration_ms: 0.237792
+  duration_ms: 0.175792
   type: 'test'
   ...
 # Subtest: duplicate file keys report both source row numbers
-ok 111 - duplicate file keys report both source row numbers
+ok 112 - duplicate file keys report both source row numbers
   ---
-  duration_ms: 0.07675
+  duration_ms: 0.063083
   type: 'test'
   ...
 # Subtest: CSV accepts BOM, separators, CRLF, quoted decimal comma and multiline escaped quotes
-ok 112 - CSV accepts BOM, separators, CRLF, quoted decimal comma and multiline escaped quotes
+ok 113 - CSV accepts BOM, separators, CRLF, quoted decimal comma and multiline escaped quotes
   ---
-  duration_ms: 0.347416
+  duration_ms: 0.314333
   type: 'test'
   ...
 # Subtest: limits, malformed archives and incorrect headers fail clearly
-ok 113 - limits, malformed archives and incorrect headers fail clearly
+ok 114 - limits, malformed archives and incorrect headers fail clearly
   ---
-  duration_ms: 9.547417
+  duration_ms: 10.130625
   type: 'test'
   ...
 # Subtest: stored ZIP/data descriptors, inline rich text, entities, sparse rows and scientific numbers
-ok 114 - stored ZIP/data descriptors, inline rich text, entities, sparse rows and scientific numbers
+ok 115 - stored ZIP/data descriptors, inline rich text, entities, sparse rows and scientific numbers
   ---
-  duration_ms: 0.743542
+  duration_ms: 1.126625
   type: 'test'
   ...
 # Subtest: a committed request is visible on the next page read even when another worker handles the write
-ok 115 - a committed request is visible on the next page read even when another worker handles the write
+ok 116 - a committed request is visible on the next page read even when another worker handles the write
   ---
-  duration_ms: 1.364709
+  duration_ms: 1.326042
   type: 'test'
   ...
 # Subtest: public updates and removals do not remain in a previously read page snapshot
-ok 116 - public updates and removals do not remain in a previously read page snapshot
+ok 117 - public updates and removals do not remain in a previously read page snapshot
   ---
-  duration_ms: 0.373708
+  duration_ms: 0.34575
   type: 'test'
   ...
-# (node:3299) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/read-timeout.js is not specified and it doesn't parse as CommonJS.
+# (node:7065) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/read-timeout.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: a hung read aborts and releases its caller even when transport ignores abort
-ok 117 - a hung read aborts and releases its caller even when transport ignores abort
+ok 118 - a hung read aborts and releases its caller even when transport ignores abort
   ---
-  duration_ms: 17.681708
+  duration_ms: 18.5985
   type: 'test'
   ...
 # Subtest: the timeout covers the response body and successful reads leave no abort
-ok 118 - the timeout covers the response body and successful reads leave no abort
+ok 119 - the timeout covers the response body and successful reads leave no abort
   ---
-  duration_ms: 48.673334
+  duration_ms: 48.040667
   type: 'test'
   ...
-# (node:3300) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/registration-event.js is not specified and it doesn't parse as CommonJS.
+# (node:7066) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/registration-event.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: registration event accepts only the bounded privacy-safe schema
-ok 119 - registration event accepts only the bounded privacy-safe schema
+ok 120 - registration event accepts only the bounded privacy-safe schema
   ---
-  duration_ms: 0.687417
+  duration_ms: 0.738
   type: 'test'
   ...
 # Subtest: untouched form defaults do not create an unfinished request
-ok 120 - untouched form defaults do not create an unfinished request
+ok 121 - untouched form defaults do not create an unfinished request
   ---
-  duration_ms: 1.165083
+  duration_ms: 1.140042
   type: 'test'
   ...
 # Subtest: meaningful content survives navigation, and erasing it clears the draft
-ok 121 - meaningful content survives navigation, and erasing it clears the draft
+ok 122 - meaningful content survives navigation, and erasing it clears the draft
   ---
-  duration_ms: 0.326167
+  duration_ms: 0.34075
   type: 'test'
   ...
 # Subtest: expired and malformed drafts are ignored
-ok 122 - expired and malformed drafts are ignored
+ok 123 - expired and malformed drafts are ignored
   ---
-  duration_ms: 0.277167
+  duration_ms: 0.247167
   type: 'test'
   ...
 # Subtest: disabled storage does not break the request form
-ok 123 - disabled storage does not break the request form
+ok 124 - disabled storage does not break the request form
   ---
-  duration_ms: 0.296625
+  duration_ms: 0.315583
   type: 'test'
   ...
 # Subtest: specification and budget-only drafts survive navigation without legacy text
-ok 124 - specification and budget-only drafts survive navigation without legacy text
+ok 125 - specification and budget-only drafts survive navigation without legacy text
   ---
-  duration_ms: 0.750125
+  duration_ms: 0.754208
   type: 'test'
   ...
 # Subtest: server draft: load normalizes the row and ignores empty drafts
-ok 125 - server draft: load normalizes the row and ignores empty drafts
+ok 126 - server draft: load normalizes the row and ignores empty drafts
   ---
-  duration_ms: 0.425416
+  duration_ms: 0.417708
   type: 'test'
   ...
 # Subtest: server draft: save sends only allowed keys and returns updatedAt; delete calls the rpc
-ok 126 - server draft: save sends only allowed keys and returns updatedAt; delete calls the rpc
+ok 127 - server draft: save sends only allowed keys and returns updatedAt; delete calls the rpc
   ---
-  duration_ms: 0.489125
+  duration_ms: 0.483208
   type: 'test'
   ...
 # Subtest: readRequestDraftAt returns the session save time or 0
-ok 127 - readRequestDraftAt returns the session save time or 0
+ok 128 - readRequestDraftAt returns the session save time or 0
   ---
-  duration_ms: 0.232834
+  duration_ms: 0.233875
   type: 'test'
   ...
 # Subtest: server draft keeps uploaded attachment references but never serializes a local photo
-ok 128 - server draft keeps uploaded attachment references but never serializes a local photo
+ok 129 - server draft keeps uploaded attachment references but never serializes a local photo
   ---
-  duration_ms: 0.455209
+  duration_ms: 0.463666
   type: 'test'
   ...
-# (node:3302) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/rpc-value.js is not specified and it doesn't parse as CommonJS.
+# (node:7068) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/kapana/Library/Application%20Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/app/lib/rpc-value.js is not specified and it doesn't parse as CommonJS.
 # Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 # To eliminate this warning, add "type": "module" to /Users/kapana/Library/Application Support/ThreadRig/engine/0992AAFA-61C4-4D95-AAF4-DF00FF05AA7D/workspace/checkout/web/package.json.
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: JSON lists, empty lists and nested values use JSON, not PostgreSQL array syntax
-ok 129 - JSON lists, empty lists and nested values use JSON, not PostgreSQL array syntax
+ok 130 - JSON lists, empty lists and nested values use JSON, not PostgreSQL array syntax
   ---
-  duration_ms: 1.180625
+  duration_ms: 1.089583
   type: 'test'
   ...
 # Subtest: SQL text arrays keep their native parameter form
-ok 130 - SQL text arrays keep their native parameter form
+ok 131 - SQL text arrays keep their native parameter form
   ---
-  duration_ms: 0.098208
+  duration_ms: 0.090375
   type: 'test'
   ...
-1..130
-# tests 130
+1..131
+# tests 131
 # suites 0
-# pass 130
+# pass 131
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 684.405208
+# duration_ms 658.288167

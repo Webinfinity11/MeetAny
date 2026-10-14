@@ -3,8 +3,40 @@ import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type Reac
 import { Button } from './Button';
 import { Sheet } from './Sheet';
 import { Icon } from '../Icon';
-import { creationValue, toggleSelection } from './combobox-selection';
+import { creationValue, toggleSelection, visibleTokenCount } from './combobox-selection';
 import s from './combobox.module.css';
+
+/** Tokens take part in layout; a hidden measuring row determines overflow after two rows. */
+function SelectedTokens({ items, disabled, onRemove }: { items: { value: string; label: string }[]; disabled: boolean; onRemove: (value: string) => void }) {
+  const measure = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(items.length);
+  const signature = JSON.stringify(items);
+  useLayoutEffect(() => {
+    const node = measure.current;
+    if (!node) return;
+    const update = () => {
+      const tokens = Array.from(node.querySelectorAll<HTMLElement>('[data-token]'));
+      const summary = node.querySelector<HTMLElement>('[data-summary]');
+      const gap = parseFloat(getComputedStyle(node).columnGap) || 0;
+      setVisible(visibleTokenCount(tokens.map(token => token.getBoundingClientRect().width), node.clientWidth, gap, summary?.getBoundingClientRect().width || 0));
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    for (const child of node.children) observer.observe(child);
+    return () => observer.disconnect();
+  }, [signature]);
+  return <div className={s.tokenArea}>
+    <div ref={measure} className={`${s.tokens} ${s.measure}`} aria-hidden="true" inert>
+      {items.map(item => <span key={item.value} data-token className={s.token}><span>{item.label}</span><span className={s.tokenRemove}><Icon name="x" /></span></span>)}
+      <span className={s.more} data-summary>+{items.length}</span>
+    </div>
+    <div className={s.tokens}>
+      {items.slice(0, visible).map(item => <span key={item.value} className={s.token}><span>{item.label}</span><Button variant="ghost" className={s.tokenRemove} disabled={disabled} aria-label={`${item.label} — წაშალეთ`} onClick={() => onRemove(item.value)}><Icon name="x" /></Button></span>)}
+      {items.length > visible && <span className={s.more}>+{items.length - visible}</span>}
+    </div>
+  </div>;
+}
 
 export type ComboboxOption = { value: string; label: string; group?: string; icon?: ReactNode; disabled?: boolean };
 export type ComboboxCommonProps = {
@@ -100,9 +132,10 @@ export function Selection({ id, label, options, values, onChange, multiple = fal
           if (['ArrowDown', 'ArrowUp'].includes(event.key)) { event.preventDefault(); show(); }
           else if (event.key.length === 1 && event.key !== ' ' && !event.metaKey && !event.ctrlKey && !event.altKey) { event.preventDefault(); show(event.key); }
         }}>
-        <span className={s.value}>{values.length ? multiple ? <span className={s.tokenSpace} aria-hidden="true">{values.slice(0, 2).map(value => <span key={value} className={s.tokenPlaceholder}>{available.find(option => option.value === value)?.label || value}</span>)}{values.length > 2 && <span>+{values.length - 2}</span>}</span> : <>{available.find(option => option.value === values[0])?.icon}{available.find(option => option.value === values[0])?.label || values[0]}</> : <span className={s.placeholder}>{placeholder}</span>}</span>
+        {!(multiple && values.length > 0) && <span className={s.value}>{values.length ? <>{available.find(option => option.value === values[0])?.icon}{available.find(option => option.value === values[0])?.label || values[0]}</> : <span className={s.placeholder}>{placeholder}</span>}</span>}
+        <Icon name="chevron-down" className={s.arrow} />
       </Button>
-      {multiple && values.length > 0 && <div className={s.tokens}>{values.slice(0, 2).map(value => <span key={value} className={s.token}><span>{available.find(option => option.value === value)?.label || value}</span><Button variant="ghost" disabled={disabled} aria-label={`${available.find(option => option.value === value)?.label || value} — წაშალეთ`} onClick={() => { onChange(values.filter(item => item !== value)); trigger.current?.focus(); }}><Icon name="x" /></Button></span>)}{values.length > 2 && <span className={s.more}>+{values.length - 2}</span>}</div>}
+      {multiple && values.length > 0 && <SelectedTokens items={values.map(value => ({ value, label: available.find(option => option.value === value)?.label || value }))} disabled={disabled} onRemove={value => { onChange(values.filter(item => item !== value)); trigger.current?.focus(); }} />}
     </div>
     {hint && <p id={helpId} className="ma-field__help">{hint}</p>}
     {mobile ? <Sheet open={open} onClose={close} title={label} className={s.sheet}>{content}</Sheet> : <div ref={panel} popover="manual" className={s.popover} onBlur={event => { if (open && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node)) setOpen(false); }}>{open && content}</div>}
