@@ -1,0 +1,4437 @@
+{
+  "at": "2026-10-14T06:26:53.535Z",
+  "base": "http://127.0.0.1:3440",
+  "role": "client",
+  "depth": 4,
+  "pages": [
+    {
+      "role": "client",
+      "slug": "account-overview",
+      "path": "/account/?tab=overview",
+      "width": 1440,
+      "finalUrl": "/account/?tab=overview",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1361,
+      "scrollWidth": 1440,
+      "viewports": 1.36,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 936
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 159,
+          "y": 841,
+          "above": "div.ma-container",
+          "below": "main-end",
+          "depth": 0
+        },
+        {
+          "gap": 24,
+          "y": 126,
+          "above": "header.account_heading__J67ux",
+          "below": "ul.account_stats__c_wEB",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 236,
+          "above": "ul.account_stats__c_wEB",
+          "below": "div.account-quick-actions",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 304,
+          "above": "div.account-quick-actions",
+          "below": "section.account-for-you",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1320,
+        "width": 1188,
+        "rightMargin": 120,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 520,
+        "pctOfScroll": 38.2,
+        "pctOfMain": 55.6,
+        "top5": [
+          {
+            "px": 270,
+            "y": 730,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 61,
+            "y": 537,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 28,
+            "y": 136,
+            "above": "svg.icon",
+            "below": "svg.icon"
+          },
+          {
+            "px": 28,
+            "y": 232,
+            "above": "svg.icon",
+            "below": "svg.icon"
+          },
+          {
+            "px": 28,
+            "y": 376,
+            "above": "svg.icon",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "h1": {
+        "text": "გამარჯობა, სასტუმრო „ლეგენდა“",
+        "top": 88,
+        "bottom": 126
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-requests",
+      "path": "/account/?tab=requests",
+      "width": 1440,
+      "finalUrl": "/account/?tab=requests",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 3139,
+      "scrollWidth": 1440,
+      "viewports": 3.14,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2714
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 132,
+          "above": "header.account_heading__J67ux",
+          "below": "section.account-records",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1303,
+        "width": 1171,
+        "rightMargin": 137,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 1280,
+        "pctOfScroll": 40.8,
+        "pctOfMain": 47.2,
+        "top5": [
+          {
+            "px": 96,
+            "y": 2682,
+            "above": "p",
+            "below": "main-end"
+          },
+          {
+            "px": 51,
+            "y": 456,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 51,
+            "y": 562,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 51,
+            "y": 668,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 51,
+            "y": 774,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ჩემი მოთხოვნები",
+        "top": 95,
+        "bottom": 132
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-deals",
+      "path": "/account/?tab=deals",
+      "width": 1440,
+      "finalUrl": "/account/?tab=deals",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1699,
+      "scrollWidth": 1440,
+      "viewports": 1.7,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1274
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 126,
+          "above": "header.account_heading__J67ux",
+          "below": "ul.account_deals__mrnXG",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1284,
+        "width": 1152,
+        "rightMargin": 156,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 705,
+        "pctOfScroll": 41.5,
+        "pctOfMain": 55.4,
+        "top5": [
+          {
+            "px": 100,
+            "y": 1238,
+            "above": "p",
+            "below": "main-end"
+          },
+          {
+            "px": 62,
+            "y": 454,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 62,
+            "y": 566,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 62,
+            "y": 678,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 62,
+            "y": 790,
+            "above": "p",
+            "below": "a.account_cardLink__L3DzT"
+          }
+        ]
+      },
+      "h1": {
+        "text": "გარიგებები",
+        "top": 88,
+        "bottom": 126
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-saved",
+      "path": "/account/?tab=saved",
+      "width": 1440,
+      "finalUrl": "/account/?tab=saved",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1361,
+      "scrollWidth": 1440,
+      "viewports": 1.36,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 936
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 186,
+          "y": 814,
+          "above": "div.ma-container",
+          "below": "main-end",
+          "depth": 0
+        },
+        {
+          "gap": 24,
+          "y": 126,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-panel.account-saved",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1290,
+        "width": 1158,
+        "rightMargin": 150,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 625,
+        "pctOfScroll": 45.9,
+        "pctOfMain": 66.8,
+        "top5": [
+          {
+            "px": 369,
+            "y": 631,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 37,
+            "y": 576,
+            "above": "p.ma-empty__text",
+            "below": "a.ma-btn.ma-btn--secondary"
+          },
+          {
+            "px": 28,
+            "y": 136,
+            "above": "svg.icon",
+            "below": "svg.icon"
+          },
+          {
+            "px": 28,
+            "y": 376,
+            "above": "svg.icon",
+            "below": "svg.icon"
+          },
+          {
+            "px": 27,
+            "y": 466,
+            "above": "svg.icon",
+            "below": "h3.ma-empty__title"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.engagement_savedRow__zt6vF",
+        "heights": [
+          91
+        ],
+        "fitInFirstScreen": 1,
+        "firstTop": 227
+      },
+      "h1": {
+        "text": "შენახული",
+        "top": 88,
+        "bottom": 126
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-messages",
+      "path": "/account/?tab=messages",
+      "width": 1440,
+      "finalUrl": "/account/?tab=messages",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1361,
+      "scrollWidth": 1440,
+      "viewports": 1.36,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 936
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 91,
+          "y": 910,
+          "above": "div.ma-container",
+          "below": "main-end",
+          "depth": 0
+        },
+        {
+          "gap": 24,
+          "y": 126,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-wide",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1440,
+        "width": 1308,
+        "rightMargin": 0,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "fieldMaxWidth": 499,
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 52,
+        "pctOfScroll": 3.8,
+        "pctOfMain": 5.6,
+        "top5": [
+          {
+            "px": 28,
+            "y": 136,
+            "above": "svg.icon",
+            "below": "svg.icon"
+          },
+          {
+            "px": 24,
+            "y": 64,
+            "above": "main-start",
+            "below": "h1"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მიმოწერები",
+        "top": 88,
+        "bottom": 126
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-notifications",
+      "path": "/account/?tab=notifications",
+      "width": 1440,
+      "finalUrl": "/account/?tab=notifications",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1361,
+      "scrollWidth": 1440,
+      "viewports": 1.36,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 936
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 53,
+          "y": 948,
+          "above": "div.ma-container",
+          "below": "main-end",
+          "depth": 0
+        },
+        {
+          "gap": 24,
+          "y": 126,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-panel.account-alerts#alerts",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1303,
+        "width": 1171,
+        "rightMargin": 137,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        },
+        {
+          "sel": "aside.engagement_noticeDetail__H3sYd",
+          "width": 314,
+          "left": 989,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 299,
+        "pctOfScroll": 22,
+        "pctOfMain": 31.9,
+        "top5": [
+          {
+            "px": 30,
+            "y": 436,
+            "above": "span.engagement_noticeSubtitle__YZ5_a",
+            "below": "span.ma-sr-only"
+          },
+          {
+            "px": 30,
+            "y": 699,
+            "above": "span.engagement_noticeSubtitle__YZ5_a",
+            "below": "span.ma-sr-only"
+          },
+          {
+            "px": 30,
+            "y": 883,
+            "above": "span.engagement_noticeSubtitle__YZ5_a",
+            "below": "span.ma-sr-only"
+          },
+          {
+            "px": 29,
+            "y": 515,
+            "above": "span.engagement_noticeSubtitle__YZ5_a",
+            "below": "button.engagement_noticeLink__uDLZA.engagement_noticeButton__wBaH3"
+          },
+          {
+            "px": 29,
+            "y": 778,
+            "above": "span.engagement_noticeSubtitle__YZ5_a",
+            "below": "button.ma-btn.ma-btn--secondary"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შეტყობინებები",
+        "top": 88,
+        "bottom": 126
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-profile",
+      "path": "/account/?tab=profile",
+      "width": 1440,
+      "finalUrl": "/account/?tab=profile",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1653,
+      "scrollWidth": 1440,
+      "viewports": 1.65,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1228
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 126,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-main--profile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 132,
+        "right": 1303,
+        "width": 1171,
+        "rightMargin": 137,
+        "leftMargin": 132
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "form": {
+        "sel": "form.ma-form#account-profile-form",
+        "width": 894,
+        "left": 409,
+        "height": 454
+      },
+      "fieldMaxWidth": 894,
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 519,
+        "pctOfScroll": 31.4,
+        "pctOfMain": 42.3,
+        "top5": [
+          {
+            "px": 97,
+            "y": 1195,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "main-end"
+          },
+          {
+            "px": 67,
+            "y": 675,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "h2.account-section__title#company-upgrade-title"
+          },
+          {
+            "px": 55,
+            "y": 879,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2.account-section__title#password-title"
+          },
+          {
+            "px": 34,
+            "y": 451,
+            "above": "legend",
+            "below": "dt"
+          },
+          {
+            "px": 29,
+            "y": 602,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "button.ma-btn.ma-btn--primary"
+          }
+        ]
+      },
+      "h1": {
+        "text": "პარამეტრები",
+        "top": 88,
+        "bottom": 126
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-1",
+      "path": "/requests/new/?step=1",
+      "width": 1440,
+      "finalUrl": "/requests/new/?step=1",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1854,
+      "scrollWidth": 1440,
+      "viewports": 1.85,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1429
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 125
+      },
+      "topGaps": [
+        {
+          "gap": 723,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 710,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 66,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 46,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 127,
+          "above": "header.post-heading",
+          "below": "ol",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 152,
+        "right": 1256,
+        "width": 1104,
+        "rightMargin": 184,
+        "leftMargin": 152
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "form": {
+        "sel": "form#post-request-form",
+        "width": 1136,
+        "left": 152,
+        "height": 1008
+      },
+      "fieldMaxWidth": 722,
+      "asides": [
+        {
+          "sel": "aside.Post_aside__kKneb",
+          "width": 360,
+          "left": 928,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 659,
+        "pctOfScroll": 35.5,
+        "pctOfMain": 46.1,
+        "top5": [
+          {
+            "px": 115,
+            "y": 1378,
+            "above": "label.ma-check",
+            "below": "main-end"
+          },
+          {
+            "px": 66,
+            "y": 664,
+            "above": "button.ma-select.ma-custom-select#_r_5_",
+            "below": "summary"
+          },
+          {
+            "px": 49,
+            "y": 125,
+            "above": "h1",
+            "below": "span.post-steps__circle"
+          },
+          {
+            "px": 49,
+            "y": 255,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 44,
+            "y": 189,
+            "above": "span.post-steps__circle",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 88,
+        "bottom": 127
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-2",
+      "path": "/requests/new/?step=1",
+      "width": 1440,
+      "finalUrl": "/requests/new/?step=2",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1558,
+      "scrollWidth": 1440,
+      "viewports": 1.56,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1133
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 125
+      },
+      "topGaps": [
+        {
+          "gap": 723,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 710,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 66,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 46,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 127,
+          "above": "header.post-heading",
+          "below": "ol",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 152,
+        "right": 1256,
+        "width": 1104,
+        "rightMargin": 184,
+        "leftMargin": 152
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "form": {
+        "sel": "form#post-request-form",
+        "width": 1136,
+        "left": 152,
+        "height": 712
+      },
+      "fieldMaxWidth": 706,
+      "asides": [
+        {
+          "sel": "aside.Post_aside__kKneb",
+          "width": 360,
+          "left": 928,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 623,
+        "pctOfScroll": 40,
+        "pctOfMain": 55,
+        "top5": [
+          {
+            "px": 209,
+            "y": 988,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 58,
+            "y": 421,
+            "above": "input.ma-input#neededBy",
+            "below": "h2"
+          },
+          {
+            "px": 49,
+            "y": 125,
+            "above": "h1",
+            "below": "span"
+          },
+          {
+            "px": 49,
+            "y": 255,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 45,
+            "y": 845,
+            "above": "label.ma-check",
+            "below": "label.ma-check"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 88,
+        "bottom": 127
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-3",
+      "path": "/requests/new/?step=1",
+      "width": 1440,
+      "finalUrl": "/requests/new/?step=3",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1476,
+      "scrollWidth": 1440,
+      "viewports": 1.48,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1051
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 125
+      },
+      "topGaps": [
+        {
+          "gap": 66,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 46,
+          "y": 213,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 127,
+          "above": "header.post-heading",
+          "below": "ol",
+          "depth": 4
+        },
+        {
+          "gap": 37,
+          "y": 889,
+          "above": "form#post-request-form",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 127,
+          "above": "header.post-heading",
+          "below": "nav.post-steps",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 152,
+        "right": 1256,
+        "width": 1104,
+        "rightMargin": 184,
+        "leftMargin": 152
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "asides": [
+        {
+          "sel": "aside.Post_aside__kKneb",
+          "width": 360,
+          "left": 928,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 599,
+        "pctOfScroll": 40.6,
+        "pctOfMain": 57,
+        "top5": [
+          {
+            "px": 137,
+            "y": 978,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 102,
+            "y": 824,
+            "above": "small",
+            "below": "button.ma-btn.ma-btn--secondary"
+          },
+          {
+            "px": 74,
+            "y": 451,
+            "above": "p.Post_description__6QHlv",
+            "below": "h2"
+          },
+          {
+            "px": 49,
+            "y": 125,
+            "above": "h1",
+            "below": "span"
+          },
+          {
+            "px": 49,
+            "y": 255,
+            "above": "span",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 88,
+        "bottom": 127
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "path": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "width": 1440,
+      "finalUrl": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1731,
+      "scrollWidth": 1440,
+      "viewports": 1.73,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1306
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.deals_page__ZU8Co",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 41,
+          "y": 238,
+          "above": "header.deals_header__kUNgO",
+          "below": "ol",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 238,
+          "above": "header.deals_header__kUNgO",
+          "below": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 338,
+          "above": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "below": "div.deals_grid__5pdRh",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 152,
+        "right": 1269,
+        "width": 1117,
+        "rightMargin": 171,
+        "leftMargin": 152
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "asides": [
+        {
+          "sel": "aside.deals_aside__7dCRg",
+          "width": 300,
+          "left": 988,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 558,
+        "pctOfScroll": 32.2,
+        "pctOfMain": 42.7,
+        "top5": [
+          {
+            "px": 109,
+            "y": 1261,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 67,
+            "y": 318,
+            "above": "small",
+            "below": "h2"
+          },
+          {
+            "px": 47,
+            "y": 234,
+            "above": "p",
+            "below": "span"
+          },
+          {
+            "px": 47,
+            "y": 997,
+            "above": "li",
+            "below": "button.ma-btn.ma-btn--secondary"
+          },
+          {
+            "px": 36,
+            "y": 64,
+            "above": "main-start",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 164,
+        "bottom": 204
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "width": 1440,
+      "finalUrl": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 2642,
+      "scrollWidth": 1440,
+      "viewports": 2.64,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2217
+      },
+      "headerHeight": 64,
+      "footerHeight": 57,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 24,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 52,
+          "y": 1729,
+          "above": "div.request-detail-grid",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 132,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1825,
+          "above": "header.RequestDetail_similarHead__2vPvb",
+          "below": "div",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1320,
+        "width": 1200,
+        "rightMargin": 120,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 400,
+          "left": 920,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 980,
+        "pctOfScroll": 37.1,
+        "pctOfMain": 44.2,
+        "top5": [
+          {
+            "px": 104,
+            "y": 1684,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2"
+          },
+          {
+            "px": 81,
+            "y": 2200,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 66,
+            "y": 1139,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "a.ma-ocard__name"
+          },
+          {
+            "px": 65,
+            "y": 117,
+            "above": "a",
+            "below": "span.ma-badge.ma-badge--success"
+          },
+          {
+            "px": 61,
+            "y": 685,
+            "above": "img",
+            "below": "h2.request-offers__title#request-offers-title"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.ma-ocard.ma-ocard--chosen",
+        "heights": [
+          525
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1180
+      },
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 215,
+        "bottom": 258
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-overview",
+      "path": "/account/?tab=overview",
+      "width": 390,
+      "finalUrl": "/account/?tab=overview",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2344,
+      "scrollWidth": 390,
+      "viewports": 2.78,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1479
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 234,
+          "above": "header.account_heading__J67ux",
+          "below": "ul.account_stats__c_wEB",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 464,
+          "above": "ul.account_stats__c_wEB",
+          "below": "div.account-quick-actions",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 644,
+          "above": "div.account-quick-actions",
+          "below": "section.account-for-you",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 390,
+        "width": 374,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1479
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 765,
+        "pctOfScroll": 32.6,
+        "pctOfMain": 51.7,
+        "top5": [
+          {
+            "px": 80,
+            "y": 1455,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 61,
+            "y": 877,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 61,
+            "y": 1070,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 61,
+            "y": 1263,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "h1": {
+        "text": "გამარჯობა, სასტუმრო „ლეგენდა“",
+        "top": 169,
+        "bottom": 234
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-requests",
+      "path": "/account/?tab=requests",
+      "width": 390,
+      "finalUrl": "/account/?tab=requests",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 6011,
+      "scrollWidth": 390,
+      "viewports": 7.12,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 5146
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 262,
+          "above": "header.account_heading__J67ux",
+          "below": "section.account-records",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 390,
+        "width": 374,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 5146
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 2636,
+        "pctOfScroll": 43.9,
+        "pctOfMain": 51.2,
+        "top5": [
+          {
+            "px": 61,
+            "y": 816,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1016,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1216,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1416,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1616,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ჩემი მოთხოვნები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-deals",
+      "path": "/account/?tab=deals",
+      "width": 390,
+      "finalUrl": "/account/?tab=deals",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 3615,
+      "scrollWidth": 390,
+      "viewports": 4.28,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2750
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "ul.account_deals__mrnXG",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2750
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1831,
+        "pctOfScroll": 50.7,
+        "pctOfMain": 66.6,
+        "top5": [
+          {
+            "px": 78,
+            "y": 2728,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 72,
+            "y": 436,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 72,
+            "y": 688,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 72,
+            "y": 940,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 72,
+            "y": 1192,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          }
+        ]
+      },
+      "h1": {
+        "text": "გარიგებები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-saved",
+      "path": "/account/?tab=saved",
+      "width": 390,
+      "finalUrl": "/account/?tab=saved",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 1811,
+      "scrollWidth": 390,
+      "viewports": 2.15,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 946
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-panel.account-saved",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 946
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 612,
+        "pctOfScroll": 33.8,
+        "pctOfMain": 64.7,
+        "top5": [
+          {
+            "px": 151,
+            "y": 851,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 72,
+            "y": 544,
+            "above": "h2.account-section__title#saved-requests-title",
+            "below": "svg.icon"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 54,
+            "y": 468,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2.account-section__title#saved-requests-title"
+          },
+          {
+            "px": 51,
+            "y": 310,
+            "above": "a.ma-btn.ma-btn--ghost",
+            "below": "a.engagement_savedLink__Rj1Ua"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.engagement_savedRow__zt6vF",
+        "heights": [
+          151
+        ],
+        "fitInFirstScreen": 1,
+        "firstTop": 339
+      },
+      "h1": {
+        "text": "შენახული",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-messages",
+      "path": "/account/?tab=messages",
+      "width": 390,
+      "finalUrl": "/account/?tab=messages",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2061,
+      "scrollWidth": 390,
+      "viewports": 2.44,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1196
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-wide",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1196
+      },
+      "fieldMaxWidth": 278,
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 202,
+        "pctOfScroll": 9.8,
+        "pctOfMain": 16.9,
+        "top5": [
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 49,
+            "y": 1203,
+            "above": "button.engagement_inbox-row__COLzb",
+            "below": "main-end"
+          },
+          {
+            "px": 48,
+            "y": 200,
+            "above": "h1",
+            "below": "input"
+          },
+          {
+            "px": 38,
+            "y": 131,
+            "above": "svg.icon",
+            "below": "h1"
+          },
+          {
+            "px": 12,
+            "y": 281,
+            "above": "span.ma-sr-only",
+            "below": "button.engagement_inbox-row__COLzb"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მიმოწერები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-notifications",
+      "path": "/account/?tab=notifications",
+      "width": 390,
+      "finalUrl": "/account/?tab=notifications",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 4785,
+      "scrollWidth": 390,
+      "viewports": 5.67,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 3920
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-panel.account-alerts#alerts",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 3920
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1568,
+        "pctOfScroll": 32.8,
+        "pctOfMain": 40,
+        "top5": [
+          {
+            "px": 65,
+            "y": 3911,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 45,
+            "y": 2747,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "strong"
+          },
+          {
+            "px": 43,
+            "y": 200,
+            "above": "h1",
+            "below": "button.ma-btn.ma-btn--primary"
+          },
+          {
+            "px": 39,
+            "y": 697,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "span.ma-sr-only"
+          }
+        ]
+      },
+      "rows": {
+        "count": 25,
+        "sel": "article.engagement_row__0av9Q",
+        "heights": [
+          85,
+          185,
+          161,
+          85,
+          185,
+          161,
+          185,
+          161
+        ],
+        "fitInFirstScreen": 2,
+        "firstTop": 453
+      },
+      "h1": {
+        "text": "შეტყობინებები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-profile",
+      "path": "/account/?tab=profile",
+      "width": 390,
+      "finalUrl": "/account/?tab=profile",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2489,
+      "scrollWidth": 390,
+      "viewports": 2.95,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1624
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-main--profile",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 358,
+        "width": 358,
+        "rightMargin": 32,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1624
+      },
+      "form": {
+        "sel": "form.ma-form#account-profile-form",
+        "width": 324,
+        "left": 33,
+        "height": 648
+      },
+      "fieldMaxWidth": 324,
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 773,
+        "pctOfScroll": 31.1,
+        "pctOfMain": 47.6,
+        "top5": [
+          {
+            "px": 170,
+            "y": 864,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2.account-section__title#company-upgrade-title"
+          },
+          {
+            "px": 65,
+            "y": 1615,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "main-end"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 55,
+            "y": 1213,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2.account-section__title#password-title"
+          },
+          {
+            "px": 44,
+            "y": 200,
+            "above": "h1",
+            "below": "h2.account-section__title"
+          }
+        ]
+      },
+      "h1": {
+        "text": "პარამეტრები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-1",
+      "path": "/requests/new/?step=1",
+      "width": 390,
+      "finalUrl": "/requests/new/?step=1",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2608,
+      "scrollWidth": 390,
+      "viewports": 3.09,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1743
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 157
+      },
+      "topGaps": [
+        {
+          "gap": 538,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 525,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 112,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 92,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 114,
+          "above": "header.post-heading",
+          "below": "div.post-steps__mobile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 367,
+        "width": 347,
+        "rightMargin": 23,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "width": 350,
+        "left": 20,
+        "right": 370,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1743
+      },
+      "form": {
+        "sel": "form#post-request-form",
+        "width": 350,
+        "left": 20,
+        "height": 1207
+      },
+      "fieldMaxWidth": 316,
+      "empty": {
+        "px": 705,
+        "pctOfScroll": 27,
+        "pctOfMain": 40.4,
+        "top5": [
+          {
+            "px": 235,
+            "y": 1565,
+            "above": "label.ma-check",
+            "below": "main-end"
+          },
+          {
+            "px": 48,
+            "y": 299,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 41,
+            "y": 911,
+            "above": "span",
+            "below": "label"
+          },
+          {
+            "px": 37,
+            "y": 1255,
+            "above": "label.ma-check",
+            "below": "h2"
+          },
+          {
+            "px": 35,
+            "y": 832,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "summary"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 80,
+        "bottom": 114
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-2",
+      "path": "/requests/new/?step=1",
+      "width": 390,
+      "finalUrl": "/requests/new/?step=2",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2388,
+      "scrollWidth": 390,
+      "viewports": 2.83,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1523
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 157
+      },
+      "topGaps": [
+        {
+          "gap": 538,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 525,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 112,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 92,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 114,
+          "above": "header.post-heading",
+          "below": "div.post-steps__mobile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 367,
+        "width": 347,
+        "rightMargin": 23,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "width": 350,
+        "left": 20,
+        "right": 370,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1523
+      },
+      "form": {
+        "sel": "form#post-request-form",
+        "width": 350,
+        "left": 20,
+        "height": 988
+      },
+      "fieldMaxWidth": 300,
+      "empty": {
+        "px": 777,
+        "pctOfScroll": 32.5,
+        "pctOfMain": 51,
+        "top5": [
+          {
+            "px": 372,
+            "y": 1207,
+            "above": "label.ma-check",
+            "below": "main-end"
+          },
+          {
+            "px": 70,
+            "y": 652,
+            "above": "input.ma-input#neededBy",
+            "below": "h2"
+          },
+          {
+            "px": 48,
+            "y": 299,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 45,
+            "y": 1119,
+            "above": "label.ma-check",
+            "below": "label.ma-check"
+          },
+          {
+            "px": 32,
+            "y": 1044,
+            "above": "input.ma-input#_r_9_-payment",
+            "below": "label.ma-check"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 80,
+        "bottom": 114
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-3",
+      "path": "/requests/new/?step=1",
+      "width": 390,
+      "finalUrl": "/requests/new/?step=3",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2459,
+      "scrollWidth": 390,
+      "viewports": 2.91,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1594
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 157
+      },
+      "topGaps": [
+        {
+          "gap": 538,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 525,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 112,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 92,
+          "y": 210,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 114,
+          "above": "header.post-heading",
+          "below": "div.post-steps__mobile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 377,
+        "width": 357,
+        "rightMargin": 13,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "width": 350,
+        "left": 20,
+        "right": 370,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1594
+      },
+      "asides": [
+        {
+          "sel": "aside.Post_aside__kKneb",
+          "width": 350,
+          "left": 20,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 814,
+        "pctOfScroll": 33.1,
+        "pctOfMain": 51.1,
+        "top5": [
+          {
+            "px": 318,
+            "y": 1332,
+            "above": "p",
+            "below": "main-end"
+          },
+          {
+            "px": 110,
+            "y": 1093,
+            "above": "small",
+            "below": "h2"
+          },
+          {
+            "px": 49,
+            "y": 617,
+            "above": "p.Post_description__6QHlv",
+            "below": "h2"
+          },
+          {
+            "px": 48,
+            "y": 299,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 36,
+            "y": 685,
+            "above": "h2",
+            "below": "dt"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 80,
+        "bottom": 114
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "path": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "width": 390,
+      "finalUrl": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2595,
+      "scrollWidth": 390,
+      "viewports": 3.07,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1730
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.deals_page__ZU8Co",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 45,
+          "y": 298,
+          "above": "header.deals_header__kUNgO",
+          "below": "div.deals_mobileSteps__1TNo7",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 298,
+          "above": "header.deals_header__kUNgO",
+          "below": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "depth": 3
+        },
+        {
+          "gap": 24,
+          "y": 1442,
+          "above": "div.deals_main___Zxq1",
+          "below": "aside.deals_aside__7dCRg",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 556,
+          "above": "div.deals_mobileOnly__oA1JJ",
+          "below": "div.deals_grid__5pdRh",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 238,
+          "above": "div",
+          "below": "div.deals_actions__HopHI",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 349,
+        "width": 329,
+        "rightMargin": 41,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.deals_page__ZU8Co",
+        "width": 350,
+        "left": 20,
+        "right": 370,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1730
+      },
+      "asides": [
+        {
+          "sel": "aside.deals_aside__7dCRg",
+          "width": 350,
+          "left": 20,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 880,
+        "pctOfScroll": 33.9,
+        "pctOfMain": 50.9,
+        "top5": [
+          {
+            "px": 113,
+            "y": 1673,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 69,
+            "y": 412,
+            "above": "small",
+            "below": "span"
+          },
+          {
+            "px": 69,
+            "y": 1275,
+            "above": "p.deals_note__omOGq",
+            "below": "p"
+          },
+          {
+            "px": 67,
+            "y": 1421,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "img"
+          },
+          {
+            "px": 64,
+            "y": 1156,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 156,
+        "bottom": 182
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "width": 390,
+      "finalUrl": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 4431,
+      "scrollWidth": 390,
+      "viewports": 5.25,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 3566
+      },
+      "headerHeight": 56,
+      "footerHeight": 57,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 16,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 52,
+          "y": 2348,
+          "above": "div.request-detail-grid",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 3
+        },
+        {
+          "gap": 24,
+          "y": 1936,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 2462,
+          "above": "header.RequestDetail_similarHead__2vPvb",
+          "below": "div",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 382,
+        "width": 366,
+        "rightMargin": 8,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 3566
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1542,
+        "pctOfScroll": 34.8,
+        "pctOfMain": 43.2,
+        "top5": [
+          {
+            "px": 81,
+            "y": 2065,
+            "above": "dd",
+            "below": "h2"
+          },
+          {
+            "px": 81,
+            "y": 3541,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 76,
+            "y": 1919,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "dt"
+          },
+          {
+            "px": 71,
+            "y": 1250,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "a.ma-ocard__name"
+          },
+          {
+            "px": 66,
+            "y": 616,
+            "above": "p.ma-prose",
+            "below": "h2.detail-section-title"
+          }
+        ]
+      },
+      "rows": {
+        "count": 4,
+        "sel": "article.ma-ocard.ma-ocard--chosen",
+        "heights": [
+          645,
+          357,
+          336,
+          357
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1291
+      },
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 223,
+        "bottom": 293
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-overview",
+      "path": "/account/?tab=overview",
+      "width": 360,
+      "finalUrl": "/account/?tab=overview",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2372,
+      "scrollWidth": 360,
+      "viewports": 2.81,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1479
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 234,
+          "above": "header.account_heading__J67ux",
+          "below": "ul.account_stats__c_wEB",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 464,
+          "above": "ul.account_stats__c_wEB",
+          "below": "div.account-quick-actions",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 644,
+          "above": "div.account-quick-actions",
+          "below": "section.account-for-you",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 360,
+        "width": 344,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1479
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 765,
+        "pctOfScroll": 32.3,
+        "pctOfMain": 51.7,
+        "top5": [
+          {
+            "px": 80,
+            "y": 1455,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 61,
+            "y": 877,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 61,
+            "y": 1070,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 61,
+            "y": 1263,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "h1": {
+        "text": "გამარჯობა, სასტუმრო „ლეგენდა“",
+        "top": 169,
+        "bottom": 234
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-requests",
+      "path": "/account/?tab=requests",
+      "width": 360,
+      "finalUrl": "/account/?tab=requests",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 6147,
+      "scrollWidth": 360,
+      "viewports": 7.28,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 5254
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 262,
+          "above": "header.account_heading__J67ux",
+          "below": "section.account-records",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 360,
+        "width": 344,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 5254
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 2670,
+        "pctOfScroll": 43.4,
+        "pctOfMain": 50.8,
+        "top5": [
+          {
+            "px": 61,
+            "y": 868,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1068,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1268,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1468,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 61,
+            "y": 1668,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ჩემი მოთხოვნები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-deals",
+      "path": "/account/?tab=deals",
+      "width": 360,
+      "finalUrl": "/account/?tab=deals",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 3763,
+      "scrollWidth": 360,
+      "viewports": 4.46,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2870
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "ul.account_deals__mrnXG",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 353,
+        "width": 353,
+        "rightMargin": 7,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2870
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1861,
+        "pctOfScroll": 49.5,
+        "pctOfMain": 64.9,
+        "top5": [
+          {
+            "px": 78,
+            "y": 2848,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 72,
+            "y": 1012,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 72,
+            "y": 1264,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 72,
+            "y": 1516,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          },
+          {
+            "px": 72,
+            "y": 1768,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "a.account_cardLink__L3DzT"
+          }
+        ]
+      },
+      "h1": {
+        "text": "გარიგებები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-saved",
+      "path": "/account/?tab=saved",
+      "width": 360,
+      "finalUrl": "/account/?tab=saved",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 1839,
+      "scrollWidth": 360,
+      "viewports": 2.18,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 946
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-panel.account-saved",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 360,
+        "width": 360,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 946
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 612,
+        "pctOfScroll": 33.3,
+        "pctOfMain": 64.7,
+        "top5": [
+          {
+            "px": 151,
+            "y": 851,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 72,
+            "y": 544,
+            "above": "h2.account-section__title#saved-requests-title",
+            "below": "svg.icon"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 54,
+            "y": 468,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2.account-section__title#saved-requests-title"
+          },
+          {
+            "px": 51,
+            "y": 310,
+            "above": "a.ma-btn.ma-btn--ghost",
+            "below": "a.engagement_savedLink__Rj1Ua"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.engagement_savedRow__zt6vF",
+        "heights": [
+          151
+        ],
+        "fitInFirstScreen": 1,
+        "firstTop": 339
+      },
+      "h1": {
+        "text": "შენახული",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-messages",
+      "path": "/account/?tab=messages",
+      "width": 360,
+      "finalUrl": "/account/?tab=messages",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2089,
+      "scrollWidth": 360,
+      "viewports": 2.48,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1196
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-wide",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 360,
+        "width": 360,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1196
+      },
+      "fieldMaxWidth": 248,
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 202,
+        "pctOfScroll": 9.7,
+        "pctOfMain": 16.9,
+        "top5": [
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 49,
+            "y": 1203,
+            "above": "button.engagement_inbox-row__COLzb",
+            "below": "main-end"
+          },
+          {
+            "px": 48,
+            "y": 200,
+            "above": "h1",
+            "below": "input"
+          },
+          {
+            "px": 38,
+            "y": 131,
+            "above": "svg.icon",
+            "below": "h1"
+          },
+          {
+            "px": 12,
+            "y": 281,
+            "above": "span.ma-sr-only",
+            "below": "button.engagement_inbox-row__COLzb"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მიმოწერები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-notifications",
+      "path": "/account/?tab=notifications",
+      "width": 360,
+      "finalUrl": "/account/?tab=notifications",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 4929,
+      "scrollWidth": 360,
+      "viewports": 5.84,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 4036
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-panel.account-alerts#alerts",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 360,
+        "width": 360,
+        "rightMargin": 0,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 4036
+      },
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1597,
+        "pctOfScroll": 32.4,
+        "pctOfMain": 39.6,
+        "top5": [
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 53,
+            "y": 4039,
+            "above": "span.engagement_noticeSubtitle__YZ5_a",
+            "below": "main-end"
+          },
+          {
+            "px": 45,
+            "y": 2837,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "strong"
+          },
+          {
+            "px": 43,
+            "y": 200,
+            "above": "h1",
+            "below": "button.ma-btn.ma-btn--primary"
+          },
+          {
+            "px": 39,
+            "y": 715,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "span.ma-sr-only"
+          }
+        ]
+      },
+      "rows": {
+        "count": 25,
+        "sel": "article.engagement_row__0av9Q",
+        "heights": [
+          85,
+          185,
+          161,
+          85,
+          185,
+          161,
+          185,
+          161
+        ],
+        "fitInFirstScreen": 2,
+        "firstTop": 471
+      },
+      "h1": {
+        "text": "შეტყობინებები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "account-profile",
+      "path": "/account/?tab=profile",
+      "width": 360,
+      "finalUrl": "/account/?tab=profile",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2535,
+      "scrollWidth": 360,
+      "viewports": 3,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1642
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.account-page",
+        "paddingTop": 24,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 202,
+          "above": "header.account_heading__J67ux",
+          "below": "div.account-main--profile",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 149,
+          "above": "aside.account_sidebar__BhwEy",
+          "below": "div.account_main__UUeVA",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 0,
+        "right": 328,
+        "width": 328,
+        "rightMargin": 32,
+        "leftMargin": 0
+      },
+      "widest": {
+        "sel": "div.ma-page.account-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1642
+      },
+      "form": {
+        "sel": "form.ma-form#account-profile-form",
+        "width": 294,
+        "left": 33,
+        "height": 648
+      },
+      "fieldMaxWidth": 294,
+      "asides": [
+        {
+          "sel": "aside.account_sidebar__BhwEy",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 773,
+        "pctOfScroll": 30.5,
+        "pctOfMain": 47.1,
+        "top5": [
+          {
+            "px": 170,
+            "y": 864,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2.account-section__title#company-upgrade-title"
+          },
+          {
+            "px": 65,
+            "y": 1633,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "main-end"
+          },
+          {
+            "px": 55,
+            "y": 56,
+            "above": "main-start",
+            "below": "svg.icon"
+          },
+          {
+            "px": 55,
+            "y": 1231,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "h2.account-section__title#password-title"
+          },
+          {
+            "px": 44,
+            "y": 200,
+            "above": "h1",
+            "below": "h2.account-section__title"
+          }
+        ]
+      },
+      "h1": {
+        "text": "პარამეტრები",
+        "top": 169,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-1",
+      "path": "/requests/new/?step=1",
+      "width": 360,
+      "finalUrl": "/requests/new/?step=1",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2694,
+      "scrollWidth": 360,
+      "viewports": 3.19,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1801
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 157
+      },
+      "topGaps": [
+        {
+          "gap": 504,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 491,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 136,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 116,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 148,
+          "above": "header.post-heading",
+          "below": "div.post-steps__mobile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 323,
+        "width": 303,
+        "rightMargin": 37,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "width": 320,
+        "left": 20,
+        "right": 340,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1801
+      },
+      "form": {
+        "sel": "form#post-request-form",
+        "width": 320,
+        "left": 20,
+        "height": 1207
+      },
+      "fieldMaxWidth": 286,
+      "empty": {
+        "px": 729,
+        "pctOfScroll": 27.1,
+        "pctOfMain": 40.5,
+        "top5": [
+          {
+            "px": 235,
+            "y": 1622,
+            "above": "label.ma-check",
+            "below": "main-end"
+          },
+          {
+            "px": 66,
+            "y": 858,
+            "above": "button.ma-select.ma-custom-select#_r_5_",
+            "below": "summary"
+          },
+          {
+            "px": 48,
+            "y": 357,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 41,
+            "y": 968,
+            "above": "span",
+            "below": "label"
+          },
+          {
+            "px": 37,
+            "y": 1312,
+            "above": "label.ma-check",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 80,
+        "bottom": 148
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-2",
+      "path": "/requests/new/?step=1",
+      "width": 360,
+      "finalUrl": "/requests/new/?step=2",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2474,
+      "scrollWidth": 360,
+      "viewports": 2.93,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1581
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 157
+      },
+      "topGaps": [
+        {
+          "gap": 504,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 491,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 136,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 116,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 148,
+          "above": "header.post-heading",
+          "below": "div.post-steps__mobile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 320,
+        "width": 300,
+        "rightMargin": 40,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "width": 320,
+        "left": 20,
+        "right": 340,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1581
+      },
+      "form": {
+        "sel": "form#post-request-form",
+        "width": 320,
+        "left": 20,
+        "height": 988
+      },
+      "fieldMaxWidth": 270,
+      "empty": {
+        "px": 772,
+        "pctOfScroll": 31.2,
+        "pctOfMain": 48.8,
+        "top5": [
+          {
+            "px": 372,
+            "y": 1265,
+            "above": "label.ma-check",
+            "below": "main-end"
+          },
+          {
+            "px": 48,
+            "y": 357,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 45,
+            "y": 1177,
+            "above": "label.ma-check",
+            "below": "label.ma-check"
+          },
+          {
+            "px": 41,
+            "y": 709,
+            "above": "input.ma-input#neededBy",
+            "below": "p.Post_saved__hVTNY"
+          },
+          {
+            "px": 32,
+            "y": 1102,
+            "above": "input.ma-input#_r_9_-payment",
+            "below": "label.ma-check"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 80,
+        "bottom": 148
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "requests-new-3",
+      "path": "/requests/new/?step=1",
+      "width": 360,
+      "finalUrl": "/requests/new/?step=3",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2545,
+      "scrollWidth": 360,
+      "viewports": 3.02,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1652
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "paddingTop": 24,
+        "paddingBottom": 157
+      },
+      "topGaps": [
+        {
+          "gap": 504,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "div.post-actions__inner",
+          "depth": 4
+        },
+        {
+          "gap": 491,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "div.post-actions",
+          "depth": 3
+        },
+        {
+          "gap": 136,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "fieldset.post-layout",
+          "depth": 4
+        },
+        {
+          "gap": 116,
+          "y": 244,
+          "above": "nav.post-steps",
+          "below": "form#post-request-form",
+          "depth": 3
+        },
+        {
+          "gap": 41,
+          "y": 148,
+          "above": "header.post-heading",
+          "below": "div.post-steps__mobile",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 347,
+        "width": 327,
+        "rightMargin": 13,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.post-page.Post_page__5u0QU",
+        "width": 320,
+        "left": 20,
+        "right": 340,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1652
+      },
+      "asides": [
+        {
+          "sel": "aside.Post_aside__kKneb",
+          "width": 320,
+          "left": 20,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 821,
+        "pctOfScroll": 32.3,
+        "pctOfMain": 49.7,
+        "top5": [
+          {
+            "px": 318,
+            "y": 1390,
+            "above": "p",
+            "below": "main-end"
+          },
+          {
+            "px": 110,
+            "y": 1151,
+            "above": "small",
+            "below": "h2"
+          },
+          {
+            "px": 49,
+            "y": 675,
+            "above": "p.Post_description__6QHlv",
+            "below": "h2"
+          },
+          {
+            "px": 48,
+            "y": 357,
+            "above": "span",
+            "below": "h2"
+          },
+          {
+            "px": 27,
+            "y": 853,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "dt"
+          }
+        ]
+      },
+      "h1": {
+        "text": "მოთხოვნის განთავსება",
+        "top": 80,
+        "bottom": 148
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "deal-view",
+      "path": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "width": 360,
+      "finalUrl": "/deals/view/?id=8e6766e1-b67e-408a-a8c0-e9e6944e115b",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2643,
+      "scrollWidth": 360,
+      "viewports": 3.13,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1750
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.deals_page__ZU8Co",
+        "paddingTop": 24,
+        "paddingBottom": 80
+      },
+      "topGaps": [
+        {
+          "gap": 45,
+          "y": 318,
+          "above": "header.deals_header__kUNgO",
+          "below": "div.deals_mobileSteps__1TNo7",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 318,
+          "above": "header.deals_header__kUNgO",
+          "below": "nav.deals_card__c_uL6.deals_steps__fGYWl",
+          "depth": 3
+        },
+        {
+          "gap": 24,
+          "y": 1462,
+          "above": "div.deals_main___Zxq1",
+          "below": "aside.deals_aside__7dCRg",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 576,
+          "above": "div.deals_mobileOnly__oA1JJ",
+          "below": "div.deals_grid__5pdRh",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 258,
+          "above": "div",
+          "below": "div.deals_actions__HopHI",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 20,
+        "right": 319,
+        "width": 299,
+        "rightMargin": 41,
+        "leftMargin": 20
+      },
+      "widest": {
+        "sel": "div.deals_page__ZU8Co",
+        "width": 320,
+        "left": 20,
+        "right": 340,
+        "rightMargin": 20
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1750
+      },
+      "asides": [
+        {
+          "sel": "aside.deals_aside__7dCRg",
+          "width": 320,
+          "left": 20,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 872,
+        "pctOfScroll": 33,
+        "pctOfMain": 49.8,
+        "top5": [
+          {
+            "px": 113,
+            "y": 1693,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 69,
+            "y": 432,
+            "above": "small",
+            "below": "span"
+          },
+          {
+            "px": 69,
+            "y": 1295,
+            "above": "p.deals_note__omOGq",
+            "below": "p"
+          },
+          {
+            "px": 67,
+            "y": 1441,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "img"
+          },
+          {
+            "px": 64,
+            "y": 1176,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესრულება მიმდინარეობს",
+        "top": 176,
+        "bottom": 202
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "client",
+      "slug": "request-view-own",
+      "path": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "width": 360,
+      "finalUrl": "/requests/view/?id=012ca27c-5913-46e2-899f-254785bd3d23",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 4491,
+      "scrollWidth": 360,
+      "viewports": 5.32,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 3598
+      },
+      "headerHeight": 56,
+      "footerHeight": 57,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 16,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 52,
+          "y": 2415,
+          "above": "div.request-detail-grid",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 3
+        },
+        {
+          "gap": 24,
+          "y": 2003,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 2529,
+          "above": "header.RequestDetail_similarHead__2vPvb",
+          "below": "div",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 15,
+        "right": 360,
+        "width": 345,
+        "rightMargin": 0,
+        "leftMargin": 15
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 3598
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1545,
+        "pctOfScroll": 34.4,
+        "pctOfMain": 42.9,
+        "top5": [
+          {
+            "px": 81,
+            "y": 2132,
+            "above": "dd",
+            "below": "h2"
+          },
+          {
+            "px": 81,
+            "y": 3573,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 76,
+            "y": 1986,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "dt"
+          },
+          {
+            "px": 71,
+            "y": 1317,
+            "above": "button.ma-btn.ma-btn--secondary",
+            "below": "a.ma-ocard__name"
+          },
+          {
+            "px": 66,
+            "y": 671,
+            "above": "p.ma-prose",
+            "below": "h2.detail-section-title"
+          }
+        ]
+      },
+      "rows": {
+        "count": 4,
+        "sel": "article.ma-ocard.ma-ocard--chosen",
+        "heights": [
+          645,
+          338,
+          338,
+          338
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1358
+      },
+      "h1": {
+        "text": "ხის მაგიდების შესყიდვა 1791905313872",
+        "top": 223,
+        "bottom": 328
+      },
+      "pageErrors": []
+    }
+  ],
+  "errors": []
+}

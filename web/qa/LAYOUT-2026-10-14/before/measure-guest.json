@@ -1,0 +1,3208 @@
+{
+  "at": "2026-10-14T06:15:49.397Z",
+  "base": "http://127.0.0.1:3440",
+  "role": "guest",
+  "depth": 4,
+  "pages": [
+    {
+      "role": "guest",
+      "slug": "home",
+      "path": "/",
+      "width": 1440,
+      "finalUrl": "/",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 5353,
+      "scrollWidth": 1440,
+      "viewports": 5.35,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 80,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 4928
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "section.home-hero",
+        "paddingTop": 56,
+        "paddingBottom": 56
+      },
+      "topGaps": [
+        {
+          "gap": 223,
+          "y": 1350,
+          "above": "section.home-section.home-wrap",
+          "below": "h2#live-title",
+          "depth": 3
+        },
+        {
+          "gap": 189,
+          "y": 1350,
+          "above": "section.home-section.home-wrap",
+          "below": "div.HomeSections_intro__Z8CVB",
+          "depth": 2
+        },
+        {
+          "gap": 154,
+          "y": 3679,
+          "above": "section.home-wrap.HomeSections_block__QvHK2",
+          "below": "h2#supplier-title",
+          "depth": 3
+        },
+        {
+          "gap": 149,
+          "y": 1870,
+          "above": "section.home-wrap.HomeSections_block__QvHK2",
+          "below": "h2#home-how-title",
+          "depth": 4
+        },
+        {
+          "gap": 145,
+          "y": 1870,
+          "above": "section.home-wrap.HomeSections_block__QvHK2",
+          "below": "div.home-wrap",
+          "depth": 2
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1320,
+        "width": 1200,
+        "rightMargin": 120,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.home-wrap.hero-layout",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "fullBleed": {
+        "sel": "section.home-hero",
+        "height": 601
+      },
+      "empty": {
+        "px": 1300,
+        "pctOfScroll": 24.3,
+        "pctOfMain": 26.4,
+        "top5": [
+          {
+            "px": 125,
+            "y": 4867,
+            "above": "p",
+            "below": "main-end"
+          },
+          {
+            "px": 111,
+            "y": 608,
+            "above": "img",
+            "below": "strong"
+          },
+          {
+            "px": 111,
+            "y": 2753,
+            "above": "p",
+            "below": "h2#home-companies-title"
+          },
+          {
+            "px": 101,
+            "y": 3658,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img"
+          },
+          {
+            "px": 99,
+            "y": 1332,
+            "above": "svg.icon",
+            "below": "img"
+          }
+        ]
+      },
+      "h1": {
+        "text": "დაწერეთ, რა სჭირდება თქვენს ბიზნესს. მიიღეთ შეთავა",
+        "top": 171,
+        "bottom": 358
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "requests",
+      "path": "/requests/",
+      "width": 1440,
+      "finalUrl": "/requests/",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 2910,
+      "scrollWidth": 1440,
+      "viewports": 2.91,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2485
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.requests-catalog",
+        "paddingTop": 0,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 279,
+          "above": "div.Catalog_requestSearchBar__wFGiK",
+          "below": "aside.catalog-sidebar",
+          "depth": 4
+        },
+        {
+          "gap": 13,
+          "y": 209,
+          "above": "header.catalog-header.catalog-header--opportunities",
+          "below": "div.Catalog_search__QXli6",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1320,
+        "width": 1200,
+        "rightMargin": 120,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "fieldMaxWidth": 933,
+      "asides": [
+        {
+          "sel": "aside.catalog-sidebar",
+          "width": 240,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 612,
+        "pctOfScroll": 21,
+        "pctOfMain": 24.6,
+        "top5": [
+          {
+            "px": 77,
+            "y": 2472,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 2381,
+            "above": "svg.icon",
+            "below": "a.ma-btn.ma-btn--secondary"
+          },
+          {
+            "px": 45,
+            "y": 266,
+            "above": "input.ma-input#query",
+            "below": "button"
+          },
+          {
+            "px": 45,
+            "y": 1871,
+            "above": "svg.icon",
+            "below": "img"
+          },
+          {
+            "px": 40,
+            "y": 64,
+            "above": "main-start",
+            "below": "h1.catalog-title"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ღია მოთხოვნები",
+        "top": 104,
+        "bottom": 149
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "companies",
+      "path": "/companies/",
+      "width": 1440,
+      "finalUrl": "/companies/",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 3594,
+      "scrollWidth": 1440,
+      "viewports": 3.59,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 3169
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.companies-catalog",
+        "paddingTop": 0,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 311,
+          "above": "div",
+          "below": "aside.catalog-sidebar",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1368,
+        "width": 1248,
+        "rightMargin": 72,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "fieldMaxWidth": 948,
+      "asides": [
+        {
+          "sel": "aside.catalog-sidebar",
+          "width": 220,
+          "left": 120,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 866,
+        "pctOfScroll": 24.1,
+        "pctOfMain": 27.3,
+        "top5": [
+          {
+            "px": 89,
+            "y": 3144,
+            "above": "p.Catalog_description__V0VUc",
+            "below": "main-end"
+          },
+          {
+            "px": 65,
+            "y": 1705,
+            "above": "li",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 65,
+            "y": 1961,
+            "above": "li",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 65,
+            "y": 2217,
+            "above": "li",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 65,
+            "y": 2473,
+            "above": "li",
+            "below": "img.Catalog_logo__zbRWt"
+          }
+        ]
+      },
+      "rows": {
+        "count": 11,
+        "sel": "article.Catalog_company__d__bR.Catalog_companyRow__FgSpb",
+        "heights": [
+          240,
+          240,
+          240,
+          240,
+          240,
+          240,
+          240,
+          240
+        ],
+        "fitInFirstScreen": 2,
+        "firstTop": 469
+      },
+      "h1": {
+        "text": "კომპანიები",
+        "top": 104,
+        "bottom": 149
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 1440,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1695,
+      "scrollWidth": 1440,
+      "viewports": 1.7,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1270
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 24,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 52,
+          "y": 782,
+          "above": "div.request-detail-grid",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 132,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 878,
+          "above": "header.RequestDetail_similarHead__2vPvb",
+          "below": "div",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1320,
+        "width": 1200,
+        "rightMargin": 120,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 400,
+          "left": 920,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 433,
+        "pctOfScroll": 25.5,
+        "pctOfMain": 34.1,
+        "top5": [
+          {
+            "px": 81,
+            "y": 1253,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 65,
+            "y": 117,
+            "above": "a",
+            "below": "span.ma-badge.ma-badge--success"
+          },
+          {
+            "px": 59,
+            "y": 782,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2"
+          },
+          {
+            "px": 49,
+            "y": 641,
+            "above": "p",
+            "below": "button.ma-btn.ma-btn--ghost"
+          },
+          {
+            "px": 38,
+            "y": 64,
+            "above": "main-start",
+            "below": "a"
+          }
+        ]
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 215,
+        "bottom": 301
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "company-view",
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "width": 1440,
+      "finalUrl": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 2434,
+      "scrollWidth": 1440,
+      "viewports": 2.43,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2009
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.company-profile",
+        "paddingTop": 32,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 20,
+          "y": 418,
+          "above": "header.CompanyProfile_hero__K6Yh0",
+          "below": "div.CompanyProfile_content__Fb4yg",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1295,
+        "width": 1175,
+        "rightMargin": 145,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.CompanyProfile_sidebar__gGueq",
+          "width": 300,
+          "left": 1020,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 683,
+        "pctOfScroll": 28.1,
+        "pctOfMain": 34,
+        "top5": [
+          {
+            "px": 89,
+            "y": 1984,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "main-end"
+          },
+          {
+            "px": 74,
+            "y": 1121,
+            "above": "button.CompanyProfile_productTile__ZzpQR",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 73,
+            "y": 389,
+            "above": "p",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 73,
+            "y": 1434,
+            "above": "button.CompanyProfile_galleryTile__mVwz4",
+            "below": "h2.detail-section-title#company-reviews"
+          },
+          {
+            "px": 58,
+            "y": 127,
+            "above": "svg.icon",
+            "below": "img"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ხის ხაზი",
+        "top": 185,
+        "bottom": 216
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "how-it-works",
+      "path": "/how-it-works/",
+      "width": 1440,
+      "finalUrl": "/how-it-works/",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 4006,
+      "scrollWidth": 1440,
+      "viewports": 4.01,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 80,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 3581
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.home-wrap.How_page__F62as",
+        "paddingTop": 64,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 142,
+          "y": 742,
+          "above": "section.How_section___YDxt#buyers",
+          "below": "h2#companies",
+          "depth": 4
+        },
+        {
+          "gap": 104,
+          "y": 3179,
+          "above": "section.How_section___YDxt",
+          "below": "div",
+          "depth": 3
+        },
+        {
+          "gap": 96,
+          "y": 176,
+          "above": "h1",
+          "below": "nav.How_paths___ijuZ",
+          "depth": 3
+        },
+        {
+          "gap": 94,
+          "y": 316,
+          "above": "header.How_hero__L7HoO",
+          "below": "h2#buyers-title",
+          "depth": 3
+        },
+        {
+          "gap": 94,
+          "y": 1505,
+          "above": "section.How_supplier__GfPZu#suppliers",
+          "below": "h2#trust-title",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1320,
+        "width": 1200,
+        "rightMargin": 120,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.home-wrap.How_page__F62as",
+        "width": 1200,
+        "left": 120,
+        "right": 1320,
+        "rightMargin": 120
+      },
+      "empty": {
+        "px": 1688,
+        "pctOfScroll": 42.1,
+        "pctOfMain": 47.1,
+        "top5": [
+          {
+            "px": 201,
+            "y": 3444,
+            "above": "a.ma-btn.ma-btn--primary",
+            "below": "main-end"
+          },
+          {
+            "px": 118,
+            "y": 3166,
+            "above": "p",
+            "below": "h2"
+          },
+          {
+            "px": 103,
+            "y": 2581,
+            "above": "a",
+            "below": "h2#faq-title"
+          },
+          {
+            "px": 93,
+            "y": 2071,
+            "above": "p",
+            "below": "h2#help-title"
+          },
+          {
+            "px": 85,
+            "y": 2379,
+            "above": "a",
+            "below": "h3"
+          }
+        ]
+      },
+      "h1": {
+        "text": "როგორ მუშაობს MeetAny",
+        "top": 128,
+        "bottom": 176
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "terms",
+      "path": "/terms/",
+      "width": 1440,
+      "finalUrl": "/terms/",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 3223,
+      "scrollWidth": 1440,
+      "viewports": 3.22,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2798
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.Terms_page__pTw0a",
+        "paddingTop": 48,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 96,
+          "y": 152,
+          "above": "h1",
+          "below": "nav.Terms_contents__GYAGN",
+          "depth": 3
+        },
+        {
+          "gap": 49,
+          "y": 620,
+          "above": "nav.Terms_contents__GYAGN",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 49,
+          "y": 866,
+          "above": "section#platform",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 49,
+          "y": 1162,
+          "above": "section#account",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 49,
+          "y": 1626,
+          "above": "section#requests",
+          "below": "h2",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 340,
+        "right": 942,
+        "width": 602,
+        "rightMargin": 498,
+        "leftMargin": 340
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "empty": {
+        "px": 1542,
+        "pctOfScroll": 47.8,
+        "pctOfMain": 55.1,
+        "top5": [
+          {
+            "px": 93,
+            "y": 2769,
+            "above": "li",
+            "below": "main-end"
+          },
+          {
+            "px": 84,
+            "y": 586,
+            "above": "a",
+            "below": "h2"
+          },
+          {
+            "px": 79,
+            "y": 837,
+            "above": "p",
+            "below": "h2"
+          },
+          {
+            "px": 79,
+            "y": 1133,
+            "above": "li",
+            "below": "h2"
+          },
+          {
+            "px": 79,
+            "y": 1597,
+            "above": "li",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "წესები და კონფიდენციალურობა",
+        "top": 112,
+        "bottom": 152
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "account-login",
+      "path": "/account/",
+      "width": 1440,
+      "finalUrl": "/account/",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1361,
+      "scrollWidth": 1440,
+      "viewports": 1.36,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 936
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.auth-page",
+        "paddingTop": 40,
+        "paddingBottom": 64
+      },
+      "topGaps": [],
+      "content": {
+        "left": 518,
+        "right": 922,
+        "width": 404,
+        "rightMargin": 518,
+        "leftMargin": 518
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "form": {
+        "sel": "form.ma-form.auth-controls",
+        "width": 404,
+        "left": 518,
+        "height": 280
+      },
+      "fieldMaxWidth": 404,
+      "empty": {
+        "px": 604,
+        "pctOfScroll": 44.4,
+        "pctOfMain": 64.5,
+        "top5": [
+          {
+            "px": 237,
+            "y": 763,
+            "above": "button",
+            "below": "main-end"
+          },
+          {
+            "px": 226,
+            "y": 64,
+            "above": "main-start",
+            "below": "h1.auth-title#auth-title"
+          },
+          {
+            "px": 34,
+            "y": 654,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "button"
+          },
+          {
+            "px": 30,
+            "y": 346,
+            "above": "p.auth-lead",
+            "below": "label.ma-field__label"
+          },
+          {
+            "px": 18,
+            "y": 448,
+            "above": "input.ma-input#login-email",
+            "below": "label.ma-field__label"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესვლა",
+        "top": 288,
+        "bottom": 316
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "account-register",
+      "path": "/account/?tab=register",
+      "width": 1440,
+      "finalUrl": "/account/?tab=register",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1474,
+      "scrollWidth": 1440,
+      "viewports": 1.47,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1049
+      },
+      "headerHeight": 64,
+      "footerHeight": 361,
+      "pageWrap": {
+        "sel": "div.ma-page.auth-page",
+        "paddingTop": 40,
+        "paddingBottom": 64
+      },
+      "topGaps": [],
+      "content": {
+        "left": 392,
+        "right": 1047,
+        "width": 655,
+        "rightMargin": 393,
+        "leftMargin": 392
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "form": {
+        "sel": "form.ma-form.auth-controls",
+        "width": 654,
+        "left": 393,
+        "height": 718
+      },
+      "fieldMaxWidth": 654,
+      "empty": {
+        "px": 536,
+        "pctOfScroll": 36.4,
+        "pctOfMain": 51.1,
+        "top5": [
+          {
+            "px": 86,
+            "y": 1027,
+            "above": "button",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 64,
+            "above": "main-start",
+            "below": "h1.auth-title#auth-title"
+          },
+          {
+            "px": 38,
+            "y": 859,
+            "above": "span",
+            "below": "button.ma-btn.ma-btn--primary"
+          },
+          {
+            "px": 34,
+            "y": 803,
+            "above": "input.ma-input#reg-password",
+            "below": "input#reg-terms"
+          },
+          {
+            "px": 34,
+            "y": 949,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "button"
+          }
+        ]
+      },
+      "h1": {
+        "text": "რეგისტრაცია",
+        "top": 137,
+        "bottom": 169
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "home",
+      "path": "/",
+      "width": 390,
+      "finalUrl": "/",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 7104,
+      "scrollWidth": 390,
+      "viewports": 8.42,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 80,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 6239
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "section.home-hero",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 214,
+          "y": 579,
+          "above": "div.hero-copy.HomeSections_heroEnter__wOTKs",
+          "below": "ul.HomeSections_heroStats__r4k3c",
+          "depth": 4
+        },
+        {
+          "gap": 162,
+          "y": 3546,
+          "above": "h3",
+          "below": "h3",
+          "depth": 4
+        },
+        {
+          "gap": 144,
+          "y": 4932,
+          "above": "h2#supplier-title",
+          "below": "ul",
+          "depth": 3
+        },
+        {
+          "gap": 136,
+          "y": 3756,
+          "above": "h3",
+          "below": "h3",
+          "depth": 4
+        },
+        {
+          "gap": 132,
+          "y": 4499,
+          "above": "div.Catalog_companySummary__xgE_E",
+          "below": "div.Catalog_companyActions__4nSO_",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 390,
+        "width": 374,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.home-wrap.hero-layout",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "section.home-hero",
+        "height": 857
+      },
+      "empty": {
+        "px": 2238,
+        "pctOfScroll": 31.5,
+        "pctOfMain": 35.9,
+        "top5": [
+          {
+            "px": 127,
+            "y": 3240,
+            "above": "p.HomeSections_stepText__RK5g_",
+            "below": "h2#home-why-title"
+          },
+          {
+            "px": 122,
+            "y": 6173,
+            "above": "a.ma-btn.ma-btn--primary",
+            "below": "main-end"
+          },
+          {
+            "px": 94,
+            "y": 5353,
+            "above": "a",
+            "below": "h2#home-faq-title"
+          },
+          {
+            "px": 93,
+            "y": 1885,
+            "above": "svg.icon",
+            "below": "p.HomeSections_eyebrow__iZcdX"
+          },
+          {
+            "px": 78,
+            "y": 4023,
+            "above": "p",
+            "below": "h2#home-companies-title"
+          }
+        ]
+      },
+      "rows": {
+        "count": 11,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          389,
+          368,
+          389,
+          368,
+          368,
+          427,
+          427,
+          427
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1513
+      },
+      "h1": {
+        "text": "დაწერეთ, რა სჭირდება თქვენს ბიზნესს. მიიღეთ შეთავა",
+        "top": 122,
+        "bottom": 257
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "requests",
+      "path": "/requests/",
+      "width": 390,
+      "finalUrl": "/requests/",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 7681,
+      "scrollWidth": 390,
+      "viewports": 9.1,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 6816
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.requests-catalog",
+        "paddingTop": 0,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 329,
+          "above": "div.Catalog_requestSearchBar__wFGiK",
+          "below": "div.catalog-main#request-results",
+          "depth": 4
+        },
+        {
+          "gap": 13,
+          "y": 203,
+          "above": "header.catalog-header.catalog-header--opportunities",
+          "below": "div.Catalog_search__QXli6",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 15,
+        "right": 373,
+        "width": 358,
+        "rightMargin": 17,
+        "leftMargin": 15
+      },
+      "widest": {
+        "sel": "div.ma-page.requests-catalog",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 6816
+      },
+      "fieldMaxWidth": 332,
+      "empty": {
+        "px": 2222,
+        "pctOfScroll": 28.9,
+        "pctOfMain": 32.6,
+        "top5": [
+          {
+            "px": 77,
+            "y": 6795,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 6704,
+            "above": "svg.icon",
+            "below": "a.ma-btn.ma-btn--secondary"
+          },
+          {
+            "px": 61,
+            "y": 301,
+            "above": "span",
+            "below": "p.catalog-count"
+          },
+          {
+            "px": 49,
+            "y": 5374,
+            "above": "svg.icon",
+            "below": "button.OpportunityCard_save__rMJyj"
+          },
+          {
+            "px": 49,
+            "y": 6326,
+            "above": "svg.icon",
+            "below": "button.OpportunityCard_save__rMJyj"
+          }
+        ]
+      },
+      "rows": {
+        "count": 12,
+        "sel": "article.OpportunityCard_card__Yvcam.Catalog_fullCard__5QPiG",
+        "heights": [
+          538,
+          538,
+          538,
+          517,
+          538,
+          538,
+          538,
+          538
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 453
+      },
+      "h1": {
+        "text": "ღია მოთხოვნები",
+        "top": 88,
+        "bottom": 123
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "companies",
+      "path": "/companies/",
+      "width": 390,
+      "finalUrl": "/companies/",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 5059,
+      "scrollWidth": 390,
+      "viewports": 5.99,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 4194
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.companies-catalog",
+        "paddingTop": 0,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 307,
+          "above": "div",
+          "below": "section.catalog-main#company-results",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 15,
+        "right": 390,
+        "width": 375,
+        "rightMargin": 0,
+        "leftMargin": 15
+      },
+      "widest": {
+        "sel": "div.ma-page.companies-catalog",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 4194
+      },
+      "fieldMaxWidth": 358,
+      "empty": {
+        "px": 1315,
+        "pctOfScroll": 26,
+        "pctOfMain": 31.4,
+        "top5": [
+          {
+            "px": 81,
+            "y": 4169,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "main-end"
+          },
+          {
+            "px": 50,
+            "y": 2225,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 50,
+            "y": 2583,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 50,
+            "y": 2917,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 50,
+            "y": 3251,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          }
+        ]
+      },
+      "rows": {
+        "count": 11,
+        "sel": "article.Catalog_company__d__bR.Catalog_companyRow__FgSpb",
+        "heights": [
+          318,
+          318,
+          318,
+          342,
+          318,
+          342,
+          318,
+          318
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 564
+      },
+      "h1": {
+        "text": "კომპანიები",
+        "top": 88,
+        "bottom": 123
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 390,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2812,
+      "scrollWidth": 390,
+      "viewports": 3.33,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1947
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 16,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 52,
+          "y": 1452,
+          "above": "div.request-detail-grid",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 3
+        },
+        {
+          "gap": 24,
+          "y": 904,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1567,
+          "above": "header.RequestDetail_similarHead__2vPvb",
+          "below": "div",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 390,
+        "width": 374,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1947
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 852,
+        "pctOfScroll": 30.3,
+        "pctOfMain": 43.8,
+        "top5": [
+          {
+            "px": 83,
+            "y": 880,
+            "above": "p.ma-prose",
+            "below": "dt"
+          },
+          {
+            "px": 81,
+            "y": 1922,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 67,
+            "y": 1170,
+            "above": "p.RequestDetail_note__i2i1i",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 61,
+            "y": 101,
+            "above": "a",
+            "below": "span.ma-badge.ma-badge--success"
+          },
+          {
+            "px": 53,
+            "y": 1452,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          357
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1583
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 223,
+        "bottom": 363
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "company-view",
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "width": 390,
+      "finalUrl": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 3635,
+      "scrollWidth": 390,
+      "viewports": 4.31,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2770
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.company-profile",
+        "paddingTop": 24,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 458,
+          "above": "div.CompanyProfile_identity__Ok62M",
+          "below": "div.CompanyProfile_actions__l8drE",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 2433,
+          "above": "div.CompanyProfile_main__OYyh3",
+          "below": "aside.CompanyProfile_sidebar__gGueq",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 715,
+          "above": "header.CompanyProfile_hero__K6Yh0",
+          "below": "div.CompanyProfile_content__Fb4yg",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 357,
+        "width": 341,
+        "rightMargin": 33,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.company-profile",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2770
+      },
+      "asides": [
+        {
+          "sel": "aside.CompanyProfile_sidebar__gGueq",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1140,
+        "pctOfScroll": 31.4,
+        "pctOfMain": 41.2,
+        "top5": [
+          {
+            "px": 85,
+            "y": 2741,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 686,
+            "above": "p",
+            "below": "h2.detail-section-title#company-about"
+          },
+          {
+            "px": 72,
+            "y": 1135,
+            "above": "span",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 69,
+            "y": 2412,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 66,
+            "y": 1598,
+            "above": "button.CompanyProfile_productTile__ZzpQR",
+            "below": "h2.detail-section-title"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ხის ხაზი",
+        "top": 257,
+        "bottom": 288
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "how-it-works",
+      "path": "/how-it-works/",
+      "width": 390,
+      "finalUrl": "/how-it-works/",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 6026,
+      "scrollWidth": 390,
+      "viewports": 7.14,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 80,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 5161
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.home-wrap.How_page__F62as",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 152,
+          "y": 168,
+          "above": "h1",
+          "below": "nav.How_paths___ijuZ",
+          "depth": 3
+        },
+        {
+          "gap": 102,
+          "y": 1428,
+          "above": "section.How_section___YDxt#buyers",
+          "below": "h2#companies",
+          "depth": 4
+        },
+        {
+          "gap": 80,
+          "y": 5137,
+          "above": "div.home-wrap.How_page__F62as",
+          "below": "main-end",
+          "depth": 0
+        },
+        {
+          "gap": 78,
+          "y": 416,
+          "above": "header.How_hero__L7HoO",
+          "below": "h2#buyers-title",
+          "depth": 3
+        },
+        {
+          "gap": 78,
+          "y": 2454,
+          "above": "section.How_supplier__GfPZu#suppliers",
+          "below": "h2#trust-title",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "rightMargin": 16,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.home-wrap.How_page__F62as",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "empty": {
+        "px": 2491,
+        "pctOfScroll": 41.3,
+        "pctOfMain": 48.3,
+        "top5": [
+          {
+            "px": 153,
+            "y": 5064,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 100,
+            "y": 1403,
+            "above": "span.How_meta__mMH3c",
+            "below": "p.How_eyebrow__84EEw"
+          },
+          {
+            "px": 88,
+            "y": 4120,
+            "above": "a",
+            "below": "h2#faq-title"
+          },
+          {
+            "px": 81,
+            "y": 3687,
+            "above": "a",
+            "below": "h3"
+          },
+          {
+            "px": 79,
+            "y": 2830,
+            "above": "a",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "rows": {
+        "count": 5,
+        "sel": "article.How_card__9hqco",
+        "heights": [
+          272,
+          255,
+          236,
+          219,
+          182
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 2596
+      },
+      "h1": {
+        "text": "როგორ მუშაობს MeetAny",
+        "top": 88,
+        "bottom": 168
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "terms",
+      "path": "/terms/",
+      "width": 390,
+      "finalUrl": "/terms/",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 4937,
+      "scrollWidth": 390,
+      "viewports": 5.85,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 4072
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.Terms_page__pTw0a",
+        "paddingTop": 32,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 124,
+          "y": 152,
+          "above": "h1",
+          "below": "nav.Terms_contents__GYAGN",
+          "depth": 3
+        },
+        {
+          "gap": 68,
+          "y": 3603,
+          "above": "h2",
+          "below": "ul",
+          "depth": 4
+        },
+        {
+          "gap": 45,
+          "y": 648,
+          "above": "nav.Terms_contents__GYAGN",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 45,
+          "y": 1066,
+          "above": "section#platform",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 45,
+          "y": 1508,
+          "above": "section#account",
+          "below": "h2",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 32,
+        "right": 337,
+        "width": 305,
+        "rightMargin": 53,
+        "leftMargin": 32
+      },
+      "widest": {
+        "sel": "div.Terms_page__pTw0a",
+        "width": 326,
+        "left": 32,
+        "right": 358,
+        "rightMargin": 32
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 4072
+      },
+      "empty": {
+        "px": 1821,
+        "pctOfScroll": 36.9,
+        "pctOfMain": 44.7,
+        "top5": [
+          {
+            "px": 80,
+            "y": 614,
+            "above": "a",
+            "below": "h2"
+          },
+          {
+            "px": 73,
+            "y": 4055,
+            "above": "li",
+            "below": "main-end"
+          },
+          {
+            "px": 71,
+            "y": 1041,
+            "above": "p",
+            "below": "h2"
+          },
+          {
+            "px": 71,
+            "y": 1483,
+            "above": "li",
+            "below": "h2"
+          },
+          {
+            "px": 71,
+            "y": 2299,
+            "above": "li",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "წესები და კონფიდენციალურობა",
+        "top": 88,
+        "bottom": 152
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "account-login",
+      "path": "/account/",
+      "width": 390,
+      "finalUrl": "/account/",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 1653,
+      "scrollWidth": 390,
+      "viewports": 1.96,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 788
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.auth-page",
+        "paddingTop": 16,
+        "paddingBottom": 40
+      },
+      "topGaps": [
+        {
+          "gap": 200,
+          "y": 644,
+          "above": "div.ma-container",
+          "below": "main-end",
+          "depth": 0
+        }
+      ],
+      "content": {
+        "left": 36,
+        "right": 354,
+        "width": 318,
+        "rightMargin": 36,
+        "leftMargin": 36
+      },
+      "widest": {
+        "sel": "div.ma-page.auth-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 588
+      },
+      "form": {
+        "sel": "form.ma-form.auth-controls",
+        "width": 318,
+        "left": 36,
+        "height": 280
+      },
+      "fieldMaxWidth": 318,
+      "empty": {
+        "px": 435,
+        "pctOfScroll": 26.3,
+        "pctOfMain": 55.2,
+        "top5": [
+          {
+            "px": 253,
+            "y": 591,
+            "above": "button",
+            "below": "main-end"
+          },
+          {
+            "px": 42,
+            "y": 56,
+            "above": "main-start",
+            "below": "h1.auth-title#auth-title"
+          },
+          {
+            "px": 34,
+            "y": 460,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "button"
+          },
+          {
+            "px": 29,
+            "y": 153,
+            "above": "p.auth-lead",
+            "below": "label.ma-field__label"
+          },
+          {
+            "px": 18,
+            "y": 254,
+            "above": "input.ma-input#login-email",
+            "below": "label.ma-field__label"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესვლა",
+        "top": 96,
+        "bottom": 124
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "account-register",
+      "path": "/account/?tab=register",
+      "width": 390,
+      "finalUrl": "/account/?tab=register",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2014,
+      "scrollWidth": 390,
+      "viewports": 2.39,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1149
+      },
+      "headerHeight": 56,
+      "footerHeight": 809,
+      "pageWrap": {
+        "sel": "div.ma-page.auth-page",
+        "paddingTop": 20,
+        "paddingBottom": 32
+      },
+      "topGaps": [],
+      "content": {
+        "left": 36,
+        "right": 353,
+        "width": 317,
+        "rightMargin": 37,
+        "leftMargin": 36
+      },
+      "widest": {
+        "sel": "div.ma-page.auth-page",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1149
+      },
+      "form": {
+        "sel": "form.ma-form.auth-controls",
+        "width": 316,
+        "left": 37,
+        "height": 876
+      },
+      "fieldMaxWidth": 316,
+      "empty": {
+        "px": 509,
+        "pctOfScroll": 25.3,
+        "pctOfMain": 44.3,
+        "top5": [
+          {
+            "px": 42,
+            "y": 1163,
+            "above": "button",
+            "below": "main-end"
+          },
+          {
+            "px": 41,
+            "y": 56,
+            "above": "main-start",
+            "below": "h1.auth-title#auth-title"
+          },
+          {
+            "px": 38,
+            "y": 1003,
+            "above": "a",
+            "below": "button.ma-btn.ma-btn--primary"
+          },
+          {
+            "px": 34,
+            "y": 895,
+            "above": "input.ma-input#reg-password",
+            "below": "input#reg-terms"
+          },
+          {
+            "px": 34,
+            "y": 1085,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "button"
+          }
+        ]
+      },
+      "h1": {
+        "text": "რეგისტრაცია",
+        "top": 97,
+        "bottom": 125
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "home",
+      "path": "/",
+      "width": 360,
+      "finalUrl": "/",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 7432,
+      "scrollWidth": 360,
+      "viewports": 8.81,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 80,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 6539
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "section.home-hero",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 191,
+          "y": 615,
+          "above": "div.hero-copy.HomeSections_heroEnter__wOTKs",
+          "below": "ul.HomeSections_heroStats__r4k3c",
+          "depth": 4
+        },
+        {
+          "gap": 170,
+          "y": 5176,
+          "above": "h2#supplier-title",
+          "below": "ul",
+          "depth": 3
+        },
+        {
+          "gap": 162,
+          "y": 3686,
+          "above": "h3",
+          "below": "h3",
+          "depth": 4
+        },
+        {
+          "gap": 162,
+          "y": 3896,
+          "above": "h3",
+          "below": "h3",
+          "depth": 4
+        },
+        {
+          "gap": 150,
+          "y": 4689,
+          "above": "div.Catalog_companySummary__xgE_E",
+          "below": "div.Catalog_companyActions__4nSO_",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 360,
+        "width": 344,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.home-wrap.hero-layout",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "section.home-hero",
+        "height": 870
+      },
+      "empty": {
+        "px": 2268,
+        "pctOfScroll": 30.5,
+        "pctOfMain": 34.7,
+        "top5": [
+          {
+            "px": 127,
+            "y": 3356,
+            "above": "p.HomeSections_stepText__RK5g_",
+            "below": "h2#home-why-title"
+          },
+          {
+            "px": 122,
+            "y": 6473,
+            "above": "a.ma-btn.ma-btn--primary",
+            "below": "main-end"
+          },
+          {
+            "px": 94,
+            "y": 5623,
+            "above": "a",
+            "below": "h2#home-faq-title"
+          },
+          {
+            "px": 93,
+            "y": 1923,
+            "above": "svg.icon",
+            "below": "p.HomeSections_eyebrow__iZcdX"
+          },
+          {
+            "px": 78,
+            "y": 4213,
+            "above": "p",
+            "below": "h2#home-companies-title"
+          }
+        ]
+      },
+      "rows": {
+        "count": 11,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          389,
+          368,
+          389,
+          368,
+          368,
+          445,
+          445,
+          445
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1551
+      },
+      "h1": {
+        "text": "დაწერეთ, რა სჭირდება თქვენს ბიზნესს. მიიღეთ შეთავა",
+        "top": 122,
+        "bottom": 293
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "requests",
+      "path": "/requests/",
+      "width": 360,
+      "finalUrl": "/requests/",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 7502,
+      "scrollWidth": 360,
+      "viewports": 8.89,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 6609
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.requests-catalog",
+        "paddingTop": 0,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 329,
+          "above": "div.Catalog_requestSearchBar__wFGiK",
+          "below": "div.catalog-main#request-results",
+          "depth": 4
+        },
+        {
+          "gap": 13,
+          "y": 203,
+          "above": "header.catalog-header.catalog-header--opportunities",
+          "below": "div.Catalog_search__QXli6",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 15,
+        "right": 343,
+        "width": 328,
+        "rightMargin": 17,
+        "leftMargin": 15
+      },
+      "widest": {
+        "sel": "div.ma-page.requests-catalog",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 6609
+      },
+      "fieldMaxWidth": 302,
+      "empty": {
+        "px": 2210,
+        "pctOfScroll": 29.5,
+        "pctOfMain": 33.4,
+        "top5": [
+          {
+            "px": 77,
+            "y": 6588,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 6497,
+            "above": "svg.icon",
+            "below": "a.ma-btn.ma-btn--secondary"
+          },
+          {
+            "px": 61,
+            "y": 301,
+            "above": "span",
+            "below": "p.catalog-count"
+          },
+          {
+            "px": 49,
+            "y": 5209,
+            "above": "svg.icon",
+            "below": "button.OpportunityCard_save__rMJyj"
+          },
+          {
+            "px": 49,
+            "y": 6129,
+            "above": "svg.icon",
+            "below": "button.OpportunityCard_save__rMJyj"
+          }
+        ]
+      },
+      "rows": {
+        "count": 12,
+        "sel": "article.OpportunityCard_card__Yvcam.Catalog_fullCard__5QPiG",
+        "heights": [
+          516,
+          516,
+          516,
+          516,
+          516,
+          516,
+          516,
+          516
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 453
+      },
+      "h1": {
+        "text": "ღია მოთხოვნები",
+        "top": 88,
+        "bottom": 123
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "companies",
+      "path": "/companies/",
+      "width": 360,
+      "finalUrl": "/companies/",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 5231,
+      "scrollWidth": 360,
+      "viewports": 6.2,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 4338
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.companies-catalog",
+        "paddingTop": 0,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 307,
+          "above": "div",
+          "below": "section.catalog-main#company-results",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 15,
+        "right": 360,
+        "width": 345,
+        "rightMargin": 0,
+        "leftMargin": 15
+      },
+      "widest": {
+        "sel": "div.ma-page.companies-catalog",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 4338
+      },
+      "fieldMaxWidth": 328,
+      "empty": {
+        "px": 1327,
+        "pctOfScroll": 25.4,
+        "pctOfMain": 30.6,
+        "top5": [
+          {
+            "px": 81,
+            "y": 4313,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "main-end"
+          },
+          {
+            "px": 50,
+            "y": 2345,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 50,
+            "y": 2703,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 50,
+            "y": 3037,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          },
+          {
+            "px": 50,
+            "y": 3371,
+            "above": "button.engagement_save__xbnhe.engagement_saveLabel__p7g9V",
+            "below": "img.Catalog_logo__zbRWt"
+          }
+        ]
+      },
+      "rows": {
+        "count": 11,
+        "sel": "article.Catalog_company__d__bR.Catalog_companyRow__FgSpb",
+        "heights": [
+          354,
+          318,
+          378,
+          342,
+          342,
+          342,
+          318,
+          318
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 564
+      },
+      "h1": {
+        "text": "კომპანიები",
+        "top": 88,
+        "bottom": 123
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 360,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2914,
+      "scrollWidth": 360,
+      "viewports": 3.45,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2021
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 16,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 52,
+          "y": 1544,
+          "above": "div.request-detail-grid",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 3
+        },
+        {
+          "gap": 24,
+          "y": 928,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 1659,
+          "above": "header.RequestDetail_similarHead__2vPvb",
+          "below": "div",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 360,
+        "width": 344,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2021
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 866,
+        "pctOfScroll": 29.7,
+        "pctOfMain": 42.9,
+        "top5": [
+          {
+            "px": 83,
+            "y": 904,
+            "above": "p.ma-prose",
+            "below": "dt"
+          },
+          {
+            "px": 81,
+            "y": 1996,
+            "above": "svg.icon",
+            "below": "main-end"
+          },
+          {
+            "px": 67,
+            "y": 1262,
+            "above": "p.RequestDetail_note__i2i1i",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 61,
+            "y": 101,
+            "above": "a",
+            "below": "span.ma-badge.ma-badge--success"
+          },
+          {
+            "px": 53,
+            "y": 1544,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          338
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1675
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 223,
+        "bottom": 363
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "company-view",
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "width": 360,
+      "finalUrl": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 3860,
+      "scrollWidth": 360,
+      "viewports": 4.57,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2967
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.company-profile",
+        "paddingTop": 24,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 458,
+          "above": "div.CompanyProfile_identity__Ok62M",
+          "below": "div.CompanyProfile_actions__l8drE",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 2610,
+          "above": "div.CompanyProfile_main__OYyh3",
+          "below": "aside.CompanyProfile_sidebar__gGueq",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 715,
+          "above": "header.CompanyProfile_hero__K6Yh0",
+          "below": "div.CompanyProfile_content__Fb4yg",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 322,
+        "width": 306,
+        "rightMargin": 38,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.company-profile",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2967
+      },
+      "asides": [
+        {
+          "sel": "aside.CompanyProfile_sidebar__gGueq",
+          "width": 328,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1196,
+        "pctOfScroll": 31,
+        "pctOfMain": 40.3,
+        "top5": [
+          {
+            "px": 85,
+            "y": 2938,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 686,
+            "above": "p",
+            "below": "h2.detail-section-title#company-about"
+          },
+          {
+            "px": 72,
+            "y": 1159,
+            "above": "span",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 69,
+            "y": 2589,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 66,
+            "y": 1627,
+            "above": "button.CompanyProfile_productTile__ZzpQR",
+            "below": "h2.detail-section-title"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ხის ხაზი",
+        "top": 257,
+        "bottom": 288
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "how-it-works",
+      "path": "/how-it-works/",
+      "width": 360,
+      "finalUrl": "/how-it-works/",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 6255,
+      "scrollWidth": 360,
+      "viewports": 7.41,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 80,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 5362
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.home-wrap.How_page__F62as",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 152,
+          "y": 168,
+          "above": "h1",
+          "below": "nav.How_paths___ijuZ",
+          "depth": 3
+        },
+        {
+          "gap": 102,
+          "y": 1476,
+          "above": "section.How_section___YDxt#buyers",
+          "below": "h2#companies",
+          "depth": 4
+        },
+        {
+          "gap": 80,
+          "y": 5338,
+          "above": "div.home-wrap.How_page__F62as",
+          "below": "main-end",
+          "depth": 0
+        },
+        {
+          "gap": 78,
+          "y": 416,
+          "above": "header.How_hero__L7HoO",
+          "below": "h2#buyers-title",
+          "depth": 3
+        },
+        {
+          "gap": 78,
+          "y": 2526,
+          "above": "section.How_supplier__GfPZu#suppliers",
+          "below": "h2#trust-title",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "rightMargin": 16,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.home-wrap.How_page__F62as",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "empty": {
+        "px": 2529,
+        "pctOfScroll": 40.4,
+        "pctOfMain": 47.2,
+        "top5": [
+          {
+            "px": 153,
+            "y": 5265,
+            "above": "a.ma-btn.ma-btn--secondary",
+            "below": "main-end"
+          },
+          {
+            "px": 100,
+            "y": 1451,
+            "above": "span.How_meta__mMH3c",
+            "below": "p.How_eyebrow__84EEw"
+          },
+          {
+            "px": 88,
+            "y": 4301,
+            "above": "a",
+            "below": "h2#faq-title"
+          },
+          {
+            "px": 81,
+            "y": 3841,
+            "above": "a",
+            "below": "h3"
+          },
+          {
+            "px": 79,
+            "y": 2929,
+            "above": "a",
+            "below": "svg.icon"
+          }
+        ]
+      },
+      "rows": {
+        "count": 5,
+        "sel": "article.How_card__9hqco",
+        "heights": [
+          299,
+          283,
+          236,
+          219,
+          209
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 2668
+      },
+      "h1": {
+        "text": "როგორ მუშაობს MeetAny",
+        "top": 88,
+        "bottom": 168
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "terms",
+      "path": "/terms/",
+      "width": 360,
+      "finalUrl": "/terms/",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 5403,
+      "scrollWidth": 360,
+      "viewports": 6.4,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 4510
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.Terms_page__pTw0a",
+        "paddingTop": 32,
+        "paddingBottom": 48
+      },
+      "topGaps": [
+        {
+          "gap": 124,
+          "y": 152,
+          "above": "h1",
+          "below": "nav.Terms_contents__GYAGN",
+          "depth": 3
+        },
+        {
+          "gap": 94,
+          "y": 3963,
+          "above": "h2",
+          "below": "ul",
+          "depth": 4
+        },
+        {
+          "gap": 45,
+          "y": 648,
+          "above": "nav.Terms_contents__GYAGN",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 45,
+          "y": 1066,
+          "above": "section#platform",
+          "below": "h2",
+          "depth": 4
+        },
+        {
+          "gap": 45,
+          "y": 1534,
+          "above": "section#account",
+          "below": "h2",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 32,
+        "right": 325,
+        "width": 293,
+        "rightMargin": 35,
+        "leftMargin": 32
+      },
+      "widest": {
+        "sel": "div.Terms_page__pTw0a",
+        "width": 296,
+        "left": 32,
+        "right": 328,
+        "rightMargin": 32
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 4510
+      },
+      "empty": {
+        "px": 1930,
+        "pctOfScroll": 35.7,
+        "pctOfMain": 42.8,
+        "top5": [
+          {
+            "px": 80,
+            "y": 614,
+            "above": "a",
+            "below": "h2"
+          },
+          {
+            "px": 73,
+            "y": 4493,
+            "above": "li",
+            "below": "main-end"
+          },
+          {
+            "px": 71,
+            "y": 1041,
+            "above": "p",
+            "below": "h2"
+          },
+          {
+            "px": 71,
+            "y": 1509,
+            "above": "li",
+            "below": "h2"
+          },
+          {
+            "px": 71,
+            "y": 2455,
+            "above": "li",
+            "below": "h2"
+          }
+        ]
+      },
+      "h1": {
+        "text": "წესები და კონფიდენციალურობა",
+        "top": 88,
+        "bottom": 152
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "account-login",
+      "path": "/account/",
+      "width": 360,
+      "finalUrl": "/account/",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 1681,
+      "scrollWidth": 360,
+      "viewports": 1.99,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 788
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.auth-page",
+        "paddingTop": 16,
+        "paddingBottom": 40
+      },
+      "topGaps": [
+        {
+          "gap": 178,
+          "y": 666,
+          "above": "div.ma-container",
+          "below": "main-end",
+          "depth": 0
+        }
+      ],
+      "content": {
+        "left": 36,
+        "right": 324,
+        "width": 288,
+        "rightMargin": 36,
+        "leftMargin": 36
+      },
+      "widest": {
+        "sel": "div.ma-page.auth-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 610
+      },
+      "form": {
+        "sel": "form.ma-form.auth-controls",
+        "width": 288,
+        "left": 36,
+        "height": 280
+      },
+      "fieldMaxWidth": 288,
+      "empty": {
+        "px": 426,
+        "pctOfScroll": 25.3,
+        "pctOfMain": 54.1,
+        "top5": [
+          {
+            "px": 231,
+            "y": 613,
+            "above": "button",
+            "below": "main-end"
+          },
+          {
+            "px": 47,
+            "y": 460,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "p"
+          },
+          {
+            "px": 42,
+            "y": 56,
+            "above": "main-start",
+            "below": "h1.auth-title#auth-title"
+          },
+          {
+            "px": 29,
+            "y": 153,
+            "above": "p.auth-lead",
+            "below": "label.ma-field__label"
+          },
+          {
+            "px": 18,
+            "y": 254,
+            "above": "input.ma-input#login-email",
+            "below": "label.ma-field__label"
+          }
+        ]
+      },
+      "h1": {
+        "text": "შესვლა",
+        "top": 96,
+        "bottom": 124
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "account-register",
+      "path": "/account/?tab=register",
+      "width": 360,
+      "finalUrl": "/account/?tab=register",
+      "redirected": false,
+      "vw": 360,
+      "vh": 844,
+      "scrollHeight": 2042,
+      "scrollWidth": 360,
+      "viewports": 2.42,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1149
+      },
+      "headerHeight": 56,
+      "footerHeight": 837,
+      "pageWrap": {
+        "sel": "div.ma-page.auth-page",
+        "paddingTop": 20,
+        "paddingBottom": 32
+      },
+      "topGaps": [],
+      "content": {
+        "left": 36,
+        "right": 323,
+        "width": 287,
+        "rightMargin": 37,
+        "leftMargin": 36
+      },
+      "widest": {
+        "sel": "div.ma-page.auth-page",
+        "width": 328,
+        "left": 16,
+        "right": 344,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1149
+      },
+      "form": {
+        "sel": "form.ma-form.auth-controls",
+        "width": 286,
+        "left": 37,
+        "height": 876
+      },
+      "fieldMaxWidth": 286,
+      "empty": {
+        "px": 509,
+        "pctOfScroll": 24.9,
+        "pctOfMain": 44.3,
+        "top5": [
+          {
+            "px": 42,
+            "y": 1163,
+            "above": "button",
+            "below": "main-end"
+          },
+          {
+            "px": 41,
+            "y": 56,
+            "above": "main-start",
+            "below": "h1.auth-title#auth-title"
+          },
+          {
+            "px": 38,
+            "y": 1003,
+            "above": "a",
+            "below": "button.ma-btn.ma-btn--primary"
+          },
+          {
+            "px": 34,
+            "y": 895,
+            "above": "input.ma-input#reg-password",
+            "below": "input#reg-terms"
+          },
+          {
+            "px": 34,
+            "y": 1085,
+            "above": "button.ma-btn.ma-btn--primary",
+            "below": "button"
+          }
+        ]
+      },
+      "h1": {
+        "text": "რეგისტრაცია",
+        "top": 97,
+        "bottom": 125
+      },
+      "pageErrors": []
+    }
+  ],
+  "errors": []
+}
