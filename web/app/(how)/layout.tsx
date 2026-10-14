@@ -36,7 +36,7 @@ export default function HowLayout({ children }: { children: React.ReactNode }) {
         </a>
         <div className="site-shell">
           <Header />
-          <main id="main" className="home-page" tabIndex={-1}>
+          <main id="main" className="home-page how-page" tabIndex={-1}>
             {children}
           </main>
           <Footer />

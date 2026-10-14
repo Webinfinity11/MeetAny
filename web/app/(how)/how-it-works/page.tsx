@@ -31,8 +31,8 @@ export default function HowItWorksPage() {
     <section className={styles.section} id="buyers" aria-labelledby="buyers-title">
       <p className={styles.eyebrow}>მყიდველისთვის</p><h2 id="buyers-title">ერთი მოთხოვნიდან — გარიგებამდე</h2>
       <ol className={styles.steps}>{buyerSteps.map(({ icon, title, text, meta }, i) => <li key={title}>
-        <div className={styles.stepHead}><span className={styles.stepIcon}><Icon name={icon} /></span><span className={styles.connector} /></div>
-        <div><p className={styles.number}>0{i + 1}</p><h3>{title}</h3><p>{text}</p><span className={styles.meta}>{meta}</span></div>
+        <div className={styles.stepHead}><span className={styles.stepIcon}><Icon name={icon} /></span><p className={styles.number}>0{i + 1}</p><span className={styles.connector} /></div>
+        <div><h3>{title}</h3><p>{text}</p><span className={styles.meta}>{meta}</span></div>
       </li>)}</ol>
     </section>
     <section className={styles.supplier} id="suppliers" aria-labelledby="companies">
