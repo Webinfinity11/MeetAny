@@ -1,0 +1,192 @@
+{
+  "pages": [
+    {
+      "name": "requests-new-step1",
+      "width": 1440,
+      "overflow": 0,
+      "primaryInForm": [
+        "შემდეგი"
+      ],
+      "primaryInPage": [
+        "შემდეგი"
+      ],
+      "primaryInViewport": [
+        "შემდეგი"
+      ],
+      "footerPosition": "static",
+      "axe": []
+    },
+    {
+      "name": "requests-new-step3",
+      "width": 1440,
+      "overflow": 0,
+      "primaryInForm": [
+        "განთავსება"
+      ],
+      "primaryInPage": [
+        "განთავსება"
+      ],
+      "primaryInViewport": [
+        "განთავსება"
+      ],
+      "footerPosition": "static",
+      "axe": []
+    },
+    {
+      "name": "company-upgrade",
+      "width": 1440,
+      "overflow": 0,
+      "primaryInForm": [
+        "გააგრძელეთ"
+      ],
+      "primaryInPage": [
+        "შეინახეთ",
+        "გააგრძელეთ",
+        "შეცვალეთ პაროლი"
+      ],
+      "primaryInViewport": [
+        "შეინახეთ",
+        "გააგრძელეთ",
+        "შეცვალეთ პაროლი"
+      ],
+      "footerPosition": "static",
+      "axe": []
+    },
+    {
+      "name": "requests-new-step1",
+      "width": 390,
+      "overflow": 0,
+      "primaryInForm": [
+        "შემდეგი"
+      ],
+      "primaryInPage": [
+        "შემდეგი"
+      ],
+      "primaryInViewport": [
+        "შემდეგი"
+      ],
+      "footerPosition": "sticky",
+      "axe": []
+    },
+    {
+      "name": "requests-new-step3",
+      "width": 390,
+      "overflow": 0,
+      "primaryInForm": [
+        "განთავსება"
+      ],
+      "primaryInPage": [
+        "განთავსება"
+      ],
+      "primaryInViewport": [
+        "განთავსება"
+      ],
+      "footerPosition": "sticky",
+      "axe": []
+    },
+    {
+      "name": "company-upgrade",
+      "width": 390,
+      "overflow": 0,
+      "primaryInForm": [
+        "გააგრძელეთ"
+      ],
+      "primaryInPage": [
+        "შეინახეთ",
+        "გააგრძელეთ",
+        "შეცვალეთ პაროლი"
+      ],
+      "primaryInViewport": [
+        "შეინახეთ",
+        "გააგრძელეთ"
+      ],
+      "footerPosition": "sticky",
+      "axe": []
+    },
+    {
+      "name": "requests-new-step1",
+      "width": 320,
+      "overflow": 0,
+      "primaryInForm": [
+        "შემდეგი"
+      ],
+      "primaryInPage": [
+        "შემდეგი"
+      ],
+      "primaryInViewport": [
+        "შემდეგი"
+      ],
+      "footerPosition": "sticky",
+      "axe": []
+    },
+    {
+      "name": "requests-new-step3",
+      "width": 320,
+      "overflow": 0,
+      "primaryInForm": [
+        "განთავსება"
+      ],
+      "primaryInPage": [
+        "განთავსება"
+      ],
+      "primaryInViewport": [
+        "განთავსება"
+      ],
+      "footerPosition": "sticky",
+      "axe": []
+    },
+    {
+      "name": "company-upgrade",
+      "width": 320,
+      "overflow": 0,
+      "primaryInForm": [
+        "გააგრძელეთ"
+      ],
+      "primaryInPage": [
+        "შეინახეთ",
+        "გააგრძელეთ",
+        "შეცვალეთ პაროლი"
+      ],
+      "primaryInViewport": [
+        "შეინახეთ",
+        "გააგრძელეთ"
+      ],
+      "footerPosition": "sticky",
+      "axe": []
+    }
+  ],
+  "flows": [
+    {
+      "width": 1440,
+      "requestPublished": true,
+      "id": "13070dab-8f4b-4aff-a070-5a53c9f23bfa"
+    },
+    {
+      "width": 1440,
+      "companyUpgrade": true,
+      "url": "http://127.0.0.1:3448/onboarding/?step=type"
+    },
+    {
+      "width": 390,
+      "requestPublished": true,
+      "id": "a72eeb46-9819-4a90-88fe-f27a19f583f3"
+    },
+    {
+      "width": 390,
+      "companyUpgrade": true,
+      "url": "http://127.0.0.1:3448/onboarding/?step=type"
+    },
+    {
+      "width": 320,
+      "requestPublished": true,
+      "id": "b26461f6-d2da-4d3f-885e-7b55edac4721"
+    },
+    {
+      "width": 320,
+      "companyUpgrade": true,
+      "url": "http://127.0.0.1:3448/onboarding/?step=type"
+    }
+  ],
+  "errors": [],
+  "cleanup": true
+}
