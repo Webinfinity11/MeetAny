@@ -1,0 +1,2236 @@
+{
+  "tag": "after-step1-client",
+  "origin": "http://localhost:3420",
+  "role": "signed-in",
+  "samples": [
+    {
+      "route": "request",
+      "run": 0,
+      "load": [
+        3.39404296875,
+        3.5439453125,
+        2.9716796875
+      ],
+      "ready": 1545,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 194.4000000357628,
+          "end": 682,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 194.5,
+          "end": 463.69999998807907,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 194.5,
+          "end": 489,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 194.5,
+          "end": 531.8000000119209,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 194.5,
+          "end": 698.4000000357628,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 194.5,
+          "end": 713.6999999880791,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 194.60000002384186,
+          "end": 765.1999999880791,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/3f3e0252df43aaac.css",
+          "start": 196.4000000357628,
+          "end": 782.1999999880791,
+          "bytes": 5713,
+          "decoded": 31653
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 196.5,
+          "end": 731.6999999880791,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/static/css/233fc057aa95b173.css",
+          "start": 196.5,
+          "end": 965.6999999880791,
+          "bytes": 1906,
+          "decoded": 8847
+        },
+        {
+          "url": "/_next/static/css/8dc5a50c96b96898.css",
+          "start": 196.5,
+          "end": 965.8000000119209,
+          "bytes": 1856,
+          "decoded": 8240
+        },
+        {
+          "url": "/_next/static/css/abefc691cdb571a8.css",
+          "start": 196.5,
+          "end": 989,
+          "bytes": 510,
+          "decoded": 1360
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 196.5,
+          "end": 1055.199999988079,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 197.60000002384186,
+          "end": 1015.1000000238419,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 198.80000001192093,
+          "end": 1130.5,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 198.80000001192093,
+          "end": 1333.699999988079,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 198.9000000357628,
+          "end": 1355.6000000238419,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 198.9000000357628,
+          "end": 1382.699999988079,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+          "start": 198.9000000357628,
+          "end": 2934,
+          "bytes": 63372,
+          "decoded": 201058
+        },
+        {
+          "url": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+          "start": 198.9000000357628,
+          "end": 2991.900000035763,
+          "bytes": 3561,
+          "decoded": 8661
+        },
+        {
+          "url": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+          "start": 198.9000000357628,
+          "end": 3014.900000035763,
+          "bytes": 66499,
+          "decoded": 241480
+        },
+        {
+          "url": "/_next/static/chunks/app/global-error-d17a17c59bf313ef.js",
+          "start": 199,
+          "end": 2933.800000011921,
+          "bytes": 1160,
+          "decoded": 2459
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-0788fd007825c7aa.js",
+          "start": 199,
+          "end": 3132.800000011921,
+          "bytes": 1555,
+          "decoded": 3953
+        },
+        {
+          "url": "/_next/static/chunks/852-741c2695606b1880.js",
+          "start": 199,
+          "end": 3215.699999988079,
+          "bytes": 3751,
+          "decoded": 9563
+        },
+        {
+          "url": "/_next/static/chunks/5582-bbe068a9de999574.js",
+          "start": 199,
+          "end": 3315.5,
+          "bytes": 5483,
+          "decoded": 14290
+        },
+        {
+          "url": "/_next/static/chunks/385-165f935216455f7b.js",
+          "start": 199,
+          "end": 3315.5,
+          "bytes": 3791,
+          "decoded": 10903
+        },
+        {
+          "url": "/_next/static/chunks/4577-0987d3b4c0ec9952.js",
+          "start": 199,
+          "end": 3353.900000035763,
+          "bytes": 21794,
+          "decoded": 66963
+        },
+        {
+          "url": "/_next/static/chunks/9286-e76661959374f6c0.js",
+          "start": 199,
+          "end": 3397.800000011921,
+          "bytes": 4828,
+          "decoded": 11965
+        },
+        {
+          "url": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+          "start": 199,
+          "end": 3500.400000035763,
+          "bytes": 9483,
+          "decoded": 33137
+        },
+        {
+          "url": "/_next/static/chunks/7026-7b4fe66180a4bd23.js",
+          "start": 199,
+          "end": 3615.5,
+          "bytes": 5148,
+          "decoded": 16631
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 199.10000002384186,
+          "end": 989,
+          "bytes": 531,
+          "decoded": 1455
+        },
+        {
+          "url": "/_next/static/chunks/app/(ideas)/layout-0b25ae71f02ecf66.js",
+          "start": 199.10000002384186,
+          "end": 3498.699999988079,
+          "bytes": 337,
+          "decoded": 337
+        },
+        {
+          "url": "/_next/static/chunks/app/(request-view)/error-21118e7cf09c9e4a.js",
+          "start": 199.10000002384186,
+          "end": 3548.600000023842,
+          "bytes": 1062,
+          "decoded": 2209
+        },
+        {
+          "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+          "start": 1062.5,
+          "end": 1782.699999988079,
+          "bytes": 0,
+          "decoded": 0
+        },
+        {
+          "url": "/icons.svg#search",
+          "start": 1062.800000011921,
+          "end": 3632.300000011921,
+          "bytes": 4562,
+          "decoded": 17193
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Regular-ge.woff2",
+          "start": 1085.699999988079,
+          "end": 2382.900000035763,
+          "bytes": 39432,
+          "decoded": 39432
+        },
+        {
+          "url": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+          "start": 1095.199999988079,
+          "end": 2722.300000011921,
+          "bytes": 39916,
+          "decoded": 39916
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Medium-ge.woff2",
+          "start": 1095.300000011921,
+          "end": 2722.300000011921,
+          "bytes": 39996,
+          "decoded": 39996
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Bold-ge.woff2",
+          "start": 1095.300000011921,
+          "end": 2772.400000035763,
+          "bytes": 40100,
+          "decoded": 40100
+        },
+        {
+          "url": "/api/db/bootstrap",
+          "start": 1784.800000011921,
+          "end": 4322.300000011921,
+          "bytes": 136207,
+          "decoded": 136207
+        },
+        {
+          "url": "/_next/static/chunks/6318-0aba41799cb36c27.js",
+          "start": 3079.800000011921,
+          "end": 3848.800000011921,
+          "bytes": 6428,
+          "decoded": 20491
+        },
+        {
+          "url": "/_next/static/chunks/1905-13141cdcf7554b6d.js",
+          "start": 3079.800000011921,
+          "end": 3848.800000011921,
+          "bytes": 8151,
+          "decoded": 27537
+        },
+        {
+          "url": "/_next/static/chunks/4705-e193e6f70d18a73c.js",
+          "start": 3079.900000035763,
+          "end": 3872.300000011921,
+          "bytes": 5465,
+          "decoded": 13943
+        },
+        {
+          "url": "/_next/static/chunks/4900-39aa5c30f2abe98c.js",
+          "start": 3079.900000035763,
+          "end": 3922.300000011921,
+          "bytes": 5573,
+          "decoded": 14727
+        },
+        {
+          "url": "/_next/static/chunks/7735-8a400e6ff4f21548.js",
+          "start": 3084,
+          "end": 3896.900000035763,
+          "bytes": 2771,
+          "decoded": 8423
+        },
+        {
+          "url": "/_next/static/chunks/app/(request-view)/requests/view/page-beb8ea85d6298d5b.js",
+          "start": 3084.100000023842,
+          "end": 4150.5,
+          "bytes": 10169,
+          "decoded": 35322
+        },
+        {
+          "url": "/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3660.600000023842,
+          "end": 4018.600000023842,
+          "bytes": 168,
+          "decoded": 266
+        },
+        {
+          "url": "/requests/new/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3660.699999988079,
+          "end": 4055.699999988079,
+          "bytes": 183,
+          "decoded": 383
+        },
+        {
+          "url": "/?_rsc=I3JJyWD33F36RDvL",
+          "start": 4023.600000023842,
+          "end": 4213.900000035763,
+          "bytes": 1194,
+          "decoded": 4013
+        },
+        {
+          "url": "/requests/new/?_rsc=I3JJyWD33F36RDvL",
+          "start": 4058,
+          "end": 4257.900000035763,
+          "bytes": 1187,
+          "decoded": 3715
+        }
+      ]
+    },
+    {
+      "route": "request",
+      "run": 1,
+      "load": [
+        3.3623046875,
+        3.53466796875,
+        2.9716796875
+      ],
+      "ready": 1121,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 203.10000002384186,
+          "end": 674.6999999880791,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 203.19999998807907,
+          "end": 708.6000000238419,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 203.19999998807907,
+          "end": 745.6999999880791,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 203.30000001192093,
+          "end": 408.69999998807907,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 203.30000001192093,
+          "end": 491.60000002384186,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 203.39999997615814,
+          "end": 491.5,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 203.39999997615814,
+          "end": 726.6000000238419,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 203.39999997615814,
+          "end": 733.6000000238419,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/3f3e0252df43aaac.css",
+          "start": 203.39999997615814,
+          "end": 775.8000000119209,
+          "bytes": 5713,
+          "decoded": 31653
+        },
+        {
+          "url": "/_next/static/css/233fc057aa95b173.css",
+          "start": 203.39999997615814,
+          "end": 860.1000000238419,
+          "bytes": 1906,
+          "decoded": 8847
+        },
+        {
+          "url": "/_next/static/css/8dc5a50c96b96898.css",
+          "start": 203.5,
+          "end": 873,
+          "bytes": 1856,
+          "decoded": 8240
+        },
+        {
+          "url": "/_next/static/css/abefc691cdb571a8.css",
+          "start": 203.5,
+          "end": 926,
+          "bytes": 510,
+          "decoded": 1360
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 203.5,
+          "end": 991.6999999880791,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 207.10000002384186,
+          "end": 963.1999999880791,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 207.19999998807907,
+          "end": 1041.5,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 207.19999998807907,
+          "end": 1214,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 207.19999998807907,
+          "end": 1266.800000011921,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+          "start": 207.19999998807907,
+          "end": 2791.5,
+          "bytes": 63372,
+          "decoded": 201058
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 207.30000001192093,
+          "end": 1225.300000011921,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+          "start": 207.30000001192093,
+          "end": 2850.300000011921,
+          "bytes": 66499,
+          "decoded": 241480
+        },
+        {
+          "url": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+          "start": 207.39999997615814,
+          "end": 1320.8999999761581,
+          "bytes": 3561,
+          "decoded": 8661
+        },
+        {
+          "url": "/_next/static/chunks/app/global-error-d17a17c59bf313ef.js",
+          "start": 207.39999997615814,
+          "end": 2792.600000023842,
+          "bytes": 1160,
+          "decoded": 2459
+        },
+        {
+          "url": "/_next/static/chunks/852-741c2695606b1880.js",
+          "start": 207.39999997615814,
+          "end": 2931.899999976158,
+          "bytes": 3751,
+          "decoded": 9563
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-0788fd007825c7aa.js",
+          "start": 207.39999997615814,
+          "end": 3008.300000011921,
+          "bytes": 1555,
+          "decoded": 3953
+        },
+        {
+          "url": "/_next/static/chunks/4577-0987d3b4c0ec9952.js",
+          "start": 207.39999997615814,
+          "end": 3219.800000011921,
+          "bytes": 21794,
+          "decoded": 66963
+        },
+        {
+          "url": "/_next/static/chunks/385-165f935216455f7b.js",
+          "start": 207.5,
+          "end": 3126,
+          "bytes": 3791,
+          "decoded": 10903
+        },
+        {
+          "url": "/_next/static/chunks/5582-bbe068a9de999574.js",
+          "start": 207.5,
+          "end": 3133.5,
+          "bytes": 5483,
+          "decoded": 14290
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 209,
+          "end": 948.6000000238419,
+          "bytes": 531,
+          "decoded": 1455
+        },
+        {
+          "url": "/_next/static/chunks/9286-e76661959374f6c0.js",
+          "start": 209,
+          "end": 3220,
+          "bytes": 4828,
+          "decoded": 11965
+        },
+        {
+          "url": "/_next/static/chunks/app/(ideas)/layout-0b25ae71f02ecf66.js",
+          "start": 209,
+          "end": 3308.300000011921,
+          "bytes": 337,
+          "decoded": 337
+        },
+        {
+          "url": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+          "start": 209,
+          "end": 3342.800000011921,
+          "bytes": 9483,
+          "decoded": 33137
+        },
+        {
+          "url": "/_next/static/chunks/7026-7b4fe66180a4bd23.js",
+          "start": 209,
+          "end": 3400.100000023842,
+          "bytes": 5148,
+          "decoded": 16631
+        },
+        {
+          "url": "/_next/static/chunks/app/(request-view)/error-21118e7cf09c9e4a.js",
+          "start": 209,
+          "end": 3415.100000023842,
+          "bytes": 1062,
+          "decoded": 2209
+        },
+        {
+          "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+          "start": 999.6000000238419,
+          "end": 1724.699999988079,
+          "bytes": 0,
+          "decoded": 0
+        },
+        {
+          "url": "/icons.svg#search",
+          "start": 1001.6999999880791,
+          "end": 3476.800000011921,
+          "bytes": 4562,
+          "decoded": 17193
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Regular-ge.woff2",
+          "start": 1026.699999988079,
+          "end": 2500.199999988079,
+          "bytes": 39432,
+          "decoded": 39432
+        },
+        {
+          "url": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+          "start": 1043,
+          "end": 2592.399999976158,
+          "bytes": 39916,
+          "decoded": 39916
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Medium-ge.woff2",
+          "start": 1043.1000000238419,
+          "end": 2646.5,
+          "bytes": 39996,
+          "decoded": 39996
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Bold-ge.woff2",
+          "start": 1043.1000000238419,
+          "end": 2696.300000011921,
+          "bytes": 40100,
+          "decoded": 40100
+        },
+        {
+          "url": "/api/db/bootstrap",
+          "start": 1725.5,
+          "end": 4269.899999976158,
+          "bytes": 136207,
+          "decoded": 136207
+        },
+        {
+          "url": "/_next/static/chunks/1905-13141cdcf7554b6d.js",
+          "start": 2931.600000023842,
+          "end": 3641.399999976158,
+          "bytes": 8151,
+          "decoded": 27537
+        },
+        {
+          "url": "/_next/static/chunks/6318-0aba41799cb36c27.js",
+          "start": 2931.699999988079,
+          "end": 3696.800000011921,
+          "bytes": 6428,
+          "decoded": 20491
+        },
+        {
+          "url": "/_next/static/chunks/4705-e193e6f70d18a73c.js",
+          "start": 2931.800000011921,
+          "end": 3742.5,
+          "bytes": 5465,
+          "decoded": 13943
+        },
+        {
+          "url": "/_next/static/chunks/7735-8a400e6ff4f21548.js",
+          "start": 2931.899999976158,
+          "end": 3742.5,
+          "bytes": 2771,
+          "decoded": 8423
+        },
+        {
+          "url": "/_next/static/chunks/4900-39aa5c30f2abe98c.js",
+          "start": 2931.899999976158,
+          "end": 3748.600000023842,
+          "bytes": 5573,
+          "decoded": 14727
+        },
+        {
+          "url": "/_next/static/chunks/app/(request-view)/requests/view/page-beb8ea85d6298d5b.js",
+          "start": 2935.300000011921,
+          "end": 3933.100000023842,
+          "bytes": 10169,
+          "decoded": 35322
+        },
+        {
+          "url": "/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3450.5,
+          "end": 3875.300000011921,
+          "bytes": 168,
+          "decoded": 266
+        },
+        {
+          "url": "/requests/new/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3451.300000011921,
+          "end": 3911,
+          "bytes": 183,
+          "decoded": 383
+        },
+        {
+          "url": "/?_rsc=I3JJyWD33F36RDvL",
+          "start": 3881,
+          "end": 4066.899999976158,
+          "bytes": 1194,
+          "decoded": 4013
+        },
+        {
+          "url": "/requests/new/?_rsc=I3JJyWD33F36RDvL",
+          "start": 3913.899999976158,
+          "end": 4094.100000023842,
+          "bytes": 1187,
+          "decoded": 3715
+        },
+        {
+          "url": "/favicon.ico?v=meetany-20261002",
+          "start": 3955.800000011921,
+          "end": 4241.600000023842,
+          "bytes": 11824,
+          "decoded": 11868
+        },
+        {
+          "url": "/requests/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3956.100000023842,
+          "end": 4125.100000023842,
+          "bytes": 175,
+          "decoded": 327
+        }
+      ]
+    },
+    {
+      "route": "request",
+      "run": 2,
+      "load": [
+        3.2529296875,
+        3.5087890625,
+        2.9658203125
+      ],
+      "ready": 1548,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 186.70000004768372,
+          "end": 782.2000000476837,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 186.80000001192093,
+          "end": 782.3000000119209,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 188.20000004768372,
+          "end": 734.4000000357628,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 188.30000001192093,
+          "end": 498.9000000357628,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 188.30000001192093,
+          "end": 499.10000002384186,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 188.30000001192093,
+          "end": 557.9000000357628,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 188.4000000357628,
+          "end": 783.7000000476837,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/static/css/3f3e0252df43aaac.css",
+          "start": 188.4000000357628,
+          "end": 815.7000000476837,
+          "bytes": 5713,
+          "decoded": 31653
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 188.4000000357628,
+          "end": 815.6000000238419,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/233fc057aa95b173.css",
+          "start": 188.5,
+          "end": 907.7000000476837,
+          "bytes": 1906,
+          "decoded": 8847
+        },
+        {
+          "url": "/_next/static/css/8dc5a50c96b96898.css",
+          "start": 188.5,
+          "end": 1044.800000011921,
+          "bytes": 1856,
+          "decoded": 8240
+        },
+        {
+          "url": "/_next/static/css/abefc691cdb571a8.css",
+          "start": 188.5,
+          "end": 1047.7000000476837,
+          "bytes": 510,
+          "decoded": 1360
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 188.5,
+          "end": 1124.300000011921,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 188.70000004768372,
+          "end": 1074.4000000357628,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 188.80000001192093,
+          "end": 1107.800000011921,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 190.60000002384186,
+          "end": 1384,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 190.70000004768372,
+          "end": 1434.5,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+          "start": 190.70000004768372,
+          "end": 2900.400000035763,
+          "bytes": 63372,
+          "decoded": 201058
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 190.80000001192093,
+          "end": 1383.800000011921,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+          "start": 190.80000001192093,
+          "end": 1457.4000000357628,
+          "bytes": 3561,
+          "decoded": 8661
+        },
+        {
+          "url": "/_next/static/chunks/app/global-error-d17a17c59bf313ef.js",
+          "start": 190.80000001192093,
+          "end": 1657.6000000238419,
+          "bytes": 1160,
+          "decoded": 2459
+        },
+        {
+          "url": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+          "start": 190.80000001192093,
+          "end": 2997,
+          "bytes": 66499,
+          "decoded": 241480
+        },
+        {
+          "url": "/_next/static/chunks/4577-0987d3b4c0ec9952.js",
+          "start": 191.20000004768372,
+          "end": 2300.5,
+          "bytes": 21794,
+          "decoded": 66963
+        },
+        {
+          "url": "/_next/static/chunks/852-741c2695606b1880.js",
+          "start": 191.20000004768372,
+          "end": 2974.5,
+          "bytes": 3751,
+          "decoded": 9563
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-0788fd007825c7aa.js",
+          "start": 191.30000001192093,
+          "end": 2940.900000035763,
+          "bytes": 1555,
+          "decoded": 3953
+        },
+        {
+          "url": "/_next/static/chunks/5582-bbe068a9de999574.js",
+          "start": 191.30000001192093,
+          "end": 3168.800000011921,
+          "bytes": 5483,
+          "decoded": 14290
+        },
+        {
+          "url": "/_next/static/chunks/385-165f935216455f7b.js",
+          "start": 191.4000000357628,
+          "end": 3169,
+          "bytes": 3791,
+          "decoded": 10903
+        },
+        {
+          "url": "/_next/static/chunks/9286-e76661959374f6c0.js",
+          "start": 191.4000000357628,
+          "end": 3234.300000011921,
+          "bytes": 4828,
+          "decoded": 11965
+        },
+        {
+          "url": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+          "start": 191.4000000357628,
+          "end": 3299,
+          "bytes": 9483,
+          "decoded": 33137
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 191.60000002384186,
+          "end": 1033.6000000238419,
+          "bytes": 531,
+          "decoded": 1455
+        },
+        {
+          "url": "/_next/static/chunks/7026-7b4fe66180a4bd23.js",
+          "start": 191.60000002384186,
+          "end": 3269.2000000476837,
+          "bytes": 5148,
+          "decoded": 16631
+        },
+        {
+          "url": "/_next/static/chunks/app/(ideas)/layout-0b25ae71f02ecf66.js",
+          "start": 191.60000002384186,
+          "end": 3274.400000035763,
+          "bytes": 337,
+          "decoded": 337
+        },
+        {
+          "url": "/_next/static/chunks/app/(request-view)/error-21118e7cf09c9e4a.js",
+          "start": 191.60000002384186,
+          "end": 3357.900000035763,
+          "bytes": 1062,
+          "decoded": 2209
+        },
+        {
+          "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+          "start": 1132.4000000357628,
+          "end": 3307.7000000476837,
+          "bytes": 0,
+          "decoded": 0
+        },
+        {
+          "url": "/icons.svg#search",
+          "start": 1135.5,
+          "end": 3371.2000000476837,
+          "bytes": 4562,
+          "decoded": 17193
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Regular-ge.woff2",
+          "start": 1148.1000000238419,
+          "end": 2650.300000011921,
+          "bytes": 39432,
+          "decoded": 39432
+        },
+        {
+          "url": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+          "start": 1148.1000000238419,
+          "end": 2700.400000035763,
+          "bytes": 39916,
+          "decoded": 39916
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Medium-ge.woff2",
+          "start": 1457,
+          "end": 2974.600000023842,
+          "bytes": 39996,
+          "decoded": 39996
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Bold-ge.woff2",
+          "start": 1457,
+          "end": 3094,
+          "bytes": 40100,
+          "decoded": 40100
+        },
+        {
+          "url": "/_next/static/chunks/1905-13141cdcf7554b6d.js",
+          "start": 3092.600000023842,
+          "end": 3469.7000000476837,
+          "bytes": 8151,
+          "decoded": 27537
+        },
+        {
+          "url": "/_next/static/chunks/4705-e193e6f70d18a73c.js",
+          "start": 3092.7000000476837,
+          "end": 3584.800000011921,
+          "bytes": 5465,
+          "decoded": 13943
+        },
+        {
+          "url": "/_next/static/chunks/6318-0aba41799cb36c27.js",
+          "start": 3092.7000000476837,
+          "end": 3599.7000000476837,
+          "bytes": 6428,
+          "decoded": 20491
+        },
+        {
+          "url": "/_next/static/chunks/4900-39aa5c30f2abe98c.js",
+          "start": 3095.400000035763,
+          "end": 3590.900000035763,
+          "bytes": 5573,
+          "decoded": 14727
+        },
+        {
+          "url": "/_next/static/chunks/7735-8a400e6ff4f21548.js",
+          "start": 3095.5,
+          "end": 3615.600000023842,
+          "bytes": 2771,
+          "decoded": 8423
+        },
+        {
+          "url": "/_next/static/chunks/app/(request-view)/requests/view/page-beb8ea85d6298d5b.js",
+          "start": 3095.600000023842,
+          "end": 3748.900000035763,
+          "bytes": 10169,
+          "decoded": 35322
+        },
+        {
+          "url": "/api/db/bootstrap",
+          "start": 3326.100000023842,
+          "end": 4504.900000035763,
+          "bytes": 136207,
+          "decoded": 136207
+        },
+        {
+          "url": "/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3411.300000011921,
+          "end": 3749.100000023842,
+          "bytes": 168,
+          "decoded": 266
+        },
+        {
+          "url": "/requests/new/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3412.900000035763,
+          "end": 3761,
+          "bytes": 183,
+          "decoded": 383
+        },
+        {
+          "url": "/?_rsc=I3JJyWD33F36RDvL",
+          "start": 3757.2000000476837,
+          "end": 3949.2000000476837,
+          "bytes": 1194,
+          "decoded": 4013
+        },
+        {
+          "url": "/requests/new/?_rsc=I3JJyWD33F36RDvL",
+          "start": 3778.900000035763,
+          "end": 3978.600000023842,
+          "bytes": 1188,
+          "decoded": 3715
+        },
+        {
+          "url": "/favicon.ico?v=meetany-20261002",
+          "start": 3785.7000000476837,
+          "end": 4127.200000047684,
+          "bytes": 11824,
+          "decoded": 11868
+        },
+        {
+          "url": "/requests/?_rsc=PLIBLt6-pjCXHSCo",
+          "start": 3839.600000023842,
+          "end": 4008.7000000476837,
+          "bytes": 175,
+          "decoded": 327
+        },
+        {
+          "url": "/requests/?_rsc=I3JJyWD33F36RDvL",
+          "start": 4012.100000023842,
+          "end": 4199.600000023842,
+          "bytes": 1224,
+          "decoded": 4077
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "run": 0,
+      "load": [
+        3.552734375,
+        3.56640625,
+        2.9892578125
+      ],
+      "ready": 1177,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 227.80000001192093,
+          "end": 772.4000000357628,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 228.20000004768372,
+          "end": 566.7000000476837,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 228.20000004768372,
+          "end": 741.6000000238419,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 228.20000004768372,
+          "end": 796.6000000238419,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e321a489414a012c.css",
+          "start": 228.30000001192093,
+          "end": 550.1000000238419,
+          "bytes": 2912,
+          "decoded": 14412
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 228.30000001192093,
+          "end": 550.4000000357628,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 228.30000001192093,
+          "end": 772.5,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 228.30000001192093,
+          "end": 834.1000000238419,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 228.30000001192093,
+          "end": 857.8000000119209,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 228.30000001192093,
+          "end": 1025.6000000238419,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 230.20000004768372,
+          "end": 1016.5,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 230.20000004768372,
+          "end": 1016.6000000238419,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F1877f069-837f-49fa-b4c6-91b79de45601%2Flogo-mv6u6d0w-f65z6fhm-jikPmcyVvK2GRvFXoW2o4413UUL19T.png&w=64&q=75",
+          "start": 230.30000001192093,
+          "end": 1236.7000000476837,
+          "bytes": 68,
+          "decoded": 68
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 230.30000001192093,
+          "end": 1266.9000000357628,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 230.30000001192093,
+          "end": 1294.5,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+          "start": 230.4000000357628,
+          "end": 2810.100000023842,
+          "bytes": 63372,
+          "decoded": 201058
+        },
+        {
+          "url": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+          "start": 230.4000000357628,
+          "end": 2893,
+          "bytes": 66499,
+          "decoded": 241480
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 231.4000000357628,
+          "end": 1266.7000000476837,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/app/global-error-d17a17c59bf313ef.js",
+          "start": 231.5,
+          "end": 2893.5,
+          "bytes": 1160,
+          "decoded": 2459
+        },
+        {
+          "url": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+          "start": 231.5,
+          "end": 2925.400000035763,
+          "bytes": 3561,
+          "decoded": 8661
+        },
+        {
+          "url": "/_next/static/chunks/852-741c2695606b1880.js",
+          "start": 231.5,
+          "end": 3055.800000011921,
+          "bytes": 3751,
+          "decoded": 9563
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-0788fd007825c7aa.js",
+          "start": 231.5,
+          "end": 3091.900000035763,
+          "bytes": 1555,
+          "decoded": 3953
+        },
+        {
+          "url": "/_next/static/chunks/4577-0987d3b4c0ec9952.js",
+          "start": 231.5,
+          "end": 3254.800000011921,
+          "bytes": 21794,
+          "decoded": 66963
+        },
+        {
+          "url": "/_next/static/chunks/5582-bbe068a9de999574.js",
+          "start": 231.60000002384186,
+          "end": 3217.600000023842,
+          "bytes": 5483,
+          "decoded": 14290
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 231.70000004768372,
+          "end": 1026.7000000476837,
+          "bytes": 531,
+          "decoded": 1455
+        },
+        {
+          "url": "/_next/static/chunks/385-165f935216455f7b.js",
+          "start": 231.70000004768372,
+          "end": 3205,
+          "bytes": 3791,
+          "decoded": 10903
+        },
+        {
+          "url": "/_next/static/chunks/9286-e76661959374f6c0.js",
+          "start": 231.70000004768372,
+          "end": 3312.900000035763,
+          "bytes": 4828,
+          "decoded": 11965
+        },
+        {
+          "url": "/_next/static/chunks/app/(ideas)/layout-0b25ae71f02ecf66.js",
+          "start": 231.70000004768372,
+          "end": 3416.800000011921,
+          "bytes": 337,
+          "decoded": 337
+        },
+        {
+          "url": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+          "start": 231.70000004768372,
+          "end": 3419.100000023842,
+          "bytes": 9483,
+          "decoded": 33137
+        },
+        {
+          "url": "/_next/static/chunks/app/(company-view)/error-a15288d31ddd0f70.js",
+          "start": 231.70000004768372,
+          "end": 3466.900000035763,
+          "bytes": 1065,
+          "decoded": 2209
+        },
+        {
+          "url": "/_next/static/chunks/7026-7b4fe66180a4bd23.js",
+          "start": 231.70000004768372,
+          "end": 3484.2000000476837,
+          "bytes": 5148,
+          "decoded": 16631
+        },
+        {
+          "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+          "start": 1033.800000011921,
+          "end": 2303.900000035763,
+          "bytes": 0,
+          "decoded": 0
+        },
+        {
+          "url": "/icons.svg#search",
+          "start": 1035.4000000357628,
+          "end": 3531.600000023842,
+          "bytes": 4562,
+          "decoded": 17193
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Regular-ge.woff2",
+          "start": 1062.800000011921,
+          "end": 2460.800000011921,
+          "bytes": 39432,
+          "decoded": 39432
+        },
+        {
+          "url": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+          "start": 1076.300000011921,
+          "end": 2666.7000000476837,
+          "bytes": 39916,
+          "decoded": 39916
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Medium-ge.woff2",
+          "start": 1076.300000011921,
+          "end": 2667.2000000476837,
+          "bytes": 39996,
+          "decoded": 39996
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Bold-ge.woff2",
+          "start": 1076.300000011921,
+          "end": 2729.400000035763,
+          "bytes": 40100,
+          "decoded": 40100
+        },
+        {
+          "url": "/api/db/bootstrap",
+          "start": 2309.600000023842,
+          "end": 4259.100000023842,
+          "bytes": 136207,
+          "decoded": 136207
+        },
+        {
+          "url": "/_next/static/chunks/1905-13141cdcf7554b6d.js",
+          "start": 3128.800000011921,
+          "end": 3759.5,
+          "bytes": 8151,
+          "decoded": 27537
+        },
+        {
+          "url": "/_next/static/chunks/663-8a6d0f0a6f91cd35.js",
+          "start": 3131.800000011921,
+          "end": 3670.5,
+          "bytes": 4622,
+          "decoded": 12685
+        },
+        {
+          "url": "/_next/static/chunks/4222-f91cf6104cf659d1.js",
+          "start": 3131.900000035763,
+          "end": 3774.800000011921,
+          "bytes": 5428,
+          "decoded": 17222
+        },
+        {
+          "url": "/_next/static/chunks/app/(company-view)/companies/view/page-f99a42f23525361c.js",
+          "start": 3132.300000011921,
+          "end": 3794.300000011921,
+          "bytes": 5836,
+          "decoded": 17368
+        },
+        {
+          "url": "/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3569.300000011921,
+          "end": 3759.900000035763,
+          "bytes": 168,
+          "decoded": 266
+        },
+        {
+          "url": "/requests/new/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3569.5,
+          "end": 3857.900000035763,
+          "bytes": 183,
+          "decoded": 383
+        },
+        {
+          "url": "/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3769.100000023842,
+          "end": 3945.400000035763,
+          "bytes": 1195,
+          "decoded": 4013
+        },
+        {
+          "url": "/favicon.ico?v=meetany-20261002",
+          "start": 3816.600000023842,
+          "end": 4133.200000047684,
+          "bytes": 11824,
+          "decoded": 11868
+        },
+        {
+          "url": "/companies/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3821.300000011921,
+          "end": 4003.300000011921,
+          "bytes": 177,
+          "decoded": 329
+        },
+        {
+          "url": "/requests/new/?category=furniture&company=1877f069-837f-49fa-b4c6-91b79de45601&_rsc=CP71fjRsMrkpUGbv",
+          "start": 3821.300000011921,
+          "end": 4003.400000035763,
+          "bytes": 236,
+          "decoded": 447
+        },
+        {
+          "url": "/requests/new/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3863.100000023842,
+          "end": 4058.400000035763,
+          "bytes": 1188,
+          "decoded": 3715
+        },
+        {
+          "url": "/companies/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 4008.900000035763,
+          "end": 4191.600000023842,
+          "bytes": 1225,
+          "decoded": 3870
+        },
+        {
+          "url": "/requests/new/?category=furniture&company=1877f069-837f-49fa-b4c6-91b79de45601&_rsc=Y4oBO2iavX1nHeuw",
+          "start": 4011.300000011921,
+          "end": 4226.5,
+          "bytes": 1265,
+          "decoded": 3861
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "run": 1,
+      "load": [
+        3.74853515625,
+        3.6064453125,
+        3.0068359375
+      ],
+      "ready": 1118,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 273.30000001192093,
+          "end": 784.6000000238419,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 273.4000000357628,
+          "end": 831.6999999880791,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 273.5,
+          "end": 548.4000000357628,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/e321a489414a012c.css",
+          "start": 273.5,
+          "end": 574.3000000119209,
+          "bytes": 2912,
+          "decoded": 14412
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 273.5,
+          "end": 590.1000000238419,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 273.5,
+          "end": 758.3000000119209,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 273.5,
+          "end": 807.8000000119209,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 273.5,
+          "end": 865,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 273.5,
+          "end": 901.3000000119209,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 273.5,
+          "end": 956.4000000357628,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 277.5,
+          "end": 986.5,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 277.60000002384186,
+          "end": 1001.3000000119209,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F1877f069-837f-49fa-b4c6-91b79de45601%2Flogo-mv6u6d0w-f65z6fhm-jikPmcyVvK2GRvFXoW2o4413UUL19T.png&w=64&q=75",
+          "start": 277.60000002384186,
+          "end": 1206.5,
+          "bytes": 68,
+          "decoded": 68
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 277.60000002384186,
+          "end": 1253.6000000238419,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 277.69999998807907,
+          "end": 1284.800000011921,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+          "start": 277.9000000357628,
+          "end": 2742.100000023842,
+          "bytes": 63372,
+          "decoded": 201058
+        },
+        {
+          "url": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+          "start": 278,
+          "end": 2801.5,
+          "bytes": 66499,
+          "decoded": 241480
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 280.10000002384186,
+          "end": 1284.699999988079,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+          "start": 280.10000002384186,
+          "end": 2898.400000035763,
+          "bytes": 3561,
+          "decoded": 8661
+        },
+        {
+          "url": "/_next/static/chunks/app/global-error-d17a17c59bf313ef.js",
+          "start": 280.10000002384186,
+          "end": 2898.5,
+          "bytes": 1160,
+          "decoded": 2459
+        },
+        {
+          "url": "/_next/static/chunks/852-741c2695606b1880.js",
+          "start": 280.19999998807907,
+          "end": 2989.699999988079,
+          "bytes": 3751,
+          "decoded": 9563
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-0788fd007825c7aa.js",
+          "start": 280.19999998807907,
+          "end": 3008.699999988079,
+          "bytes": 1555,
+          "decoded": 3953
+        },
+        {
+          "url": "/_next/static/chunks/385-165f935216455f7b.js",
+          "start": 280.19999998807907,
+          "end": 3198.900000035763,
+          "bytes": 3791,
+          "decoded": 10903
+        },
+        {
+          "url": "/_next/static/chunks/5582-bbe068a9de999574.js",
+          "start": 280.19999998807907,
+          "end": 3240.100000023842,
+          "bytes": 5483,
+          "decoded": 14290
+        },
+        {
+          "url": "/_next/static/chunks/4577-0987d3b4c0ec9952.js",
+          "start": 280.19999998807907,
+          "end": 3248.300000011921,
+          "bytes": 21794,
+          "decoded": 66963
+        },
+        {
+          "url": "/_next/static/chunks/9286-e76661959374f6c0.js",
+          "start": 280.19999998807907,
+          "end": 3281.699999988079,
+          "bytes": 4828,
+          "decoded": 11965
+        },
+        {
+          "url": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+          "start": 280.19999998807907,
+          "end": 3351.300000011921,
+          "bytes": 9483,
+          "decoded": 33137
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 280.30000001192093,
+          "end": 962.9000000357628,
+          "bytes": 531,
+          "decoded": 1455
+        },
+        {
+          "url": "/_next/static/chunks/app/(ideas)/layout-0b25ae71f02ecf66.js",
+          "start": 280.30000001192093,
+          "end": 3407.800000011921,
+          "bytes": 337,
+          "decoded": 337
+        },
+        {
+          "url": "/_next/static/chunks/7026-7b4fe66180a4bd23.js",
+          "start": 280.30000001192093,
+          "end": 3434.900000035763,
+          "bytes": 5148,
+          "decoded": 16631
+        },
+        {
+          "url": "/_next/static/chunks/app/(company-view)/error-a15288d31ddd0f70.js",
+          "start": 280.30000001192093,
+          "end": 3465,
+          "bytes": 1065,
+          "decoded": 2209
+        },
+        {
+          "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+          "start": 961.3000000119209,
+          "end": 1918,
+          "bytes": 0,
+          "decoded": 0
+        },
+        {
+          "url": "/icons.svg#search",
+          "start": 963.4000000357628,
+          "end": 3509.600000023842,
+          "bytes": 4562,
+          "decoded": 17193
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Regular-ge.woff2",
+          "start": 986.3000000119209,
+          "end": 2541.699999988079,
+          "bytes": 39432,
+          "decoded": 39432
+        },
+        {
+          "url": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+          "start": 996,
+          "end": 2648.300000011921,
+          "bytes": 39916,
+          "decoded": 39916
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Bold-ge.woff2",
+          "start": 996.1000000238419,
+          "end": 2682.300000011921,
+          "bytes": 40100,
+          "decoded": 40100
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Medium-ge.woff2",
+          "start": 996.1000000238419,
+          "end": 2682.400000035763,
+          "bytes": 39996,
+          "decoded": 39996
+        },
+        {
+          "url": "/api/db/bootstrap",
+          "start": 1921.1000000238419,
+          "end": 4234.600000023842,
+          "bytes": 136207,
+          "decoded": 136207
+        },
+        {
+          "url": "/_next/static/chunks/1905-13141cdcf7554b6d.js",
+          "start": 2869.100000023842,
+          "end": 3618.100000023842,
+          "bytes": 8151,
+          "decoded": 27537
+        },
+        {
+          "url": "/_next/static/chunks/663-8a6d0f0a6f91cd35.js",
+          "start": 2869.300000011921,
+          "end": 3698.5,
+          "bytes": 4622,
+          "decoded": 12685
+        },
+        {
+          "url": "/_next/static/chunks/4222-f91cf6104cf659d1.js",
+          "start": 2869.400000035763,
+          "end": 3740.600000023842,
+          "bytes": 5428,
+          "decoded": 17222
+        },
+        {
+          "url": "/_next/static/chunks/app/(company-view)/companies/view/page-f99a42f23525361c.js",
+          "start": 2869.600000023842,
+          "end": 3759.100000023842,
+          "bytes": 5836,
+          "decoded": 17368
+        },
+        {
+          "url": "/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3509.300000011921,
+          "end": 3698.400000035763,
+          "bytes": 168,
+          "decoded": 266
+        },
+        {
+          "url": "/requests/new/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3510.400000035763,
+          "end": 3784.300000011921,
+          "bytes": 183,
+          "decoded": 383
+        },
+        {
+          "url": "/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3704.900000035763,
+          "end": 3901.300000011921,
+          "bytes": 1193,
+          "decoded": 4013
+        },
+        {
+          "url": "/favicon.ico?v=meetany-20261002",
+          "start": 3776.699999988079,
+          "end": 4101.300000011921,
+          "bytes": 11824,
+          "decoded": 11868
+        },
+        {
+          "url": "/companies/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3783.800000011921,
+          "end": 3953.600000023842,
+          "bytes": 177,
+          "decoded": 329
+        },
+        {
+          "url": "/requests/new/?category=furniture&company=1877f069-837f-49fa-b4c6-91b79de45601&_rsc=CP71fjRsMrkpUGbv",
+          "start": 3784,
+          "end": 3958.600000023842,
+          "bytes": 236,
+          "decoded": 447
+        },
+        {
+          "url": "/requests/new/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3788.600000023842,
+          "end": 3996.5,
+          "bytes": 1188,
+          "decoded": 3715
+        },
+        {
+          "url": "/companies/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3958.400000035763,
+          "end": 4148.400000035763,
+          "bytes": 1222,
+          "decoded": 3870
+        },
+        {
+          "url": "/requests/new/?category=furniture&company=1877f069-837f-49fa-b4c6-91b79de45601&_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3961.800000011921,
+          "end": 4156.400000035763,
+          "bytes": 1267,
+          "decoded": 3861
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "run": 2,
+      "load": [
+        3.6884765625,
+        3.59619140625,
+        3.00634765625
+      ],
+      "ready": 1066,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 202.4000000357628,
+          "end": 726.1000000238419,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 202.5,
+          "end": 574,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 202.5,
+          "end": 764.1999999880791,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 202.5,
+          "end": 770.5,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e321a489414a012c.css",
+          "start": 202.60000002384186,
+          "end": 484.80000001192093,
+          "bytes": 2912,
+          "decoded": 14412
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 202.60000002384186,
+          "end": 507.30000001192093,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 202.60000002384186,
+          "end": 692.6999999880791,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 202.60000002384186,
+          "end": 803.1999999880791,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 202.60000002384186,
+          "end": 841.4000000357628,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 203.60000002384186,
+          "end": 861.3000000119209,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 204,
+          "end": 947.8000000119209,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 204,
+          "end": 950.3000000119209,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F1877f069-837f-49fa-b4c6-91b79de45601%2Flogo-mv6u6d0w-f65z6fhm-jikPmcyVvK2GRvFXoW2o4413UUL19T.png&w=64&q=75",
+          "start": 204.10000002384186,
+          "end": 1033.5,
+          "bytes": 68,
+          "decoded": 68
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 204.10000002384186,
+          "end": 1057.199999988079,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 204.10000002384186,
+          "end": 1088.699999988079,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 204.10000002384186,
+          "end": 1147.5,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/938c8c7b-435da335455b5463.js",
+          "start": 204.10000002384186,
+          "end": 2580.900000035763,
+          "bytes": 63372,
+          "decoded": 201058
+        },
+        {
+          "url": "/_next/static/chunks/4273-a3bbbb04fed351f1.js",
+          "start": 204.10000002384186,
+          "end": 2728.5,
+          "bytes": 3561,
+          "decoded": 8661
+        },
+        {
+          "url": "/_next/static/chunks/1362-a634ee0ad559fcf3.js",
+          "start": 204.10000002384186,
+          "end": 2740.100000023842,
+          "bytes": 66499,
+          "decoded": 241480
+        },
+        {
+          "url": "/_next/static/chunks/app/global-error-d17a17c59bf313ef.js",
+          "start": 204.19999998807907,
+          "end": 2683.800000011921,
+          "bytes": 1160,
+          "decoded": 2459
+        },
+        {
+          "url": "/_next/static/chunks/852-741c2695606b1880.js",
+          "start": 204.19999998807907,
+          "end": 2844.199999988079,
+          "bytes": 3751,
+          "decoded": 9563
+        },
+        {
+          "url": "/_next/static/chunks/4577-0987d3b4c0ec9952.js",
+          "start": 204.19999998807907,
+          "end": 3105.400000035763,
+          "bytes": 21794,
+          "decoded": 66963
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-0788fd007825c7aa.js",
+          "start": 204.30000001192093,
+          "end": 2880.900000035763,
+          "bytes": 1555,
+          "decoded": 3953
+        },
+        {
+          "url": "/_next/static/chunks/5582-bbe068a9de999574.js",
+          "start": 204.30000001192093,
+          "end": 3007.300000011921,
+          "bytes": 5483,
+          "decoded": 14290
+        },
+        {
+          "url": "/_next/static/chunks/385-165f935216455f7b.js",
+          "start": 204.30000001192093,
+          "end": 3022.100000023842,
+          "bytes": 3791,
+          "decoded": 10903
+        },
+        {
+          "url": "/_next/static/chunks/9286-e76661959374f6c0.js",
+          "start": 204.30000001192093,
+          "end": 3105.600000023842,
+          "bytes": 4828,
+          "decoded": 11965
+        },
+        {
+          "url": "/_next/static/chunks/app/(ideas)/layout-0b25ae71f02ecf66.js",
+          "start": 204.30000001192093,
+          "end": 3197.5,
+          "bytes": 337,
+          "decoded": 337
+        },
+        {
+          "url": "/_next/static/chunks/9494-f8da61153bbd22c0.js",
+          "start": 204.30000001192093,
+          "end": 3215.699999988079,
+          "bytes": 9483,
+          "decoded": 33137
+        },
+        {
+          "url": "/_next/static/chunks/7026-7b4fe66180a4bd23.js",
+          "start": 204.30000001192093,
+          "end": 3292.100000023842,
+          "bytes": 5148,
+          "decoded": 16631
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 204.4000000357628,
+          "end": 891.6000000238419,
+          "bytes": 531,
+          "decoded": 1455
+        },
+        {
+          "url": "/_next/static/chunks/app/(company-view)/error-a15288d31ddd0f70.js",
+          "start": 204.4000000357628,
+          "end": 3292.300000011921,
+          "bytes": 1065,
+          "decoded": 2209
+        },
+        {
+          "url": "https://ep-withered-glade-b54ts1g5.neonauth.c-7.us-east-2.aws.neon.tech/neondb/auth/get-session",
+          "start": 866,
+          "end": 1524.800000011921,
+          "bytes": 0,
+          "decoded": 0
+        },
+        {
+          "url": "/icons.svg#search",
+          "start": 868.1000000238419,
+          "end": 3340.800000011921,
+          "bytes": 4562,
+          "decoded": 17193
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Regular-ge.woff2",
+          "start": 919.4000000357628,
+          "end": 2347.5,
+          "bytes": 39432,
+          "decoded": 39432
+        },
+        {
+          "url": "/assets/fonts/FiraGO-SemiBold-ge.woff2",
+          "start": 950.5,
+          "end": 2447.699999988079,
+          "bytes": 39916,
+          "decoded": 39916
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Medium-ge.woff2",
+          "start": 950.5,
+          "end": 2473.300000011921,
+          "bytes": 39996,
+          "decoded": 39996
+        },
+        {
+          "url": "/assets/fonts/FiraGO-Bold-ge.woff2",
+          "start": 950.6000000238419,
+          "end": 2515.199999988079,
+          "bytes": 40100,
+          "decoded": 40100
+        },
+        {
+          "url": "/api/db/bootstrap",
+          "start": 1526.5,
+          "end": 4080.300000011921,
+          "bytes": 136207,
+          "decoded": 136207
+        },
+        {
+          "url": "/_next/static/chunks/1905-13141cdcf7554b6d.js",
+          "start": 2813.300000011921,
+          "end": 3527.600000023842,
+          "bytes": 8151,
+          "decoded": 27537
+        },
+        {
+          "url": "/_next/static/chunks/663-8a6d0f0a6f91cd35.js",
+          "start": 2813.400000035763,
+          "end": 3490.600000023842,
+          "bytes": 4622,
+          "decoded": 12685
+        },
+        {
+          "url": "/_next/static/chunks/4222-f91cf6104cf659d1.js",
+          "start": 2815.699999988079,
+          "end": 3597.400000035763,
+          "bytes": 5428,
+          "decoded": 17222
+        },
+        {
+          "url": "/_next/static/chunks/app/(company-view)/companies/view/page-f99a42f23525361c.js",
+          "start": 2815.699999988079,
+          "end": 3597.5,
+          "bytes": 5836,
+          "decoded": 17368
+        },
+        {
+          "url": "/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3341.100000023842,
+          "end": 3527.800000011921,
+          "bytes": 168,
+          "decoded": 266
+        },
+        {
+          "url": "/requests/new/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3341.199999988079,
+          "end": 3664.199999988079,
+          "bytes": 183,
+          "decoded": 383
+        },
+        {
+          "url": "/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3533.900000035763,
+          "end": 3717.199999988079,
+          "bytes": 1193,
+          "decoded": 4013
+        },
+        {
+          "url": "/companies/?_rsc=CP71fjRsMrkpUGbv",
+          "start": 3616,
+          "end": 3790,
+          "bytes": 177,
+          "decoded": 329
+        },
+        {
+          "url": "/requests/new/?category=furniture&company=1877f069-837f-49fa-b4c6-91b79de45601&_rsc=CP71fjRsMrkpUGbv",
+          "start": 3616.100000023842,
+          "end": 3790.100000023842,
+          "bytes": 236,
+          "decoded": 447
+        },
+        {
+          "url": "/favicon.ico?v=meetany-20261002",
+          "start": 3620.900000035763,
+          "end": 3938.699999988079,
+          "bytes": 11824,
+          "decoded": 11868
+        },
+        {
+          "url": "/requests/new/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3668.5,
+          "end": 3880.699999988079,
+          "bytes": 1188,
+          "decoded": 3715
+        },
+        {
+          "url": "/companies/?_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3790.800000011921,
+          "end": 3973.900000035763,
+          "bytes": 1224,
+          "decoded": 3870
+        },
+        {
+          "url": "/requests/new/?category=furniture&company=1877f069-837f-49fa-b4c6-91b79de45601&_rsc=Y4oBO2iavX1nHeuw",
+          "start": 3793.199999988079,
+          "end": 3997.400000035763,
+          "bytes": 1265,
+          "decoded": 3861
+        }
+      ]
+    }
+  ],
+  "profileRole": "client"
+}

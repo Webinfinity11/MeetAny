@@ -1,0 +1,800 @@
+{
+  "tag": "after-step2-guest",
+  "origin": "http://localhost:3420",
+  "role": "guest",
+  "samples": [
+    {
+      "route": "request",
+      "run": 0,
+      "load": [
+        3.49658203125,
+        3.35546875,
+        3.09423828125
+      ],
+      "ready": 1578,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 218.89999997615814,
+          "end": 738.1999999880791,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 221.39999997615814,
+          "end": 794.8999999761581,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 221.5,
+          "end": 520.8999999761581,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 221.5,
+          "end": 767.5,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 221.5999999642372,
+          "end": 460.5999999642372,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 221.5999999642372,
+          "end": 503.80000001192093,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 221.69999998807907,
+          "end": 794.8999999761581,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 221.80000001192093,
+          "end": 767.5,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/static/css/3f3e0252df43aaac.css",
+          "start": 221.80000001192093,
+          "end": 806.5,
+          "bytes": 5713,
+          "decoded": 31653
+        },
+        {
+          "url": "/_next/static/css/233fc057aa95b173.css",
+          "start": 221.80000001192093,
+          "end": 1012.5,
+          "bytes": 1906,
+          "decoded": 8847
+        },
+        {
+          "url": "/_next/static/css/8dc5a50c96b96898.css",
+          "start": 221.89999997615814,
+          "end": 1012.5999999642372,
+          "bytes": 1856,
+          "decoded": 8240
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 221.89999997615814,
+          "end": 1060.300000011921,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/abefc691cdb571a8.css",
+          "start": 223.69999998807907,
+          "end": 1012.3999999761581,
+          "bytes": 510,
+          "decoded": 1360
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 225.69999998807907,
+          "end": 1029.3999999761581,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 225.80000001192093,
+          "end": 1288.699999988079,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 225.80000001192093,
+          "end": 1300.800000011921,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 225.89999997615814,
+          "end": 1300.699999988079,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 225.89999997615814,
+          "end": 1334.0999999642372,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 228,
+          "end": 1020.3000000119209,
+          "bytes": 531,
+          "decoded": 1455
+        }
+      ]
+    },
+    {
+      "route": "request",
+      "run": 1,
+      "load": [
+        3.49658203125,
+        3.35546875,
+        3.09423828125
+      ],
+      "ready": 1547,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 202.0999999642372,
+          "end": 727.8999999761581,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 205.0999999642372,
+          "end": 801.8999999761581,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 205.19999998807907,
+          "end": 446.5999999642372,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 205.19999998807907,
+          "end": 542.1999999880791,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 205.19999998807907,
+          "end": 773.5999999642372,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 205.5999999642372,
+          "end": 508.89999997615814,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 205.5999999642372,
+          "end": 773.6999999880791,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 205.69999998807907,
+          "end": 777.5999999642372,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/static/css/3f3e0252df43aaac.css",
+          "start": 205.69999998807907,
+          "end": 817.6999999880791,
+          "bytes": 5713,
+          "decoded": 31653
+        },
+        {
+          "url": "/_next/static/css/233fc057aa95b173.css",
+          "start": 205.69999998807907,
+          "end": 994.7999999523163,
+          "bytes": 1906,
+          "decoded": 8847
+        },
+        {
+          "url": "/_next/static/css/8dc5a50c96b96898.css",
+          "start": 205.69999998807907,
+          "end": 994.7999999523163,
+          "bytes": 1856,
+          "decoded": 8240
+        },
+        {
+          "url": "/_next/static/css/abefc691cdb571a8.css",
+          "start": 205.69999998807907,
+          "end": 1017.7999999523163,
+          "bytes": 510,
+          "decoded": 1360
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 205.69999998807907,
+          "end": 1080.2999999523163,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 206.0999999642372,
+          "end": 1044.7999999523163,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 206.0999999642372,
+          "end": 1168.3999999761581,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 206.0999999642372,
+          "end": 1306.8999999761581,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 208,
+          "end": 1332.699999988079,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 208.0999999642372,
+          "end": 1306.699999988079,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 209.0999999642372,
+          "end": 1017.8999999761581,
+          "bytes": 531,
+          "decoded": 1455
+        }
+      ]
+    },
+    {
+      "route": "request",
+      "run": 2,
+      "load": [
+        3.37646484375,
+        3.33251953125,
+        3.08740234375
+      ],
+      "ready": 1150,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 245.39999997615814,
+          "end": 698.6999999880791,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 245.5,
+          "end": 540.8999999761581,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 245.5,
+          "end": 724.3000000119209,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 245.5,
+          "end": 807.5999999642372,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 245.5999999642372,
+          "end": 524.3999999761581,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 245.5999999642372,
+          "end": 524.3000000119209,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 245.5999999642372,
+          "end": 774.3000000119209,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/static/css/3f3e0252df43aaac.css",
+          "start": 245.5999999642372,
+          "end": 832.0999999642372,
+          "bytes": 5713,
+          "decoded": 31653
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 245.5999999642372,
+          "end": 832.1999999880791,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/233fc057aa95b173.css",
+          "start": 245.5999999642372,
+          "end": 930.6999999880791,
+          "bytes": 1906,
+          "decoded": 8847
+        },
+        {
+          "url": "/_next/static/css/8dc5a50c96b96898.css",
+          "start": 245.69999998807907,
+          "end": 943,
+          "bytes": 1856,
+          "decoded": 8240
+        },
+        {
+          "url": "/_next/static/css/abefc691cdb571a8.css",
+          "start": 245.69999998807907,
+          "end": 990.8999999761581,
+          "bytes": 510,
+          "decoded": 1360
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 245.69999998807907,
+          "end": 1033.5,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 246,
+          "end": 1033.3999999761581,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 246.0999999642372,
+          "end": 1093.800000011921,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 249.30000001192093,
+          "end": 1033.300000011921,
+          "bytes": 531,
+          "decoded": 1455
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "run": 0,
+      "load": [
+        3.37646484375,
+        3.33251953125,
+        3.08740234375
+      ],
+      "ready": 1591,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 199.30000001192093,
+          "end": 677.1999999880791,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 199.4000000357628,
+          "end": 675.6999999880791,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 199.4000000357628,
+          "end": 722.8000000119209,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e321a489414a012c.css",
+          "start": 199.5,
+          "end": 481.4000000357628,
+          "bytes": 2912,
+          "decoded": 14412
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 199.5,
+          "end": 513.6999999880791,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 199.5,
+          "end": 513.3000000119209,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 199.5,
+          "end": 684.5,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 199.5,
+          "end": 771.1000000238419,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 199.5,
+          "end": 809.1000000238419,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 199.5,
+          "end": 952.1999999880791,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 201.60000002384186,
+          "end": 952.5,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 201.60000002384186,
+          "end": 952.8000000119209,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 201.60000002384186,
+          "end": 1182.5,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F1877f069-837f-49fa-b4c6-91b79de45601%2Flogo-mv6u6d0w-f65z6fhm-jikPmcyVvK2GRvFXoW2o4413UUL19T.png&w=64&q=75",
+          "start": 201.60000002384186,
+          "end": 1159.4000000357628,
+          "bytes": 68,
+          "decoded": 68
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 201.69999998807907,
+          "end": 1217.300000011921,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 202.5,
+          "end": 1197.9000000357628,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 203.4000000357628,
+          "end": 952.4000000357628,
+          "bytes": 531,
+          "decoded": 1455
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "run": 1,
+      "load": [
+        3.37646484375,
+        3.33251953125,
+        3.08740234375
+      ],
+      "ready": 1543,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 179.80000001192093,
+          "end": 688.5,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 180,
+          "end": 530.6000000238419,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 180,
+          "end": 692.3999999761581,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 180,
+          "end": 715.1999999880791,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e321a489414a012c.css",
+          "start": 181.89999997615814,
+          "end": 498.69999998807907,
+          "bytes": 2912,
+          "decoded": 14412
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 182,
+          "end": 499.10000002384186,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 182,
+          "end": 715.6000000238419,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 182,
+          "end": 782.6000000238419,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 182.10000002384186,
+          "end": 806,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 182.10000002384186,
+          "end": 958,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 182.30000001192093,
+          "end": 974.8999999761581,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 182.30000001192093,
+          "end": 975.1999999880791,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 182.5,
+          "end": 1226.8999999761581,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F1877f069-837f-49fa-b4c6-91b79de45601%2Flogo-mv6u6d0w-f65z6fhm-jikPmcyVvK2GRvFXoW2o4413UUL19T.png&w=64&q=75",
+          "start": 184.10000002384186,
+          "end": 1181.6000000238419,
+          "bytes": 68,
+          "decoded": 68
+        },
+        {
+          "url": "/_next/static/chunks/main-app-15dc1b3a633d5679.js",
+          "start": 184.30000001192093,
+          "end": 1215.800000011921,
+          "bytes": 482,
+          "decoded": 482
+        },
+        {
+          "url": "/_next/static/chunks/webpack-3f52d01c52e3089f.js",
+          "start": 184.30000001192093,
+          "end": 1236.199999988079,
+          "bytes": 2735,
+          "decoded": 5528
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 185.60000002384186,
+          "end": 958.1000000238419,
+          "bytes": 531,
+          "decoded": 1455
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "run": 2,
+      "load": [
+        3.42626953125,
+        3.34326171875,
+        3.09228515625
+      ],
+      "ready": 1094,
+      "resources": [
+        {
+          "url": "/_next/static/css/f8653d853c1c7603.css",
+          "start": 208.60000002384186,
+          "end": 700.8000000119209,
+          "bytes": 14845,
+          "decoded": 91859
+        },
+        {
+          "url": "/_next/static/css/7573cb0793c460b4.css",
+          "start": 208.70000004768372,
+          "end": 737.2000000476837,
+          "bytes": 15807,
+          "decoded": 80920
+        },
+        {
+          "url": "/_next/static/css/e321a489414a012c.css",
+          "start": 208.80000001192093,
+          "end": 468.80000001192093,
+          "bytes": 2912,
+          "decoded": 14412
+        },
+        {
+          "url": "/_next/static/css/bd704f98e900073d.css",
+          "start": 208.80000001192093,
+          "end": 503.2000000476837,
+          "bytes": 4369,
+          "decoded": 31508
+        },
+        {
+          "url": "/_next/static/css/a0d15ef3b691d5fe.css",
+          "start": 208.80000001192093,
+          "end": 734,
+          "bytes": 14605,
+          "decoded": 94119
+        },
+        {
+          "url": "/_next/static/css/e3fbdf7b86fdd0cd.css",
+          "start": 209,
+          "end": 505.2000000476837,
+          "bytes": 1518,
+          "decoded": 6104
+        },
+        {
+          "url": "/_next/static/css/45948d4eca5a1c86.css",
+          "start": 211.10000002384186,
+          "end": 673.5,
+          "bytes": 1243,
+          "decoded": 4957
+        },
+        {
+          "url": "/_next/static/css/ac7b9fe432e751b5.css",
+          "start": 211.20000004768372,
+          "end": 775.9000000357628,
+          "bytes": 5650,
+          "decoded": 34791
+        },
+        {
+          "url": "/_next/static/css/01b578c7d1532412.css",
+          "start": 211.20000004768372,
+          "end": 803.6000000238419,
+          "bytes": 8096,
+          "decoded": 49721
+        },
+        {
+          "url": "/_next/static/css/5f087b44090ef217.css",
+          "start": 211.20000004768372,
+          "end": 852,
+          "bytes": 1006,
+          "decoded": 3452
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-symbol-transparent.png&w=48&q=75",
+          "start": 211.60000002384186,
+          "end": 920.7000000476837,
+          "bytes": 1346,
+          "decoded": 1346
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark.png&w=96&q=75",
+          "start": 211.70000004768372,
+          "end": 925,
+          "bytes": 2092,
+          "decoded": 2092
+        },
+        {
+          "url": "/_next/image/?url=%2Fassets%2Fmeetany-wordmark-light.png&w=96&q=75",
+          "start": 211.70000004768372,
+          "end": 1087,
+          "bytes": 1850,
+          "decoded": 1850
+        },
+        {
+          "url": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F1877f069-837f-49fa-b4c6-91b79de45601%2Flogo-mv6u6d0w-f65z6fhm-jikPmcyVvK2GRvFXoW2o4413UUL19T.png&w=64&q=75",
+          "start": 211.80000001192093,
+          "end": 1060.2000000476837,
+          "bytes": 68,
+          "decoded": 68
+        },
+        {
+          "url": "/_next/static/css/05e0cfccf77e39c9.css",
+          "start": 215.5,
+          "end": 877.6000000238419,
+          "bytes": 531,
+          "decoded": 1455
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "kind": "request",
+    "role": "guest",
+    "width": 1440,
+    "bootstrap": "/api/db/bootstrap?detail=request&id=26b44585-e6d4-4d3c-b359-532d0fb1f4d2&seeded=1",
+    "bytes": 10959,
+    "requests": 7,
+    "companies": 0,
+    "seeded": true,
+    "errors": []
+  },
+  {
+    "kind": "company",
+    "role": "guest",
+    "width": 1440,
+    "bootstrap": "/api/db/bootstrap?detail=company&id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "bytes": 1065,
+    "requests": 0,
+    "companies": 1,
+    "seeded": false,
+    "errors": [],
+    "catalogCompanies": 16
+  },
+  {
+    "kind": "request",
+    "role": "guest",
+    "width": 390,
+    "bootstrap": "/api/db/bootstrap?detail=request&id=26b44585-e6d4-4d3c-b359-532d0fb1f4d2&seeded=1",
+    "bytes": 10959,
+    "requests": 7,
+    "companies": 0,
+    "seeded": true,
+    "errors": []
+  },
+  {
+    "kind": "company",
+    "role": "guest",
+    "width": 390,
+    "bootstrap": "/api/db/bootstrap?detail=company&id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "bytes": 1065,
+    "requests": 0,
+    "companies": 1,
+    "seeded": false,
+    "errors": [],
+    "catalogCompanies": 16
+  },
+  {
+    "kind": "request",
+    "role": "client",
+    "width": 1440,
+    "bootstrap": "/api/db/bootstrap?detail=request&id=26b44585-e6d4-4d3c-b359-532d0fb1f4d2&seeded=1",
+    "bytes": 28448,
+    "requests": 8,
+    "companies": 1,
+    "seeded": true,
+    "errors": []
+  },
+  {
+    "kind": "company",
+    "role": "client",
+    "width": 1440,
+    "bootstrap": "/api/db/bootstrap?detail=company&id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "bytes": 13139,
+    "requests": 0,
+    "companies": 1,
+    "seeded": false,
+    "errors": [],
+    "catalogCompanies": 16
+  },
+  {
+    "kind": "request",
+    "role": "client",
+    "width": 390,
+    "bootstrap": "/api/db/bootstrap?detail=request&id=26b44585-e6d4-4d3c-b359-532d0fb1f4d2&seeded=1",
+    "bytes": 28449,
+    "requests": 8,
+    "companies": 1,
+    "seeded": true,
+    "errors": []
+  },
+  {
+    "kind": "company",
+    "role": "client",
+    "width": 390,
+    "bootstrap": "/api/db/bootstrap?detail=company&id=1877f069-837f-49fa-b4c6-91b79de45601",
+    "bytes": 13139,
+    "requests": 0,
+    "companies": 1,
+    "seeded": false,
+    "errors": [],
+    "catalogCompanies": 16
+  }
+]
