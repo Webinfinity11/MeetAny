@@ -35,7 +35,7 @@ export type CompanyListingData = {
   stats: { sent: number; chosen: number };
 };
 
-/** Catalog cards keep identity together, then give the description the full width. */
+/** Catalog rows keep identity, services and secondary actions in two compact bands. */
 export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogLayout = "grid" }: { c: CompanyListingData; entranceIndex?: number; catalog?: boolean; catalogLayout?: "grid" | "list" }) {
   const href = `/companies/view/?id=${encodeURIComponent(c.id)}`;
   const cityIds = [...new Set((c.serviceCities.filter(Boolean).length ? c.serviceCities : [c.city]).filter(Boolean))];
@@ -43,22 +43,20 @@ export function CompanyListingCard({ c, entranceIndex, catalog = false, catalogL
   const image = companyImage(c.name, c.logoUrl, c.gallery);
   const isLogo = !!c.logoUrl && !c.gallery?.[0];
   const isDemo = c.about.startsWith("სადემო კომპანია.");
-  const description = isDemo ? c.about.replace(/^სადემო კომპანია\. ინფორმაცია და ფოტოები საილუსტრაციოა\.\s*/, "") : c.about;
   const entrance = entranceIndex != null && entranceIndex < 12;
   if (catalog) return <article className={`${styles.company}${catalogLayout === "list" ? ` ${styles.companyRow}` : ""}`}>
     <header className={styles.companyIdentity}>
       {image ? <Image unoptimized={!optimizable(image)} className={`${styles.logo}${isLogo ? ` ${styles.containedLogo}` : ""}`} src={image} alt="" width={56} height={56} loading="lazy" /> : <Avatar name={c.name} size={56} className={styles.logo} />}
       <div className={styles.companyDetails}>
-        <h3><Link href={href}>{c.name}</Link>{c.verified && <span role="img" aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
+        <h3><Link className="card-main-link" href={href}>{c.name}</Link>{c.verified && <span role="img" aria-label="ვერიფიცირებული"><Icon name="badge-check" /></span>}</h3>
         <p>{categories[c.industry] || c.industry}{c.city ? ` · ${cities[c.city] || c.city}` : ""}</p>
-        {isDemo ? <Badge className={styles.demoLabel}>სადემო კომპანია</Badge> : null}
       </div>
     </header>
     <div className={styles.companySummary}>
-      {description && <p className={styles.description}>{description}</p>}
-      {c.offers.length > 0 && <ul className={styles.services} aria-label="მომსახურება">{c.offers.slice(0, 2).map((offer, index) => <li key={index}>{offer}</li>)}{c.offers.length > 2 && <li>+{c.offers.length - 2}</li>}</ul>}
+      {isDemo ? <span className={styles.demoLabel}>სადემო კომპანია</span> : null}
+      {c.offers.length > 0 && <ul className={styles.services} aria-label="მომსახურება">{c.offers.slice(0, 1).map((offer, index) => <li key={index} title={offer}>{offer}</li>)}{c.offers.length > 1 && <li className={styles.moreServices} title={c.offers.slice(1).join(", ")}>+{c.offers.length - 1}</li>}</ul>}
     </div>
-    <div className={styles.companyActions}><Button variant="secondary" href={href}>პროფილის ნახვა</Button><SaveCompanyButton id={c.id}/></div>
+    <div className={styles.companyActions}>{c.phone ? <CallButton phone={c.phone} variant="secondary" contactId={c.id} source="company-list" /> : null}<SaveCompanyButton id={c.id} icon /></div>
   </article>;
   return (
     <article className={`company-card${catalog ? " company-card--catalog" : ""}`} data-enter={entrance ? "" : undefined} style={entrance ? { "--i": entranceIndex } as CSSProperties : undefined}>

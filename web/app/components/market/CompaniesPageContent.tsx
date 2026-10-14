@@ -102,6 +102,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
       feature: featureById.get(c.id),
       name: c.company || c.name,
       logoUrl: c.logoUrl,
+      phone: c.phone,
       gallery: c.gallery,
       industry: c.industry,
       city: c.city,
