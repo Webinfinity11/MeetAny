@@ -1,0 +1,48 @@
+== tsc
+tsc exit 0
+== eslint
+eslint exit 0
+== lint:design
+
+> web@0.1.0 lint:design
+> node scripts/lint-design.mjs
+
+დიზაინის შემოწმება წარმატებულია: სკალა, შეხების ზომები, CSS ტოკენები და საერთო Button.
+design exit 0
+== unit (node22)
+# tests 133
+# suites 0
+# pass 133
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 738.86125
+unit exit 
+== build
+├ ○ /how-it-works
+├ ○ /ideas
+├   /ideas/[slug]
+│ ├ ● /ideas/office-supply
+│ ├ ● /ideas/brand-packaging
+│ ├ ● /ideas/workspace-care
+│ └ ● [+3 more paths]
+├ ○ /matching
+├ ○ /offers/new
+├ ƒ /og
+├ ○ /onboarding
+├ ○ /opengraph-image
+├ ƒ /requests
+├ ○ /requests/compare
+├ ƒ /requests/new
+├ ƒ /requests/view
+├ ○ /robots.txt
+├ ○ /sitemap.xml                         1h      1y
+└ ○ /terms
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+build exit 
