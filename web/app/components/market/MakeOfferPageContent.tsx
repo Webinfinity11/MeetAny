@@ -78,9 +78,9 @@ export function MakeOfferPageContent() {
               <dl className={styles.previewFacts}><div><dt>ჯამური ფასი</dt><dd>{price}</dd></div><div><dt>მიწოდება</dt><dd>{delivery}</dd></div></dl>
               <p className={styles.previewBody}>{state.values.body.trim().split('\n')[0] || 'აქ გამოჩნდება თქვენი შეთავაზების მოკლე აღწერა.'}</p>
             </section>
-            <div className={styles.desktopActions}>{submit}<Button variant="secondary" disabled={state.pending || state.fileBusy} onClick={() => router.push(requestHref)}>მოთხოვნაზე დაბრუნება</Button></div>
+            <Link className={styles.returnLink} href={requestHref} aria-disabled={state.pending || state.fileBusy || undefined} onClick={event => { if (state.pending || state.fileBusy) event.preventDefault(); }}>მოთხოვნაზე დაბრუნება</Link>
           </>}
-          footer={<div className={styles.mobileActions}><span>{price} · {delivery}</span>{submit}</div>}>
+          footer={<div className={styles.footerActions}><span>{price} · {delivery}</span>{submit}</div>}>
           <section className={styles.panel}>{form}</section>
         </FormLayout>;
       }}/>}

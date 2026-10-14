@@ -100,10 +100,11 @@
 .previewFacts dt { font-size: var(--fs-meta); line-height: var(--lh-meta); color: var(--text-3); }
 .previewFacts dd { margin: var(--space-1) 0 0; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-semibold); overflow-wrap: normal; }
 .previewBody { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--text-3); }
-.desktopActions { display: none; }
-.mobileActions { display: grid; gap: var(--space-2); }
-.mobileActions > span { font-size: var(--fs-meta); line-height: var(--lh-meta); }
-.mobileActions button, .desktopActions button { white-space: normal; width: 100%; }
+.returnLink { display: inline-flex; align-items: center; min-height: var(--tap-min); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+.returnLink[aria-disabled="true"] { opacity: .5; cursor: default; }
+.footerActions { display: grid; gap: var(--space-2); }
+.footerActions > span { font-size: var(--fs-meta); line-height: var(--lh-meta); }
+.footerActions button { white-space: normal; width: 100%; }
 @media (max-width: 767px) {
   .layout.layout h1 { font-size: var(--fs-h2); }
   .breadcrumbs { overflow: visible; font-size: var(--fs-meta); line-height: var(--lh-meta); }
@@ -112,6 +113,6 @@
   .breadcrumbs .requestCrumb { overflow: visible; }
 }
 @media (min-width: 1024px) {
-  .desktopActions { display: grid; gap: var(--stack-gap); }
-  .layout > [data-form-footer] { display: none; }
+  .footerActions { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--stack-gap); }
+  .footerActions button { width: auto; }
 }
