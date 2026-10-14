@@ -64,7 +64,7 @@
   background: var(--canvas);
 }
 .bare .page {
-  margin-block: 20vh;
+  margin-block: var(--page-pad-y);
 }
 
 @media (max-width: 640px) {
