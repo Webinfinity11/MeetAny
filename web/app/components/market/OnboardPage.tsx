@@ -8,19 +8,19 @@ import { toast } from '../Toasts';
 import { ConfirmSheet } from '../ui/ConfirmSheet';
 import { Notice } from '../ui/Notice';
 import { Button } from '../ui/Button';
+import { FormLayout } from '../ui/FormLayout';
 import { Icon } from '../Icon';
 import { Logo } from '../Logo';
 import { DetailSkeleton, ListSkeleton } from './Skeletons';
-import { OnboardPreview, OnboardSteps, stepLabels, titles, leads } from './OnboardSteps';
+import { OnboardPreview, OnboardSteps, stepLabels, leads } from './OnboardSteps';
 import s from './onboarding.module.css';
 
 export function OnboardLoading() {
   return <div className={s.page}>
     <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><Button variant="ghost" href="/account/">გადით</Button></div></header>
-    <div className={s.shell}>
-      <aside className={s.navigation}><ListSkeleton compact kind="records" label="ნაბიჯები იტვირთება…" /></aside>
-      <main className={s.main}><DetailSkeleton compact label="კომპანიის პროფილი იტვირთება…" /></main>
-    </div>
+    <main className={s.shell}><FormLayout steps={<ListSkeleton compact kind="records" label="ნაბიჯები იტვირთება…" />}>
+      <DetailSkeleton compact label="კომპანიის პროფილი იტვირთება…" />
+    </FormLayout></main>
   </div>;
 }
 
@@ -205,20 +205,30 @@ export function OnboardPage() {
     }
     void save(target);
   };
+  const status = (key: OnboardStep) => key === step ? 'მიმდინარე' : completed[key] ? 'შევსებულია' : 'მომავალი';
+  const completedCount = steps.filter(key => completed[key]).length;
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>შეინახეთ და გადით</Button></div></header>
-    <div className={s.shell}><nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span>{isComplete(key) ? <Icon name="check" /> : i + 1}</span>{stepLabels[key]}</button></li>)}</ol></nav>
-      <main className={s.main}><nav className={s.mobileProgress} aria-label="მობილური ნაბიჯები"><div><strong>{stepLabels[step]}</strong><span>ნაბიჯი {index + 1} / {steps.length}</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-label={`${i + 1}. ${stepLabels[key]}`} aria-current={key === step ? "step" : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
-        <h1 ref={heading} tabIndex={-1}>{titles[step]}</h1><p className={s.lead}>{leads[step]}</p>
-        <p className={s.draftStatus} role="status">{hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : ''}</p>
-        {restoredDraft && <Notice tone="info" className={s.draftNotice} action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გააუქმეთ</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
-        <form noValidate ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1], index === last); }}>
-          <fieldset disabled={pending} className={s.formFieldset}><div className={s.columns}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div>{!['details', 'review'].includes(step) && <aside className={s.aside}><OnboardPreview profile={model.profile} products={model.products} step={step} /></aside>}</div></fieldset>
+    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გადით</Button></div></header>
+    <main className={s.shell}>
+      <FormLayout title={stepLabels[step]} subtitle={leads[step]} titleRef={heading}
+        steps={<>
+          <nav className={s.navigation} aria-label="პროფილის ნაბიჯები"><p>კომპანიის ანგარიში</p><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span className={s.stepNumber}>{isComplete(key) ? <Icon name="check" /> : i + 1}</span><span className={s.stepCopy}><span>{stepLabels[key]}</span><small>{status(key)}</small></span></button></li>)}</ol></nav>
+          <nav className={s.mobileProgress} aria-label="პროფილის ნაბიჯები"><div><strong>ნაბიჯი {index + 1} / {steps.length}</strong><span>მიმდინარე</span></div><ol>{steps.map((key, i) => <li key={key}><button type="button" disabled={pending} data-complete={isComplete(key) || undefined} aria-label={`${i + 1}. ${stepLabels[key]} — ${status(key)}`} aria-current={key === step ? 'step' : undefined} onClick={() => go(key)}><span /></button></li>)}</ol></nav>
+        </>}
+        aside={<>
+          <OnboardPreview profile={model.profile} products={model.products} step={step} />
+          <section className={s.progressPanel} aria-label="შევსების პროგრესი"><strong>შევსებულია {completedCount}/{steps.length} ნაბიჯი</strong><progress value={completedCount} max={steps.length} aria-label="შევსებული ნაბიჯები" /><p className={s.draftStatus} role="status">{pending ? 'ინახება…' : hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : 'ცვლილებები შენახულია'}</p><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გადით</Button></section>
+        </>}
+        footer={<div className={s.actions}><Button variant="secondary" disabled={pending || index === 0} onClick={() => go(steps[index - 1])}>უკან</Button><Button type="submit" form="onboard-form" loading={pending}>{index === last ? 'დასრულება' : 'შემდეგი'}</Button></div>}
+      >
+        {restoredDraft && <Notice tone="info" action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გააუქმეთ</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
+        <form id="onboard-form" noValidate ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1], index === last); }}>
+          <fieldset disabled={pending} className={s.formFieldset}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div></fieldset>
           {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შეასწორეთ</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
-          <div className={s.actions}><span className={s.autosave} role="status">{pending ? 'ინახება…' : savedAt ? 'შენახულია ' + savedAt : ''}</span>{hasChanges && <Button variant="ghost" className={s.discardAction} disabled={pending} onClick={() => setConfirmDiscard(true)}>გააუქმეთ ცვლილებები</Button>}{index > 0 && <Button variant="secondary" disabled={pending} onClick={() => go(steps[index - 1])}>უკან</Button>}<Button type="submit" loading={pending}>{index === last ? 'დაასრულეთ' : step === 'verify' ? 'გადახედეთ' : 'შემდეგი'}</Button></div>
+          {hasChanges && <div className={s.draftActions}><span className={s.draftStatus} role="status">შეუნახავი ცვლილებები</span><Button variant="ghost" disabled={pending} onClick={() => setConfirmDiscard(true)}>გააუქმეთ ცვლილებები</Button></div>}
         </form>
-      </main>
-    </div>
+      </FormLayout>
+    </main>
     <ConfirmSheet id="onboard-discard" open={confirmDiscard} title="ცვლილებების გაუქმება" confirmLabel="ცვლილებების გაუქმება" pendingLabel="უქმდება…" pending={pending} danger onCancel={() => setConfirmDiscard(false)} onConfirm={() => { discardDraft(); setConfirmDiscard(false); }}><p>შეუნახავი ცვლილებები წაიშლება. შენახული მონაცემები დარჩება.</p></ConfirmSheet>
   </div>;
 }

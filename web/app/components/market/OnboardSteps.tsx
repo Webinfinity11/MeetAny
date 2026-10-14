@@ -19,15 +19,14 @@ import { OnboardCard as Card, OnboardField as Field, OnboardItems as Items, Onbo
 import s from './onboarding.module.css';
 
 export const stepLabels: Record<OnboardStep, string> = { type: 'ანგარიშის ტიპი', details: 'კომპანიის მონაცემები', profile: 'ბიზნეს-პროფილი', provide: 'რას სთავაზობთ', need: 'რას ყიდულობთ', verify: 'ვერიფიკაცია', review: 'გადახედვა' };
-export const titles: Record<OnboardStep, string> = { type: 'როგორ გამოიყენებთ MeetAny-ს?', details: 'კომპანიის მონაცემები', profile: 'ბიზნეს-პროფილი', provide: 'რას სთავაზობთ ბაზარს', need: 'რას ყიდულობთ ხშირად', verify: 'ვერიფიკაცია', review: 'გადახედვა და დასრულება' };
 export const leads: Record<OnboardStep, string> = {
-  type: 'ერთი კომპანიის ანგარიშით შეგიძლიათ იყიდოთ, გაყიდოთ ან ორივე. არჩევანის შეცვალეთ შეგიძლიათ ნებისმიერ დროს.',
-  details: 'დაადასტურეთ საკონტაქტო პირი და ქალაქი. დანარჩენის დამატება მოგვიანებითაც შეგიძლიათ.',
-  profile: 'ეს ნაწილი ყველას უჩანს. ტეგებით MeetAny შესაბამის მოთხოვნებსა და პარტნიორებს გიპოვით.',
-  provide: 'დაამატეთ პროდუქტები და მომსახურებები — მყიდველები ამით გიპოვიან. ფასი აქ არ საჭიროა, ის შეთავაზებაში იწერება.',
-  need: 'აირჩიეთ, რას ყიდულობთ ხშირად — რეკომენდაციებში ამ კატეგორიების მომწოდებლებს ნახავთ.',
-  verify: 'ვერიფიცირებულ კომპანიას შეუძლია შეთავაზებების გაგზავნა, მის პროფილზე კი ვერიფიკაციის ნიშანი ჩანს.',
-  review: 'შეამოწმეთ შენახული მონაცემები. დასრულების შემდეგ თქვენს ანგარიშზე გადახვალთ.',
+  type: 'აირჩიეთ, იყიდით, გაყიდით თუ ორივეს გააკეთებთ — ტიპს მოგვიანებითაც შეცვლით.',
+  details: 'დაადასტურეთ საკონტაქტო პირი და ქალაქი, დანარჩენი კი მოგვიანებით დაამატეთ.',
+  profile: 'წარადგინეთ კომპანია, რომ შესაბამისმა პარტნიორებმა გიპოვონ.',
+  provide: 'დაამატეთ პროდუქტები და მომსახურებები, ფასს კი შეთავაზებაში მიუთითებთ.',
+  need: 'აირჩიეთ კატეგორიები შესაბამისი მომწოდებლების საპოვნელად.',
+  verify: 'ვერიფიკაცია გაძლევთ შეთავაზებების გაგზავნის უფლებას და პროფილის ნიშანს.',
+  review: 'შეამოწმეთ მონაცემები და დაასრულეთ თქვენი კომპანიის პროფილის შევსება.',
 };
 const intentTags = (p: OnboardProfile) => p.account_intent === 'both' ? ['ყიდვა', 'გაყიდვა'] : [p.account_intent === 'buy' ? 'ყიდვა' : 'გაყიდვა'];
 const categoryNames = (keys: string[]) => keys.map(key => categories[key as keyof typeof categories] || key);
@@ -56,7 +55,7 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
   const updateProduct = (index: number, value: Partial<Product>) => setProducts(products.map((item, i) => i === index ? { ...item, ...value } : item));
   const removeProduct = (index: number) => { setProducts(products.filter((_, i) => i !== index)); setExpanded(null); setPhotoPicker(null); };
   if (step === 'type') return <>
-    <div className={s.intentGrid}>{(['buy', 'sell', 'both'] as const).map((key, i) => <label key={key} className={`${s.intent} ${p.account_intent === key ? s.intentSelected : ''}`}><input type="radio" name="intent" value={key} checked={p.account_intent === key} onChange={() => patch({ account_intent: key, ...(key !== 'buy' && !p.provide_categories.length && p.industry ? { provide_categories: [p.industry] } : {}) })} /><span className={s.intentCheck} aria-hidden="true" /><span className={s.intentIcon}><Icon name={['shopping-cart', 'store', 'handshake'][i]} /></span><strong>{intents[key]}</strong><span>{['განათავსეთ მოთხოვნები და მიიღეთ შეთავაზებები', 'ნახეთ მოთხოვნები და გაგზავნეთ შეთავაზებები', 'ყიდვა და გაყიდვა ერთი ანგარიშით'][i]}</span></label>)}</div>
+    <div className={s.intentGrid}>{(['buy', 'sell', 'both'] as const).map((key, i) => <label key={key} className={`${s.intent} ${p.account_intent === key ? s.intentSelected : ''}`}><input type="radio" name="intent" value={key} checked={p.account_intent === key} onChange={() => patch({ account_intent: key, ...(key !== 'buy' && !p.provide_categories.length && p.industry ? { provide_categories: [p.industry] } : {}) })} /><span className={s.intentIcon} aria-hidden="true"><Icon name={['shopping-cart', 'store', 'handshake'][i]} /></span><span className={s.intentCopy}><strong>{intents[key]}</strong><span>{['მიიღეთ შეთავაზებები', 'გაგზავნეთ შეთავაზებები', 'იყიდეთ და გაყიდეთ'][i]}</span></span><span className={s.intentCheck} aria-hidden="true" /></label>)}</div>
     {p.account_intent !== 'buy' && <Card title="რას აწვდით"><p className={s.muted}>ძირითადი დარგი: {categories[p.industry]} (რეგისტრაციიდან)</p><Categories compact limit={5} count={`არჩეულია ${p.provide_categories.length} / 5`} values={p.provide_categories} onChange={provide_categories => patch({ provide_categories })} /></Card>}
   </>;
   if (step === 'details') return <>
