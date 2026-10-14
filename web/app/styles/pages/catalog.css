@@ -744,6 +744,8 @@ body:has(.catalog-page) { background: var(--ink-50); }
 
 /* Catalog titles keep their distinct tones; spacing follows the density scale. */
 .catalog-page .catalog-header--opportunities { padding-block: var(--hero-pad-y); }
+/* A light title sits on the page background; the search bar's own margin is the only gap below it. */
+.catalog-page .catalog-header--opportunities.catalog-header--light { padding-bottom: 0; }
 .catalog-page .catalog-header--dark::before { display: block; background: var(--brand-panel-bg); }
 .catalog-page .catalog-header--dark .catalog-title { color: var(--white); }
 .catalog-page .catalog-header--dark .catalog-description { color: var(--inverse-text-2); }
