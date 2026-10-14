@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "company: saving one dirty block preserves the other draft and server value",
+    "company: dirty navigation guard and stay preserve draft",
+    "company: disabled → dirty → real database save → timed feedback → reload persistence",
+    "company: block-scoped coordinate validation and footer error",
+    "company: failed RPC stays dirty and reports the error in its own footer",
+    "company: logo selection, local preview and upload failure retain the unsaved file",
+    "company: logo and gallery SDK upload fixture → real local RPC → reload persistence",
+    "company: uploaded logo and gallery have no overflow at 390/360/320",
+    "client: disabled → dirty → real database save → timed feedback → reload persistence"
+  ],
+  "errors": []
+}

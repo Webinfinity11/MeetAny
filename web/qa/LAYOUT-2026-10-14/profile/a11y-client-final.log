@@ -1,0 +1,25 @@
+client blue 1440 /account/?tab=requests page: 0
+client blue 1440 /account/?tab=deals page: 0
+client blue 1440 /account/?tab=messages page: 0
+client blue 1440 /account/?tab=notifications page: 0
+client blue 390 /account/?tab=requests page: 0
+client blue 390 /account/?tab=deals page: 0
+client blue 390 /account/?tab=messages page: 0
+client blue 390 /account/?tab=notifications page: 0
+client blue 360 /account/?tab=requests page: 0
+client blue 360 /account/?tab=deals page: 0
+client blue 360 /account/?tab=messages page: 0
+client blue 360 /account/?tab=notifications page: 0
+client classic 1440 /account/?tab=requests page: 0
+client classic 1440 /account/?tab=deals page: 0
+client classic 1440 /account/?tab=messages page: 0
+client classic 1440 /account/?tab=notifications page: 0
+client classic 390 /account/?tab=requests page: 0
+client classic 390 /account/?tab=deals page: 0
+client classic 390 /account/?tab=messages page: 0
+client classic 390 /account/?tab=notifications page: 0
+client classic 360 /account/?tab=requests page: 0
+client classic 360 /account/?tab=deals page: 0
+client classic 360 /account/?tab=messages page: 0
+client classic 360 /account/?tab=notifications page: 0
+{"counts":{},"keyboard":[],"failures":[]}

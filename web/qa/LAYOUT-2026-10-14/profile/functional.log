@@ -1,0 +1,9 @@
+PASS company: saving one dirty block preserves the other draft and server value
+PASS company: dirty navigation guard and stay preserve draft
+PASS company: disabled → dirty → real database save → timed feedback → reload persistence
+PASS company: block-scoped coordinate validation and footer error
+PASS company: failed RPC stays dirty and reports the error in its own footer
+PASS company: logo selection, local preview and upload failure retain the unsaved file
+PASS company: logo and gallery SDK upload fixture → real local RPC → reload persistence
+PASS company: uploaded logo and gallery have no overflow at 390/360/320
+PASS client: disabled → dirty → real database save → timed feedback → reload persistence

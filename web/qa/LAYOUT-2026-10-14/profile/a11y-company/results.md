@@ -1,0 +1,71 @@
+| გვერდი | თემა | სიგანე | impact | წესი | ელემენტები |
+|---|---|---|---|---|---|
+| company /account/?tab=deals (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=offers (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=opportunities (account-menu) | blue | 1440 | — | — | 0 |
+| company /account/?tab=opportunities (chat) | blue | 1440 | — | — | 0 |
+| company /account/?tab=opportunities (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=details (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=distribution (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=documents (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=legal (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=products (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=security (page) | blue | 1440 | — | — | 0 |
+| company /account/?tab=deals (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=offers (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=opportunities (chat) | blue | 360 | — | — | 0 |
+| company /account/?tab=opportunities (mobile-menu) | blue | 360 | — | — | 0 |
+| company /account/?tab=opportunities (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=profile&section=details (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=profile&section=distribution (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=profile&section=documents (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=profile&section=legal (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=profile&section=products (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=profile&section=security (page) | blue | 360 | — | — | 0 |
+| company /account/?tab=deals (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=offers (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=opportunities (mobile-menu) | blue | 390 | — | — | 0 |
+| company /account/?tab=opportunities (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=profile&section=details (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=profile&section=distribution (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=profile&section=documents (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=profile&section=legal (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=profile&section=products (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=profile&section=security (page) | blue | 390 | — | — | 0 |
+| company /account/?tab=deals (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=offers (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=opportunities (account-menu) | classic | 1440 | — | — | 0 |
+| company /account/?tab=opportunities (chat) | classic | 1440 | — | — | 0 |
+| company /account/?tab=opportunities (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=details (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=distribution (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=documents (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=legal (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=products (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=profile&section=security (page) | classic | 1440 | — | — | 0 |
+| company /account/?tab=deals (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=offers (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=opportunities (chat) | classic | 360 | — | — | 0 |
+| company /account/?tab=opportunities (mobile-menu) | classic | 360 | — | — | 0 |
+| company /account/?tab=opportunities (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=profile&section=details (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=profile&section=distribution (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=profile&section=documents (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=profile&section=legal (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=profile&section=products (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=profile&section=security (page) | classic | 360 | — | — | 0 |
+| company /account/?tab=deals (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=offers (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=opportunities (chat) | classic | 390 | — | — | 0 |
+| company /account/?tab=opportunities (mobile-menu) | classic | 390 | — | — | 0 |
+| company /account/?tab=opportunities (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=profile&section=details (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=profile&section=distribution (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=profile&section=documents (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=profile&section=legal (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=profile&section=products (page) | classic | 390 | — | — | 0 |
+| company /account/?tab=profile&section=security (page) | classic | 390 | — | — | 0 |
+
+კლავიატურა: 11/12
+
+{}

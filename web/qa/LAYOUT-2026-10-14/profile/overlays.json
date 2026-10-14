@@ -1,0 +1,1155 @@
+{
+  "results": [
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "columns",
+      "form": 640,
+      "panel": 320
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1024,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 360,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile&section=legal",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile&section=documents",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile&section=products",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile&section=distribution",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "company",
+      "width": 320,
+      "path": "/account/?tab=profile&section=security",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "columns",
+      "form": 640,
+      "panel": 320
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 1024,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 980,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=overview",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=messages",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=profile",
+      "kind": "menu",
+      "covered": []
+    },
+    {
+      "role": "client",
+      "width": 360,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "path": "/account/?tab=overview",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "path": "/account/?tab=messages",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "path": "/account/?tab=profile",
+      "kind": "page",
+      "overflow": 0
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "path": "/account/?tab=profile",
+      "kind": "mobile-panel",
+      "passed": true
+    }
+  ],
+  "errors": []
+}
