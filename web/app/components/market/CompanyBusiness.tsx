@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "../ui/Button";
 
+import { AccountSectionFooter, useSavedTime } from "./account/AccountSection";
 import { DistributionForm } from "./Distribution";
 import type { Distribution } from "../../lib/distribution";
 import { useCallback, useState } from "react";
@@ -49,16 +50,21 @@ export function CompanyBusinessPanel({owner}:{owner:string}){
 export function CompanyDistributionPanel({owner}:{owner:string}) {
  const {store}=useMarketStore();
  const resource=useBusinessResource<Settings>(store?.myBusinessSettings,owner);
- const [pending,setPending]=useState('');
- const [error,setError]=useState('');
- const settings=resource.data;
- async function act(key:string,work:()=>Promise<Settings>){if(pending)return;setPending(key);setError('');try{resource.replace(await work());toast('ცვლილება შენახულია.');}catch(e){setError(businessError(e));}finally{setPending('');}}
- return <section className="business-panel"><header><h2>დისტრიბუცია</h2><p>თუ პროდუქტებს სხვა ბიზნესებს აწვდით, ჩართეთ — კომპანია დისტრიბუტორების ფილტრშიც გამოჩნდება, ძირითადი დარგი კი არ შეიცვლება.</p></header>
- {resource.error?<BusinessError error={resource.error} retry={resource.reload}/>:!settings?<ListSkeleton compact kind="records"/>:<>
- <section className="business-setting"><label className="filter-switch"><span>ვარ დისტრიბუტორი</span><input type="checkbox" role="switch" checked={settings.distributor} disabled={!!pending} onChange={e=>{const checked=e.target.checked;void act('distributor',()=>store!.setCompanyDistributor(checked));}}/><span className="filter-switch__track" aria-hidden="true"/></label></section>
- {settings.distributor?<DistributionForm key={owner} initial={settings.distribution} onSaved={resource.reload}/>:null}
- </>}
- {error?<p className="ma-field__error" role="alert">{error}</p>:null}</section>;
+ return <div className="account-distribution">{resource.error?<BusinessError error={resource.error} retry={resource.reload}/>:!resource.data?<ListSkeleton compact kind="records"/>:<>
+  <DistributorStatus key={owner} initial={resource.data.distributor} onSaved={resource.replace}/>
+  {resource.data.distributor?<DistributionForm key={owner} initial={resource.data.distribution} onSaved={resource.reload}/>:null}
+ </>}</div>;
+}
+function DistributorStatus({initial,onSaved}:{initial:boolean;onSaved:(settings:Settings)=>void}) {
+ const {store}=useMarketStore();
+ const [enabled,setEnabled]=useState(initial),[pending,setPending]=useState(false),[error,setError]=useState('');
+ const {savedAt,markSaved,clearSaved}=useSavedTime();
+ const [baseline,setBaseline]=useState(initial);
+ return <section className="account-section account-profile-block"><header className="account-section__heading"><h2 className="account-section__title">დისტრიბუცია</h2><p className="account-hint">დისტრიბუტორის სტატუსით კომპანია კატალოგის შესაბამის ფილტრშიც გამოჩნდება.</p></header>
+ <form className="ma-form" onSubmit={async e=>{e.preventDefault();if(!store||pending||enabled===baseline)return;setPending(true);setError('');try{const settings=await store.setCompanyDistributor(enabled);setBaseline(enabled);markSaved();onSaved(settings);}catch(err){setError(businessError(err));}finally{setPending(false);}}}>
+ <label className="filter-switch"><span>ვარ დისტრიბუტორი</span><input type="checkbox" role="switch" checked={enabled} disabled={pending} onChange={e=>{setEnabled(e.target.checked);clearSaved();}}/><span className="filter-switch__track" aria-hidden="true"/></label>
+ <AccountSectionFooter dirty={enabled!==baseline} pending={pending} savedAt={savedAt} error={error}/>
+ </form></section>;
 }
 
 type Review={id:string;rating:number;body:string;author:string;updated_at:string};

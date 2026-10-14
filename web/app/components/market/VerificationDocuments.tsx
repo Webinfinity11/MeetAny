@@ -3,6 +3,7 @@ import {useState,useEffect,useRef} from 'react';
 import Link from 'next/link';
 import type {Store} from '../../lib/market-client';
 import {Button} from '../ui/Button';
+import {useSavedTime} from './account/AccountSection';
 import {Badge} from '../ui/Badge';
 import {FileAttachments} from './FileAttachments';
 import {readVerificationRequirements,verificationRequirements,type VerificationRequirements,verificationHint,verificationLabel,verificationState,verificationTone} from '../../lib/onboarding-client';
@@ -25,8 +26,9 @@ export function VerificationSummary({store,id,onDetails}:{store:Store;id:string;
  return requirements?<Checklist requirements={requirements} onDetails={onDetails}/>:error?<div role="alert">{error}<Button variant="ghost" onClick={()=>{setError('');setRevision(value=>value+1);}}>ხელახლა ცდა</Button></div>:<p role="status">მოთხოვნები იტვირთება…</p>;
 }
 /** Company verification has two document slots, shown one at a time. */
-export function VerificationDocuments({store,id,status,verified=false,note,onStatus,onBusy,onDetails}:{store:Store;id:string;status:string;verified?:boolean;note?:string|null;onStatus?:(status:string)=>void;onBusy?:(value:boolean)=>void;onDetails?:()=>void}) {
+export function VerificationDocuments({store,id,status,verified=false,note,onStatus,onBusy,onDetails,blockFooter=false}:{blockFooter?:boolean;store:Store;id:string;status:string;verified?:boolean;note?:string|null;onStatus?:(status:string)=>void;onBusy?:(value:boolean)=>void;onDetails?:()=>void}) {
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[attempted,setAttempted]=useState(false);
+ const {savedAt,markSaved}=useSavedTime();
  const [requirements,setRequirements]=useState<VerificationRequirements>(),[revision,setRevision]=useState(0);
  const [slot,setSlot]=useState<'registration'|'tax'|'review'>('registration');
  const root=useRef<HTMLDivElement>(null);const state=verificationState(status,verified);const locked=state==='pending'||state==='approved';
@@ -38,7 +40,7 @@ export function VerificationDocuments({store,id,status,verified=false,note,onSta
   try {
    const current=await readVerificationRequirements(store);setRequirements(current);
    if(Object.values(current).some(value=>!value)){focusMissing();return;}
-   const profile=await store.mutateRpc('submit_verification',{});onStatus?.(profile.verification_documents_status);
+   const profile=await store.mutateRpc('submit_verification',{});onStatus?.(profile.verification_documents_status);markSaved();
   }catch(err){
    if((err as {code?:string})?.code==='MA902'||(err as Error)?.message?.includes('MA902')){
     try{setRequirements(await readVerificationRequirements(store));focusMissing();}catch{setError('ვერიფიკაციის მოთხოვნები ვერ ჩაიტვირთა. სცადეთ ხელახლა.');}
@@ -51,8 +53,10 @@ export function VerificationDocuments({store,id,status,verified=false,note,onSta
  <nav className={v.addRow} aria-label="დოკუმენტების ნაბიჯები">{(['registration','tax','review'] as const).map((value,index)=><Button key={value} variant={slot===value?'secondary':'ghost'} disabled={busy} aria-current={slot===value?'step':undefined} onClick={()=>setSlot(value)}>{index+1}. {value==='registration'?'რეგისტრაცია':value==='tax'?'საგადასახადო':'მიმოხილვა'}</Button>)}</nav>
  {slot!=='review'?<FileAttachments key={slot} store={store} kind="verification" target={id} slot={slot} label={slot==='registration'?'რეგისტრაციის ამონაწერი':'საგადასახადო დოკუმენტი'} editable={!locked} onBusy={updateBusy} onChange={()=>setRevision(value=>value+1)}/>:<p className={v.muted}>გაგზავნამდე შეამოწმეთ ზემოთ ჩამოთვლილი ოთხივე პუნქტი.</p>}
  {slot!=='review'&&<Button variant="secondary" disabled={busy} onClick={()=>setSlot(slot==='registration'?'tax':'review')}>შემდეგი დოკუმენტის ნაბიჯი</Button>}
+ <div className={blockFooter ? 'account-section__footer' : undefined}>
+ {error?<div className="ma-field__error" role="alert">{error}<Button variant="ghost" disabled={busy} onClick={()=>setRevision(value=>value+1)}>ხელახლა ცდა</Button></div>:blockFooter?<p className="account-section__status" role="status">{savedAt?`შენახულია · ${new Date(savedAt).toLocaleTimeString('ka-GE',{hour:'2-digit',minute:'2-digit'})}`:locked?'დოკუმენტები გაგზავნილია':'ატვირთვა თითოეულ დოკუმენტს ინახავს'}</p>:null}
  {!locked?<Button disabled={busy} loading={busy} onClick={()=>void submit()}>{state==='returned'?'ხელახლა გაგზავნა':'განხილვაზე გაგზავნა'}</Button>:null}
- {error?<div className="ma-field__error" role="alert">{error}<Button variant="ghost" disabled={busy} onClick={()=>setRevision(value=>value+1)}>ხელახლა ცდა</Button></div>:null}
+ </div>
  </div>;
 }
 // Admin side: one verification term and status, documents, and the review actions in one row (decisions go through ModerationSheet).

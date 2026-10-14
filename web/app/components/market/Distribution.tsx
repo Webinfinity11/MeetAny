@@ -5,20 +5,30 @@ import { useState } from "react";
 import { useMarketStore } from "../../lib/market-client";
 import { businessError } from "../../lib/business-client";
 import { distributionChannels, warehouses, transports, emptyDistribution, type Distribution } from "../../lib/distribution";
-import { Button } from "../ui/Button";
 import { CustomSelect } from "../ui/CustomSelect";
 import styles from "./Distribution.module.css";
-import { toast } from "../Toasts";
+import { AccountSectionFooter, UnsavedSheet, useSavedTime } from "./account/AccountSection";
+import { useUnsavedGuard } from "../../lib/use-unsaved-draft";
 export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;onSaved:()=>void}) {
  const {store}=useMarketStore();
  const [value,setValue]=useState<Distribution>(()=>({...emptyDistribution,...initial,regions:initial?.regions||store?.currentUser()?.serviceCities||[]}));
- const [pending,setPending]=useState(false),[error,setError]=useState(""),[saved,setSaved]=useState(false);
- const patch=(change:Partial<Distribution>)=>{setSaved(false);setValue(v=>({...v,...change}));};
- return <form className={`ma-form distribution-form ${styles.form}`} onChange={()=>setSaved(false)} onSubmit={async e=>{e.preventDefault();if(pending)return;if(!value.channels.length){setError("აირჩიეთ მინიმუმ ერთი არხი");document.getElementById("distribution-channels")?.focus();return;}if(!value.regions.length){setError("აირჩიეთ მინიმუმ ერთი ქალაქი");return;}setPending(true);setError("");setSaved(false);try {
-  await store!.setMyDistribution({p_regions:value.regions,p_categories:value.categories,p_channels:value.channels,p_brands:value.brands,p_warehouse:value.warehouse,p_transport:value.transport,p_cold_chain:value.coldChain,p_min_order:value.minOrder,p_exclusive:value.exclusive});
-  toast("დისტრიბუციის პროფილი შენახულია.");setSaved(true);onSaved();
- }catch(err){setError(businessError(err));}finally{setPending(false);}}}>
- <h3>მიწოდების პირობები</h3>
+ const [pending,setPending]=useState(false),[error,setError]=useState("");
+ const snapshot=JSON.stringify(value), [baseline,setBaseline]=useState(snapshot);
+ const dirty=snapshot!==baseline, guard=useUnsavedGuard(dirty);
+ const {savedAt,markSaved,clearSaved}=useSavedTime();
+ const patch=(change:Partial<Distribution>)=>{clearSaved();setValue(v=>({...v,...change}));};
+ async function save(){
+  if(!store||pending)return false;if(!dirty)return true;
+  if(!value.channels.length){setError("აირჩიეთ მინიმუმ ერთი არხი");document.getElementById("distribution-channels")?.focus();return false;}
+  if(!value.regions.length){setError("აირჩიეთ მინიმუმ ერთი ქალაქი");document.getElementById("distribution-cities")?.focus();return false;}
+  setPending(true);setError("");clearSaved();
+  try {
+   await store.setMyDistribution({p_regions:value.regions,p_categories:value.categories,p_channels:value.channels,p_brands:value.brands,p_warehouse:value.warehouse,p_transport:value.transport,p_cold_chain:value.coldChain,p_min_order:value.minOrder,p_exclusive:value.exclusive});
+   setBaseline(snapshot);markSaved();onSaved();return true;
+  }catch(err){setError(businessError(err));return false;}finally{setPending(false);}
+ }
+ return <section className="account-section account-profile-block"><header className="account-section__heading"><h2 className="account-section__title">მიწოდების პირობები</h2><p className="account-hint">აირჩიეთ მომსახურების ქალაქები, არხები და მიწოდების პირობები.</p></header>
+ <form className={`ma-form distribution-form ${styles.form}`} onSubmit={e=>{e.preventDefault();void save();}}>
  <fieldset className={styles.selections} disabled={pending}>
  <MultiCombobox label="მომსახურების ქალაქები" options={cityOptions} exclusiveValue="georgia" id="distribution-cities" value={value.regions} onChange={regions=>patch({regions})} disabled={pending}/>
  <MultiCombobox label="პროდუქტის კატეგორიები" options={categoryOptions} limit={6} value={value.categories} onChange={categories=>patch({categories})}/>
@@ -29,8 +39,6 @@ export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;o
  <label className="ma-field">მინიმალური შეკვეთა<input className="ma-input" value={value.minOrder} maxLength={80} disabled={pending} onChange={e=>patch({minOrder:e.target.value})}/></label>
  <label className="ma-check"><input type="checkbox" checked={value.coldChain} disabled={pending} onChange={e=>patch({coldChain:e.target.checked})}/>გაცივებული / გაყინული მიწოდება</label>
  <label className="ma-check"><input type="checkbox" checked={value.exclusive} disabled={pending} onChange={e=>patch({exclusive:e.target.checked})}/>მზად ვარ ექსკლუზიური თანამშრომლობისთვის</label>
- {error?<p id="distribution-error" className="ma-field__error" role="alert">{error}</p>:null}
- <Button type="submit" loading={pending}>შეინახეთ</Button>
- {saved?<p className="account-save-feedback" role="status">დისტრიბუციის პროფილი შენახულია.</p>:null}
- </form>;
+ <AccountSectionFooter dirty={dirty} pending={pending} savedAt={savedAt} error={error} errorId="distribution-error"/>
+ </form><UnsavedSheet id="distribution-unsaved" guard={guard} pending={pending} error={error} save={save}/></section>;
 }

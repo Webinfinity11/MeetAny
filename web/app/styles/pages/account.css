@@ -724,3 +724,16 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-category-field :is(#reg-industry,#industry,#upgrade-industry)[data-compact] [role="radiogroup"]>div>div{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-1)}
 .auth-category-field :is(#reg-industry,#industry,#upgrade-industry)[data-compact] h3{display:block;font-size:var(--fs-xs)}
 }
+
+/* Profile settings save and report feedback within the block being edited. */
+.account-page .account-profile-block { padding:var(--card-pad); gap:var(--stack-gap); border: var(--size-1) solid var(--card-border); border-radius: var(--card-radius); background: var(--white); box-shadow: none; scroll-margin-top:var(--panel-top); }
+.account-section__heading { display: grid; gap:var(--space-1); }
+.account-page .account-profile-block .ma-form, .account-block-fields { display: grid; gap:var(--form-gap); min-width: 0; }
+.account-block-fields { padding:0; margin:0; border: 0; }
+.account-page .account-profile-block .account-form-group { padding:0; border: 0; gap:var(--form-gap); }
+.account-section__footer { display: flex; align-items: center; justify-content: space-between; gap:var(--stack-gap); padding:var(--card-pad-sm); margin:0 calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad)); border-top: var(--size-1) solid var(--border-subtle); border-radius: 0 0 var(--card-radius) var(--card-radius); background: var(--ink-50); }
+.account-section__footer > p { margin:0; min-width: 0; font-size: var(--fs-sm); line-height: var(--lh-sm); }
+.account-section__status { color: var(--text-3); }
+.account-section__footer > .ma-btn { flex: none; margin-left:auto; }
+.account-page .account-profile-block .account-password { grid-template-columns: minmax(0, 1fr); }
+.account-distribution { display: grid; gap: var(--block-gap); min-width: 0; }
