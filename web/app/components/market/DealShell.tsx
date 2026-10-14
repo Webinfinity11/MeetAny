@@ -35,7 +35,7 @@ export function DealShell({ deal, requestTitle, partner, actions, summary, child
   };
   return <div className={styles.page}>
     <Link href="/account/?tab=deals" className={styles.back}><Icon name="chevron-left"/>გარიგებები</Link>
-    <header className={styles.header}><div><p className={styles.context}>{requestTitle} · #{deal.id.slice(0, 8).toUpperCase()}</p><h1>{dealStageLabel(deal.stage)}</h1><p>{waiting || leads[deal.stage]}</p></div>{actions ? <div className={styles.actions}>{actions}</div> : null}</header>
+    <header className={styles.header}><div><h1>{dealStageLabel(deal.stage)}</h1><p className={styles.context}>{requestTitle} · #{deal.id.slice(0, 8).toUpperCase()}</p><p>{waiting || leads[deal.stage]}</p></div>{actions ? <div className={styles.actions}>{actions}</div> : null}</header>
     <DealStepper deal={deal}/>{summary}<div className={styles.grid}><div className={styles.main}>{children}</div><aside className={styles.aside}>{aside}</aside></div>
   </div>;
 }
