@@ -6,6 +6,7 @@ import { Button } from '../ui/Button';
 import { Notice } from '../ui/Notice';
 import { money } from '../../lib/deal-client';
 import s from './flow-details.module.css';
+import post from './post/Post.module.css';
 export type RequestPreferences = { specification?:string;design?:string;supplierTypes?:string[];certificates?:string;verifiedOnly?:boolean;flexibility?:number;budgetType?:string;budgetMin?:number;budgetMax?:number;budgetPrivate?:boolean;payment?:string;vatInvoice?:boolean;deferredPayment?:boolean };
 export function preferenceError(p:RequestPreferences) {
  if(p.budgetType&&p.budgetType!=='negotiable'&&(!p.budgetMin||p.budgetMin<=0||p.budgetMin>1e9||(p.budgetType==='range'&&(!p.budgetMax||p.budgetMax<p.budgetMin||p.budgetMax>1e9))))return 'მიუთითეთ ბიუჯეტი 0-ზე მეტი; ზედა ზღვარი ქვედაზე ნაკლები არ უნდა იყოს.';
@@ -17,7 +18,7 @@ export function RequestPreferenceFields({value:p,onChange,part}:{value:RequestPr
  const id=useId();const patch=(next:Partial<RequestPreferences>)=>onChange({...p,...next});
  const field=(key:'specification'|'certificates'|'payment',label:string,max:number,multi=false)=><div className="ma-field"><label htmlFor={`${id}-${key}`}>{label}</label>{multi?<textarea id={`${id}-${key}`} className="ma-textarea" maxLength={max} value={p[key]||''} onChange={e=>patch({[key]:e.target.value})}/>:<input id={`${id}-${key}`} className="ma-input" maxLength={max} value={p[key]||''} onChange={e=>patch({[key]:e.target.value})}/>}</div>;
  const check=(key:'verifiedOnly'|'budgetPrivate'|'vatInvoice'|'deferredPayment',label:string)=><label className="ma-check"><input type="checkbox" checked={!!p[key]} onChange={e=>patch({[key]:e.target.checked})}/>{label}</label>;
- return <div className={s.fields}>{part==='specification'?<>
+ return <div className={`${s.fields} ${post.preferenceFields}`}>{part==='specification'?<>
  {field('specification','ზომა, მასალა და ტექნიკური დეტალები',2000,true)}
  <div className="ma-field"><label htmlFor={`${id}-design`}>დიზაინი</label><CustomSelect id={`${id}-design`} value={p.design||''} onChange={e=>patch({design:e.target.value})}><option value="">აირჩიეთ</option>{Object.entries(designs).map(([key,label])=><option key={key} value={key}>{label}</option>)}</CustomSelect></div>
  <fieldset className={s.checks}><legend className="ma-field__label">მომწოდებლის ტიპი</legend>{Object.entries(suppliers).map(([key,label])=><label className="ma-check" key={key}><input type="checkbox" checked={p.supplierTypes?.includes(key)||false} onChange={e=>patch({supplierTypes:e.target.checked?[...(p.supplierTypes||[]),key]:(p.supplierTypes||[]).filter(v=>v!==key)})}/>{label}</label>)}</fieldset>

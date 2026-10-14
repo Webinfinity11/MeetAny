@@ -6,8 +6,10 @@ import { RequestPreferenceFields, RequestPreferenceSummary, preferenceError, pre
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Button } from "../ui/Button";
+import { FormLayout } from "../ui/FormLayout";
+import { OpportunityCard } from "./OpportunityCard";
 import { CustomSelect } from "../ui/CustomSelect";
 import { Icon } from "../Icon";
 import { useMarketStore, type PublicSnapshot, type Store } from "../../lib/market-client";
@@ -38,7 +40,7 @@ function StepBar({ step }: { step: number }) {
       <div className="post-steps__progress">{steps.map((name, i) => <span key={name} className={i + 1 < step ? "is-done" : i + 1 === step ? "is-current" : ""} />)}</div>
     </div>
     <ol>{steps.map((name, i) => <li key={name} className={i + 1 < step ? "is-done" : i + 1 === step ? "is-current" : ""} aria-current={i + 1 === step ? "step" : undefined}>
-      <span className="post-steps__circle">{i + 1 < step ? <Icon name="check" /> : i + 1}</span><span>{name}</span>{i < steps.length - 1 ? <span className="post-steps__line" /> : null}
+      <span className="post-steps__circle">{i + 1 < step ? <Icon name="check" /> : i + 1}</span><span className="post-steps__copy">{name}<small>{i + 1 === step ? "მიმდინარე" : i + 1 < step ? "შევსებულია" : "მომავალი"}</small></span>{i < steps.length - 1 ? <span className="post-steps__line" /> : null}
     </li>)}</ol>
   </nav>;
 }
@@ -83,17 +85,6 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const [limitError, setLimitError] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [published, setPublished] = useState<{ id: string; title: string; createdAt: string } | null>(null);
-  const actions = useRef<HTMLDivElement>(null);
-  const [actionsHeight, setActionsHeight] = useState(0);
-  useEffect(() => {
-    const element = actions.current;
-    if (!element) return;
-    const measure = () => setActionsHeight(Math.ceil(element.getBoundingClientRect().height));
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [published]);
   const [furthest, setFurthest] = useState(() => furthestFor(draft));
   const [draftFiles, setDraftFiles] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -255,12 +246,15 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const keepDraft = () => saveRequestDraft({ title, category, city, addressNote, quantity, unit, neededByText: draftText(neededBy), body,preferences,attachmentDraft });
   const edit = (part: number) => <Button variant="ghost" size="sm" onClick={() => go(part)}><Icon name="pencil" />შეცვლა<span className="ma-sr-only">: {steps[part - 1]}</span></Button>;
   const quantityLabel = quantity ? `${quantity} ${units[unit as keyof typeof units] || ""}` : "რაოდენობა";
+  const previewQuantity = Number(quantity.trim().replace(/\s+/g, "").replace(",", "."));
 
-  return <div className={`post-page ${styles.page}`} style={{ '--post-actions-height': `${published ? 0 : actionsHeight}px` } as CSSProperties}>
-    {!published ? <header className="post-heading"><h1 ref={heading} tabIndex={-1}>მოთხოვნის განთავსება</h1></header> : null}
-    {!published && targetCompany ? <div className={styles.connectionNotice} role="status"><p>მოთხოვნა საჯაროა — {targetCompany.company || targetCompany.name} და სხვა შესაბამისი კომპანიებიც ნახავენ.</p></div> : null}
-    {!published && openRequestCount >= 5 ? <div className={styles.connectionNotice} role="status"><p>თქვენ გაქვთ {openRequestCount} ღია მოთხოვნა — დახურეთ ერთი, რომ ახალი გამოაქვეყნოთ.</p><Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button></div> : null}
-    {!published ? <StepBar step={step} /> : null}
+  const missing = [...Object.values(errorsFor(1)), ...Object.values(errorsFor(2))];
+  const primaryAction = (footer = false) => step === 3 && !signedIn && (sessionStatus === "ready" || sessionStatus === "profile")
+    ? <Button variant="primary" className={footer ? "post-actions__next" : styles.panelAction} href={`/account/?next=${next}`} onClick={keepDraft}>{sessionStatus === "profile" ? "პროფილის დასრულება" : "შესვლა და გაგრძელება"}</Button>
+    : <Button variant="primary" className={footer ? "post-actions__next" : styles.panelAction} type="submit" form="post-request-form" disabled={fileBusy || (step === 3 && sessionStatus !== "ready")} loading={pending}>{pending ? "იგზავნება…" : step < 3 ? "შემდეგი" : sessionStatus === "loading" ? "მოწმდება…" : "განთავსება"}</Button>;
+  const savedStatus = saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `ტექსტი შენახულია · ${saved.at}` : `ტექსტი შენახულია ამ ბრაუზერში · ${saved.at}`}{photo ? <span> · ფოტო არ ინახება მონახაზში</span> : null}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null;
+
+  return <div className={`post-page ${styles.page}`}>
     {published ? <>
       <section className="post-published">
         <span className="post-published__check"><Icon name="check" /></span>
@@ -276,12 +270,33 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
         </div>
         <aside className={styles.aside}><FormCard title="შესაბამისი მომწოდებლები"><MatchingSuppliers store={store} requestId={published.id} /></FormCard></aside>
       </div>
-    </> : <>
+    </> : <FormLayout className={styles.layout} title={steps[step - 1]} titleRef={heading}
+      subtitle={step === 1 ? "დაწერეთ, რა გჭირდებათ — კომპანიები შეთავაზებებს გამოგიგზავნიან." : step === 2 ? "მიუთითეთ მიწოდების ადგილი, თარიღი და სასურველი პირობები." : "გადაამოწმეთ მოთხოვნა და განათავსეთ მომწოდებლებისთვის."}
+      steps={<StepBar step={step} />} asideLabel="ასე ჩანს"
+      aside={<>
+        <section className={styles.progressPanel} aria-label="შევსების პროგრესი">
+          <strong>ნაბიჯი {step}/{steps.length}</strong>
+          <progress value={6 - missing.length} max={6} aria-label="შევსებული სავალდებულო ველები" />
+          <p>{missing.length ? missing[0] : "ყველა სავალდებულო ველი შევსებულია."}</p>
+          {primaryAction()}
+        </section>
+        <section className={styles.catalogPreview} aria-label="მოთხოვნის წინასწარი ხედი">
+          <h2>ასე ჩანს</h2>
+          <div inert><OpportunityCard request={{ id: "draft-preview", title: title.trim() || "მოთხოვნის სათაური", body, category: category || "კატეგორია", city, cityLabel: cities[city] || "ქალაქი", photo: preview, quantity: Number.isFinite(previewQuantity) && previewQuantity > 0 ? previewQuantity : null, unit, daysLeft: 14 }} buyer={{ name: user?.company || user?.name || "მყიდველი", verified: !!user?.verified }} offers={0} /></div>
+          <p className="ma-sr-only">{title.trim() || "მოთხოვნის სათაური"} · {categories[category] || "კატეგორია"} · {cities[city] || "ქალაქი"} · {quantityLabel}</p>
+          <p className={styles.previewDate}>{!quantity ? "რაოდენობა · " : ""}სასურველი თარიღი: {neededBy ? dateLabel(neededBy) : "აირჩიეთ თარიღი"}</p>
+        </section>
+        <FormCard title="შესაბამისი მომწოდებლები"><MatchingPreview store={store} category={category}/></FormCard>
+      </>}
+      footer={<div className="post-actions__buttons"><Button variant="secondary" disabled={step === 1 || pending || fileBusy} onClick={() => go(step - 1)}>უკან</Button>{primaryAction(true)}</div>}
+    >
+      {targetCompany ? <div className={styles.connectionNotice} role="status"><p>მოთხოვნა საჯაროა — {targetCompany.company || targetCompany.name} და სხვა შესაბამისი კომპანიებიც ნახავენ.</p></div> : null}
+      {openRequestCount >= 5 ? <div className={styles.connectionNotice} role="status"><p>თქვენ გაქვთ {openRequestCount} ღია მოთხოვნა — დახურეთ ერთი, რომ ახალი გამოაქვეყნოთ.</p><Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button></div> : null}
       {sessionStatus === "loading" ? <p className="post-guest" role="status"><Icon name="info" /><span>ანგარიში მოწმდება. მოთხოვნის შევსება ამასობაში შეგიძლიათ.</span></p> : sessionStatus === "error" ? <div className={styles.connectionNotice} role="status"><p>კავშირი ვერ დამყარდა. შევსებული ტექსტი შენარჩუნდება.</p><Button variant="secondary" size="sm" loading={retrying} onClick={async () => { setRetrying(true); try { await store.refresh(); } finally { setRetrying(false); } }}>ხელახლა ცდა</Button></div> : sessionStatus === "profile" ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>დაასრულეთ პროფილი</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : !signedIn ? <p className="post-guest"><Icon name="info" /><span>გამოსაქვეყნებლად <Link onClick={keepDraft} href={`/account/?next=${next}`}>შედით ანგარიშში</Link>. შევსებული ტექსტი შენარჩუნდება.</span></p> : null}
       {restoredDraft ? <p className="post-guest" role="status"><Icon name="info"/><span>მონახაზი აღდგენილია. ფოტო არ ინახება მონახაზში — თუ ფოტო გქონდათ არჩეული, აირჩიეთ ხელახლა.</span></p> : null}
       {Object.keys(v.errors).length ? <section id="post-errors" tabIndex={-1} className={styles.errorSummary} role="alert" aria-labelledby="post-errors-title"><h2 id="post-errors-title">შეასწორეთ მონიშნული ველები</h2><ul>{Object.entries(v.errors).map(([field, message]) => <li key={field}><a href={`#${field}`} onClick={event => { event.preventDefault(); document.getElementById(field)?.focus(); }}>{message}</a></li>)}</ul></section> : null}
       <form id="post-request-form" noValidate onSubmit={submit} aria-busy={pending}>
-        <fieldset disabled={pending} className="post-layout">
+        <fieldset disabled={pending} className={styles.fields}>
           <div className="post-content">
             {step === 1 ? <>
               <FormCard title="რა გჭირდებათ">
@@ -319,20 +334,10 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
             {step===3&&preferenceRows(preferences).length?<FormCard title="დამატებითი პირობები"><RequestPreferenceSummary value={preferences}/></FormCard>:null}
             {step===3&&signedIn&&draftFiles?<FormCard title="ფაილები"><FileAttachments store={store} kind="request_draft" showTitle={false} target={attachmentDraft}/></FormCard>:null}
           </div>
-          <aside className={styles.aside}>{step < 3 ? <div className={styles.preview} aria-label="მოთხოვნის წინასწარი ნახვა">
-            <article className={styles.previewCard}>{preview ? <Image unoptimized width={360} height={180} src={preview} alt="მოთხოვნის ფოტო"/> : <span className={styles.previewPhoto} aria-hidden="true"><Icon name={categoryIcon[category] || "image"}/></span>}<div><h2>{title.trim() || "მოთხოვნის სათაური"}</h2><span className={styles.category}>{categories[category] || "კატეგორია"}</span><p>{user?.company || user?.name || "მყიდველი"} · {cities[city] || city}</p><p>{quantityLabel}</p>{step === 2 && neededBy ? <p>{dateLabel(neededBy)}</p> : null}</div></article>
-          </div> : <FormCard title="შესაბამისი მომწოდებლები"><MatchingPreview store={store} category={category}/></FormCard>}</aside>
         </fieldset>
       </form>
-      <div className="post-actions" ref={actions}><div className="post-actions__inner">
-        {error ? <div className="ma-field__error" role="alert"><p>{error}</p>{limitError ? <Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button> : null}</div> : null}
-        {saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `ტექსტი შენახულია · ${saved.at}` : `ტექსტი შენახულია ამ ბრაუზერში · ${saved.at}`}{photo ? <span> · ფოტო არ ინახება მონახაზში</span> : null}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null}
-        <div className="post-actions__buttons">{step > 1 ? <Button variant="secondary" size="lg" className={styles.backButton} aria-label="უკან" title="უკან" disabled={pending||fileBusy} onClick={() => go(step - 1)}><Icon name="arrow-left"/><span className={styles.long}>უკან</span></Button> : null}
-          {signedIn ? <Button variant="secondary" size="lg" disabled={pending||fileBusy||!hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}><span className={styles.long}>მონახაზად შენახვა</span><span className={styles.short}>მონახაზი</span></Button> : null}
-
-          {step === 3 && !signedIn && (sessionStatus === "ready" || sessionStatus === "profile") ? <Button size="lg" className="post-actions__next" href={`/account/?next=${next}`} onClick={keepDraft}>{sessionStatus === "profile" ? "პროფილის დასრულება" : "შესვლა და გაგრძელება"}</Button> : <Button size="lg" className="post-actions__next" type="submit" form="post-request-form" disabled={fileBusy || (step === 3 && sessionStatus !== "ready")} loading={pending}>{pending ? "იგზავნება…" : <><span className={styles.long}>{step === 1 ? "შემდეგი: მიწოდება" : step === 2 ? "შემდეგი: გადახედვა" : sessionStatus === "loading" ? "ანგარიში მოწმდება…" : "მოთხოვნის გამოქვეყნება"}</span><span className={styles.short}>{step < 3 ? "შემდეგი" : sessionStatus === "loading" ? "მოწმდება…" : "გამოქვეყნება"}</span></>}</Button>}
-        </div>
-      </div></div>
-    </>}
+      {error ? <div className="ma-field__error" role="alert"><p>{error}</p>{limitError ? <Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button> : null}</div> : null}
+      <div className={styles.draftActions}>{savedStatus}{signedIn ? <Button variant="secondary" disabled={pending || fileBusy || !hasContent} loading={savingDraft} onClick={() => void saveAsDraft()}>მონახაზად შენახვა</Button> : null}</div>
+    </FormLayout>}
   </div>;
 }

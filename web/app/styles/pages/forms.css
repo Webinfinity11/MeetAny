@@ -1,15 +1,15 @@
 /* pages/forms: shared tokens; original selector specificity is preserved. */
 .ma-sheet.request-form{border-radius:var(--radius-lg);box-shadow:var(--shadow-4)}
 @media(min-width:768px){.ma-proto .ma-sheet.request-form{height:90vh;max-height:90vh}}
-.request-form__skeleton{display:grid;gap:var(--space-4);padding-block:var(--space-2)}
+.request-form__skeleton{display:grid;gap:var(--form-gap);padding-block:var(--space-2)}
 .request-form__skeleton .ma-skel:nth-child(2){width:70%}
 .request-form__skeleton .ma-skel:nth-child(3){width:45%}
 
-.request-form__group{display:grid;gap:var(--space-3);min-width:0}
-.request-form__group+.request-form__group{padding-top:var(--space-5);border-top:var(--size-1) solid var(--border-subtle)}
+.request-form__group{display:grid;gap:var(--stack-gap);min-width:0}
+.request-form__group+.request-form__group{padding-top:var(--block-gap);border-top:var(--size-1) solid var(--border-subtle)}
 .ma-proto .request-form .request-form__group-title{display:flex;align-items:baseline;gap:var(--space-2);margin:0;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-semibold);color:var(--text);font-feature-settings:var(--ff-heading);letter-spacing:var(--ls-heading)}
 .request-form__group-opt{font-size:var(--fs-xs);line-height:var(--lh-xs);font-weight:var(--fw-regular);color:var(--text-3);font-feature-settings:normal;letter-spacing:normal}
-.request-form__grid{display:grid;gap:var(--space-4);grid-template-columns:minmax(0,1fr)}
+.request-form__grid{display:grid;gap:var(--form-gap);grid-template-columns:minmax(0,1fr)}
 .request-form__note{flex:1 1 0;min-width:0;max-width:none;margin:0 auto 0 0;font-size:var(--fs-xs);line-height:var(--lh-xs);color:var(--text-3)}
 .request-form__note.ma-field__error{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--danger-600)}
 .request-date{position:relative;min-width:0}
@@ -26,8 +26,8 @@
 .ma-proto .request-form .ma-sheet__title{margin:0;padding:0;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-bold);color:var(--text)}
 .request-form .ma-sheet__close{width:var(--tap-min);height:var(--tap-min);margin:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-2)}
 .request-form .ma-sheet__close:hover{background:var(--bg-subtle);color:var(--text)}
-.request-form .ma-sheet__body{padding-top:var(--space-5);gap:var(--space-5)}
-.request-form .ma-form{gap:var(--space-4)}
+.request-form .ma-sheet__body{padding-top:var(--block-gap);gap:var(--form-gap)}
+.request-form .ma-form{gap:var(--form-gap)}
 .request-form .ma-note{font-size:var(--fs-sm);line-height:var(--lh-sm)}
 .request-form input[type="date"]{-webkit-appearance:none;appearance:none;display:block;height:var(--control-h);min-height:var(--control-h);text-align:left;border:var(--size-1) solid var(--border-input);border-radius:var(--radius-sm);background:var(--white)}
 .request-form .ma-field{align-content:start}
@@ -41,7 +41,7 @@
 .request-form .request-form__qty .ma-select{width:auto;border-left:var(--size-1) solid var(--border-subtle)}
 .request-form .request-form__qty :is(.ma-input,.ma-select):is(:focus,:focus-visible){box-shadow:none}
 .ma-proto .request-form .ma-sheet__footer .ma-btn--primary{font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
-.ma-proto .request-form .ma-sheet__footer{align-items:center;gap:var(--space-5);padding:var(--space-3) var(--space-6);background:var(--white)}
+.ma-proto .request-form .ma-sheet__footer{align-items:center;gap:var(--form-gap);padding:var(--space-3) var(--space-6);background:var(--white)}
 @media(max-width:767.98px){
  .ma-sheet--full.request-form{border-radius:0}
  .ma-proto .request-form .ma-sheet__header{padding-left:var(--gutter)}
@@ -80,19 +80,19 @@
   text-underline-offset: var(--size-3);
 }
 
-/* Rhythm (2026-09-30): 24px between fields' rows, a divider and 24px between groups, titles at body size. */
+/* Compact form rhythm; typography and control sizes are unchanged. */
 .request-form .ma-sheet__body {
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-8);
+  padding-top: var(--block-gap);
+  padding-bottom: var(--card-pad);
 }
 .request-form .ma-form {
-  gap: var(--space-6);
+  gap: var(--form-gap);
 }
 .request-form__group {
-  gap: var(--space-4);
+  gap: var(--stack-gap);
 }
 .request-form__group + .request-form__group {
-  padding-top: var(--space-6);
+  padding-top: var(--block-gap);
 }
 .ma-proto .request-form .request-form__group-title {
   font-size: var(--fs-body);
@@ -100,8 +100,8 @@
   font-weight: var(--fw-bold);
 }
 .request-form__grid {
-  row-gap: var(--space-5);
-  column-gap: var(--space-4);
+  row-gap: var(--form-gap);
+  column-gap: var(--form-gap);
 }
 .request-form .ma-textarea {
   min-height: var(--size-120);
