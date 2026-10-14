@@ -33,7 +33,7 @@ export function CompanyProducts({companyId,edit=false,fallback=[],initial}:{comp
  const chips = loaded.filter(product => !product.photoUrl);
  if(!products.length && !chips.length)return null;
  // Column count follows the item count, so the last row is never a lone tile (5 → 3+2, not 4+1).
- const cols = [5, 6, 9].includes(products.length) ? 3 : 4;
+ const cols = Math.min(products.length, [5, 6, 9].includes(products.length) ? 3 : 4);
  return <section className="company-detail-section"><h2 className="detail-section-title">პროდუქტები და მომსახურებები</h2>
  {products.length ? <div className={styles.products} style={{ "--cols": cols } as CSSProperties}>{products.map((product,i)=><ProductTile key={`${i}:${product.name}`} product={product} onOpen={() => setSelectedProduct(product)}/>)}</div> : null}
  {chips.length ? <div className={styles.chips}>{chips.map((product,i)=><Button variant="ghost" key={`${i}:${product.name}`} onClick={() => setSelectedProduct(product)}>{product.name}</Button>)}</div> : null}
