@@ -83,7 +83,7 @@
 .hero-scene { position: relative; min-width: 0; }
 /* No frame: the cards float on the section and fade out softly at the top and bottom edges
    (an alpha mask, not a colour gradient — the one place lint:design allows a gradient). */
-.hero-scene__photos { --fade: var(--size-64); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); height: var(--size-440); overflow: hidden; padding-inline: var(--size-4);
+.hero-scene__photos { --fade: var(--size-64); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--size-16); height: var(--size-320); overflow: hidden; padding-inline: var(--size-4);
   -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--fade), black calc(100% - var(--fade)), transparent);
   mask-image: linear-gradient(to bottom, transparent, black var(--fade), black calc(100% - var(--fade)), transparent); }
 /* The live columns scroll inside a framed window, so cards meet its edge instead of being cut mid-air. */
@@ -143,7 +143,7 @@
 @media (max-width: 1023px) {
   .hero-layout { grid-template-columns: minmax(0, 1fr); }
   .hero-scene { width: 100%; }
-  .hero-scene__photos { height: var(--size-400); }
+  .hero-scene__photos { height: var(--size-320); }
   .hero-media { aspect-ratio: 16 / 10; }
   .home-opportunities { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -154,7 +154,7 @@
   .hero-subtitle { margin-top: var(--size-16); font-size: var(--size-16); }
   .hero-actions { margin-top: var(--block-gap); }
   .hero-trust { gap: var(--size-8) var(--size-16); margin-top: var(--block-gap); }
-  .hero-media { aspect-ratio: 16 / 7; border-radius: var(--size-16); }
+  .hero-media { aspect-ratio: 3 / 1; border-radius: var(--size-16); }
   .hero-actions { flex-direction: column; }
   .hero-actions .ma-btn { width: 100%; }
   .market-search-types label { min-width: var(--size-28); }

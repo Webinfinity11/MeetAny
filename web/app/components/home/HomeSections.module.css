@@ -104,7 +104,7 @@
 
 /* The live strip (requests placed / offers arriving) with its explanation. */
 .live { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: var(--block-gap); align-items: start; }
-.live > .intro { margin-bottom: 0; }
+.block.live > .intro { margin-bottom: 0; }
 
 /* Section rhythm for the information blocks. */
 .block { margin-top: var(--section-gap); }
