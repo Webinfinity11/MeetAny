@@ -18,6 +18,7 @@ import { MyRequests } from "./account/MyRequests";
 import { MyOffers } from "./account/MyOffers";
 import { MyDeals } from "./account/MyDeals";
 import { CompanyProfile, CompanyProfileNav, ProfileForm, PasswordForm } from "./account/Profile";
+import { ProfileLayout } from "./account/ProfileLayout";
 import { CompanyUpgrade } from "./account/CompanyUpgrade";
 import { useAccountNav } from "./account/nav";
 import { Notice } from "../ui/Notice";
@@ -80,6 +81,6 @@ export function AccountPageContent() {
     {activeTab === "notifications" ? <div id="alerts" className="account-panel account-alerts"><EngagementPanel kind="notifications" all={searchParams.get("alerts") === "all"}/></div> : null}
     {activeTab === "messages" ? <div className="account-wide"><Inbox key={me.id} store={store} me={me} space={space}/></div> : null}
     {activeTab === "business" ? <div className="account-main--profile"><CompanyProfileNav active="business"/><CompanyBusinessPanel key={me.id} owner={me.id}/></div> : null}
-    {activeTab === "profile" ? <div className="account-main--profile">{me.blocked ? <Notice tone="warning">ანგარიში დაბლოკილია.</Notice> : null}{isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"}/> : <><ProfileForm me={me}/><CompanyUpgrade user={me}/><PasswordForm key={me.id}/></>}</div> : null}
+    {activeTab === "profile" ? <div className="account-main--profile">{me.blocked ? <Notice tone="warning">ანგარიში დაბლოკილია.</Notice> : null}{isCompany ? <CompanyProfile me={me} section={searchParams.get("section") || "details"}/> : <ProfileLayout me={me}><ProfileForm me={me}/><CompanyUpgrade user={me}/><PasswordForm key={me.id}/></ProfileLayout>}</div> : null}
   </AccountShell>;
 }

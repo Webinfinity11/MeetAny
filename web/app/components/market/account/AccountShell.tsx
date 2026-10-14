@@ -38,5 +38,5 @@ export function AccountShell({ tab, items, company, space, switcher, title, lead
     params.set("tab", "requests");
     router.replace(`/account/?${params.toString()}`, { scroll: false });
   }, [redirectOffers, router, searchParams]);
-  return <div className={`ma-page account-page ${styles.shell} account-shell${tab === "messages" ? " account-shell--messages" : ""}`}><AccountTabs tab={tab} items={items} company={company} space={space} switcher={switcher}/><div className={styles.main}><header className={styles.heading}><div><h1>{title}</h1>{lead ? <p>{lead}</p> : null}</div>{action}</header>{offersNotice && rawTab === "requests" ? <Notice role="status">მიღებული შეთავაზებები მოთხოვნებშია — გახსენით მოთხოვნა და შეადარეთ</Notice> : null}{children}</div></div>;
+  return <div className={`ma-page account-page ${styles.shell} account-shell${tab === "profile" ? " account-shell--profile" : ""}${tab === "messages" ? " account-shell--messages" : ""}`}><AccountTabs tab={tab} items={items} company={company} space={space} switcher={switcher}/><div className={styles.main}><header className={styles.heading}><div><h1>{title}</h1>{lead ? <p>{lead}</p> : null}</div>{action}</header>{offersNotice && rawTab === "requests" ? <Notice role="status">მიღებული შეთავაზებები მოთხოვნებშია — გახსენით მოთხოვნა და შეადარეთ</Notice> : null}{children}</div></div>;
 }

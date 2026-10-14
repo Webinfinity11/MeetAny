@@ -154,3 +154,17 @@
 .shell :global(.account-item-heading h2),.shell :global(.account-offer-copy)>strong,.offerDetailContent h2,.matchCopy h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden}
 .matchFooter a{display:inline-flex;align-items:center;min-height:var(--tap-min);padding:var(--space-2)}
 .cardLink{display:inline-flex;align-items:center;min-height:var(--tap-min);padding-block:var(--space-2)}
+
+/* At 1440px the existing 1200px container holds 188 + 20 + 640 + 32 + 320. */
+@media(min-width:1280px){
+  .shell.shell:global(.account-shell--profile){grid-template-columns:minmax(0,1fr) calc(var(--form-col) + var(--form-panel-gap) + var(--panel-col));gap:var(--block-gap)}
+  :global(.account-shell--profile) .nav a{padding-inline:var(--space-2)}
+  :global(.account-shell--profile) .nav a>span{white-space:normal;overflow:visible;text-overflow:clip}
+}
+@media(min-width:1024px) and (max-width:1279px){
+  .shell.shell:global(.account-shell--profile){grid-template-columns:minmax(0,1fr);gap:var(--block-gap)}
+  .shell.shell:global(.account-shell--profile)>.sidebar,.shell.shell:global(.account-shell--profile)>.main{grid-column:1;grid-row:auto}
+  :global(.account-shell--profile) .sidebar{position:static}
+  :global(.account-shell--profile) .nav{display:flex;overflow:auto;gap:var(--stack-gap)}
+  :global(.account-shell--profile) .nav a{flex:none}
+}

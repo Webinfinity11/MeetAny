@@ -36,3 +36,15 @@
 @media(max-width:639px){.contacts{grid-template-columns:minmax(0,1fr)}}
 .profileForm > :global(.ma-form) { gap: var(--space-4); }
 .profileForm :global(input), .profileForm :global(textarea), .profileForm :global(button), .profileForm :global(summary) { scroll-margin-bottom: var(--block-gap); }
+.layout { min-width: 0; }
+.preview { min-width: 0; }
+.preview > p { margin-bottom: var(--stack-gap); }
+.checks { display: grid; gap: 0; width: 100%; list-style: none; padding: 0; margin: 0; }
+.checks a, .panelLink { display: flex; align-items: center; gap: var(--space-2); min-height: var(--tap-min); color: var(--text-link); font-size: var(--fs-sm); line-height: var(--lh-sm); text-decoration: none; }
+.checks a:hover, .panelLink:hover { text-decoration: underline; }
+.checks a > span:first-child { flex: none; color: var(--text-3); }
+.media :global([data-kind]) { --size: var(--size-96); }
+.media :global([data-kind=gallery] > ul) { gap: var(--space-2); }
+.media :global([data-kind=logo] > ul) { display: block; }
+.media :global([data-kind=logo] > ul > li > button) { width: 100%; height: var(--tap-min); flex-direction: row; }
+.layout :global(#company-upgrade) { padding: var(--card-pad); border: var(--size-1) solid var(--card-border); border-radius: var(--card-radius); background: var(--white); }

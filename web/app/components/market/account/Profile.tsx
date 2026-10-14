@@ -26,6 +26,7 @@ import { readOnboardProfile, type OnboardProfile } from "../../../lib/onboarding
 import { VerificationDocuments } from "../VerificationDocuments";
 import type { AnyUser } from "./shared";
 import styles from "./ProfileForm.module.css";
+import { ProfileLayout } from "./ProfileLayout";
 const profileSections = { details: "მონაცემები და ფოტოები", legal: "იურიდიული მონაცემები", documents: "დოკუმენტები", products: "პროდუქტები", distribution: "დისტრიბუცია", security: "პაროლი" };
 export function CompanyProfileNav({active}:{active:string}) {
  return <nav className="company-profile-sections ma-scroll-row" aria-label="კომპანიის პროფილის განყოფილებები">{Object.entries(profileSections).map(([key,label])=><Link key={key} href={`/account/?tab=profile&section=${key}`} aria-current={active===key?"page":undefined}>{label}</Link>)}</nav>;
@@ -34,7 +35,7 @@ export function CompanyProfile({me,section}:{me:AnyUser;section:string}) {
  const active=Object.hasOwn(profileSections,section)?section:"details";
  return <>
   <CompanyProfileNav active={active}/>
-  {active==="details"?<ProfileForm key={me.id} me={me}/>:active==="legal"?<LegalProfile key={me.id}/>:active==="documents"?<ProfileDocuments key={me.id} me={me}/>:active==="products"?<section className="account-section account-profile-block"><p className="account-hint">დაამატეთ პროდუქტები და მომსახურებები კომპანიის საჯარო გვერდისთვის.</p><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}
+  <ProfileLayout me={me} section={active}>{active==="details"?<ProfileForm key={me.id} me={me}/>:active==="legal"?<LegalProfile key={me.id}/>:active==="documents"?<ProfileDocuments key={me.id} me={me}/>:active==="products"?<section className="account-section account-profile-block"><p className="account-hint">დაამატეთ პროდუქტები და მომსახურებები კომპანიის საჯარო გვერდისთვის.</p><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}</ProfileLayout>
  </>;
 }
 
