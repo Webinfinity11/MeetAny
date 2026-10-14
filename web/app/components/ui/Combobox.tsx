@@ -117,7 +117,7 @@ export function Selection({ id, label, options, values, onChange, multiple = fal
       {entries.map((option, index) => <div key={option.value} role="presentation">
         {option.group && option.group !== entries[index - 1]?.group && <div className={s.group} role="presentation">{option.group}</div>}
         <div id={`${listId}-${index}`} role="option" aria-selected={values.includes(option.value)} aria-disabled={blocked(option) || undefined} className={s.option} data-active={index === activeIndex || undefined} onPointerMove={() => setActive(index)} onPointerDown={event => event.preventDefault()} onClick={() => choose(option)}>
-          {multiple && <span className={s.check} aria-hidden="true">{values.includes(option.value) && <Icon name="check" />}</span>}{option.icon}<span>{option.label}</span>{!multiple && values.includes(option.value) && <Icon name="check" />}
+          {multiple && <span className={s.check} aria-hidden="true">{values.includes(option.value) && <Icon name="check" />}</span>}{!multiple && option.icon}<span>{option.label}</span>{!multiple && values.includes(option.value) && <Icon name="check" />}
         </div>
       </div>)}
     </div>
