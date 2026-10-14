@@ -48,7 +48,7 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
         <li><Icon name="check"/><span>შეთავაზებების გაგზავნა</span></li>
         <li><Icon name="check"/><span>პროდუქტებისა და მომსახურების გამოჩენა</span></li>
         <li><Icon name="check"/><span>ყიდვა და გაყიდვა</span></li>
-      </ul><Button variant="primary" type="submit" form="company-upgrade-form" loading={busy}>გააგრძელეთ</Button></section>}
+      </ul></section>}
       footer={<div className={styles.actions}><Button variant="secondary" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>უკან</Button><Button variant="primary" type="submit" form="company-upgrade-form" loading={busy}>გააგრძელეთ</Button></div>}
     ><form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
       <fieldset className={styles.fields} disabled={busy}>

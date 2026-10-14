@@ -114,13 +114,11 @@
 .progressPanel { display: grid; gap: var(--stack-gap); padding: var(--card-pad); background: var(--white); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); }
 .progressPanel p, .previewDate { margin: 0; color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .progressPanel progress { display: block; width: 100%; height: var(--space-2); accent-color: var(--action-strong); }
-.panelAction { width: 100%; }
 .catalogPreview { display: grid; gap: var(--stack-gap); min-width: 0; }
 .catalogPreview > h2 { margin: 0; font-size: var(--fs-body); line-height: var(--lh-body); }
 .previewDate { padding-inline: var(--card-pad); }
 @media (max-width: 1023px) {
   .catalogPreview > h2 { display: none; }
-  .progressPanel .panelAction { display: none; }
 }
 
 .preferenceFields { gap: var(--form-gap); }

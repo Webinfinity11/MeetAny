@@ -249,9 +249,9 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
   const previewQuantity = Number(quantity.trim().replace(/\s+/g, "").replace(",", "."));
 
   const missing = [...Object.values(errorsFor(1)), ...Object.values(errorsFor(2))];
-  const primaryAction = (footer = false) => step === 3 && !signedIn && (sessionStatus === "ready" || sessionStatus === "profile")
-    ? <Button variant="primary" className={footer ? "post-actions__next" : styles.panelAction} href={`/account/?next=${next}`} onClick={keepDraft}>{sessionStatus === "profile" ? "პროფილის დასრულება" : "შესვლა და გაგრძელება"}</Button>
-    : <Button variant="primary" className={footer ? "post-actions__next" : styles.panelAction} type="submit" form="post-request-form" disabled={fileBusy || (step === 3 && sessionStatus !== "ready")} loading={pending}>{pending ? "იგზავნება…" : step < 3 ? "შემდეგი" : sessionStatus === "loading" ? "მოწმდება…" : "განთავსება"}</Button>;
+  const primaryAction = step === 3 && !signedIn && (sessionStatus === "ready" || sessionStatus === "profile")
+    ? <Button variant="primary" className="post-actions__next" href={`/account/?next=${next}`} onClick={keepDraft}>{sessionStatus === "profile" ? "პროფილის დასრულება" : "შესვლა და გაგრძელება"}</Button>
+    : <Button variant="primary" className="post-actions__next" type="submit" form="post-request-form" disabled={fileBusy || (step === 3 && sessionStatus !== "ready")} loading={pending}>{pending ? "იგზავნება…" : step < 3 ? "შემდეგი" : sessionStatus === "loading" ? "მოწმდება…" : "განთავსება"}</Button>;
   const savedStatus = saved ? <p className={styles.saved} role="status">{saved.where === "server" ? `ტექსტი შენახულია · ${saved.at}` : `ტექსტი შენახულია ამ ბრაუზერში · ${saved.at}`}{photo ? <span> · ფოტო არ ინახება მონახაზში</span> : null}</p> : hasContent ? <p className={styles.saved}>ავტომატური შენახვა მიუწვდომელია</p> : null;
 
   return <div className={`post-page ${styles.page}`}>
@@ -278,7 +278,6 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
           <strong>ნაბიჯი {step}/{steps.length}</strong>
           <progress value={6 - missing.length} max={6} aria-label="შევსებული სავალდებულო ველები" />
           <p>{missing.length ? missing[0] : "ყველა სავალდებულო ველი შევსებულია."}</p>
-          {primaryAction()}
         </section>
         <section className={styles.catalogPreview} aria-label="მოთხოვნის წინასწარი ხედი">
           <h2>ასე ჩანს</h2>
@@ -288,7 +287,7 @@ function PostRequestForm({ store, sessionStatus }: { store: Store; sessionStatus
         </section>
         <FormCard title="შესაბამისი მომწოდებლები"><MatchingPreview store={store} category={category}/></FormCard>
       </>}
-      footer={<div className="post-actions__buttons"><Button variant="secondary" disabled={step === 1 || pending || fileBusy} onClick={() => go(step - 1)}>უკან</Button>{primaryAction(true)}</div>}
+      footer={<div className="post-actions__buttons"><Button variant="secondary" disabled={step === 1 || pending || fileBusy} onClick={() => go(step - 1)}>უკან</Button>{primaryAction}</div>}
     >
       {targetCompany ? <div className={styles.connectionNotice} role="status"><p>მოთხოვნა საჯაროა — {targetCompany.company || targetCompany.name} და სხვა შესაბამისი კომპანიებიც ნახავენ.</p></div> : null}
       {openRequestCount >= 5 ? <div className={styles.connectionNotice} role="status"><p>თქვენ გაქვთ {openRequestCount} ღია მოთხოვნა — დახურეთ ერთი, რომ ახალი გამოაქვეყნოთ.</p><Button variant="secondary" href="/account/?tab=requests&filter=open" onClick={keepDraft}>ღია მოთხოვნების ნახვა</Button></div> : null}
