@@ -10,7 +10,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMarketStore, type Store } from "../../lib/market-client";
 import { cities } from "../../lib/categories";
 import { normalizeMobilePhone } from "../../lib/mobile-phone";
-import { CategoryChips } from "../ui/CategoryChips";
+import { Combobox } from "../ui/Combobox";
+import { categoryOptions } from "../ui/combobox-options";
 import { isEmail, useFieldErrors, type FieldErrors } from "./fieldErrors";
 
 type Mode = "login" | "register" | "reset";
@@ -238,7 +239,7 @@ function RegisterForm({ initialRole, store, onSubmitted }: { initialRole: string
             <label className="ma-field__label" htmlFor="reg-industry">
               დარგი *
             </label>
-            <CategoryChips id="reg-industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ""); v.clear("reg-industry");}} />
+            <Combobox {...v.control("reg-industry")} required label="დარგი" options={categoryOptions} value={industry} onChange={value => {setIndustry(value); v.clear("reg-industry");}} />
             <div className="auth-field-message">{v.message("reg-industry")}</div>
           </div>
         ) : null}

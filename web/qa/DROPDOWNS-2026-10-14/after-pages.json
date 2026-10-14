@@ -1,0 +1,23 @@
+[
+  {
+    "role": "guest",
+    "width": 1440,
+    "name": "register",
+    "axe": [],
+    "overflow": 0
+  },
+  {
+    "role": "guest",
+    "width": 390,
+    "name": "register",
+    "axe": [],
+    "overflow": 0
+  },
+  {
+    "role": "guest",
+    "width": 360,
+    "name": "register",
+    "axe": [],
+    "overflow": 0
+  }
+]

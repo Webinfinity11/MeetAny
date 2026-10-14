@@ -1,8 +1,10 @@
 'use client';
+import { MultiCombobox } from "../ui/MultiCombobox";
+import { categoryOptions, categoryTextOptions } from "../ui/combobox-options";
 import { useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CategoryChips, ImageUpload, ChipsInput } from '../ui';
+import { Combobox, ImageUpload } from '../ui';
 import type { Store } from '../../lib/market-client';
 import { VerificationDocuments, VerificationSummary } from './VerificationDocuments';
 import { ProductsImport } from './ProductsImport';
@@ -80,7 +82,7 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
     <Card title="ვინ ხართ"><ImageUpload id="onboard-logo" label="ლოგო (არასავალდებულო)" kind="logo" items={p.logo_url ? [{ key: 'logo', url: p.logo_url }] : []} onChange={items => { void upload(items[0]?.file || null, 'logo'); }} />
       <Field label="კომპანიის შესახებ" hint={`${p.about.length} / 1000`} multiline value={p.about || ''} maxLength={1000} onChange={about => patch({ about })} /><p className={s.muted}>გალერეა და ფონური ფოტო ემატება <Link href="/account/?tab=profile">პროფილის პარამეტრებში</Link></p></Card>
     <Card title="დარგი და ტეგები"><div className={s.industryRow}><p>დარგი: {categories[p.industry] || 'არ არის მითითებული'}</p><Button variant="ghost" aria-expanded={editingIndustry} onClick={() => setEditingIndustry(!editingIndustry)}>შეცვალეთ</Button></div>
-      {editingIndustry && <CategoryChips value={[p.industry]} onChange={values => { patch({ industry: values[0] }); setEditingIndustry(false); }} />}
+      {editingIndustry && <Combobox label="დარგი" options={categoryOptions} value={p.industry} onChange={value => { patch({ industry: value }); setEditingIndustry(false); }} />}
       <Items label="ტეგები" values={p.business_tags} suggestions={['HoReCa', 'დისტრიბუცია', 'იმპორტი', 'წარმოება', 'კეითერინგი']} onChange={business_tags => patch({ business_tags })} /></Card>
     <details className={s.optional}><summary>დამატებითი</summary><Card title="სერტიფიკატები" hint="არასავალდებულო"><Items label="სერტიფიკატები" values={p.certificates} suggestions={certificateOptions} onChange={certificates => patch({ certificates })} /></Card></details>
   </>;
@@ -103,7 +105,7 @@ export function OnboardSteps({ store,onBusy,step, profile: p, patch, products, s
     </div>
     {search && !products.some(item => item.name.toLocaleLowerCase('ka').includes(search.toLocaleLowerCase('ka'))) && <p className={s.muted}>პროდუქტი ვერ მოიძებნა.</p>}
     <Button variant="secondary" disabled={products.length >= 100} onClick={() => { setSearch(''); setExpanded(products.length); setPhotoPicker(null); setProducts([...products, { name: '', note: '', photoUrl: null }]); }}><Icon name="plus" />{products.length >= 100 ? 'ლიმიტი: 100 პროდუქტი' : 'დაამატეთ პროდუქტი'}</Button>
-    <ChipsInput id="onboard-services" label="მომსახურებები" values={p.offers} max={8} onChange={offers => patch({ offers })} />
+    <MultiCombobox creatable limit={8} options={categoryTextOptions} id="onboard-services" label="მომსახურებები" value={p.offers} onChange={offers => patch({ offers })} />
     <Button variant="ghost" onClick={() => document.getElementById('onboard-services')?.focus()}><Icon name="plus" />დაამატეთ მომსახურება</Button>
   </Card>;
   if (step === 'verify') return <>

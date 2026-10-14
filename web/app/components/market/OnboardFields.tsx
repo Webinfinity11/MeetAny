@@ -1,8 +1,7 @@
 'use client';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { Button } from '../ui/Button';
-import { CategoryChips } from '../ui/CategoryChips';
-import { ChipsInput } from '../ui/ChipsInput';
+import { MultiCombobox } from '../ui/MultiCombobox';
+import { categoryOptions, categoryTextOptions, textOptions } from '../ui/combobox-options';
 import { CustomSelect } from '../ui/CustomSelect';
 import { Icon } from '../Icon';
 import s from './onboarding.module.css';
@@ -37,20 +36,10 @@ export function OnboardField({ label, value, onChange, required, maxLength, type
     {shown && <small id={id + '-error'} className={s.fieldError}>{shown}</small>}
   </div>;
 }
-export function OnboardItems({ label, values, onChange, suggestions = [], checkboxes = false, rows = false }: { label: string; values: string[]; onChange: (values: string[]) => void; suggestions?: string[]; checkboxes?: boolean; rows?: boolean }) {
-  const id = useId(), [text, setText] = useState(''), [adding, setAdding] = useState(!checkboxes);
-  const [customOptions, setCustomOptions] = useState(values);
-  const add = () => { const value = text.trim(); if (value && values.length < 8 && !values.includes(value)) { onChange([...values, value]); setCustomOptions(previous => [...new Set([...previous, value])]); setText(''); } };
-  if (!checkboxes) return <ChipsInput id={id} label={label} values={values} onChange={onChange} suggestions={suggestions} compact={rows} />;
-  const customButton = <Button variant="secondary" className={s.customAdd} aria-label={`${label} — საკუთარი`} aria-expanded={adding} disabled={values.length >= 8} onClick={() => setAdding(!adding)}><Icon name="plus" />დაამატეთ საკუთარი</Button>;
-  return <div className={s.items} role="group" aria-label={label}>
-    <div className={s.checkboxes}>{[...new Set([...suggestions, ...customOptions, ...values])].map(value => <label key={value}><input type="checkbox" checked={values.includes(value)} disabled={!values.includes(value) && values.length >= 8} onChange={() => onChange(values.includes(value) ? values.filter(item => item !== value) : [...values, value])} />{value}</label>)}{customButton}</div>
-    {adding && <div className={s.addItem}><input id={id} aria-label={label} value={text} maxLength={120} placeholder="დაამატეთ" onChange={e => setText(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} /><Button variant="secondary" disabled={!text.trim() || values.length >= 8 || values.includes(text.trim())} onClick={add}>დაამატეთ</Button></div>}
-    {adding && text.trim() && <small>ჩანაწერის შესანახად დააჭირეთ „დაამატეთ“.</small>}
-  </div>;
+export function OnboardItems({ label, values, onChange, suggestions = [] }: { label: string; values: string[]; onChange: (values: string[]) => void; suggestions?: string[]; checkboxes?: boolean; rows?: boolean }) {
+  const id = useId();
+  return <MultiCombobox id={id} label={label} value={values} onChange={onChange} options={['რას ეძებთ', 'რას ვთავაზობთ', 'რას ვეძებთ'].includes(label) ? categoryTextOptions : textOptions(suggestions)} creatable limit={8} />;
 }
-/** Steps 1 (what you supply) and 5 (what you buy) pick from the same list with the same names:
- *  the featured categories first, every other one under "all categories". */
-export function OnboardCategories({ values, onChange, compact = false, limit, count }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number; count?: string }) {
-  return <CategoryChips multiple value={values} onChange={onChange} compact={compact} limit={limit} count={count} />;
+export function OnboardCategories({ values, onChange, limit, count }: { values: string[]; onChange: (values: string[]) => void; compact?: boolean; limit?: number; count?: string }) {
+  return <MultiCombobox label="კატეგორიები" options={categoryOptions} value={values} onChange={onChange} limit={limit} hint={count} />;
 }

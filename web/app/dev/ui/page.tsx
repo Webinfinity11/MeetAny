@@ -1,5 +1,7 @@
 "use client";
-import { CategoryChips, ChipsInput, ImageUpload, type ImageUploadItem } from "../../components/ui";
+import { MultiCombobox } from "../../components/ui/MultiCombobox";
+import { categoryOptions, categoryTextOptions, cityOptions } from "../../components/ui/combobox-options";
+import { Combobox, ImageUpload, type ImageUploadItem } from "../../components/ui";
 import { useState } from "react";
 import { Modal, type ModalTone } from "../../components/ui/Modal";
 import { ConfirmSheet } from "../../components/ui/ConfirmSheet";
@@ -13,6 +15,7 @@ import { Icon } from "../../components/Icon";
 import toastStyles from "../../components/Toasts.module.css";
 
 export default function UIPage() {
+  const [serviceCities, setServiceCities] = useState(['tbilisi', 'batumi', 'kutaisi']);
   const [modal, setModal] = useState<ModalTone | null>(null);
   const [confirm, setConfirm] = useState(false);
   const [category, setCategory] = useState<string[]>([]), [categories, setCategories] = useState(['food_fresh', 'beverages']);
@@ -23,12 +26,13 @@ export default function UIPage() {
     <h1>MeetAny UI</h1>
     <p>ღილაკები და სტატუსის ნიშნები იყენებს საერთო ფერებს, ზომებსა და ფოკუსის წესებს.</p>
     <h2>კატეგორიები — ერთი არჩევანი</h2>
-    <CategoryChips id="demo-single" label="დარგი" value={category} onChange={setCategory} />
+    <Combobox id="demo-single" label="დარგი" options={categoryOptions} value={category[0] || ""} onChange={value => setCategory([value])} />
     <h2>კატეგორიები — რამდენიმე არჩევანი, ლიმიტი</h2>
-    <CategoryChips id="demo-multiple" label="მომარაგება" value={categories} onChange={setCategories} multiple limit={2} compact />
+    <MultiCombobox id="demo-multiple" label="მომარაგება" options={categoryOptions} value={categories} onChange={setCategories} limit={2} />
+    <MultiCombobox id="demo-cities" label="მომსახურების ქალაქები" options={cityOptions} value={serviceCities} onChange={setServiceCities} exclusiveValue="georgia" />
     <h2>პუნქტების დამატება</h2>
-    <div className="ui-preview-grid"><ChipsInput id="demo-chips" label="რას ვთავაზობთ" values={chips} onChange={setChips} suggestions={['მიწოდება', 'მონტაჟი']} />
-    <ChipsInput id="demo-limit" label="ლიმიტი" values={full} onChange={setFull} max={2} /></div>
+    <div className="ui-preview-grid"><MultiCombobox creatable limit={8} options={categoryTextOptions} id="demo-chips" label="რას ვთავაზობთ" value={chips} onChange={setChips} />
+    <MultiCombobox creatable limit={2} options={categoryTextOptions} id="demo-limit" label="ლიმიტი" value={full} onChange={setFull} /></div>
     <h2>ლოგო და გალერეა</h2>
     <div className="ui-preview-grid"><ImageUpload id="demo-logo" label="ლოგო" kind="logo" items={logo} onChange={setLogo} />
     <ImageUpload id="demo-gallery" label="ფოტოები" kind="gallery" items={gallery} onChange={setGallery} /></div>

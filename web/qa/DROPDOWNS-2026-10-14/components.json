@@ -1,0 +1,59 @@
+[
+  {
+    "width": 1440,
+    "screen": "single",
+    "axe": []
+  },
+  {
+    "width": 1440,
+    "screen": "multi",
+    "axe": []
+  },
+  {
+    "width": 1440,
+    "exclusive": "PASS",
+    "focusReturn": "PASS",
+    "keyboard": "PASS",
+    "limit": "PASS",
+    "creatable": "PASS",
+    "overflow": 0
+  },
+  {
+    "width": 390,
+    "screen": "single",
+    "axe": []
+  },
+  {
+    "width": 390,
+    "screen": "multi",
+    "axe": []
+  },
+  {
+    "width": 390,
+    "exclusive": "PASS",
+    "focusReturn": "PASS",
+    "keyboard": "PASS",
+    "limit": "PASS",
+    "creatable": "PASS",
+    "overflow": 0
+  },
+  {
+    "width": 360,
+    "screen": "single",
+    "axe": []
+  },
+  {
+    "width": 360,
+    "screen": "multi",
+    "axe": []
+  },
+  {
+    "width": 360,
+    "exclusive": "PASS",
+    "focusReturn": "PASS",
+    "keyboard": "PASS",
+    "limit": "PASS",
+    "creatable": "PASS",
+    "overflow": 0
+  }
+]

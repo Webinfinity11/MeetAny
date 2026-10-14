@@ -1,0 +1,20 @@
+[
+  {
+    "role": "guest",
+    "width": 1440,
+    "name": "register",
+    "status": "captured"
+  },
+  {
+    "role": "guest",
+    "width": 390,
+    "name": "register",
+    "status": "captured"
+  },
+  {
+    "role": "guest",
+    "width": 360,
+    "name": "register",
+    "status": "captured"
+  }
+]

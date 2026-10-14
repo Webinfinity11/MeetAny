@@ -1,11 +1,11 @@
 "use client";
+import { MultiCombobox } from "../../ui/MultiCombobox";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { Icon } from "../../Icon";
 import { Button } from "../../ui/Button";
 import { CustomSelect } from "../../ui/CustomSelect";
-import { CityChips } from "../../ui/CityChips";
 import { toast } from "../../Toasts";
 import { PasswordInput } from "../AuthForms";
 import { useFieldErrors, type FieldErrors } from "../fieldErrors";
@@ -16,8 +16,8 @@ import { LocationPicker } from "../LocationPicker";
 import { CompanyDistributionPanel } from "../CompanyBusiness";
 import { useMarketStore } from "../../../lib/market-client";
 import { cities } from "../../../lib/categories";
-import { CategoryChips } from "../../ui/CategoryChips";
-import { ChipsInput } from "../../ui/ChipsInput";
+import { Combobox } from "../../ui/Combobox";
+import { categoryOptions, cityOptions } from "../../ui/combobox-options";
 import { Sheet } from "../../ui/Sheet";
 import { ConfirmSheet } from "../../ui/ConfirmSheet";
 import { useUnsavedGuard } from "../../../lib/use-unsaved-draft";
@@ -168,7 +168,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <label className="ma-field__label" htmlFor="industry">
                 დარგი *
               </label>
-              <CategoryChips id="industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ""); v.clear("industry");}} />
+              <Combobox {...v.control("industry")} required label="დარგი" options={categoryOptions} value={industry} onChange={value => {setIndustry(value); v.clear("industry");}} />
               {v.message("industry")}
             </div>
           ) : null}
@@ -199,7 +199,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <ProfileItems compact id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);setSaved(false);}}/>
               <ProfileItems compact id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);setSaved(false);}}/>
             </div>
-            <CityChips id="profile-service-cities" value={serviceCities} disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
+            <MultiCombobox label="მომსახურების ქალაქები" options={cityOptions} exclusiveValue="georgia" id="profile-service-cities" value={serviceCities} disabled={pending} onChange={next=>{setServiceCities(next);setSaved(false);}}/>
           </fieldset>
           <fieldset className="account-form-group" disabled={pending}>
             <legend>მისამართი</legend>
@@ -410,7 +410,7 @@ function LegalProfile() {
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-form">იურიდიული ფორმა</label><CustomSelect id="legal-form" value={profile.legal_form || ''} onChange={e => patch({legal_form: e.target.value || null})}><option value="">აირჩიეთ</option>{Array.from(new Set(['შპს', 'ინდ. მეწარმე', 'სს', 'კოოპერატივი', 'სხვა', ...(profile.legal_form ? [profile.legal_form] : [])])).map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-year">დაარსების წელი</label><input className="ma-input" type="number" min={1800} max={new Date().getFullYear()} value={profile.founded_year ?? ''} onChange={e => {patch({founded_year: e.target.value ? Number(e.target.value) : null}); fields.clear('legal-year');}} {...fields.control('legal-year')}/>{fields.message('legal-year')}</div>
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-employees">თანამშრომლები</label><CustomSelect id="legal-employees" value={profile.employee_band || ''} onChange={e => patch({employee_band: e.target.value || null})}><option value="">აირჩიეთ</option>{['1-7','8-50','51-200','201+'].map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
-   </div><ChipsInput id="legal-markets" label="ბაზრები" compact values={profile.markets} onChange={markets => patch({markets})}/><ChipsInput id="legal-languages" label="ენები" compact values={profile.languages} onChange={languages => patch({languages})}/></fieldset>
+   </div><MultiCombobox creatable limit={8} options={[]} id="legal-markets" label="ბაზრები" value={profile.markets} onChange={markets => patch({markets})}/><MultiCombobox creatable limit={8} options={[]} id="legal-languages" label="ენები" value={profile.languages} onChange={languages => patch({languages})}/></fieldset>
    <div className="ma-form-bar"><p className="ma-form-bar__note" role="status">{dirty ? 'შეუნახავი ცვლილებები' : savedAt ? `შენახულია ${savedAt}` : 'ცვლილებები არ არის'}</p><Button type="submit" loading={pending}>შეინახეთ</Button></div>
   </form> : !error ? <p role="status">იტვირთება…</p> : null}
   {error && <p className="ma-field__error" role="alert">{error}</p>}

@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../ui/Button';
-import { CategoryChips } from '../../ui/CategoryChips';
+import { Combobox } from '../../ui/Combobox';
+import { categoryOptions } from '../../ui/combobox-options';
 import { useMarketStore } from '../../../lib/market-client';
 import { categories } from '../../../lib/categories';
 import { useFieldErrors, type FieldErrors } from '../fieldErrors';
@@ -44,7 +45,7 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
     {!open ? <Button className={styles.action} variant="secondary" aria-expanded={false} aria-controls="company-upgrade-form" onClick={() => setOpen(true)}><Icon name="plus"/>დაამატეთ კომპანიის პროფილი</Button> : <form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
       <fieldset className={styles.fields} disabled={busy}>
         <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-company">კომპანიის დასახელება *</label><input className="ma-input" autoComplete="organization" maxLength={120} value={company} onChange={event => { setCompany(event.target.value); fields.clear('upgrade-company'); }} {...fields.control('upgrade-company')}/>{fields.message('upgrade-company')}</div>
-        <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-industry">დარგი *</label><CategoryChips id="upgrade-industry" label="დარგი" compact value={industry ? [industry] : []} onChange={value => {setIndustry(value[0] || ''); fields.clear('upgrade-industry');}}/>{fields.message('upgrade-industry')}</div>
+        <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-industry">დარგი *</label><Combobox {...fields.control("upgrade-industry")} required label="დარგი" options={categoryOptions} value={industry} onChange={value => {setIndustry(value); fields.clear('upgrade-industry');}}/>{fields.message('upgrade-industry')}</div>
       </fieldset>
       {error && <p className="ma-field__error" role="alert">{error}</p>}
       <p className={styles.next}>შემდეგ ნაბიჯზე აირჩევთ, რისთვის გამოიყენებთ MeetAny-ს.</p>
