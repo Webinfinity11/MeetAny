@@ -20,7 +20,7 @@
   hyphens: none;
   text-wrap: balance;
 }
-.heading h1:focus { outline: none; }
+.heading h1:focus, .heading h1:focus-visible { outline: none; box-shadow: none; }
 .heading p { margin: 0; max-width: 64ch; color: var(--text-2); font-size: var(--fs-body); line-height: 1.6; text-wrap: pretty; }
 .panel { min-width: 0; }
 .panel summary {
