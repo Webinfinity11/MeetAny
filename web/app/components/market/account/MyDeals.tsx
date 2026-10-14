@@ -25,7 +25,7 @@ export function useAccountDeals(store: Store, actor: string) {
 }
 function DealRow({ store, actor, deal }: { store: Store; actor: string; deal: MyDeal }) {
   const partner = store.userById(deal.buyer_id === actor ? deal.supplier_id : deal.buyer_id);
-  return <li className={styles.deal}><div><h2><Link className={styles.cardLink} href={dealHref(deal.id)}>{deal.request_title || "გარიგება"}</Link></h2><p>{deal.buyer_id === actor ? "მომწოდებელი" : "მყიდველი"}: {partner?.company || partner?.name || "პარტნიორი"}</p></div><Status tone={deal.stage === "complete" ? "success" : deal.stage === "cancelled" ? "muted" : "info"}>{dealStageLabel(deal.stage)}</Status><time dateTime={deal.latest_at}>{dealDate(deal.latest_at)}</time><Button variant="secondary" href={dealHref(deal.id)}>გარიგების გახსნა</Button></li>;
+  return <li className={styles.deal}><div><Link className={`${styles.cardLink} ${styles.recordIdentity}`} href={dealHref(deal.id)}><h2>{deal.request_title || "გარიგება"}</h2><p>{deal.buyer_id === actor ? "მომწოდებელი" : "მყიდველი"}: {partner?.company || partner?.name || "პარტნიორი"}</p></Link></div><Status tone={deal.stage === "complete" ? "success" : deal.stage === "cancelled" ? "muted" : "info"}>{dealStageLabel(deal.stage)}</Status><time dateTime={deal.latest_at}>{dealDate(deal.latest_at)}</time><Button variant="secondary" href={dealHref(deal.id)}>გარიგების გახსნა</Button></li>;
 }
 export function MyDeals({ store, actor, space }: { store: Store; actor: string; space: Space }) {
   const result = useAccountDeals(store, actor);

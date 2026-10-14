@@ -169,6 +169,9 @@
   :global(.account-shell--profile) .nav a{flex:none}
 }
 .deal p { margin: var(--space-1) 0 0; }
+.cardLink.recordIdentity { display:grid; align-content:center; gap:var(--space-1); min-width:0; min-height:var(--tap-min); padding:0; }
+.shell .recordIdentity p { margin:0; }
+.shell :global(.account-item-heading) > .recordIdentity { flex:1; }
 @media(max-width:767px){
   .deal { grid-template-columns:minmax(0,1fr) auto; gap:var(--stack-gap); }
   .deal > div, .deal > a { grid-column:1/-1; }
