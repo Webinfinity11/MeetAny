@@ -43,7 +43,7 @@
 .ma-field__error{display:flex;gap:var(--space-compact);align-items:flex-start;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--danger-600);font-weight:var(--fw-medium)}
 .ma-field__error .icon{width:var(--icon-sm);height:var(--icon-sm);margin-top:var(--space-three-quarter)}
 .ma-field__error[hidden]{display:none}
-.ma-form{display:grid;gap:var(--space-5)}
+.ma-form{display:grid;gap:var(--form-gap)}
 .ma-form__row{display:grid;gap:var(--space-4);grid-template-columns:minmax(0,1fr)}
 @media (min-width:480px){.ma-form__row--2{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ma-input,.ma-textarea,.ma-select{display:block;width:100%;min-height:var(--field-h);padding:var(--space-field-y) var(--space-3);border:var(--size-1) solid var(--field-border);border-radius:var(--field-radius);background:var(--white);color:var(--text);font-family:var(--font-sans);font-size:var(--field-fs);line-height:var(--lh-control);transition:border-color var(--dur-fast) var(--ease),box-shadow var(--dur-fast) var(--ease)}

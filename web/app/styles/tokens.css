@@ -140,7 +140,6 @@
   --space-16:64px;
   --space-20:80px;
   --space-24:96px;
-  --section-gap:48px;
   --radius-xs:calc(var(--theme-radius) * .6);
   --radius-sm:calc(var(--theme-radius) * .6);
   --radius-md:var(--theme-radius);
@@ -413,6 +412,14 @@
   --size-88:88px;
 
   /* SEMANTIC LAYER — roles referencing primitive values */
+  /* სექციებს შორის დაშორება: 32px; დესკტოპზე (≥1024px) — 56px. */
+  --section-gap:var(--space-8);
+  /* ერთ სვეტში ბლოკებს შორის და ბლოკის შიგნით ელემენტებს შორის დაშორებები. */
+  --block-gap:var(--space-4);
+  --stack-gap:var(--space-3);
+  /* გვერდის main-ისა და მთავარი/კატალოგის hero-ს ზედა/ქვედა padding. */
+  --page-pad-y:var(--space-5);
+  --hero-pad-y:var(--space-8);
   --catalog-title-case:normal;
   --tier-vip-bg:var(--white);
   --tier-vip-border:var(--ink-200);
@@ -484,6 +491,16 @@
   --avatar-6-bg:var(--avatar-bg);
   --avatar-6-text:var(--avatar-text);
   --card-pad:16px;
+  /* სიის რიგებისა და ბარათის ქვედა ზოლის კომპაქტური padding. */
+  --card-pad-sm:var(--space-3);
+  /* ფორმის ველებს შორის ვერტიკალური დაშორება. */
+  --form-gap:var(--space-4);
+  /* დესკტოპზე (≥1024px) ფორმისა და გვერდითი პანელის სიგანეები და მათ შორის დაშორება. */
+  --form-col:var(--size-640);
+  --panel-col:var(--size-320);
+  --form-panel-gap:var(--space-8);
+  /* sticky პანელის ზედა პოზიცია ფიქსირებული ჰედერის ქვემოთ. */
+  --panel-top:calc(var(--header-h) + var(--space-4));
   --field-error-ring:0 0 0 2px var(--white),0 0 0 4px var(--danger-600);
   --badge-accent-ring:0 0 0 3px var(--orange-50);
   --card-selected-shadow:var(--shadow-1),0 0 0 6px var(--ink-100);
@@ -592,7 +609,7 @@
 /* Breakpoints (min-width): 480 / 768 / 1024 / 1280. Mobile values are the defaults above for
    layout tokens; the type scale is desktop-first as in the source file. */
 @media (max-width:767px){:root{--fs-display:32px;--lh-display:40px;--fs-h1:24px;--lh-h1:32px;--fs-h2:21px;--lh-h2:28px;--fs-h3:18px;--lh-h3:24px;--fs-copy:15px;--lh-copy:24px}}
-@media (min-width:768px){:root{--card-pad:20px;--header-h:64px;--gutter:24px}}
-@media (min-width:1024px){:root{--section-gap:80px}}
+@media (min-width:768px){:root{--card-pad:20px;--card-pad-sm:var(--space-4);--block-gap:var(--space-5);--stack-gap:var(--space-4);--page-pad-y:var(--space-8);--header-h:64px;--gutter:24px}}
+@media (min-width:1024px){:root{--section-gap:var(--size-56);--hero-pad-y:var(--space-12)}}
 @media (min-width:1280px){:root{--gutter:32px}}
 @media (prefers-reduced-motion:reduce){:root{--dur-fast:0ms;--dur:0ms;--dur-slow:0ms;--motion-overlay-in:1ms;--motion-overlay-out:1ms}}
