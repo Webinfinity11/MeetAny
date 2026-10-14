@@ -64,12 +64,12 @@
 }
 
 /* ---------- Requests: business brief, with a distinct facts/action strip ---------- */
-.request-card-grid { display: grid; gap: var(--size-16); }
+.request-card-grid { display: grid; gap: var(--block-gap); }
 .request-card {
   display: grid;
   grid-template-columns: var(--size-64) minmax(0, 1fr);
-  gap: var(--size-20);
-  padding: var(--size-24);
+  gap: var(--stack-gap);
+  padding: var(--card-pad);
 }
 .request-card:hover {
   transform: none;
@@ -138,12 +138,12 @@
 .company-directory-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-8) var(--space-6);
+  gap: var(--block-gap);
 }
 .company-similar {
-  margin-top: var(--space-12);
+  margin-top: var(--section-gap);
 }
-.company-similar .detail-section-title { margin-bottom: var(--space-5); }
+.company-similar .detail-section-title { margin-bottom: var(--block-gap); }
 .company-directory-list > :not(.company-card, .catalog-skeleton__card) {
   grid-column: 1 / -1;
 }
@@ -307,7 +307,7 @@
 .catalog-skeleton__card {
   display: grid;
   gap: var(--space-3);
-  padding: var(--space-6);
+  padding: var(--card-pad);
   background: var(--white);
   border: var(--size-1) solid var(--card-border);
   border-radius: var(--card-radius);
@@ -326,9 +326,9 @@
 
 @media (max-width: 767px) {
   .request-card {
-    padding: var(--size-16);
+    padding: var(--card-pad-sm);
     grid-template-columns: var(--size-44) minmax(0, 1fr);
-    gap: var(--size-12);
+    gap: var(--stack-gap);
   }
   .request-card__visual { width: var(--size-44); height: var(--size-44); border-radius: var(--size-12) var(--size-12) var(--size-12) var(--size-3); }
   .request-card__visual .duo-icon { width: var(--size-24); height: var(--size-24); }

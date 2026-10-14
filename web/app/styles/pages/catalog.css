@@ -9,7 +9,7 @@
 
 .catalog-page {
   padding-top: 0;
-  padding-bottom: var(--space-16);
+  padding-bottom: var(--page-pad-y);
 }
 
 /* ---------- Header ---------- */
@@ -23,8 +23,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: end;
-  gap: var(--space-6) var(--space-12);
-  padding-block: var(--space-12) var(--space-12);
+  gap: var(--stack-gap) var(--block-gap);
+  padding-block: var(--hero-pad-y);
   color: var(--hero-text);
 }
 .catalog-header::before {
@@ -106,7 +106,7 @@
   grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: var(--space-6);
-  padding-block: var(--space-12) var(--space-10);
+  padding-block: var(--hero-pad-y);
   text-align: center;
 }
 .catalog-header--center.catalog-header--light::before {
@@ -125,10 +125,10 @@
   background: var(--color--F6F7FA);
 }
 .companies-catalog .catalog-header--center {
-  padding-block: var(--size-72) var(--size-64);
+  padding-block: var(--hero-pad-y);
 }
 @media (min-width: 1320px) {
-  .requests-catalog .catalog-header--center { padding-block: var(--size-72) var(--size-64); }
+  .requests-catalog .catalog-header--center { padding-block: var(--hero-pad-y); }
 }
 .catalog-collage {
   --collage-w: var(--size-104);
@@ -253,7 +253,7 @@
     font-size: var(--size-26);
     line-height: var(--size-38);
   }
-  .companies-catalog .catalog-header--center { padding-block: var(--space-8); }
+  .companies-catalog .catalog-header--center { padding-block: var(--hero-pad-y); }
   .catalog-collage, .request-cover { display: none; }
 }
 /* Request previews share the catalog rhythm while representing live demand. */
@@ -318,8 +318,8 @@
 .catalog-workspace {
   display: grid;
   grid-template-columns: var(--size-280) minmax(0, 1fr);
-  gap: var(--space-8);
-  padding-top: var(--space-10);
+  gap: var(--block-gap);
+  padding-top: var(--block-gap);
 }
 .catalog-sidebar {
   align-self: start;
@@ -574,7 +574,7 @@
 @media (max-width: 1023px) {
   .catalog-workspace {
     grid-template-columns: minmax(0, 1fr);
-    padding-top: var(--space-5);
+    padding-top: var(--block-gap);
   }
   .catalog-sidebar {
     display: none;
@@ -588,14 +588,14 @@
   .catalog-header {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
-    padding-block: var(--space-8);
+    padding-block: var(--hero-pad-y);
   }
   .catalog-title {
     font-size: var(--size-30);
     line-height: var(--size-38);
   }
   .catalog-header--center {
-    padding-block: var(--space-8);
+    padding-block: var(--hero-pad-y);
     gap: var(--space-5);
   }
   .catalog-header--center.catalog-header--light::before {
@@ -717,10 +717,10 @@ body:has(.catalog-page) { background: var(--ink-50); }
 .catalog-page .catalog-header::before { display: none; }
 .catalog-page .catalog-title { margin: 0; font-size: var(--size-36); line-height: 1.25; font-weight: var(--fw-bold); font-feature-settings: normal; letter-spacing: -.025em; color: var(--ink-950); }
 .catalog-page .catalog-description { max-width: var(--measure); margin-top: var(--space-2); color: var(--ink-600); font-size: var(--fs-copy); line-height: var(--lh-copy); }
-.catalog-page .catalog-search-area { margin-top: var(--space-8); padding: var(--space-3); border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); width: 100%; max-width: none; }
+.catalog-page .catalog-search-area { margin-top: var(--block-gap); padding: var(--space-3); border: var(--size-1) solid var(--ink-200); border-radius: var(--card-radius); background: var(--white); width: 100%; max-width: none; }
 .catalog-page .catalog-search { margin: 0; }
 .catalog-page .catalog-search .ma-input { height: var(--size-44); min-height: var(--size-44); border-color: var(--ink-200); background: var(--white); color: var(--ink-950); font-size: var(--field-fs); }
-.catalog-page .catalog-workspace { grid-template-columns: var(--size-220) minmax(0, 1fr); gap: var(--space-8); padding-top: var(--space-8); }
+.catalog-page .catalog-workspace { grid-template-columns: var(--size-220) minmax(0, 1fr); gap: var(--block-gap); padding-top: var(--block-gap); }
 .catalog-page .catalog-sidebar { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .catalog-page .catalog-count { font-size: var(--size-14); font-weight: var(--fw-regular); line-height: 1.5; color: var(--ink-600); }
 .catalog-page .catalog-results-bar { gap: var(--space-3); margin-bottom: var(--space-4); }
@@ -734,10 +734,23 @@ body:has(.catalog-page) { background: var(--ink-50); }
 }
 @media(max-width:599px) {
   .catalog-page .catalog-title { font-size: var(--size-28); }
-  .catalog-page .catalog-header--opportunities { padding-top: var(--space-8); }
+  .catalog-page .catalog-header--opportunities { padding-top: var(--block-gap); }
   .catalog-page :is(.request-card-grid,.company-directory-list,.catalog-skeleton) { grid-template-columns: minmax(0,1fr); }
   .catalog-page .catalog-results-controls { margin-left: 0; width: 100%; justify-content: space-between; }
   .catalog-page .catalog-results-controls .catalog-sort { flex: 0 1 auto; }
   .catalog-page .catalog-sort .ma-select { max-width: var(--size-160); }
 }
 .catalog-page .request-card-grid > :not(.request-card) { grid-column: 1 / -1; }
+
+/* Catalog titles keep their distinct tones; spacing follows the density scale. */
+.catalog-page .catalog-header--opportunities { padding-block: var(--hero-pad-y); }
+.catalog-page .catalog-header--dark::before { display: block; background: var(--brand-panel-bg); }
+.catalog-page .catalog-header--dark .catalog-title { color: var(--white); }
+.catalog-page .catalog-header--dark .catalog-description { color: var(--inverse-text-2); }
+.catalog-page .catalog-workspace { gap: var(--block-gap); padding-top: var(--block-gap); }
+.catalog-page .catalog-sidebar { padding: var(--card-pad-sm); border: var(--size-1) solid var(--card-border); border-radius: var(--card-radius); background: var(--white); }
+@media (max-width: 767px) {
+  .catalog-page .catalog-description { display: none; }
+  .companies-catalog .catalog-header--opportunities { padding-block: var(--page-pad-y); }
+  .companies-catalog .catalog-workspace { padding-top: 0; }
+}

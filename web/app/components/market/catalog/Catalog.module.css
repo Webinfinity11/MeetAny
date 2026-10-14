@@ -1,5 +1,5 @@
 .page { min-width: 0; }
-.page:global(.catalog-page) :global(.catalog-workspace) { grid-template-columns: var(--size-220) minmax(0, 1fr); }
+.page:global(.catalog-page) :global(.catalog-workspace) { grid-template-columns: var(--size-280) minmax(0, 1fr); }
 .page:global(.catalog-page) :global(.catalog-sidebar) { display: block; position: sticky; top: var(--size-96); max-height: calc(100dvh - var(--size-120)); overflow-y: auto; align-self: start; }
 .page:global(.catalog-page) :global(.catalog-header) { display: block; }
 .page:global(.catalog-page) :global(.catalog-search-area) { display: none; }
@@ -14,10 +14,10 @@
 .page .toolbar :global(.catalog-sort) { margin: 0; }
 .page .toolbar :global(.catalog-sort > label) { display: none; }
 .page .toolbar :global(.catalog-filter-toggle) { display: none; }
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--block-gap); }
 .grid > article { min-width: 0; }
 .grid > :not(article) { grid-column: 1 / -1; }
-.filters { display: grid; gap: var(--space-6); }
+.filters { display: grid; gap: var(--stack-gap); }
 .filters h3 { margin: 0 0 var(--space-3); font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .group { margin-top: var(--space-4); }
 .group h4 { margin: 0 0 var(--space-2); color: var(--ink-600); font-size: var(--fs-xs); line-height: var(--lh-meta); }
@@ -27,7 +27,7 @@
 .choice[aria-pressed="true"] { background: var(--action-strong); border-color: var(--action-strong); color: var(--white); }
 .verified { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--tap-min); padding: var(--space-3); background: var(--ink-50); border-radius: var(--radius-md); font-size: var(--fs-sm); line-height: var(--lh-sm); }
 .verified input { flex: none; width: var(--size-24); height: var(--size-24); accent-color: var(--action); }
-.pagination { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); margin-top: var(--space-8); }
+.pagination { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); margin-top: var(--block-gap); }
 .pagination a { min-width: var(--tap-min); min-height: var(--tap-min); }
 .pagination [aria-current="page"] { background: var(--selected-bg); color: var(--selected-text); }
 .fullCard p { overflow-wrap: anywhere; }
@@ -100,7 +100,7 @@
 .fullCard .active { background: var(--ink-100); color: var(--ink-700); }
 
 /* Request facets adapt to the sidebar and mobile sheet. */
-.requestFilters { display: grid; gap: var(--space-8); }
+.requestFilters { display: grid; gap: var(--stack-gap); }
 .requestFilters h2 { margin: 0 0 var(--space-3); font-size: var(--size-14); line-height: var(--lh-sm); color: var(--text); }
 .requestFilters ul { list-style: none; margin: 0; padding: 0; }
 .requestFilters li + li { margin-top: var(--size-2); }
@@ -116,7 +116,7 @@
 .requestFilters .subcategories { margin: var(--space-1) 0 var(--space-2) var(--space-4); }
 .filterCheck { display: flex; align-items: center; gap: var(--size-10); min-height: var(--tap-min); font-size: var(--size-14); line-height: var(--lh-sm); color: var(--text-2); cursor: pointer; }
 .filterCheck input { accent-color: var(--action-strong); }
-.requestSearchBar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); background: var(--white); }
+.requestSearchBar { display: flex; align-items: center; gap: var(--stack-gap); margin-top: var(--block-gap); padding: var(--card-pad-sm); border: var(--size-1) solid var(--border); border-radius: var(--card-radius); background: var(--white); }
 .requestVerified { position: relative; display: flex; align-items: center; gap: var(--size-10); min-height: var(--tap-min); font-size: var(--size-13); line-height: var(--lh-meta); color: var(--text-2); cursor: pointer; }
 .requestVerified input { position: absolute; opacity: 0; inset: 0; }
 .switchTrack { position: relative; flex: none; width: var(--size-40); height: var(--size-24); border-radius: var(--radius-pill); background: var(--ink-300); }
@@ -124,7 +124,7 @@
 .requestVerified input:checked + .switchTrack { background: var(--action-strong); }
 .requestVerified input:checked + .switchTrack::after { left: auto; right: var(--size-2); }
 .requestVerified input:focus-visible + .switchTrack { outline: var(--size-2) solid var(--action-strong); outline-offset: var(--size-3); }
-.requestFilters + .requestVerified { margin-top: var(--space-6); padding: var(--space-3); background: var(--ink-50); border-radius: var(--size-10); }
+.requestFilters + .requestVerified { margin-top: var(--stack-gap); padding: var(--space-3); background: var(--ink-50); border-radius: var(--size-10); }
 .requestResults { margin-bottom: var(--space-4); }
 .requestResults :global(.catalog-results-bar) { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .requestResults :global(.catalog-count) { margin: 0; }
@@ -143,7 +143,7 @@
 
 /* Opportunity-only layout keeps the companies catalog unchanged. */
 .page:global(.requests-catalog) :global(.catalog-sidebar) { max-height: none; overflow: visible; }
-.page:global(.requests-catalog) :global(.catalog-workspace) { grid-template-columns: var(--size-240) minmax(0, 1fr); }
+.page:global(.requests-catalog) :global(.catalog-workspace) { grid-template-columns: var(--size-280) minmax(0, 1fr); }
 .list { grid-template-columns: minmax(0, 1fr); }
 .viewSwitch { display: flex; gap: var(--size-8); order: 2; }
 .viewSwitch button { display: grid; place-items: center; width: var(--tap-min); height: var(--tap-min); padding: 0; border: var(--size-1) solid var(--ink-200); border-radius: var(--size-8); background: var(--white); color: var(--ink-700); cursor: pointer; }
@@ -181,7 +181,7 @@
 
 .requestResults :global(.catalog-count) { font-size: var(--size-14); line-height: var(--size-20); font-weight: var(--fw-regular); color: var(--ink-600); }
 .requestResults :global(.catalog-count strong) { font-weight: var(--fw-bold); color: var(--ink-950); }
-.requestResults :global(.catalog-filter-toggle) { min-height: var(--size-36); height: var(--size-36); padding: 0 var(--size-12); border-color: var(--ink-950); font-size: var(--size-13); line-height: var(--lh-meta); gap: var(--size-6); }
+.requestResults :global(.catalog-filter-toggle) { min-height: var(--tap-min); height: var(--tap-min); padding: 0 var(--size-12); border-color: var(--ink-950); font-size: var(--size-13); line-height: var(--lh-meta); gap: var(--size-6); }
 .filterCount { display: inline-grid; place-items: center; min-width: var(--size-20); height: var(--size-20); padding: 0 var(--size-4); border-radius: var(--radius-pill); background: var(--action-strong); color: var(--white); font-size: var(--fs-meta); }
 
 
@@ -189,3 +189,28 @@
 .logo.containedLogo { object-fit: contain; padding: var(--size-12); background: var(--white); }
 .logoMedia.logoMedia { display: grid; place-items: center; padding: var(--size-16); background: var(--white); }
 .logoMedia.logoMedia > img { position: static; width: 100%; height: 60%; object-fit: contain; }
+
+/* Compact header media stays present without adding a banner above results. */
+.cover { display: flex; align-items: center; gap: var(--space-2); overflow-x: auto; max-width: 100%; padding-block: var(--space-1); }
+.coverPhoto { flex: none; width: var(--size-56); height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-md); }
+.page:global(.companies-catalog) :global(.catalog-header) { display: flex; align-items: center; justify-content: space-between; gap: var(--stack-gap); }
+.page:global(.companies-catalog) :global(.catalog-search-area) { display: block; flex: 0 1 var(--size-320); min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; }
+.mobileSort { display: grid; gap: var(--space-2); margin-bottom: var(--stack-gap); }
+@media (max-width: 767px) {
+  .requestSearchBar { padding: 0; border: 0; background: transparent; }
+  .requestSearchBar > .requestVerified { display: none; }
+  .requestResults :global(.catalog-results-bar) { gap: var(--space-2); margin-bottom: 0; }
+  .requestResults :global(.catalog-count > span) { display: none; }
+  .requestResults :global(.catalog-results-controls) { width: auto; margin: 0; }
+  .page:global(.companies-catalog) :global(.catalog-search-area) { flex-basis: var(--size-128); }
+  .page:global(.companies-catalog) .toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); margin-bottom: var(--block-gap); }
+  .page:global(.companies-catalog) .search { grid-column: 1 / -1; }
+  .page:global(.companies-catalog) .toolbar :global(.catalog-results-controls) { display: contents; }
+  .page:global(.companies-catalog) .toolbar :global(.catalog-sort) { display: none; }
+  .page:global(.companies-catalog) .toolbar :global(.catalog-filter-toggle) { grid-column: 1; grid-row: 2; justify-self: start; }
+  .page .companyViewSwitch { grid-column: 2; grid-row: 2; order: 0; width: auto; padding: 0; }
+  .page .companyViewSwitch button { flex: none; width: var(--tap-min); padding: 0; gap: 0; }
+  .page .companyViewSwitch button > span { display: none; }
+  .page:global(.companies-catalog) .toolbar :global(.catalog-count) { grid-column: 1 / -1; order: 0; }
+  .page .toolbar :global(.catalog-active-filters) { grid-column: 1 / -1; }
+}

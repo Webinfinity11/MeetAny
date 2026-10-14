@@ -1,4 +1,5 @@
 "use client";
+import { CustomSelect } from "../ui/CustomSelect";
 import { CategoryIcon } from "../ui/CategoryIcon";
 import { Button } from "../ui/Button";
 
@@ -247,7 +248,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
 
   return (
     <div className={`ma-page requests-catalog catalog-page request-board ${styles.page}`}>
-      <CatalogHeader
+      <CatalogHeader tone="dark"
         title="ღია მოთხოვნები"
         description="ბიზნესების რეალური საჭიროებები — გაუგზავნეთ შეთავაზება მათ, ვისაც თქვენი პროდუქტი ან მომსახურება სჭირდება."
 
@@ -306,6 +307,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
           <Button type="button" variant="primary" onClick={() => setSheetOpen(false)}>{rows.length} შედეგის ნახვა</Button>
         </>}
       >
+        <div className={styles.mobileSort}><label htmlFor="request-sheet-sort">დალაგება</label><CustomSelect id="request-sheet-sort" value={sort} onChange={e => setSort(e.target.value)}><option value="newest">უახლესი</option><option value="expiring">მალე იწურება</option></CustomSelect></div>
         {requestFilters(true)}
         {verifiedSwitch()}
       </MobileFilterSheet>

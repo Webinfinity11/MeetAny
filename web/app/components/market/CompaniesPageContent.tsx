@@ -2,6 +2,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useCallback, useMemo, useState } from "react";
+import { CustomSelect } from "../ui/CustomSelect";
 import { Button } from "../ui/Button";
 import { EmptyState } from "../ui/Structure";
 import { Icon } from "../Icon";
@@ -142,8 +143,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const mapped: MapCompany[] = rows.filter(c => c.lat != null && c.lng != null).map(c => ({ id: c.id, name: c.name, industry: c.industry, city: c.city, lat: c.lat!, lng: c.lng! }));
   const unmapped = rows.filter(c => c.lat == null || c.lng == null);
   return <div className={`ma-page companies-catalog catalog-page ${styles.page}`}>
-    <CatalogHeader title="კომპანიები" description="კომპანიები და მომსახურება მთელი საქართველოდან." />
-    <CompanyCatalogCover />
+    <CatalogHeader title="კომპანიები" description="კომპანიები და მომსახურება მთელი საქართველოდან." search={<CompanyCatalogCover />} />
     <div className="catalog-workspace">
       <aside className="catalog-sidebar" aria-label="კომპანიების ფილტრები">{body}</aside>
       <section className="catalog-main" id="company-results" aria-label="კომპანიების სია">
@@ -156,7 +156,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
               { value: "list", label: "სია", icon: "list-filter" },
               { value: "grid", label: "ბადე", icon: "layout-grid" },
               { value: "map", label: "რუკა", icon: "map-pin" },
-            ] as const).map(option => <Button key={option.value} variant="secondary" aria-label={option.label} title={option.label} aria-pressed={view === option.value} onClick={() => filters.set({ view: option.value === "list" ? "" : option.value })}><Icon name={option.icon} />{option.label}</Button>)}</div>} />
+            ] as const).map(option => <Button key={option.value} variant="secondary" aria-label={option.label} title={option.label} aria-pressed={view === option.value} onClick={() => filters.set({ view: option.value === "list" ? "" : option.value })}><Icon name={option.icon} /><span>{option.label}</span></Button>)}</div>} />
         </div>
         <div className={`${styles.grid}${view === "list" ? ` ${styles.companyList}` : ""}`}>
           {!available ? <ServiceUnavailable /> : !ready ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : type === "distributors" && (business.error || distribution.error) ? <BusinessError error={business.error || distribution.error!} retry={() => { business.reload(); distribution.reload(); }} /> : type === "distributors" && (business.loading || distribution.loading) ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : !rows.length
@@ -168,6 +168,6 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
         </div>
       </section>
     </div>
-    <MobileFilterSheet id="filters" title="ფილტრები" open={sheetOpen} onOpenChange={setSheetOpen} footer={<><Button variant="secondary" onClick={clearFilters} disabled={!activeItems.length && !query}>გასუფთავება</Button><Button onClick={() => setSheetOpen(false)}>{rows.length} შედეგის ნახვა</Button></>}>{body}</MobileFilterSheet>
+    <MobileFilterSheet id="filters" title="ფილტრები" open={sheetOpen} onOpenChange={setSheetOpen} footer={<><Button variant="secondary" onClick={clearFilters} disabled={!activeItems.length && !query}>გასუფთავება</Button><Button onClick={() => setSheetOpen(false)}>{rows.length} შედეგის ნახვა</Button></>}><div className={styles.mobileSort}><label htmlFor="company-sheet-sort">დალაგება</label><CustomSelect id="company-sheet-sort" value={sort} onChange={e => filters.set({sort: e.target.value})}><option value="recommended">რეკომენდებული</option><option value="newest">უახლესი</option><option value="active">ყველაზე აქტიური</option></CustomSelect></div>{body}</MobileFilterSheet>
   </div>;
 }
