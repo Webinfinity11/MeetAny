@@ -2,8 +2,7 @@
 .ma-container{width:100%;max-width:calc(var(--container) + 2 * var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
 .ma-frame{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
 .ma-main{display:block;flex:1;min-width:0}
-.ma-page{padding-block:var(--space-6) var(--space-12)}
-@media (min-width:768px){.ma-page{padding-block:var(--space-8) var(--space-20)}}
+.ma-page{padding-block:var(--page-pad-y)}
 .ma-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--space-3) var(--space-6);margin-bottom:var(--space-6)}
 .ma-page-head__text{min-width:0;display:grid;gap:var(--space-1)}
 .ma-page-head__meta{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3)}
