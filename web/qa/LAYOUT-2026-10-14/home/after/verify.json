@@ -1,0 +1,373 @@
+{
+  "pages": [
+    {
+      "theme": "blue",
+      "width": 320,
+      "path": "/",
+      "height": 6520,
+      "overflow": 0,
+      "heroStatsBottom": 727.65625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 320,
+      "path": "/how-it-works/",
+      "height": 5191,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 320,
+      "path": "/terms/",
+      "height": 4691,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 320,
+      "path": "/ideas/",
+      "height": 3753,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 320,
+      "path": "/density-missing-page/",
+      "height": 844,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "height": 5814,
+      "overflow": 0,
+      "heroStatsBottom": 666.0625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 390,
+      "path": "/how-it-works/",
+      "height": 4587,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 390,
+      "path": "/terms/",
+      "height": 3917,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 390,
+      "path": "/ideas/",
+      "height": 3731,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 390,
+      "path": "/density-missing-page/",
+      "height": 844,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 1440,
+      "path": "/",
+      "height": 4527,
+      "overflow": 0,
+      "heroStatsBottom": 645.609375,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 1440,
+      "path": "/how-it-works/",
+      "height": 3469,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 1440,
+      "path": "/terms/",
+      "height": 2903,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 1440,
+      "path": "/ideas/",
+      "height": 1685,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 1440,
+      "path": "/density-missing-page/",
+      "height": 1000,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 320,
+      "path": "/",
+      "height": 6474,
+      "overflow": 0,
+      "heroStatsBottom": 727.65625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 320,
+      "path": "/how-it-works/",
+      "height": 5191,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 320,
+      "path": "/terms/",
+      "height": 4691,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 320,
+      "path": "/ideas/",
+      "height": 3753,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 320,
+      "path": "/density-missing-page/",
+      "height": 844,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "height": 5760,
+      "overflow": 0,
+      "heroStatsBottom": 666.0625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 390,
+      "path": "/how-it-works/",
+      "height": 4587,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 390,
+      "path": "/terms/",
+      "height": 3917,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 390,
+      "path": "/ideas/",
+      "height": 3731,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 390,
+      "path": "/density-missing-page/",
+      "height": 844,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 1440,
+      "path": "/",
+      "height": 4527,
+      "overflow": 0,
+      "heroStatsBottom": 645.609375,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 1440,
+      "path": "/how-it-works/",
+      "height": 3469,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 1440,
+      "path": "/terms/",
+      "height": 2903,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 1440,
+      "path": "/ideas/",
+      "height": 1685,
+      "overflow": 0,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 1440,
+      "path": "/density-missing-page/",
+      "height": 1000,
+      "overflow": 0,
+      "seriousCritical": 0
+    }
+  ],
+  "overlays": [
+    {
+      "role": "guest",
+      "width": 390,
+      "id": "ma-mnav",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "id": "ma-mnav",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "id": "ma-mnav",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 390,
+      "id": "ma-mnav",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "id": "notification-list",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "id": "ma-account-menu",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "id": "notification-list",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "id": "ma-account-menu",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "id": "notification-list",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 980,
+      "id": "ma-account-menu",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "id": "notification-list",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "id": "ma-account-menu",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "id": "notification-list",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "id": "ma-account-menu",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "id": "notification-list",
+      "overlaps": 0,
+      "keyboard": true
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "id": "ma-account-menu",
+      "overlaps": 0,
+      "keyboard": true
+    }
+  ],
+  "checks": [
+    "idea detail: link, axe, overflow",
+    "blue: keyboard toggle and reload preserve classic",
+    "blue: how/terms anchors and FAQ",
+    "classic: keyboard toggle and reload preserve blue",
+    "classic: how/terms anchors and FAQ",
+    "classic 1440 companies: standard audit timeout retry passed"
+  ],
+  "pageErrors": []
+}

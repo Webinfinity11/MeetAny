@@ -1,0 +1,19 @@
+{
+  "tsc": {
+    "exitCode": 0
+  },
+  "eslint": {
+    "exitCode": 0,
+    "errors": 0
+  },
+  "lintDesign": {
+    "exitCode": 0
+  },
+  "unit": {
+    "node": "22",
+    "exitCode": 0,
+    "passed": 133,
+    "failed": 0
+  },
+  "scope": "final checkout including catalog prerequisites"
+}

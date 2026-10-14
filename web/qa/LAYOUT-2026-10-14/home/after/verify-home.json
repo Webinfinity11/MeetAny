@@ -1,0 +1,73 @@
+{
+  "pages": [
+    {
+      "theme": "blue",
+      "width": 320,
+      "path": "/",
+      "height": 6099,
+      "overflow": 0,
+      "heroStatsBottom": 727.65625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "height": 5484,
+      "overflow": 0,
+      "heroStatsBottom": 666.0625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "blue",
+      "width": 1440,
+      "path": "/",
+      "height": 4177,
+      "overflow": 0,
+      "heroStatsBottom": 645.609375,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 320,
+      "path": "/",
+      "height": 6099,
+      "overflow": 0,
+      "heroStatsBottom": 727.65625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "height": 5484,
+      "overflow": 0,
+      "heroStatsBottom": 666.0625,
+      "seriousCritical": 0
+    },
+    {
+      "theme": "classic",
+      "width": 1440,
+      "path": "/",
+      "height": 4177,
+      "overflow": 0,
+      "heroStatsBottom": 645.609375,
+      "seriousCritical": 0
+    }
+  ],
+  "overlays": [
+    {
+      "role": "guest",
+      "width": 390,
+      "id": "ma-mnav",
+      "overlaps": 0,
+      "keyboard": true
+    }
+  ],
+  "checks": [
+    "blue: keyboard toggle and reload preserve classic",
+    "classic: keyboard toggle and reload preserve blue",
+    "classic 1440 companies: standard audit timeout retry passed"
+  ],
+  "pageErrors": []
+}

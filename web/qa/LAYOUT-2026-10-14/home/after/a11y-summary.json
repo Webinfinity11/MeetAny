@@ -1,0 +1,468 @@
+{
+  "pages": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/account/?tab=register",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/account/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/companies/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/how-it-works/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/requests/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/requests/new/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/terms/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "state": "mobile-menu",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/account/?tab=register",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/account/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "state": "filters",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/how-it-works/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/",
+      "state": "filters",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/new/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/terms/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/account/?tab=register",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/account/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/how-it-works/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/requests/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/requests/new/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/terms/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "state": "mobile-menu",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/account/?tab=register",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/account/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "state": "filters",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/how-it-works/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/",
+      "state": "filters",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/new/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/terms/",
+      "state": "page",
+      "overflow": 0,
+      "violations": []
+    }
+  ],
+  "keyboard": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "name": "mobile-menu",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "name": "mobile-menu",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/",
+      "name": "filters",
+      "passed": true
+    }
+  ],
+  "failures": [
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/companies/",
+      "error": "locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('header').first().locator('a[href=\"/account/\"]').filter({ hasText: 'შესვლა' })\u001b[22m\n"
+    }
+  ]
+}

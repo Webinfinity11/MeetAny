@@ -1,0 +1,23 @@
+[
+  {
+    "width": 320,
+    "requests": 5,
+    "keyboard": true,
+    "focusVisible": true,
+    "overflow": 0
+  },
+  {
+    "width": 390,
+    "requests": 5,
+    "keyboard": true,
+    "focusVisible": true,
+    "overflow": 0
+  },
+  {
+    "width": 1440,
+    "requests": 5,
+    "keyboard": true,
+    "focusVisible": true,
+    "overflow": 0
+  }
+]
