@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useMarketStore } from '../../lib/market-client';
 import { hasOfferTerms, readOwnOffer, setOfferTerms, termsEqual, type OfferTerms, type StoredOffer } from '../../lib/offer-terms-client';
 import { flowError } from '../../lib/matching-client';
@@ -20,9 +20,13 @@ import { toast } from '../Toasts';
 import styles from './MakeOffer.module.css';
 
 type Values = { body: string; price: string; priceType: string; vatIncluded: boolean; deliveryIncluded: boolean; deliveryDays: string; paymentTerms: string; validUntil: string; commercialTerms: string };
+export type OfferFormState = {
+  values: Readonly<Values>; total: number | null; pending: boolean; fileBusy: boolean; conflict: boolean;
+  submitDisabled: boolean; submitLabel: string;
+};
 const valuesFrom = (o?: Partial<StoredOffer> | OfferCardData): Values => ({ body: o?.body || '', price: o?.price != null ? String(o.price) : '', priceType: o?.priceType || 'total', vatIncluded: !!o?.vatIncluded, deliveryIncluded: !!o?.deliveryIncluded, deliveryDays: o?.deliveryDays != null ? String(o.deliveryDays) : '', paymentTerms: o?.paymentTerms || '', validUntil: o?.validUntil || '', commercialTerms: o?.commercialTerms?.join('\n') || '' });
 
-export function SendOfferForm({ requestId, existing, onDone, onCancel, standalone = false }: { requestId: string; existing?: OfferCardData; standalone?: boolean; onDone: (editing: boolean) => void; onCancel: () => void }) {
+export function SendOfferForm({ requestId, existing, onDone, onCancel, standalone = false, formId, renderLayout }: { requestId: string; existing?: OfferCardData; standalone?: boolean; onDone: (editing: boolean) => void; onCancel: () => void; formId?: string; renderLayout?: (form: ReactNode, state: OfferFormState) => ReactNode }) {
   const { store, sessionReady } = useMarketStore();
   const [fileBusy,setFileBusy]=useState(false);
   const [fileDraft,setFileDraft]=useState('');
@@ -157,7 +161,9 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   const toggleTerm = (term: string) => change('commercialTerms', (selectedTerms.includes(term) ? selectedTerms.filter(t => t !== term) : [...selectedTerms, term]).join('\n'));
   const validityDate = (days: number) => { const date = new Date(`${store?.todayDate()}T12:00:00Z`); date.setUTCDate(date.getUTCDate() + days); return date.toISOString().slice(0, 10); };
   const disabled = pending || !!partial || conflict || !key || loaded !== key || completed;
-  return <form className={`${styles.form} ${standalone ? styles.standalone : styles.embedded}`} onSubmit={submit} noValidate aria-label="შეთავაზების ფორმა">
+  const submitDisabled = pending || fileBusy || !key || loaded !== key || conflict || completed;
+  const submitLabel = partial ? 'შენახვის დასრულება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა';
+  const form = <form id={formId} className={`${styles.form} ${standalone ? styles.standalone : styles.embedded}`} onSubmit={submit} noValidate aria-label="შეთავაზების ფორმა">
     {draftNotice ? <div className={styles.notice} role="status"><p>{draftNotice}</p>{restored && !partial ? <Button variant="secondary" disabled={pending} onClick={() => { setValues({ ...initialValues.current }); setRestored(false); setDraftNotice('შეუნახავი ცვლილებები გაუქმდა'); }}>ცვლილებების გაუქმება</Button> : null}</div> : null}
     <fieldset disabled={disabled} className={styles.fields}>
       <section className={styles.formCard}><h2>ფასი</h2><div className={styles.chips} role="group" aria-label="ფასის ტიპი">{[['total', 'ჯამური'], ['unit', 'ერთეულის'], ['negotiable', 'შეთანხმებით']].map(([value, label]) => <Button key={value} variant="secondary" aria-pressed={values.priceType === value} onClick={() => change('priceType', value)}>{label}</Button>)}</div>
@@ -171,6 +177,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
     <div className={styles.submitArea}>
     {error ? <div className={styles.notice} role="alert"><p>{error}</p>{conflict || partial || loaded !== key ? <Button variant="secondary" disabled={pending} onClick={() => void reload()}>ბოლო ვერსიის ჩატვირთვა</Button> : null}</div> : null}
     {completed ? <p role="status">შეთავაზება და პირობები შენახულია.</p> : null}
-    <div className="ma-form-bar"><p className={styles.sendSummary}>{values.priceType === 'negotiable' ? 'ფასი შეთანხმებით' : total == null ? 'ფასი დასაზუსტებელია' : money(total)} · {values.deliveryDays ? `${values.deliveryDays} დღე` : 'ვადა დასაზუსტებელია'} · {values.paymentTerms || 'გადახდა დასაზუსტებელია'}</p><div className={styles.actions}><Button variant="secondary" disabled={pending||fileBusy} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={fileBusy||!key || loaded !== key || conflict || completed}>{partial ? 'შენახვის დასრულება' : editing ? 'შეთავაზების განახლება' : 'შეთავაზების გაგზავნა'}</Button></div></div><p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p></div>
+    {!renderLayout ? <div className="ma-form-bar"><p className={styles.sendSummary}>{values.priceType === 'negotiable' ? 'ფასი შეთანხმებით' : total == null ? 'ფასი დასაზუსტებელია' : money(total)} · {values.deliveryDays ? `${values.deliveryDays} დღე` : 'ვადა დასაზუსტებელია'} · {values.paymentTerms || 'გადახდა დასაზუსტებელია'}</p><div className={styles.actions}><Button variant="secondary" disabled={pending||fileBusy} onClick={onCancel}>გაუქმება</Button><Button type="submit" loading={pending} disabled={submitDisabled}>{submitLabel}</Button></div></div> : null}<p className={styles.privacy}><Icon name="lock"/>თქვენი კონტაქტი მყიდველს გაეხსნება მხოლოდ არჩევის შემთხვევაში.</p></div>
   </form>;
+  return renderLayout ? renderLayout(form, { values, total, pending, fileBusy, conflict, submitDisabled, submitLabel }) : form;
 }

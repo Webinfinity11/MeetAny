@@ -15,6 +15,8 @@ import { DetailSkeleton } from './Skeletons';
 import { CompanyAvatar } from './CompanyAvatar';
 import { SendOfferForm } from './SendOfferForm';
 import { Button } from '../ui/Button';
+import { FormLayout } from '../ui/FormLayout';
+import { money } from '../../lib/deal-client';
 import { budgetLabel } from './OpportunityCard';
 import { Icon } from '../Icon';
 import styles from './MakeOffer.module.css';
@@ -50,7 +52,38 @@ export function MakeOfferPageContent() {
   const opportunitiesHref = me?.role === 'company' ? '/matching/' : '/requests/';
   const signInHref = `/account/?${new URLSearchParams({ next: `/offers/new/?requestId=${requestId}`, intent: 'offer', context: request?.title || '' })}`;
   return <div className={`ma-page ${styles.page}`}><nav className={styles.breadcrumbs} aria-label="ნავიგაცია"><Link href={opportunitiesHref}>შესაძლებლობები</Link><span>/</span>{request ? <><Link href={requestHref} className={styles.requestCrumb}><span>{request.title}</span><span className={styles.mobileCrumb}>‹ მოთხოვნა</span></Link><span>/</span></> : null}<span>შეთავაზების გაგზავნა</span></nav>
-    {message ? <section className={styles.panel}><h1>შეთავაზების გაგზავნა</h1><p role="status">{message}</p>{verification ? <dl className={styles.verification}><div><dt>ვერიფიკაცია</dt><dd>{verification.status}</dd></div><div><dt>შემდეგი ნაბიჯი</dt><dd>{verification.next}</dd></div></dl> : null}{verification ? verification.action ? <Button href="/onboarding/?step=verify">{verification.action}</Button> : <Button href={opportunitiesHref} variant="secondary">მოთხოვნების ნახვა</Button> : detail.error ? <Button onClick={() => window.location.reload()}>ხელახლა ცდა</Button> : !me && sessionReady ? <Button href={signInHref}>შესვლა</Button> : request ? <Button href={requestHref} variant="secondary">მოთხოვნაზე დაბრუნება</Button> : <Button href={opportunitiesHref} variant="secondary">მოთხოვნების ნახვა</Button>}</section> : <div className={styles.layout}><section className={styles.panel}><h1>{offer ? 'შეთავაზების რედაქტირება' : 'შეთავაზების გაგზავნა'}</h1><details className={styles.requestSummary} open><summary>თქვენ პასუხობთ მოთხოვნას: {request.title}</summary><dl><div><dt>რაოდენობა</dt><dd>{request.quantity} {units[request.unit] || request.unit}</dd></div><div><dt>ქალაქი</dt><dd>{cities[request.city] || request.city}</dd></div><div><dt>ვადა</dt><dd>{dateShort(request.neededBy) || 'დასაზუსტებელია'}</dd></div>{budgetLabel(request) ? <div><dt>ბიუჯეტი</dt><dd>{budgetLabel(request)}</dd></div> : null}</dl><Link href={requestHref}>მოთხოვნის ნახვა</Link></details><SendOfferForm standalone key={`${me.id}:${requestId}`} requestId={requestId} existing={offer ? { ...offer, companyName: me.company, companyHref: `/companies/view/?id=${me.id}`, city: me.city, isNew: false } : undefined} onDone={editing => { if (editing) router.push(requestHref); else setSent(true); }} onCancel={() => router.push(requestHref)}/></section><aside className={styles.summary}><section className={styles.panel}><small>მყიდველი</small>{buyer?.company ? <div className={styles.buyer}><CompanyAvatar name={buyer.company} logoUrl={buyer.logoUrl}/><div><strong>{buyer.company}</strong>{buyer.verified ? <Badge status="success">{verificationLabel(buyer.verificationDocumentsStatus, buyer.verified)}</Badge> : null}<p>{cities[buyer.city] || buyer.city}</p></div></div> : null}</section>{!detail.loading && !detail.error ? <section className={styles.offerCount}><Icon name="inbox"/><span>{store?.offerCount(requestId) ? `მიღებულია ${store.offerCount(requestId)} შეთავაზება` : 'შეთავაზება ჯერ არ მიღებულა'}</span></section> : null}</aside></div>}
+    {message ? <section className={styles.panel}><h1>შეთავაზების გაგზავნა</h1><p role="status">{message}</p>{verification ? <dl className={styles.verification}><div><dt>ვერიფიკაცია</dt><dd>{verification.status}</dd></div><div><dt>შემდეგი ნაბიჯი</dt><dd>{verification.next}</dd></div></dl> : null}{verification ? verification.action ? <Button href="/onboarding/?step=verify">{verification.action}</Button> : <Button href={opportunitiesHref} variant="secondary">მოთხოვნების ნახვა</Button> : detail.error ? <Button onClick={() => window.location.reload()}>ხელახლა ცდა</Button> : !me && sessionReady ? <Button href={signInHref}>შესვლა</Button> : request ? <Button href={requestHref} variant="secondary">მოთხოვნაზე დაბრუნება</Button> : <Button href={opportunitiesHref} variant="secondary">მოთხოვნების ნახვა</Button>}</section> : <SendOfferForm standalone formId="make-offer-form" key={`${me.id}:${requestId}`} requestId={requestId}
+      existing={offer ? { ...offer, companyName: me.company, companyHref: `/companies/view/?id=${me.id}`, city: me.city, isNew: false } : undefined}
+      onDone={editing => { if (editing) router.push(requestHref); else setSent(true); }} onCancel={() => router.push(requestHref)}
+      renderLayout={(form, state) => {
+        const price = state.values.priceType === 'negotiable' ? 'ფასი შეთანხმებით' : state.total == null ? 'ფასი დასაზუსტებელია' : money(state.total);
+        const delivery = state.values.deliveryDays ? `${state.values.deliveryDays} დღე` : 'ვადა დასაზუსტებელია';
+        const submit = <Button type="submit" form="make-offer-form" loading={state.pending} disabled={state.submitDisabled}>{state.submitLabel}</Button>;
+        return <FormLayout className={styles.layout} title={offer ? 'შეთავაზების რედაქტირება' : 'შეთავაზების გაგზავნა'}
+          subtitle={<Link href={requestHref}>მოთხოვნა: {request.title}</Link>} asideLabel="მოთხოვნა და შეთავაზების წინასწარი ხედი"
+          aside={<>
+            <section className={styles.panel} aria-label="მოთხოვნის შეჯამება">
+              <h2><Link href={requestHref}>{request.title}</Link></h2>
+              <dl className={styles.summaryFacts}>
+                <div><dt><Icon name="map-pin"/>ქალაქი</dt><dd>{cities[request.city] || request.city}</dd></div>
+                <div><dt><Icon name="package"/>რაოდენობა</dt><dd>{request.quantity} {units[request.unit] || request.unit}</dd></div>
+                <div><dt><Icon name="calendar"/>ვადა</dt><dd>{dateShort(request.neededBy) || 'დასაზუსტებელია'}</dd></div>
+                {budgetLabel(request) ? <div><dt><Icon name="wallet"/>ბიუჯეტი</dt><dd>{budgetLabel(request)}</dd></div> : null}
+              </dl>
+              {buyer ? <div className={styles.buyer}><CompanyAvatar name={buyer.company || buyer.name} logoUrl={buyer.logoUrl}/><div><small>მყიდველი</small><strong>{buyer.company || buyer.name}</strong>{buyer.verified ? <Badge status="success">{verificationLabel(buyer.verificationDocumentsStatus, buyer.verified)}</Badge> : null}</div></div> : null}
+              {!detail.loading && !detail.error ? <p className={styles.offerCount}><Icon name="inbox"/><span>{store?.offerCount(requestId) ? `მიღებულია ${store.offerCount(requestId)} შეთავაზება` : 'შეთავაზება ჯერ არ მიღებულა'}</span></p> : null}
+            </section>
+            <section className={`${styles.panel} ${styles.preview}`} aria-label="შეთავაზების წინასწარი ხედი">
+              <h2>ასე ნახავს კლიენტი</h2>
+              <dl className={styles.previewFacts}><div><dt>ჯამური ფასი</dt><dd>{price}</dd></div><div><dt>მიწოდება</dt><dd>{delivery}</dd></div></dl>
+              <p className={styles.previewBody}>{state.values.body.trim().split('\n')[0] || 'აქ გამოჩნდება თქვენი შეთავაზების მოკლე აღწერა.'}</p>
+            </section>
+            <div className={styles.desktopActions}>{submit}<Button variant="secondary" disabled={state.pending || state.fileBusy} onClick={() => router.push(requestHref)}>მოთხოვნაზე დაბრუნება</Button></div>
+          </>}
+          footer={<div className={styles.mobileActions}><span>{price} · {delivery}</span>{submit}</div>}>
+          <section className={styles.panel}>{form}</section>
+        </FormLayout>;
+      }}/>}
     <OfferSentModal open={sent} onClose={() => router.push(requestHref)}/>
   </div>;
 }
