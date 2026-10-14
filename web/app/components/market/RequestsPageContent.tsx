@@ -248,7 +248,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
 
   return (
     <div className={`ma-page requests-catalog catalog-page request-board ${styles.page}`}>
-      <CatalogHeader tone="dark"
+      <CatalogHeader
         title="ღია მოთხოვნები"
         description="ბიზნესების რეალური საჭიროებები — გაუგზავნეთ შეთავაზება მათ, ვისაც თქვენი პროდუქტი ან მომსახურება სჭირდება."
 
