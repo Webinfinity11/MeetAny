@@ -1,0 +1,19 @@
+FAIL {"role":"guest","theme":"blue","width":1440,"path":"/","error":"locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('header').first().locator('a[href=\"/account/\"]').filter({ hasText: 'შესვლა' })\u001b[22m\n"}
+guest blue 1440 /requests/ page: 0
+guest blue 1440 /companies/ page: 0
+guest blue 390 / page: 0
+guest blue 390 / mobile-menu: 0
+guest blue 390 /requests/ page: 0
+guest blue 390 /requests/ filters: 0
+guest blue 390 /companies/ page: 0
+guest blue 390 /companies/ filters: 0
+guest classic 1440 / page: 0
+guest classic 1440 /requests/ page: 0
+guest classic 1440 /companies/ page: 0
+guest classic 390 / page: 0
+guest classic 390 / mobile-menu: 0
+guest classic 390 /requests/ page: 0
+guest classic 390 /requests/ filters: 0
+guest classic 390 /companies/ page: 0
+guest classic 390 /companies/ filters: 0
+{"counts":{},"keyboard":[],"failures":[{"role":"guest","theme":"blue","width":1440,"path":"/","error":"locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('header').first().locator('a[href=\"/account/\"]').filter({ hasText: 'შესვლა' })\u001b[22m\n"}]}

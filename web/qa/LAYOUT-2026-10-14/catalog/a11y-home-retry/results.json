@@ -1,0 +1,1071 @@
+{
+  "at": "2026-10-14T07:31:31.176Z",
+  "base": "http://127.0.0.1:3441",
+  "axe": "4.13.0",
+  "ids": {
+    "client": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+    "company": "74cc28fc-47de-45cb-9563-93735b86855e",
+    "admin": "d2517b00-554d-4e6b-929a-ef3da51f3b47",
+    "request": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+    "deal": "8e6766e1-b67e-408a-a8c0-e9e6944e115b"
+  },
+  "pages": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"hero-scene\" aria-label=\"ახლახან განთავსებული მოთხოვნები\" aria-busy=\"false\">",
+              "target": [
+                ".hero-scene"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>2<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">15 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თელავი · 8 ცალი\">ავეჯი · თელავი · 8 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თელავი · 8 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>3<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">16 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>2<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">17 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"home-text-link\" href=\"/how-it-works/\">დეტალურად</a>",
+              "target": [
+                ".home-text-link[href$=\"how-it-works/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"hero-scene\" aria-label=\"ახლახან განთავსებული მოთხოვნები\" aria-busy=\"false\">",
+              "target": [
+                ".hero-scene"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>2<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">15 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თელავი · 8 ცალი\">ავეჯი · თელავი · 8 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თელავი · 8 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>3<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">16 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>2<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">17 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"home-text-link\" href=\"/how-it-works/\">დეტალურად</a>",
+              "target": [
+                ".home-text-link[href$=\"how-it-works/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    }
+  ],
+  "keyboard": [],
+  "failures": [],
+  "counts": {}
+}

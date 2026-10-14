@@ -1,0 +1,155 @@
+{
+  "layouts": [
+    {
+      "slug": "requests",
+      "width": 320,
+      "scrollHeight": 3336,
+      "firstY": 319,
+      "firstScreen": 3,
+      "afterScroll": 4,
+      "heights": [
+        156
+      ]
+    },
+    {
+      "slug": "companies",
+      "width": 320,
+      "scrollHeight": 2888,
+      "firstY": 309,
+      "firstScreen": 3,
+      "afterScroll": 5,
+      "heights": [
+        134,
+        156
+      ]
+    },
+    {
+      "slug": "home",
+      "width": 320,
+      "scrollHeight": 7546,
+      "firstY": 1668.84375,
+      "firstScreen": 0,
+      "afterScroll": 5,
+      "heights": [
+        156
+      ]
+    },
+    {
+      "slug": "requests",
+      "width": 360,
+      "scrollHeight": 3256,
+      "firstY": 291,
+      "firstScreen": 3,
+      "afterScroll": 4,
+      "heights": [
+        156
+      ]
+    },
+    {
+      "slug": "companies",
+      "width": 360,
+      "scrollHeight": 2824,
+      "firstY": 289,
+      "firstScreen": 3,
+      "afterScroll": 5,
+      "heights": [
+        134,
+        156
+      ]
+    },
+    {
+      "slug": "home",
+      "width": 360,
+      "scrollHeight": 7040,
+      "firstY": 1551.25,
+      "firstScreen": 0,
+      "afterScroll": 5,
+      "heights": [
+        156
+      ]
+    },
+    {
+      "slug": "requests",
+      "width": 390,
+      "scrollHeight": 3228,
+      "firstY": 291,
+      "firstScreen": 3,
+      "afterScroll": 4,
+      "heights": [
+        156
+      ]
+    },
+    {
+      "slug": "companies",
+      "width": 390,
+      "scrollHeight": 2774,
+      "firstY": 289,
+      "firstScreen": 3,
+      "afterScroll": 5,
+      "heights": [
+        134,
+        156
+      ]
+    },
+    {
+      "slug": "home",
+      "width": 390,
+      "scrollHeight": 6731,
+      "firstY": 1513.453125,
+      "firstScreen": 0,
+      "afterScroll": 5,
+      "heights": [
+        156
+      ]
+    },
+    {
+      "slug": "requests",
+      "width": 1440,
+      "scrollHeight": 1996,
+      "firstY": 443,
+      "firstScreen": 6,
+      "afterScroll": 8,
+      "heights": [
+        166
+      ]
+    },
+    {
+      "slug": "companies",
+      "width": 1440,
+      "scrollHeight": 2584,
+      "firstY": 385,
+      "firstScreen": 3,
+      "afterScroll": 4,
+      "heights": [
+        150,
+        106
+      ]
+    },
+    {
+      "slug": "home",
+      "width": 1440,
+      "scrollHeight": 4925,
+      "firstY": 981.578125,
+      "firstScreen": 0,
+      "afterScroll": 5,
+      "heights": [
+        300
+      ]
+    }
+  ],
+  "interactions": [
+    "requests 320: whole card link and 44px controls",
+    "companies 320: whole card link and 44px controls",
+    "requests 360: whole card link and 44px controls",
+    "companies 360: whole card link and 44px controls",
+    "requests: guest save dialog, keyboard trap/return, sort, city, URL reload",
+    "requests 390: whole card link and 44px controls",
+    "companies: guest save dialog, keyboard trap/return, sort, city, URL reload, map/grid/list",
+    "companies 390: whole card link and 44px controls",
+    "requests 1440: whole card link and 44px controls",
+    "companies 1440: whole card link and 44px controls",
+    "requests: signed-in save toggles and restores original state",
+    "companies: signed-in save toggles and restores original state"
+  ],
+  "errors": []
+}

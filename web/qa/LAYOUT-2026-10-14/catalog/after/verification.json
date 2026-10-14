@@ -1,0 +1,823 @@
+{
+  "layouts": [
+    {
+      "slug": "requests",
+      "width": 320,
+      "scrollHeight": 3336,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 319,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 491,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 663,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 835,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1007,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1179,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1351,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1523,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1695,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1867,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 2039,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 2211,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        }
+      ],
+      "firstY": 319,
+      "firstScreen": 3,
+      "afterScroll": 4
+    },
+    {
+      "slug": "companies",
+      "width": 320,
+      "scrollHeight": 2888,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 309,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 459,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 609,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 781,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 931,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1103,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1275,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1425,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1575,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1725,
+          "height": 134,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1875,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        }
+      ],
+      "firstY": 309,
+      "firstScreen": 3,
+      "afterScroll": 5
+    },
+    {
+      "slug": "home",
+      "width": 320,
+      "scrollHeight": 7546,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 1668.84375,
+          "height": 156,
+          "x": 16,
+          "width": 288
+        },
+        {
+          "y": 1668.84375,
+          "height": 156,
+          "x": 320,
+          "width": 288
+        },
+        {
+          "y": 1668.84375,
+          "height": 156,
+          "x": 624,
+          "width": 288
+        },
+        {
+          "y": 1668.84375,
+          "height": 156,
+          "x": 928,
+          "width": 288
+        },
+        {
+          "y": 1668.84375,
+          "height": 156,
+          "x": 1232,
+          "width": 288
+        }
+      ],
+      "firstY": 1668.84375,
+      "firstScreen": 0,
+      "afterScroll": 5
+    },
+    {
+      "slug": "requests",
+      "width": 360,
+      "scrollHeight": 3256,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 291,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 463,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 635,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 807,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 979,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1151,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1323,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1495,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1667,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1839,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 2011,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 2183,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        }
+      ],
+      "firstY": 291,
+      "firstScreen": 3,
+      "afterScroll": 4
+    },
+    {
+      "slug": "companies",
+      "width": 360,
+      "scrollHeight": 2824,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 289,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 439,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 611,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 761,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 911,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1061,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1211,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1361,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1511,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1661,
+          "height": 134,
+          "x": 16,
+          "width": 328
+        },
+        {
+          "y": 1811,
+          "height": 156,
+          "x": 16,
+          "width": 328
+        }
+      ],
+      "firstY": 289,
+      "firstScreen": 3,
+      "afterScroll": 5
+    },
+    {
+      "slug": "home",
+      "width": 360,
+      "scrollHeight": 7040,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 1551.25,
+          "height": 156,
+          "x": 16,
+          "width": 320
+        },
+        {
+          "y": 1551.25,
+          "height": 156,
+          "x": 352,
+          "width": 320
+        },
+        {
+          "y": 1551.25,
+          "height": 156,
+          "x": 688,
+          "width": 320
+        },
+        {
+          "y": 1551.25,
+          "height": 156,
+          "x": 1024,
+          "width": 320
+        },
+        {
+          "y": 1551.25,
+          "height": 156,
+          "x": 1360,
+          "width": 320
+        }
+      ],
+      "firstY": 1551.25,
+      "firstScreen": 0,
+      "afterScroll": 5
+    },
+    {
+      "slug": "requests",
+      "width": 390,
+      "scrollHeight": 3228,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 291,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 463,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 635,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 807,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 979,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1151,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1323,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1495,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1667,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1839,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 2011,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 2183,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        }
+      ],
+      "firstY": 291,
+      "firstScreen": 3,
+      "afterScroll": 4
+    },
+    {
+      "slug": "companies",
+      "width": 390,
+      "scrollHeight": 2774,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 289,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 439,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 589,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 739,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 889,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1039,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1189,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1339,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1489,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1639,
+          "height": 134,
+          "x": 16,
+          "width": 358
+        },
+        {
+          "y": 1789,
+          "height": 156,
+          "x": 16,
+          "width": 358
+        }
+      ],
+      "firstY": 289,
+      "firstScreen": 3,
+      "afterScroll": 5
+    },
+    {
+      "slug": "home",
+      "width": 390,
+      "scrollHeight": 6731,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 1513.453125,
+          "height": 156,
+          "x": 16,
+          "width": 320
+        },
+        {
+          "y": 1513.453125,
+          "height": 156,
+          "x": 352,
+          "width": 320
+        },
+        {
+          "y": 1513.453125,
+          "height": 156,
+          "x": 688,
+          "width": 320
+        },
+        {
+          "y": 1513.453125,
+          "height": 156,
+          "x": 1024,
+          "width": 320
+        },
+        {
+          "y": 1513.453125,
+          "height": 156,
+          "x": 1360,
+          "width": 320
+        }
+      ],
+      "firstY": 1513.453125,
+      "firstScreen": 0,
+      "afterScroll": 5
+    },
+    {
+      "slug": "requests",
+      "width": 1440,
+      "scrollHeight": 1996,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 443,
+          "height": 166,
+          "x": 420,
+          "width": 440
+        },
+        {
+          "y": 443,
+          "height": 166,
+          "x": 880,
+          "width": 440
+        },
+        {
+          "y": 629,
+          "height": 166,
+          "x": 420,
+          "width": 440
+        },
+        {
+          "y": 629,
+          "height": 166,
+          "x": 880,
+          "width": 440
+        },
+        {
+          "y": 815,
+          "height": 166,
+          "x": 420,
+          "width": 440
+        },
+        {
+          "y": 815,
+          "height": 166,
+          "x": 880,
+          "width": 440
+        },
+        {
+          "y": 1001,
+          "height": 166,
+          "x": 420,
+          "width": 440
+        },
+        {
+          "y": 1001,
+          "height": 166,
+          "x": 880,
+          "width": 440
+        },
+        {
+          "y": 1187,
+          "height": 166,
+          "x": 420,
+          "width": 440
+        },
+        {
+          "y": 1187,
+          "height": 166,
+          "x": 880,
+          "width": 440
+        },
+        {
+          "y": 1373,
+          "height": 166,
+          "x": 420,
+          "width": 440
+        },
+        {
+          "y": 1373,
+          "height": 166,
+          "x": 880,
+          "width": 440
+        }
+      ],
+      "firstY": 443,
+      "firstScreen": 6,
+      "afterScroll": 8
+    },
+    {
+      "slug": "companies",
+      "width": 1440,
+      "scrollHeight": 2584,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 385,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 555,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 725,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 895,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 1065,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 1235,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 1405,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 1575,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 1745,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 1915,
+          "height": 150,
+          "x": 420,
+          "width": 900
+        },
+        {
+          "y": 2085,
+          "height": 106,
+          "x": 420,
+          "width": 900
+        }
+      ],
+      "firstY": 385,
+      "firstScreen": 3,
+      "afterScroll": 4
+    },
+    {
+      "slug": "home",
+      "width": 1440,
+      "scrollHeight": 4925,
+      "overflow": 0,
+      "rows": [
+        {
+          "y": 981.578125,
+          "height": 300,
+          "x": 120,
+          "width": 227.1875
+        },
+        {
+          "y": 981.578125,
+          "height": 300,
+          "x": 363.1875,
+          "width": 227.203125
+        },
+        {
+          "y": 981.578125,
+          "height": 300,
+          "x": 606.390625,
+          "width": 227.203125
+        },
+        {
+          "y": 981.578125,
+          "height": 300,
+          "x": 849.59375,
+          "width": 227.203125
+        },
+        {
+          "y": 981.578125,
+          "height": 300,
+          "x": 1092.796875,
+          "width": 227.1875
+        }
+      ],
+      "firstY": 981.578125,
+      "firstScreen": 0,
+      "afterScroll": 5
+    }
+  ],
+  "interactions": [
+    "requests 320: whole card link and 44px controls",
+    "companies 320: whole card link and 44px controls",
+    "requests 360: whole card link and 44px controls",
+    "companies 360: whole card link and 44px controls",
+    "requests: guest save dialog, keyboard trap/return, sort, city, URL reload",
+    "requests 390: whole card link and 44px controls",
+    "companies: guest save dialog, keyboard trap/return, sort, city, URL reload, map/grid/list",
+    "companies 390: whole card link and 44px controls",
+    "requests 1440: whole card link and 44px controls",
+    "companies 1440: whole card link and 44px controls",
+    "requests: signed-in save toggles and restores original state",
+    "companies: signed-in save toggles and restores original state"
+  ],
+  "errors": []
+}

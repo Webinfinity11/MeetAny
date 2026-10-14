@@ -1,0 +1,3403 @@
+{
+  "at": "2026-10-14T07:26:13.414Z",
+  "base": "http://127.0.0.1:3441",
+  "axe": "4.13.0",
+  "ids": {
+    "client": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+    "company": "74cc28fc-47de-45cb-9563-93735b86855e",
+    "admin": "d2517b00-554d-4e6b-929a-ef3da51f3b47",
+    "request": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+    "deal": "8e6766e1-b67e-408a-a8c0-e9e6944e115b"
+  },
+  "pages": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/requests/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"Catalog_viewSwitch__OxVSn\" aria-label=\"ხედის არჩევა\">",
+              "target": [
+                ".Catalog_viewSwitch__OxVSn"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+              "target": [
+                "#sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "27.0pt (36px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"catalog-header catalog-header--opportunities catalog-header--dark\">",
+                      "target": [
+                        ".catalog-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"catalog-title\">ღია მოთხოვნები</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"catalog-header catalog-header--opportunities catalog-header--dark\">",
+                      "target": [
+                        ".catalog-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"catalog-description\">ბიზნესების რეალური საჭიროებები — გაუგზავნეთ შეთავაზება მათ, ვისაც თქვენი პროდუქტი ან მომსახურება სჭირდება.</p>",
+              "target": [
+                ".catalog-description"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+                      "target": [
+                        "#sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">უახლესი</span>",
+              "target": [
+                "#sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"კომერციული ინვენტარი · რუსთავი · 8 ცალი\">კომერციული ინვენტარი · რუსთავი · 8 ცალი</p>",
+              "target": [
+                "article:nth-child(10) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 46,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "state": "mobile-menu",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/requests/\">მოთხოვნები</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"requests/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/companies/\">კომპანიები</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"companies/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/how-it-works/\">როგორ მუშაობს</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"how-it-works/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/account/\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"user-round\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#user-round\"></use></svg>შესვლა</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"account/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/account/?tab=register&amp;role=company&amp;entry=header\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"store\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#store\"></use></svg>კომპანიის რეგისტრაცია</a>",
+              "target": [
+                ".Header_ma-mnav__group__Xp_uE:nth-child(2) > .Header_ma-mnav__link__tTkGI:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"ma-btn ma-btn--primary Header_ma-header__cta__CDDKA\" href=\"/requests/new/\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"plus\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#plus\"></use></svg>მოთხოვნის განთავსება</a>",
+              "target": [
+                ".Header_ma-mnav__foot____DXw > .Header_ma-header__cta__CDDKA.ma-btn--primary[href$=\"new/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 21,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"hero-scene\" aria-label=\"ახლახან განთავსებული მოთხოვნები\" aria-busy=\"false\">",
+              "target": [
+                ".hero-scene"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p>ბიზნესები აქვეყნებენ, რა სჭირდებათ, და გადამოწმებული კომპანიები პასუხობენ ფასითა და ვადით. შეთავაზებებს მხოლოდ მოთხოვნის ავტორი ხედავს.</p>",
+              "target": [
+                ".HomeSections_intro__Z8CVB > p:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 46,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "state": "filters",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"company-sheet-sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#company-sheet-sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "15.0pt (20px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h2 id=\"filters-title\" class=\"Modal_title__OQs_t\">ფილტრები</h2>",
+              "target": [
+                "#filters-title"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#company-sheet-sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#company-sheet-sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 29,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"filters\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"filters\" aria-expanded=\"false\" class=\"ma-btn ma-btn--secondary catalog-filter-toggle\">",
+              "target": [
+                ".catalog-filter-toggle"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/",
+      "state": "filters",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"request-sheet-sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"request-sheet-sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"request-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"request-sheet-sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+              "target": [
+                "#request-sheet-sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"request-sheet-sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "15.0pt (20px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h2 id=\"filters-title\" class=\"Modal_title__OQs_t\">ფილტრები</h2>",
+              "target": [
+                "#filters-title"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"request-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"request-sheet-sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+                      "target": [
+                        "#request-sheet-sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">უახლესი</span>",
+              "target": [
+                "#request-sheet-sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 29,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"filters\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"filters\" aria-expanded=\"false\" class=\"ma-btn ma-btn--secondary catalog-filter-toggle\">",
+              "target": [
+                ".catalog-filter-toggle"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "21.0pt (28px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"catalog-header catalog-header--opportunities catalog-header--dark\">",
+                      "target": [
+                        ".catalog-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"catalog-title\">ღია მოთხოვნები</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                "article:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                "article:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                "article:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რემონტი და მოწყობა · რუსთავი · 85 მ²\">რემონტი და მოწყობა · რუსთავი · 85 მ²</p>",
+              "target": [
+                "article:nth-child(8) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"დასუფთავება · გორი · 75 მ²\">დასუფთავება · გორი · 75 მ²</p>",
+              "target": [
+                "p[title=\"დასუფთავება · გორი · 75 მ²\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"კომერციული ინვენტარი · რუსთავი · 8 ცალი\">კომერციული ინვენტარი · რუსთავი · 8 ცალი</p>",
+              "target": [
+                "article:nth-child(10) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 44,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"hero-scene\" aria-label=\"ახლახან განთავსებული მოთხოვნები\" aria-busy=\"false\">",
+              "target": [
+                ".hero-scene"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>2<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">15 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თელავი · 8 ცალი\">ავეჯი · თელავი · 8 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თელავი · 8 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>3<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">16 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(4) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>2<!-- --> შეთავაზება<span aria-hidden=\"true\"> · </span></span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\"> · </span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(1) > span"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"\">17 დღე დარჩა</span>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > p:nth-child(1) > span:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_price__z9pdT\">ფასი შეთანხმებით</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_bottom__2iie2 > .OpportunityCard_summary__6pJr6 > .OpportunityCard_price__z9pdT"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"home-text-link\" href=\"/how-it-works/\">დეტალურად</a>",
+              "target": [
+                ".home-text-link[href$=\"how-it-works/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/requests/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"Catalog_viewSwitch__OxVSn\" aria-label=\"ხედის არჩევა\">",
+              "target": [
+                ".Catalog_viewSwitch__OxVSn"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+              "target": [
+                "#sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "27.0pt (36px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"catalog-header catalog-header--opportunities catalog-header--dark\">",
+                      "target": [
+                        ".catalog-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"catalog-title\">ღია მოთხოვნები</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"catalog-header catalog-header--opportunities catalog-header--dark\">",
+                      "target": [
+                        ".catalog-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"catalog-description\">ბიზნესების რეალური საჭიროებები — გაუგზავნეთ შეთავაზება მათ, ვისაც თქვენი პროდუქტი ან მომსახურება სჭირდება.</p>",
+              "target": [
+                ".catalog-description"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+                      "target": [
+                        "#sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">უახლესი</span>",
+              "target": [
+                "#sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"კომერციული ინვენტარი · რუსთავი · 8 ცალი\">კომერციული ინვენტარი · რუსთავი · 8 ცალი</p>",
+              "target": [
+                "article:nth-child(10) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 46,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "state": "mobile-menu",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/requests/\">მოთხოვნები</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"requests/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/companies/\">კომპანიები</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"companies/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/how-it-works/\">როგორ მუშაობს</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"how-it-works/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/account/\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"user-round\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#user-round\"></use></svg>შესვლა</a>",
+              "target": [
+                ".Header_ma-mnav__link__tTkGI[href$=\"account/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"Header_ma-mnav__link__tTkGI\" href=\"/account/?tab=register&amp;role=company&amp;entry=header\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"store\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#store\"></use></svg>კომპანიის რეგისტრაცია</a>",
+              "target": [
+                ".Header_ma-mnav__group__Xp_uE:nth-child(2) > .Header_ma-mnav__link__tTkGI:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"ma-btn ma-btn--primary Header_ma-header__cta__CDDKA\" href=\"/requests/new/\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"plus\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#plus\"></use></svg>მოთხოვნის განთავსება</a>",
+              "target": [
+                ".Header_ma-mnav__foot____DXw > .Header_ma-header__cta__CDDKA.ma-btn--primary[href$=\"new/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 21,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div class=\"hero-scene\" aria-label=\"ახლახან განთავსებული მოთხოვნები\" aria-busy=\"false\">",
+              "target": [
+                ".hero-scene"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                ".OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p>ბიზნესები აქვეყნებენ, რა სჭირდებათ, და გადამოწმებული კომპანიები პასუხობენ ფასითა და ვადით. შეთავაზებებს მხოლოდ მოთხოვნის ავტორი ხედავს.</p>",
+              "target": [
+                ".HomeSections_intro__Z8CVB > p:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 46,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "state": "filters",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"company-sheet-sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#company-sheet-sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "15.0pt (20px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h2 id=\"filters-title\" class=\"Modal_title__OQs_t\">ფილტრები</h2>",
+              "target": [
+                "#filters-title"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#company-sheet-sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#company-sheet-sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 29,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"filters\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"filters\" aria-expanded=\"false\" class=\"ma-btn ma-btn--secondary catalog-filter-toggle\">",
+              "target": [
+                ".catalog-filter-toggle"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/",
+      "state": "filters",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"request-sheet-sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"request-sheet-sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"request-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"request-sheet-sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+              "target": [
+                "#request-sheet-sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"request-sheet-sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "15.0pt (20px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h2 id=\"filters-title\" class=\"Modal_title__OQs_t\">ფილტრები</h2>",
+              "target": [
+                "#filters-title"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"request-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"request-sheet-sort-options\"><span class=\"ma-custom-select__value\">უახლესი</span></button>",
+                      "target": [
+                        "#request-sheet-sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">უახლესი</span>",
+              "target": [
+                "#request-sheet-sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 29,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"filters\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"filters\" aria-expanded=\"false\" class=\"ma-btn ma-btn--secondary catalog-filter-toggle\">",
+              "target": [
+                ".catalog-filter-toggle"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "21.0pt (28px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header class=\"catalog-header catalog-header--opportunities catalog-header--dark\">",
+                      "target": [
+                        ".catalog-header"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"catalog-title\">ღია მოთხოვნები</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი\">რეცხვა და ქიმწმენდა · ბათუმი · 80 ცალი</p>",
+              "target": [
+                "article:nth-child(1) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ავეჯი · თბილისი · 6 ცალი\">ავეჯი · თბილისი · 6 ცალი</p>",
+              "target": [
+                "p[title=\"ავეჯი · თბილისი · 6 ცალი\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი\">ტვირთის გადაზიდვა · ზუგდიდი · 4 ცალი</p>",
+              "target": [
+                "article:nth-child(3) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"ვებსაიტი და აპები · თელავი · 1 სერვისი\">ვებსაიტი და აპები · თელავი · 1 სერვისი</p>",
+              "target": [
+                "article:nth-child(5) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"რემონტი და მოწყობა · რუსთავი · 85 მ²\">რემონტი და მოწყობა · რუსთავი · 85 მ²</p>",
+              "target": [
+                "article:nth-child(8) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"დასუფთავება · გორი · 75 მ²\">დასუფთავება · გორი · 75 მ²</p>",
+              "target": [
+                "p[title=\"დასუფთავება · გორი · 75 მ²\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgOverlap",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it is overlapped by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"OpportunityCard_facts__fZj7C\" title=\"კომერციული ინვენტარი · რუსთავი · 8 ცალი\">კომერციული ინვენტარი · რუსთავი · 8 ცალი</p>",
+              "target": [
+                "article:nth-child(10) > .OpportunityCard_body__LeYW_ > .OpportunityCard_facts__fZj7C"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+            }
+          ]
+        }
+      ],
+      "passes": 44,
+      "overflow": 0
+    }
+  ],
+  "keyboard": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/",
+      "name": "mobile-menu",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/requests/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/",
+      "name": "mobile-menu",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/requests/",
+      "name": "filters",
+      "passed": true
+    }
+  ],
+  "failures": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/",
+      "error": "locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('header').first().locator('a[href=\"/account/\"]').filter({ hasText: 'შესვლა' })\u001b[22m\n"
+    }
+  ],
+  "counts": {}
+}
