@@ -21,7 +21,7 @@ export function AccountSectionFooter({ dirty, pending, disabled, savedAt, error,
     <p id={errorId} className={error ? "ma-field__error" : "account-section__status"} role={error ? "alert" : "status"}>
       {error || (pending ? "ინახება…" : dirty ? "შეუნახავი ცვლილებები" : savedAt ? `შენახულია · ${new Date(savedAt).toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit" })}` : "ცვლილებები არ არის")}
     </p>
-    {children || <Button type="submit" disabled={!dirty || pending || disabled} loading={pending}>შენახვა</Button>}
+    {children || <Button variant={dirty ? "primary" : "secondary"} type="submit" disabled={!dirty || pending || disabled} loading={pending}>შენახვა</Button>}
   </div>;
 }
 

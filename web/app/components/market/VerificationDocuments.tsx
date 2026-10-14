@@ -55,7 +55,7 @@ export function VerificationDocuments({store,id,status,verified=false,note,onSta
  {slot!=='review'&&<Button variant="secondary" disabled={busy} onClick={()=>setSlot(slot==='registration'?'tax':'review')}>შემდეგი დოკუმენტის ნაბიჯი</Button>}
  <div className={blockFooter ? 'account-section__footer' : undefined}>
  {error?<div className="ma-field__error" role="alert">{error}<Button variant="ghost" disabled={busy} onClick={()=>setRevision(value=>value+1)}>ხელახლა ცდა</Button></div>:blockFooter?<p className="account-section__status" role="status">{savedAt?`შენახულია · ${new Date(savedAt).toLocaleTimeString('ka-GE',{hour:'2-digit',minute:'2-digit'})}`:locked?'დოკუმენტები გაგზავნილია':'ატვირთვა თითოეულ დოკუმენტს ინახავს'}</p>:null}
- {!locked?<Button disabled={busy} loading={busy} onClick={()=>void submit()}>{state==='returned'?'ხელახლა გაგზავნა':'განხილვაზე გაგზავნა'}</Button>:null}
+ {!locked?<Button variant={blockFooter?'secondary':'primary'} disabled={busy} loading={busy} onClick={()=>void submit()}>{state==='returned'?'ხელახლა გაგზავნა':'განხილვაზე გაგზავნა'}</Button>:null}
  </div>
  </div>;
 }

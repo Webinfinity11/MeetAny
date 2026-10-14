@@ -323,7 +323,9 @@ export function PasswordForm() {
             <div className="auth-field-message">{v.message("password-repeat")}</div>
           </div>
         </fieldset>
-        <AccountSectionFooter dirty={dirty} pending={pending} savedAt={savedAt} error={error}/>
+        <AccountSectionFooter dirty={dirty} pending={pending} savedAt={savedAt} error={error}>
+          <Button variant="secondary" type="submit" disabled={!dirty || pending} loading={pending}>შეცვალეთ პაროლი</Button>
+        </AccountSectionFooter>
       </form>
     </section>
   );

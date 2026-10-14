@@ -49,7 +49,7 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
         <li><Icon name="check"/><span>პროდუქტებისა და მომსახურების გამოჩენა</span></li>
         <li><Icon name="check"/><span>ყიდვა და გაყიდვა</span></li>
       </ul></section>}
-      footer={<div className={styles.actions}><Button variant="secondary" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>უკან</Button><Button variant="primary" type="submit" form="company-upgrade-form" loading={busy}>გააგრძელეთ</Button></div>}
+      footer={<div className={styles.actions}><Button variant="secondary" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>უკან</Button><Button variant="tint" type="submit" form="company-upgrade-form" loading={busy}>გააგრძელეთ</Button></div>}
     ><form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
       <fieldset className={styles.fields} disabled={busy}>
         <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-company">კომპანიის დასახელება *</label><input className="ma-input" autoComplete="organization" maxLength={120} value={company} onChange={event => { setCompany(event.target.value); fields.clear('upgrade-company'); }} {...fields.control('upgrade-company')}/>{fields.message('upgrade-company')}</div>

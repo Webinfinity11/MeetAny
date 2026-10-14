@@ -130,7 +130,7 @@ function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(item
   setFeedback("");setSearch("");setPage(Math.floor(items.length/20));setItems(all=>[...all,{name:"",photoUrl:null,note:"",priceInput:""}]);
  }}>პროდუქტის დამატება</Button></div>
  {error?<p className="ma-field__error" role="alert">{error}</p>:null}
- <div className={`ma-form-bar ${styles.productsSaveBar}`}><span role="status">{feedback || (changed ? "შეუნახავი ცვლილებები" : "")}</span><Button type="submit" loading={pending}>შენახვა</Button></div>
+ <div className={`ma-form-bar ${styles.productsSaveBar}`}><span role="status">{feedback || (changed ? "შეუნახავი ცვლილებები" : "")}</span><Button variant={changed ? "primary" : "secondary"} type="submit" disabled={!changed || pending} loading={pending}>შენახვა</Button></div>
  </form>
  <Modal open={photoIndex!==null} onClose={()=>setPhotoIndex(null)} title="პროდუქტის ფოტო" actions={<Button onClick={()=>setPhotoIndex(null)}>მზადაა</Button>}>
  {photoIndex!==null && items[photoIndex] ? <label className="ma-field">ფოტო გალერეიდან<CustomSelect value={items[photoIndex].photoUrl||""} onChange={e=>patch(photoIndex,{photoUrl:e.target.value||null})}><option value="">ფოტოს გარეშე</option>{gallery.map((url,i)=><option key={url} value={url}>გალერეის ფოტო {i+1}</option>)}</CustomSelect><ProductPreview product={items[photoIndex]}/></label> : null}
