@@ -19,7 +19,7 @@
       "width": 1440,
       "slug": "offers-new-form",
       "overflow": 0,
-      "scrollHeight": 1807,
+      "scrollHeight": 1868,
       "h1": 156,
       "panel": [
         {
@@ -234,17 +234,17 @@
   ],
   "checks": [
     {
-      "name": "external-submit-validation-and-live-preview",
+      "name": "single-footer-submit-validation-and-live-preview",
       "width": 1440,
       "passed": true
     },
     {
-      "name": "external-submit-validation-and-live-preview",
+      "name": "single-footer-submit-validation-and-live-preview",
       "width": 980,
       "passed": true
     },
     {
-      "name": "external-submit-validation-and-live-preview",
+      "name": "single-footer-submit-validation-and-live-preview",
       "width": 390,
       "passed": true
     },
@@ -254,12 +254,12 @@
       "passed": true
     },
     {
-      "name": "external-submit-validation-and-live-preview",
+      "name": "single-footer-submit-validation-and-live-preview",
       "width": 360,
       "passed": true
     },
     {
-      "name": "external-submit-validation-and-live-preview",
+      "name": "single-footer-submit-validation-and-live-preview",
       "width": 320,
       "passed": true
     }

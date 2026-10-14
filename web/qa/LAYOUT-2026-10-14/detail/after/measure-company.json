@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-14T08:05:08.443Z",
+  "at": "2026-10-14T08:11:50.693Z",
   "base": "http://127.0.0.1:3443",
   "role": "company",
   "depth": 4,
@@ -13,16 +13,16 @@
       "redirected": false,
       "vw": 1440,
       "vh": 1000,
-      "scrollHeight": 1807,
+      "scrollHeight": 1868,
       "scrollWidth": 1440,
-      "viewports": 1.81,
+      "viewports": 1.87,
       "hOverflow": 0,
       "main": {
         "paddingTop": 0,
         "paddingBottom": 0,
         "paddingLeft": 0,
         "top": 64,
-        "height": 1470
+        "height": 1531
       },
       "headerHeight": 64,
       "footerHeight": 0,
@@ -70,15 +70,15 @@
         }
       ],
       "empty": {
-        "px": 564,
-        "pctOfScroll": 31.2,
-        "pctOfMain": 38.4,
+        "px": 596,
+        "pctOfScroll": 31.9,
+        "pctOfMain": 38.9,
         "top5": [
           {
-            "px": 77,
+            "px": 62,
             "y": 1457,
             "above": "p.MakeOffer_privacy__v7OzX",
-            "below": "main-end"
+            "below": "button.ma-btn.ma-btn--primary"
           },
           {
             "px": 45,

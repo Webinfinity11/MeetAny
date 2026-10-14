@@ -1,6 +1,6 @@
 {
-  "at": "2026-10-14T08:08:14.013797+00:00",
-  "codeHead": "665d63c",
+  "at": "2026-10-14T08:13:32.255362+00:00",
+  "codeHead": "3093872",
   "database": "meetany_layout_detail",
   "commands": [
     {
@@ -8,7 +8,7 @@
       "exitCode": 0
     },
     {
-      "command": "npx eslint app",
+      "command": "npx eslint app/components/market/MakeOfferPageContent.tsx",
       "exitCode": 0,
       "errors": 0,
       "warnings": 0
@@ -81,7 +81,9 @@
     "pageErrors": 0,
     "failures": 0,
     "overflow": 0,
-    "overlaps": 0
+    "overlaps": 0,
+    "singleSubmitInFooter": true,
+    "primaryInAside": false
   },
   "measurements": [
     {
@@ -157,42 +159,6 @@
       "hOverflow": 0
     },
     {
-      "role": "company",
-      "slug": "offers-new",
-      "width": 1440,
-      "scrollHeight": 1807,
-      "h1": {
-        "text": "შეთავაზების გაგზავნა",
-        "top": 156,
-        "bottom": 198
-      },
-      "hOverflow": 0
-    },
-    {
-      "role": "company",
-      "slug": "offers-new",
-      "width": 390,
-      "scrollHeight": 2266,
-      "h1": {
-        "text": "შეთავაზების გაგზავნა",
-        "top": 108,
-        "bottom": 135
-      },
-      "hOverflow": 0
-    },
-    {
-      "role": "company",
-      "slug": "offers-new",
-      "width": 360,
-      "scrollHeight": 2330,
-      "h1": {
-        "text": "შეთავაზების გაგზავნა",
-        "top": 108,
-        "bottom": 135
-      },
-      "hOverflow": 0
-    },
-    {
       "role": "guest",
       "slug": "request-view",
       "width": 1440,
@@ -225,6 +191,42 @@
         "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
         "top": 112,
         "bottom": 252
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "width": 1440,
+      "scrollHeight": 1868,
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 156,
+        "bottom": 198
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "width": 390,
+      "scrollHeight": 2266,
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 108,
+        "bottom": 135
+      },
+      "hOverflow": 0
+    },
+    {
+      "role": "company",
+      "slug": "offers-new",
+      "width": 360,
+      "scrollHeight": 2330,
+      "h1": {
+        "text": "შეთავაზების გაგზავნა",
+        "top": 108,
+        "bottom": 135
       },
       "hOverflow": 0
     }

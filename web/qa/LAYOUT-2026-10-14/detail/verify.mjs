@@ -57,6 +57,9 @@ async function overlay(page, role, width, slug) {
 }
 async function preview(page, width) {
   await page.locator('#make-offer-form').waitFor();
+  assert.equal(await page.locator('button[form="make-offer-form"]').count(), 1);
+  assert.equal(await page.locator('main aside button.ma-btn--primary').count(), 0);
+  assert.equal(await page.locator('[data-form-footer] button[form="make-offer-form"]').count(), 1);
   await page.locator('button[form="make-offer-form"]:visible').click();
   await page.waitForFunction(() => document.activeElement?.id === 'of-price');
   await page.locator('#of-price').fill('1200');
@@ -73,7 +76,7 @@ async function preview(page, width) {
   await page.getByRole('button', { name: 'შეთანხმებით', exact: true }).click();
   assert.match(await panel.innerText(), /ფასი შეთანხმებით/);
   if (width < 1024) await page.locator('aside > details > summary').click();
-  result.checks.push({ name: 'external-submit-validation-and-live-preview', width, passed: true });
+  result.checks.push({ name: 'single-footer-submit-validation-and-live-preview', width, passed: true });
 }
 try {
   if (process.env.ONLY_FLOW !== '1') for (const role of (process.env.ROLES || 'guest,client,company').split(',')) for (const width of (process.env.WIDTHS || '1440,980,390,360,320').split(',').map(Number)) {
