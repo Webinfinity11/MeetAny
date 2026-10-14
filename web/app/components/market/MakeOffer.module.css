@@ -82,7 +82,7 @@
 /* FormLayout owns the columns and sticky panel, including editing mode. */
 .layout .panel h2 { margin: 0; }
 .layout .panel a { color: inherit; }
-.layout h1 { font-size: var(--fs-h1); line-height: 1.3; }
+.layout.layout h1 { font-size: var(--fs-h1); line-height: 1.3; }
 .form, .two, .formCard { gap: var(--form-gap); }
 .formCard { padding-block: var(--form-gap); }
 .submitArea { gap: var(--stack-gap); }
@@ -105,7 +105,7 @@
 .mobileActions > span { font-size: var(--fs-meta); line-height: var(--lh-meta); }
 .mobileActions button, .desktopActions button { white-space: normal; width: 100%; }
 @media (max-width: 767px) {
-  .layout h1 { font-size: var(--fs-h2); }
+  .layout.layout h1 { font-size: var(--fs-h2); }
   .breadcrumbs { overflow: visible; font-size: var(--fs-meta); line-height: var(--lh-meta); }
   .breadcrumbs a { position: relative; min-height: 0; }
   .breadcrumbs a::before { content: ""; position: absolute; inset: calc(-1 * var(--space-3)) 0; }
