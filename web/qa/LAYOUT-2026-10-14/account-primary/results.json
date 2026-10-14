@@ -1,0 +1,530 @@
+{
+  "clean": [
+    {
+      "role": "client",
+      "section": "details",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "legal",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "documents",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "products",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "distribution",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "security",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "details",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "legal",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "documents",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "products",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "distribution",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "security",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "details",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "legal",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "documents",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "products",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "distribution",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "client",
+      "section": "security",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "details",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "legal",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "documents",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "products",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "distribution",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "security",
+      "width": 1440,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "details",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "legal",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "documents",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "products",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "distribution",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "security",
+      "width": 390,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "details",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "legal",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "documents",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "products",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "distribution",
+      "width": 320,
+      "primary": 0
+    },
+    {
+      "role": "company",
+      "section": "security",
+      "width": 320,
+      "primary": 0
+    }
+  ],
+  "dirty": [
+    {
+      "label": "client/details/1440",
+      "primary": 1
+    },
+    {
+      "label": "client/details/390",
+      "primary": 1
+    },
+    {
+      "label": "client/details/320",
+      "primary": 1
+    },
+    {
+      "label": "company/details/1440",
+      "primary": 1
+    },
+    {
+      "label": "company/details/390",
+      "primary": 1
+    },
+    {
+      "label": "company/details/320",
+      "primary": 1
+    },
+    {
+      "label": "company/legal",
+      "primary": 1
+    },
+    {
+      "label": "company/products",
+      "primary": 1
+    }
+  ],
+  "checks": [
+    "client/1440: basic real save, feedback, persisted reload, restored",
+    "client/1440: password secondary submits; INVALID_PASSWORD fixture error and focus",
+    "client/390: basic real save, feedback, persisted reload, restored",
+    "client/390: password secondary submits; INVALID_PASSWORD fixture error and focus",
+    "client/320: basic real save, feedback, persisted reload, restored",
+    "client/320: password secondary submits; INVALID_PASSWORD fixture error and focus",
+    "client: CompanyUpgrade tint validates, real become_company RPC, onboarding redirect",
+    "company/1440: basic real save, feedback, persisted reload, restored",
+    "company/1440: password secondary submits; INVALID_PASSWORD fixture error and focus",
+    "company/390: basic real save, feedback, persisted reload, restored",
+    "company/390: password secondary submits; INVALID_PASSWORD fixture error and focus",
+    "company/320: basic real save, feedback, persisted reload, restored",
+    "company/320: password secondary submits; INVALID_PASSWORD fixture error and focus",
+    "company/legal: primary 0 → 1 → 0; real save, feedback, reload persistence, restored",
+    "company/products: primary 0 → 1 → 0; real save, feedback, reload persistence, restored",
+    "company/distribution conditions: secondary → primary, saved and persisted",
+    "company/distribution: dirty status primary, saved and persisted, restored",
+    "company/documents: unverified secondary submit retains requirements validation"
+  ],
+  "axe": [
+    {
+      "label": "client/details/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/details-dirty/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/legal/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/documents/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/products/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/distribution/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/security/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/password-error/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/details/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/details-dirty/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/legal/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/documents/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/products/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/distribution/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/security/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/password-error/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/details/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/details-dirty/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/legal/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/documents/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/products/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/distribution/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/security/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "client/password-error/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/details/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/details-dirty/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/legal/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/documents/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/products/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/distribution/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/security/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/password-error/1440",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/details/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/details-dirty/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/legal/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/documents/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/products/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/distribution/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/security/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/password-error/390",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/details/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/details-dirty/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/legal/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/documents/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/products/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/distribution/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/security/320",
+      "overflow": 0,
+      "violations": []
+    },
+    {
+      "label": "company/password-error/320",
+      "overflow": 0,
+      "violations": []
+    }
+  ],
+  "overlays": [
+    {
+      "role": "client",
+      "width": 1440,
+      "covered": []
+    },
+    {
+      "role": "company",
+      "width": 1440,
+      "covered": []
+    }
+  ],
+  "pageerrors": [],
+  "errors": []
+}
