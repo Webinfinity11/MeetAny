@@ -283,7 +283,7 @@ export function PasswordForm() {
     if (password.length > 128) errors["password-new"] = "პაროლი გრძელია";
     if (!repeat) errors["password-repeat"] = "შეიყვანეთ პაროლი ხელახლა";
     else if (repeat !== password) errors["password-repeat"] = "პაროლები არ ემთხვევა";
-    if (!v.check(errors, ["password-current", "password-new", "password-repeat"])) return;
+    if (!v.check(errors, ["password-current", "password-new", "password-repeat"])) { setError("შეასწორეთ მონიშნული ველები."); return; }
     setPending(true);
     try {
       await store.changePassword(current, password);
@@ -292,6 +292,7 @@ export function PasswordForm() {
     } catch (err) {
       const failure = err as { code?: string; userMessage?: string };
       const message = failure.userMessage || "პაროლი ვერ შეიცვალა.";
+      setError(message);
       const field = failure.code === "INVALID_PASSWORD" ? "password-current"
         : failure.code === "PASSWORD_TOO_SHORT" || failure.code === "PASSWORD_TOO_LONG" ? "password-new" : null;
       if (field) {
@@ -397,7 +398,7 @@ function LegalProfile() {
   if (profile.registration_code && profile.registration_code.trim().length < 3) errors['legal-registration_code'] = 'მინიმუმ 3 სიმბოლო';
   if (profile.website && !/^https?:\/\//.test(profile.website)) errors['legal-website'] = 'ბმული დაიწყეთ https://-ით';
   if (profile.founded_year !== null && (!Number.isInteger(profile.founded_year) || profile.founded_year < 1800 || profile.founded_year > new Date().getFullYear())) errors['legal-year'] = 'მიუთითეთ წელი 1800-დან მიმდინარე წლამდე';
-  if (!fields.check(errors, Object.keys(errors))) {if (guard.open) setError('შეასწორეთ მონიშნული ველები. ფორმაში დასაბრუნებლად აირჩიეთ „დარჩენა“.'); return false;}
+  if (!fields.check(errors, Object.keys(errors))) {setError('შეასწორეთ მონიშნული ველები.'); return false;}
   setPending(true); setError(null);
   try {
    // Preserve the other onboarding fields from a fresh server row.

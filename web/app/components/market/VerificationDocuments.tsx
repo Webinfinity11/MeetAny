@@ -39,7 +39,7 @@ export function VerificationDocuments({store,id,status,verified=false,note,onSta
   updateBusy(true);setAttempted(true);setError('');
   try {
    const current=await readVerificationRequirements(store);setRequirements(current);
-   if(Object.values(current).some(value=>!value)){focusMissing();return;}
+   if(Object.values(current).some(value=>!value)){setError('გაგზავნამდე შეავსეთ მონიშნული მოთხოვნები.');focusMissing();return;}
    const profile=await store.mutateRpc('submit_verification',{});onStatus?.(profile.verification_documents_status);markSaved();
   }catch(err){
    if((err as {code?:string})?.code==='MA902'||(err as Error)?.message?.includes('MA902')){
