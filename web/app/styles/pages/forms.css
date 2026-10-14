@@ -110,3 +110,6 @@
   font-size: var(--fs-sm);
   line-height: var(--lh-sm);
 }
+
+/* Offer form route: grey page background down to the footer, edge to edge. */
+.ma-frame[data-market-page="make-offer"] .ma-main { background: var(--bg-subtle); }
