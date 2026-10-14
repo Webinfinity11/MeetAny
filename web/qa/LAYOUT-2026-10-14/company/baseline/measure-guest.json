@@ -1,0 +1,506 @@
+{
+  "at": "2026-10-14T08:16:53.298Z",
+  "base": "http://127.0.0.1:3447",
+  "role": "guest",
+  "depth": 4,
+  "pages": [
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 1440,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 1417,
+      "scrollWidth": 1440,
+      "viewports": 1.42,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 1080
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 32,
+        "paddingBottom": 32
+      },
+      "topGaps": [
+        {
+          "gap": 56,
+          "y": 586,
+          "above": "div.request-detail-main",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 116,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 20,
+          "y": 300,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 222,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1282,
+        "width": 1162,
+        "rightMargin": 158,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 320,
+          "left": 1000,
+          "sticky": true
+        }
+      ],
+      "empty": {
+        "px": 417,
+        "pctOfScroll": 29.4,
+        "pctOfMain": 38.6,
+        "top5": [
+          {
+            "px": 65,
+            "y": 832,
+            "above": "span",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 47,
+            "y": 297,
+            "above": "p.RequestDetail_posted__hJEZR",
+            "below": "h2"
+          },
+          {
+            "px": 45,
+            "y": 975,
+            "above": "p",
+            "below": "button.ma-btn.ma-btn--ghost"
+          },
+          {
+            "px": 34,
+            "y": 64,
+            "above": "main-start",
+            "below": "a"
+          },
+          {
+            "px": 34,
+            "y": 561,
+            "above": "p.ma-prose",
+            "below": "a.ma-btn.ma-btn--primary"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          158
+        ],
+        "fitInFirstScreen": 1,
+        "firstTop": 706
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 136,
+        "bottom": 222
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "company-view",
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "width": 1440,
+      "finalUrl": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "redirected": false,
+      "vw": 1440,
+      "vh": 1000,
+      "scrollHeight": 2346,
+      "scrollWidth": 1440,
+      "viewports": 2.35,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 64,
+        "height": 2009
+      },
+      "headerHeight": 64,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.company-profile",
+        "paddingTop": 32,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 20,
+          "y": 418,
+          "above": "header.CompanyProfile_hero__K6Yh0",
+          "below": "div.CompanyProfile_content__Fb4yg",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 120,
+        "right": 1295,
+        "width": 1175,
+        "rightMargin": 145,
+        "leftMargin": 120
+      },
+      "widest": {
+        "sel": "div.ma-container",
+        "width": 1264,
+        "left": 88,
+        "right": 1352,
+        "rightMargin": 88
+      },
+      "asides": [
+        {
+          "sel": "aside.CompanyProfile_sidebar__gGueq",
+          "width": 300,
+          "left": 1020,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 683,
+        "pctOfScroll": 29.1,
+        "pctOfMain": 34,
+        "top5": [
+          {
+            "px": 89,
+            "y": 1984,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "main-end"
+          },
+          {
+            "px": 74,
+            "y": 1121,
+            "above": "button.CompanyProfile_productTile__ZzpQR",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 73,
+            "y": 389,
+            "above": "p",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 73,
+            "y": 1434,
+            "above": "button.CompanyProfile_galleryTile__mVwz4",
+            "below": "h2.detail-section-title#company-reviews"
+          },
+          {
+            "px": 58,
+            "y": 127,
+            "above": "svg.icon",
+            "below": "img"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ხის ხაზი",
+        "top": 185,
+        "bottom": 216
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "request-view",
+      "path": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "width": 390,
+      "finalUrl": "/requests/view/?id=0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 2057,
+      "scrollWidth": 390,
+      "viewports": 2.44,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 1584
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.request-detail",
+        "paddingTop": 20,
+        "paddingBottom": 20
+      },
+      "topGaps": [
+        {
+          "gap": 32,
+          "y": 1329,
+          "above": "aside.request-detail-aside#request-contact",
+          "below": "section.RequestDetail_similar__hLhSm",
+          "depth": 4
+        },
+        {
+          "gap": 16,
+          "y": 96,
+          "above": "nav.detail-breadcrumb.RequestDetail_breadcrumbs__9y_HN",
+          "below": "header.detail-hero",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 363,
+          "above": "header.detail-hero",
+          "below": "div.request-detail-grid",
+          "depth": 3
+        },
+        {
+          "gap": 16,
+          "y": 739,
+          "above": "div.request-detail-main",
+          "below": "aside.request-detail-aside#request-contact",
+          "depth": 4
+        },
+        {
+          "gap": 12,
+          "y": 259,
+          "above": "div.RequestDetail_titleRow__P9CJl",
+          "below": "ul.RequestDetail_facts__miA6o",
+          "depth": 4
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 390,
+        "width": 374,
+        "rightMargin": 0,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.request-detail",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 1584
+      },
+      "asides": [
+        {
+          "sel": "aside.request-detail-aside#request-contact",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 732,
+        "pctOfScroll": 35.6,
+        "pctOfMain": 46.2,
+        "top5": [
+          {
+            "px": 67,
+            "y": 719,
+            "above": "p.ma-prose",
+            "below": "dt"
+          },
+          {
+            "px": 55,
+            "y": 1071,
+            "above": "p.RequestDetail_note__i2i1i",
+            "below": "p.detail-label"
+          },
+          {
+            "px": 48,
+            "y": 1592,
+            "above": "span",
+            "below": "main-end"
+          },
+          {
+            "px": 43,
+            "y": 1434,
+            "above": "a",
+            "below": "img"
+          },
+          {
+            "px": 42,
+            "y": 830,
+            "above": "dd",
+            "below": "dt"
+          }
+        ]
+      },
+      "rows": {
+        "count": 1,
+        "sel": "article.OpportunityCard_card__Yvcam.OpportunityCard_compact__FGI_0",
+        "heights": [
+          156
+        ],
+        "fitInFirstScreen": 0,
+        "firstTop": 1464
+      },
+      "h1": {
+        "text": "თბილისი–ბათუმი: 3 პალეტის ყოველკვირეული გადაზიდვა",
+        "top": 112,
+        "bottom": 217
+      },
+      "pageErrors": []
+    },
+    {
+      "role": "guest",
+      "slug": "company-view",
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "width": 390,
+      "finalUrl": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "redirected": false,
+      "vw": 390,
+      "vh": 844,
+      "scrollHeight": 3239,
+      "scrollWidth": 390,
+      "viewports": 3.84,
+      "hOverflow": 0,
+      "main": {
+        "paddingTop": 0,
+        "paddingBottom": 0,
+        "paddingLeft": 0,
+        "top": 56,
+        "height": 2766
+      },
+      "headerHeight": 56,
+      "footerHeight": 0,
+      "pageWrap": {
+        "sel": "div.ma-page.company-profile",
+        "paddingTop": 20,
+        "paddingBottom": 64
+      },
+      "topGaps": [
+        {
+          "gap": 24,
+          "y": 454,
+          "above": "div.CompanyProfile_identity__Ok62M",
+          "below": "div.CompanyProfile_actions__l8drE",
+          "depth": 4
+        },
+        {
+          "gap": 24,
+          "y": 2429,
+          "above": "div.CompanyProfile_main__OYyh3",
+          "below": "aside.CompanyProfile_sidebar__gGueq",
+          "depth": 4
+        },
+        {
+          "gap": 20,
+          "y": 711,
+          "above": "header.CompanyProfile_hero__K6Yh0",
+          "below": "div.CompanyProfile_content__Fb4yg",
+          "depth": 3
+        }
+      ],
+      "content": {
+        "left": 16,
+        "right": 357,
+        "width": 341,
+        "rightMargin": 33,
+        "leftMargin": 16
+      },
+      "widest": {
+        "sel": "div.ma-page.company-profile",
+        "width": 358,
+        "left": 16,
+        "right": 374,
+        "rightMargin": 16
+      },
+      "fullBleed": {
+        "sel": "div.ma-container",
+        "height": 2766
+      },
+      "asides": [
+        {
+          "sel": "aside.CompanyProfile_sidebar__gGueq",
+          "width": 358,
+          "left": 16,
+          "sticky": false
+        }
+      ],
+      "empty": {
+        "px": 1136,
+        "pctOfScroll": 35.1,
+        "pctOfMain": 41.1,
+        "top5": [
+          {
+            "px": 85,
+            "y": 2737,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "main-end"
+          },
+          {
+            "px": 73,
+            "y": 682,
+            "above": "p",
+            "below": "h2.detail-section-title#company-about"
+          },
+          {
+            "px": 72,
+            "y": 1131,
+            "above": "span",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 69,
+            "y": 2408,
+            "above": "button.ma-btn.ma-btn--ghost",
+            "below": "h2.detail-section-title"
+          },
+          {
+            "px": 66,
+            "y": 1594,
+            "above": "button.CompanyProfile_productTile__ZzpQR",
+            "below": "h2.detail-section-title"
+          }
+        ]
+      },
+      "h1": {
+        "text": "ხის ხაზი",
+        "top": 253,
+        "bottom": 284
+      },
+      "pageErrors": []
+    }
+  ],
+  "errors": []
+}

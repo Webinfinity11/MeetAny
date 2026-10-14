@@ -1,0 +1,678 @@
+{
+  "pages": [
+    {
+      "role": "guest",
+      "width": 320,
+      "height": 3226,
+      "overflow": 0,
+      "titleTop": 93,
+      "titleSize": "24px",
+      "primary": 1,
+      "actions": [
+        {
+          "label": "კომპანიები",
+          "height": 44,
+          "width": 44
+        },
+        {
+          "label": "ფასის მოთხოვნა",
+          "height": 62,
+          "width": 119.375
+        },
+        {
+          "label": "მიწერა",
+          "height": 62,
+          "width": 74.625
+        },
+        {
+          "label": "კომპანიის შენახვა",
+          "height": 44,
+          "width": 44
+        }
+      ],
+      "photos": [
+        {
+          "src": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=3840&q=75",
+          "loaded": true
+        }
+      ],
+      "imageOverlaps": [
+        0,
+        0
+      ],
+      "panelWidth": 288
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "height": 2789,
+      "overflow": 0,
+      "titleTop": 93,
+      "titleSize": "24px",
+      "primary": 1,
+      "actions": [
+        {
+          "label": "კომპანიები",
+          "height": 44,
+          "width": 44
+        },
+        {
+          "label": "ფასის მოთხოვნა",
+          "height": 44,
+          "width": 162.453125
+        },
+        {
+          "label": "მიწერა",
+          "height": 44,
+          "width": 101.546875
+        },
+        {
+          "label": "კომპანიის შენახვა",
+          "height": 44,
+          "width": 44
+        }
+      ],
+      "photos": [
+        {
+          "src": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=3840&q=75",
+          "loaded": true
+        }
+      ],
+      "imageOverlaps": [
+        0,
+        0
+      ],
+      "panelWidth": 358
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "height": 1962,
+      "overflow": 0,
+      "titleTop": 181.40625,
+      "titleSize": "24px",
+      "primary": 1,
+      "actions": [
+        {
+          "label": "კომპანიები",
+          "height": 44,
+          "width": 105.296875
+        },
+        {
+          "label": "ფასის მოთხოვნა",
+          "height": 44,
+          "width": 356.921875
+        },
+        {
+          "label": "მიწერა",
+          "height": 44,
+          "width": 223.078125
+        },
+        {
+          "label": "კომპანიის შენახვა",
+          "height": 44,
+          "width": 44
+        }
+      ],
+      "photos": [
+        {
+          "src": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=3840&q=75",
+          "loaded": true
+        }
+      ],
+      "imageOverlaps": [
+        0,
+        0
+      ],
+      "panelWidth": 320
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "height": 3082,
+      "overflow": 0,
+      "titleTop": 93,
+      "titleSize": "24px",
+      "primary": 1,
+      "actions": [
+        {
+          "label": "კომპანიები",
+          "height": 44,
+          "width": 44
+        },
+        {
+          "label": "ფასის მოთხოვნა",
+          "height": 62,
+          "width": 119.375
+        },
+        {
+          "label": "მიწერა",
+          "height": 62,
+          "width": 74.625
+        },
+        {
+          "label": "შენახვის გაუქმება",
+          "height": 44,
+          "width": 44
+        }
+      ],
+      "photos": [
+        {
+          "src": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=3840&q=75",
+          "loaded": true
+        }
+      ],
+      "imageOverlaps": [
+        0,
+        0
+      ],
+      "panelWidth": 288
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "height": 2645,
+      "overflow": 0,
+      "titleTop": 93,
+      "titleSize": "24px",
+      "primary": 1,
+      "actions": [
+        {
+          "label": "კომპანიები",
+          "height": 44,
+          "width": 44
+        },
+        {
+          "label": "ფასის მოთხოვნა",
+          "height": 44,
+          "width": 162.453125
+        },
+        {
+          "label": "მიწერა",
+          "height": 44,
+          "width": 101.546875
+        },
+        {
+          "label": "შენახვის გაუქმება",
+          "height": 44,
+          "width": 44
+        }
+      ],
+      "photos": [
+        {
+          "src": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=3840&q=75",
+          "loaded": true
+        }
+      ],
+      "imageOverlaps": [
+        0,
+        0
+      ],
+      "panelWidth": 358
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "height": 1918,
+      "overflow": 0,
+      "titleTop": 181.40625,
+      "titleSize": "24px",
+      "primary": 1,
+      "actions": [
+        {
+          "label": "კომპანიები",
+          "height": 44,
+          "width": 105.296875
+        },
+        {
+          "label": "ფასის მოთხოვნა",
+          "height": 44,
+          "width": 356.921875
+        },
+        {
+          "label": "მიწერა",
+          "height": 44,
+          "width": 223.078125
+        },
+        {
+          "label": "შენახვის გაუქმება",
+          "height": 44,
+          "width": 44
+        }
+      ],
+      "photos": [
+        {
+          "src": "/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-photo-1791467184924-nSZwnuqECRCp2KM0RqEr62bWfUxTiH.jpg&w=3840&q=75",
+          "loaded": true
+        },
+        {
+          "src": "http://127.0.0.1:3447/_next/image/?url=https%3A%2F%2Fk3kp1syowhtmw3er.public.blob.vercel-storage.com%2F74cc28fc-47de-45cb-9563-93735b86855e%2Fgallery-demo-wood-MjjfKBsBCDYsDv8xKWRZN1QwCaukQ9.jpg&w=3840&q=75",
+          "loaded": true
+        }
+      ],
+      "imageOverlaps": [
+        0,
+        0
+      ],
+      "panelWidth": 320
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "company": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "company": "3d12ff1f-0d72-4a53-a92f-1830cfd5b290",
+      "overflow": 0
+    }
+  ],
+  "dialogs": [
+    {
+      "role": "guest",
+      "width": 320,
+      "name": "gallery",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 320,
+      "name": "product",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 320,
+      "name": "save-auth",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 320,
+      "name": "message-auth",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "name": "gallery",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "name": "product",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "name": "save-auth",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "name": "message-auth",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "name": "gallery",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "name": "product",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "name": "save-auth",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "name": "message-auth",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "name": "gallery",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "name": "product",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "name": "message-client",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "name": "gallery",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "name": "product",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "name": "message-client",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "name": "gallery",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "name": "product",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "name": "message-client",
+      "focusTrap": false,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "name": "product-second",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "name": "product-second",
+      "focusTrap": true,
+      "escape": true,
+      "focusReturn": true,
+      "serious": 0
+    }
+  ],
+  "actions": [
+    {
+      "role": "guest",
+      "width": 320,
+      "requestNavigation": true
+    },
+    {
+      "role": "guest",
+      "width": 390,
+      "requestNavigation": true
+    },
+    {
+      "role": "guest",
+      "width": 1440,
+      "requestNavigation": true
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "saveRestored": true
+    },
+    {
+      "role": "client",
+      "width": 320,
+      "requestNavigation": true
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "saveRestored": true
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "requestNavigation": true
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "saveRestored": true
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "requestNavigation": true
+    }
+  ],
+  "overlays": [
+    {
+      "role": "client",
+      "width": 320,
+      "label": "მენიუ",
+      "found": true,
+      "overlaps": []
+    },
+    {
+      "role": "client",
+      "width": 390,
+      "label": "მენიუ",
+      "found": true,
+      "overlaps": []
+    },
+    {
+      "role": "client",
+      "width": 1440,
+      "label": "პროფილი",
+      "found": true,
+      "overlaps": []
+    }
+  ],
+  "requestPixels": [
+    {
+      "width": 1440,
+      "source": "local-baseline",
+      "sameSize": true,
+      "beforeHeight": 1417,
+      "afterHeight": 1417,
+      "pixels": 0
+    },
+    {
+      "width": 1440,
+      "source": "detail-after",
+      "sameSize": true,
+      "beforeHeight": 1417,
+      "afterHeight": 1417,
+      "pixels": 0
+    },
+    {
+      "width": 390,
+      "source": "local-baseline",
+      "sameSize": true,
+      "beforeHeight": 2057,
+      "afterHeight": 2057,
+      "pixels": 0
+    },
+    {
+      "width": 390,
+      "source": "detail-after",
+      "sameSize": true,
+      "beforeHeight": 2057,
+      "afterHeight": 2057,
+      "pixels": 0
+    }
+  ],
+  "errors": []
+}

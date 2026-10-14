@@ -1,0 +1,11 @@
+guest blue 1440 /companies/ page: 0
+guest blue 1440 /companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e page: 0
+guest blue 390 /companies/ page: 0
+guest blue 390 /companies/ filters: 0
+guest blue 390 /companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e page: 0
+guest classic 1440 /companies/ page: 0
+guest classic 1440 /companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e page: 0
+guest classic 390 /companies/ page: 0
+guest classic 390 /companies/ filters: 0
+guest classic 390 /companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e page: 0
+{"counts":{},"keyboard":[],"failures":[]}

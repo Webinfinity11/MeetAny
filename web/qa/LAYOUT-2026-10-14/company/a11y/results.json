@@ -1,0 +1,878 @@
+{
+  "at": "2026-10-14T08:23:53.914Z",
+  "base": "http://127.0.0.1:3447",
+  "axe": "4.13.0",
+  "ids": {
+    "client": "bacf1572-7493-4ac9-bfc7-95719e911c4c",
+    "company": "74cc28fc-47de-45cb-9563-93735b86855e",
+    "admin": "d2517b00-554d-4e6b-929a-ef3da51f3b47",
+    "request": "0101aaac-f4e6-4ed4-b1bd-5a52e0942db9",
+    "deal": "8e6766e1-b67e-408a-a8c0-e9e6944e115b"
+  },
+  "pages": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 1440,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "imgNode",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<img alt=\"\" loading=\"lazy\" width=\"360\" height=\"240\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"(max-width: 720px) 5...\" srcset=\"/_next/image/?url=ht...\" src=\"http://127.0.0.1:344...\">",
+                      "target": [
+                        "article:nth-child(1) > .CompanyProfile_productTile__ZzpQR[aria-haspopup=\"dialog\"][type=\"button\"] > .CompanyProfile_productPhoto__1Mo2I > img[width=\"360\"][height=\"240\"][sizes=\"(max-width: 720px) 50vw, 360px\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because element contains an image node"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h3>კაფის ხის მაგიდა 70×70</h3>",
+              "target": [
+                "article:nth-child(1) > .CompanyProfile_productTile__ZzpQR[aria-haspopup=\"dialog\"][type=\"button\"] > .CompanyProfile_productCopy__lqFzt > h3"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "imgNode",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<img alt=\"\" loading=\"lazy\" width=\"360\" height=\"240\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"(max-width: 720px) 5...\" srcset=\"/_next/image/?url=ht...\" src=\"http://127.0.0.1:344...\">",
+                      "target": [
+                        "article:nth-child(1) > .CompanyProfile_productTile__ZzpQR[aria-haspopup=\"dialog\"][type=\"button\"] > .CompanyProfile_productPhoto__1Mo2I > img[width=\"360\"][height=\"240\"][sizes=\"(max-width: 720px) 50vw, 360px\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because element contains an image node"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p>სადემო · ფოტო საილუსტრაციოა. 70×70 სმ ხის მაგიდა კაფისთვის. მასალა, ფერი და დამცავი საფარი შეთანხმებით; სხვა ზომით დამზადების პირობები ცალკე დაზუსტდება.</p>",
+              "target": [
+                "article:nth-child(1) > .CompanyProfile_productTile__ZzpQR[aria-haspopup=\"dialog\"][type=\"button\"] > .CompanyProfile_productCopy__lqFzt > p"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "imgNode",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<img alt=\"\" loading=\"lazy\" width=\"360\" height=\"240\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"(max-width: 720px) 5...\" srcset=\"/_next/image/?url=ht...\" src=\"http://127.0.0.1:344...\">",
+                      "target": [
+                        "button[aria-label=\"სავაჭრო თარო — პროდუქტის ნახვა\"] > .CompanyProfile_productPhoto__1Mo2I > img[width=\"360\"][height=\"240\"][sizes=\"(max-width: 720px) 50vw, 360px\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because element contains an image node"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h3>სავაჭრო თარო</h3>",
+              "target": [
+                "button[aria-label=\"სავაჭრო თარო — პროდუქტის ნახვა\"] > .CompanyProfile_productCopy__lqFzt > h3"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "imgNode",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<img alt=\"\" loading=\"lazy\" width=\"360\" height=\"240\" decoding=\"async\" data-nimg=\"1\" style=\"color:transparent\" sizes=\"(max-width: 720px) 5...\" srcset=\"/_next/image/?url=ht...\" src=\"http://127.0.0.1:344...\">",
+                      "target": [
+                        "button[aria-label=\"სავაჭრო თარო — პროდუქტის ნახვა\"] > .CompanyProfile_productPhoto__1Mo2I > img[width=\"360\"][height=\"240\"][sizes=\"(max-width: 720px) 50vw, 360px\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because element contains an image node"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p>სადემო · ფოტო საილუსტრაციოა. სავაჭრო თარო მაღაზიისა და კაფისთვის. ზომა, კონსტრუქცია, თაროების რაოდენობა და მონტაჟის პირობები შეთანხმებით.</p>",
+              "target": [
+                "button[aria-label=\"სავაჭრო თარო — პროდუქტის ნახვა\"] > .CompanyProfile_productCopy__lqFzt > p"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "state": "filters",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"company-sheet-sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#company-sheet-sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#company-sheet-sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#company-sheet-sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 29,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"filters\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"filters\" aria-expanded=\"false\" class=\"ma-btn ma-btn--secondary catalog-filter-toggle\">",
+              "target": [
+                ".catalog-filter-toggle"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select ma-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 1440,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "violations": [],
+      "incomplete": [],
+      "passes": 45,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "state": "filters",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"company-sheet-sort-options\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+              "target": [
+                "#company-sheet-sort"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"company-sheet-sort-options\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button id=\"company-sheet-sort\" type=\"button\" role=\"combobox\" class=\"ma-select ma-custom-select\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-controls=\"company-sheet-sort-options\"><span class=\"ma-custom-select__value\">რეკომენდებული</span></button>",
+                      "target": [
+                        "#company-sheet-sort"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"ma-custom-select__value\">რეკომენდებული</span>",
+              "target": [
+                "#company-sheet-sort > .ma-custom-select__value"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ],
+      "passes": 29,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"filters\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button type=\"button\" aria-haspopup=\"dialog\" aria-controls=\"filters\" aria-expanded=\"false\" class=\"ma-btn ma-btn--secondary catalog-filter-toggle\">",
+              "target": [
+                ".catalog-filter-toggle"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"filters\""
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "overflow": 0
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/view/?id=74cc28fc-47de-45cb-9563-93735b86855e",
+      "state": "page",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"ma-mnav\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"Header_ma-header__menu-btn__o_PR7\" aria-label=\"მენიუ\" aria-haspopup=\"dialog\" aria-controls=\"ma-mnav\" aria-expanded=\"false\"><svg class=\"icon\" viewBox=\"0 0 24 24\" data-icon=\"menu\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/icons.svg#menu\"></use></svg></button>",
+              "target": [
+                ".Header_ma-header__menu-btn__o_PR7"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"ma-mnav\""
+            }
+          ]
+        }
+      ],
+      "passes": 45,
+      "overflow": 0
+    }
+  ],
+  "keyboard": [
+    {
+      "role": "guest",
+      "theme": "blue",
+      "width": 390,
+      "path": "/companies/",
+      "name": "filters",
+      "passed": true
+    },
+    {
+      "role": "guest",
+      "theme": "classic",
+      "width": 390,
+      "path": "/companies/",
+      "name": "filters",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "counts": {}
+}
