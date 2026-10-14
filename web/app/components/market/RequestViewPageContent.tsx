@@ -36,7 +36,7 @@ import { Badge } from "../ui/Badge";
 import { OpportunityCard, budgetLabel, type OpportunityRequest } from "./OpportunityCard";
 import { SaveRequestButton } from "./SaveRequestButton";
 import styles from "./request/RequestDetail.module.css";
-import { addressLabel, dateLong, dateShort, postedLabel } from "../../lib/format";
+import { addressLabel, dateShort, postedLabel } from "../../lib/format";
 
 
 const RequestFormSheet = dynamic(() => import("./RequestFormSheet").then(m => m.RequestFormSheet));
@@ -163,16 +163,16 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   });
   const daysLeft: number = state === "open" ? store?.daysLeft(r) ?? 0 : 0;
   const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
-  // The deadline lives in the aside only; the meta says what, where and when it was posted.
+  // Keep the same fact order as a request card: category, city, quantity, deadline.
   const posted = postedLabel(r.createdAt, now);
   // The buyer's exact address opens together with the contact, after an offer is chosen (owner, admin and the chosen company).
   const showAddress = !!r.addressNote && (isOwner || me?.role === "admin" || !!contact);
   const cityLabel = cities[r.city] || r.city;
   const facts: [string, string, string][] = [
+    ["briefcase-business", "კატეგორია", categories[r.category] || r.category],
+    ["map-pin", "ქალაქი", cityLabel],
     ...(r.quantity != null ? [["package", "რაოდენობა", `${r.quantity} ${units[r.unit] || r.unit || ""}`.trim()] as [string, string, string]] : []),
-    ["map-pin", "მიწოდება", showAddress ? `${cityLabel}, ${addressLabel(r.addressNote)}` : cityLabel],
-    ["wallet", "ბიუჯეტი", budgetLabel(r) || "შეთანხმებით"],
-    ...(r.neededBy ? [["calendar", "მიწოდების ვადა", dateLong(r.neededBy)] as [string, string, string]] : []),
+    ["calendar", "შეთავაზებების მიღება", statusText],
   ];
   const lockNote = isOwner ? (r.chosenOfferId ? "" : "კომპანიის კონტაქტი იხსნება შეთავაზების არჩევის შემდეგ")
     : contact ? "" : "მყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ";
@@ -279,18 +279,16 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
   return (
     <div className="ma-page request-detail detail-page request-workspace" data-owner={isOwner || undefined}>
       <nav className={`detail-breadcrumb ${styles.breadcrumbs}`} aria-label="ნავიგაცია">{isOwner ? <Link href="/account/?tab=requests">ჩემი მოთხოვნები</Link> : <><Link href="/requests/">მოთხოვნები</Link><span>/</span><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>{categories[r.category] || r.category}</Link></>}<span>/</span><span>{r.title}</span></nav>
+      <header className="detail-hero">
+        <div className={styles.titleRow}><h1 className="detail-hero__title" tabIndex={-1}>{r.title}</h1><span className="detail-status" data-tone={state === "chosen" ? "chosen" : state !== "open" ? "closed" : daysLeft <= 0 ? "urgent" : undefined}>{state === "open" ? "ღიაა" : statusText}</span></div>
+        <ul className={styles.facts} aria-label="მოთხოვნის ფაქტები">{facts.map(([icon, label, value]) => <li key={label}><Icon name={icon}/><span><span className="ma-sr-only">{label}: </span>{value}</span></li>)}</ul>
+        {posted ? <p className={styles.posted}>გამოქვეყნდა {posted}</p> : null}
+      </header>
       <div className="request-detail-grid">
         <div className="request-detail-main">
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
-            <header className="detail-hero">
-              <div className="detail-brief-meta"><Badge status={state === "open" || state === "chosen" ? "success" : "neutral"}>{state === "open" ? "ღიაა" : statusText}</Badge><span className="detail-category">{categories[r.category] || r.category}</span><span>{posted ? `გამოქვეყნდა ${posted}` : ""}</span></div>
-              <h1 className="detail-hero__title" tabIndex={-1}>{r.title}</h1>
-            </header>
-            <dl className="request-detail-facts">
-              {facts.map(([icon, label, value]) => <div key={label}><dt><Icon name={icon}/>{label}</dt><dd>{value}</dd></div>)}
-            </dl>
             <div className="request-description-brief"><h2><Icon name="file-text"/>მოთხოვნის აღწერა</h2><div className="request-description-content">
-            <p className="ma-prose">{r.body}</p>{/* Once the caller is known: earlier, the SSR preview store and then the signed-out singleton each read them anonymously. */}{sessionReady ? <><RequestPreferenceRecord key={`${r.id}:${me?.id||"guest"}`} store={store!} id={r.id} editable={isOwner&&!closed} hideBudget={!!budgetLabel(r)}/><FileAttachments key={`files:${r.id}:${me?.id||"guest"}`} store={store!} kind="request" target={r.id} editable={isOwner&&!closed} optional/></> : null}
+            <p className="ma-prose">{r.body}</p>{r.neededBy ? <p className={styles.note}><Icon name="calendar"/>მიწოდების ვადა: {dateShort(r.neededBy)}</p> : null}{showAddress ? <p className={styles.note}><Icon name="map-pin"/>{cityLabel}, {addressLabel(r.addressNote)}</p> : null}{/* Once the caller is known: earlier, the SSR preview store and then the signed-out singleton each read them anonymously. */}{sessionReady ? <><RequestPreferenceRecord key={`${r.id}:${me?.id||"guest"}`} store={store!} id={r.id} editable={isOwner&&!closed} hideBudget={!!budgetLabel(r)}/><FileAttachments key={`files:${r.id}:${me?.id||"guest"}`} store={store!} kind="request" target={r.id} editable={isOwner&&!closed} optional/></> : null}
 
             </div></div>
           </section>
@@ -308,6 +306,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <aside className="request-detail-aside" id="request-contact" aria-label={isOwner ? "მოთხოვნის მართვა" : "კონტაქტი და შეთავაზება"}>
 
           <section className="request-submit-card"><dl className="request-summary-facts">
+            <div className={styles.budget}><dt>ბიუჯეტი</dt><dd>{budgetLabel(r) || "შეთანხმებით"}</dd></div>
             <div><dt>{state === "open" ? "მიღება სრულდება" : "სტატუსი"}</dt><dd>{state === "open" ? (daysLeft > 0 ? `${daysLeft} დღეში` : "დღეს") : statusText}</dd>{state === "open" ? <dd className="request-summary-facts__date">{dateShort(r.expiresAt)}</dd> : null}</div>
             <div><dt>შეთავაზებები</dt><dd>{offerCount ? `${offerCount} მიღებულია` : "ჯერ არ არის"}</dd></div>
           </dl>
@@ -339,11 +338,11 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           </div>
         </aside>
         {!isOwner && me?.role === "company" && (myOffer || closed) ? <div className="request-company-response">{responsePanel}</div> : null}
+        {similar.length > 0 && <section className={styles.similar}><header className={styles.similarHead}><h2>მსგავსი მოთხოვნები</h2><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>ყველა მოთხოვნა</Link></header><div>{similar.map(item => <OpportunityCard key={item.id} request={item} compact />)}</div></section>}
       </div>
 
       {offerAction ? <div className="detail-actionbar"><Button variant="primary" href={offerAction.href}><Icon name="send"/>{offerAction.label}</Button></div> : null}
       {isOwner && offerCount > 0 ? <div className="detail-actionbar">{r.chosenOfferId && dealId ? <Button variant="primary" href={dealHref(dealId)}>გარიგების ნახვა</Button> : <Button variant="primary" href={compareHref(r.id)}>შეთავაზებების შედარება</Button>}</div> : null}
-      {similar.length > 0 && <section className={styles.similar}><header className={styles.similarHead}><h2>მსგავსი მოთხოვნები</h2><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>ყველა მოთხოვნა</Link></header><div>{similar.map(item => <OpportunityCard key={item.id} request={item} compact />)}</div></section>}
 
       <ConfirmSheet
         id="request-confirm"
@@ -360,7 +359,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <p>{confirmKind === "extend" ? (closed ? "მოთხოვნა ხელახლა გაიხსნება და შეთავაზებებს 7 დღე მიიღებს." : "შეთავაზებების მიღების ვადა 7 დღით გაგრძელდება.") : confirmKind === "delete" ? "მოთხოვნა და მისი ყველა შეთავაზება სამუდამოდ წაიშლება." : confirmKind === "close" ? "მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს. მოგვიანებით შეგიძლიათ ხელახლა გახსნა." : "მყიდველი თქვენს შეთავაზებას ვეღარ ნახავს. ხელახლა გაგზავნა შესაძლებელია, სანამ მოთხოვნა ღიაა."}</p>
       </ConfirmSheet>
       {editRequest ? <RequestFormSheet key={r.id} open existing={r} onClose={() => setEditRequest(false)} /> : null}
-      {chooseId ? <ChooseOfferSheet
+      <ChooseOfferSheet
         open={!!chooseId}
         companyName={chosenCard?.companyName || ""}
         offer={chosenCard ? { logoUrl: chosenCard.logoUrl, priceLabel: offerPrice(chosenCard), deliveryDays: chosenCard.deliveryDays } : undefined}
@@ -373,7 +372,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
           setChooseId(null);
           setChooseError(null);
         }}
-      /> : null}
+      />
     </div>
   );
 }
