@@ -16,7 +16,7 @@ import { CompanyProducts } from "./CompanyProducts";
 import { type ProductCardData } from "./ProductCard";
 import { CompanyGallery } from "./CompanyGallery";
 import { CompanyActions } from "./company/CompanyActions";
-import { CompanyReviews, useCompanyReviews, useCompanyStats } from "./company/CompanyReviews";
+import { CompanyReviews, useCompanyReviews, useCompanyStats, type Reviews, type CompanyStats } from "./company/CompanyReviews";
 import styles from "./company/CompanyProfile.module.css";
 
 import { SaveCompanyButton } from "./SaveCompanyButton";
@@ -31,15 +31,16 @@ import { useCompanyDetail } from "../../lib/use-company-detail";
 import { isUuid } from "../../lib/ids";
 import { EmptyState } from "../ui/Structure";
 import { companyImage } from "./CompanyAvatar";
-export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapshot }) {
+export function CompanyProfilePageContent({ initial, extras }: { initial?: PublicSnapshot; extras?: { id: string; products: ProductCardData[]; reviews: Reviews; stats: CompanyStats } }) {
   const { store, ready, sessionReady, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const validId = isUuid(id);
   const detail = useCompanyDetail(store, sessionReady, available, id);
   // A malformed id never reaches the API (it would only answer 400).
-  const reviews = useCompanyReviews(validId ? id : "");
-  const stats = useCompanyStats(validId ? id : "");
+  const seed = extras?.id === id ? extras : undefined;
+  const reviews = useCompanyReviews(validId ? id : "", seed?.reviews);
+  const stats = useCompanyStats(validId ? id : "", seed?.stats);
 
   const data = useMemo(() => {
     if (!store || !ready || !available || !id) return null;
@@ -117,7 +118,7 @@ export function CompanyProfilePageContent({ initial }: { initial?: PublicSnapsho
           {about ? <p className="company-profile-description">{about}</p> : null}
           <div className={styles.chips}>{products.map((product, i) => <span key={`${i}:${product.name}`}>{product.name}</span>)}</div>
         </section> : null}
-        <CompanyProducts companyId={c.id} fallback={products}/>
+        <CompanyProducts companyId={c.id} fallback={products} initial={seed?.products}/>
         {photos.length ? <section><h2 className="detail-section-title">გალერეა</h2><CompanyGallery photos={photos} name={name}/></section> : null}
         {openRequests.length ? <section className="company-profile-requests" aria-labelledby="company-requests">
           <h2 id="company-requests" className="detail-section-title">ღია მოთხოვნები</h2>

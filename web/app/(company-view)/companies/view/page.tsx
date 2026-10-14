@@ -52,7 +52,7 @@ export default async function CompanyViewPage({ searchParams }: Props) {
   return (
     <>
     <Suspense>
-      <CompanyProfilePageContent initial={initial} />
+      <CompanyProfilePageContent initial={initial} extras={initial?.companyExtras ? { ...initial.companyExtras, id } : undefined} />
     </Suspense>
     {item && <JsonLd data={{ "@context": "https://schema.org", "@type": "Organization",
       name: item.company || item.name, url, description: item.about || undefined,

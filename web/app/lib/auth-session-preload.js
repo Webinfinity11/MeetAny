@@ -83,7 +83,8 @@ export function sessionPreloadScript(authUrl) {
   if (!authUrl) return '';
   const endpoint = JSON.stringify(authUrl.replace(/\/+$/, '') + '/get-session').replaceAll('<', '\\u003c');
   return `try{const H={Accept:'application/json'},T=()=>AbortSignal.timeout(12000);
-const boot=jwt=>fetch('/api/db/bootstrap',{headers:jwt?{...H,Authorization:'Bearer '+jwt}:H,signal:T()}).then(async r=>r.ok?await r.json():null);
+const detail=['/requests/view','/companies/view'].includes((window.location?.pathname||'').replace(/\\/$/,''));
+const boot=jwt=>detail?Promise.resolve(null):fetch('/api/db/bootstrap',{headers:jwt?{...H,Authorization:'Bearer '+jwt}:H,signal:T()}).then(async r=>r.ok?await r.json():null);
 let guest=null;try{if(localStorage.getItem('${SESSION_HINT_KEY}')!=='1')guest=boot(null).catch(()=>null);}catch{}
 const cache=window.__meetanySessionCache||=(${createSessionCache.toString()})(window,${endpoint});
 const s=window.__meetanySessionPreload=cache.load().catch(e=>e.status===429?{error:'RATE_LIMIT'}:e.name==='TimeoutError'||e.name==='AbortError'?{error:'TIMEOUT'}:null);

@@ -18,12 +18,12 @@ import Image from "next/image";
 import Link from "next/link";
 /** Product notes seeded for the demo start with a technical marker that is not for visitors. */
 export const publicNote = (note?: string | null) => String(note || "").replace(/^(სადემო პროდუქტი\s*·\s*)?(ფოტო საილუსტრაციოა[;.]?\s*)?/, "").trim() || undefined;
-export function CompanyProducts({companyId,edit=false,fallback=[]}:{companyId:string;edit?:boolean;fallback?:ProductCardData[]}) {
+export function CompanyProducts({companyId,edit=false,fallback=[],initial}:{companyId:string;edit?:boolean;fallback?:ProductCardData[];initial?:ProductCardData[]}) {
  const [selectedProduct, setSelectedProduct] = useState<ProductCardData | null>(null);
  const {store,ready}=useMarketStore();
  const read=store?.companyProducts;
  const load=useCallback(()=>read!(companyId),[read,companyId]);
- const resource=useBusinessResource<ProductCardData[]>(ready&&store?load:undefined,companyId);
+ const resource=useBusinessResource<ProductCardData[]>(ready&&store?load:undefined,companyId,undefined,initial);
  if(resource.error && (edit || !fallback.length))return <p role="alert">{resource.error} <Button variant="ghost" onClick={resource.reload}>ხელახლა ცდა</Button></p>;
  if(!resource.data && (edit || !fallback.length))return <ListSkeleton compact kind="records" label="პროდუქტები იტვირთება…"/>;
  if(edit)return <ProductsForm key={companyId} initial={resource.data || []} onSaved={resource.replace}/>;

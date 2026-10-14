@@ -11,19 +11,19 @@ import styles from "./CompanyProfile.module.css";
 import { ListSkeleton } from "../Skeletons";
 import { dateShort } from "../../../lib/format";
 
-type Reviews = { total: number; rating: number | null; items: { id: string; author_id: string; author: string; rating: number; body: string; updated_at: string }[] };
-export function useCompanyReviews(companyId: string) {
+export type Reviews = { total: number; rating: number | null; items: { id: string; author_id: string; author: string; rating: number; body: string; updated_at: string }[] };
+export function useCompanyReviews(companyId: string, initial?: Reviews) {
   const { store, sessionReady, available } = useMarketStore();
   const read = store?.companyReviews;
   const load = useCallback(() => read!(companyId) as Promise<Reviews>, [read, companyId]);
-  return useBusinessResource<Reviews>(companyId && sessionReady && available && read ? load : undefined, companyId);
+  return useBusinessResource<Reviews>(companyId && sessionReady && available && read ? load : undefined, companyId, undefined, initial);
 }
 export type CompanyStats = { completedDeals: number; completedAsBuyer: number };
-export function useCompanyStats(companyId: string) {
+export function useCompanyStats(companyId: string, initial?: CompanyStats) {
   const { store, sessionReady, available } = useMarketStore();
   const read = store?.callRpc;
   const load = useCallback(() => read!("company_public_stats", { p_company_id: companyId }) as Promise<CompanyStats>, [read, companyId]);
-  return useBusinessResource<CompanyStats>(companyId && sessionReady && available && read ? load : undefined, companyId);
+  return useBusinessResource<CompanyStats>(companyId && sessionReady && available && read ? load : undefined, companyId, undefined, initial);
 }
 export function CompanyReviews({ resource }: { resource: ReturnType<typeof useCompanyReviews> }) {
   const { store } = useMarketStore();

@@ -149,7 +149,10 @@ const handler = {
     try {
       let result;
       if (request.method === 'GET' && path === 'bootstrap') {
-        result = await asCaller(claims, db => marketBootstrap(db, claims.role === 'authenticated'));
+        const kind = url.searchParams.get('detail'), id = url.searchParams.get('id');
+        if (kind && (!['request', 'company'].includes(kind) || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || ''))) throw bad('invalid detail scope');
+        const detail = kind ? { kind, id, seeded: url.searchParams.get('seeded') === '1' } : null;
+        result = await asCaller(claims, db => marketBootstrap(db, claims.role === 'authenticated', detail));
         result.capabilities = { engagement: true, emailDelivery: process.env.NOTIFICATION_EMAIL_ENABLED === 'true' && !!process.env.RESEND_API_KEY && !!process.env.NOTIFICATION_FROM && !!process.env.APP_ORIGIN };
       } else if (request.method === 'GET' && path === 'capabilities') {
         result = await asCaller(claims, async (db) => ({ engagement: !!(await db.query("select to_regprocedure('public.engagement_state()') is not null as enabled")).rows[0].enabled, emailDelivery: process.env.NOTIFICATION_EMAIL_ENABLED === 'true' && !!process.env.RESEND_API_KEY && !!process.env.NOTIFICATION_FROM && !!process.env.APP_ORIGIN }));

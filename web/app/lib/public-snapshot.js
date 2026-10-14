@@ -76,6 +76,8 @@ async function readPublicDetail(id, company) {
   const sql = `with r as materialized (select * from public.requests where ${requestFilter} order by created_at desc),
     c as materialized (select * from public.list_companies() where id=$1::uuid and $2::boolean)
   select json_build_object(
+    'detail', json_build_object('kind',case when $2::boolean then 'company' else 'request' end,'id',$1::uuid),
+    'companyExtras', case when $2::boolean then public.company_detail_extras($1::uuid) else null end,
     'requests', (select coalesce(json_agg(r), '[]'::json) from r),
     'companies', (select coalesce(json_agg(c), '[]'::json) from c),
     'companyStats', (select coalesce(json_agg(t), '[]'::json) from public.company_stats(ids => array(select id from c)) t),

@@ -288,8 +288,10 @@ export function createMarketStore({initial=null,background=true}={}){
 
  // A render-local public store never starts auth/network work. The browser singleton
  // keeps its authenticated cache on navigation; only an unready singleton is seeded.
+ let publicDetailSeed=null,loadedScope=null,loadingScope=null;
  function seedPublic(snapshot){
   if(!snapshot||isReady)return;
+  publicDetailSeed=snapshot.detail||null;
   cache.requests=snapshot.requests.map(mapRequest);
   cache.companies=snapshot.companies.map(c=>mapUser({...c,role:'company'}));
   for(const p of snapshot.profiles)cache.profiles[p.id]=mapUser(p);
@@ -370,11 +372,17 @@ export function createMarketStore({initial=null,background=true}={}){
   let data;
   // A profile written just above must be read back, not taken from the earlier preload.
   const pre=await preloadedBootstrap(actor);
-  try{data=!wrote&&pre||await db('/bootstrap');}
+  const scope=detailRoute(),scopeKey=scope?scope.kind+':'+scope.id:'';
+  const seeded=!wrote&&scope&&publicDetailSeed?.kind===scope.kind&&publicDetailSeed?.id===scope.id;
+  const endpoint=scope?'/bootstrap?'+new URLSearchParams({detail:scope.kind,id:scope.id,...(seeded?{seeded:'1'}:{})}):'/bootstrap';
+  try{data=!scope&&!wrote&&pre||await db(endpoint);}
   catch(err){if(err.code==='PGRST205')return loadLegacy();throw err;}
   if(revision!==authRevision||actor!==(authUser?.id||null))return;
-  const me=mapUser(data.me),companies=data.companies.map(mapUser).sort(compareCompanies);
-  const next={me,requests:data.requests.map(mapRequest),offers:me?data.offers.map(mapOffer):[],counts:{},profiles:{},contacts:{},users:null,stats:data.stats||null,companies,companyStats:{}};
+  const merge=(before,after)=>[...new Map([...before,...after].map(row=>[row.id,row])).values()];
+  const me=mapUser(data.me),companies=(data.seeded?merge(cache.companies,data.companies.map(mapUser)):data.companies.map(mapUser)).sort(compareCompanies);
+  const next={me,requests:data.seeded?merge(cache.requests,data.requests.map(mapRequest)):data.requests.map(mapRequest),offers:me?data.offers.map(mapOffer):[],counts:{},profiles:{},contacts:{},users:null,stats:data.stats||null,companies,companyStats:{}};
+  if(data.seeded){next.counts={...cache.counts};next.profiles={...cache.profiles};next.companyStats={...cache.companyStats};}
+  publicDetailSeed=null;loadedScope=scopeKey;
   for(const p of [...companies,...data.profiles.map(mapUser)])next.profiles[p.id]=p;
   if(me){next.profiles[me.id]=me;if(pendingMatches()){setPending(null);profileError=null;}}
   for(const row of data.counts)next.counts[row.request_id]=Number(row.offers)||0;
@@ -392,14 +400,16 @@ export function createMarketStore({initial=null,background=true}={}){
  function refresh(){
   if(!configured)return Promise.resolve();
   if(running){if(!queued)queued=running.then(()=>{queued=null;return refresh();});return queued;}
+  const scope=detailRoute();loadingScope=scope?scope.kind+':'+scope.id:'';
   running=load().then(()=>{loadFailed=false;dataStale=false;sessionLoadError=null;loadedAt=Date.now();},err=>{console.error('MarketStore: refresh failed',err);if(!sessionReady)sessionLoadError=err.userMessage||GENERIC;if(!isReady)loadFailed=true;else dataStale=true;})
    .then(()=>{running=null;isReady=true;sessionReady=true;emit();});
   return running;
  }
  // Page mounts ask for current data; a load in flight or finished moments ago already is.
  function revalidate(){
-  if(running)return queued||running;
-  if(Date.now()-loadedAt<5000)return Promise.resolve();
+  const scope=detailRoute(),key=scope?scope.kind+':'+scope.id:'';
+  if(running)return loadingScope===key?queued||running:refresh();
+  if(loadedScope===key&&Date.now()-loadedAt<5000)return Promise.resolve();
   return refresh();
  }
  const readyPromise=background&&typeof window!=='undefined'?(configured?refresh():Promise.resolve().then(()=>{isReady=true;sessionReady=true;sessionLoadError=UNAVAILABLE;emit();})):Promise.resolve();
