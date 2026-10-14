@@ -1,0 +1,1107 @@
+[
+  {
+    "step": "type",
+    "width": 1440,
+    "radioHeights": [
+      89.28125,
+      89.28125,
+      89.28125
+    ],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "1ანგარიშის ტიპიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ანგარიშის ტიპი",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 1440,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1121,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "2კომპანიის მონაცემებიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 1440,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1072,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "3ბიზნეს-პროფილიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 1440,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1367,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "4რას სთავაზობთმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 1440,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "5რას ყიდულობთმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 1440,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "6ვერიფიკაციამიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 1440,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1547,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "7გადახედვამიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დასრულება",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა",
+    "formWidth": 640,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "type",
+    "width": 1280,
+    "radioHeights": [
+      89.28125,
+      89.28125,
+      89.28125
+    ],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "1ანგარიშის ტიპიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ანგარიშის ტიპი",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 1280,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1154,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "2კომპანიის მონაცემებიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 1280,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1072,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "3ბიზნეს-პროფილიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 1280,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1389,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "4რას სთავაზობთმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 1280,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "5რას ყიდულობთმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 1280,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "6ვერიფიკაციამიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 1280,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1624,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "7გადახედვამიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დასრულება",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა",
+    "formWidth": 592,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "type",
+    "width": 1024,
+    "radioHeights": [
+      89.28125,
+      89.28125,
+      89.28125
+    ],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1008,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "1ანგარიშის ტიპიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ანგარიშის ტიპი",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 1024,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1292,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "2კომპანიის მონაცემებიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 1024,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1209,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "3ბიზნეს-პროფილიმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 1024,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1504,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "4რას სთავაზობთმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 1024,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "5რას ყიდულობთმიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 1024,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1005,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "6ვერიფიკაციამიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 1024,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": true,
+    "scrollHeight": 1710,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "7გადახედვამიმდინარე",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დასრულება",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა",
+    "formWidth": 624,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "type",
+    "width": 390,
+    "radioHeights": [
+      81.28125,
+      81.28125,
+      81.28125
+    ],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 950,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "1. ანგარიშის ტიპი — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ანგარიშის ტიპი",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 390,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1548,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "2. კომპანიის მონაცემები — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 390,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1207,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "3. ბიზნეს-პროფილი — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 390,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1994,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "4. რას სთავაზობთ — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 390,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 955,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "5. რას ყიდულობთ — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 390,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1108,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "6. ვერიფიკაცია — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 390,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1981,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "7. გადახედვა — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დასრულება",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა",
+    "formWidth": 358,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "type",
+    "width": 360,
+    "radioHeights": [
+      81.28125,
+      81.28125,
+      81.28125
+    ],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 999,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "1. ანგარიშის ტიპი — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ანგარიშის ტიპი",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 360,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1574,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "2. კომპანიის მონაცემები — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 360,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1261,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "3. ბიზნეს-პროფილი — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 360,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 2084,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "4. რას სთავაზობთ — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 360,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 977,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "5. რას ყიდულობთ — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 360,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 1156,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "6. ვერიფიკაცია — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 360,
+    "radioHeights": [],
+    "footerMatchesForm": true,
+    "asideOutsideForm": true,
+    "previewOpen": false,
+    "scrollHeight": 2051,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "7. გადახედვა — მიმდინარე"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დასრულება",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა",
+    "formWidth": 328,
+    "pageerror": [],
+    "axe": []
+  }
+]

@@ -1,0 +1,571 @@
+[
+  {
+    "step": "type",
+    "width": 1440,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [
+      "მომწოდებლების"
+    ],
+    "current": [
+      {
+        "text": "1ანგარიშის ტიპი",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "როგორ გამოიყენებთ MeetAny-ს?",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 1440,
+    "scrollHeight": 1249,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "2კომპანიის მონაცემები",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 1440,
+    "scrollHeight": 1203,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "3ბიზნეს-პროფილი",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 1440,
+    "scrollHeight": 1505,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "4რას სთავაზობთ",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ ბაზარს",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 1440,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "5რას ყიდულობთ",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ ხშირად",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 1440,
+    "scrollHeight": 1000,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "6ვერიფიკაცია",
+        "label": null
+      },
+      {
+        "text": "1. რეგისტრაცია",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "გადახედეთ",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 1440,
+    "scrollHeight": 1538,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "7გადახედვა",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დაასრულეთ",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა და დასრულება",
+    "formWidth": 856,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "type",
+    "width": 390,
+    "scrollHeight": 1231,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "1. ანგარიშის ტიპი"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "როგორ გამოიყენებთ MeetAny-ს?",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 390,
+    "scrollHeight": 1599,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "2. კომპანიის მონაცემები"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 390,
+    "scrollHeight": 1769,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "3. ბიზნეს-პროფილი"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 390,
+    "scrollHeight": 2444,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "4. რას სთავაზობთ"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ ბაზარს",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 390,
+    "scrollHeight": 1256,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "5. რას ყიდულობთ"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ ხშირად",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 390,
+    "scrollHeight": 1325,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "6. ვერიფიკაცია"
+      },
+      {
+        "text": "1. რეგისტრაცია",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "გადახედეთ",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 390,
+    "scrollHeight": 2148,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "7. გადახედვა"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დაასრულეთ",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა და დასრულება",
+    "formWidth": 350,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "type",
+    "width": 360,
+    "scrollHeight": 1307,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "1. ანგარიშის ტიპი"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "როგორ გამოიყენებთ MeetAny-ს?",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "details",
+    "width": 360,
+    "scrollHeight": 1621,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "2. კომპანიის მონაცემები"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "კომპანიის მონაცემები",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "profile",
+    "width": 360,
+    "scrollHeight": 1845,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "3. ბიზნეს-პროფილი"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "ბიზნეს-პროფილი",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "provide",
+    "width": 360,
+    "scrollHeight": 2642,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "4. რას სთავაზობთ"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას სთავაზობთ ბაზარს",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "need",
+    "width": 360,
+    "scrollHeight": 1256,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "5. რას ყიდულობთ"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "შემდეგი",
+        "height": 44
+      }
+    ],
+    "title": "რას ყიდულობთ ხშირად",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "verify",
+    "width": 360,
+    "scrollHeight": 1398,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "6. ვერიფიკაცია"
+      },
+      {
+        "text": "1. რეგისტრაცია",
+        "label": null
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "გადახედეთ",
+        "height": 44
+      }
+    ],
+    "title": "ვერიფიკაცია",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  },
+  {
+    "step": "review",
+    "width": 360,
+    "scrollHeight": 2217,
+    "overflow": 0,
+    "brokenWords": [],
+    "current": [
+      {
+        "text": "",
+        "label": "7. გადახედვა"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "უკან",
+        "height": 44
+      },
+      {
+        "text": "დაასრულეთ",
+        "height": 44
+      }
+    ],
+    "title": "გადახედვა და დასრულება",
+    "formWidth": 320,
+    "pageerror": [],
+    "axe": []
+  }
+]
