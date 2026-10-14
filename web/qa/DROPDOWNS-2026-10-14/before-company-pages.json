@@ -1,0 +1,74 @@
+[
+  {
+    "name": "profile",
+    "width": 1440,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "onboarding-need",
+    "width": 1440,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "profile",
+    "width": 390,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "onboarding-need",
+    "width": 390,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "profile",
+    "width": 360,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "onboarding-need",
+    "width": 360,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "onboarding-provide",
+    "width": 1440,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "distribution",
+    "width": 1440,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "onboarding-provide",
+    "width": 390,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "distribution",
+    "width": 390,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "onboarding-provide",
+    "width": 360,
+    "source": "9e70953",
+    "status": "captured"
+  },
+  {
+    "name": "distribution",
+    "width": 360,
+    "source": "9e70953",
+    "status": "captured"
+  }
+]

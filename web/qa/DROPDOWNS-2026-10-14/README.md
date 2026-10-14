@@ -25,9 +25,13 @@
 
 პროფილი და onboarding-ის `need` ნაბიჯი სამივე ზომაზე შემოწმებულია: axe 0, overflow 0 (`after-company-pages.json`).
 
-## დარჩენილი ბლოკერი
+## დარჩენილი ფორმების დასრულებული შემოწმება
 
-კომპანიას აქვს **მხოლოდ ყიდვის რეჟიმი** და **გამორთული დისტრიბუცია**. `/onboarding/?step=provide` რეალურად `type` ნაბიჯზე აბრუნებს; დისტრიბუციის განყოფილებაში მხოლოდ გამორთული switch ჩანს. ამიტომ ამ ორი ფორმის რეალური before/after/interaction QA კვლავ დაუმთავრებელია და ანგარიში მათ FAIL-ად აღნიშნავს. სადემო მონაცემები არ შეცვლილა; როლი/რეჟიმი/დისტრიბუცია არ ჩართულა. საჭირო იქნება შესაბამისი მდგომარეობის მქონე არსებული კომპანიის storageState ან შეთანხმებული, მხოლოდ ბრაუზერში მოქმედი QA fixture.
+მთავარი სესიისგან მიღებული `company-seller-local.storage.json` ეკუთვნის `demo-food` კომპანიას (`both`, ჩართული დისტრიბუცია). ფაილი `.gitignore`-ით გამორიცხულია. ხელახალი შესვლა არ შესრულებულა.
+
+`seller.mjs`-მა onboarding-ის `provide` და დისტრიბუციის ფორმა 1440/390/360-ზე შეამოწმა: გახსნა/ძიება/არჩევა/არჩევის დაბრუნება/Esc/ფოკუსი PASS; დახურულ და ღია სიებზე axe 0; გვერდის overflow 0. Onboarding-ის დროებითი მონახაზი გაუქმდა, ფორმები არ გაგზავნილა; ჩაწერის RPC მოთხოვნები 0 (`seller.json`). კადრები: `after-onboarding-provide-*`, `after-distribution-*`, ღია სიებისთვის `*-open-*`.
+
+საწყისი `9e70953`-ის UI წყაროებით გადაიღო ოთხივე კომპანიის ეკრანის before კადრები სამივე ზომაზე (`before-company-pages.json`, `before-profile-*`, `before-onboarding-need-*`, `before-onboarding-provide-*`, `before-distribution-*`). მიმდინარე წყაროები გადაღების შემდეგ ბაიტობრივად აღდგა; `web/app`-ში ამ QA ეტაპს ცვლილება არ დაუტოვებია. საბოლოო კომპანიის შედეგები გაერთიანებულია `after-company-pages.json`-ში: 12/12, დარჩენილი ბლოკერი არ არის.
 
 სერვერი: `next dev --webpack -p 3430`; ლოკალური DATABASE_URL და MEETANY_LOCAL_DATABASE_URL: `postgresql://kapana@localhost:5432/meetany_perf_20261014`. Production DB/deploy და სადემო პროფილების შენახვა არ შესრულებულა. CompanyProfilePageContent/market-store/public-snapshot არ შეცვლილა.
 
@@ -38,8 +42,8 @@
 ```sh
 node qa/DROPDOWNS-2026-10-14/check.mjs
 QA_ROLE=guest node qa/DROPDOWNS-2026-10-14/pages.mjs
-QA_ROLE=company QA_STORAGE_STATE=qa/DROPDOWNS-2026-10-14/company-local.storage.json node qa/DROPDOWNS-2026-10-14/pages.mjs
 node qa/DROPDOWNS-2026-10-14/token-layout.mjs
+node qa/DROPDOWNS-2026-10-14/seller.mjs
 ```
 
 სკრიპტები ფორმებს არ აგზავნის და ბაზაში მონაცემებს არ ცვლის. მოქმედი სესიის გარეშე კომპანიის QA უნდა დარჩეს წარუმატებლად მონიშნული.

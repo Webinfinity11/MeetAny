@@ -25,3 +25,4 @@ web/qa/**/shots/
 
 # Authenticated dropdown QA session (local only)
 web/qa/DROPDOWNS-2026-10-14/company-local.storage.json
+web/qa/DROPDOWNS-2026-10-14/company-seller-local.storage.json

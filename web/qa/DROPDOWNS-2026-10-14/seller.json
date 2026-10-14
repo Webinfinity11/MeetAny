@@ -1,0 +1,71 @@
+{
+  "report": [
+    {
+      "width": 1440,
+      "name": "onboarding-provide",
+      "status": "PASS",
+      "axe": 0,
+      "overflow": 0,
+      "search": "PASS",
+      "selectionUndo": "PASS",
+      "focusReturn": "PASS",
+      "databaseWrites": 0
+    },
+    {
+      "width": 1440,
+      "name": "distribution",
+      "status": "PASS",
+      "axe": 0,
+      "overflow": 0,
+      "search": "PASS",
+      "selectionUndo": "PASS",
+      "focusReturn": "PASS",
+      "databaseWrites": 0
+    },
+    {
+      "width": 390,
+      "name": "onboarding-provide",
+      "status": "PASS",
+      "axe": 0,
+      "overflow": 0,
+      "search": "PASS",
+      "selectionUndo": "PASS",
+      "focusReturn": "PASS",
+      "databaseWrites": 0
+    },
+    {
+      "width": 390,
+      "name": "distribution",
+      "status": "PASS",
+      "axe": 0,
+      "overflow": 0,
+      "search": "PASS",
+      "selectionUndo": "PASS",
+      "focusReturn": "PASS",
+      "databaseWrites": 0
+    },
+    {
+      "width": 360,
+      "name": "onboarding-provide",
+      "status": "PASS",
+      "axe": 0,
+      "overflow": 0,
+      "search": "PASS",
+      "selectionUndo": "PASS",
+      "focusReturn": "PASS",
+      "databaseWrites": 0
+    },
+    {
+      "width": 360,
+      "name": "distribution",
+      "status": "PASS",
+      "axe": 0,
+      "overflow": 0,
+      "search": "PASS",
+      "selectionUndo": "PASS",
+      "focusReturn": "PASS",
+      "databaseWrites": 0
+    }
+  ],
+  "writes": []
+}

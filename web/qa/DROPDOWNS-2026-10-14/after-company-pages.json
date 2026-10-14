@@ -4,77 +4,119 @@
     "width": 1440,
     "name": "profile",
     "axe": [],
-    "overflow": 0
-  },
-  {
-    "role": "company",
-    "width": 1440,
-    "name": "distribution",
-    "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#distribution-cities') to be visible\u001b[22m\n"
-  },
-  {
-    "role": "company",
-    "width": 1440,
-    "name": "onboarding-provide",
-    "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#onboard-services') to be visible\u001b[22m\n"
+    "overflow": 0,
+    "fixture": "owner_company"
   },
   {
     "role": "company",
     "width": 1440,
     "name": "onboarding-need",
     "axe": [],
-    "overflow": 0
+    "overflow": 0,
+    "fixture": "owner_company"
   },
   {
     "role": "company",
     "width": 390,
     "name": "profile",
     "axe": [],
-    "overflow": 0
-  },
-  {
-    "role": "company",
-    "width": 390,
-    "name": "distribution",
-    "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#distribution-cities') to be visible\u001b[22m\n"
-  },
-  {
-    "role": "company",
-    "width": 390,
-    "name": "onboarding-provide",
-    "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#onboard-services') to be visible\u001b[22m\n"
+    "overflow": 0,
+    "fixture": "owner_company"
   },
   {
     "role": "company",
     "width": 390,
     "name": "onboarding-need",
     "axe": [],
-    "overflow": 0
+    "overflow": 0,
+    "fixture": "owner_company"
   },
   {
     "role": "company",
     "width": 360,
     "name": "profile",
     "axe": [],
-    "overflow": 0
-  },
-  {
-    "role": "company",
-    "width": 360,
-    "name": "distribution",
-    "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#distribution-cities') to be visible\u001b[22m\n"
-  },
-  {
-    "role": "company",
-    "width": 360,
-    "name": "onboarding-provide",
-    "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#onboard-services') to be visible\u001b[22m\n"
+    "overflow": 0,
+    "fixture": "owner_company"
   },
   {
     "role": "company",
     "width": 360,
     "name": "onboarding-need",
     "axe": [],
-    "overflow": 0
+    "overflow": 0,
+    "fixture": "owner_company"
+  },
+  {
+    "width": 1440,
+    "name": "onboarding-provide",
+    "status": "PASS",
+    "axe": 0,
+    "overflow": 0,
+    "search": "PASS",
+    "selectionUndo": "PASS",
+    "focusReturn": "PASS",
+    "databaseWrites": 0,
+    "fixture": "demo_food"
+  },
+  {
+    "width": 1440,
+    "name": "distribution",
+    "status": "PASS",
+    "axe": 0,
+    "overflow": 0,
+    "search": "PASS",
+    "selectionUndo": "PASS",
+    "focusReturn": "PASS",
+    "databaseWrites": 0,
+    "fixture": "demo_food"
+  },
+  {
+    "width": 390,
+    "name": "onboarding-provide",
+    "status": "PASS",
+    "axe": 0,
+    "overflow": 0,
+    "search": "PASS",
+    "selectionUndo": "PASS",
+    "focusReturn": "PASS",
+    "databaseWrites": 0,
+    "fixture": "demo_food"
+  },
+  {
+    "width": 390,
+    "name": "distribution",
+    "status": "PASS",
+    "axe": 0,
+    "overflow": 0,
+    "search": "PASS",
+    "selectionUndo": "PASS",
+    "focusReturn": "PASS",
+    "databaseWrites": 0,
+    "fixture": "demo_food"
+  },
+  {
+    "width": 360,
+    "name": "onboarding-provide",
+    "status": "PASS",
+    "axe": 0,
+    "overflow": 0,
+    "search": "PASS",
+    "selectionUndo": "PASS",
+    "focusReturn": "PASS",
+    "databaseWrites": 0,
+    "fixture": "demo_food"
+  },
+  {
+    "width": 360,
+    "name": "distribution",
+    "status": "PASS",
+    "axe": 0,
+    "overflow": 0,
+    "search": "PASS",
+    "selectionUndo": "PASS",
+    "focusReturn": "PASS",
+    "databaseWrites": 0,
+    "fixture": "demo_food"
   }
 ]
