@@ -748,8 +748,8 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page .account-row { padding-block: var(--card-pad-sm); }
 .account-page .ma-empty { padding-block: var(--page-pad-y); gap: var(--stack-gap); }
 .account-page .account-alerts article[data-unread] { padding: var(--card-pad-sm); gap: var(--stack-gap); }
-.account-page .account-saved li { padding-block: var(--card-pad-sm); }
-.account-page [data-conversations] button { padding-block: var(--card-pad-sm); }
+.account-page .account-saved article { padding: var(--card-pad-sm); }
+.account-page [data-conversations] li > button { padding-block: var(--card-pad-sm); }
 :is(#reg-industry,#industry,#upgrade-industry)[data-compact] [role="radiogroup"]{display:flex;flex-wrap:wrap;gap:var(--space-2)}
 :is(#reg-industry,#industry,#upgrade-industry)[data-compact] [role="radiogroup"]>div,
 :is(#reg-industry,#industry,#upgrade-industry)[data-compact] [role="radiogroup"]>div>div{display:contents}
