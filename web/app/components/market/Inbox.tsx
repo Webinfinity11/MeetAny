@@ -1,21 +1,20 @@
 "use client";
-import { ReportButton } from "./ReportButton";
 import { Button } from "../ui/Button";
 
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChatContext, ChatMessages } from "./messaging/ChatParts";
+import { ChatContext, ChatMessages, ChatTools } from "./messaging/ChatParts";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { EmptyState } from "../ui/Structure";
 import { Notice } from "../ui/Notice";
-import { dateShort, money } from "../../lib/format";
+import { dateShort } from "../../lib/format";
 import { SharedFiles } from "./messaging/SharedFiles";
 import styles from "./engagement.module.css";
 import { useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import type { Store } from "../../lib/market-client";
-import { useChatThread, useConversationList, type Conversation } from "../../lib/chat-client";
+import { useChatDraft, useChatThread, useConversationList, type Conversation } from "../../lib/chat-client";
 import { categories } from "../../lib/categories";
 import { usePublicPhone } from "../../lib/phones";
 import { Icon } from "../Icon";
@@ -55,7 +54,7 @@ function describe(store: Store, me: Me, c: Conversation) {
   // context_key carries the request id even when the list returns request_id empty.
   const requestId = c.requestId || (c.contextKey && c.contextKey !== "general" ? c.contextKey : null);
   const request = requestId ? (store.getRequest(requestId) as { title?: string } | null) : null;
-  const isCompany = profile?.role === "company" || (!!c.otherCompany && otherId === c.companyId);
+  const isCompany = (profile?.role || c.otherRole) === "company";
   const context = requestId ? request?.title || "მოთხოვნის შესახებ" : isCompany && profile?.industry ? categories[profile.industry] || profile.industry : "პირადი მიმოწერა";
   return { otherId, name, logoUrl: profile?.logoUrl, verified: profile?.verified, context, isCompany, requestId, requestFound: !!request };
 }
@@ -123,11 +122,9 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
   const [target] = useState(() => ({ companyId: conversation.companyId, conversation }));
   const { messages, loaded, failed, pending, sendError, send, retry } = useChatThread(store, target);
   const d = describe(store, me, conversation);
-  const request = d.requestId ? store.getRequest(d.requestId) : null;
-  const offer = request ? store.visibleOffers(request.id).find((item: { companyUserId: string }) => item.companyUserId === conversation.companyId) : null;
   // Public company phone only (same projection as the profile page); clients have none.
   const phone = usePublicPhone(store, d.isCompany ? d.otherId : undefined);
-  const [body, setBody] = useState("");
+  const [body, setBody] = useChatDraft(me.id, target);
   const [validationError, setValidationError] = useState("");
   const log = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
@@ -163,13 +160,13 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
     {!wide ? <button ref={back} type="button" className={styles["inbox-back"]} onClick={onBack}><Icon name="chevron-left"/><span>უკან</span></button> : null}
       <CompanyAvatar name={d.name} logoUrl={d.logoUrl}/>
       <div className={styles["inbox-head__text"]}>
-        <h2 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h2><p className={styles["inbox-head__context"]}>{d.context}{offer?.price != null ? ` · შეთავაზება: ${money(Number(offer.price))}` : ""}</p>
+        <h2 className={styles["inbox-head__name"]}>{d.isCompany ? <Link href={`/companies/view/?id=${encodeURIComponent(d.otherId)}`}>{d.name}</Link> : d.name}</h2>{!d.requestId ? <p className={styles["inbox-head__context"]}>{d.context}</p> : null}
 
       </div>
-      {d.requestId ? <Button variant="secondary" size="sm" href={`/requests/view/?id=${encodeURIComponent(d.requestId)}`}>მოთხოვნის ნახვა</Button> : null}
       {phone ? <a className={styles["inbox-call"]} href={`tel:${phone.replace(/[^+\d]/g, "")}`} aria-label={`დარეკვა: ${phone}`} title={phone}><Icon name="phone"/></a> : null}
+      <ChatTools conversationId={conversation.id}/>
     </header>
-    <details><summary style={{minHeight:"var(--tap-min)",padding:"var(--space-3)"}}>საუბრის მოქმედებები</summary><ReportButton kind="conversation" targetId={conversation.id}/></details>
+    {d.requestId ? <div className={styles.inboxContext}><ChatContext store={store} requestId={d.requestId} companyId={conversation.companyId} collapsible disclosureGroup={`inbox-${conversation.id}`}/></div> : null}
     <div className={styles["inbox-log"]} ref={log} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}
       onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }}>
       {!loaded ? <p className={styles["inbox-log__note"]} role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p>
@@ -177,7 +174,7 @@ function Thread({ store, me, conversation, wide, onBack }: { store: Store; me: M
         : <ChatMessages messages={messages} owner={me.id} name={d.name} now={now}/>}
     </div>
     {failed && loaded ? <div className={styles["inbox-retry"]} role="alert"><span>განახლება ვერ მოხერხდა.</span><button type="button" className="account-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
-    <SharedFiles store={store} target={conversation.id}/>
+    <SharedFiles store={store} target={conversation.id} disclosureGroup={`inbox-${conversation.id}`}/>
     <form className={styles["inbox-compose"]} onSubmit={e => { e.preventDefault(); void submit(); }}>
       <label className="ma-sr-only" htmlFor="inbox-body">შეტყობინება</label>
       <textarea ref={input} id="inbox-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} aria-invalid={!!(validationError || sendError)} aria-describedby={validationError || sendError ? "inbox-error" : undefined} placeholder="დაწერეთ შეტყობინება…"

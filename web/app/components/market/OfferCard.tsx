@@ -17,12 +17,13 @@ export type OfferCardData = {
   id: string;
   companyName: string;
   logoUrl?: string | null;
-  companyHref: string;
+  companyHref?: string;
   city: string;
   createdAt: string;
   deliveryDays: number | null;
   price?: number | null;
   priceType?: string;
+  quantity?: number;
   vatIncluded?: boolean;
   deliveryIncluded?: boolean;
   body: string;
@@ -38,7 +39,7 @@ export type OfferCardData = {
 
 export function offerPrice(o: OfferCardData) {
  if(o.price==null || o.priceType==="negotiable")return "შეთანხმებით";
- return `${money(o.price)}${o.priceType==="unit"?" / ერთეული":""}`;
+ return o.priceType === "unit" && o.quantity && o.quantity > 0 ? money(o.price * o.quantity) : `${money(o.price)}${o.priceType==="unit"?" / ერთეული":""}`;
 }
 
 export function OfferCard({ store,o, onChoose, canChoose, canReport = false, messageTarget }: { store?:Store; o: OfferCardData; onChoose?: () => void; canChoose: boolean; canReport?: boolean; messageTarget?: { companyId: string; requestId: string } }) {
@@ -56,9 +57,7 @@ export function OfferCard({ store,o, onChoose, canChoose, canReport = false, mes
         <CompanyAvatar name={o.companyName} logoUrl={o.logoUrl} />
         <div className="ma-ocard__who">
           <div className="ma-ocard__name-row">
-            <Link className="ma-ocard__name" href={o.companyHref}>
-              {o.companyName}
-            </Link>
+            {o.companyHref ? <Link className="ma-ocard__name" href={o.companyHref}>{o.companyName}</Link> : <span className="ma-ocard__name">{o.companyName}</span>}
             {o.status === "chosen" ? <span className="ma-badge ma-badge--success">{offerStatusLabel("chosen")}</span> : null}
             {o.status === "declined" ? <span className="ma-badge ma-badge--neutral">{offerStatusLabel("declined")}</span> : null}
             {o.isNew && o.status === "sent" ? <span className="ma-badge ma-badge--success">ახალი</span> : null}
@@ -68,8 +67,8 @@ export function OfferCard({ store,o, onChoose, canChoose, canReport = false, mes
         </div>
       </header>
       <dl className="offer-terms offer-terms--compact">
-        <div className="offer-terms__price"><dt>{o.priceType==="unit"?"ერთეულის ფასი":"ჯამური ფასი"}</dt><dd>{offerPrice(o)}</dd></div>
-        <div><dt>მიწოდების ვადა</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div>
+        <div className="offer-terms__price"><dt>{o.priceType === "unit" && !o.quantity ? "ერთეულის ფასი" : "ჯამური ფასი"}</dt><dd>{offerPrice(o)}</dd>{o.priceType === "unit" && !!o.quantity && o.price != null ? <small>{money(o.price)} / ერთეული · {o.quantity} ერთეული</small> : null}</div>
+        <div><dt>შესრულების ვადა</dt><dd>{o.deliveryDays!=null?`${o.deliveryDays} დღე`:"დასაზუსტებელია"}</dd></div>
         {o.validUntil ? <div><dt>ძალაშია</dt><dd>{dealDate(o.validUntil)}</dd></div> : null}
       </dl>
       {o.commercialTerms?.length ? <div className={flowStyles.termsList}><span>მოიცავს</span><ul>{o.commercialTerms.map(term => <li key={term}><Icon name="check"/>{term}</li>)}</ul></div> : null}

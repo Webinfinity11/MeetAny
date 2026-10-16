@@ -6,6 +6,7 @@ import s from './form-layout.module.css';
 export type FormLayoutProps = {
   children: ReactNode;
   steps?: ReactNode;
+  stepsPosition?: 'side' | 'top';
   aside?: ReactNode;
   footer?: ReactNode;
   title?: ReactNode;
@@ -16,7 +17,7 @@ export type FormLayoutProps = {
 };
 
 /** The caller owns the main/form landmarks and links footer submits with form="…". */
-export function FormLayout({ children, steps, aside, footer, title, subtitle, titleRef, asideLabel = 'ასე გამოჩნდებით', className = '' }: FormLayoutProps) {
+export function FormLayout({ children, steps, stepsPosition = 'side', aside, footer, title, subtitle, titleRef, asideLabel = 'ასე გამოჩნდებით', className = '' }: FormLayoutProps) {
   const panel = useRef<HTMLDetailsElement>(null);
   const hasAside = aside != null;
   useEffect(() => {
@@ -27,7 +28,7 @@ export function FormLayout({ children, steps, aside, footer, title, subtitle, ti
     return () => media.removeEventListener('change', sync);
   }, [hasAside]);
 
-  return <div className={`${s.layout} ${className}`} data-steps={steps ? '' : undefined} data-aside={aside ? '' : undefined}>
+  return <div className={`${s.layout} ${className}`} data-steps={steps ? stepsPosition : undefined} data-aside={aside ? '' : undefined}>
     {steps && <div className={s.steps}>{steps}</div>}
     <div className={s.form}>
       {(title || subtitle) && <header className={s.heading}>

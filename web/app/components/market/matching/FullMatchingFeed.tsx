@@ -105,8 +105,8 @@ export function FullMatchingFeed({ requestId, compact = false, kind, onCount }: 
   // A supplier from a neighbouring direction of the same group (list_matching match='similar') says so.
   const badge = (item: FeedItem) => <><Badge className={styles.kind} status={supplier(item) ? 'info' : 'success'}>{supplier(item) ? 'მომწოდებელი' : 'ყიდვის მოთხოვნა'}</Badge>{item.match === 'similar' ? <Badge className={styles.kind} status="muted">მსგავსი მიმართულება</Badge> : null}</>;
   const viewHref = (item: FeedItem) => `/${supplier(item) ? 'companies' : 'requests'}/view/?id=${encodeURIComponent(item.id)}`;
-  const actionHref = (item: FeedItem) => supplier(item) ? viewHref(item) : me.role === 'company' ? (me.verified ? `/offers/new/?requestId=${encodeURIComponent(item.id)}` : '/onboarding/?step=verify') : '/account/?tab=profile#company-upgrade';
-  const actionLabel = (item: FeedItem) => supplier(item) ? 'კომპანიის ნახვა' : me.role !== 'company' ? 'კომპანიის პროფილის შექმნა' : me.verified ? 'შეთავაზების გაგზავნა' : 'ვერიფიკაციის გავლა';
+  const actionHref = (item: FeedItem) => supplier(item) ? viewHref(item) : `/offers/new/?requestId=${encodeURIComponent(item.id)}`;
+  const actionLabel = (item: FeedItem) => supplier(item) ? 'კომპანიის ნახვა' : 'შეთავაზების გაგზავნა';
   // A supplier card names the company in its title; the line under it says what it does and where.
   const meta = (item: FeedItem) => (supplier(item) ? [categories[item.industry || item.category || ''], cities[item.city] || item.city] : [item.company || ownerFor(item)?.company || ownerFor(item)?.name, cities[item.city] || item.city, createdFor(item) ? postedLabel(createdFor(item), now) : null]).filter(Boolean).join(' · ');
   const request = active ? requestFor(active) : null;

@@ -1,0 +1,782 @@
+{
+  "origin": "https://www.meetany.ge",
+  "run": "1792063262981",
+  "startedAt": "2026-10-15T11:21:02.982Z",
+  "actors": {
+    "supplier": {
+      "id": "ba04f12c-c4f1-43be-9b52-c16127359fc2",
+      "role": "company",
+      "createdThroughUI": true
+    },
+    "other": {
+      "id": "1e849ff1-4e78-4fc2-842a-0e9cd4ac53dd",
+      "initialRole": "client",
+      "createdThroughUI": true,
+      "role": "company"
+    },
+    "buyer": {
+      "id": "57e1da94-073d-4f04-9d8c-450dcd3361e8",
+      "role": "client",
+      "createdThroughUI": true
+    }
+  },
+  "checks": [
+    {
+      "label": "Registration empty and invalid fields show specific errors",
+      "at": "2026-10-15T11:21:32.488Z"
+    },
+    {
+      "label": "Buyer production UI registration and subsequent login succeeded",
+      "at": "2026-10-15T11:23:42.694Z"
+    },
+    {
+      "label": "Direct company registration through live UI succeeds",
+      "at": "2026-10-15T11:24:15.226Z"
+    },
+    {
+      "label": "Company legal identity, two document uploads and submission succeed through live UI",
+      "at": "2026-10-15T11:28:46.191Z"
+    },
+    {
+      "label": "Company onboarding finished to account dashboard",
+      "at": "2026-10-15T11:30:05.637Z"
+    },
+    {
+      "label": "Personal account upgrades to company through UI without re-entering contact",
+      "at": "2026-10-15T11:30:43.016Z",
+      "sameId": true,
+      "role": "company"
+    },
+    {
+      "label": "Empty request focuses title with validation",
+      "at": "2026-10-15T11:31:08.959Z",
+      "focus": "title"
+    },
+    {
+      "label": "Request draft text survives reload",
+      "at": "2026-10-15T11:31:09.724Z",
+      "titleRetained": true
+    },
+    {
+      "label": "Request visible immediately to signed-out visitor without admin approval",
+      "at": "2026-10-15T11:31:56.886Z",
+      "requestId": "1d412a80-758c-4eb4-b62b-50a935f4dca6"
+    },
+    {
+      "label": "Redundant open badge absent on request title",
+      "at": "2026-10-15T11:31:56.887Z",
+      "badgeCount": 0
+    },
+    {
+      "label": "Unverified supplier cannot send offer; pending status explains next step",
+      "at": "2026-10-15T11:32:36.475Z",
+      "superseded": "Historical behavior intentionally replaced by LOGIC-042 per user decision."
+    },
+    {
+      "label": "Admin document return reason is visible to supplier",
+      "at": "2026-10-15T11:33:59.679Z"
+    },
+    {
+      "label": "Company corrects upload and resubmits returned verification",
+      "at": "2026-10-15T11:34:02.385Z"
+    },
+    {
+      "label": "Admin approves resubmitted company verification through UI",
+      "at": "2026-10-15T11:34:17.097Z"
+    },
+    {
+      "label": "Admin manual verification works for second dedicated test company",
+      "at": "2026-10-15T11:35:02.506Z"
+    },
+    {
+      "label": "Offer required fields validate before send",
+      "at": "2026-10-15T11:35:36.301Z",
+      "alerts": [
+        ""
+      ]
+    },
+    {
+      "label": "Verified supplier submits unit-price offer and attachment through live form",
+      "at": "2026-10-15T11:35:52.531Z"
+    },
+    {
+      "label": "Second company submits competing total-price offer through UI",
+      "at": "2026-10-15T11:36:10.635Z"
+    },
+    {
+      "label": "Comparison normalizes both offers",
+      "at": "2026-10-15T11:37:05.129Z",
+      "totals": [
+        400,
+        450
+      ]
+    },
+    {
+      "label": "Buyer selection creates a deal through confirmation dialog",
+      "at": "2026-10-15T11:37:55.775Z",
+      "dealId": "ffbd09c5-adad-43a8-9b10-f8616c53f821"
+    },
+    {
+      "label": "Real chat message visible to both deal participants",
+      "at": "2026-10-15T11:39:26.460Z"
+    },
+    {
+      "label": "Deal terms automatically reuse offer price, quantity, delivery, payment and request address",
+      "at": "2026-10-15T11:39:38.759Z"
+    },
+    {
+      "label": "Both parties confirm exact revised terms through UI",
+      "at": "2026-10-15T11:40:20.923Z"
+    },
+    {
+      "label": "Supplier posts fulfillment update through live UI",
+      "at": "2026-10-15T11:41:25.976Z"
+    },
+    {
+      "label": "Buyer submits deal issue through production UI",
+      "at": "2026-10-15T11:41:42.324Z"
+    },
+    {
+      "label": "Admin comments on and resolves live deal issue through UI",
+      "at": "2026-10-15T11:42:53.675Z"
+    },
+    {
+      "label": "Buyer sees admin comment and resolved issue outcome",
+      "at": "2026-10-15T11:43:14.499Z"
+    },
+    {
+      "label": "Buyer confirms receipt and completes deal",
+      "at": "2026-10-15T11:43:29.173Z"
+    },
+    {
+      "label": "Buyer submits four-dimension review after completed deal",
+      "at": "2026-10-15T11:44:40.847Z"
+    },
+    {
+      "label": "Unselected supplier sees rejected offer and buyer contacts remain locked",
+      "at": "2026-10-15T11:48:56.193Z"
+    },
+    {
+      "label": "Unchosen supplier cannot open another parties deal",
+      "at": "2026-10-15T11:49:04.425Z",
+      "text": "გარიგებაზე წვდომა შეზღუდულია\n\nგარიგება ვერ მოიძებნა ან მასზე წვდომა არ გაქვთ.\n\nგარიგებები"
+    },
+    {
+      "label": "Guest cannot open private deal",
+      "at": "2026-10-15T11:49:15.281Z"
+    },
+    {
+      "label": "Admin hides QA review with reason",
+      "at": "2026-10-15T11:49:44.525Z"
+    },
+    {
+      "label": "Admin accepted offer deletion is replaced by detail action",
+      "at": "2026-10-15T11:50:49.387Z"
+    },
+    {
+      "label": "Admin site-content editor loads catalog photos; no global content changed",
+      "at": "2026-10-15T11:51:38.904Z",
+      "publishDisabled": false
+    },
+    {
+      "label": "Admin overview, contact analytics, photos and history load",
+      "at": "2026-10-15T11:52:06.107Z",
+      "scope": "read-only; no unrelated records changed"
+    },
+    {
+      "label": "Admin block is reflected in existing QA session and matching is unavailable",
+      "at": "2026-10-15T11:53:23.939Z"
+    },
+    {
+      "label": "Admin unblocks QA account and existing session recovers",
+      "at": "2026-10-15T11:53:35.789Z"
+    },
+    {
+      "label": "Notification opens correct completed deal and unread count reduces from 3 to 2 after refresh",
+      "at": "2026-10-15T11:54:10.913Z"
+    },
+    {
+      "label": "Conversation report submitted, admin dismissed with reason, reporter receives outcome notification",
+      "at": "2026-10-15T11:55:43.514Z"
+    },
+    {
+      "label": "Mark all read persists across reload",
+      "at": "2026-10-15T11:56:04.808Z",
+      "disabled": true
+    },
+    {
+      "label": "Fifteen products persist after saving/reloading; add-sixteenth UI disabled",
+      "at": "2026-10-15T11:56:59.532Z"
+    },
+    {
+      "label": "QA buyer changed password, logged out and logged in with new password",
+      "at": "2026-10-15T11:59:34.419Z"
+    },
+    {
+      "label": "Admin approves QA contact-phone change and profile reflects updated number",
+      "at": "2026-10-15T12:01:16.932Z"
+    },
+    {
+      "label": "Buyer edits and closes own request",
+      "at": "2026-10-15T12:02:35.031Z"
+    },
+    {
+      "label": "Buyer reopens closed request for seven days",
+      "at": "2026-10-15T12:02:46.582Z"
+    },
+    {
+      "label": "Supplier edits offer from 50 to 55 without re-entering description or delivery",
+      "at": "2026-10-15T12:04:23.847Z"
+    },
+    {
+      "label": "Supplier withdraws QA offer through confirmation",
+      "at": "2026-10-15T12:04:54.647Z"
+    },
+    {
+      "label": "Buyer cancels selected deal; new-request reuse offered",
+      "at": "2026-10-15T12:05:59.358Z"
+    },
+    {
+      "label": "Cancelled deal offers new-request draft link; prefill still requires verification",
+      "at": "2026-10-15T12:06:20.046Z"
+    },
+    {
+      "label": "Request reuse copies title, quantity and description after explicit overwrite confirmation; new date required",
+      "at": "2026-10-15T12:07:47.640Z"
+    },
+    {
+      "label": "Product-import spreadsheet template downloads through UI",
+      "at": "2026-10-15T12:15:13.545Z",
+      "file": "meetany-products.xlsx"
+    },
+    {
+      "label": "XLSX import preview blocks exceeding fifteen products",
+      "at": "2026-10-15T12:15:59.812Z",
+      "confirmDisabled": false
+    },
+    {
+      "label": "XLSX import adds two products and subsequent preview matches existing product codes",
+      "at": "2026-10-15T12:16:46.050Z",
+      "preview": "0 დაემატება · 2 განახლდება · 0 შეცდომა"
+    },
+    {
+      "label": "Imported QA products can be edited and saved",
+      "at": "2026-10-15T12:17:13.600Z"
+    },
+    {
+      "label": "320px registration fits viewport; error summary links focus relevant input",
+      "at": "2026-10-15T12:17:52.016Z"
+    },
+    {
+      "label": "320px city select opens upward near screen edge and mobile menu closes with Escape",
+      "at": "2026-10-15T12:18:40.593Z"
+    },
+    {
+      "label": "Admin hides QA request; guest detail is not available",
+      "at": "2026-10-15T12:19:47.753Z"
+    },
+    {
+      "label": "Admin restores QA request and public detail returns",
+      "at": "2026-10-15T12:19:59.721Z"
+    },
+    {
+      "label": "Admin filtered request CSV export downloads",
+      "at": "2026-10-15T12:20:16.577Z",
+      "file": "meetany-requests-2026-10-15.csv"
+    },
+    {
+      "label": "Both QA companies hidden from catalog while accounts retained for regression checks",
+      "at": "2026-10-15T12:21:04.825Z"
+    }
+  ],
+  "issues": [
+    {
+      "id": "UX-001",
+      "severity": "medium",
+      "title": "Registration welcome and next step",
+      "details": "Requested by user: dedicated welcome after registration for personal and company accounts. Only generic dashboard greeting currently.",
+      "at": "2026-10-15T11:23:38.772Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-002",
+      "severity": "medium",
+      "title": "Fresh company onboarding immediately says unsaved changes",
+      "details": "Immediately after registration, before any input on onboarding type, page shows unsaved changes twice. Default values seeded from registration should not imply the user edited unsaved data. Screenshot 06.",
+      "at": "2026-10-15T11:24:33.241Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-003",
+      "severity": "medium",
+      "title": "Onboarding exposes seven steps even when data is already provided",
+      "details": "Company data and business profile prefilled/completed, but seven-step navigation with multiple future optional sections makes a simple registration feel long. Evaluate one concise setup + optional enrichment.",
+      "at": "2026-10-15T11:24:33.241Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-004",
+      "severity": "high",
+      "title": "Onboarding grid changes between type and details",
+      "details": "User observed live /onboarding/?step=type vs details. Source OnboardPage applies detailsLayout and removes aside only on details; form width and alignment jump. Need stable frame, step navigation, content width and footer across all steps.",
+      "at": "2026-10-15T11:27:46.946Z",
+      "status": "live_verified",
+      "evidence": "forms-regression/report.json"
+    },
+    {
+      "id": "UI-005",
+      "severity": "high",
+      "title": "Product photo caption overflows into form column",
+      "details": "User screenshot confirms Georgian ფოტო არასავალდებულოა spills out of narrow photo column toward product code field. Need wrapping/min-width rules and consistent responsive product form.",
+      "at": "2026-10-15T11:28:21.782Z",
+      "status": "locally_verified",
+      "evidence": "forms-regression/report.json"
+    },
+    {
+      "id": "UX-006",
+      "severity": "medium",
+      "title": "Spreadsheet import dominates single-product creation",
+      "details": "Large import instructions and technical limits appear before first product. Single product add should lead; import can expand on demand.",
+      "at": "2026-10-15T11:28:21.782Z",
+      "status": "locally_verified",
+      "evidence": "forms-regression/report.json"
+    },
+    {
+      "id": "UX-007",
+      "severity": "medium",
+      "title": "Verification submission leaves contradictory instructions",
+      "details": "After successful submission status is განსახილველი, but wizard still says გაგზავნამდე შეამოწმეთ and unsaved changes. Server-persisted verification status is treated as unsaved form editing.",
+      "at": "2026-10-15T11:28:46.191Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-008",
+      "severity": "medium",
+      "title": "Verification has nested progress and ambiguous exits",
+      "details": "Desktop verification screen shows outer 7-step flow, inner 3-step document tabs, right completion meter, top skip-to-finish and multiple გადით actions. After pending, user still sees 4/7 despite action completed. Simplify one primary next action, label optional/skipped steps accurately, distinguish leave setup from sign out.",
+      "at": "2026-10-15T11:29:03.874Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-009",
+      "severity": "medium",
+      "title": "Company review repeats name without field labels",
+      "details": "Review company section prints trading name and identical legal name twice, plus person/city/registration code without labels. Collapse equal names and label differing values. Screenshot 14.",
+      "at": "2026-10-15T11:29:36.734Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-010",
+      "severity": "high",
+      "title": "Upgrade company nested grid compresses form and actions",
+      "details": "In personal account settings, CompanyUpgrade uses another FormLayout with benefits aside inside the narrow account content column. At desktop the company field is ~210px, supporting paragraph becomes a tall narrow column, and footer buttons crowd. Screenshot16. Use single column within account card.",
+      "at": "2026-10-15T11:30:40.526Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-011",
+      "severity": "medium",
+      "title": "Personal name duplicated as company in profile settings",
+      "details": "Fresh personal registration without company shows personal name in Company / Organization field and twice in profile preview. Do not invent company identity from personal name.",
+      "at": "2026-10-15T11:30:40.526Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-012",
+      "severity": "medium",
+      "title": "Final request review truncates entered description",
+      "details": "Review shows two lines ending ellipsis with no expand control. User must go back to edit to verify full text before publishing. Show full description or expand. Screenshot21.",
+      "at": "2026-10-15T11:31:34.435Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UI-013",
+      "severity": "low",
+      "title": "Request review and preview use different missing-photo treatment",
+      "details": "Final review has gray image icon while right preview uses themed photo. Shared fallback treatment should be consistent. Screenshot21.",
+      "at": "2026-10-15T11:31:34.435Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-014",
+      "severity": "medium",
+      "title": "Underlined navigation links remain in offer flow",
+      "details": "Offer page breadcrumbs, repeated request title links and return link still use default underlines, inconsistent with requested link treatment. Screenshot28.",
+      "at": "2026-10-15T11:35:36.092Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-015",
+      "severity": "medium",
+      "title": "Offer cards emphasize incomparable unit and total prices",
+      "details": "Same buyer list shows 100 per unit vs 450 total without calculated 400 total on first card. Comparison page can normalize, but primary list should show total for quantity4 and unit price secondary. Screenshot31.",
+      "at": "2026-10-15T11:36:43.459Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UX-016",
+      "severity": "medium",
+      "title": "Term differences appear below confirmation action",
+      "details": "Buyer receives changed price400→380, but change history/diff is below the confirm block. Show latest changes next to proposed terms and before acceptance. Supplier proposing own terms must separately confirm; consolidate with explicit combined wording if intent is unchanged. Screenshot37.",
+      "at": "2026-10-15T11:40:17.078Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UX-017",
+      "severity": "high",
+      "title": "Fulfillment timeline labels next unreported step as current delivered",
+      "details": "Supplier submitted only მზადაა გადასაცემად. Buyer timeline marks გადაცემულია as მიმდინარე though delivery was never reported. Distinguish reported current state from upcoming step. Screenshot42.",
+      "at": "2026-10-15T11:43:14.499Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UI-018",
+      "severity": "medium",
+      "title": "Comparison table and repeated cards create excessive vertical length",
+      "details": "User still observes spacing and table problems. Comparison table uses wide cells and repeats same values in full offer cards beneath. Align sizing to information density and avoid duplicated details; verify on desktop and mobile. Screenshot32.",
+      "at": "2026-10-15T11:44:06.098Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-019",
+      "severity": "medium",
+      "title": "Completed deal primary rating action is buried under history",
+      "details": "After completion, long fulfillment timeline, updates and resolved issue precede completion summary and rating CTA. Put success summary and next action near title; keep history collapsible. Screenshot44.",
+      "at": "2026-10-15T11:44:06.098Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UI-020",
+      "severity": "medium",
+      "title": "Unselected rating stars have weak contrast",
+      "details": "Unselected star controls use approx #d9d9d9 on white (about1.4:1). The four required rating rows initially look empty; selected state must not be required to discover controls. Screenshot45 stable.",
+      "at": "2026-10-15T11:44:39.368Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UI-021",
+      "severity": "high",
+      "title": "Admin offer table squeezes company and request columns",
+      "details": "At desktop width, description and action columns dominate; company/request wrap to many short lines with underlines. Pagination shown twice even with two rows. Screenshot51.",
+      "at": "2026-10-15T11:50:49.387Z",
+      "status": "live_verified",
+      "evidence": "admin-final-readonly-results.json;screenshots160–168"
+    },
+    {
+      "id": "COPY-022",
+      "severity": "high",
+      "title": "Simplify interface text and remove repeated instructions",
+      "details": "User requirement: review all critical flows for concise Georgian text, clear action labels and progressive disclosure. Keep decision-critical price, privacy, verification and irreversible-action information.",
+      "at": "2026-10-15T11:51:26.515Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-023",
+      "severity": "low",
+      "title": "Content publish stays enabled without edits",
+      "details": "Content editor says no changes but both publish actions remain enabled. Screenshot54; publishing not invoked.",
+      "at": "2026-10-15T11:51:57.825Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-024",
+      "severity": "medium",
+      "title": "Audit-history search and period only filter current page",
+      "details": "UI explicitly says search/time filter only the 25 loaded entries; can report no result although matching older action exists. Server-wide filtering needed. Screenshot57.",
+      "at": "2026-10-15T11:52:12.642Z",
+      "status": "live_verified",
+      "evidence": "admin-final-readonly-results.json;screenshots160–168"
+    },
+    {
+      "id": "UI-025",
+      "severity": "high",
+      "title": "Notifications and messages need typography and grid review",
+      "details": "User reports oversized text and uncomfortable box layout. Inspect header dropdown, notifications page and message composer on desktop/mobile, including action destinations and read/unread behavior. Confirmed screenshot60: timestamp takes separate wide column while title truncated before supplier, grouped-offer heading huge and repeated, mixed card/list layouts. Move time below and simplify hierarchy.",
+      "at": "2026-10-15T11:53:23.939Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UX-026",
+      "severity": "medium",
+      "title": "Contact-change requests are filed as complaints",
+      "details": "A normal profile contact-change enters Complaints, adds complaint count, and is described as complaint for admin. Separate account-change task semantics and clear pending state needed. Screenshot67.",
+      "at": "2026-10-15T12:00:27.143Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "COPY-027",
+      "severity": "medium",
+      "title": "Contact email vs login email semantics differ between user and admin",
+      "details": "User contact-change dialog describes phone/email as account identifiers, while admin says only profile contact email changes and login email stays unchanged. User must see this distinction before submitting.",
+      "at": "2026-10-15T12:01:16.932Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "LOGIC-028",
+      "severity": "medium",
+      "title": "Reopen confirmation promises seven days but request still shows fourteen",
+      "details": "Request closed then reopened. Confirmation says accepts offers for 7 days; resulting buyer/supplier view shows14 days and original Oct28 expiry. Need align operation and copy. Screenshot69.",
+      "at": "2026-10-15T12:04:23.847Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UX-029",
+      "severity": "medium",
+      "title": "Resubmitting a withdrawn offer requires all information again",
+      "details": "After cancellation the promised resubmit path opens a blank form, losing access to prior description, price, delivery and terms. Offer reuse option would meet no-repeat-entry requirement.",
+      "at": "2026-10-15T12:05:15.995Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-030",
+      "severity": "high",
+      "title": "Mobile filter tabs wrap into bulky button grid",
+      "details": "User screenshot16:06 confirms notifications filters use two rows of large buttons; use one horizontally scrollable tab row with visible overflow affordance, selected state and keyboard focus. Audit all equivalent account/catalog/admin tab bars.",
+      "at": "2026-10-15T12:07:29.759Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UX-031",
+      "severity": "high",
+      "title": "Mobile navigation and overlay placement require functional audit",
+      "details": "User asks dropdown direction, edge fitting, information visibility, state retention, and potential bottom quick nav. Verify overlays flip/fit, close/focus behavior, background scroll lock, sticky action conflicts, back retention. Assess bottom nav against form footer and keyboard.",
+      "at": "2026-10-15T12:08:52.751Z",
+      "status": "live_verified"
+    },
+    {
+      "id": "UX-032",
+      "severity": "high",
+      "title": "Unsent message is lost when closing mobile conversation",
+      "details": "Type an unsent message, press Back, reopen same conversation: composer is empty without warning. Preserve per-thread draft across navigation, including attachments where supported.",
+      "at": "2026-10-15T12:10:28.451Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-033",
+      "severity": "high",
+      "title": "Mobile admin offers lose field labels and alignment",
+      "details": "Exact page /admin/?tab=offers&q=2981: table-to-card styling removes headers but shows no per-field labels; request links center while company links left; status/action misaligned; huge filter region and duplicate pager for three records. Screenshots79/80.",
+      "at": "2026-10-15T12:11:35.411Z",
+      "status": "live_verified",
+      "evidence": "admin-final-readonly-results.json;screenshots160–168"
+    },
+    {
+      "id": "UX-034",
+      "severity": "high",
+      "title": "Products optional; do not foreground product quota",
+      "details": "Latest owner instruction: company may have no products or provide services only. No required catalog or quota pressure, no constant 0/15 or limit copy. Preserve previously agreed 15-product cap; explain only when adding would exceed it. Do not treat optional missing products as registration failure.",
+      "at": "2026-10-15T12:15:41.975Z",
+      "status": "live_verified",
+      "evidence": "forms-regression/report.json"
+    },
+    {
+      "id": "UX-035",
+      "severity": "high",
+      "title": "Progressive onboarding must allow useful completion with missing optional data",
+      "details": "Owner requires minimal registration, explicit add-later actions, retained progress and a clear successful endpoint. Products, services, gallery and verification documents may be added later. Preserve actual gating for verification-dependent actions, explain locally instead of trapping user in incomplete onboarding.",
+      "at": "2026-10-15T12:17:11.290Z",
+      "status": "live_verified",
+      "evidence": "forms-regression/report.json"
+    },
+    {
+      "id": "UX-036",
+      "severity": "medium",
+      "title": "Manually verified company still receives missing-verification crosses",
+      "details": "Review screen says verified but lists legal data/documents with failure crosses after admin manual verification. Avoid presenting optional outstanding documents as verification failure; status authority and next action must agree. Screenshot83.",
+      "at": "2026-10-15T12:17:40.993Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "ANALYTICS-037",
+      "severity": "high",
+      "title": "Admin funnel must distinguish completion, deferral and abandonment",
+      "details": "Owner requests visibility of last stage reached and later return. Track registration complete separately from company profile, verification and first business action; expose last activity, optional-step deferred vs errors, resumed users. No-products or missing optional documents must not count as failed signup. Never collect raw field values or passwords in analytics.",
+      "at": "2026-10-15T12:18:26.791Z",
+      "status": "live_verified",
+      "evidence": "admin-final-readonly-results.json;screenshots160–168"
+    },
+    {
+      "id": "LOGIC-038",
+      "severity": "medium",
+      "title": "Cancelled deal retains selected-supplier request wording",
+      "details": "After deal cancellation, admin request shows supplier selected and chosen offer alongside cancelled deal. Cancellation copy says request stays closed. Keep historical selection but show cancellation prominently and use consistent current status.",
+      "at": "2026-10-15T12:19:17.151Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-039",
+      "severity": "high",
+      "title": "Popups sometimes appear beneath page text or open out of bounds",
+      "details": "User reports recurring overlay stacking/placement bug. Inspect actual transition frames and settled state, parent stacking contexts, portal/top-layer use, clipping, flip/shift placement and nested overlays. Earlier transparent-frame observations were not confirmed; reproduce before choosing fix.",
+      "at": "2026-10-15T12:22:10.166Z",
+      "status": "implemented_pending_live_recheck"
+    },
+    {
+      "id": "UI-040",
+      "title": "Search menu detached from its field",
+      "details": "Replaced viewport-wide absolute popup with anchored native top-layer popover; flips/clamps, follows scroll/resize, closes when anchor leaves view; keyboard scroll affects only panel.",
+      "severity": "medium",
+      "status": "locally_verified",
+      "evidence": "104/105 screenshots and local keyboard/scroll/Escape checks"
+    },
+    {
+      "id": "UX-041",
+      "title": "Category-specific request fields and mandatory unknown quantity/date",
+      "details": "One request form with title/category/body/city required; quantity/date optional. Optional fields visible, budget errors focus field; categories remain open for browsing.",
+      "severity": "medium",
+      "status": "locally_verified",
+      "evidence": "Actual local minimal request af38d827-6be5-4f8a-9c38-bd4bf6274601; 320px budget validation"
+    },
+    {
+      "id": "LOGIC-042",
+      "title": "Personal and unverified accounts blocked from offers",
+      "details": "Registered client/company may respond, verification remains optional trust indicator; sealed offers/private columns/self/blocked/closed protections retained.",
+      "severity": "medium",
+      "status": "live_verified",
+      "evidence": "2356 SQL assertions; actual personal offer submitted and visible to both participants locally"
+    },
+    {
+      "id": "UX-043",
+      "title": "Populated unnamed optional product silently discarded",
+      "details": "Only entirely blank products ignored. Populated missing-name rows retain fields and focus marked required name before any save.",
+      "severity": "medium",
+      "status": "locally_verified",
+      "evidence": "forms-regression/report.json; onboarding unit tests"
+    },
+    {
+      "id": "UI-044",
+      "title": "Long service names hidden by +N and oversized chips",
+      "details": "All services/needs appear in editable rows; immediate draft updates, compact add and 44px removal controls.",
+      "severity": "medium",
+      "status": "locally_verified",
+      "evidence": "forms-regression/31-services-final-390.png; forms-regression/32-services-final-320.png; forms-regression/33-needs-list-320.png"
+    },
+    {
+      "id": "UX-045",
+      "title": "Offer form assumes manufacturing and fixed delivery deadline",
+      "details": "Visible freeform condition rows, optional offer execution deadline; actual agreed deal terms remain required.",
+      "severity": "medium",
+      "status": "live_verified",
+      "evidence": "109-universal-offer-terms-320.png; local personal offer without deadline"
+    },
+    {
+      "id": "UI-046",
+      "title": "Mobile navigation CSS selector fails webpack purity rule",
+      "details": "Scoped global offset reset through local nav presence; production Turbopack build passed, final webpack check pending.",
+      "severity": "medium",
+      "status": "live_verified",
+      "evidence": "Final build logs"
+    },
+    {
+      "id": "UI-047",
+      "title": "Category rows too tall and disclosure replaced icons",
+      "status": "live_verified",
+      "details": "Shared category tree preserves icons, allchildren initial visibility, separate collapse control, alignedcounts and compactrows.",
+      "evidence": "live-final/categories-final-1440.png; live-final/categories-final-320.png;category-refinement/report.json"
+    },
+    {
+      "id": "UX-048",
+      "title": "Final deal terms could drop pending added condition",
+      "status": "locally_verified",
+      "details": "Editableconditionrows save enteredtext; blankrows ignored. Back/X/Escape/backdrop all use the same discardguard; local320/390 verified."
+    },
+    {
+      "id": "A11Y-049",
+      "title": "Registration stars did not match native required attributes",
+      "status": "locally_verified",
+      "details": "Native/ARIArequired, consentstar, first-invalidfocus; duplicatephone gets inlineerrorandfocus.",
+      "evidence": "live-final/forms-auth-discard-report.json"
+    },
+    {
+      "id": "UI-050",
+      "title": "Empty product descriptions reserve redundant rows",
+      "status": "locally_verified",
+      "details": "Compactedit/delete row and no emptyparagraph;15-product case checked320/390."
+    }
+  ],
+  "artifacts": {
+    "requestIds": [
+      "1d412a80-758c-4eb4-b62b-50a935f4dca6",
+      "1e6563f9-3c57-4074-81f6-8a87f3167260"
+    ],
+    "offerIds": [
+      "9332367c-4fb2-494d-97e6-58d7729c271e",
+      "b3725284-1893-4488-af03-439fac227405"
+    ],
+    "dealIds": [
+      "ffbd09c5-adad-43a8-9b10-f8616c53f821",
+      "610b785b-f8eb-4d80-8bd7-aabb1518c30e"
+    ]
+  },
+  "errors": [],
+  "cleanup": {
+    "requestsHidden": [
+      "1d412a80-758c-4eb4-b62b-50a935f4dca6",
+      "1e6563f9-3c57-4074-81f6-8a87f3167260"
+    ],
+    "companiesHidden": [
+      "supplier",
+      "other"
+    ],
+    "reviewHidden": true,
+    "accountsRetained": true
+  },
+  "release": {
+    "status": "deployed_and_verified",
+    "candidate": "https://meet-lyd2zz9xw-infinity-solutions.vercel.app",
+    "unitTests": 147,
+    "sqlAssertions": 2356,
+    "typescript": "passed",
+    "lint": "app ESLint:0 errors/warnings; full lint includes32 existingQA script warnings",
+    "designLint": "passed",
+    "productionMigration": "applied;11postchecks passed",
+    "liveRecheck": "Business flow complete; final category icons/disclosure/320px verified. Modal input-retention mechanics locally verified.",
+    "limitations": [
+      "Browser viewport emulation at 320/390/desktop; no physical-device test.",
+      "Email/SMS delivery outside browser walkthrough not established.",
+      "No destructive actions against real customer data."
+    ],
+    "deploymentId": "dpl_Ftwm36qCLCPLoLMiDtLT4JsSbrAz",
+    "site": "https://www.meetany.ge",
+    "build": "Webpack local and Turbopack Vercel passed",
+    "sourceSnapshot": "Final app files match tested build snapshot."
+  },
+  "liveFinal": {
+    "origin": "https://www.meetany.ge",
+    "deployment": "meet-nm1407xo5-infinity-solutions.vercel.app",
+    "requestId": "deba268b-1cda-4407-8390-da2297906e0f",
+    "dealId": "c81584f4-da57-45e8-b110-1dea6d71f8d7",
+    "checks": [
+      "Minimal universal request published through browser without quantity/date and without admin approval.",
+      "Personal account sent offer without company/verification; no fixed execution date required.",
+      "Buyer saw correct personal supplier identity and could select offer.",
+      "Deal discussion and terms editor available to both participants.",
+      "Final required price/quantity/unit/place/payment/days supplied and both parties confirmed.",
+      "Personal supplier started execution and recorded completion update.",
+      "Buyer completed deal and four-score review saved successfully.",
+      "Personal supplier sees completed deal at390px without document overflow.",
+      "Fresh personal registration completed through live browser; duplicate phone correctly prevented duplicate profile and preserved other entered data for recovery.",
+      "Guest1440/390/320 routes, search anchoring, compact action return links and modal/navigation bounds verified; see live-final/guest/report.json.",
+      "Onboarding stable grids, optional request fields, notifications and quick navigation checked; see live-final/forms-report.json.",
+      "Final published category tree preserves all14 categoryicons; separate collapse leaves filter unchanged;320px menu has no pageoverflow and was visually inspected.",
+      "Admin offers/audit search2981/registration+onboarding analytics checked readonly1440/390; fouroffers,16auditmatches, fresh registration completion exactlyonce, dialogbounds/Escape/focusrestore passed; no browsererrors or overflow."
+    ],
+    "cleanup": {
+      "requestHidden": true,
+      "companionReviewHidden": true,
+      "dealHistoryRetained": true,
+      "realCustomerDataChanged": false
+    },
+    "evidence": [
+      "live-final/personal-deal-complete-1440.png",
+      "live-final/personal-deal-complete-390.png",
+      "live-final/registration-complete-390.png"
+    ],
+    "limitations": [
+      "Browser viewport emulation, not physical-device testing.",
+      "Email/SMS delivery not validated.",
+      "Final terms close-guard interactions locally verified on exact deployed source; live completed deal remains unchanged."
+    ],
+    "finalPresentationDeployment": "meet-lyd2zz9xw-infinity-solutions.vercel.app"
+  }
+}

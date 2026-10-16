@@ -15,6 +15,7 @@ import { marketBootstrap } from './market-bootstrap.js';
 
 // Every function a client may call. Anything else is 404 without touching the database.
 const RPCS = new Set([
+  'record_onboarding_activity','my_onboarding_activity','admin_onboarding_analytics',
   'admin_set_role', 'admin_anonymize_user', 'admin_set_company_hidden', 'admin_edit_offer', 'admin_comment_deal_issue',
   'verification_record','verification_requirements','rate_deal_full','create_request_full','reject_deal_proposal','complete_onboarding','review_verification',
   'become_company','list_attachments','remove_attachment','bind_draft_files','submit_verification','set_request_preferences','request_preferences','list_matching_feed','add_deal_update','open_deal_issue','admin_deal_issues','admin_resolve_deal_issue',
@@ -31,7 +32,7 @@ const RPCS = new Set([
   'engagement_state', 'list_notifications', 'mark_notification_read', 'set_notification_email',
   'list_saved_companies', 'set_saved_company', 'request_alert_preferences', 'set_request_alert_preferences',
   'admin_overview', 'admin_stats', 'admin_list_users', 'admin_search_users', 'admin_search_requests', 'admin_list_audit',
-  'admin_search_offers', 'admin_delete_offer', 'admin_delete_request_v2', 'admin_list_audit_v2',
+  'admin_search_offers', 'admin_delete_offer', 'admin_delete_request_v2', 'admin_list_audit_v2', 'admin_search_audit',
   'admin_set_verified', 'admin_set_blocked', 'admin_set_hidden', 'admin_delete_request',
   'admin_contact_events', 'admin_contact_stats', 'admin_message_stats', 'admin_list_conversations', 'admin_conversation_messages',
   // New flows (migrations 20261007-*): offer terms and comparison, deals, deal contact, matching, onboarding.

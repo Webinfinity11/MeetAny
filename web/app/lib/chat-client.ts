@@ -9,10 +9,33 @@ import { toastError } from "../components/Toasts";
 export type Message = { id: string; senderId: string; body: string; createdAt: string; readAt?: string | null };
 export type Conversation = {
   id: string; clientId: string; companyId: string; requestId: string | null; contextKey?: string | null;
-  otherId?: string | null; otherName: string | null; otherCompany: string | null;
+  otherId?: string | null; otherRole?: "client" | "company" | "admin" | null; otherName: string | null; otherCompany: string | null;
   createdAt: string; lastMessageAt: string | null; lastMessage: Message | null; unreadCount: number;
 };
 export type ChatTarget = { companyId: string; requestId?: string; conversation?: Conversation };
+
+/** A tab-local draft belongs to one user and conversation, and survives closing either chat view. */
+export function useChatDraft(owner: string, target: ChatTarget) {
+  const context = target.conversation?.requestId || target.conversation?.contextKey || target.requestId || "general";
+  const other = target.conversation ? (target.conversation.clientId === owner ? target.conversation.companyId : target.conversation.clientId) : target.companyId;
+  const key = `meetany:chat-draft:${owner}:${other}:${context}`;
+  const [body, updateBody] = useState(() => {
+    try {
+      const draft = JSON.parse(sessionStorage.getItem(key) || "null");
+      if (draft && typeof draft.body === "string" && Date.now() - draft.at < 86400000) return draft.body.slice(0, 2000);
+      sessionStorage.removeItem(key);
+    } catch { /* Draft storage is optional; sending stays available. */ }
+    return "";
+  });
+  const setBody = (value: string) => {
+    updateBody(value);
+    try {
+      if (value) sessionStorage.setItem(key, JSON.stringify({ body: value, at: Date.now() }));
+      else sessionStorage.removeItem(key);
+    } catch { /* Private mode or quota must not prevent typing. */ }
+  };
+  return [body, setBody] as const;
+}
 
 export const chatChanged = () => window.dispatchEvent(new Event("meetany:chat-changed"));
 export const chatErrorText = (err: unknown) => (err as { userMessage?: string })?.userMessage || "მიმოწერა ვერ ჩაიტვირთა. სცადეთ ხელახლა.";

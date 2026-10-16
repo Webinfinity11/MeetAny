@@ -1,12 +1,13 @@
 "use client";
 import { Button } from "./ui/Button";
 import { Logo } from "./Logo";
+import { MobileNavigation } from './MobileNavigation';
 import { Avatar, avatarInitials } from "./ui/Avatar";
 
 
 import { closeDialogWithMotion, trapDialogFocus } from "./ui/dialog-focus";
 
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { Suspense, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NotificationBell } from "./market/EngagementPanels";
@@ -72,7 +73,7 @@ export function Header() {
   const isAdmin = role === "admin";
   const accountLabel = isAdmin ? "ადმინი" : "პროფილი";
   const focusEdge = useRef<"first" | "last" | null>(null);
-  // Messages and notifications live once, as the badged icons in the header bar (visible at every width).
+  // Messages and notifications use the header on desktop and the bottom navigation on phones.
   const links = !me && sessionUnknown ? [["user-round", "ანგარიში", "/account/"]] : !me && store?.hasSession() ? [["user-round", "პროფილის დასრულება", "/account/"]] : !me ? [["user-round", "შესვლა", "/account/"], ["store", "კომპანიის რეგისტრაცია", "/account/?tab=register&role=company&entry=header"]]
     : isAdmin ? [["shield-check", "ადმინის პანელი", "/admin/"]]
     // One account menu per role, the same in the dropdown and the drawer (Request → Offer → Deal).
@@ -86,11 +87,12 @@ export function Header() {
     ] : [
       ["layout-grid", "დაფა", "/account/"],
       ["clipboard-list", "ჩემი მოთხოვნები", "/account/?tab=requests"],
+      ["send", "ჩემი შეთავაზებები", "/account/?tab=offers"],
       ["handshake", "გარიგებები", "/account/?tab=deals"],
       ["bookmark", "შენახული", "/account/?tab=saved"],
       ["settings", "პარამეტრები", "/account/?tab=profile"],
     ];
-  // The drawer adds messages and notifications: below 360px their header icons give way to it.
+  // The drawer also serves tablet widths, where the bottom navigation is not shown.
   const mobileLinks = !me || isAdmin ? links : [...links.slice(0, -1),
     ["message-square", "მიმოწერები", "/account/?tab=messages"],
     ["bell", "შეტყობინებები", "/account/?tab=notifications"],
@@ -120,13 +122,13 @@ export function Header() {
   }
   const identity = me ? <div className={h("ma-menu__identity")} role="presentation"><strong>{me.company || me.name}</strong>{me.company && me.company !== me.name ? <span>{me.name}</span> : null}</div> : null;
   const brand = <Link className={h("ma-header__brand")} href="/" aria-label="MeetAny — მთავარი"><Logo size={24}/></Link>;
-  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "მოთხოვნები", "/requests/"], ["companies", "კომპანიები", "/companies/"], ["how", "როგორ მუშაობს", "/how-it-works/"]]).map(([id, title, href]) => <Link key={id} className={h(cls)} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
+  const nav = (cls: string) => (isAdmin ? [["admin", "პლატფორმის მართვა", "/admin/"]] : [["requests", "მოთხოვნები", "/requests/"], ["companies", "კომპანიები", "/companies/"]]).map(([id, title, href]) => <Link key={id} className={`${h(cls)}${id === 'requests' || (!me && id === 'companies') ? ` ${styles.mobileQuickLink}` : ''}`} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}>{title}</Link>);
   const isCompany = role === "company";
   const add = <Button variant="primary" className={h("ma-header__cta")} aria-label="მოთხოვნის განთავსება" href="/requests/new/"><Icon name="plus"/><span className={h("ma-header__cta-label")}>მოთხოვნის განთავსება</span><span className={h("ma-header__cta-short")} aria-hidden="true">მოთხოვნა</span></Button>;
   // The drawer has the full width: the whole label, never the short "მოთხოვნა".
   const addFull = <Button variant="primary" className={h("ma-header__cta")} href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button>;
   return <>
-    <header className={h("ma-header")}><div className={h("ma-header__inner ma-container")}>
+    <header data-site-header className={h("ma-header")}><div className={h("ma-header__inner ma-container")}>
       {brand}<nav className={h("ma-header__nav")} aria-label="მთავარი ნავიგაცია">{nav("ma-header__link")}</nav>
       <div className={h("ma-header__actions")}>
         <Link className={h("ma-header__search")} href="/requests/?focus=search" onClick={event => { if (pathname === "/requests/") { const input = document.querySelector<HTMLInputElement>('main input[type="search"]'); if (input) { event.preventDefault(); input.focus(); } } }} aria-label="მოთხოვნების ძიება"><Icon name="search"/></Link>
@@ -158,10 +160,11 @@ export function Header() {
     </div></header>
     <dialog onKeyDown={trapDialogFocus} ref={mobile} id="ma-mnav" className={h("ma-mnav")} aria-label="მენიუ" onCancel={e => {e.preventDefault(); closeMenu();}} onClose={() => {setMenuOpen(false); opener.current?.focus();}} onClick={e => {if ((e.target as HTMLElement).closest("a")) closeMenu();}}>
       <div className={h("ma-mnav__head")}>{brand}<button className={h("ma-mnav__close")} aria-label="მენიუს დახურვა" onClick={closeMenu}><Icon name="x"/></button></div>
-      <div className={h("ma-mnav__body")}><nav className={h("ma-mnav__group")} aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
-        <div className={h("ma-mnav__group")}>{me ? <div className={h("ma-mnav__identity")}>{isAdmin ? <Icon name="shield-check"/> : <HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/>} {identity}</div> : null}{mobileLinks.map(([icon, title, href]) => <Link key={href} className={h("ma-mnav__link")} href={href}><Icon name={icon}/>{title}</Link>)}</div>
+      <div className={h("ma-mnav__body")}><nav className={`${h("ma-mnav__group")} ${styles.mobileCatalogLinks}`} aria-label="ნავიგაცია">{nav("ma-mnav__link")}</nav>
+        <div className={h("ma-mnav__group")}>{me ? <div className={h("ma-mnav__identity")}>{isAdmin ? <Icon name="shield-check"/> : <HeaderAvatar name={me.company || me.name} logoUrl={me.logoUrl}/>} {identity}</div> : null}{mobileLinks.map(([icon, title, href]) => <Link key={href} className={`${h("ma-mnav__link")}${["/account/", "/account/?tab=messages", "/account/?tab=notifications"].includes(href) ? ` ${styles.mobileQuickLink}` : ""}`} href={href}><Icon name={icon}/>{title}</Link>)}</div>
       </div>{me ? <div className={h("ma-mnav__foot")}>{!isAdmin && !isCompanyRole(me.role) ? addFull : null}<Button variant="ghost" disabled={pending} onClick={logout}><Icon name="log-out"/>გასვლა</Button></div> : !isAdmin ? <div className={h("ma-mnav__foot")}>{addFull}</div> : null}
     </dialog>
+    <Suspense fallback={null}><MobileNavigation role={role}/></Suspense>
   </>;
 }
 

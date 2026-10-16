@@ -13,6 +13,7 @@ import { dateLabel } from "../../lib/format";
 import { AdminMarketMetrics } from "./AdminMarketMetrics";
 import { AdminActivityChart } from "./AdminActivityChart";
 import { AdminRegistrationAnalytics } from "./AdminRegistrationAnalytics";
+import { AdminOnboardingAnalytics } from "./AdminOnboardingAnalytics";
 import styles from "./admin.module.css";
 import analyticsStyles from "./analytics.module.css";
 
@@ -143,6 +144,7 @@ export function AdminOverview({ store, stats, onVerify, onOpenUser }: {
     </section>
     </div>
     <AdminRegistrationAnalytics />
+    <AdminOnboardingAnalytics />
     <AdminMarketMetrics store={store} />
   </div>;
 }

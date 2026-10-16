@@ -44,7 +44,7 @@ export function MyOffers({ offers, store, me }: { offers: (OfferItem & { body?: 
     <header><h2 title={selectedRequest?.title}>{selectedRequest?.title || "შეთავაზება"}</h2><Status tone={offerTone(selected)}>{offerLabel(selected.status, selected.viewedAt)}</Status></header>
     <dl>
       <div><Icon name="wallet"/><dt>ფასი</dt><dd>{price?.total}{price?.unit != null ? <small>{money(price.unit)} / {store.units[selectedRequest?.unit || ""] || "ერთეული"}</small> : null}</dd></div>
-      {selected.deliveryDays != null || selectedDeal?.delivery_date ? <div><Icon name="truck"/><dt>მიწოდება</dt><dd>{[selected.deliveryDays != null ? `${selected.deliveryDays} დღე` : null, selectedDeal?.delivery_date ? dealDate(selectedDeal.delivery_date) : null].filter(Boolean).join(" · ")}</dd></div> : null}
+      {selected.deliveryDays != null || selectedDeal?.delivery_date ? <div><Icon name="truck"/><dt>შესრულების ვადა</dt><dd>{[selected.deliveryDays != null ? `${selected.deliveryDays} დღე` : null, selectedDeal?.delivery_date ? dealDate(selectedDeal.delivery_date) : null].filter(Boolean).join(" · ")}</dd></div> : null}
       {selected.paymentTerms ? <div><Icon name="receipt"/><dt>გადახდა</dt><dd>{selected.paymentTerms}</dd></div> : null}
       <div><Icon name="receipt"/><dt>დღგ</dt><dd>{selected.vatIncluded ? "ფასში შედის" : "ფასში არ შედის"}</dd></div>
       <div><Icon name="truck"/><dt>მიწოდების ხარჯი</dt><dd>{selected.deliveryIncluded ? "ფასში შედის" : "დასაზუსტებელია"}</dd></div>

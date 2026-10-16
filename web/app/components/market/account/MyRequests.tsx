@@ -14,7 +14,7 @@ import { dealHref, compareHref } from "../../../lib/deal-client";
 import { clearRequestDraft, deleteServerDraft, loadServerDraft, readRequestDraft, type RequestDraft } from "../../../lib/request-draft";
 import { toast, toastError } from "../../Toasts";
 import { EmptyState } from "../../ui/Structure";
-import { formatNumber } from "../../../lib/format";
+import { dateShort, formatNumber } from "../../../lib/format";
 import { ListSkeleton } from "../Skeletons";
 import { useConversationList } from "../../../lib/chat-client";
 import styles from "./account.module.css";
@@ -63,7 +63,11 @@ export function MyRequests({ requests, store, me, now, seen }: { requests: Reque
   async function extend(id: string) {
     if (pending) return;
     setPending(id);
-    try { await store.extendRequest(id); toast("ვადა გაგრძელდა 7 დღით."); }
+    try {
+      const updated = await store.extendRequest(id);
+      const expires = dateShort(updated?.expiresAt);
+      toast(expires ? `შეთავაზებების მიღება: ${expires}.` : "მიღების ვადა განახლდა.");
+    }
     catch (err) { toastError((err as { userMessage?: string }).userMessage || "ვერ შესრულდა."); }
     finally { setPending(null); }
   }
@@ -103,6 +107,6 @@ export function MyRequests({ requests, store, me, now, seen }: { requests: Reque
             : <Button variant="secondary" href={requestHref(request.id)}>მოთხოვნის ნახვა</Button>}
         </li>;
       })}
-    </ul> : requests.length || draft ? <EmptyState icon="file-text" text="ამ სტატუსით მოთხოვნა არ არის." action={<Button variant="secondary" onClick={() => setFilter("all")}>ყველა მოთხოვნის ნახვა</Button>}/> : <EmptyState icon="file-text" title="მოთხოვნები ჯერ არ გაქვთ" text="აღწერეთ, რა გჭირდებათ — კომპანიები შეთავაზებებს გამოგიგზავნიან." action={<Button href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button>}/>}
+    </ul> : requests.length || draft ? <EmptyState icon="file-text" text="ამ სტატუსით მოთხოვნა არ არის." action={<Button variant="secondary" onClick={() => setFilter("all")}>ყველა მოთხოვნის ნახვა</Button>}/> : <EmptyState icon="file-text" title="მოთხოვნები ჯერ არ გაქვთ" text="აღწერეთ, რა გჭირდებათ — მომწოდებლები შეთავაზებებს გამოგიგზავნიან." action={<Button href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button>}/>}
   </section>;
 }

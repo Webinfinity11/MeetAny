@@ -5,8 +5,13 @@
 .page p { line-height: 1.7; max-width: var(--measure); }
 .hero { max-width: var(--size-760); }
 .hero > p { font-size: var(--fs-body-lg); color: var(--text-2); margin-block: var(--stack-gap) var(--block-gap); max-width: var(--measure); line-height: var(--lh-body-lg); }
-.paths { display: flex; flex-wrap: wrap; gap: var(--size-8) var(--size-24); }
-.paths a, .more, .card a { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--text-link); }
+.paths { display: flex; flex-wrap: wrap; gap: var(--size-12); }
+.paths a { display: inline-flex; align-items: center; justify-content: center; gap: var(--size-8); min-height: var(--size-48); padding: var(--size-12) var(--size-16); border: var(--size-1) solid var(--border); border-radius: var(--radius-md); background: var(--white); color: var(--text); text-decoration: none; font-weight: var(--fw-semibold); font-size: var(--fs-control-copy); line-height: var(--lh-copy); transition: background var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease); }
+.paths a:hover { background: var(--bg-subtle); border-color: var(--text); text-decoration: none; }
+.paths a svg { flex: none; width: var(--size-18); height: var(--size-18); }
+.more, .card a { display: inline-flex; align-items: center; min-height: var(--tap-min); padding-inline: var(--space-3); border: var(--size-1) solid var(--border); border-radius: var(--radius-md); color: var(--text-link); text-decoration: none; font-size: var(--fs-control-copy); transition: background-color var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease); }
+.more:hover, .card a:hover { background: var(--bg-subtle); border-color: var(--border-strong); }
+.card a { margin-top: var(--space-4); max-width: 100%; }
 .section { margin: var(--section-gap) 0 0; scroll-margin-top: var(--size-96); }
 .eyebrow { margin: 0 0 var(--size-8); color: var(--ink-600); font-size: var(--size-13); line-height: var(--lh-meta); font-weight: var(--fw-semibold); }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--block-gap); list-style: none; margin: var(--block-gap) 0 0; padding: 0; }
@@ -39,6 +44,7 @@
 .faq details { border-bottom: var(--size-1) solid var(--border); }
 .faq summary { display: flex; align-items: center; justify-content: space-between; gap: var(--size-16); min-height: var(--tap-min); padding-block: var(--stack-gap); cursor: pointer; font-weight: var(--fw-semibold); list-style: none; line-height: var(--lh-heading); }
 .faq summary::-webkit-details-marker { display: none; }
+.faq summary:hover { background: var(--bg-subtle); }
 .faq summary svg { flex: none; }
 .faq details[open] summary svg { transform: rotate(180deg); }
 .faq p { max-width: var(--measure); margin: 0 0 var(--stack-gap); color: var(--text-2); line-height: var(--lh-body); }
@@ -53,6 +59,9 @@
   .photo::after { background:transparent; }
 }
 @media (max-width: 639px) {
+  .paths { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .paths a { justify-content: flex-start; }
+  .paths a svg:last-child { margin-left: auto; }
   .page { padding-block: var(--page-pad-y); }
   .section { margin: var(--section-gap) 0 0; }
   .steps, .cards { grid-template-columns: 1fr; gap: var(--size-16); }

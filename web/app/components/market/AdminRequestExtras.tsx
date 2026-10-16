@@ -52,8 +52,8 @@ export function AdminRequestExtras({ store, requestId, v2, onOpen }: { store: St
     ...(p.certificates ? [["სერტიფიკატები", p.certificates] as [string, string]] : []),
     ...(p.payment ? [["გადახდა", p.payment] as [string, string]] : []),
     ...(p.flexibility ? [["ვადის მოქნილობა", `${p.flexibility} დღე`] as [string, string]] : []),
-    ...([p.verifiedOnly && "მხოლოდ ვერიფიცირებული", p.vatInvoice && "ანგარიშ-ფაქტურა", p.deferredPayment && "გადავადებული გადახდა"].filter(Boolean).length
-      ? [["პირობები", [p.verifiedOnly && "მხოლოდ ვერიფიცირებული", p.vatInvoice && "ანგარიშ-ფაქტურა", p.deferredPayment && "გადავადებული გადახდა"].filter(Boolean).join(", ")] as [string, string]] : []),
+    ...([p.verifiedOnly && "ვერიფიცირებული სასურველია", p.vatInvoice && "ანგარიშ-ფაქტურა", p.deferredPayment && "გადავადებული გადახდა"].filter(Boolean).length
+      ? [["პირობები", [p.verifiedOnly && "ვერიფიცირებული სასურველია", p.vatInvoice && "ანგარიშ-ფაქტურა", p.deferredPayment && "გადავადებული გადახდა"].filter(Boolean).join(", ")] as [string, string]] : []),
   ] : [];
   return <>
     <section className={styles.detailList} aria-label="ბიუჯეტი და პირობები">

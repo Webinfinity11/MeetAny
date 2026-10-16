@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-16",
+  "status": "findings_assigned_and_notification_audit_fixes_implemented",
+  "scope": "Remaining freeform token editors, required markers, offer permission copy and contact-change semantics",
+  "findings": [
+    {
+      "file": "app/components/market/Distribution.tsx",
+      "line": 36,
+      "severity": "medium",
+      "issue": "Brands uses creatable MultiCombobox, max20 entries at80chars. Shared SelectedTokens hides entries after two rows behind +N; pending search query is not draft state.",
+      "recommendation": "Reuse visible editable list for freeform brand names; normalize on save, keep stated DB limits."
+    },
+    {
+      "files": [
+        "app/components/market/OnboardFields.tsx:46",
+        "app/components/market/OnboardSteps.tsx:85",
+        "app/components/market/OnboardSteps.tsx:93",
+        "app/components/market/OnboardSteps.tsx:94",
+        "app/components/market/account/Profile.tsx:424"
+      ],
+      "severity": "medium",
+      "issue": "Markets/languages/business tags/certificates remain creatable MultiCombobox. Long freeform certificates/markets can show same large-chip and hidden+N pattern.",
+      "recommendation": "Apply visible rows to freeform values, particularly certificates; keep category/city predefined selectors."
+    },
+    {
+      "files": [
+        "app/components/market/Distribution.tsx:23",
+        "app/components/market/Distribution.tsx:33",
+        "app/components/market/Distribution.tsx:35",
+        "app/components/ui/Combobox.tsx:133"
+      ],
+      "severity": "medium",
+      "issue": "Distribution save requires region, but region control has no required/asterisk. Channels declares required but shared multi label does not render star.",
+      "recommendation": "Align required prop/visible star/ARIA and focus validation for regions and channels."
+    },
+    {
+      "files": [
+        "app/components/market/EngagementPanels.tsx:26",
+        "app/components/market/EngagementPanels.tsx:63",
+        "app/components/market/EngagementPanels.tsx:142"
+      ],
+      "severity": "medium",
+      "issue": "Contact-change outcome shares report_resolved and is labelled complaint. Server Georgian success text in detail.resolution is replaced by generic complaint fallback; detail.kind contact_change already exists to distinguish it.",
+      "recommendation": "Label contact changes separately and show their actual outcome/login-email distinction; preserve generic unknown-enum fallback for unrelated reports."
+    },
+    {
+      "files": [
+        "app/components/market/AdminAuditTable.tsx:16",
+        "app/components/market/AdminAuditTable.tsx:27",
+        "app/components/market/AdminBusinessAudit.tsx:12"
+      ],
+      "severity": "low",
+      "issue": "Audit report.resolve/report target labels still say complaint including contact-change rejection. contact_change_applied lacks business audit label and becomes generic action.",
+      "recommendation": "Use inquiry label for general report action/target; add contact change applied action label."
+    }
+  ],
+  "excluded": [
+    "ProfileItems service/needs fields already assigned to forms agent.",
+    "Category and city MultiCombobox uses are valid predefined selectors.",
+    "Catalog card +N is a summary leading to full company detail, not a data-entry editor; not flagged as equivalent bug.",
+    "Main SendOfferForm/DealTermsForm commercial conditions use direct typed draft values; no remaining token editor there.",
+    "No reachable verification-required or companies-only offer-send claim found. Company-only import/setup messages and optional verified filters are correct."
+  ],
+  "implementedByThisAgent": {
+    "files": [
+      "app/components/market/EngagementPanels.tsx",
+      "app/components/market/AdminAuditTable.tsx",
+      "app/components/market/AdminBusinessAudit.tsx",
+      "app/components/ui/Combobox.tsx",
+      "qa/unit/account-public.test.mjs"
+    ],
+    "validation": "Targeted ESLint passed; account-public unit suite 8/8 passed, including current and historical applied/rejected contact outcomes, preserved reason, unknown-neutral and unrelated-report behavior.",
+    "status": "implemented_unit_verified_pending_browser_recheck"
+  }
+}

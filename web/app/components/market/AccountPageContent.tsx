@@ -22,6 +22,7 @@ import { ProfileLayout } from "./account/ProfileLayout";
 import { CompanyUpgrade } from "./account/CompanyUpgrade";
 import { useAccountNav } from "./account/nav";
 import { Notice } from "../ui/Notice";
+import { onboardingHref } from "../../lib/auth-redirect";
 import { readSeen, type AnyUser, type RequestItem, type OfferItem, type Tab } from "./account/shared";
 export function AccountPageContent() {
   const { store, ready, sessionReady, available } = useMarketStore();
@@ -44,34 +45,34 @@ export function AccountPageContent() {
   const data = useMemo(() => {
     if (!store || !me) return null;
     const myRequests = store.listRequests({ ownerId: me.id, state: "", includeHidden: true }) as RequestItem[];
-    if (me.role === "company") {
-      return { myOffers: store.myOffers(me) as OfferItem[], myRequests };
-    }
-    return { myOffers: [] as OfferItem[], myRequests };
+    return { myOffers: store.myOffers(me) as OfferItem[], myRequests };
   }, [store, me]);
   const isCompany = me?.role === "company";
   const requestedSpace = searchParams.get("space");
   const { myRequests = [], myOffers = [] } = data || {};
-  // Account intent decides which spaces exist: buyers only buy; sellers see Buying once they have requests (or ask for it).
-  const intent = (me as { accountIntent?: "buy" | "sell" | "both" } | null)?.accountIntent ?? "both";
-  const buyOnly = !isCompany || intent === "buy";
-  const buyOpen = intent !== "sell" || myRequests.length > 0 || requestedSpace === "buy";
-  const space = buyOnly || (buyOpen && (tab === "requests" || (requestedSpace === "buy" && !["offers", "opportunities"].includes(rawTab)))) ? "buy" : "sell";
+  // Buying and responding are available to every registered profile. Intent sets the default only.
+  const intent = me?.accountIntent;
+  const space = tab === "offers" || tab === "opportunities" ? "sell" : tab === "requests" ? "buy"
+    : requestedSpace === "buy" || requestedSpace === "sell" ? requestedSpace
+    : isCompany && intent !== "buy" ? "sell" : "buy";
   const tabs = useAccountNav(store, me, space);
   // The store can unmount RegisterForm before its async submit finishes. Keep the
   // registration destination in this surviving parent as well, including code verification.
   const registeringCompany = sessionReady && me?.role === "company" && rawTab === "register";
   useEffect(() => {
-    if (registeringCompany) router.replace("/onboarding/?step=type");
-  }, [registeringCompany, router]);
+    // A successful upgrade refreshes the store and unmounts CompanyUpgrade,
+    // just as signup unmounts RegisterForm. The surviving parent owns navigation.
+    const upgradedCompany = me?.role === "company" && rawTab === "profile" && window.location.hash === "#company-upgrade";
+    if (registeringCompany || upgradedCompany) router.replace(onboardingHref("type", searchParams.get("next")));
+  }, [registeringCompany, me?.role, rawTab, router, searchParams]);
   if (ready && !available) return <div className="ma-page"><ServiceUnavailable/></div>;
   if (!ready || !sessionReady || me?.role === "admin" || registeringCompany) return <AccountSkeleton admin={me?.role === "admin"}/>;
   if (!me || !store) return <AuthForms initialRole={searchParams.get("role") || ""}/>;
-  // Selling sections do not exist for a buyer; their links land on the dashboard.
-  const outOfSpace = buyOnly && ["opportunities", "offers"].includes(tab) || !isCompany && tab === "business";
+  // Business settings belong to a company; offers belong to either profile type.
+  const outOfSpace = !isCompany && tab === "business";
   const activeTab: Tab = outOfSpace ? "overview" : space === "sell" && tab === "requests" ? "overview" : tab;
   const title = activeTab === "overview" ? `გამარჯობა, ${me.company || me.name}` : activeTab === "business" ? "პარამეტრები" : tabs.find(item => item.key === activeTab)?.label || "ანგარიში";
-  return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} switcher={isCompany && intent !== "buy" && buyOpen} title={title} action={activeTab === "requests" ? <Button variant="secondary" href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button> : activeTab === "offers" ? <Button variant="secondary" href="/matching/"><Icon name="search"/>შესაძლებლობების ნახვა</Button> : undefined}>
+  return <AccountShell tab={activeTab} items={tabs} company={isCompany} space={space} switcher title={title} action={activeTab === "requests" ? <Button variant="secondary" href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button> : activeTab === "offers" ? <Button variant="secondary" href={isCompany ? "/matching/" : "/requests/"}><Icon name="search"/>მოთხოვნების ნახვა</Button> : undefined}>
     {activeTab === "deals" ? <MyDeals key={me.id} store={store} actor={me.id} space={space}/> : null}
     {activeTab === "overview" ? <Dashboard me={me} space={space}/> : null}
     {activeTab === "opportunities" ? <MatchingFeed key={me.id}/> : null}

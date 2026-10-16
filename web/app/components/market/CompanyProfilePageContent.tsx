@@ -94,10 +94,10 @@ export function CompanyProfilePageContent({ initial, extras }: { initial?: Publi
   const report = !ownProfile && store?.currentUser()?.role !== "admin" ? <ReportButton kind="company" targetId={c.id} /> : null;
   return (
     <div className={`ma-page company-profile detail-page ${styles.page}`}>
-      {ownProfile && (!c.verified || c.blocked || isInternalTestAccount(c)) ? <Notice>ეს გვერდი სტუმრისთვის არ ჩანს — მიზეზი: {!c.verified ? "ვერიფიკაცია არ არის" : "დამალულია"}.</Notice> : null}
+      {ownProfile && (c.blocked || isInternalTestAccount(c)) ? <Notice>პროფილი საჯაროდ დამალულია.</Notice> : null}
+      <Link className={`ma-back ${styles.back}`} href="/companies/"><Icon name="chevron-left" /><span>კომპანიები</span></Link>
       <header className={styles.hero}>
-        <Link className={`ma-back ${styles.back}`} href="/companies/"><Icon name="chevron-left" /><span>კომპანიები</span></Link>
-        <span className={styles.avatar}>{logo ? <Image src={logo} alt="" width={160} height={160} sizes="64px" priority unoptimized={!optimizable(logo)} /> : <Icon name="building-2"/>}</span>
+        <span className={styles.avatar}>{logo ? <Image src={logo} alt="" width={160} height={160} sizes="(min-width: 1024px) 80px, 64px" priority unoptimized={!optimizable(logo)} /> : <Icon name="building-2"/>}</span>
         <div className={styles.identity}>
           <div className={styles.nameRow}><h1 className={styles.name}>{name}</h1>{c.verified ? <span className={styles.verified} role="img" aria-label="ვერიფიცირებული კომპანია"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 14.4 4l3.1-.3.9 3 2.7 1.6-1 3 1 3-2.7 1.6-.9 3-3.1-.3L12 22l-2.4-2-3.1.3-.9-3L2.9 15.7l1-3-1-3 2.7-1.6.9-3 3.1.3L12 2Z"/><path className={styles.verifiedCheck} d="m8.5 12.2 2.3 2.3 4.7-4.9"/></svg></span> : null}</div>
           <p className={styles.meta}>{[categories[c.industry] || c.industry, cities[c.city] || c.city].filter(Boolean).join(" · ")}</p>
@@ -109,7 +109,7 @@ export function CompanyProfilePageContent({ initial, extras }: { initial?: Publi
           {reviews.data && reviews.data.total > 0 ? <p className={styles.rating}><Icon name="star" className={styles.filledStar}/><strong>{reviews.data.rating ?? "—"}</strong><span>· {reviews.data.total} შეფასება</span></p> : null}
           {stats.error ? null : stats.data ? <p className={styles.dealStats}><Icon name="handshake"/><strong>{stats.data.completedDeals}</strong><span>დასრულებული გარიგება</span></p> : <span className={styles.dealStatsSkeleton} aria-hidden="true"/>}
           {c.about?.startsWith("სადემო კომპანია.") ? <p className="company-demo-label">სადემო კომპანია · ინფორმაცია და კონტაქტები პრეზენტაციის მაგალითია.</p> : null}
-          {!ownProfile ? <p className={styles.actionNote}>მოთხოვნა საჯაროა — {name} და სხვა კომპანიებიც ნახავენ.</p> : null}
+          {!ownProfile ? <p className={styles.actionNote}>მოთხოვნას სხვა კომპანიებიც ნახავენ.</p> : null}
         </div>
       </header>
       <div className={`${styles.content} ${facts.length ? "" : styles.contentFull}`}>

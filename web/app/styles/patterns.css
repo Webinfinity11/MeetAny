@@ -27,7 +27,7 @@
 .ma-ocard__who{display:grid;gap:var(--space-1);min-width:0}
 .ma-ocard__name-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-1) var(--space-2);min-width:0}
 .ma-ocard__name{font-size:var(--fs-title);line-height:var(--lh-title);font-weight:var(--fw-semibold);color:var(--text);text-decoration:none;overflow-wrap:anywhere}
-a.ma-ocard__name:hover{color:var(--blue-700);text-decoration:underline;text-underline-offset:var(--size-3)}
+a.ma-ocard__name:hover{color:var(--action-hover);background:var(--bg-subtle);border-radius:var(--radius-sm)}
 .ma-ocard__who .ma-meta{font-size:var(--fs-xs);line-height:var(--lh-xs)}
 .ma-ocard__who .ma-meta>*:not(:last-child)::after{margin-inline:var(--space-compact)}
 @media (max-width:419.98px){
@@ -159,12 +159,13 @@ html:has(.ma-sheet[open]){overflow:hidden}
 .sector-icon .sector-fill{fill:var(--blue-50)}
 /* Compact grouped suggestions; the full-results link sits outside the listbox. */
 .search-suggestions {
-  position: absolute;
-  top: calc(100% + var(--space-3));
-  left: 0;
-  right: 0;
-  z-index: var(--z-menu);
-  max-height: min(var(--size-460), 70vh);
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: none;
+  max-height: var(--size-360);
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: var(--space-2);
@@ -174,7 +175,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
   color: var(--text);
   box-shadow: var(--shadow-float);
 }
-.search-suggestions[hidden] {
+.search-suggestions:not(:popover-open) {
   display: none;
 }
 .search-suggestions__heading {
@@ -264,7 +265,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
 .ma-chat .ma-chat__head .ma-avatar{flex:none;background:var(--action-subtle);color:var(--action)}
 .ma-chat__head span:not(.ma-avatar){font-size:var(--fs-xs);line-height:var(--lh-xs)}
 .ma-chat__peer-link,.ma-chat__context a{color:inherit;text-decoration:none}
-.ma-chat__peer-link:hover,.ma-chat__context a:hover{text-decoration:underline}
+.ma-chat__peer-link:hover,.ma-chat__context a:hover{background:var(--bg-subtle);border-radius:var(--radius-sm)}
 .ma-chat__peer-link:focus-visible,.ma-chat__context a:focus-visible{outline:var(--size-2) solid currentColor;outline-offset:calc(-1 * var(--size-2))}
 .ma-chat__context{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ma-chat__close{display:grid;place-items:center;flex:none;width:var(--tap-min);height:var(--tap-min);border:0;border-radius:var(--radius-control);background:transparent;color:inherit;cursor:pointer;transition:background var(--motion-fast) var(--motion-ease)}
@@ -320,7 +321,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
   .ma:has(.ma-chat:modal){height:100dvh;overflow:hidden}
   .ma-chat[open]{inset:0;width:100%;height:100dvh;max-height:100dvh;max-width:100%;border:0;border-radius:0;box-shadow:none}
   .ma-chat--dock[open]{top:var(--chat-viewport-top,var(--size-0));bottom:auto;height:var(--chat-viewport-height,100dvh);max-height:var(--chat-viewport-height,100dvh)}
-  .ma-chat-launcher{right:var(--size-16);bottom:calc(var(--size-16) + env(safe-area-inset-bottom));width:var(--size-52);padding:0;justify-content:center;border-radius:var(--btn-radius)}
+  .ma-chat-launcher{right:var(--size-16);bottom:calc(var(--size-16) + env(safe-area-inset-bottom) + var(--mobile-nav-offset, var(--space-0)));width:var(--size-52);padding:0;justify-content:center;border-radius:var(--btn-radius)}
   .ma-chat-launcher>.ma-chat-badge{position:absolute;top:var(--size-neg-5);right:var(--size-neg-5);border:var(--size-1) solid var(--blue-700)}
   .ma-chat--dock .ma-chat__head{gap:var(--size-8);padding-inline:var(--size-12)}
   .ma-chat--dock .ma-chat__head>.ma-avatar{width:var(--size-36);height:var(--size-36)}
@@ -374,7 +375,7 @@ html:has(.ma-sheet[open]){overflow:hidden}
 @keyframes catalog-enter{from{opacity:.72;transform:translateY(calc(var(--space-1)*1.5))}to{opacity:1;transform:none}}
 @keyframes catalog-pulse{0%,100%{opacity:1}50%{opacity:.7}}
 :is(.account-page,.auth-page,.request-form) :is(.account-link,.auth-link,.request-form__cancel){display:inline-flex;align-items:center;justify-self:start;min-height:var(--tap-min);padding:0;border:0;background:none;font:inherit;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:var(--fw-medium);color:var(--text-link);text-decoration:none;cursor:pointer;font-feature-settings:var(--catalog-title-case);letter-spacing:normal}
-:is(.account-page,.auth-page,.request-form) :is(.account-link,.auth-link,.request-form__cancel):hover{color:var(--action-hover);text-decoration:underline}
+:is(.account-page,.auth-page,.request-form) :is(.account-link,.auth-link,.request-form__cancel):hover{color:var(--action-hover);background:var(--bg-subtle);border-radius:var(--radius-sm)}
 :is(.account-page,.auth-page,.request-form) :is(.account-link,.auth-link,.request-form__cancel):disabled{color:var(--text-disabled);cursor:not-allowed;text-decoration:none}
 :is(.account-page,.auth-page,.request-form) .ma-form__row{gap:var(--space-4)}
 .ma-form__row--3{display:grid;gap:var(--space-4);grid-template-columns:minmax(0,1fr)}
@@ -408,9 +409,6 @@ html:has(.ma-sheet[open]){overflow:hidden}
 /* SiteHeader / SiteFooter: design-system shell, with the live account and mobile navigation. */
 
 /* Compact theme control; the footer adds a visible label and its inverse surface styles. */
-.ma-theme-toggle{flex:none;width:var(--tap-min);min-height:var(--tap-min);height:var(--tap-min);padding:0;border-color:var(--ink-300)}
-.ma-theme-toggle__swatch{display:block;width:var(--size-18);height:var(--size-18);flex:none;border:var(--size-1) solid var(--ink-300);border-radius:var(--radius-circle);background:var(--theme-swatch)}
-.ma-theme-toggle.ma-btn--secondary[aria-pressed=true]{border-color:var(--action);background:var(--selected-bg);color:var(--selected-text)}
 
 /* Offer form route: grey page background down to the footer, edge to edge. */
 .ma-frame[data-market-page="make-offer"] .ma-main { background: var(--bg-subtle); }

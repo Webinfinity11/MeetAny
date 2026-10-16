@@ -17,23 +17,16 @@ export const offerStatuses: Record<string, string> = { sent: "გაგზავ
 export const offerPrice = (offer: Pick<AdminOffer, "price" | "price_type">) =>
   offer.price == null ? "შეთანხმებით" : `${adminMoney(offer.price)}${offer.price_type === "unit" ? " / ერთეული" : offer.price_type === "from" ? "-დან" : ""}`;
 
-export function AdminOffersTable({ offers, onDelete, onOpen }: { offers: AdminOffer[]; onDelete: (offer: AdminOffer) => void; onOpen: (target: AdminTarget) => void }) {
-  const anyChosen = offers.some(offer => offer.status === "chosen");
+export function AdminOffersTable({ offers, onOpen }: { offers: AdminOffer[]; onOpen: (target: AdminTarget) => void }) {
   return <>
-    {anyChosen ? <p className={styles.note}>არჩეული შეთავაზება არ იშლება: მის ნაცვლად დამალეთ მოთხოვნა, გააუქმეთ გარიგება ან დაბლოკეთ კომპანია.</p> : null}
     <div className="ma-table-wrap"><table className={`ma-table ${styles.offersTable}`}>
       <caption className="ma-sr-only">შეთავაზებების მოდერაცია</caption>
-      <colgroup><col className={styles.colWide} /><col /><col /><col /><col className={styles.colDate} /><col className={styles.colAction} /></colgroup>
-      <thead><tr>{["შეთავაზება", "კომპანია", "მოთხოვნა", "სტატუსი", "თარიღი"].map(label => <th scope="col" key={label}>{label}</th>)}<th scope="col"><span className="ma-sr-only">მოქმედება</span></th></tr></thead>
+      <thead><tr>{["შეთავაზება / მომწოდებელი", "მოთხოვნა", "სტატუსი / თარიღი"].map(label => <th scope="col" key={label}>{label}</th>)}<th scope="col"><span className="ma-sr-only">მოქმედება</span></th></tr></thead>
       <tbody>{offers.map(offer => <tr key={offer.id}>
-        <td data-label="შეთავაზება"><button type="button" className={styles.rowLink} onClick={() => onOpen({ kind: "offer", id: offer.id })}>{offerPrice(offer)}</button><p className={styles.excerpt}>{offer.body || "ტექსტი არ არის"}</p></td>
-        <td data-label="კომპანია"><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "user", id: offer.company_id })}>{offer.company_name || `კომპანია · #${offer.company_id.slice(0, 8)}`}</button></td>
+        <td data-label="შეთავაზება"><div className={styles.offerIdentity}><button type="button" className={styles.rowLink} onClick={() => onOpen({ kind: "offer", id: offer.id })}>{offerPrice(offer)}</button><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "user", id: offer.company_id })}>{offer.company_name || `მომწოდებელი · #${offer.company_id.slice(0, 8)}`}</button><p className={styles.excerpt}>{offer.body || "ტექსტი არ არის"}</p></div></td>
         <td data-label="მოთხოვნა"><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "request", id: offer.request_id })}>{offer.request_title || `მოთხოვნა · #${offer.request_id.slice(0, 8)}`}</button>{offer.request_hidden ? <small>დამალული მოთხოვნა</small> : null}</td>
-        <td data-label="სტატუსი"><span className={`ma-badge ma-badge--${offer.status === "chosen" ? "success" : "neutral"}`}>{offerStatuses[offer.status]}</span>{offer.expired ? <small>ვადაგასული</small> : null}</td>
-        <td data-label="თარიღი"><time dateTime={offer.created_at} className={styles.nowrap}>{dateLabel(offer.created_at)}</time></td>
-        <td data-label="მოქმედება">{offer.status === "chosen"
-          ? <Button type="button" variant="secondary" onClick={() => onOpen({ kind: "offer", id: offer.id })}>დეტალების ნახვა</Button>
-          : <Button type="button" variant="danger-quiet" onClick={() => onDelete(offer)}>წაშლა…</Button>}</td>
+        <td data-label="სტატუსი"><span className={`ma-badge ma-badge--${offer.status === "chosen" ? "success" : "neutral"}`}>{offerStatuses[offer.status]}</span>{offer.expired ? <small className={styles.warningText}>ვადაგასული</small> : null}<small><time dateTime={offer.created_at}>{dateLabel(offer.created_at)}</time></small></td>
+        <td data-label="მოქმედება"><Button type="button" variant="secondary" aria-label={`შეთავაზების ნახვა: ${offer.company_name || offer.id.slice(0, 8)}`} onClick={() => onOpen({ kind: "offer", id: offer.id })}>ნახვა</Button></td>
       </tr>)}</tbody>
     </table></div>
   </>;

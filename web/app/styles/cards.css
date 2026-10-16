@@ -126,7 +126,7 @@
 .request-card__facts .is-urgent .icon { color: inherit; }
 .request-card__open { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: var(--size-6); min-height: var(--size-36); padding: var(--size-7) var(--size-4) var(--size-7) var(--size-10); border-radius: var(--size-7); color: var(--action); font-size: var(--size-13); line-height: var(--size-20); font-weight: var(--fw-semibold); text-decoration: none; }
 .request-card__open .icon { width: var(--size-16); height: var(--size-16); stroke-width: 1.75; transition: transform .15s ease; }
-.request-card__open:hover { text-decoration: underline; text-underline-offset: var(--size-3); }
+.request-card__open:hover { background: var(--bg-subtle); }
 .request-card__open:hover .icon { transform: translateX(var(--size-3)); }
 @media (prefers-reduced-motion: reduce) { .request-card__open .icon { transition: none; } }
 .request-card__open:focus-visible { outline: var(--size-2) solid var(--action); outline-offset: var(--size-3); }

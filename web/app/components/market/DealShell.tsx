@@ -65,7 +65,7 @@ function termRows(deal: Deal) {
   return [
     ["wallet", "ჯამური ფასი", `${money(deal.total_price)}${unitPrice ? ` · ${unitPrice}` : ""}`],
     ["package", "რაოდენობა", deal.quantity == null ? "დასაზუსტებელია" : `${deal.quantity} ${units[deal.unit || ""] || deal.unit || ""}`],
-    ["truck", "მიწოდების ვადა", `${deal.delivery_days == null ? "დასაზუსტებელია" : `${deal.delivery_days} დღე`}${deal.delivery_date ? ` · ${dealDate(deal.delivery_date)}` : ""}`],
+    ["truck", "შესრულების ვადა", `${deal.delivery_days == null ? "დასაზუსტებელია" : `${deal.delivery_days} დღე`}${deal.delivery_date ? ` · ${dealDate(deal.delivery_date)}` : ""}`],
     ["map-pin", "ადგილი", deal.delivery_place || "დასაზუსტებელია"],
     ["receipt", "გადახდა", deal.payment_terms || "დასაზუსტებელია"],
   ];
@@ -74,7 +74,7 @@ function termRows(deal: Deal) {
 export function DealTermsRecord({ store, deal, request, compact = false, actions }: { store?: Store; deal: Deal; request?: RecordRequest; compact?: boolean; actions?: ReactNode }) {
   const previous: Record<string, string | undefined> = {
     "რაოდენობა": request?.quantity != null && (request.quantity !== deal.quantity || request.unit !== deal.unit) ? `${request.quantity} ${units[request.unit || ""] || request.unit || ""}` : undefined,
-    "მიწოდების ვადა": request?.neededBy && deal.delivery_date && request.neededBy !== deal.delivery_date ? dealDate(request.neededBy) : undefined,
+    "შესრულების ვადა": request?.neededBy && deal.delivery_date && request.neededBy !== deal.delivery_date ? dealDate(request.neededBy) : undefined,
   };
   const agreed = !!(deal.buyer_confirmed_at && deal.supplier_confirmed_at);
   const agreedAt = [deal.buyer_confirmed_at, deal.supplier_confirmed_at].sort().at(-1);

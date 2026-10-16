@@ -42,3 +42,40 @@ test('report outcomes never expose an internal enum',()=>{
  assert.equal(reportResolutionLabel('hidden'),'დაკმაყოფილდა');
  assert.equal(reportResolutionLabel('future-enum'),'საჩივარი განხილულია');
 });
+test('contact changes preserve the applied outcome for current and historical payloads',()=>{
+ const {contactChangeOutcome}=context.exports;
+ for(const detail of [
+  {kind:'contact_change',result:'applied'},
+  {kind:'contact_change',resolution:'applied'},
+  {kind:'contact_change',resolution:'საკონტაქტო მონაცემები განახლდა. შესასვლელი ელფოსტა უცვლელია.'},
+ ]){
+  const outcome=contactChangeOutcome(detail);
+  assert.equal(outcome.title,'კონტაქტი განახლდა');
+  assert.match(outcome.description,/შესვლის ელფოსტა უცვლელია/);
+  assert.equal(outcome.tone,'success');
+  assert.equal(outcome.reason,'');
+ }
+});
+test('contact rejection keeps the reason separate from its status',()=>{
+ const {contactChangeOutcome}=context.exports;
+ const reason='ნომერი უკვე გამოიყენება: გადაამოწმეთ.';
+ for(const detail of [
+  {kind:'contact_change',result:'rejected',note:reason},
+  {kind:'contact_change',resolution:`კონტაქტის შეცვლის მოთხოვნა უარყოფილია: ${reason}`},
+ ]){
+  const outcome=contactChangeOutcome(detail);
+  assert.equal(outcome.title,'კონტაქტის შეცვლა უარყოფილია');
+  assert.equal(outcome.description,'საკონტაქტო მონაცემები არ შეცვლილა.');
+  assert.equal(outcome.reason,reason);
+  assert.equal(outcome.tone,'danger');
+ }
+});
+test('unknown contact results stay neutral and unrelated complaints keep their own semantics',()=>{
+ const {contactChangeOutcome}=context.exports;
+ assert.equal(contactChangeOutcome({kind:'offer',result:'applied'}),null);
+ assert.equal(contactChangeOutcome(null),null);
+ const unknown=contactChangeOutcome({kind:'contact_change',result:'future-enum'});
+ assert.equal(unknown.tone,'neutral');
+ assert.doesNotMatch(JSON.stringify(unknown),/future-enum|საჩივარი/);
+ assert.equal(contactChangeOutcome({kind:'contact_change',result:'rejected',resolution:'applied'}).tone,'danger');
+});

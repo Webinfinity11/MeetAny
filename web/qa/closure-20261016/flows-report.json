@@ -1,0 +1,125 @@
+{
+  "origin": "https://www.meetany.ge",
+  "checkedAt": "2026-10-16T07:00:07.923238+00:00",
+  "scope": "Dedicated labelled live QA actors only; no owner account or customer data mutations. Width emulation is not physical-device coverage.",
+  "requestId": "bd003bf9-ef7f-493b-9b96-eef118e1ca4d",
+  "dealId": "50be8507-faa8-4143-a9d3-37ca1e5f4363",
+  "screenshotsReviewed": [
+    "flows/reopened-1440.png",
+    "flows/offer-390.png",
+    "flows/resubmit-restored-390.png",
+    "flows/compare-1440.png",
+    "flows/compare-320.png",
+    "flows/compare-table-320.png",
+    "flows/chat-draft-320.png",
+    "flows/terms-before-submit-320.png",
+    "flows/request-cancelled-320.png"
+  ],
+  "checks": [
+    {
+      "id": "registration-personal",
+      "status": "live_verified",
+      "details": "Two fresh personal accounts registered with required fields and consent; dashboard welcome is visible."
+    },
+    {
+      "id": "request-publication",
+      "status": "live_verified",
+      "details": "Personal buyer published an other-category request with no quantity/date. Live confirmation was immediate without admin approval."
+    },
+    {
+      "id": "LOGIC-028",
+      "status": "live_verified",
+      "details": "Closed dedicated request originally expiring30Oct; reopened16Oct; confirmation, request heading and expiry changed to7days/23Oct. Separate copy fix for date-capped extension remains pending release below.",
+      "evidence": "flows/reopened-1440.png"
+    },
+    {
+      "id": "UX-029",
+      "status": "live_verified",
+      "details": "Unverified company sent120GEL total, unknown deadline, payment100% on delivery and typed condition; withdrew offer; reopened form retained price, description,payment,condition; resubmitted successfully. Buyer sees120GEL.",
+      "evidence": "flows/resubmit-restored-390.png"
+    },
+    {
+      "id": "offer-participation",
+      "status": "live_verified",
+      "details": "Unverified company and personal supplier both submitted real offers successfully. Personal supplier selected without verification gate; counterparties saw deal. Personal supplier heading has no company-profile link."
+    },
+    {
+      "id": "UI-018",
+      "status": "live_verified",
+      "details": "Two offers100/120GEL shown as readable comparison rows; table is optional, preserves full critical prices/taxes/delivery/payment data;320px table scrolls internally without page overflow.1440 and320screens visually inspected.",
+      "evidence": [
+        "flows/compare-1440.png",
+        "flows/compare-320.png",
+        "flows/compare-table-320.png"
+      ]
+    },
+    {
+      "id": "UX-032",
+      "status": "live_verified",
+      "details": "Unsent text retained across popup close/reopen, switching to another conversation (empty separate draft), full inbox Back/reopen,and page reload at320px. No test message was sent.",
+      "evidence": "flows/chat-draft-320.png"
+    },
+    {
+      "id": "UX-048",
+      "status": "live_verified",
+      "details": "Buyer typed condition directly without pressingAdd;Back,X,Escape each opened discard guard;continue retained input. Quantity validation retained other fields. Final submission saved1service,3days,online,100%advance and condition;both buyer and personal supplier saw identical saved condition before cancellation.",
+      "evidence": "flows/terms-before-submit-320.png"
+    },
+    {
+      "id": "LOGIC-038",
+      "status": "live_verified",
+      "details": "Buyer cancelled pendingterms deal;buyer and supplier both see cancelled;request headline/status shows cancellation prominently while preserving historical chosen offer. Admin exact view assigned root; source removes redundant repeated cancellation meta row.",
+      "evidence": "flows/request-cancelled-320.png"
+    }
+  ],
+  "findingsAndFixes": [
+    {
+      "id": "UI-014",
+      "status": "implemented_pending_live_recheck",
+      "details": "Live breadcrumbs have no underline but subtitle and returnLink retained browser underlines. Fixed explicit navigationLink style with44px target,neutral hover,and no underline for all three request navigation links.",
+      "files": [
+        "web/app/components/market/MakeOfferPageContent.tsx",
+        "web/app/components/market/MakeOffer.module.css"
+      ]
+    },
+    {
+      "id": "COPY-051",
+      "status": "implemented_pending_live_recheck",
+      "details": "Published request success screen incorrectly said request will be published when no matching supplier exists. Success-only text now says alreadypublished;draftpreview unchanged.",
+      "files": [
+        "web/app/components/market/post/MatchingSuppliers.tsx"
+      ]
+    },
+    {
+      "id": "LOGIC-028-date-cap-copy",
+      "status": "implemented_pending_live_recheck",
+      "details": "Root found expiry is capped by neededBy and21daysahead. Removed unconditional+7badge;confirmation explainsmax7 and cap;toast now uses actual returned expirydate in detail andMyRequests.",
+      "files": [
+        "web/app/components/market/RequestViewPageContent.tsx",
+        "web/app/components/market/account/MyRequests.tsx"
+      ]
+    },
+    {
+      "id": "COPY-052",
+      "status": "implemented_pending_live_recheck",
+      "details": "Cancelled request repeated the same state inbadge andcalendarfact directly below. Headerfact row now shows deadline only foropenrequests;closed state remains visible onceinbadge plus actionpanel."
+    }
+  ],
+  "checksLocal": [
+    "TypeScript noEmit passed",
+    "ESLint changed TSX files passed",
+    "Design lint passed"
+  ],
+  "cleanup": {
+    "status": "requested_root",
+    "requestHidden": false,
+    "note": "Preserve history. Root shouldhide labelled request andQAcompany after finalverification. No reviewscreated."
+  },
+  "limits": [
+    "Physical devices not tested by this agent",
+    "Real email delivery not tested",
+    "Fresh finaldeal was deliberatelycancelled toverifyLOGIC038;completedcycle evidencealreadyexists inOct15mainreport",
+    "Manualverifiedcompany withoutdocuments delegatedfinish_forms/root",
+    "Newcopy/stylesawaitreleasevisualrecheck"
+  ]
+}

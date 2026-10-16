@@ -137,11 +137,10 @@ export function RequestFormSheet({
     if (b.length < 10) errors.body = b ? "აღწერა მინიმუმ 10 სიმბოლო უნდა იყოს" : "აღწერეთ, რა გჭირდებათ";
     const neededBy = neededByText.trim() ? textToIso(neededByText) : "";
     const n = Number(quantity.trim().replace(/\s+/g, "").replace(",", "."));
-    if (!quantity.trim() || !Number.isFinite(n) || n <= 0 || Math.round(n * 1000) <= 0) errors.quantity = "მიუთითეთ რაოდენობა";
+    if (quantity.trim() && (!Number.isFinite(n) || n <= 0 || Math.round(n * 1000) <= 0)) errors.quantity = "მიუთითეთ 0-ზე მეტი რაოდენობა";
     else if (n > 1e9) errors.quantity = "რაოდენობა ძალიან დიდია";
-    if (!neededByText.trim()) errors.neededBy = "აირჩიეთ სასურველი თარიღი";
-    else if (neededBy === null) errors.neededBy = "მიუთითეთ თარიღი დღ.თთ.წწწწ ფორმატით";
-    else if (neededBy && tomorrow && neededBy < tomorrow) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
+    if (neededBy === null) errors.neededBy = "მიუთითეთ თარიღი დღ.თთ.წწწწ ფორმატით";
+    else if (neededBy && tomorrow && neededBy < tomorrow && neededBy !== existing?.neededBy) errors.neededBy = "თარიღი ხვალიდან უნდა იყოს";
     else if (neededBy && max && neededBy > max) errors.neededBy = `თარიღი არაუგვიანეს ${isoToText(max)}`;
     if (!v.check(errors, ["title", "category", "city", "body", "quantity", "neededBy"])) return;
     setPending(true);
@@ -274,11 +273,10 @@ export function RequestFormSheet({
             <div className="request-form__grid">
               <div className="ma-field">
                 <label className="ma-field__label" htmlFor="quantity">
-                  რაოდენობა *
+                  რაოდენობა / მოცულობა
                 </label>
                 <div className="request-form__qty" role="group" aria-label="რაოდენობა და ერთეული">
                   <input
-                    required
                     {...v.control("quantity")}
                     className="ma-input ma-input--num"
                     inputMode="decimal"
@@ -297,9 +295,9 @@ export function RequestFormSheet({
               </div>
               <div className="ma-field">
                 <label className="ma-field__label" htmlFor="neededBy">
-                  სასურველი თარიღი *
+                  სასურველი თარიღი
                 </label>
-                <input className="ma-input" required type="date" value={textToIso(neededByText) || ""} onChange={e => { setNeededByText(isoToText(e.target.value)); v.clear("neededBy"); }} min={tomorrow} max={max} {...v.control("neededBy")} />
+                <input className="ma-input" type="date" value={textToIso(neededByText) || ""} onChange={e => { setNeededByText(isoToText(e.target.value)); v.clear("neededBy"); }} min={tomorrow} max={max} {...v.control("neededBy")} />
                 {v.message("neededBy")}
               </div>
               <div className="ma-field request-form__wide">
@@ -326,11 +324,7 @@ export function RequestFormSheet({
           <p className="ma-field__error request-form__note" role="alert">
             {error}
           </p>
-        ) : (
-          <p className="request-form__note">
-            აქტიური იქნება 14 დღე.
-          </p>
-        )}
+        ) : null}
         <button className="request-form__cancel" type="button" onClick={close}>
           გაუქმება
         </button>

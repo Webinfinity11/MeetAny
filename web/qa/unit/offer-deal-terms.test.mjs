@@ -11,7 +11,7 @@ function load(path, imports = {}) {
 }
 const termsApi = load('../../app/lib/offer-terms-client.ts');
 const { termsEqual } = termsApi;
-const { readOfferDraft, offerDraftKey } = load('../../app/components/market/offer/offer-draft.ts', { '../../../lib/offer-terms-client': termsApi });
+const { readOfferDraft, offerDraftKey, retainWithdrawnOffer } = load('../../app/components/market/offer/offer-draft.ts', { '../../../lib/offer-terms-client': termsApi });
 const { paymentPreset, paymentPresets } = load('../../app/components/market/offer/payment-presets.ts');
 const offerTerms = { paymentTerms: '30% ავანსი', validUntil: '2026-11-01', commercialTerms: ['მონტაჟი'] };
 const dealTerms = { p_total_price: 1250, p_quantity: 10, p_unit: 'pcs', p_delivery_days: 6, p_delivery_date: '2026-11-01', p_delivery_place: 'თბილისი', p_payment_terms: 'მიწოდებისას', p_includes: ['მონტაჟი'] };
@@ -80,4 +80,19 @@ test('a current revision draft takes precedence over older partial-save recovery
   const s = storage([[key, JSON.stringify({ body: 'current draft' })], [root + '.offer.old', JSON.stringify({ body: 'older draft', pendingTerms: { id: offer.id, updatedAt: offer.updatedAt, terms: offerTerms } })]]);
   assert.equal(readOfferDraft(s, root, offer).draft.body, 'current draft');
   assert.equal(JSON.parse(s.getItem(key)).body, 'current draft');
+});
+
+
+test('withdrawn offer restores text and terms for its owner without reusing attachment or revision IDs', () => {
+  const s = storage([]);
+  retainWithdrawnOffer(s, 'actor', 'request', { ...offer, body: 'მზად ვართ', price: 100, priceType: 'unit', deliveryDays: 7, vatIncluded: true });
+  const restored = readOfferDraft(s, root).draft;
+  assert.equal(restored.price, '100');
+  assert.equal(restored.priceType, 'unit');
+  assert.equal(restored.body, 'მზად ვართ');
+  assert.equal(restored.paymentTerms, offerTerms.paymentTerms);
+  assert.equal(restored.commercialTerms, 'მონტაჟი');
+  assert.equal(restored.id, undefined);
+  assert.equal(restored.pendingTerms, undefined);
+  assert.equal(readOfferDraft(s, 'meetany.offerDraft.another.request').draft.body, undefined);
 });

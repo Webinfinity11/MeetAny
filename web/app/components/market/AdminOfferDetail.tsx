@@ -34,12 +34,12 @@ export function AdminOfferDetail({ store, id, revision, onClose, onOpen, onActio
   else body = <div className={styles.detail}>
     <div className={styles.detailHead}>
       <h3>{offerPrice(offer)}</h3>
-      <p>{offer.company_name || "კომპანია"} · {dateLabel(offer.created_at)}</p>
+      <p>{offer.company_name || "მომწოდებელი"} · {dateLabel(offer.created_at)}</p>
       <div className={styles.detailBadges}><span className={`ma-badge ma-badge--${offer.status === "chosen" ? "success" : "neutral"}`}>{offerStatuses[offer.status]}</span>{offer.expired ? <span className="ma-badge ma-badge--warning">ვადაგასული</span> : null}</div>
     </div>
     {offer.body ? <p className={styles.detailText}>{offer.body}</p> : null}
     <dl className={styles.detailFacts}>
-      <dt>კომპანია</dt><dd><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "user", id: offer.company_id })}>{offer.company_name || "კომპანია"}</button></dd>
+      <dt>მომწოდებელი</dt><dd><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "user", id: offer.company_id })}>{offer.company_name || "მომწოდებელი"}</button></dd>
       <dt>მოთხოვნა</dt><dd><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "request", id: offer.request_id })}>{offer.request_title || "მოთხოვნა"}</button>{offer.request_hidden ? " · დამალული" : ""}</dd>
       {offer.deal_id ? <><dt>გარიგება</dt><dd><button type="button" className={styles.detailLink} onClick={() => onOpen({ kind: "deal", id: offer.deal_id! })}>გარიგების ნახვა</button></dd></> : null}
       {offer.vat_included != null ? <><dt>დღგ</dt><dd>{offer.vat_included ? "ფასში შედის" : "ფასში არ შედის"}</dd></> : null}
@@ -57,7 +57,7 @@ export function AdminOfferDetail({ store, id, revision, onClose, onOpen, onActio
     {offer.deal_id ? <Button type="button" variant="secondary" onClick={() => onOpen({ kind: "deal", id: offer.deal_id! })}>გარიგების ნახვა</Button> : <span />}
     <div className={styles.dangerZone}>
       <Button type="button" variant="danger-quiet" disabled={offer.status === "chosen"} aria-describedby={offer.status === "chosen" ? "offer-delete-locked" : undefined}
-        onClick={() => onAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "კომპანია"} · ${offer.request_title || ""}` })}>შეთავაზების წაშლა…</Button>
+        onClick={() => onAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "მომწოდებელი"} · ${offer.request_title || ""}` })}>შეთავაზების წაშლა…</Button>
       {offer.status === "chosen" ? <small id="offer-delete-locked">არჩეული შეთავაზება არ იშლება.</small> : null}
     </div>
   </div> : null;

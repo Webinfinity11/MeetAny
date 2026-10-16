@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useRef, useState } from "react";
-import { parseProductCsv, parseProductRows, productKey, PRODUCT_HEADERS, PRODUCT_UNITS, type ImportProduct } from "../../lib/products-import";
+import { parseProductCsv, parseProductRows, productKey, PRODUCT_HEADERS, type ImportProduct } from "../../lib/products-import";
 import { businessError } from "../../lib/business-client";
 import { Button } from "../ui/Button";
 import { toast } from "../Toasts";
@@ -13,9 +13,10 @@ export type ProductsImportProps = {
  /** Receives the complete merged catalog, including preserved photos; resolve only after saving. */
  onConfirm: (products: ImportProduct[]) => Promise<void>;
  disabled?: boolean;
+ onBusy?: (busy: boolean) => void;
 };
 
-export function ProductsImport({ existing, gallery, onConfirm, disabled = false }: ProductsImportProps) {
+export function ProductsImport({ existing, gallery, onConfirm, onBusy, disabled = false }: ProductsImportProps) {
  const id = useId(), input = useRef<HTMLInputElement>(null), revision = useRef(0);
  const [rows, setRows] = useState<string[][] | null>(null), [filename, setFilename] = useState("");
  const [busy, setBusy] = useState(false), [error, setError] = useState("");
@@ -31,7 +32,7 @@ export function ProductsImport({ existing, gallery, onConfirm, disabled = false 
  async function read(file?: File) {
   if (!file) return;
   const current = ++revision.current;
-  setBusy(true); setError(""); setRows(null); setFilename(file.name);
+  setBusy(true); onBusy?.(true); setError(""); setRows(null); setFilename(file.name);
   try {
    if (file.size > 2 * 1024 * 1024) throw new Error("ფაილის მაქსიმალური ზომაა 2 მბ.");
    let parsed: string[][];
@@ -51,14 +52,14 @@ export function ProductsImport({ existing, gallery, onConfirm, disabled = false 
    if (current === revision.current) setRows(parsed);
   } catch (err) {
    if (current === revision.current) setError(err instanceof Error && /[ა-ჰ]/.test(err.message) ? err.message : "ფაილი ვერ წაიკითხა. გამოიყენეთ XLSX შაბლონი ან UTF-8 CSV და სცადეთ ხელახლა.");
-  } finally { if (current === revision.current) setBusy(false); }
+  } finally { if (current === revision.current) { setBusy(false); onBusy?.(false); } }
  }
  return <section className={styles.productsImport} aria-labelledby={`${id}-title`}>
-  <h3 id={`${id}-title`}>პროდუქტების იმპორტი</h3>
-  <p className={styles.productsHelp}>ჩამოტვირთეთ შაბლონი, შეცვალეთ ნიმუშები თქვენი პროდუქტებით და ატვირთეთ. ფასი და ფოტო არასავალდებულოა; ფოტო იმპორტით არ ემატება.</p>
-  <p className={styles.productsHelp}>ერთეულები: {Object.values(PRODUCT_UNITS).join(" / ")}. მაქსიმუმ 100 პროდუქტი, ფაილი — 2 მბ / 500 რიგი.</p>
+  <h3 id={`${id}-title`}>ფაილიდან დამატება</h3>
+  <div className={styles.productsImportContent}>
+  <p className={styles.productsHelp}>შეავსეთ შაბლონი და ატვირთეთ XLSX ან CSV ფაილი. ფოტოები შემდეგ დაამატეთ.</p>
   <div className={styles.productsEditorActions}>
-   <Button href="/templates/meetany-products.xlsx" download variant="secondary">შაბლონის ჩამოტვირთვა (.xlsx)</Button>
+   <Button href="/templates/meetany-products.xlsx" download variant="secondary">შაბლონი (.xlsx)</Button>
    <Button variant="secondary" disabled={disabled || busy} onClick={() => input.current?.click()}>ფაილის არჩევა</Button>
    <input ref={input} id={`${id}-file`} type="file" accept=".xlsx,.csv" hidden aria-label="პროდუქტების ფაილი" disabled={disabled || busy} onChange={event => { void read(event.target.files?.[0]); event.target.value = ""; }}/>
   </div>
@@ -78,13 +79,14 @@ export function ProductsImport({ existing, gallery, onConfirm, disabled = false 
    <div className={styles.productsEditorActions}>
     <Button loading={busy} disabled={disabled} onClick={async () => {
      if (!preview.length || result.errors.length) { setError(result.errors.length ? "გაასწორეთ მითითებული შეცდომები და ხელახლა ატვირთეთ ფაილი." : "ფაილში პროდუქტები არ არის."); return; }
-     setError(""); setBusy(true);
+     setError(""); setBusy(true); onBusy?.(true);
      try { await onConfirm(result.products); setRows(null); toast("პროდუქტები იმპორტირებულია."); }
      catch (err) { setError(businessError(err)); }
-     finally { setBusy(false); }
+     finally { setBusy(false); onBusy?.(false); }
     }}>დადასტურება</Button>
     <Button variant="ghost" disabled={busy || disabled} onClick={() => { revision.current++; setRows(null); setError(""); }}>გაუქმება</Button>
    </div>
   </> : null}
+  </div>
  </section>;
 }

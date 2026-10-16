@@ -29,7 +29,7 @@ export function HomeAudience({ stats }: { stats?: HomeStatsData | null }) {
   return <section className={`home-wrap ${styles.audience}`} aria-label="ვისთვის არის MeetAny">
     <Link className={styles.path} href="/requests/new/">
       <span className={styles.pathIcon}><Icon name="building-2" /></span>
-      <span className={styles.pathCopy}><strong>მჭირდება მომწოდებელი ან პარტნიორი</strong><span>აღწერეთ საჭიროება და მიიღეთ შეთავაზებები გადამოწმებული კომპანიებისგან.</span>
+      <span className={styles.pathCopy}><strong>მჭირდება მომწოდებელი ან პარტნიორი</strong><span>აღწერეთ საჭიროება და მიიღეთ მომწოდებლების შეთავაზებები.</span>
         {deals && <span className={styles.pathProof}><b>{formatNumber(deals[1], 0)}</b> დასრულებული გარიგება</span>}</span>
       <Icon name="arrow-right" className={styles.pathArrow} />
     </Link>
@@ -51,7 +51,7 @@ export function HomeHow() {
 
 export function HomeWhy() {
   return <section className={`home-wrap ${styles.block}`} aria-labelledby="home-why-title">
-    <div className={styles.intro}><h2 id="home-why-title">რატომ MeetAny</h2><p>სამი წესი, რომელსაც საიტი ყველა გარიგებაზე იცავს.</p></div>
+    <div className={styles.intro}><h2 id="home-why-title">რატომ MeetAny</h2><p>რაც მომწოდებლის არჩევაში გეხმარებათ.</p></div>
     <ul className={styles.rules}>{homeRules.map(({ icon, title, text }) => <li key={title}><span className={styles.ruleIcon}><Icon name={icon} /></span><h3>{title}</h3><p>{text}</p></li>)}</ul>
   </section>;
 }
@@ -65,7 +65,7 @@ export function HomeFaq() {
 
 export function HomeCta() {
   return <section className={`home-wrap ${styles.cta}`} aria-labelledby="home-cta-title">
-    <div><h2 id="home-cta-title">ერთი მოთხოვნა — რამდენიმე შეთავაზება</h2><p>აღწერეთ, რა გჭირდებათ, და შეადარეთ ვერიფიცირებული კომპანიების პასუხები.</p></div>
+    <div><h2 id="home-cta-title">ერთი მოთხოვნა — რამდენიმე შეთავაზება</h2><p>აღწერეთ, რა გჭირდებათ, და შეადარეთ ფასი, ვადა და პირობები.</p></div>
     <Button size="lg" href="/requests/new/"><Icon name="plus" />განათავსეთ მოთხოვნა</Button>
   </section>;
 }

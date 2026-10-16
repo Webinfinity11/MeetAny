@@ -1,5 +1,10 @@
 .ma-header,.ma-header *,.ma-mnav,.ma-mnav *{box-sizing:border-box}
 .ma-header,.ma-mnav{font-feature-settings:normal}
+@media(max-width:767px){
+ :global(body):has([data-bottom-nav]) .ma-mnav__body .mobileQuickLink{display:none}
+ :global(body):has([data-bottom-nav]) .ma-header__updates{display:none}
+ .ma-mnav__body>.mobileCatalogLinks:not(:has(a:not(.mobileQuickLink))){display:none}
+}
 .ma-header :global(.ma-btn),.ma-mnav :global(.ma-btn){font-feature-settings:var(--ff-button);letter-spacing:var(--ls-button)}
 .ma-header :global(.icon),.ma-mnav :global(.icon){width:var(--icon);height:var(--icon);flex:none;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:var(--icon-stroke);stroke-linecap:round;stroke-linejoin:round}
 .ma-header :focus-visible,.ma-mnav :focus-visible{outline:none;box-shadow:var(--focus-ring)}
@@ -121,7 +126,7 @@ html:has(.ma-mnav[open]){overflow:hidden}
 @media (max-width:767px){.ma-header__actions:has(.ma-header__updates) .ma-header__cta>:global(.icon){display:block;flex:none}}
 @media (max-width:767px){.ma-header__actions:has(.ma-header__updates) .ma-header__cta-short,.ma-header__actions:has(.ma-header__updates) .ma-header__cta-label{display:none}}
 .ma-header__account .ma-header__avatar,.ma-mnav__identity .ma-header__avatar{width:var(--size-28);height:var(--size-28);border-radius:var(--radius-circle);border:var(--size-1) solid var(--card-border);background:var(--bg-subtle);color:var(--text-2);font-size:var(--fs-xs);line-height:var(--lh-solid);font-weight:var(--fw-semibold);flex:none}
-.ma-header__avatar img{object-fit:contain;background:var(--white)}
+.ma-header__avatar img{object-fit:cover;background:var(--white)}
 .ma-menu__identity{display:grid;gap:var(--space-1);min-width:0;margin-bottom:var(--space-1);padding:var(--space-3);border-bottom:var(--size-1) solid var(--border-subtle);color:var(--text);font-size:var(--fs-sm);line-height:var(--lh-sm);overflow-wrap:anywhere}
 .ma-menu__identity strong{font-weight:var(--fw-semibold)}
 .ma-menu__identity>span{color:var(--text-3);font-size:var(--fs-xs);line-height:var(--lh-xs)}
@@ -166,7 +171,6 @@ html:has(.ma-mnav[open]){overflow:hidden}
 @media (max-width:359.98px){.ma-header:has(.ma-header__updates) :global(.ma-logo){--logo-h:var(--size-20);gap:var(--space-1)}}
 @media (max-width:359.98px){.ma-header__actions:has(.ma-header__updates){gap:0}}
 @media (max-width:359.98px){.ma-header__actions:has(.ma-header__updates) .ma-header__cta{width:var(--size-40)}}
-.ma-header__actions :global(.ma-theme-toggle){flex:none;width:var(--tap-min);min-height:var(--tap-min);height:var(--tap-min);padding:0;border-color:var(--ink-300)}
 .ma-header__account .ma-menu__trigger>.ma-menu__label{display:none}
 .ma-header__actions:has(.ma-header__updates) .ma-header__cta-short{display:inline}
 .ma-header__actions:has(.ma-header__updates) .ma-header__cta-label{position:absolute;width:var(--size-1);height:var(--size-1);overflow:hidden;clip:rect(0 0 0 0)}
@@ -178,7 +182,7 @@ html:has(.ma-mnav[open]){overflow:hidden}
 @media (max-width:767.98px){.ma-header__actions:has(.ma-header__updates){gap:0}}
 /* Final SiteHeader geometry; shared live controls keep their own behavior. */
 .ma-header{flex-shrink:0}
-.ma-header__inner{max-width:var(--container);width:100%;margin-inline:auto;padding-inline:var(--space-8);height:calc(var(--size-64) - var(--size-1));gap:var(--space-8)}
+.ma-header__inner{max-width:calc(var(--container) + 2 * var(--gutter));width:100%;margin-inline:auto;padding-inline:var(--gutter);height:calc(var(--size-64) - var(--size-1));gap:var(--space-8)}
 .ma-header__brand{color:var(--text)}
 .ma-header__search{display:none;align-items:center;justify-content:center;flex:none;width:var(--size-40);height:var(--size-40);border-radius:var(--radius-circle);color:var(--ink-800)}
 .ma-header__search:hover{background:var(--ink-100)}
@@ -245,3 +249,9 @@ html:has(.ma-mnav[open]){overflow:hidden}
 @media(max-width:359.98px){
   .ma-header__updates{display:none}
 }
+
+/* The signed-in profile has the same 44px target as adjacent header controls. */
+.ma-header__account .ma-menu__trigger--compact{width:var(--tap-min);min-width:var(--tap-min);height:var(--tap-min);padding:var(--space-2);gap:0;border-radius:var(--btn-radius)}
+.ma-header__account .ma-menu__trigger--compact>:global(.icon){display:none}
+.ma-header__account .ma-menu__trigger--compact .ma-header__avatar{width:var(--size-28);height:var(--size-28);border:0;border-radius:var(--radius-md);overflow:hidden}
+.ma-header__account .ma-menu__trigger--compact:hover,.ma-header__account .ma-menu__trigger--compact[aria-expanded=true]{background:var(--ink-100)}

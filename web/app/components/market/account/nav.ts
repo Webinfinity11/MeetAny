@@ -9,7 +9,7 @@ export function accountNav(company: boolean, space: Space, counts: Partial<Recor
   const items: NavItem[] = [
     { key: "overview", label: "დაფა", icon: "layout-grid" },
     ...(space === "buy" ? [{ key: "requests" as Tab, label: "ჩემი მოთხოვნები", icon: "file-text" }] : []),
-    ...(company && space === "sell" ? [{ key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "inbox", href: "/matching/" }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send" }] : []),
+    ...(space === "sell" ? [{ key: "opportunities" as Tab, label: "შესაძლებლობები", icon: "inbox", href: company ? "/matching/" : "/requests/" }, { key: "offers" as Tab, label: "ჩემი შეთავაზებები", icon: "send" }] : []),
     { key: "deals", label: "გარიგებები", icon: "handshake" },
     { key: "saved", label: "შენახული", icon: "bookmark" },
     { key: "messages", label: "მიმოწერები", icon: "message-square" },
@@ -27,7 +27,7 @@ export function useAccountNav(store: Store | null | undefined, me: AnyUser | nul
   const engagement = store?.engagement();
   return accountNav(company, space, me && store ? {
     requests: store.listRequests({ ownerId: me.id, state: "", includeHidden: true }).length,
-    offers: company ? store.myOffers(me).length : 0,
+    offers: store.myOffers(me).length,
     messages: unread,
     notifications: engagement?.status === "ready" ? engagement.unread : null,
   } : {});

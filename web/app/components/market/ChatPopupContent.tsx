@@ -1,6 +1,5 @@
 "use client";
-import { ReportButton } from "./ReportButton";
-import { ChatContext, ChatMessages } from "./messaging/ChatParts";
+import { ChatContext, ChatMessages, ChatTools } from "./messaging/ChatParts";
 import { SharedFiles } from "./messaging/SharedFiles";
 import { Button } from "../ui/Button";
 
@@ -9,18 +8,15 @@ import { trapDialogFocus } from "../ui/dialog-focus";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { type Store } from "../../lib/market-client";
-import { useChatThread, useConversationList, useUnreadMessageCount, type ChatTarget, type Conversation } from "../../lib/chat-client";
+import { useChatDraft, useChatThread, useConversationList, useUnreadMessageCount, type ChatTarget, type Conversation } from "../../lib/chat-client";
 import { CompanyAvatar } from "./CompanyAvatar";
 import { Icon } from "../Icon";
 import styles from "./ChatPopup.module.css";
 
-/** Decorative invitation for a genuinely empty thread; never a peer's typing or presence state. */
+/** A small decorative cue leaves the empty conversation readable at any viewport height. */
 function EmptyConversationArt() {
-  return <span className={styles.emptyArt} aria-hidden="true">
-    <Image className={styles.illustration} src="/assets/chat-conversation-v1.png" width={1536} height={1024} sizes="216px" alt="" />
-  </span>;
+  return <span className={styles.emptyArt} aria-hidden="true"><Icon name="message-square"/></span>;
 }
 export function ChatPopupContent({ store, owner, role, initial }: { store: Store; owner: string; role: string; initial: { target?: ChatTarget } }) {
   const [selection, setSelection] = useState<{ target: ChatTarget; key: number } | null>(() => initial.target ? { target: initial.target, key: 0 } : null);
@@ -109,13 +105,13 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
   const scroll = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
   const { conversation, messages, loaded, failed, pending, sendError, send: deliver, retry } = useChatThread(store, target, visible);
-  const [body, setBody] = useState("");
+  const [body, setBody] = useChatDraft(owner, target);
   const [validationError, setValidationError] = useState("");
   const otherId = conversation?.otherId || (conversation ? (conversation.clientId === owner ? conversation.companyId : conversation.clientId) : target.companyId !== owner ? target.companyId : "");
   const peer = store.userById(otherId);
   const logoUrl = peer?.logoUrl;
   const name = conversation?.otherCompany || conversation?.otherName || peer?.company || peer?.name || "მიმოწერა";
-  const isCompany = peer?.role === "company" || otherId === (conversation?.companyId || target.companyId);
+  const isCompany = (peer?.role || conversation?.otherRole) === "company";
   const requestId = conversation?.requestId || (conversation?.contextKey && conversation.contextKey !== "general" ? conversation.contextKey : null) || target.requestId;
   const [now] = useState(() => Date.now());
   const lastSent = messages.findLast(message => message.senderId === owner);
@@ -132,17 +128,17 @@ function ChatWindow({ store, owner, target, visible, onBack, onClose }: { store:
   return <dialog ref={dialog} className={`ma-chat ma-chat--dock ${styles.dock}`} aria-labelledby="ma-chat-title" onCancel={e => { e.preventDefault(); onClose(); }} onKeyDown={e => { if (e.currentTarget.matches(":modal")) trapDialogFocus(e); if (e.key === "Escape") { e.preventDefault(); onClose(); } }}>
     <div className={`ma-chat__head ${styles.threadHead}`}>
       <div className={styles.threadIdentity}><CompanyAvatar name={name} logoUrl={logoUrl}/><h2 id="ma-chat-title" title={name}>{isCompany ? <Link className="ma-chat__peer-link" href={`/companies/view/?id=${encodeURIComponent(otherId)}`} onClick={onClose}>{name}</Link> : name}</h2></div>
+      {conversation ? <ChatTools conversationId={conversation.id}/> : null}
       <button type="button" className="ma-chat__close" aria-label="მიმოწერის ჩაკეცვა" title="მიმოწერის ჩაკეცვა" onClick={onClose}><Icon name="x"/></button>
     </div>
     <nav className={styles.threadTabs} aria-label="მიმოწერის ხედი"><button type="button" onClick={onBack}><Icon name="chevron-left"/>ყველა საუბარი</button>{conversation ? <Link href={`/account/?tab=messages&c=${encodeURIComponent(conversation.id)}`} onClick={onClose}><Icon name="external-link"/>სრულად გახსნა</Link> : null}</nav>
-    {conversation ? <details><summary style={{minHeight:"var(--tap-min)",padding:"var(--space-3)"}}>საუბრის მოქმედებები</summary><ReportButton kind="conversation" targetId={conversation.id}/></details> : null}
-    <ChatContext store={store} requestId={requestId} companyId={conversation?.companyId || target.companyId}/>
+    <div className={styles.contextArea}><ChatContext store={store} requestId={requestId} companyId={conversation?.companyId || target.companyId} collapsible disclosureGroup={conversation ? `popup-${conversation.id}` : undefined}/></div>
     <div className="ma-chat__messages" tabIndex={0} ref={scroll} onScroll={e => { const n = e.currentTarget; atBottom.current = n.scrollHeight - n.scrollTop - n.clientHeight < 80; }} role="log" aria-label="საუბრის შეტყობინებები" aria-live="polite" aria-relevant="additions" aria-busy={!loaded && !failed}>
       {!loaded ? <p role="status">{failed ? "საუბარი ვერ ჩაიტვირთა." : "საუბარი იტვირთება…"}</p> : !messages.length ? <div className="ma-chat__empty"><EmptyConversationArt /><h3>დაიწყეთ საუბარი</h3><p>მოიკითხეთ დეტალები და შეთანხმდით თანამშრომლობაზე.</p></div> : <ChatMessages messages={messages} owner={owner} name={name} now={now}/>}
     </div>
     {lastSent ? <small className="ma-note" role="status">ბოლო შეტყობინება · {lastSent.readAt ? "წაკითხულია" : "გაგზავნილია"}</small> : null}
     {failed ? <div className="ma-chat__retry"><span>განახლება ვერ მოხერხდა.</span><button className="ma-link" onClick={retry}>ხელახლა ცდა</button></div> : null}
-    {conversation && visible ? <SharedFiles store={store} target={conversation.id}/> : null}
+    {conversation && visible ? <SharedFiles store={store} target={conversation.id} disclosureGroup={`popup-${conversation.id}`}/> : null}
     <form className="ma-chat__composer" onSubmit={e => { e.preventDefault(); void send(); }}>
       <label className="ma-sr-only" htmlFor="ma-chat-body">შეტყობინება</label>
       <textarea ref={input} id="ma-chat-body" className="ma-textarea" rows={1} maxLength={2000} value={body} readOnly={pending} aria-invalid={!!(validationError || sendError)} aria-describedby={validationError || sendError ? "ma-chat-error" : undefined} placeholder="დაწერეთ შეტყობინება…" onChange={e => { setBody(e.target.value); setValidationError(""); }} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void send(); } }}/>

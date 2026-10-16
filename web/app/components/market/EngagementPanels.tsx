@@ -4,7 +4,7 @@ import { Sheet } from "../ui/Sheet";
 
 import { ListSkeleton } from "./Skeletons";
 import { ServiceUnavailable } from "./ServiceUnavailable";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMarketStore, type Store } from "../../lib/market-client";
@@ -24,8 +24,6 @@ type Page = { items: (Notice & Saved)[]; nextCursor: Cursor };
 // Store statuses: idle (not loaded yet) → ready | unavailable (feature off) | error (request failed).
 const failed = (status?: string) => status === "unavailable" || status === "error";
 const label = (kind: string) => kind === "request_match" ? "შესაბამისი მოთხოვნა" : kind === "offer_chosen" ? "შეთავაზება აირჩიეს" : kind === "offer_received" ? "ახალი შეთავაზება" : kind === "offer_declined" ? "შეთავაზება არ შეირჩა" : kind === "verification_reviewed" ? "ვერიფიკაცია" : kind === "report_resolved" ? "საჩივარი განხილულია" : kind === "verify_to_respond" ? "ახალი მოთხოვნა თქვენს მიმართულებაზე" : "შეტყობინება";
-// An unverified company sees a matching request; answering it needs verification first.
-const verifyText = "ამ მოთხოვნაზე პასუხისთვის დაასრულეთ ვერიფიკაცია";
 // Calendar day in Tbilisi as a UTC-midnight number, for "today / yesterday / N days ago".
 const tbilisiDay = (value: string | number) => Date.parse(new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Tbilisi", year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(value)));
 const clock = (value: string) => new Intl.DateTimeFormat("en-GB", {timeZone: "Asia/Tbilisi", hour: "2-digit", minute: "2-digit", hour12: false}).format(new Date(value));
@@ -34,18 +32,28 @@ function relative(value: string, now: number) {
  return days <= 0 ? `დღეს ${clock(value)}` : days === 1 ? `გუშინ ${clock(value)}` : days < 7 ? `${days} დღის წინ` : dateShort(value);
 }
 const noticeType = (n: Notice) => n.deal_id ? "deal" : n.kind === "offer_received" || n.kind === "offer_chosen" || n.kind === "offer_declined" ? "offers" : "system";
+const noticeTone = (n: Notice) => {
+ const contact = n.kind === "report_resolved" ? contactChangeOutcome(n.detail) : null;
+ if (contact) return contact.tone;
+ if (n.deal_action === "cancelled" || n.detail?.status === "rejected") return "danger";
+ if (n.deal_action === "complete" || n.kind === "offer_chosen" || n.detail?.status === "approved") return "success";
+ if (n.detail?.status === "returned") return "warning";
+ return "neutral";
+};
 // Conversations have their own section („მიმოწერები“); notifications are offers, deals and system notices.
 const noticeTypes = { offers: "შეთავაზებები", deal: "გარიგებები", system: "სისტემა" };
 const noticeLabel = (n: Notice) => {
+ const contact = n.kind === "report_resolved" ? contactChangeOutcome(n.detail) : null;
+ if (contact) return contact.title;
  const stage = ({ selected: "მომწოდებლის არჩევა", discuss: "დეტალების განხილვა", progress: "შესრულება", complete: "დასრულდა", cancelled: "გაუქმდა" } as Record<string, string>)[n.deal_action || ""];
  if (n.kind === "verification_reviewed") { const status = n.detail?.status; return status === "approved" ? "ვერიფიკაცია — ვერიფიცირებულია" : status === "rejected" || status === "returned" ? "ვერიფიკაცია — დაბრუნებულია შესასწორებლად" : label(n.kind); }
  return n.deal_id ? stage ? `გარიგება გადავიდა ეტაპზე „${stage}“` : dealActionLabel(n.deal_action) : label(n.kind);
 };
 // Second line: what the notice is about; a returned verification carries the moderator's note.
-const noticeSubject = (n: Notice, requestTitle?: string) => n.kind === "verification_reviewed" ? (n.detail?.status === "approved" ? null : n.detail?.note) || n.detail?.title || n.title : requestTitle || n.title || n.detail?.title;
+const noticeSubject = (n: Notice, requestTitle?: string) => n.kind === "verification_reviewed" ? (n.detail?.status === "approved" ? null : n.detail?.note) || n.detail?.title || n.title : (n.kind === "report_resolved" ? contactChangeOutcome(n.detail)?.description : null) || requestTitle || n.title || n.detail?.title;
 /** Where a notice leads; null when there is nowhere to go (resolved reports, unknown kinds without a request). */
-const noticeHref = (n: Notice): string | null => n.deal_id ? dealHref(n.deal_id) : n.kind === "verification_reviewed" ? "/onboarding/" : n.kind === "verify_to_respond" ? "/onboarding/?step=verify" : n.kind === "report_resolved" || !n.request_id ? null : n.kind === "offer_received" ? `/requests/compare/?id=${encodeURIComponent(n.request_id)}` : `/requests/view/?id=${encodeURIComponent(n.request_id)}`;
-const actionLabel = (n: Notice) => n.kind === "offer_received" && !n.deal_id ? "შედარება" : n.kind === "verification_reviewed" ? "პროფილის გახსნა" : n.kind === "verify_to_respond" ? "ვერიფიკაციის გავლა" : "ნახვა";
+const noticeHref = (n: Notice): string | null => n.deal_id ? dealHref(n.deal_id) : n.kind === "verification_reviewed" ? "/onboarding/" : n.kind === "report_resolved" || !n.request_id ? null : n.kind === "offer_received" ? `/requests/compare/?id=${encodeURIComponent(n.request_id)}` : `/requests/view/?id=${encodeURIComponent(n.request_id)}`;
+const actionLabel = (n: Notice) => n.kind === "offer_received" && !n.deal_id ? "შედარება" : n.kind === "verification_reviewed" ? "პროფილის გახსნა" : "ნახვა";
 export function groupOfferNotifications(items: Notice[], ungrouped = false) {
  const groups = new Map<string, Notice[]>();
  const grouped = items.filter(n => {
@@ -58,6 +66,20 @@ export function groupOfferNotifications(items: Notice[], ungrouped = false) {
 }
 export function reportResolutionLabel(resolution?: string) {
  return resolution === "rejected" ? "უარყოფილია" : resolution === "hidden" ? "დაკმაყოფილდა" : "საჩივარი განხილულია";
+}
+/** Contact-change notices share the reports channel; older events store a sentence instead of an enum. */
+export function contactChangeOutcome(detail: Notice["detail"]) {
+ if (detail?.kind !== "contact_change") return null;
+ const resolution = detail.resolution?.trim() || "";
+ const result = ["applied", "rejected"].includes(detail.result || "") ? detail.result
+  : resolution === "applied" || resolution.startsWith("საკონტაქტო მონაცემები განახლდა") ? "applied"
+  : resolution === "rejected" || resolution.startsWith("კონტაქტის შეცვლის მოთხოვნა უარყოფილია") ? "rejected" : "unknown";
+ const reason = (detail.note || detail.resolution_reason || detail.reason || (result === "rejected" && resolution.startsWith("კონტაქტის შეცვლის მოთხოვნა უარყოფილია:") ? resolution.split(":").slice(1).join(":") : "")).trim();
+ return result === "applied"
+  ? { title: "კონტაქტი განახლდა", description: "საკონტაქტო მონაცემები განახლდა. შესვლის ელფოსტა უცვლელია.", reason, tone: "success" }
+  : result === "rejected"
+   ? { title: "კონტაქტის შეცვლა უარყოფილია", description: "საკონტაქტო მონაცემები არ შეცვლილა.", reason, tone: "danger" }
+   : { title: "კონტაქტის მოთხოვნა განხილულია", description: "მომართვა განხილულია.", reason, tone: "neutral" };
 }
 export function notificationTerms(notice: Pick<Notice, "deal_id">, deal?: Deal | null, offer?: { price?: number | null; deliveryDays?: number | null } | null) {
  // Never fall back to the original offer while agreed terms are loading or unavailable.
@@ -108,10 +130,9 @@ function NoticeRows({ items, limit, store, compact = false, ungrouped = false }:
    {!compact && (!index || dayBand(rows[index - 1].created_at) !== day) ? <h2 className={styles.dayHeading}>{day}</h2> : null}
    <article className={styles.row} data-unread={!n.read_at} data-selected={!compact && selected?.id === n.id}>
     {(() => { const body = <>
-     <span className={styles.noticeIcon} data-type={noticeType(n)}><Icon name={noticeType(n) === "offers" ? "inbox" : noticeType(n) === "deal" ? "handshake" : "bell"}/>{!n.read_at ? <span className={styles.unreadDot} aria-hidden="true"/> : null}</span>
+     <span className={styles.noticeIcon} data-type={noticeType(n)} data-tone={noticeTone(n)}><Icon name={noticeTone(n) === "success" ? "check" : noticeTone(n) === "danger" ? "x" : noticeTone(n) === "warning" ? "triangle-alert" : noticeType(n) === "offers" ? "inbox" : noticeType(n) === "deal" ? "handshake" : "bell"}/>{!n.read_at ? <span className={styles.unreadDot} aria-hidden="true"/> : null}</span>
      <span className={styles.noticeCopy}><strong className={styles.noticeTitle}>{title}</strong><span className={styles.noticeSubtitle}>{subtitle}</span>
       {n.kind === "request_match" ? <span className={styles.meta}>{[categories[n.category || ""], cities[n.city || ""]].filter(Boolean).join(" · ")}</span> : null}
-      {n.kind === "verify_to_respond" ? <span className={styles.meta}>{verifyText}</span> : null}
      </span>
      <time className={styles.noticeTime} dateTime={n.created_at}>{compact ? relative(n.created_at, now) : clock(n.created_at)}</time>
      {!n.read_at ? <span className="ma-sr-only">წაუკითხავი</span> : null}
@@ -130,13 +151,14 @@ function NoticeRows({ items, limit, store, compact = false, ungrouped = false }:
 function NoticeDetail({ notice, deal, store, acknowledge }: { notice: Notice; deal?: Deal | null; store?: Store; acknowledge: () => void }) {
  const request = notice.request_id ? store?.getRequest(notice.request_id) : null;
  const href = noticeHref(notice);
+ const contact = notice.kind === "report_resolved" ? contactChangeOutcome(notice.detail) : null;
  // The notification API has no offer/sender id. Only selection events identify a specific offer via the request.
  const offer = notice.kind === "offer_chosen" && request?.chosenOfferId ? store?.visibleOffers(request.id).find((item: { id: string }) => item.id === request.chosenOfferId) : null;
  const company = deal ? store?.userById(deal.supplier_id) : offer ? store?.userById(offer.companyUserId) : null;
  return <aside className={styles.noticeDetail} aria-label="შეტყობინების დეტალი">
   <p className={styles.meta}>{noticeLabel(notice)} · {clock(notice.created_at)}</p>
   <h2>{request?.title || notice.detail?.title || notice.title}</h2>
-  {notice.kind === "verification_reviewed" && notice.detail?.note ? <p>{notice.detail.note}</p> : notice.kind === "report_resolved" ? <><p>{reportResolutionLabel(notice.detail?.result || notice.detail?.resolution)}</p>{notice.detail?.note || notice.detail?.resolution_reason || notice.detail?.reason ? <p>{notice.detail.note || notice.detail.resolution_reason || notice.detail.reason}</p> : <p>განხილვის მიზეზი ამ შეტყობინებაში მითითებული არ არის.</p>}</> : notice.kind === "verify_to_respond" ? <p>{verifyText}</p> : null}
+  {contact ? <><p>{contact.description}</p>{contact.reason ? <p>{contact.reason}</p> : null}</> : notice.kind === "verification_reviewed" && notice.detail?.note ? <p>{notice.detail.note}</p> : notice.kind === "report_resolved" ? <><p>{reportResolutionLabel(notice.detail?.result || notice.detail?.resolution)}</p>{notice.detail?.note || notice.detail?.resolution_reason || notice.detail?.reason ? <p>{notice.detail.note || notice.detail.resolution_reason || notice.detail.reason}</p> : <p>განხილვის მიზეზი ამ შეტყობინებაში მითითებული არ არის.</p>}</> : null}
   {company ? <h3>{company.company || company.name}</h3> : null}
   <dl>{request ? <div><dt>მოთხოვნა</dt><dd>{[request.quantity != null ? `${request.quantity} ${store?.units[request.unit] || ""}` : null, cities[request.city] || request.city].filter(Boolean).join(" · ")}</dd></div> : null}
    {deal ? <><div><dt>ფასი</dt><dd>{money(deal.total_price == null ? null : Number(deal.total_price))}</dd></div>{deal.delivery_days != null ? <div><dt>მიწოდება</dt><dd>{deal.delivery_days} დღე</dd></div> : null}</> : notice.deal_id ? <div><dt>პირობები</dt><dd>{deal === null ? "დროებით მიუწვდომელია" : "იტვირთება…"}</dd></div> : offer ? <><div><dt>ფასი</dt><dd>{money(offer.price == null ? null : Number(offer.price))}{offer.price != null && offer.priceType === "unit" ? " / ერთეული" : ""}</dd></div>{offer.deliveryDays != null ? <div><dt>მიწოდება</dt><dd>{offer.deliveryDays} დღე</dd></div> : null}</> : null}
@@ -152,6 +174,31 @@ export function NotificationBell() {
  const [open, setOpen] = useState(false);
  const root = useRef<HTMLDivElement>(null);
  const trigger = useRef<HTMLButtonElement>(null);
+ const panel = useRef<HTMLDivElement>(null);
+ useLayoutEffect(() => {
+  if (!open || !panel.current || !trigger.current) return;
+  const menu = panel.current, button = trigger.current;
+  const position = () => {
+   const box = button.getBoundingClientRect(), viewport = window.visualViewport;
+   const left = viewport?.offsetLeft || 0, top = viewport?.offsetTop || 0;
+   const width = viewport?.width || innerWidth, height = viewport?.height || innerHeight;
+   menu.style.width = `${Math.min(400, width - 24)}px`;
+   const below = top + height - box.bottom - 12, above = box.top - top - 12;
+   const upwards = below < Math.min(menu.scrollHeight, 360) && above > below;
+   menu.style.maxHeight = `${Math.max(0, Math.min(480, height - 24, upwards ? above : below))}px`;
+   menu.style.left = `${Math.max(left + 12, Math.min(box.right - menu.offsetWidth, left + width - menu.offsetWidth - 12))}px`;
+   menu.style.top = `${Math.max(top + 12, Math.min(upwards ? box.top - menu.offsetHeight - 6 : box.bottom + 6, top + height - menu.offsetHeight - 12))}px`;
+  };
+  menu.showPopover(); position();
+  const observer = new ResizeObserver(position); observer.observe(menu); observer.observe(button);
+  window.addEventListener("scroll", position, true); window.addEventListener("resize", position);
+  window.visualViewport?.addEventListener("resize", position); window.visualViewport?.addEventListener("scroll", position);
+  return () => {
+   if (menu.matches(":popover-open")) menu.hidePopover(); observer.disconnect();
+   window.removeEventListener("scroll", position, true); window.removeEventListener("resize", position);
+   window.visualViewport?.removeEventListener("resize", position); window.visualViewport?.removeEventListener("scroll", position);
+  };
+ }, [open]);
  const retry = async () => {
   await refresh?.();
   // The retry button disappears after recovery; keep keyboard focus in the bell.
@@ -166,7 +213,7 @@ export function NotificationBell() {
  const count = state?.unread || 0;
  return <div className={styles.bell} ref={root} onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget) && !(e.relatedTarget as HTMLElement)?.closest(`.${styles.noticeSheet}`)) setOpen(false); }} onKeyDown={e => { if (e.key === "Escape") { setOpen(false); trigger.current?.focus(); } }}>
   <button ref={trigger} type="button" className={`${styles.save} ${styles.bellButton}`} aria-label={`შეტყობინებები${count ? `, ${count} წაუკითხავი` : ""}`} aria-expanded={open} aria-controls="notification-list" onClick={() => { setOpen(!open); if (!open) void refresh?.(); }}><Icon name="bell"/>{count ? <span className={styles.badge} aria-hidden="true"></span> : null}</button>
-  {open ? <div id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
+  {open ? <div ref={panel} popover="manual" id="notification-list" className={styles.popover} aria-label="შეტყობინებები">
    <div className={styles.head}><strong>შეტყობინებები</strong><Button type="button" variant="ghost" aria-label="შეტყობინებების დახურვა" onClick={() => {setOpen(false);trigger.current?.focus();}}><Icon name="x"/></Button></div>
    {state?.status === "ready" ? state.notifications.items.length ? <div className={styles.noticeList} onClick={e => { if ((e.target as HTMLElement).closest("a")) setOpen(false); }}><NoticeRows store={store} items={state.notifications.items} limit={5} compact/></div> : <p>ახალი შეტყობინებები ჯერ არ გაქვთ.</p> : failed(state?.status) ? <div className={styles.noticeError} role="status"><p>შეტყობინებები დროებით მიუწვდომელია.</p><Button type="button" variant="secondary" size="sm" onClick={() => void retry()}>ხელახლა ცდა</Button></div> : <ListSkeleton compact label="შეტყობინებები იტვირთება…" />}
    <Button variant="ghost" size="sm" className={styles.noticeFooter} href="/account/?tab=notifications" onClick={() => setOpen(false)}>ყველა შეტყობინება</Button>
@@ -234,7 +281,7 @@ export function EngagementPanel({ kind, all = true }: { kind: "saved" | "notific
  const filters = [["all", "ყველა", items.length] as const, ...Object.entries(noticeTypes).map(([type, text]) => [type, text, items.filter(n => noticeType(n) === type).length] as const)].filter(([type, , count]) => type === "all" || count > 0 || filter === type);
  return <div className={styles.stack}>
   {kind === "saved" ? <div className={styles.sectionHead}><h2 className="account-section__title">შენახული კომპანიები</h2>{items.length ? <Button variant="ghost" size="sm" href="/companies/"><Icon name="search"/>კომპანიების ძიება</Button> : null}</div>
-   : <div className={styles.notificationHead}><div className={styles.filters} role="group" aria-label="შეტყობინებების ტიპი">{filters.map(([type, text, count]) => <Button key={type} variant={filter === type ? "primary" : "secondary"} aria-pressed={filter === type} onClick={() => setFilter(type)}>{text}{current?.page ? count ? <span>{count}</span> : null : <span>…</span>}</Button>)}</div><Button variant="secondary" disabled={marking || !state?.unread || state?.status !== "ready"} onClick={() => void markAll()}><Icon name="check"/>{marking ? "ინიშნება…" : "ყველას წაკითხულად მონიშვნა"}</Button></div>}
+   : <div className={styles.notificationHead}><div className={styles.filters} role="group" aria-label="შეტყობინებების ტიპი">{filters.map(([type, text, count]) => <Button key={type} variant={filter === type ? "primary" : "secondary"} aria-pressed={filter === type} onClick={() => setFilter(type)}>{text}{current?.page ? count ? <span>{count}</span> : null : <span>…</span>}</Button>)}</div><Button variant="secondary" disabled={marking || !state?.unread || state?.status !== "ready"} aria-label="ყველა შეტყობინების წაკითხულად მონიშვნა" onClick={() => void markAll()}><Icon name="check"/>{marking ? "ინიშნება…" : "ყველას მონიშვნა"}</Button></div>}
   {failed(state?.status) ? <ServiceUnavailable /> : state?.status !== "ready" || !current ? <ListSkeleton compact label={loadingLabel} /> : current.error ? <InlineNotice tone="error" action={<Button type="button" variant="secondary" size="sm" onClick={() => setRetry(x => x+1)}>ხელახლა ცდა</Button>}>სია ვერ ჩაიტვირთა.</InlineNotice> : <>
    {!items.length ? kind === "saved"
      ? <EmptyState icon="bookmark" title="შენახული კომპანიები ჯერ არ გაქვთ" text="მონიშნეთ საინტერესო მომწოდებლები და აქ მარტივად დაუბრუნდებით." action={<Button variant="secondary" href="/companies/"><Icon name="search"/>კომპანიების ძიება</Button>}/>

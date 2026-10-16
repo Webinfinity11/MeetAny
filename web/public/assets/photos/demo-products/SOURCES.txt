@@ -1,0 +1,10 @@
+Illustrative stock photography for explicitly marked demo products only.
+License: https://www.pexels.com/license/ (checked 2026-10-15)
+No endorsement or claim that these are the demo company's manufactured products.
+
+cafe-table.jpg https://www.pexels.com/photo/an-empty-wooden-table-with-chairs-near-the-glass-window-10428139/
+shop-shelves.jpg https://www.pexels.com/photo/shop-shelves-loaded-with-goods-11689777/
+table-linen.jpg https://www.pexels.com/photo/table-napkins-on-a-plate-8112784/
+herbs.jpg https://www.pexels.com/photo/photo-of-assorted-herbs-4113898/
+Downloaded from images.pexels.com at width 960; display cropping via CSS only.
+Other illustrations reuse credited local assets (see ../sources.json and ../cover/SOURCES.txt).

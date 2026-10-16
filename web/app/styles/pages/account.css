@@ -19,9 +19,9 @@
 .account-row--plain{grid-template-columns:minmax(0,1fr)}
 .account-row__main{display:grid;gap:var(--space-1);min-width:0}
 .account-row__title a{color:inherit;text-decoration:none}
-.account-row__title a:hover{text-decoration:underline;text-underline-offset:var(--space-1)}
+.account-row__title a:hover{color:var(--action-hover)}
 .account-row__link::after{content:"";position:absolute;inset:0}
-.account-row:hover .account-row__link{text-decoration:underline;text-underline-offset:var(--space-1)}
+.account-row:hover .account-row__link{color:var(--action-hover)}
 .account-row__actions>*{position:relative;z-index:1}
 .account-row__due{font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--text-3);font-variant-numeric:tabular-nums}
 .account-row__due[data-soon]{color:var(--warning-600)}
@@ -93,7 +93,7 @@
 .inbox-head__name a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;min-height:var(--tap-min);margin-block:calc((var(--lh-body) - var(--tap-min)) / 2)}
 .inbox-head__context{max-width:none;margin:0;font-size:var(--fs-copy);line-height:var(--lh-copy);color:var(--text-3);overflow-wrap:anywhere}
 .inbox-head__context a{color:var(--text-link);text-decoration:none}
-.inbox-head a:hover{text-decoration:underline;text-underline-offset:var(--space-1)}
+.inbox-head a:hover{background:var(--bg-subtle);border-radius:var(--radius-sm)}
 .inbox-call{display:grid;place-items:center;flex:none;width:var(--tap-min);height:var(--tap-min);border:var(--size-1) solid var(--border-strong);border-radius:var(--radius-sm);background:var(--white);color:var(--action)}
 .inbox-call:hover{background:var(--bg-subtle)}
 .inbox-call .icon{width:var(--icon);height:var(--icon)}
@@ -147,7 +147,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-controls .ma-btn--block{width:100%;height:var(--size-48);min-height:var(--btn-h);background:var(--action-strong);border-color:var(--action-strong);color:var(--white);font-size:var(--btn-fs);}
 .auth-controls .ma-btn--block:hover{background:var(--ink-800)}
 .auth-controls .auth-link{display:inline-flex;align-items:center;justify-self:start;min-height:var(--tap-min);padding:0;border:0;background:none;color:var(--ink-950);font:inherit;font-size:var(--fs-sm);font-weight:var(--fw-semibold);cursor:pointer;text-underline-offset:var(--size-2)}
-.auth-controls .auth-link:hover{color:var(--ink-950);text-decoration:underline}
+.auth-controls .auth-link:hover{color:var(--ink-950);background:var(--bg-subtle);border-radius:var(--radius-sm)}
 .auth-controls .auth-forgot{justify-self:end;min-height:var(--tap-min);font-size:var(--fs-sm);line-height:var(--lh-sm)}
 .auth-registration{display:grid;gap:var(--space-2);margin-top:var(--space-6);border-top:var(--size-1) solid var(--ink-150);padding-top:var(--space-5);text-align:center;font-size:var(--fs-sm);line-height:var(--lh-sm);color:var(--ink-600)}
 .auth-registration p{margin:0}
@@ -562,8 +562,8 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-page{grid-template-columns:var(--size-240) minmax(0,1fr);gap:var(--block-gap);padding-top:var(--space-6)}
 .account-page .account-main{gap:var(--block-gap)}
 .account-records{display:grid;gap:var(--space-4);min-width:0}
-.account-filter-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);padding-bottom:var(--space-1);max-width:100%}
-.account-filter-chips>.ma-btn{flex:0 1 auto;min-width:0;white-space:normal}
+.account-filter-chips{display:flex;flex-wrap:nowrap;gap:var(--space-2);padding:var(--space-1);max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-padding-inline:var(--space-1);scrollbar-width:thin}
+.account-filter-chips>.ma-btn{flex:none;min-width:0;white-space:nowrap}
 .account-filter-label{min-width:0;overflow-wrap:anywhere}
 .account-filter-chips>.ma-btn span:last-child{color:inherit;opacity:var(--filter-count-opacity);font-weight:var(--fw-regular);flex:none}
 .account-page .account-rows{display:grid;gap:var(--space-3);border:0;min-width:0}
@@ -577,7 +577,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-item-photo{display:block;width:var(--size-80);height:var(--size-56);flex:none;object-fit:cover;border-radius:var(--size-8)}
 .account-item-heading h2,.account-offer-copy h2,.account-offer-detail h2,.account-recommendations h3{margin:0;font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-bold);min-width:0}
 .account-item-heading h2 a,.account-offer-copy h2 a,.account-recommendations h3 a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-950);text-decoration:none}
-.account-item-heading h2 a:hover,.account-offer-copy h2 a:hover,.account-recommendations h3 a:hover{text-decoration:underline}
+.account-item-heading h2 a:hover,.account-offer-copy h2 a:hover,.account-recommendations h3 a:hover{color:var(--action-hover);background:var(--bg-subtle);border-radius:var(--radius-sm)}
 .account-item-heading p,.account-offer-buyer p,.account-recommendations p,.account-buyer-card p{margin:var(--space-1) 0 0;color:var(--ink-600);font-size:var(--fs-sm);overflow-wrap:anywhere}
 .account-page .account-status{width:fit-content;max-width:100%;padding:var(--space-half) var(--space-2);border-radius:var(--size-999);font-size:var(--fs-xs);font-weight:var(--fw-semibold);background:var(--ink-100);color:var(--ink-700)}
 .account-page .account-status::before{display:none}
@@ -603,7 +603,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .account-profile-status{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5);padding:var(--space-5)}
 .account-profile-status h2{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-2);margin:0;font-size:var(--fs-sm);font-weight:var(--fw-bold);line-height:var(--lh-heading)}
 .account-profile-status p{font-size:var(--fs-copy);color:var(--ink-600);margin:var(--space-2) 0 0;line-height:var(--lh-copy)}
-.account-progress-heading{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.account-progress-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
 .account-progress-heading a{flex:none;color:var(--action);font-size:var(--fs-sm);font-weight:var(--fw-semibold);display:inline-flex;align-items:center;min-height:var(--tap-min);line-height:var(--lh-sm)}
 .account-profile-status progress{display:block;appearance:none;border:0;width:100%;height:var(--size-6);margin-top:var(--space-3);border-radius:var(--size-999);overflow:hidden;background:var(--ink-150);accent-color:var(--action)}
 .account-profile-status progress::-webkit-progress-bar{background:var(--ink-150)}
@@ -662,7 +662,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .auth-register .ma-form__row > .ma-field { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; }
 .auth-register .ma-field__label { align-self: end; line-height: var(--lh-sm); }
 .auth-register .ma-form__row .ma-field__label { margin-bottom: var(--space-2); }
-.auth-register .ma-form__row > .auth-category-field { margin-top: var(--space-5); }
+.auth-register .ma-form__row > .auth-category-field { margin-top: 0; }
 .auth-register .auth-field-message:empty { display: none; }
 .auth-register .auth-field-message:not(:empty) { margin-top: var(--space-2); }
 .auth-register .ma-check { align-items: start; gap: var(--space-3); line-height: var(--lh-body); }
@@ -702,6 +702,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 @media(max-width:639px){.account-form-actions>.ma-btn{width:100%}}
 .account-hint{font-size:var(--fs-copy);line-height:var(--lh-copy);max-width:var(--measure)}
 
+.auth-role-hint{margin:calc(-1 * var(--space-3)) 0 0;color:var(--text-3);font-size:var(--fs-copy);line-height:var(--lh-copy);max-width:var(--measure)}
 .auth-role-switch{display:flex;gap:var(--space-1);padding:var(--space-1);border:var(--size-1) solid var(--border-subtle);border-radius:var(--radius-md)}
 .auth-role-switch button{flex:1;min-height:var(--size-44);padding:var(--space-2);border:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-2);font:inherit;cursor:pointer}
 .auth-role-switch button[aria-pressed="true"]{background:var(--bg-subtle);color:var(--text);font-weight:var(--fw-semibold)}
@@ -727,7 +728,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 
 /* Profile settings save and report feedback within the block being edited. */
 .account-page .account-profile-block { padding:var(--card-pad); gap:var(--stack-gap); border: var(--size-1) solid var(--card-border); border-radius: var(--card-radius); background: var(--white); box-shadow: none; scroll-margin-top:var(--panel-top); }
-.account-section__heading { display: grid; gap:var(--space-1); }
+.account-section__heading { display: grid; gap:var(--space-2); }
 .account-page .account-profile-block .ma-form, .account-block-fields { display: grid; gap:var(--form-gap); min-width: 0; }
 .account-block-fields { padding:0; margin:0; border: 0; }
 .account-page .account-profile-block .account-form-group { padding:0; border: 0; gap:var(--form-gap); }
@@ -742,7 +743,7 @@ html:has(.inbox-thread--sheet){overflow:hidden}
 .ma-page.account-page { padding-block: var(--page-pad-y); }
 .account-page :is(.account-records, .account-main, .account-wide, .account-saved, .account-rows) { gap: var(--block-gap); }
 .account-page .account-section { gap: var(--stack-gap); }
-.account-page .account-profile-status { gap: var(--stack-gap); padding: var(--card-pad); }
+.account-page .account-profile-status { gap: var(--block-gap); padding: var(--card-pad); }
 .account-page .account-panel { padding: var(--card-pad); }
 .account-page :is(.account-alerts, .account-saved) { padding: 0; border: 0; background: transparent; }
 .account-page .account-row { padding-block: var(--card-pad-sm); }

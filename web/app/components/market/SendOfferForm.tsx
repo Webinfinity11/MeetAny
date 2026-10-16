@@ -32,8 +32,6 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   const [fileDraft,setFileDraft]=useState('');
   const [offerId,setOfferId]=useState(existing?.id||'');
   const [values, setValues] = useState<Values>(() => valuesFrom(existing));
-  const [customTerm, setCustomTerm] = useState('');
-  const [showCustom, setShowCustom] = useState(false);
   const [draftNotice, setDraftNotice] = useState('');
   const [restored, setRestored] = useState(false);
   const draftKey = useRef('');
@@ -112,8 +110,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
     if (!store || fileBusy || busy.current || !key || loaded !== key || conflict || completed) return;
     const errors: FieldErrors = {};
     if (values.body.trim().length < 10 || values.body.length > 2000) errors['of-body'] = values.body.trim() ? 'აღწერა მინიმუმ 10 სიმბოლო უნდა იყოს.' : 'აღწერეთ შეთავაზება მოკლედ.';
-    if (!values.deliveryDays.trim()) errors['of-deliveryDays'] = 'მიუთითეთ მიწოდების ვადა.';
-    else if (!Number.isInteger(Number(values.deliveryDays)) || Number(values.deliveryDays) < 0 || Number(values.deliveryDays) > 365) errors['of-deliveryDays'] = 'მიწოდების ვადა 0-დან 365 დღემდე უნდა იყოს.';
+    if (values.deliveryDays.trim() && (!Number.isInteger(Number(values.deliveryDays)) || Number(values.deliveryDays) < 0 || Number(values.deliveryDays) > 365)) errors['of-deliveryDays'] = 'ვადა 0-დან 365 დღემდე უნდა იყოს.';
     if (values.priceType !== 'negotiable' && (!/^\d+(?:[.,]\d{1,2})?$/.test(values.price.trim()) || Number(values.price.replace(',', '.')) <= 0 || Number(values.price.replace(',', '.')) > 1e9)) errors['of-price'] = values.price.trim() ? 'ფასი მიუთითეთ რიცხვით, მაგ. 1250 ან 1250,50.' : 'მიუთითეთ ფასი.';
     const terms: OfferTerms = { paymentTerms: values.paymentTerms.trim() || null, validUntil: values.validUntil || null, commercialTerms: values.commercialTerms.split('\n').map(t => t.trim()).filter(Boolean) };
     if (values.paymentTerms.length > 500) errors['of-paymentTerms'] = 'მაქსიმუმ 500 სიმბოლო.';
@@ -131,7 +128,7 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
         if (!termsEqual(fresh, saved.terms)) await setOfferTerms(store, saved, saved.terms);
       } else {
         if (fresh?.updatedAt !== baseRevision.current) { setConflict(true); throw new Error('MA904'); }
-        const sent: StoredOffer = await store.sendOffer(requestId, { ...values, price: values.priceType === 'negotiable' ? undefined : values.price, deliveryDays: values.deliveryDays || undefined });
+        const sent: StoredOffer = await store.sendOffer(requestId, { ...values, price: values.priceType === 'negotiable' ? undefined : values.price, deliveryDays: values.deliveryDays.trim() || undefined });
         saved = { id: sent.id, updatedAt: sent.updatedAt, terms };
         setPartial(saved);
         // Persist before RPC 2: navigation or a lost reply can recover without sending RPC 1 again.
@@ -156,9 +153,9 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
   const quantity = Number(store?.getRequest(requestId)?.quantity) || 0;
   const price = Number(values.price.replace(',', '.'));
   const total = values.priceType === 'negotiable' || !values.price || !Number.isFinite(price) ? null : values.priceType === 'unit' ? quantity > 0 ? price * quantity : null : price;
-  const selectedTerms = values.commercialTerms.split('\n').map(t => t.trim()).filter(Boolean);
-  const presets = ['ნიმუში წარმოებამდე', 'გარანტია', 'შეფუთვა შედის'];
-  const toggleTerm = (term: string) => change('commercialTerms', (selectedTerms.includes(term) ? selectedTerms.filter(t => t !== term) : [...selectedTerms, term]).join('\n'));
+  const termRows = values.commercialTerms.split('\n');
+  const termId = (index: number) => index ? `of-commercialTerms-${index}` : 'of-commercialTerms';
+  const addTerm = () => { if (termRows.length >= 8 || !termRows.at(-1)?.trim()) return; change('commercialTerms', `${values.commercialTerms}\n`); requestAnimationFrame(() => document.getElementById(termId(termRows.length))?.focus()); };
   const validityDate = (days: number) => { const date = new Date(`${store?.todayDate()}T12:00:00Z`); date.setUTCDate(date.getUTCDate() + days); return date.toISOString().slice(0, 10); };
   const disabled = pending || !!partial || conflict || !key || loaded !== key || completed;
   const submitDisabled = pending || fileBusy || !key || loaded !== key || conflict || completed;
@@ -168,10 +165,18 @@ export function SendOfferForm({ requestId, existing, onDone, onCancel, standalon
     <fieldset disabled={disabled} className={styles.fields}>
       <section className={styles.formCard}><h2>ფასი</h2><div className={styles.chips} role="group" aria-label="ფასის ტიპი">{[['total', 'ჯამური'], ['unit', 'ერთეულის'], ['negotiable', 'შეთანხმებით']].map(([value, label]) => <Button key={value} variant="secondary" aria-pressed={values.priceType === value} onClick={() => change('priceType', value)}>{label}</Button>)}</div>
       {values.priceType !== 'negotiable' ? <><div className="ma-field"><label htmlFor="of-price">თანხა ლარში (₾) *</label><div className={styles.currency}><input className="ma-input" inputMode="decimal" required value={values.price} onChange={e => change('price', e.target.value)} {...v.control('of-price')}/><span>₾</span></div>{v.message('of-price')}{quantity > 0 && total != null ? <small>= {money(total / quantity)} / {store?.getRequest(requestId)?.unit === 'pcs' ? 'ცალი' : 'ერთეული'} · {quantity} {store?.getRequest(requestId)?.unit === 'pcs' ? 'ც.' : 'ერთ.'}</small> : null}</div><label className="ma-check"><input type="checkbox" checked={values.vatIncluded} onChange={e => change('vatIncluded', e.target.checked)}/>დღგ ფასში შედის</label></> : null}</section>
-      <section className={styles.formCard}><h2>მიწოდების ვადა</h2><div className={styles.two}><div className="ma-field"><label htmlFor="of-deliveryDays">მიწოდების ვადა *</label><DeliveryDaysField value={values.deliveryDays} onChange={value => change('deliveryDays', value)} {...v.control('of-deliveryDays')}/>{v.message('of-deliveryDays')}</div><div className="ma-field"><label htmlFor="of-validUntil">შეთავაზება ძალაშია</label><CustomSelect value={values.validUntil} onChange={e => change('validUntil', e.target.value)} {...v.control('of-validUntil')}><option value="">აირჩიეთ ვადა</option>{values.validUntil && ![14, 30, 60].some(days => validityDate(days) === values.validUntil) ? <option value={values.validUntil}>{dateShort(values.validUntil)}</option> : null}{[14, 30, 60].map(days => <option key={days} value={validityDate(days)}>{days} დღე · {dateShort(validityDate(days))}</option>)}</CustomSelect>{v.message('of-validUntil')}</div></div><label className="ma-check"><input type="checkbox" checked={values.deliveryIncluded} onChange={e => change('deliveryIncluded', e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label></section>
-      <section className={styles.formCard}><h2>გადახდის პირობები</h2><div className="ma-field"><label htmlFor="of-paymentTerms">გადახდის პირობები — არასავალდებულო</label><PaymentTermsField value={values.paymentTerms} onChange={value => change('paymentTerms', value)} {...v.control('of-paymentTerms')}/>{v.message('of-paymentTerms')}</div></section>
-      <section className={styles.formCard}><h2>კომერციული პირობები</h2><div className={styles.chips} role="group" aria-label="კომერციული პირობები">{Array.from(new Set([...presets, ...selectedTerms])).map(term => <Button key={term} variant="secondary" aria-pressed={selectedTerms.includes(term)} disabled={!selectedTerms.includes(term) && selectedTerms.length >= 8} onClick={() => toggleTerm(term)}>{selectedTerms.includes(term) ? <Icon name="check"/> : null}{term}</Button>)}<Button variant="secondary" aria-expanded={showCustom} onClick={() => setShowCustom(v => !v)}><Icon name="plus"/>საკუთარი</Button></div>{showCustom ? <div className="ma-field"><label htmlFor="of-commercialTerms">საკუთარი პირობა</label><div className={styles.addTerm}><input className="ma-input" maxLength={120} value={customTerm} onChange={e => setCustomTerm(e.target.value)} {...v.control('of-commercialTerms')}/><Button variant="secondary" disabled={!customTerm.trim() || selectedTerms.length >= 8} onClick={() => { if (!selectedTerms.includes(customTerm.trim())) toggleTerm(customTerm.trim()); setCustomTerm(''); }}>დამატება</Button></div>{v.message('of-commercialTerms')}<small>მაქსიმუმ 8 პირობა, თითოეული 120 სიმბოლომდე.</small></div> : null}</section>
-      <section className={styles.formCard}><h2>მოკლე აღწერა</h2><div className="ma-field"><label htmlFor="of-body">მოკლე აღწერა *</label><textarea className="ma-textarea" minLength={10} maxLength={2000} required value={values.body} onChange={e => change('body', e.target.value)} {...v.control('of-body')}/>{v.message('of-body')}<small>{values.body.length}/2000 · რეკომენდებულია 500 სიმბოლომდე.</small></div></section>
+      <div className={styles.formCard}><div className={styles.two}><div className="ma-field"><label htmlFor="of-deliveryDays">შესრულების ვადა</label><DeliveryDaysField required={false} value={values.deliveryDays} onChange={value => change('deliveryDays', value)} {...v.control('of-deliveryDays')}/>{v.message('of-deliveryDays')}</div><div className="ma-field"><label htmlFor="of-validUntil">შეთავაზება ძალაშია</label><CustomSelect value={values.validUntil} onChange={e => change('validUntil', e.target.value)} {...v.control('of-validUntil')}><option value="">აირჩიეთ ვადა</option>{values.validUntil && ![14, 30, 60].some(days => validityDate(days) === values.validUntil) ? <option value={values.validUntil}>{dateShort(values.validUntil)}</option> : null}{[14, 30, 60].map(days => <option key={days} value={validityDate(days)}>{days} დღე · {dateShort(validityDate(days))}</option>)}</CustomSelect>{v.message('of-validUntil')}</div></div><label className="ma-check"><input type="checkbox" checked={values.deliveryIncluded} onChange={e => change('deliveryIncluded', e.target.checked)}/>მიწოდების ხარჯი შეთავაზებაში შედის</label></div>
+      <div className={styles.formCard}><div className="ma-field"><label htmlFor="of-paymentTerms">გადახდის პირობები</label><PaymentTermsField value={values.paymentTerms} onChange={value => change('paymentTerms', value)} {...v.control('of-paymentTerms')}/>{v.message('of-paymentTerms')}</div></div>
+      <section className={styles.formCard} aria-labelledby="of-terms-title">
+        <h2 id="of-terms-title">დამატებითი პირობები</h2>
+        <div className={styles.termRows}>{termRows.map((term, index) => <div className={styles.termRow} key={index}>
+          <textarea className="ma-textarea" rows={2} maxLength={120} value={term} aria-label={`პირობა ${index + 1}`} {...v.control(termId(index))} onChange={event => { const next = [...termRows]; next[index] = event.target.value.replace(/[\r\n]+/g, ' '); change('commercialTerms', next.join('\n')); }} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) { event.preventDefault(); if (index === termRows.length - 1) addTerm(); else document.getElementById(termId(index + 1))?.focus(); } }}/>
+          {term || termRows.length > 1 ? <Button variant="ghost" aria-label={`პირობის ${index + 1} წაშლა`} onClick={() => { change('commercialTerms', termRows.filter((_, i) => i !== index).join('\n')); requestAnimationFrame(() => document.getElementById(termId(Math.max(0, index - 1)))?.focus()); }}><Icon name="x"/></Button> : null}
+        </div>)}</div>
+        {v.message('of-commercialTerms')}
+        <Button className={styles.addTerm} variant="secondary" disabled={termRows.length >= 8 || !termRows.at(-1)?.trim()} onClick={addTerm}><Icon name="plus"/>პირობის დამატება</Button>
+      </section>
+      <div className={styles.formCard}><div className="ma-field"><label htmlFor="of-body">მოკლე აღწერა *</label><textarea className="ma-textarea" minLength={10} maxLength={2000} required value={values.body} onChange={e => change('body', e.target.value)} {...v.control('of-body')}/>{v.message('of-body')}<small>{values.body.length}/2000 · რეკომენდებულია 500 სიმბოლომდე.</small></div></div>
       {store&&fileDraft?<section className={styles.formCard}><FileAttachments key={offerId||fileDraft} store={store} kind={offerId?"offer":"offer_draft"} target={offerId||fileDraft} editable onBusy={setFileBusy}/>{offerId?<FileAttachments store={store} kind="offer_draft" target={fileDraft} label="მონახაზის ფაილები"/>:null}</section>:null}
     </fieldset>
     <div className={styles.submitArea}>

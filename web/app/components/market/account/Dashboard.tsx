@@ -14,17 +14,18 @@ import styles from "./account.module.css";
 
 /** Same criteria as the onboarding steps; provide/need only apply to the sides the account uses. */
 type Checks = [string, boolean][];
-async function loadChecks(store: Store, intent: string | undefined, verified: boolean): Promise<Checks> {
+async function loadChecks(store: Store, intent: string | undefined): Promise<Checks> {
   const { profile: p, products } = await readOnboard(store);
   const side = intent || p.account_intent;
   const checks: Checks = [
-    ["რეკვიზიტები", !!(p.legal_name?.trim() && p.registration_code?.trim() && p.legal_form?.trim() && p.founded_year && p.employee_band && p.name?.trim() && p.city)],
-    ["პროფილი", !!(p.company?.trim() && p.industry && p.about?.trim())],
+    ["ძირითადი მონაცემები", !!(p.name?.trim() && p.city && p.company?.trim() && p.industry)],
+    ["კომპანიის აღწერა", !!p.about?.trim()],
   ];
-  if (side !== "buy") checks.push(["მიწოდება", !!p.provide_categories.length && !!(p.offers.length || products.some(product => product.name.trim() && product.photoUrl))]);
+  if (side !== "buy") checks.push(["მიწოდება", !!p.provide_categories.length && !!(p.offers.length || products.some(product => product.name.trim()))]);
   if (side !== "sell") checks.push(["საჭიროებები", !!p.need_categories.length]);
-  // A verified company has nothing left to send, whatever the document row says.
-  checks.push(["დოკუმენტები", verified || ["pending", "approved"].includes(p.verification_documents_status)], ["ლოგო", !!p.logo_url]);
+  // Verification is displayed separately. Optional legal details or product photos
+  // must not make an otherwise completed step appear unfinished.
+  checks.push(["ლოგო", !!p.logo_url]);
   return checks;
 }
 function Stat({ value, label, href, attention }: { value: number | string; label: string; href: string; attention?: boolean }) {
@@ -35,7 +36,7 @@ function CompanyStatus({ me, store }: { me: AnyUser; store: Store }) {
   const [loaded, setLoaded] = useState<{ actor: string; checks: Checks | null }>();
   useEffect(() => {
     let alive = true;
-    loadChecks(store, me.accountIntent, me.verified).then(checks => { if (alive) setLoaded({ actor: me.id, checks }); }, () => { if (alive) setLoaded({ actor: me.id, checks: null }); });
+    loadChecks(store, me.accountIntent).then(checks => { if (alive) setLoaded({ actor: me.id, checks }); }, () => { if (alive) setLoaded({ actor: me.id, checks: null }); });
     return () => { alive = false; };
   }, [store, me.id, me.accountIntent, me.verified]);
   const legacy: Checks = [["დასახელება", !!me.company?.trim()], ["ქალაქი", !!me.city], ["დარგი", !!me.industry], ["აღწერა", !!me.about?.trim()], ["ლოგო", !!me.logoUrl], ["მომსახურებები", !!me.offers?.length], ["მომსახურების ქალაქები", !!me.serviceCities?.length], ["გალერეა", !!me.gallery?.length]];
@@ -54,9 +55,9 @@ function CompanyStatus({ me, store }: { me: AnyUser; store: Store }) {
       <div><h2>ვერიფიკაცია <Status tone={verification.tone}>{verification.label}</Status></h2><p>{verification.text}{verification.link ? <> <Link href={verification.link.href}>{verification.link.label}</Link></> : null}</p></div>
     </div>
     <div>
-      <div className="account-progress-heading"><h2>{registering ? "რეგისტრაცია" : "პროფილი"} · {completion}%</h2><Link href={registering ? "/onboarding/" : "/account/?tab=profile"}>{registering ? "რეგისტრაციის გაგრძელება" : remaining.length ? "პროფილის შევსება" : "პროფილის რედაქტირება"}</Link></div>
-      <progress aria-label={registering ? "რეგისტრაციის სისრულე" : "პროფილის სისრულე"} value={completion} max={100} data-complete={completion === 100 || undefined}/>
-      <p>{remaining.length ? `დარჩა: ${remaining.join(", ")}` : "პროფილი სრულად არის შევსებული."}</p>
+      <div className="account-progress-heading"><h2>პროფილი · {completion}%</h2><Link href={registering ? "/onboarding/" : "/account/?tab=profile"}>{registering ? "შევსების გაგრძელება" : remaining.length ? "პროფილის შევსება" : "პროფილის რედაქტირება"}</Link></div>
+      <progress aria-label="პროფილის სისრულე" value={completion} max={100} data-complete={completion === 100 || undefined}/>
+      <p>{remaining.length ? `შეგიძლიათ დაამატოთ: ${remaining.join(", ")}` : "პროფილი სრულად არის შევსებული."}</p>
     </div>
   </section>;
 }
@@ -85,12 +86,12 @@ function DashboardBody({ me, store, space }: { me: AnyUser; store: Store; space:
         <Button href="/requests/new/"><Icon name="plus"/>მოთხოვნის განთავსება</Button>
         <Button variant="secondary" href="/companies/"><Icon name="search"/>კომპანიების ძიება</Button>
       </> : <>
-        <Button href="/matching/"><Icon name="inbox"/>შესაძლებლობების ნახვა</Button>
-        <Button variant="secondary" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="building-2"/>საჯარო პროფილის ნახვა</Button>
+        <Button href={company ? "/matching/" : "/requests/"}><Icon name="inbox"/>მოთხოვნების ნახვა</Button>
+        {company ? <Button variant="secondary" href={`/companies/view/?id=${encodeURIComponent(me.id)}`}><Icon name="building-2"/>საჯარო პროფილის ნახვა</Button> : null}
       </>}
       <Button variant="secondary" href={`/account/?space=${space}&tab=saved`}><Icon name="bookmark"/>შენახულის ნახვა</Button>
     </div>
-    <section className="account-for-you" aria-labelledby="account-for-you-title"><div className="account-feed-heading"><h2 id="account-for-you-title">თქვენთვის</h2><Link href={space === "buy" ? "/companies/" : "/matching/"}>{space === "buy" ? "ყველა კომპანია" : "ყველა შესაძლებლობა"}</Link></div><MatchingFeed compact kind={space === "buy" ? "suppliers" : "recommended"}/></section>
+    {(company || space === "buy") && <section className="account-for-you" aria-labelledby="account-for-you-title"><div className="account-feed-heading"><h2 id="account-for-you-title">თქვენთვის</h2><Link href={space === "buy" ? "/companies/" : "/matching/"}>{space === "buy" ? "ყველა კომპანია" : "ყველა შესაძლებლობა"}</Link></div><MatchingFeed compact kind={space === "buy" ? "suppliers" : "recommended"}/></section>}
   </>;
 }
 export function Dashboard({ me, space }: { me: AnyUser; space: Space }) {

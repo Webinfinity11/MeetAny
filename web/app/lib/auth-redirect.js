@@ -11,3 +11,23 @@ export function authLoginCopy(intent, context, next) {
   ? {title: 'შედით, რომ გაგზავნოთ შეთავაზება', lead: typeof context === 'string' ? Array.from(context).slice(0, 120).join('') : ''}
   : {title: next ? 'შედით, რომ გააგრძელოთ' : 'შესვლა', lead: 'კეთილი იყოს თქვენი დაბრუნება.'};
 }
+
+/** Keep the original task through company setup without sending completion back into setup. */
+export function safeOnboardingNext(value) {
+ let candidate = safeNext(value);
+ for (let depth = 0; candidate && depth < 3; depth++) {
+  const url = new URL(candidate, 'https://meetany.invalid');
+  let pathname;
+  try { pathname = decodeURIComponent(url.pathname).replace(/\/+$/, '').toLowerCase(); } catch { return null; }
+  if (pathname !== '/onboarding') return candidate;
+  candidate = safeNext(url.searchParams.get('next'));
+ }
+ return null;
+}
+/** @param {string} [step] @param {string | null} [next] */
+export function onboardingHref(step = 'type', next = null) {
+ const params = new URLSearchParams({step});
+ const destination = safeOnboardingNext(next);
+ if (destination) params.set('next', destination);
+ return '/onboarding/?' + params.toString();
+}

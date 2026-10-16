@@ -2,12 +2,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
+  justify-content: center;
   gap: var(--block-gap);
   min-width: 0;
 }
 .steps, .form, .aside { min-width: 0; }
 .form { display: grid; gap: var(--block-gap); }
-.heading { display: grid; gap: var(--space-2); }
+.heading { display: grid; gap: var(--space-3); }
 .heading h1 {
   margin: 0;
   color: var(--text);
@@ -58,12 +59,15 @@
   .aside { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: var(--panel-top); }
   .layout[data-steps] .aside { grid-row: 2 / span 2; }
   .panel summary { display: none; }
-  .footer { position: static; margin: 0; padding: var(--card-pad-sm) 0 0; background: transparent; box-shadow: none; }
+  .footer { position: static; margin: 0; padding: var(--card-pad-sm); border: var(--space-hairline) solid var(--border); border-radius: var(--card-radius); box-shadow: none; }
 }
-@media (min-width: 1280px) {
-  .layout[data-steps] { grid-template-columns: var(--size-240) minmax(0, var(--form-col)); }
-  .layout[data-steps][data-aside] { grid-template-columns: var(--size-240) minmax(0, var(--form-col)) var(--panel-col); }
-  .layout[data-steps] .steps { grid-column: 1; grid-row: 1 / span 2; position: sticky; top: var(--panel-top); }
-  .layout[data-steps] .form, .layout[data-steps] .footer { grid-column: 2; }
-  .layout[data-steps] .aside { grid-column: 3; grid-row: 1 / span 2; }
+@media (min-width: 1440px) {
+  .layout[data-steps="side"] { grid-template-columns: var(--size-240) minmax(0, var(--form-col)); }
+  .layout[data-steps="side"][data-aside] { grid-template-columns: var(--size-240) minmax(0, var(--form-col)) var(--panel-col); }
+  .layout[data-steps="side"] .steps { grid-column: 1; grid-row: 1 / span 2; position: sticky; top: var(--panel-top); }
+  .layout[data-steps="side"] .form, .layout[data-steps="side"] .footer { grid-column: 2; }
+  .layout[data-steps="side"] .aside { grid-column: 3; grid-row: 1 / span 2; }
 }
+
+/* Reserve room for the mobile action dock when a field receives keyboard focus. */
+.form :is(input, textarea, select, [role="combobox"], [tabindex="-1"]) { scroll-margin-block: calc(var(--header-h) + var(--space-6)) var(--size-128); }

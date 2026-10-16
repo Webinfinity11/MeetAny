@@ -22,7 +22,7 @@ import { AccountSectionFooter, ProfileBlock, UnsavedSheet, useSavedTime } from "
 import { useUnsavedGuard } from "../../../lib/use-unsaved-draft";
 import { normalizeMobilePhone } from "../../../lib/mobile-phone";
 import { isEmail } from "../fieldErrors";
-import { readOnboardProfile, type OnboardProfile } from "../../../lib/onboarding-client";
+import { normalizeOnboardItems, onboardItemsError, readOnboardProfile, type OnboardProfile } from "../../../lib/onboarding-client";
 import { VerificationDocuments } from "../VerificationDocuments";
 import type { AnyUser } from "./shared";
 import styles from "./ProfileForm.module.css";
@@ -52,7 +52,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
   const { store } = useMarketStore();
   const isCompany = me.role === "company";
   const [name, setName] = useState(me.name);
-  const [company, setCompany] = useState(me.company || "");
+  const [company, setCompany] = useState(!isCompany && me.company === me.name ? "" : me.company || "");
   const [city, setCity] = useState(me.city);
   const [industry, setIndustry] = useState(me.industry || "");
   const [about, setAbout] = useState(me.about || "");
@@ -109,6 +109,15 @@ export function ProfileForm({ me }: { me: AnyUser }) {
       if (!city) fieldErrors["profile-city"] = "აირჩიეთ ქალაქი";
       if (isCompany && !industry) fieldErrors.industry = "აირჩიეთ დარგი";
     }
+    if (block === "description") {
+      const invalidItems = onboardItemsError(offers) ? "offers" : onboardItemsError(seeks) ? "seeks" : null;
+      if (invalidItems) {
+        setErrors(current => ({ ...current, description: onboardItemsError(invalidItems === "offers" ? offers : seeks) }));
+        const editor = document.getElementById(invalidItems);
+        (editor?.querySelector<HTMLTextAreaElement>("textarea") || editor?.querySelector<HTMLButtonElement>("button"))?.focus();
+        return false;
+      }
+    }
     const latValue = parseCoord(lat), lngValue = parseCoord(lng);
     if (block === "location") {
       if (latValue !== null && !(latValue >= -90 && latValue <= 90)) fieldErrors.lat = "განედი რიცხვია −90-დან 90-მდე";
@@ -136,7 +145,12 @@ export function ProfileForm({ me }: { me: AnyUser }) {
         serviceCities: current.serviceCities || [], address: current.address, lat: current.lat, lng: current.lng,
       };
       if (block === "basic") await store.updateProfile({ ...unchanged, name, company, city, industry });
-      if (block === "description") await store.updateProfile({ ...unchanged, about, offers, seeks });
+      if (block === "description") {
+        const savedOffers = normalizeOnboardItems(offers), savedSeeks = normalizeOnboardItems(seeks);
+        await store.updateProfile({ ...unchanged, about, offers: savedOffers, seeks: savedSeeks });
+        setOffers(savedOffers); setSeeks(savedSeeks);
+        setBaseline(current => ({ ...current, description: JSON.stringify({ about, offers: savedOffers, seeks: savedSeeks }) }));
+      }
       if (block === "location") await store.updateProfile({ ...unchanged, address, lat: latValue, lng: lngValue, serviceCities });
       if (block === "media") {
         if (logoChanged) {
@@ -151,7 +165,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
           setGallery((user?.gallery || []).map((url: string) => ({ key: url, url })));
           setGalleryChanged(false);
         }
-      } else setBaseline(current => ({ ...current, [block]: snapshots[block] }));
+      } else if (block !== "description") setBaseline(current => ({ ...current, [block]: snapshots[block] }));
       setSaved(current => ({ ...current, [block]: new Date().toISOString() }));
       return true;
     } catch (err) {
@@ -175,19 +189,19 @@ export function ProfileForm({ me }: { me: AnyUser }) {
             <label className="ma-field__label" htmlFor="name">
               სახელი და გვარი *
             </label>
-            <input className="ma-input" maxLength={80} autoComplete="name" value={name} onChange={(e) => {setName(e.target.value); v.clear("name");}} {...v.control("name")} />
+            <input className="ma-input" maxLength={80} autoComplete="name" required value={name} onChange={(e) => {setName(e.target.value); v.clear("name");}} {...v.control("name")} />
             {v.message("name")}
           </div>
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="company">
               {isCompany ? "კომპანიის დასახელება *" : "კომპანია / ორგანიზაცია"}
             </label>
-            <input className="ma-input" maxLength={100} autoComplete="organization" value={company} onChange={(e) => {setCompany(e.target.value); v.clear("company");}} {...v.control("company")} />
+            <input className="ma-input" maxLength={100} autoComplete="organization" required={isCompany} value={company} onChange={(e) => {setCompany(e.target.value); v.clear("company");}} {...v.control("company")} />
             {v.message("company")}
           </div>
         </div>
         <div className="ma-form__row ma-form__row--2">
-        <div className="ma-field profile-city-field"><label className="ma-field__label" htmlFor="profile-city">ქალაქი *</label><CustomSelect {...v.control("profile-city")} value={city} onChange={event=>{setCity(event.target.value);v.clear("profile-city");}}>{Object.entries(cities).map(([id,label])=><option key={id} value={id}>{label}</option>)}</CustomSelect>{v.message("profile-city")}</div>
+        <div className="ma-field profile-city-field"><label className="ma-field__label" htmlFor="profile-city">ქალაქი *</label><CustomSelect {...v.control("profile-city")} required value={city} onChange={event=>{setCity(event.target.value);v.clear("profile-city");}}>{Object.entries(cities).map(([id,label])=><option key={id} value={id}>{label}</option>)}</CustomSelect>{v.message("profile-city")}</div>
           {isCompany ? (
             <div className="ma-field account-category-field">
               <label className="ma-field__label" htmlFor="industry">
@@ -200,16 +214,16 @@ export function ProfileForm({ me }: { me: AnyUser }) {
         </div>
       </ProfileBlock>
       {isCompany ? <>
-        <ProfileBlock {...blockProps("description")} title="აღწერა და ტეგები" description="მოკლედ აღწერეთ კომპანია და აირჩიეთ რას სთავაზობთ ან ეძებთ.">
+        <ProfileBlock {...blockProps("description")} title="აღწერა და მომსახურებები" description="მოკლედ აღწერეთ კომპანია და დაამატეთ რას სთავაზობთ ან ეძებთ.">
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="about">
                 კომპანიის შესახებ (არასავალდებულო) <span className="ma-field__opt" id="about-count">{about.length}/1000</span>
               </label>
               <textarea className="ma-textarea" id="about" maxLength={1000} aria-describedby="about-count" value={about} onChange={(e) => setAbout(e.target.value)} />
             </div>
-            <div className="ma-form__row ma-form__row--2">
-              <ProfileItems compact id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);}}/>
-              <ProfileItems compact id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);}}/>
+            <div className="ma-form__row">
+              <ProfileItems id="offers" label="რას ვთავაზობთ" items={offers} disabled={pending} onChange={items=>{setOffers(items);}}/>
+              <ProfileItems id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);}}/>
             </div>
         </ProfileBlock>
         <ProfileBlock {...blockProps("media")} title="ლოგო და გალერეა" description="ლოგო და პირველი ფოტო კომპანიების კატალოგშიც გამოჩნდება.">
@@ -359,7 +373,7 @@ function ContactChange({me}: {me: AnyUser}) {
   <dl className={styles.contacts}><div><dt>ტელეფონი</dt><dd>{me.phone}</dd></div><div><dt>ელფოსტა</dt><dd>{me.email}</dd></div></dl>
   <div className="account-section__footer"><p className="account-section__status" role="status">{sent ? "მოთხოვნა გაგზავნილია. პასუხს მიიღებთ 1–2 სამუშაო დღეში." : "ცვლილება დადასტურებას საჭიროებს"}</p><Button variant="secondary" aria-label="შეცვალეთ კონტაქტი" aria-haspopup="dialog" onClick={() => setOpen(true)}>შეცვალეთ</Button></div>
   {open && createPortal(<Sheet open={open} onClose={() => {if (!pending) setOpen(false);}} title="კონტაქტის შეცვლა" footer={<Button type="submit" form="contact-change" loading={pending}>გაგზავნეთ მოთხოვნა</Button>}>
-   <p>ეს ანგარიშის იდენტიფიკატორებია; ცვლილებას ადმინისტრატორი ასრულებს 1–2 სამუშაო დღეში</p>
+   <p>ცვლილებას ადმინისტრატორი განიხილავს. საკონტაქტო ელფოსტის შეცვლა შესვლის ელფოსტას არ ცვლის.</p>
    <form id="contact-change" className="ma-form" onSubmit={send} noValidate>
     <div className="ma-field"><label className="ma-field__label" htmlFor="contact-phone">ახალი ტელეფონი</label><input className="ma-input" type="tel" autoComplete="tel" value={phone} onChange={e => {setPhone(e.target.value); fields.clear('contact-phone');}} {...fields.control('contact-phone')}/>{fields.message('contact-phone')}</div>
     <div className="ma-field"><label className="ma-field__label" htmlFor="contact-email">ახალი ელფოსტა</label><input className="ma-input" type="email" autoComplete="email" maxLength={200} value={email} onChange={e => {setEmail(e.target.value); fields.clear('contact-email');}} {...fields.control('contact-email')}/>{fields.message('contact-email')}</div>
@@ -396,21 +410,29 @@ function LegalProfile() {
   if (!store || !profile || pending) return false;
   if (!dirty) return true;
   const errors: FieldErrors = {};
-  if (profile.legal_name && profile.legal_name.trim().length < 2) errors['legal-legal_name'] = 'მინიმუმ 2 სიმბოლო';
-  if (profile.registration_code && profile.registration_code.trim().length < 3) errors['legal-registration_code'] = 'მინიმუმ 3 სიმბოლო';
-  if (profile.website && !/^https?:\/\//.test(profile.website)) errors['legal-website'] = 'ბმული დაიწყეთ https://-ით';
+  if (profile.legal_name?.trim() && profile.legal_name.trim().length < 2) errors['legal-legal_name'] = 'მინიმუმ 2 სიმბოლო';
+  if (profile.registration_code?.trim() && profile.registration_code.trim().length < 3) errors['legal-registration_code'] = 'მინიმუმ 3 სიმბოლო';
+  if (profile.website?.trim() && !/^https?:\/\/\S+$/.test(profile.website.trim())) errors['legal-website'] = 'ბმული დაიწყეთ https://-ით';
   if (profile.founded_year !== null && (!Number.isInteger(profile.founded_year) || profile.founded_year < 1800 || profile.founded_year > new Date().getFullYear())) errors['legal-year'] = 'მიუთითეთ წელი 1800-დან მიმდინარე წლამდე';
   if (!fields.check(errors, Object.keys(errors))) {setError('შეასწორეთ მონიშნული ველები.'); return false;}
+  const invalidItems = onboardItemsError(profile.markets) ? 'markets' : onboardItemsError(profile.languages) ? 'languages' : null;
+  if (invalidItems) {
+   setError(onboardItemsError(profile[invalidItems]));
+   const editor = document.getElementById(`legal-${invalidItems}`);
+   (editor?.querySelector<HTMLTextAreaElement>('textarea') || editor?.querySelector<HTMLButtonElement>('button'))?.focus();
+   return false;
+  }
   setPending(true); setError(null);
   try {
    // Preserve the other onboarding fields from a fresh server row.
    const current = await readOnboardProfile(store);
+   const next = {...profile, markets: normalizeOnboardItems(profile.markets), languages: normalizeOnboardItems(profile.languages)};
    await store.mutateRpc('set_onboarding_details', {p_account_intent: current.account_intent, p_business_tags: current.business_tags, p_certificates: current.certificates,
     p_legal_name: profile.legal_name?.trim() || null, p_registration_code: profile.registration_code?.trim() || null,
     p_legal_form: profile.legal_form || null, p_founded_year: profile.founded_year, p_employee_band: profile.employee_band || null,
     p_contact_position: profile.contact_position?.trim() || null, p_website: profile.website?.trim() || null,
-    p_markets: profile.markets, p_languages: profile.languages});
-   setBaseline(editable(profile)); markSaved(); return true;
+    p_markets: next.markets, p_languages: next.languages});
+   setProfile(next); setBaseline(editable(next)); markSaved(); return true;
   } catch(failure) {setError((failure as {userMessage?: string}).userMessage || 'მონაცემები ვერ შეინახა.'); return false;}
   finally {setPending(false);}
  }
@@ -421,7 +443,7 @@ function LegalProfile() {
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-form">იურიდიული ფორმა</label><CustomSelect id="legal-form" value={profile.legal_form || ''} onChange={e => patch({legal_form: e.target.value || null})}><option value="">აირჩიეთ</option>{Array.from(new Set(['შპს', 'ინდ. მეწარმე', 'სს', 'კოოპერატივი', 'სხვა', ...(profile.legal_form ? [profile.legal_form] : [])])).map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-year">დაარსების წელი</label><input className="ma-input" type="number" min={1800} max={new Date().getFullYear()} value={profile.founded_year ?? ''} onChange={e => {patch({founded_year: e.target.value ? Number(e.target.value) : null}); fields.clear('legal-year');}} {...fields.control('legal-year')}/>{fields.message('legal-year')}</div>
     <div className="ma-field"><label className="ma-field__label" htmlFor="legal-employees">თანამშრომლები</label><CustomSelect id="legal-employees" value={profile.employee_band || ''} onChange={e => patch({employee_band: e.target.value || null})}><option value="">აირჩიეთ</option>{['1-7','8-50','51-200','201+'].map(value => <option key={value}>{value}</option>)}</CustomSelect></div>
-   </div><MultiCombobox creatable limit={8} options={[]} id="legal-markets" label="ბაზრები" value={profile.markets} onChange={markets => patch({markets})}/><MultiCombobox creatable limit={8} options={[]} id="legal-languages" label="ენები" value={profile.languages} onChange={languages => patch({languages})}/></fieldset>
+   </div><ProfileItems id="legal-markets" label="ბაზრები" items={profile.markets} onChange={markets => patch({markets})}/><ProfileItems id="legal-languages" label="ენები" items={profile.languages} onChange={languages => patch({languages})}/></fieldset>
    <AccountSectionFooter dirty={dirty} pending={pending} savedAt={savedAt} error={error}/>
   </form> : !error ? <p role="status">იტვირთება…</p> : null}
   {!profile && error && <p className="ma-field__error" role="alert">{error}</p>}

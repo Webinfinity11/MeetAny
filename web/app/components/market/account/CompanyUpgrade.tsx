@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../ui/Button';
-import { FormLayout } from '../../ui/FormLayout';
 import { Combobox } from '../../ui/Combobox';
 import { categoryOptions } from '../../ui/combobox-options';
 import { useMarketStore } from '../../../lib/market-client';
@@ -16,8 +15,9 @@ import styles from './CompanyUpgrade.module.css';
 export function CompanyUpgrade({ user }: { user: AnyUser }) {
   const { store } = useMarketStore();
   const router = useRouter();
-  const [company, setCompany] = useState(user.company || '');
-  const [industry, setIndustry] = useState('');
+  // Personal profiles may carry the person's name as a legacy company fallback.
+  const [company, setCompany] = useState(user.company && user.company !== user.name ? user.company : '');
+  const [industry, setIndustry] = useState(user.industry || '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const fields = useFieldErrors();
@@ -42,21 +42,14 @@ export function CompanyUpgrade({ user }: { user: AnyUser }) {
     } finally { setBusy(false); }
   }
   return <section className={`account-section ${styles.panel}`} id="company-upgrade" aria-labelledby="company-upgrade-title">
-    <div className={styles.intro}><span className={styles.icon} aria-hidden="true"><Icon name="building-2"/></span><div><h2 className="account-section__title" id="company-upgrade-title">კომპანიის პროფილი</h2><p>ამავე ანგარიშით გაყიდეთ პროდუქტები და მომსახურება — მოთხოვნები, გარიგებები და მიმოწერები შენარჩუნდება.</p></div></div>
-    {!open ? <Button className={styles.action} variant="secondary" aria-expanded={false} aria-controls="company-upgrade-form" onClick={() => setOpen(true)}><Icon name="plus"/>დაამატეთ კომპანიის პროფილი</Button> : <FormLayout className={styles.layout} asideLabel="კომპანიის ანგარიშით შეძლებთ"
-      aside={<section className={styles.benefits}><h3>რას მიიღებთ</h3><ul>
-        <li><Icon name="check"/><span>შეთავაზებების გაგზავნა</span></li>
-        <li><Icon name="check"/><span>პროდუქტებისა და მომსახურების გამოჩენა</span></li>
-        <li><Icon name="check"/><span>ყიდვა და გაყიდვა</span></li>
-      </ul></section>}
-      footer={<div className={styles.actions}><Button variant="secondary" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>უკან</Button><Button variant="tint" type="submit" form="company-upgrade-form" loading={busy}>გააგრძელეთ</Button></div>}
-    ><form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
+    <div className={styles.intro}><span className={styles.icon} aria-hidden="true"><Icon name="building-2"/></span><div><h2 className="account-section__title" id="company-upgrade-title">კომპანიის პროფილი</h2><p>შექმენით კომპანიის საჯარო პროფილი. თქვენი მონაცემები და მიმოწერები შენარჩუნდება.</p></div></div>
+    {!open ? <Button className={styles.action} variant="secondary" aria-expanded={false} aria-controls="company-upgrade-form" onClick={() => setOpen(true)}><Icon name="plus"/>დაამატეთ კომპანია</Button> : <form id="company-upgrade-form" className="ma-form" onSubmit={submit} noValidate>
       <fieldset className={styles.fields} disabled={busy}>
-        <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-company">კომპანიის დასახელება *</label><input className="ma-input" autoComplete="organization" maxLength={120} value={company} onChange={event => { setCompany(event.target.value); fields.clear('upgrade-company'); }} {...fields.control('upgrade-company')}/>{fields.message('upgrade-company')}</div>
+        <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-company">კომპანიის დასახელება *</label><input className="ma-input" autoComplete="organization" maxLength={100} required value={company} onChange={event => { setCompany(event.target.value); fields.clear('upgrade-company'); }} {...fields.control('upgrade-company')}/>{fields.message('upgrade-company')}</div>
         <div className="ma-field"><label className="ma-field__label" htmlFor="upgrade-industry">დარგი *</label><Combobox {...fields.control("upgrade-industry")} required label="დარგი" options={categoryOptions} value={industry} onChange={value => {setIndustry(value); fields.clear('upgrade-industry');}}/>{fields.message('upgrade-industry')}</div>
       </fieldset>
       {error && <p className="ma-field__error" role="alert">{error}</p>}
-      <p className={styles.next}>შემდეგ ნაბიჯზე აირჩევთ, რისთვის გამოიყენებთ MeetAny-ს.</p>
-    </form></FormLayout>}
+      <div className={styles.actions}><Button variant="secondary" disabled={busy} onClick={() => { setOpen(false); setError(''); }}>უკან</Button><Button type="submit" loading={busy}>გააგრძელეთ</Button></div>
+    </form>}
   </section>;
 }

@@ -22,10 +22,10 @@ export function MatchingSuppliers({ store, requestId }: { store: Store; requestI
     return () => { active = false; };
   }, [callRpc, requestId]);
   if (!items) return <p role="status">მომწოდებლები იტვირთება…</p>;
-  if (!items.length) return <EmptyState icon="users" text={failed ? "შესაბამისი მომწოდებლების სია ამჟამად მიუწვდომელია. მოთხოვნა გამოქვეყნებულია." : "ვერიფიცირებული მომწოდებელი ჯერ არ არის; მოთხოვნა კატალოგში მაინც გამოჩნდება."} />;
+  if (!items.length) return <EmptyState icon="users" text={failed ? "შესაბამისი მომწოდებლების სია ამჟამად მიუწვდომელია. მოთხოვნა გამოქვეყნებულია." : "შესაბამისი მომწოდებელი ჯერ არ ჩანს. მოთხოვნა გამოქვეყნებულია."} />;
   // Similar-direction suppliers are listed after the exact ones; only the alerted ones count as "sent".
   const notified = items.filter(item => item.notified).length;
-  return <>{notified ? <p>მოთხოვნა გაეგზავნა <strong>{notified}</strong> ვერიფიცირებულ მომწოდებელს</p> : <p><strong>{items.length}</strong> შესაბამისი ვერიფიცირებული მომწოდებელი</p>}<ul className={styles.suppliers}>{items.map(item => <li key={item.id}>
+  return <>{notified ? <p>მოთხოვნა გაეგზავნა <strong>{notified}</strong> მომწოდებელს</p> : <p><strong>{items.length}</strong> შესაბამისი მომწოდებელი</p>}<ul className={styles.suppliers}>{items.map(item => <li key={item.id}>
     <span className={styles.avatar} aria-hidden="true">{item.company?.slice(0, 1)}</span>
     <div><Link href={`/companies/view/?id=${encodeURIComponent(item.id)}`}>{item.company}</Link><p>{cities[item.city] || item.city}{item.verified ? <Icon name="badge-check" /> : null}{item.match === "similar" ? <Badge status="muted">მსგავსი მიმართულება</Badge> : null}</p></div>
   </li>)}</ul><Link href={`/matching/?requestId=${encodeURIComponent(requestId)}`}>ყველა შესაბამისი მომწოდებელი</Link></>;
@@ -40,9 +40,9 @@ export function MatchingPreview({ store, category }: { store: Store; category: s
     countMatchingSuppliers({ callRpc }, category).then(count => { if (active) setCounted({ category, count }); }, () => { if (active) setCounted({ category, count: null }); });
     return () => { active = false; };
   }, [callRpc, category]);
-  if (!category) return <div className={styles.matchingPreview}><p>აირჩიეთ კატეგორია — ვაჩვენებთ, რამდენ მომწოდებელს ეცნობება.</p></div>;
+  if (!category) return <div className={styles.matchingPreview}><p>აირჩიეთ კატეგორია — ვაჩვენებთ, რამდენი შესაბამისი მომწოდებელია.</p></div>;
   if (counted?.category !== category) return <div className={styles.matchingPreview} role="status"><p>ითვლება…</p></div>;
   if (counted.count === null) return <div className={styles.matchingPreview}><p>მომწოდებლების რაოდენობა ამჟამად მიუწვდომელია. მოთხოვნა მაინც გამოქვეყნდება.</p></div>;
-  if (!counted.count) return <div className={styles.matchingPreview}><p>ვერიფიცირებული მომწოდებელი ჯერ არ არის; მოთხოვნა კატალოგში მაინც გამოჩნდება.</p></div>;
-  return <div className={styles.matchingPreview}><p><strong>{counted.count}</strong>ვერიფიცირებული მომწოდებელი</p><p>გამოქვეყნებისას მათ ეცნობებათ.</p></div>;
+  if (!counted.count) return <div className={styles.matchingPreview}><p>შესაბამისი მომწოდებელი ჯერ არ ჩანს. მოთხოვნა გამოქვეყნდება.</p></div>;
+  return <div className={styles.matchingPreview}><p><strong>{counted.count}</strong> შესაბამისი მომწოდებელი</p><p>შეტყობინებებს მომწოდებლების ინტერესების მიხედვით გავაგზავნით.</p></div>;
 }

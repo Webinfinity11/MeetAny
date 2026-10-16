@@ -1,0 +1,76 @@
+{
+  "environment": "macOS WebKit with iPhone viewport emulation; not a physical iPhone",
+  "checks": [
+    {
+      "path": "/",
+      "width": 390,
+      "status": 200,
+      "overflow": 0,
+      "heading": "რა სჭირდება თქვენს ბიზნესს?"
+    },
+    {
+      "path": "/requests/",
+      "width": 390,
+      "status": 200,
+      "overflow": 0,
+      "heading": "ღია მოთხოვნები"
+    },
+    {
+      "path": "/companies/",
+      "width": 390,
+      "status": 200,
+      "overflow": 0,
+      "heading": "კომპანიები"
+    },
+    {
+      "path": "/account/?tab=register",
+      "width": 390,
+      "status": 200,
+      "overflow": 0,
+      "heading": "რეგისტრაცია"
+    },
+    {
+      "path": "/terms/",
+      "width": 390,
+      "status": 200,
+      "overflow": 0,
+      "heading": "წესები და კონფიდენციალურობა"
+    },
+    {
+      "path": "/",
+      "width": 320,
+      "status": 200,
+      "overflow": 0,
+      "heading": "რა სჭირდება თქვენს ბიზნესს?"
+    },
+    {
+      "path": "/requests/",
+      "width": 320,
+      "status": 200,
+      "overflow": 0,
+      "heading": "ღია მოთხოვნები"
+    },
+    {
+      "path": "/companies/",
+      "width": 320,
+      "status": 200,
+      "overflow": 0,
+      "heading": "კომპანიები"
+    },
+    {
+      "path": "/account/?tab=register",
+      "width": 320,
+      "status": 304,
+      "overflow": 0,
+      "heading": "რეგისტრაცია"
+    },
+    {
+      "path": "/terms/",
+      "width": 320,
+      "status": 304,
+      "overflow": 0,
+      "heading": "წესები და კონფიდენციალურობა"
+    }
+  ],
+  "errors": []
+}

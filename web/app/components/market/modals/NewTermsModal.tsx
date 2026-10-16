@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../ui/Modal";
 import { toast } from "../../Toasts";
 import { DealTermsForm } from "../DealTermsForm";
@@ -9,10 +9,11 @@ import { chatChanged, type Conversation } from "../../../lib/chat-client";
 export function NewTermsModal({ deal, defaults, store, pending, onClose, onSubmit }: { deal: Deal; defaults?: DealTermsInput; store: Store; pending: boolean; onClose: () => void; onSubmit: (args: DealTermsInput) => Promise<boolean> }) {
   const [conversation, setConversation] = useState<string>();
   const [sending, setSending] = useState(false);
+  const cancelRef = useRef<(() => void) | null>(null);
   useEffect(() => { let active = true; void store.listConversations().then((items: Conversation[]) => { if (active) setConversation(items.find(c => c.requestId === deal.request_id && c.companyId === deal.supplier_id)?.id); }).catch(() => {}); return () => { active = false; }; }, [store, deal.request_id, deal.supplier_id]);
   const busy = pending || sending;
-  return <Modal open onClose={() => { if (!busy) onClose(); }} width={560} title={deal.stage === "terms" ? "ცვლილების შეთავაზება" : "ახალი პირობები"} lead="ცვლილებას მეორე მხარის თანხმობა სჭირდება.">
-    <DealTermsForm deal={deal} defaults={defaults} pending={busy} commentAvailable={!!conversation} onCancel={onClose} onSubmit={async (args, comment) => {
+  return <Modal open onClose={() => { if (!busy) cancelRef.current?.(); }} width={560} title={deal.stage === "terms" ? "ცვლილების შეთავაზება" : "ახალი პირობები"} lead="ცვლილებას მეორე მხარის თანხმობა სჭირდება.">
+    <DealTermsForm deal={deal} defaults={defaults} pending={busy} commentAvailable={!!conversation} onCancel={onClose} cancelRef={cancelRef} onSubmit={async (args, comment) => {
       setSending(true);
       try {
         if (!await onSubmit(args)) return false;

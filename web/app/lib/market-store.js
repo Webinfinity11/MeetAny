@@ -24,8 +24,8 @@ export function createMarketStore({initial=null,background=true}={}){
  const CHECK_EMAIL='შეამოწმეთ ელფოსტა';
  const STALE='მონაცემები ვერ განახლდა. გვერდზე შეიძლება ძველი ინფორმაცია ჩანდეს.';
  const MSG={
-  MA801:'შეთავაზების გაგზავნას კომპანიის ვერიფიკაცია სჭირდება.',
-   MA622:'დაამატეთ მაქსიმუმ 12 პროდუქტი: სახელი 2–80 სიმბოლო, აღწერა 200-მდე და ფოტო თქვენი გალერეიდან.',
+  MA801:'მოქმედება ვერ შესრულდა. განაახლეთ გვერდი და სცადეთ ხელახლა.',
+   MA622:'პროდუქტები ვერ შეინახა. გადაამოწმეთ ველები და პროდუქტების რაოდენობა (მაქსიმუმ 15).',
    MA621:'მიუთითეთ მინიმუმ ერთი რეგიონი და არხი. გადაამოწმეთ ველების ზომა და მნიშვნელობები.',
   MA601:'აირჩიეთ 1–5 ქულა და დაწერეთ 20–1500 სიმბოლო.',MA602:'შეფასება შესაძლებელია გარიგების დასრულების შემდეგ.',MA603:'მიუთითეთ მოდერაციის მიზეზი.',MA604:'განაცხადი უკვე დამუშავებულია. განაახლეთ სია.',
   // New flows (CONTRACT.md 2026-10-07): deals, comparison, contact, matching, onboarding.
@@ -39,6 +39,8 @@ export function createMarketStore({initial=null,background=true}={}){
   MA105:'თქვენ გაქვთ 5 ღია მოთხოვნა — დახურეთ ერთი, რომ ახალი გამოაქვეყნოთ.',MA106:'მოთხოვნა ვერ მოიძებნა.',MA107:'ეს მოთხოვნა თქვენ არ გეკუთვნით.',
   MA108:'არჩეული ან დამალული მოთხოვნა ვერ გაგრძელდება.',MA109:'ატვირთეთ მხოლოდ სურათი.',
   MA111:'რაოდენობა უნდა იყოს დადებითი რიცხვი.',MA112:'აირჩიეთ რაოდენობის ერთეული.',MA113:'აირჩიეთ დღევანდელი ან მომავალი თარიღი (არაუგვიანეს 2 წლისა).',
+  MA118:'მიწოდების თარიღი გასულია. შეცვალეთ თარიღი ან შექმენით ახალი მოთხოვნა.',
+  MA623:'პროდუქტის კოდი მეორდება ან უკოდო პროდუქტი ამ სახელით უკვე დამატებულია.',
   MA114:'მისამართი ან რაიონი უნდა შეიცავდეს მაქსიმუმ 120 სიმბოლოს.',
   MA115:'ლოგო უნდა იყოს JPG, PNG, WEBP ან GIF სურათი, მაქსიმუმ 2 მბ.',
   MA305:'ფოტო ამ პროფილზე ვეღარ მოიძებნა — შესაძლოა უკვე წაიშალა.',
@@ -46,7 +48,7 @@ export function createMarketStore({initial=null,background=true}={}){
   MA412:'მისამართი უნდა შეიცავდეს მაქსიმუმ 200 სიმბოლოს.',
   MA413:'მიუთითეთ ორივე კოორდინატი: განედი −90-დან 90-მდე და გრძედი −180-დან 180-მდე.',
   MA110:'მოთხოვნას ვეღარ შეცვლით: მასზე უკვე მოვიდა შეთავაზება ან მომწოდებელი არჩეულია.',
-  MA201:'შეთავაზების გაგზავნა შეუძლია მხოლოდ კომპანიის ანგარიშს.',MA202:'საკუთარ მოთხოვნაზე შეთავაზებას ვერ გაგზავნით.',MA203:'მოთხოვნა აღარ იღებს შეთავაზებებს.',
+  MA201:'ამ ანგარიშიდან შეთავაზება მიუწვდომელია.',MA202:'საკუთარ მოთხოვნაზე შეთავაზებას ვერ გაგზავნით.',MA203:'მოთხოვნა აღარ იღებს შეთავაზებებს.',
   MA204:'აღწერეთ შეთავაზება მინიმუმ 10 სიმბოლოთი.',MA205:'ფასი უნდა იყოს დადებითი რიცხვი.',MA206:'შეთავაზება ვერ მოიძებნა.',MA207:'არჩეული შეთავაზება ვერ გაუქმდება.',
   MA208:'ამ მოთხოვნაზე არჩევა აღარ შეიძლება.',MA209:GENERIC,
   MA210:'აირჩიეთ ფასის ტიპი.',MA211:'„შეთანხმებით“ შეთავაზებაში ფასი არ მიეთითება.',MA212:'მიუთითეთ ფასი ან აირჩიეთ „შეთანხმებით“.',MA213:'მიწოდების ვადა უნდა იყოს 0-დან 365 დღემდე.',
@@ -330,7 +332,7 @@ export function createMarketStore({initial=null,background=true}={}){
    const need=[...new Set([...rs.map(r=>r.ownerId),...(me?os:[]).map(o=>o.companyUserId)])].filter(id=>!known.has(id));
    return Promise.all(chunks(need,100).map(part=>db('/profiles?select='+PUBLIC_PROFILE+'&id=in.'+inList(part)).then(rows))).then(parts=>parts.flat());
   });
-  // Contacts open only between the request author and the chosen company.
+  // Contacts open only between the request author and the chosen supplier.
   const contactsP=Promise.all([reqP,offersP,meP]).then(([rs,os,me])=>{
    if(!me)return [];
    const byId=Object.fromEntries(os.map(o=>[o.id,o]));
@@ -725,7 +727,7 @@ export function createMarketStore({initial=null,background=true}={}){
  function allUsers(){return [...(cache.users||Object.values(cache.profiles))].sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0));}
 
  // Detail routes load their own record: admin pagination can open records beyond the catalog cap.
- async function ensureRequest(id,{cached=false}={}){
+ async function ensureRequest(id,{cached=false,retry=true}={}){
   if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id||'')))return null;
   // A completed session refresh already contains this record, its RLS-scoped offers,
   // author and count. Route mounts can reuse it; explicit reads still bypass it.
@@ -745,7 +747,10 @@ export function createMarketStore({initial=null,background=true}={}){
    const profiles=(await Promise.all(chunks(profileIds,100).map(part=>db('/profiles?select='+PUBLIC_PROFILE+'&id=in.'+inList(part)).then(rows)))).flat().map(mapUser);
    const involved=actor&&request.chosenOfferId&&(request.ownerId===actor||offers.some(o=>o.id===request.chosenOfferId&&o.companyUserId===actor));
    const contact=involved?one(await rpc('contact_for_request',{p_request_id:id})):null;
-   if(actor!==(currentUser()?.id||null)||revision!==dataRevision)return null;
+   if(actor!==(currentUser()?.id||null))return null;
+   // A route refresh can finish while the detail is loading. Retry once under the new
+   // revision instead of reporting a visible request as missing/forbidden.
+   if(revision!==dataRevision)return retry?ensureRequest(id,{retry:false}):null;
    cache.requests=[...cache.requests.filter(r=>r.id!==id),request];
    cache.offers=[...cache.offers.filter(o=>o.requestId!==id),...offers];
    cache.counts[id]=Number(countRows[0]?.offers)||0;
@@ -1005,7 +1010,7 @@ export function createMarketStore({initial=null,background=true}={}){
  const mapMessage=m=>m?{id:m.id,conversationId:m.conversation_id,senderId:m.sender_id,body:m.body,createdAt:m.created_at,readAt:m.read_at}:null;
  const mapConversation=c=>({id:c.id,clientId:c.client_id,companyId:c.company_id,requestId:c.request_id,contextKey:c.context_key,
   createdAt:c.created_at,lastMessageAt:c.last_message_at,clientLastReadAt:c.client_last_read_at,companyLastReadAt:c.company_last_read_at,
-  otherId:c.other_id??null,otherName:c.other_name??null,otherCompany:c.other_company??null,
+  otherId:c.other_id??null,otherRole:c.other_role??null,otherName:c.other_name??null,otherCompany:c.other_company??null,
   lastMessage:mapMessage(c.last_message),unreadCount:Number(c.unread_count||0)});
  const startConversation=(companyId,requestId=null)=>rpc('start_conversation',{p_company_id:companyId,p_request_id:requestId}).then(mapConversation);
  const sendMessage=(id,body)=>rpc('send_message',{p_conversation_id:id,p_body:body}).then(mapMessage);
@@ -1100,7 +1105,7 @@ export function createMarketStore({initial=null,background=true}={}){
 
  return {categories,cities,units,priceTypes,todayDate,maxNeededBy,stateLabels,EXTEND_DAYS,
   companyProducts:id=>rpc('company_products',{p_company_id:id}),
-  setMyProducts:async items=>{try{const data=await rpc('set_my_products',{p_items:items});await refresh();warnStale(dataStale);return data;}catch(err){if(err.code==='MA622')err.userMessage='დაამატეთ მაქსიმუმ 100 პროდუქტი: დასახელება 2–80 სიმბოლო, კოდი 40-მდე, აღწერა 200-მდე; ფასი 0–1 000 000 000. ფოტო არასავალდებულოა და თქვენი გალერეიდან უნდა იყოს.';throw err;}},
+  setMyProducts:async items=>{try{const data=await rpc('set_my_products',{p_items:items});await refresh();warnStale(dataStale);return data;}catch(err){if(err.code==='MA622')err.userMessage='დაამატეთ მაქსიმუმ 15 პროდუქტი: დასახელება 2–80 სიმბოლო, კოდი 40-მდე, აღწერა 200-მდე; ფასი 0–1 000 000 000. ფოტო არასავალდებულოა და თქვენი გალერეიდან უნდა იყოს.';throw err;}},
   adminMarketMetrics:()=>rpc('admin_market_metrics'),
   companyDistributionProfiles:()=>rpc('company_distribution_profiles'),
   setMyDistribution:args=>mutate('set_my_distribution',args),

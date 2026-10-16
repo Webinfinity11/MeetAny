@@ -19,11 +19,13 @@
 .body>form{margin-top:0}
 .actions{display:flex;flex:none;justify-content:flex-end;flex-wrap:wrap;gap:var(--space-control-y)}
 :global(html):has(.modal[open]){overflow:hidden}
-@keyframes enter{from{opacity:0;transform:translateY(var(--space-6)) scale(.98)}}
+@keyframes enter{from{transform:translateY(var(--space-3)) scale(.98)}}
 @keyframes fade{from{opacity:0}}
 @keyframes fade-out{to{opacity:0}}
-@keyframes leave{to{opacity:0;transform:translateY(var(--space-3)) scale(.98)}}
+@keyframes leave{to{transform:translateY(var(--space-3)) scale(.98)}}
 @keyframes sheet-in{from{transform:translateY(100%)}}
 @keyframes sheet-out{to{transform:translateY(100%)}}
 @media(max-width:639px){.modal{width:100%;margin:auto 0 0;padding:var(--space-5);border-radius:var(--size-20) var(--size-20) 0 0;padding-bottom:calc(var(--space-5) + env(safe-area-inset-bottom))}.modal[open]{gap:var(--space-4)}.modal::before{content:"";display:block;flex:none;align-self:center;width:var(--space-10);height:var(--space-1);margin-top:calc(-1 * var(--space-2));border-radius:var(--radius-pill);background:var(--ink-200)}.actions{flex-direction:column}.actions :global(.ma-btn){width:100%}.actions :global(.ma-btn--primary),.actions :global(.ma-btn--danger){order:-1}.modal[open]{animation-name:sheet-in}.modal[open][data-closing]{animation-name:sheet-out}}
-@media(prefers-reduced-motion:reduce){.modal[open],.modal::backdrop{animation-name:fade}.modal[open][data-closing],.modal[data-closing]::backdrop{animation-name:fade-out}}
+@media(prefers-reduced-motion:reduce){.modal[open],.modal[open][data-closing]{animation:none}.modal::backdrop{animation-name:fade}.modal[data-closing]::backdrop{animation-name:fade-out}}
+/* At keyboard/landscape heights, scroll the whole dialog so its heading and actions cannot squeeze content out. */
+@media(max-height:540px){.modal{max-height:calc(100dvh - var(--space-4));overflow-y:auto}.modal[open]{display:block}.modal::before{margin-inline:auto;margin-bottom:var(--space-4)}.header{margin-bottom:var(--space-4)}.body{overflow:visible}.actions{margin-top:var(--space-5)}}

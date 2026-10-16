@@ -58,7 +58,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
   const type = filters.get("type"), coverage = filters.get("coverage") === "national", sort = filters.get("sort", "recommended");
   const verified = filters.get("verified") === "1";
   const requestedView = filters.get("view");
-  const view = requestedView === "grid" || requestedView === "map" ? requestedView : "list";
+  const view = requestedView === "list" || requestedView === "map" ? requestedView : "grid";
   const paid = filters.get("plan") === "paid";
   const distribution = useBusinessResource<Distribution[]>(ready && type === "distributors" ? store?.companyDistributionProfiles : undefined, "distribution");
   const distributionById = useMemo(() => new Map(distribution.data?.map(d => [d.id, d]) || []), [distribution.data]);
@@ -156,7 +156,7 @@ export function CompaniesPageContent({ initial }: { initial?: PublicSnapshot }) 
               { value: "list", label: "სია", icon: "list-filter" },
               { value: "grid", label: "ბადე", icon: "layout-grid" },
               { value: "map", label: "რუკა", icon: "map-pin" },
-            ] as const).map(option => <Button key={option.value} variant="secondary" aria-label={option.label} title={option.label} aria-pressed={view === option.value} onClick={() => filters.set({ view: option.value === "list" ? "" : option.value })}><Icon name={option.icon} /><span>{option.label}</span></Button>)}</div>} />
+            ] as const).map(option => <Button key={option.value} variant="secondary" aria-label={option.label} title={option.label} aria-pressed={view === option.value} onClick={() => filters.set({ view: option.value === "grid" ? "" : option.value })}><Icon name={option.icon} /><span>{option.label}</span></Button>)}</div>} />
         </div>
         <div className={`${styles.grid}${view === "list" ? ` ${styles.companyList}` : ""}`}>
           {!available ? <ServiceUnavailable /> : !ready ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : type === "distributors" && (business.error || distribution.error) ? <BusinessError error={business.error || distribution.error!} retry={() => { business.reload(); distribution.reload(); }} /> : type === "distributors" && (business.loading || distribution.loading) ? (view === "list" ? <ListSkeleton compact /> : <SkeletonGrid count={6} />) : !rows.length

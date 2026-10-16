@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { OpportunityCard, OpportunitySkeleton } from "./market/OpportunityCard";
 import { useMarketStore, type PublicSnapshot } from "../lib/market-client";
-import { RequestCatalogCover } from "./market/RequestCatalogCover";
+import { requestCoverPhoto } from "../lib/request-cover";
 
 export type HomeRequest = {
   id: string; title: string; category: string; city: string; createdAt: string;
@@ -28,10 +28,11 @@ export function useHomeFeed(initial?: PublicSnapshot) {
 
 export function HomeRequestPhoto({ request, live = false }: { request: HomeRequest; live?: boolean }) {
   const [failed, setFailed] = useState<string | null>(null);
+  const supplied = !!request.photo && failed !== request.photo;
+  const src = supplied ? request.photo! : requestCoverPhoto(request.category);
   return <div className={live ? "home-live-photo" : "home-opportunity-photo"}>
-    {request.photo && failed !== request.photo
-      ? <Image src={request.photo} alt="" width={480} height={300} sizes="(max-width: 720px) 100vw, 480px" unoptimized={!optimizable(request.photo)} loading="lazy" onError={() => setFailed(request.photo)} />
-      : <RequestCatalogCover category={request.category} />}
+    <Image src={src} alt="" width={480} height={300} sizes="(max-width: 479px) calc(100vw - 32px), (max-width: 1023px) 45vw, 280px" unoptimized={!optimizable(src)} loading="lazy" onError={supplied ? () => setFailed(request.photo) : undefined} />
+    {!supplied && <span className="home-live-photo__note">თემატური ფოტო</span>}
   </div>;
 }
 
@@ -42,6 +43,6 @@ export function HomeRequests({ initial, initialNow }: { initial?: PublicSnapshot
   return <div className="home-opportunities" aria-busy={!ready}>
     {!ready ? Array.from({ length: 5 }, (_, i) => <OpportunitySkeleton key={i} />)
       : !requests.length ? <p className="home-empty">{available ? "ღია მოთხოვნები მალე გამოჩნდება." : "სერვისი დროებით მიუწვდომელია."}</p>
-      : requests.slice(0, 5).map(r => <OpportunityCard key={r.id} compact request={{ ...r, daysLeft: store?.daysLeft(r, now) ?? 0, isNew: now >= Date.parse(r.createdAt) && now - Date.parse(r.createdAt) < 86400000 }} offers={store?.offerCount(r.id)} />)}
+      : requests.slice(0, 5).map(r => <OpportunityCard key={r.id} compact media={<HomeRequestPhoto request={r} />} request={{ ...r, daysLeft: store?.daysLeft(r, now) ?? 0, isNew: now >= Date.parse(r.createdAt) && now - Date.parse(r.createdAt) < 86400000 }} offers={store?.offerCount(r.id)} />)}
   </div>;
 }

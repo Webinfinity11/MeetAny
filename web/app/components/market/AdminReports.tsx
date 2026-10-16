@@ -36,7 +36,7 @@ export const hideLabels: Record<string, string> = { review: "შეფასე�
 const PAGE = 20;
 
 export const reportTargetLabel = (r: AdminReport) =>
-  r.target_kind === "offer" ? `${r.target_label || "კომპანია"}${r.context_label ? ` · ${r.context_label}` : ""}` : r.target_label || `${kinds[r.target_kind]} · #${r.target_id.slice(0, 8)}`;
+  r.target_kind === "offer" ? `${r.target_label || "მომწოდებელი"}${r.context_label ? ` · ${r.context_label}` : ""}` : r.target_label || `${kinds[r.target_kind]} · #${r.target_id.slice(0, 8)}`;
 const targetDetail = (r: AdminReport): AdminTarget => r.target_kind === "conversation" ? null : r.target_kind === "review" ? {kind:"user",id:r.context_id!} : ({ kind: (r.target_kind === "company" || r.target_kind === "contact_change") ? "user" : r.target_kind, id: r.target_id });
 
 /** Reports queue: new or handled, newest first, 20 per page. */
@@ -66,18 +66,18 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
         <option value="new">ახალი</option><option value="handled">დამუშავებული</option>
       </CustomSelect></div>
     </div>
-    {resource.error ? <AdminState error title="საჩივრები ვერ ჩაიტვირთა" text={resource.error} onRetry={resource.reload} />
-      : !page ? <ListSkeleton compact kind="records" label="საჩივრები იტვირთება…" />
-      : !page.items.length ? <AdminState title={status === "new" ? "ახალი საჩივრები არ არის" : "დამუშავებული საჩივრები ჯერ არ არის"} text={status === "new" ? "ახალი საჩივრები აქ გამოჩნდება." : undefined} onFirst={offset ? () => setOffset(0) : undefined} />
+    {resource.error ? <AdminState error title="მომართვები ვერ ჩაიტვირთა" text={resource.error} onRetry={resource.reload} />
+      : !page ? <ListSkeleton compact kind="records" label="მომართვები იტვირთება…" />
+      : !page.items.length ? <AdminState title={status === "new" ? "ახალი მომართვები არ არის" : "დამუშავებული მომართვები ჯერ არ არის"} onFirst={offset ? () => setOffset(0) : undefined} />
       : <>
-        <p className={styles.count} role="status">{page.total} საჩივარი</p>
+        <p className={styles.count} role="status">{page.total} მომართვა</p>
         <div className="ma-table-wrap"><table className="ma-table">
-          <caption className="ma-sr-only">საჩივრები</caption>
-          <thead><tr>{["საჩივარი", "მიზეზი", "ავტორი", "თარიღი", status === "new" ? "მოქმედება" : "შედეგი"].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead>
+          <caption className="ma-sr-only">მომართვები</caption>
+          <thead><tr>{["მომართვა", "მიზეზი", "ავტორი", "თარიღი", status === "new" ? "მოქმედება" : "შედეგი"].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead>
           <tbody>{page.items.map(r => <tr key={r.id}>
-            <td data-label="საჩივარი">
+            <td data-label="მომართვა">
               {r.target_exists ? <button type="button" className={styles.rowLink} onClick={() => r.target_kind === "contact_change" ? setContact(r) : ["review","conversation"].includes(r.target_kind) ? setContent(r) : onOpen(targetDetail(r))}>{reportTargetLabel(r)}</button> : reportTargetLabel(r)}
-              <small>{kinds[r.target_kind]}{!r.target_exists ? " · წაშლილია" : r.target_removed ? (r.target_kind === "company" ? " · დაბლოკილია" : " · დამალულია") : ""} · სულ {r.target_reports} საჩივარი{r.target_new > 1 && r.status === "new" ? `, ${r.target_new} ახალი` : ""}</small>
+              <small>{kinds[r.target_kind]}{!r.target_exists ? " · წაშლილია" : r.target_removed ? (r.target_kind === "company" ? " · დაბლოკილია" : " · დამალულია") : ""}{r.target_kind !== "contact_change" ? ` · სულ ${r.target_reports} საჩივარი` : ""}{r.target_new > 1 && r.status === "new" ? `, ${r.target_new} ახალი` : ""}</small>
             </td>
             <td data-label="მიზეზი"><span style={r.target_kind === "contact_change" ? {whiteSpace:"normal"} : undefined} className={`ma-badge ma-badge--${r.reason === "other" ? "neutral" : "warning"}`}>{r.target_kind === "contact_change" ? kinds.contact_change : reportReasons[r.reason]}</span>{r.body ? <p className={styles.excerpt}>{r.body}</p> : null}</td>
             <td data-label="ავტორი">{r.reporter_name || `მომხმარებელი · #${r.reporter_id.slice(0, 8)}`}{r.reporter_email ? <small>{r.reporter_email}</small> : null}</td>
@@ -93,7 +93,7 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
                 <small>{[r.handler_name, r.handled_at ? dateLabel(r.handled_at) : ""].filter(Boolean).join(" · ")}</small></td>}
           </tr>)}</tbody>
         </table></div>
-        {page.total > PAGE ? <nav className={styles.pagination} aria-label="საჩივრების გვერდები">
+        {page.total > PAGE ? <nav className={styles.pagination} aria-label="მომართვების გვერდები">
           <Button type="button" variant="secondary" disabled={!offset} onClick={() => setOffset(n => Math.max(0, n - PAGE))}>წინა</Button>
           <Button type="button" variant="secondary" disabled={offset + PAGE >= page.total} onClick={() => setOffset(n => n + PAGE)}>შემდეგი</Button>
         </nav> : null}
@@ -106,12 +106,12 @@ export function AdminReports({ store, status, revision, onStatus, onAction, onCo
       {contact ? <div className={styles.detail}>
         <h3>{reportTargetLabel(contact)}</h3>
         <dl className={styles.detailFacts}>
-          <dt>ტელეფონი</dt><dd>{contact.current_phone || "—"} → {contact.payload?.phone || "უცვლელი"}</dd>
-          <dt>საკონტაქტო ელფოსტა</dt><dd>{contact.current_email || "—"} → {contact.payload?.email || "უცვლელი"}</dd>
+          <dt>{contact.status === "new" ? "ტელეფონი" : "მოთხოვნილი ტელეფონი"}</dt><dd>{contact.status === "new" ? `${contact.current_phone || "—"} → ` : ""}{contact.payload?.phone || "უცვლელი"}</dd>
+          <dt>{contact.status === "new" ? "საკონტაქტო ელფოსტა" : "მოთხოვნილი ელფოსტა"}</dt><dd>{contact.status === "new" ? `${contact.current_email || "—"} → ` : ""}{contact.payload?.email || "უცვლელი"}</dd>
           <dt>შენიშვნა</dt><dd>{contact.payload?.note || "არ არის მითითებული"}</dd>
         </dl>
         {!contact.payload ? <p className={styles.detailText}>{contact.body}</p> : null}
-        <p>შეიცვლება პროფილის საკონტაქტო მონაცემები. შესასვლელი ელფოსტა უცვლელი დარჩება.</p>
+        <p>ცვლილება ეხება პროფილის საკონტაქტო მონაცემებს. შესვლის ელფოსტა არ იცვლება.</p>
       </div> : null}
     </Sheet>
     <ConfirmSheet id="apply-contact-change" open={confirm} title="კონტაქტის ცვლილების შესრულება" confirmLabel="შესრულება" pendingLabel="სრულდება…" pending={pending} error={error}

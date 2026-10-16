@@ -1,4 +1,5 @@
 "use client";
+import { retainWithdrawnOffer } from "./offer/offer-draft";
 import { optimizable } from "../../lib/image";
 import Image from "next/image";
 import { Button } from "../ui/Button";
@@ -91,7 +92,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     const offerCount = store.offerCount(id);
     const state = store.requestState(r);
     const isOwner = !!me && r.ownerId === me.id;
-    const myOffer = me?.role === "company" ? offers.find((o: { companyUserId: string }) => o.companyUserId === me.id) : null;
+    const myOffer = me && me.role !== "admin" ? offers.find((o: { companyUserId: string }) => o.companyUserId === me.id) : null;
     const contact = store.contactFor(r, me);
     const mapOffer = (o: { id: string; companyUserId: string; createdAt: string; updatedAt?: string; paymentTerms?: string | null; validUntil?: string | null; commercialTerms?: string[]; deliveryDays: number | null; price: number | null; priceType: string; vatIncluded: boolean; deliveryIncluded: boolean; body: string; status: string }): OfferCardData => {
       const c = store.userById(o.companyUserId);
@@ -100,8 +101,8 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         id: o.id,
         logoUrl: c?.logoUrl,
         companyId: o.companyUserId,
-        companyName: c?.company || c?.name || "კომპანია",
-        companyHref: `/companies/view/?id=${encodeURIComponent(o.companyUserId)}`,
+        companyName: c?.company || c?.name || "მომწოდებელი",
+        companyHref: c?.role === "company" ? `/companies/view/?id=${encodeURIComponent(o.companyUserId)}` : undefined,
         city: c ? cities[c.city] || c.city : "",
         createdAt: o.createdAt,
         updatedAt: o.updatedAt,
@@ -109,7 +110,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         validUntil: o.validUntil,
         commercialTerms: o.commercialTerms,
         deliveryDays: o.deliveryDays,
-        price:o.price,priceType:o.priceType,vatIncluded:o.vatIncluded,deliveryIncluded:o.deliveryIncluded,
+        price:o.price,quantity:r.quantity,priceType:o.priceType,vatIncluded:o.vatIncluded,deliveryIncluded:o.deliveryIncluded,
         body: o.body,
         status: o.status,
         isNew,
@@ -121,13 +122,13 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
 
   // The author's chosen offer already has a deal: link to it instead of reopening the choice sheet.
   const chosenOfferId: string | null = data?.isOwner ? data.r.chosenOfferId || null : null;
-  const [deal, setDeal] = useState<{ offer: string; id: string } | null>(null);
+  const [deal, setDeal] = useState<{ offer: string; id: string; stage: string } | null>(null);
   useEffect(() => {
     if (!store || !chosenOfferId) return;
     let active = true;
     listMyDeals(store).then(items => {
       const found = items.find(item => item.offer_id === chosenOfferId);
-      if (active && found) setDeal({ offer: chosenOfferId, id: found.id });
+      if (active && found) setDeal({ offer: chosenOfferId, id: found.id, stage: found.stage });
     }, () => undefined);
     return () => { active = false; };
   }, [store, chosenOfferId]);
@@ -162,7 +163,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     return offerSort === "delivery" ? (a.deliveryDays ?? Infinity) - (b.deliveryDays ?? Infinity) : Date.parse(b.createdAt) - Date.parse(a.createdAt);
   });
   const daysLeft: number = state === "open" ? store?.daysLeft(r) ?? 0 : 0;
-  const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
+  const statusText = state === "open" ? (daysLeft <= 0 ? "დღეს იწურება" : `კიდევ ${daysLeft} დღე`) : state === "closed" ? "დახურულია" : state === "chosen" ? deal?.offer === chosenOfferId && deal.stage === "cancelled" ? "გარიგება გაუქმებულია" : "მომწოდებელი არჩეულია" : state === "expired" ? "ვადაგასულია" : store?.stateLabels[state] || "";
   // Keep the same fact order as a request card: category, city, quantity, deadline.
   const posted = postedLabel(r.createdAt, now);
   // The buyer's exact address opens together with the contact, after an offer is chosen (owner, admin and the chosen company).
@@ -172,27 +173,31 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     ["briefcase-business", "კატეგორია", categories[r.category] || r.category],
     ["map-pin", "ქალაქი", cityLabel],
     ...(r.quantity != null ? [["package", "რაოდენობა", `${r.quantity} ${units[r.unit] || r.unit || ""}`.trim()] as [string, string, string]] : []),
-    ["calendar", "შეთავაზებების მიღება", statusText],
+    ...(state === "open" ? [["calendar", "შეთავაზებების მიღება", statusText] as [string, string, string]] : []),
   ];
-  const lockNote = isOwner ? (r.chosenOfferId ? "" : "კომპანიის კონტაქტი იხსნება შეთავაზების არჩევის შემდეგ")
-    : contact ? "" : "მყიდველის კონტაქტი და მისამართი იხსნება შეთავაზების არჩევის შემდეგ";
+  const lockNote = isOwner ? (r.chosenOfferId ? "" : "მომწოდებლის კონტაქტი — შეთავაზების არჩევის შემდეგ.")
+    : contact ? "" : "კონტაქტი და მისამართი — შეთავაზების არჩევის შემდეგ.";
   const similar: OpportunityRequest[] = (store?.listRequests({ category: r.category }) || []).filter((item: OpportunityRequest) => item.id !== r.id).slice(0, 3).map((item: OpportunityRequest) => ({ ...item, daysLeft: store?.daysLeft(item) ?? 0 }));
   const offerHref = `/offers/new/?requestId=${encodeURIComponent(r.id)}`;
-  const offerAction = !sessionReady || isOwner || closed || myOffer || me?.role === "admin" ? null
-    : !me ? { label: "შედით, რომ გაგზავნოთ შეთავაზება", href: `/account/?${new URLSearchParams({ next: offerHref, intent: "offer", context: r.title })}`, hint: "შეთავაზების გაგზავნა ვერიფიცირებული კომპანიის ანგარიშით შეგიძლიათ." }
-    : me.role !== "company" ? { label: "შეთავაზების გასაგზავნად გახდით კომპანია", href: "/account/?tab=profile", hint: "პროფილი გადაიქცევა კომპანიის ანგარიშად. შეთავაზების გაგზავნამდე საჭიროა ვერიფიკაცია." }
-    : !me.verified ? { label: "ვერიფიკაციის დასრულება", href: "/onboarding/?step=verify", hint: "შეთავაზების გასაგზავნად ატვირთეთ კომპანიის დოკუმენტები და დაასრულეთ ვერიფიკაცია." }
-    : { label: "შეთავაზების გაგზავნა", href: offerHref, hint: "თქვენს შეთავაზებას მხოლოდ მოთხოვნის ავტორი ნახავს." };
+  const offerAction = !sessionReady || isOwner || closed || myOffer || me?.blocked || me?.role === "admin" ? null
+    : { label: "შეთავაზების გაგზავნა", href: me ? offerHref : `/account/?${new URLSearchParams({ next: offerHref, intent: "offer", context: r.title })}` };
   const shareUrl = origin ? `${origin}/requests/view/?id=${encodeURIComponent(r.id)}` : "";
   async function action(kind: "extend" | "close" | "delete" | "withdraw") {
     if (!store || actionPending) return;
     setActionPending(true); setActionError("");
     try {
-      if (kind === "extend") await store.extendRequest(r.id);
+      let expiryLabel = "";
+      if (kind === "extend") {
+        const updated = await store.extendRequest(r.id);
+        expiryLabel = dateShort(updated?.expiresAt);
+      }
       else if (kind === "close") await store.closeRequest(r.id);
       else if (kind === "delete") {await store.deleteRequest(r.id); router.push("/account/");}
-      else if (myOffer) await store.withdrawOffer(myOffer.id);
-      toast({extend: closed ? "მოთხოვნა ხელახლა გაიხსნა 7 დღით." : "ვადა გაგრძელდა 7 დღით.", close: "მოთხოვნა დაიხურა.", delete: "მოთხოვნა წაიშალა.", withdraw: "შეთავაზება გაუქმდა."}[kind]);
+      else if (myOffer) {
+        await store.withdrawOffer(myOffer.id);
+        if (me?.id) { try { retainWithdrawnOffer(localStorage, me.id, r.id, myOffer); } catch { /* Storage is optional. */ } }
+      }
+      toast({extend: expiryLabel ? `შეთავაზებების მიღება: ${expiryLabel}.` : closed ? "მოთხოვნა ხელახლა გაიხსნა." : "მიღების ვადა განახლდა.", close: "მოთხოვნა დაიხურა.", delete: "მოთხოვნა წაიშალა.", withdraw: "შეთავაზება გაუქმდა."}[kind]);
       setConfirmKind(null);
     } catch(err) {setActionError((err as {userMessage?: string}).userMessage || "ვერ შესრულდა.");}
     finally {setActionPending(false);}
@@ -229,7 +234,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             <div><h2 className="request-offers__title" id="request-offers-title">შეთავაზებები <span className="request-offers-count">{offers.length}</span>
               {offers.some(o => o.isNew) ? <span className="request-offers__new">{offers.filter(o => o.isNew).length} ახალი</span> : null}
             </h2><p className="request-offers-privacy"><Icon name="lock" />შეთავაზებებს ხედავთ მხოლოდ თქვენ და MeetAny-ის ადმინისტრატორი.</p></div>
-            {offers.length > 1 ? <div className="request-offers-tools"><label className="ma-sr-only" htmlFor="offer-sort">შეთავაზებების დალაგება</label><CustomSelect id="offer-sort" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">მიწოდების ვადა</option></CustomSelect></div> : null}
+            {offers.length > 1 ? <div className="request-offers-tools"><label className="ma-sr-only" htmlFor="offer-sort">შეთავაზებების დალაგება</label><CustomSelect id="offer-sort" value={offerSort} onChange={e => setOfferSort(e.target.value)}><option value="newest">ახალი შეთავაზებები</option><option value="delivery">შესრულების ვადა</option></CustomSelect></div> : null}
           </div>
           {isOwner && r.chosenOfferId ? dealId ? <Button variant="primary" href={dealHref(dealId)}>გარიგების ნახვა</Button> : <Button variant="primary" disabled={choosePending} onClick={() => choose(r.chosenOfferId)}>გარიგების ჩანაწერის შექმნა</Button> : null}
           {contact ? (
@@ -244,7 +249,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             </section>
           ) : null}
           {offers.length === 0 ? (
-            <EmptyState icon="inbox" title="შეთავაზება ჯერ არ მიღებულა" text="კომპანიების პასუხები აქ გამოჩნდება. მეტი გამოხმაურებისთვის გააზიარეთ მოთხოვნა." />
+            <EmptyState icon="inbox" title="შეთავაზება ჯერ არ მიღებულა" text="მომწოდებლების პასუხები აქ გამოჩნდება." />
           ) : (
             <div className="ma-stack request-offer-list">
               {orderedOffers.map((o) => (
@@ -253,25 +258,19 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             </div>
           )}
         </>
-      ) : me?.role === "company" ? (
+      ) : me ? (
         <section className="detail-aside__block">
           {myOffer ? (
             <>
               <h2 className="ma-h3">თქვენი შეთავაზება</h2>
               <OfferCard store={store!} o={myOffer} canChoose={false} messageTarget={{ companyId: me.id, requestId: r.id }} />
-              {me.verified && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
+              {!me.blocked && state === "open" && myOffer.status === "sent" ? <div className="ma-stack">
                 <div className="ma-cluster"><Button variant="secondary" href={offerHref} aria-label="შეთავაზების რედაქტირება"><Icon name="pencil"/>რედაქტირება</Button><Button variant="danger-quiet" type="submit" disabled={actionPending} aria-label="შეთავაზების გაუქმება" onClick={() => setConfirmKind("withdraw")}><Icon name="x"/>გაუქმება</Button></div>
               </div> : null}
               {contact ? <section className="ma-panel"><h3>არჩეული შეთავაზება</h3><p>{contact.company || contact.name} · {contact.email}</p>{contact.phone ? <CallButton phone={contact.phone} requestId={r.id} source="chosen-offer"/> : null}</section> : null}
             </>
-          ) : closed ? (
-            <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           ) : (
-            <>
-              <h2 className="ma-h3" id="send-offer" tabIndex={-1}>შეთავაზების გაგზავნა</h2>
-              <p className="ma-note">თქვენს შეთავაზებას მხოლოდ მოთხოვნის ავტორი ნახავს.</p>
-              <Button variant="primary" href={`/offers/new/?requestId=${encodeURIComponent(r.id)}`}>შეთავაზების გაგზავნა</Button>
-            </>
+            <p className="ma-note">მოთხოვნა შეთავაზებებს აღარ იღებს.</p>
           )}
         </section>
       ) : closed ? (<p className="detail-aside__text">მოთხოვნა შეთავაზებებს აღარ იღებს. <Link className="detail-link" href="/requests/">ღია მოთხოვნების ნახვა</Link></p>) : null);
@@ -280,7 +279,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
     <div className="ma-page request-detail detail-page request-workspace" data-owner={isOwner || undefined}>
       <nav className={`detail-breadcrumb ${styles.breadcrumbs}`} aria-label="ნავიგაცია">{isOwner ? <Link href="/account/?tab=requests">ჩემი მოთხოვნები</Link> : <><Link href="/requests/">მოთხოვნები</Link><span>/</span><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>{categories[r.category] || r.category}</Link></>}<span>/</span><span>{r.title}</span></nav>
       <header className="detail-hero">
-        <div className={styles.titleRow}><h1 className="detail-hero__title" tabIndex={-1}>{r.title}</h1><span className="detail-status" data-tone={state === "chosen" ? "chosen" : state !== "open" ? "closed" : daysLeft <= 0 ? "urgent" : undefined}>{state === "open" ? "ღიაა" : statusText}</span></div>
+        <div className={styles.titleRow}><h1 className="detail-hero__title" tabIndex={-1}>{r.title}</h1>{state !== "open" ? <span className="detail-status" data-tone={state === "chosen" ? "chosen" : "closed"}>{statusText}</span> : null}</div>
         <ul className={styles.facts} aria-label="მოთხოვნის ფაქტები">{facts.map(([icon, label, value]) => <li key={label}><Icon name={icon}/><span><span className="ma-sr-only">{label}: </span>{value}</span></li>)}</ul>
         {posted ? <p className={styles.posted}>გამოქვეყნდა {posted}</p> : null}
       </header>
@@ -288,7 +287,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         <div className="request-detail-main">
           <section className="request-description" aria-label="მოთხოვნის აღწერა">
             <div className="request-description-brief"><h2><Icon name="file-text"/>მოთხოვნის აღწერა</h2><div className="request-description-content">
-            <p className="ma-prose">{r.body}</p>{r.neededBy ? <p className={styles.note}><Icon name="calendar"/>მიწოდების ვადა: {dateShort(r.neededBy)}</p> : null}{showAddress ? <p className={styles.note}><Icon name="map-pin"/>{cityLabel}, {addressLabel(r.addressNote)}</p> : null}{/* Once the caller is known: earlier, the SSR preview store and then the signed-out singleton each read them anonymously. */}{sessionReady ? <><RequestPreferenceRecord key={`${r.id}:${me?.id||"guest"}`} store={store!} id={r.id} editable={isOwner&&!closed} hideBudget={!!budgetLabel(r)}/><FileAttachments key={`files:${r.id}:${me?.id||"guest"}`} store={store!} kind="request" target={r.id} editable={isOwner&&!closed} optional/></> : null}
+            <p className="ma-prose">{r.body}</p>{r.neededBy ? <p className={styles.note}><Icon name="calendar"/>შესრულების ვადა: {dateShort(r.neededBy)}</p> : null}{showAddress ? <p className={styles.note}><Icon name="map-pin"/>{cityLabel}, {addressLabel(r.addressNote)}</p> : null}{/* Once the caller is known: earlier, the SSR preview store and then the signed-out singleton each read them anonymously. */}{sessionReady ? <><RequestPreferenceRecord key={`${r.id}:${me?.id||"guest"}`} store={store!} id={r.id} editable={isOwner&&!closed} hideBudget={!!budgetLabel(r)}/><FileAttachments key={`files:${r.id}:${me?.id||"guest"}`} store={store!} kind="request" target={r.id} editable={isOwner&&!closed} optional/></> : null}
 
             </div></div>
           </section>
@@ -305,23 +304,23 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         </div>
         <aside className="request-detail-aside" id="request-contact" aria-label={isOwner ? "მოთხოვნის მართვა" : "კონტაქტი და შეთავაზება"}>
 
-          <section className="request-submit-card"><dl className="request-summary-facts">
-            <div className={styles.budget}><dt>ბიუჯეტი</dt><dd>{budgetLabel(r) || "შეთანხმებით"}</dd></div>
-            <div><dt>{state === "open" ? "მიღება სრულდება" : "სტატუსი"}</dt><dd>{state === "open" ? (daysLeft > 0 ? `${daysLeft} დღეში` : "დღეს") : statusText}</dd>{state === "open" ? <dd className="request-summary-facts__date">{dateShort(r.expiresAt)}</dd> : null}</div>
-            <div><dt>შეთავაზებები</dt><dd>{offerCount ? `${offerCount} მიღებულია` : "ჯერ არ არის"}</dd></div>
+          <section className="request-submit-card"><dl className={styles.summaryFacts}>
+            <div><dt>ბიუჯეტი</dt><dd>{budgetLabel(r) || "შეთანხმებით"}</dd></div>
+            <div><dt>{state === "open" ? "მიღების ვადა" : "სტატუსი"}</dt><dd>{state === "open" ? dateShort(r.expiresAt) : statusText}</dd></div>
+            <div><dt>შეთავაზებები</dt><dd>{offerCount}</dd></div>
           </dl>
-          {offerAction ? <><Button variant="primary" className="request-submit-cta" href={offerAction.href}><Icon name="send"/>{offerAction.label}</Button><p className={styles.note}>{offerAction.hint}</p></> : null}{isOwner && offerCount > 0 ? <Button variant={r.chosenOfferId ? "secondary" : "primary"} className="request-submit-cta" href={compareHref(r.id)}>შეთავაზებების შედარება</Button> : null}{lockNote ? <p className={styles.note}><Icon name="lock"/>{lockNote}</p> : null}</section>
+          {offerAction ? <Button variant="primary" className="request-submit-cta" href={offerAction.href}><Icon name="send"/>{offerAction.label}</Button> : null}{isOwner && offerCount > 0 ? <Button variant={r.chosenOfferId ? "secondary" : "primary"} className="request-submit-cta" href={compareHref(r.id)}>შეთავაზებების შედარება</Button> : null}{lockNote ? <p className={styles.note}><Icon name="lock"/>{lockNote}</p> : null}</section>
           {owner && !isOwner ? (
             <section className="request-author"><p className="detail-label">მყიდველი</p>
               <div className="request-author-identity"><Avatar className="detail-buyer-avatar" name={owner.company || owner.name || "მყიდველი"} logoUrl={owner.logoUrl} size={48} symbol={owner.role === "company" ? "building-2" : "user-round"} /><div><h2 className="detail-author__name">{owner.company || owner.name || "მყიდველი"}</h2><p>{cities[owner.city] || owner.city}</p>{owner.verified ? <Badge status="success"><Icon name="shield-check"/>ვერიფიცირებული</Badge> : null}</div></div>
               {owner.role === "company" ? <Button variant="secondary" style={{ width: "100%" }} href={`/companies/view/?id=${encodeURIComponent(owner.id)}`}>პროფილის ნახვა</Button> : null}
             </section>
           ) : null}
-          {closed && me?.role !== "company" && !isOwner && me?.role !== "admin" ? responsePanel : null}
+          {closed && !me ? responsePanel : null}
 
-          {isOwner ? <section className="request-management"><h2><Icon name="settings"/>მოთხოვნის მართვა</h2><p className="request-management-note">{state === "open" ? "მოთხოვნა აქტიურია და კომპანიების პასუხებს იღებს." : statusText}</p>
+          {isOwner ? <section className="request-management"><h2><Icon name="settings"/>მოთხოვნის მართვა</h2><p className="request-management-note">{state === "open" ? "მოთხოვნა აქტიურია." : statusText}</p>
             {offerCount === 0 && ["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" onClick={() => setEditRequest(true)}><Icon name="pencil"/>რედაქტირება</Button> : null}
-            {["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" disabled={actionPending} onClick={() => setConfirmKind("extend")}><Icon name="calendar"/>{closed ? "ხელახლა გახსნა" : "ვადის გაგრძელება"}<span className="request-action-detail">+7 დღე</span></Button> : null}
+            {["open", "closed", "expired"].includes(state) ? <Button type="button" variant="secondary" disabled={actionPending} onClick={() => setConfirmKind("extend")}><Icon name="calendar"/>{closed ? "ხელახლა გახსნა" : "ვადის გაგრძელება"}</Button> : null}
             <details className="request-manage-more"><summary><Icon name="ellipsis"/>სხვა მოქმედებები</summary><div>
               {state === "open" ? <Button type="button" variant="secondary" disabled={actionPending} onClick={() => setConfirmKind("close")}><Icon name="lock"/>მოთხოვნის დახურვა</Button> : null}
               <Button type="button" variant="danger-quiet" disabled={actionPending} onClick={() => setConfirmKind("delete")}><Icon name="trash-2"/>მოთხოვნის წაშლა</Button>
@@ -337,7 +336,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
             {!isOwner && me?.role !== "admin" ? <ReportButton kind="request" targetId={r.id} /> : null}
           </div>
         </aside>
-        {!isOwner && me?.role === "company" && (myOffer || closed) ? <div className="request-company-response">{responsePanel}</div> : null}
+        {!isOwner && me && me.role !== "admin" && (myOffer || closed) ? <div className="request-company-response">{responsePanel}</div> : null}
         {similar.length > 0 && <section className={styles.similar}><header className={styles.similarHead}><h2>მსგავსი მოთხოვნები</h2><Link href={`/requests/?category=${encodeURIComponent(r.category)}`}>ყველა მოთხოვნა</Link></header><div>{similar.map(item => <OpportunityCard key={item.id} request={item} compact />)}</div></section>}
       </div>
 
@@ -356,7 +355,7 @@ export function RequestViewPageContent({ initial }: { initial?: PublicSnapshot }
         onConfirm={() => confirmKind && action(confirmKind)}
         onCancel={() => { setConfirmKind(null); setActionError(""); }}
       >
-        <p>{confirmKind === "extend" ? (closed ? "მოთხოვნა ხელახლა გაიხსნება და შეთავაზებებს 7 დღე მიიღებს." : "შეთავაზებების მიღების ვადა 7 დღით გაგრძელდება.") : confirmKind === "delete" ? "მოთხოვნა და მისი ყველა შეთავაზება სამუდამოდ წაიშლება." : confirmKind === "close" ? "მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს. მოგვიანებით შეგიძლიათ ხელახლა გახსნა." : "მყიდველი თქვენს შეთავაზებას ვეღარ ნახავს. ხელახლა გაგზავნა შესაძლებელია, სანამ მოთხოვნა ღიაა."}</p>
+        <p>{confirmKind === "extend" ? (closed ? "მოთხოვნა ხელახლა გაიხსნება მაქსიმუმ 7 დღით. თუ სასურველი თარიღი უფრო ახლოა, მიღება ამ თარიღამდე დასრულდება." : "მიღების ვადას დაემატება მაქსიმუმ 7 დღე, თუმცა არ გასცდება სასურველ თარიღს ან დღევანდელი დღიდან 21 დღეს.") : confirmKind === "delete" ? "მოთხოვნა და მისი ყველა შეთავაზება სამუდამოდ წაიშლება." : confirmKind === "close" ? "მოთხოვნა ახალ შეთავაზებებს აღარ მიიღებს. მოგვიანებით შეგიძლიათ ხელახლა გახსნა." : "მყიდველი თქვენს შეთავაზებას ვეღარ ნახავს. ხელახლა გაგზავნა შესაძლებელია, სანამ მოთხოვნა ღიაა."}</p>
       </ConfirmSheet>
       {editRequest ? <RequestFormSheet key={r.id} open existing={r} onClose={() => setEditRequest(false)} /> : null}
       <ChooseOfferSheet

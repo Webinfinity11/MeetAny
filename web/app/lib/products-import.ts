@@ -44,7 +44,7 @@ export function parseProductRows(rows: string[][], { existing, gallery }: { exis
    products[at] = { ...product, photoUrl: photo && gallery.includes(photo) ? photo : null };
   } else products.push(product);
  });
- if (products.length > 100) error(0, "", `ჯამში ${products.length} პროდუქტია — დასაშვებია მაქსიმუმ 100.`);
+ if (products.length > 15) error(0, "", `ჯამში ${products.length} პროდუქტია — დასაშვებია მაქსიმუმ 15.`);
  return { products, errors };
 }
 

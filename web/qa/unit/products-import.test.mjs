@@ -25,16 +25,16 @@ test('empty name, unknown unit and textual price get Georgian row/column errors'
   assert.equal(products.length, 0); assert.equal(errors[0].row, 2); assert.equal(errors[0].column, expected);
  }
 });
-test('100 rows fit; 101 rows exceed the final catalog limit', () => {
- const rows = Array.from({ length: 101 }, (_, i) => [`${i}`, `პროდუქტი ${i}`, '', '', '']);
- assert.equal(parse([headers, ...rows.slice(0, 100)]).errors.length, 0);
- assert.match(parse([headers, ...rows]).errors[0].message, /100/);
- assert.equal(parse(readProductXlsx(makeProductsTemplate(rows.slice(0, 100)))).products.length, 100);
+test('15 rows fit; 16 rows exceed the final catalog limit', () => {
+ const rows = Array.from({ length: 16 }, (_, i) => [`${i}`, `პროდუქტი ${i}`, '', '', '']);
+ assert.equal(parse([headers, ...rows.slice(0, 15)]).errors.length, 0);
+ assert.match(parse([headers, ...rows]).errors[0].message, /15/);
+ assert.equal(parse(readProductXlsx(makeProductsTemplate(rows.slice(0, 15)))).products.length, 15);
 });
 test('updates replace fields, preserve gallery photos and do not count against the limit', () => {
- const existing = Array.from({ length: 100 }, (_, i) => ({ code: `${i}`, name: `ძველი ${i}`, price: 12, photoUrl: 'owned' }));
+ const existing = Array.from({ length: 15 }, (_, i) => ({ code: `${i}`, name: `ძველი ${i}`, price: 12, photoUrl: 'owned' }));
  const { products, errors } = parse([headers, ['0', 'ახალი სახელი', '', '', '']], existing, ['owned']);
- assert.equal(errors.length, 0); assert.equal(products.length, 100);
+ assert.equal(errors.length, 0); assert.equal(products.length, 15);
  assert.deepEqual(products[0], { code: '0', name: 'ახალი სახელი', note: '', photoUrl: 'owned' });
  assert.equal(existing[0].name, 'ძველი 0');
  assert.equal(parse([headers, ['', ' NAME ', '', '', '']], [{ name: 'name' }]).products.length, 1);
@@ -75,4 +75,10 @@ test('stored ZIP/data descriptors, inline rich text, entities, sparse rows and s
  assert.throws(() => readProductXlsx(inlineWorkbook('<worksheet><sheetData><row r="501"/></sheetData></worksheet>')), /500/);
  assert.throws(() => readProductXlsx(inlineWorkbook('<worksheet><sheetData><row r="1"><c r="D1"><f>1+2</f><v>3</v></c></row></sheetData></worksheet>')), /ფორმულის/);
  const broken = inlineWorkbook(sheet); broken[65] ^= 1; assert.throws(() => readProductXlsx(broken), /XLSX/);
+});
+
+test('same-name coded variants survive import without being merged', () => {
+ const result = parse([headers, ['A', 'მაგიდა', '', '', ''], ['B', 'მაგიდა', '', '', '']]);
+ assert.deepEqual(result.errors, []);
+ assert.equal(result.products.length, 2);
 });

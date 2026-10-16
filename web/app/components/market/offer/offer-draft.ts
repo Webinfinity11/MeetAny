@@ -3,6 +3,13 @@ export type PendingTerms = { id: string; updatedAt: string; terms: OfferTerms };
 type Draft = Record<string, unknown> & { pendingTerms?: PendingTerms };
 type DraftStorage = Pick<Storage, 'length' | 'key' | 'getItem' | 'setItem' | 'removeItem'>;
 export const offerDraftKey = (root: string, offer?: Pick<StoredOffer, 'id' | 'updatedAt'>) => offer ? `${root}.${offer.id}.${offer.updatedAt}` : root;
+/** A withdrawn offer can be sent again without retyping. Only text/terms are copied, never file IDs. */
+export function retainWithdrawnOffer(storage: DraftStorage, owner: string, requestId: string, offer: Partial<StoredOffer>) {
+  const root = `meetany.offerDraft.${owner}.${requestId}`;
+  storage.setItem(root, JSON.stringify({ body: offer.body || '', price: offer.price == null ? '' : String(offer.price), priceType: offer.priceType || 'total',
+    vatIncluded: !!offer.vatIncluded, deliveryIncluded: !!offer.deliveryIncluded, deliveryDays: offer.deliveryDays == null ? '' : String(offer.deliveryDays),
+    paymentTerms: offer.paymentTerms || '', validUntil: offer.validUntil || '', commercialTerms: offer.commercialTerms?.join('\n') || '' }));
+}
 export function readOfferDraft(storage: DraftStorage, root: string, offer?: StoredOffer): { key: string; draft: Draft; stale: boolean } {
   const key = offerDraftKey(root, offer);
   let draft: Draft = {}, stale = false;

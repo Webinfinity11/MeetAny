@@ -48,11 +48,13 @@ export function VerificationDocuments({store,id,status,verified=false,note,onSta
   }finally{updateBusy(false);}
  };
  return <div ref={root} className={s.fields}>
- {requirements?<Checklist requirements={requirements} attempted={attempted} onDetails={onDetails} onDocument={setSlot}/>:<p role="status">მოთხოვნები იტვირთება…</p>}
+ {!locked && (requirements?<Checklist requirements={requirements} attempted={attempted} onDetails={onDetails} onDocument={setSlot}/>:<p role="status">მოთხოვნები იტვირთება…</p>)}
  <div className={v.verificationStatus}><Badge status={verificationTone(status,verified)}>{verificationLabel(status,verified)}</Badge><p>{verificationHint(status,verified,note)}</p></div>
- <nav className={v.addRow} aria-label="დოკუმენტების ნაბიჯები">{(['registration','tax','review'] as const).map((value,index)=><Button key={value} variant={slot===value?'secondary':'ghost'} disabled={busy} aria-current={slot===value?'step':undefined} onClick={()=>setSlot(value)}>{index+1}. {value==='registration'?'რეგისტრაცია':value==='tax'?'საგადასახადო':'მიმოხილვა'}</Button>)}</nav>
- {slot!=='review'?<FileAttachments key={slot} store={store} kind="verification" target={id} slot={slot} label={slot==='registration'?'რეგისტრაციის ამონაწერი':'საგადასახადო დოკუმენტი'} editable={!locked} onBusy={updateBusy} onChange={()=>setRevision(value=>value+1)}/>:<p className={v.muted}>გაგზავნამდე შეამოწმეთ ზემოთ ჩამოთვლილი ოთხივე პუნქტი.</p>}
- {slot!=='review'&&<Button variant="secondary" disabled={busy} onClick={()=>setSlot(slot==='registration'?'tax':'review')}>შემდეგი დოკუმენტის ნაბიჯი</Button>}
+ {locked ? <FileAttachments store={store} kind="verification" target={id} label="დოკუმენტები"/> : <>
+ <nav className={v.addRow} aria-label="დოკუმენტები">{(['registration','tax','review'] as const).map(value=><Button key={value} variant={slot===value?'secondary':'ghost'} disabled={busy} aria-pressed={slot===value} onClick={()=>setSlot(value)}>{value==='registration'?'ამონაწერი':value==='tax'?'საგადასახადო':'გადახედვა'}</Button>)}</nav>
+ {slot!=='review'?<FileAttachments key={slot} store={store} kind="verification" target={id} slot={slot} label={slot==='registration'?'რეგისტრაციის ამონაწერი':'საგადასახადო დოკუმენტი'} editable onBusy={updateBusy} onChange={()=>setRevision(value=>value+1)}/>:<p className={v.muted}>შეამოწმეთ მოთხოვნები და გაგზავნეთ დოკუმენტები.</p>}
+ {slot!=='review'&&<Button variant="secondary" disabled={busy} onClick={()=>setSlot(slot==='registration'?'tax':'review')}>შემდეგი დოკუმენტი</Button>}
+ </>}
  <div className={blockFooter ? 'account-section__footer' : undefined}>
  {error?<div className="ma-field__error" role="alert">{error}<Button variant="ghost" disabled={busy} onClick={()=>setRevision(value=>value+1)}>ხელახლა ცდა</Button></div>:blockFooter?<p className="account-section__status" role="status">{savedAt?`შენახულია · ${new Date(savedAt).toLocaleTimeString('ka-GE',{hour:'2-digit',minute:'2-digit'})}`:locked?'დოკუმენტები გაგზავნილია':'ატვირთვა თითოეულ დოკუმენტს ინახავს'}</p>:null}
  {!locked?<Button variant={blockFooter?'secondary':'primary'} disabled={busy} loading={busy} onClick={()=>void submit()}>{state==='returned'?'ხელახლა გაგზავნა':'განხილვაზე გაგზავნა'}</Button>:null}

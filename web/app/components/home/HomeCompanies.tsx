@@ -17,7 +17,7 @@ export function HomeCompanies({ initial }: { initial?: PublicSnapshot }) {
   const picked = verified.slice(0, verified.length >= 6 ? 6 : 3);
   if (picked.length < 3) return null;
   return <section className={`home-wrap ${styles.block}`} aria-labelledby="home-companies-title">
-    <div className="home-section-head"><div className={styles.intro}><h2 id="home-companies-title">ვერიფიცირებული კომპანიები</h2><p>დოკუმენტებით გადამოწმებული მომწოდებლები, რომლებიც თქვენს მოთხოვნას უპასუხებენ.</p></div><Link className="home-text-link" href="/companies/">ყველა კომპანია</Link></div>
+    <div className="home-section-head"><div className={styles.intro}><h2 id="home-companies-title">ვერიფიცირებული კომპანიები</h2><p>გაეცანით გადამოწმებული კომპანიების საქმიანობას.</p></div><Link className="home-text-link" href="/companies/">ყველა კომპანია</Link></div>
     <div className={styles.companies}>{picked.map(c => <CompanyListingCard key={c.id} catalog c={{ ...c, name: c.company || c.name || "", phone: undefined, stats: store.companyStats(c.id) }} />)}</div>
   </section>;
 }

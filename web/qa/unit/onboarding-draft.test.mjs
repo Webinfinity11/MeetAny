@@ -7,7 +7,11 @@ import ts from 'typescript';
 const source = ts.transpileModule(readFileSync(new URL('../../app/lib/onboarding-client.ts', import.meta.url), 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
 }).outputText;
-const context = { exports: {}, require: () => ({ categories: {} }) };
+const productContext = { exports: {} };
+vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../../app/lib/products-import.ts', import.meta.url), 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+}).outputText, productContext);
+const context = { exports: {}, require: name => name === './products-import' ? productContext.exports : { categories: {} } };
 vm.runInNewContext(source, context);
 const { onboardWrites, retainOnboardDraft, stepsFor, serializeOnboardDraft, restoreOnboardDraft, onboardDraftKey, onboardDraftLifetime } = context.exports;
 
@@ -99,7 +103,7 @@ test('invalid editable data and injected non-dirty properties do not replace per
   assert.equal(restoreOnboardDraft(persisted, JSON.stringify(value), now), persisted);
 });
 
-const { validateOnboardStep, saveOnboardStep } = context.exports;
+const { validateOnboardStep, saveOnboardStep, hasProductContent } = context.exports;
 const optionalProfile = { ...persisted.profile, city: 'tbilisi', address: null, markets: [], languages: [], legal_name: null, registration_code: null, legal_form: null, employee_band: null, founded_year: null, contact_position: null, website: null, need_categories: [], offers: [], seeks: [], about: '' };
 test('progressive profiling allows blank optional legal and profile fields', () => {
   assert.equal(validateOnboardStep('details', optionalProfile, []), '');
@@ -110,12 +114,86 @@ test('progressive profiling allows blank optional legal and profile fields', () 
   assert.ok(validateOnboardStep('details', { ...optionalProfile, founded_year: 9999 }, []));
   assert.ok(validateOnboardStep('profile', { ...optionalProfile, about: 'x'.repeat(1001) }, []));
 });
-test('products allow 100 rows and optional photos; empty rows do not block continuation', () => {
-  const products = Array.from({ length: 100 }, (_, i) => ({ name: 'Product ' + i, note: '' }));
+test('products allow 15 rows and optional photos; empty rows do not block continuation', () => {
+  const products = Array.from({ length: 15 }, (_, i) => ({ name: 'Product ' + i, note: '' }));
   assert.equal(validateOnboardStep('provide', optionalProfile, products), '');
   assert.equal(validateOnboardStep('provide', optionalProfile, [{ name: '', note: '' }]), '');
   assert.ok(validateOnboardStep('provide', optionalProfile, [...products, { name: 'Extra', note: '' }]));
-  assert.ok(validateOnboardStep('provide', { ...optionalProfile, offers: ['Product 1'] }, products));
+  assert.equal(validateOnboardStep('provide', { ...optionalProfile, offers: ['Product 1'] }, products), '');
+});
+test('only entirely blank product editors may be skipped; any entered detail needs a name', () => {
+  const empty = { name: '  ', note: '\n', code: ' ', photoUrl: null };
+  assert.equal(hasProductContent(empty), false);
+  assert.equal(validateOnboardStep('provide', optionalProfile, [empty]), '');
+  for (const detail of [{ note: 'Keep this description' }, { code: '0001' }, { photoUrl: 'uploaded.jpg' }, { unit: 'kg' }, { price: 0 }]) {
+    const product = { name: '', note: '', ...detail };
+    assert.equal(hasProductContent(product), true);
+    assert.match(validateOnboardStep('provide', optionalProfile, [product]), /სახელი/);
+    const model = { profile: optionalProfile, products: [product] };
+    const restored = restoreOnboardDraft(persisted, serializeOnboardDraft(model, ['provide'], now), now);
+    assert.deepEqual(JSON.parse(JSON.stringify(restored.products)), [product]);
+  }
+});
+test('saving a populated unnamed product rejects before any profile or catalog writes', async () => {
+  let calls = 0;
+  const write = async () => { calls++; throw new Error('No request should be sent'); };
+  const store = { callRpc: write, updateProfile: write, setMyProducts: write, companyProducts: write };
+  const products = [{ name: '', note: 'Keep my work', photoUrl: 'uploaded.jpg' }];
+  await assert.rejects(saveOnboardStep(store, 'provide', optionalProfile, products), /სახელი/);
+  assert.equal(calls, 0);
+  assert.deepEqual(products, [{ name: '', note: 'Keep my work', photoUrl: 'uploaded.jpg' }]);
+});
+test('optional service rows save entered text without a separate commit and ignore untouched blanks', () => {
+  const profile = { ...optionalProfile, offers: ['  Furniture assembly  ', ''], seeks: ['Need installation', '  '] };
+  assert.equal(validateOnboardStep('provide', profile, []), '');
+  assert.equal(validateOnboardStep('need', profile, []), '');
+  assert.deepEqual([...context.exports.profileInput(profile).offers], ['Furniture assembly']);
+  assert.deepEqual([...context.exports.profileInput(profile).seeks], ['Need installation']);
+  const restored = restoreOnboardDraft(persisted, serializeOnboardDraft({ profile, products: [] }, ['provide', 'need'], now), now);
+  assert.deepEqual([...restored.profile.offers], profile.offers);
+  assert.deepEqual([...restored.profile.seeks], profile.seeks);
+});
+test('service and need lists reject duplicates and excess entries before saving', async () => {
+  const eight = Array.from({ length: 8 }, (_, i) => 'Item ' + i);
+  for (const [step, field] of [['provide', 'offers'], ['need', 'seeks']]) {
+    assert.equal(validateOnboardStep(step, { ...optionalProfile, [field]: [...eight, ' '] }, []), '');
+    assert.ok(validateOnboardStep(step, { ...optionalProfile, [field]: [...eight, 'Extra'] }, []));
+    assert.ok(validateOnboardStep(step, { ...optionalProfile, [field]: ['Assembly service', ' assembly  SERVICE '] }, []));
+    let calls = 0;
+    await assert.rejects(saveOnboardStep({ callRpc: async () => { calls++; } }, step, { ...optionalProfile, [field]: ['Duplicate', 'duplicate'] }, []), /მეორდება/);
+    assert.equal(calls, 0);
+  }
+});
+test('shared freeform list rules honor each domain limit without dropping a draft', () => {
+  const { onboardItemsError } = context.exports;
+  const brands = Array.from({ length: 20 }, (_, i) => `Brand ${i}`);
+  assert.equal(onboardItemsError([...brands, ' '], { limit: 20, maxLength: 80 }), '');
+  assert.ok(onboardItemsError([...brands, 'Extra'], { limit: 20, maxLength: 80 }));
+  assert.ok(onboardItemsError(['x'.repeat(81)], { limit: 20, maxLength: 80 }));
+  assert.ok(onboardItemsError([' Example ', 'example'], { limit: 20, maxLength: 80 }));
+});
+test('all optional onboarding lists retain drafts and omit only blank rows on save', async () => {
+  const row = { ...optionalProfile, role: 'company', blocked: false, verification_documents_status: 'not_submitted', markets: [' Georgia ', ''], languages: [' Georgian ', ' '], business_tags: [' Supplier ', ''], certificates: [' ISO ', ''] };
+  const calls = [];
+  const store = {
+    callRpc: async (name, args) => { calls.push({ name, args }); return row; },
+    updateProfile: async () => row,
+    companyProducts: async () => [],
+  };
+  for (const step of ['details', 'profile']) {
+    await saveOnboardStep(store, step, row, []);
+    const args = calls.filter(call => call.name === 'set_onboarding_details').at(-1).args;
+    assert.deepEqual([...args.p_markets], ['Georgia']);
+    assert.deepEqual([...args.p_languages], ['Georgian']);
+    assert.deepEqual([...args.p_business_tags], ['Supplier']);
+    assert.deepEqual([...args.p_certificates], ['ISO']);
+  }
+  assert.deepEqual(row.markets, [' Georgia ', '']);
+  for (const [step, field] of [['details', 'markets'], ['details', 'languages'], ['profile', 'business_tags'], ['profile', 'certificates']]) {
+    let writes = 0;
+    await assert.rejects(saveOnboardStep({ callRpc: async () => { writes++; } }, step, { ...row, [field]: ['Duplicate', 'duplicate'] }, []));
+    assert.equal(writes, 0);
+  }
 });
 test('draft round-trip retains imported product code, unit, price and optional photo', () => {
   const model = { profile: optionalProfile, products: [{ name: 'Imported', note: '', code: '00012', unit: 'kg', price: 0, photoUrl: null }] };
@@ -140,7 +218,7 @@ test('save filters blank products and normalizes optional strings to null', asyn
   assert.equal(args.p_registration_code, null);
   assert.equal(args.p_website, null);
   const product = { name: 'Saved product', note: '', code: '001', unit: 'pcs', price: 10 };
-  await saveOnboardStep(store, 'provide', row, [{ name: ' ', note: 'Unfinished' }, product]);
+  await saveOnboardStep(store, 'provide', row, [{ name: ' ', note: '', photoUrl: null }, product]);
   assert.deepEqual(productsWritten, [product]);
 });
 
@@ -149,4 +227,10 @@ test('verification requirements use true as fulfilled and reject malformed RPC r
   const requirements = { legal_name: true, registration_code: false, registration_document: true, tax_document: false };
   assert.equal(await readVerificationRequirements({ callRpc: async name => { assert.equal(name, 'verification_requirements'); return requirements; } }), requirements);
   await assert.rejects(readVerificationRequirements({ callRpc: async () => ({ legal_name: true }) }));
+});
+
+test('onboarding uses the same product identity as import: coded variants pass and duplicate keys fail', () => {
+  assert.equal(validateOnboardStep('provide', optionalProfile, [{name:'Table',note:'',code:'A'},{name:'Table',note:'',code:'B'}]), '');
+  assert.ok(validateOnboardStep('provide', optionalProfile, [{name:'Table',note:'',code:'A'},{name:'Chair',note:'',code:' A '}]));
+  assert.ok(validateOnboardStep('provide', optionalProfile, [{name:' Table ',note:''},{name:'table',note:''}]));
 });

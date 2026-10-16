@@ -1,0 +1,183 @@
+{
+  "date": "2026-10-16",
+  "origin": "https://www.meetany.ge",
+  "scope": "Read-only owner admin and guest browser UI. Browser viewport emulation, not a physical device test. No email sent or production records mutated.",
+  "deployment": "dpl_Ftwm36qCLCPLoLMiDtLT4JsSbrAz",
+  "checkedAt": "2026-10-16T06:55:26.487115+00:00",
+  "checks": [
+    {
+      "issue": "UX-023",
+      "status": "live_verified",
+      "route": "/admin/?tab=content",
+      "observed": "Both publish actions disabled when no draft changes exist.",
+      "screenshots": [
+        "admin-content-1440.png"
+      ]
+    },
+    {
+      "issue": "UX-026",
+      "status": "implemented_pending_live_recheck",
+      "route": "/admin/?tab=reports",
+      "observed": "Live nav/title already says inquiries, but empty/count/table labels still called contact-change requests complaints. Fixed generic queue labels and removed complaint count from contact-change row.",
+      "files": [
+        "app/components/market/AdminReports.tsx"
+      ]
+    },
+    {
+      "issue": "COPY-027",
+      "status": "live_verified",
+      "scope": "Admin side only; user profile dialog requires separate forms evidence",
+      "route": "/admin/?tab=reports&status=handled",
+      "observed": "Contact-change dialog distinguishes profile contact email from unchanged login email.",
+      "screenshots": [
+        "admin-contact-dialog-1440.png",
+        "admin-contact-dialog-390.png"
+      ]
+    },
+    {
+      "issue": "UI-039",
+      "status": "live_verified",
+      "scope": "Admin contact-change modal, widths 1440 and 390",
+      "observed": "Native :modal top layer, opaque rgb(255,255,255). Desktop 520x378 centered; mobile 390x482 bottom sheet within 390x844, no horizontal overflow. Escape restores trigger focus after closing animation.",
+      "screenshots": [
+        "admin-contact-dialog-1440.png",
+        "admin-contact-dialog-390.png"
+      ]
+    },
+    {
+      "issue": "UI-040",
+      "status": "live_verified",
+      "route": "/requests/",
+      "widths": [
+        1440,
+        320
+      ],
+      "observed": "Search panel matches native :popover-open. Desktop anchors to field. At 320 panel x16 width288 height298 stays in viewport. Arrow keys keep document scroll stable; scrolling field under header closes panel.",
+      "screenshots": [
+        "search-1440.png",
+        "search-320.png"
+      ]
+    },
+    {
+      "issue": "UX-041",
+      "status": "live_verified",
+      "route": "/requests/new/",
+      "scope": "Guest draft only, no publication",
+      "observed": "Changing consulting to furniture preserves identical field ids. Blank quantity/date advances through conditions to review. Title/body native required, category/city ARIA required; quantity and date optional.",
+      "screenshots": [
+        "request-review-1440.png"
+      ]
+    },
+    {
+      "issue": "UI-013",
+      "status": "live_verified",
+      "route": "/requests/new/",
+      "observed": "Review thumbnail and side preview both use the same joinery thematic image, with thematic label in DOM.",
+      "screenshots": [
+        "request-review-1440.png"
+      ]
+    },
+    {
+      "issue": "category-icons-and-disclosure",
+      "status": "live_verified",
+      "route": "/requests/",
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "observed": "13 groups and 12 disclosures initially expanded. All group icons retained (14 icons plus12 chevrons). Fold action preserves current filter URL. Mobile native dialog remains within viewport; 320 document overflow0. Settled images inspected.",
+      "screenshots": [
+        "categories-1440.png",
+        "categories-390.png",
+        "categories-320.png"
+      ]
+    },
+    {
+      "issue": "admin-offers-mobile",
+      "status": "live_verified",
+      "route": "/admin/?tab=offers&q=2981",
+      "width": 320,
+      "observed": "Four QA offers loaded with price, supplier, request, status/date and view action. Document overflow0, labelled vertical values, no missing personal-supplier row.",
+      "screenshots": [
+        "admin-offers-320.png"
+      ]
+    },
+    {
+      "issue": "terms-product-copy",
+      "status": "implemented_pending_live_recheck",
+      "route": "/terms/",
+      "observed": "Removed false claim that every registration confirms email by code. Clarified that offer execution date/conditions can be agreed later. No legal policies or contact details invented.",
+      "files": [
+        "app/(terms)/terms/page.tsx"
+      ]
+    },
+    {
+      "issue": "handled-contact-duplication",
+      "status": "implemented_pending_live_recheck",
+      "route": "/admin/?tab=reports",
+      "observed": "After contact update was applied, modal showed current phone pointing to identical requested phone, as though still pending. Handled records now label and show requested contact only; current→requested comparison remains for new requests.",
+      "files": [
+        "app/components/market/AdminReports.tsx"
+      ]
+    },
+    {
+      "issue": "contact-notification-and-audit-semantics",
+      "status": "implemented_pending_live_recheck",
+      "observed": "Contact-change notices identify update/rejection separately from complaints, show unchanged login email on success and preserve rejection reason. Current result enums and historical sentence payloads supported; unknown result stays neutral. Audit general report labels neutral, contact update explicitly named.",
+      "files": [
+        "app/components/market/EngagementPanels.tsx",
+        "app/components/market/AdminAuditTable.tsx",
+        "app/components/market/AdminBusinessAudit.tsx"
+      ],
+      "validation": "account-public unit suite 8/8 and targeted ESLint pass"
+    },
+    {
+      "issue": "multi-select-required-marker",
+      "status": "implemented_pending_live_recheck",
+      "observed": "Required MultiCombobox visible label gets one star, avoids duplicate when supplied label already contains star; aria-required preserved.",
+      "files": [
+        "app/components/ui/Combobox.tsx"
+      ],
+      "validation": "targeted ESLint pass"
+    }
+  ],
+  "emailInfrastructure": {
+    "status": "disabled_not_configured",
+    "productionCapabilities": {
+      "engagement": true,
+      "emailDelivery": false
+    },
+    "productionEnvNamesInspected": true,
+    "missingEnvNames": [
+      "NOTIFICATION_EMAIL_ENABLED",
+      "RESEND_API_KEY",
+      "NOTIFICATION_FROM",
+      "APP_ORIGIN"
+    ],
+    "productionDatabaseReadOnly": {
+      "requireEmailVerificationDisabled": true,
+      "notificationOutboxGroups": []
+    },
+    "worker": "scripts/notification-worker.mjs uses Resend, guarded explicit one-shot execution. No Vercel cron or package script schedules it.",
+    "authEmailDelivery": "Not tested. Registration verification is disabled in DB; actual password-reset/OTP mailbox delivery requires an authorized recipient and provider/auth service evidence.",
+    "requiredToEnableNotifications": "Valid Resend key, verified sender/domain, HTTPS origin, deliberate worker schedule and authorized test inbox. Do not claim delivery from fake-provider unit tests."
+  },
+  "mutations": {
+    "productionDatabase": false,
+    "ownerProfile": false,
+    "messagesOrEmailsSent": false,
+    "guestDraft": "Browser-local only"
+  },
+  "validation": {
+    "targetedESLint": "pass; final AdminReports.tsx and terms/page.tsx edits checked with ESLint from web workspace",
+    "visual": "Settled screenshots reviewed for search1440/320, categories320, admincontact390, adminoffers320, requestreview1440",
+    "pageErrorsDuringChecks": []
+  },
+  "limitations": [
+    "Newly changed copy has not yet been deployed/rechecked.",
+    "A request to inspect offer detail used the wrong button locator and timed out; this is an automation failure, not evidence of an app bug. No offer detail modal recheck claimed.",
+    "Screenshots are local QA artifacts and may contain dedicated QA contacts; do not publish screenshots to public GitHub.",
+    "No physical iPhone/Android device or actual mailbox delivery test in this audit."
+  ]
+}

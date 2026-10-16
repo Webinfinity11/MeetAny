@@ -22,6 +22,7 @@ export type Deal = {
 export type MyDeal = Deal & { request_title: string; latest_at: string };
 export type DealContact = { id: string; name: string; company: string; phone: string | null; email: string | null; contact_position?: string | null };
 export type ComparedOffer = {
+  supplier_role?: "client" | "company";
   id: string; request_id: string; company_id: string; company: string; city: string; verified: boolean;
   price: number | null; price_type: string; total_gel: number | null; best_price: boolean; fastest: boolean;
   delivery_days: number | null; vat_included: boolean; delivery_included: boolean; body: string;
@@ -34,7 +35,7 @@ export type DealTermsInput = {
 };
 export const dealHref = (id: string) => `/deals/view/?id=${encodeURIComponent(id)}`;
 export const compareHref = (id: string) => `/requests/compare/?id=${encodeURIComponent(id)}`;
-export const dealActionLabel = (action?: string | null) => ({ update_started:"შეკვეთა მიღებულია",update_producing:"შეკვეთა მზადდება",update_ready:"მზადაა გასაგზავნად",update_delivered:"შეკვეთა მიწოდებულია",issue_opened:"პრობლემა განხილვაშია",issue_resolved:"პრობლემის განხილვა დასრულდა",proposal_rejected:"ცვლილება უარყოფილია",selected: "მომწოდებელი არჩეულია", discuss: "დეტალების განხილვა", propose_terms: "ახალი პირობებია შემოთავაზებული", terms: "პირობები განახლდა", confirm_terms: "პირობები დადასტურდა", progress: "შესრულება დაიწყო", complete: "გარიგება დასრულდა", cancelled: "გარიგება გაუქმდა", rated: "გარიგება შეფასდა" }[action || ""] || "გარიგება განახლდა");
+export const dealActionLabel = (action?: string | null) => ({ update_started:"შეკვეთა მიღებულია",update_producing:"შეკვეთა მიმდინარეობს",update_ready:"მზადაა გადასაცემად",update_delivered:"შეკვეთა გადაცემულია",issue_opened:"პრობლემა განხილვაშია",issue_resolved:"პრობლემის განხილვა დასრულდა",proposal_rejected:"ცვლილება უარყოფილია",selected: "მომწოდებელი არჩეულია", discuss: "დეტალების განხილვა", propose_terms: "ახალი პირობებია შემოთავაზებული", terms: "პირობები განახლდა", confirm_terms: "პირობები დადასტურდა", progress: "შესრულება დაიწყო", complete: "გარიგება დასრულდა", cancelled: "გარიგება გაუქმდა", rated: "გარიგება შეფასდა" }[action || ""] || "გარიგება განახლდა");
 export const flowCode = (error: unknown) => {
   const e = error as { code?: string; message?: string };
   return e?.code || e?.message?.match(/MA\d{3}/)?.[0];
@@ -51,10 +52,10 @@ export const selectOfferDeal = (store: Store, id: string, updatedAt: string | nu
 /** Supplier progress, in order. The first step is the deal entering progress; the rest are supplier updates. */
 export const progressSteps = [
   { key: "confirmed", label: "შეკვეთა დადასტურდა" },
-  { key: "started", label: "წარმოება დაიწყო" },
-  { key: "producing", label: "მზადდება" },
-  { key: "ready", label: "მზადაა გასაგზავნად" },
-  { key: "delivered", label: "მიწოდებულია" },
+  { key: "started", label: "შესრულება დაიწყო" },
+  { key: "producing", label: "მიმდინარეობს" },
+  { key: "ready", label: "მზადაა გადასაცემად" },
+  { key: "delivered", label: "გადაცემულია" },
 ] as const;
 export const progressStatusLabel = (status?: string | null) => progressSteps.find(step => step.key === status)?.label || "";
 /** Each step's date, or null while it has not happened. Later updates also complete the steps before them. */
@@ -75,7 +76,7 @@ export function currentDealTerms(deal: Deal, fallback: { totalPrice?: number | n
   };
   const missing = [
     !(terms.p_total_price > 0) ? "ფასი" : "", !(terms.p_quantity > 0) || !terms.p_unit ? "რაოდენობა" : "",
-    !Number.isInteger(terms.p_delivery_days) ? "მიწოდების ვადა" : "", !terms.p_delivery_place ? "მიწოდების ადგილი" : "", !terms.p_payment_terms ? "გადახდის პირობები" : "",
+    !Number.isInteger(terms.p_delivery_days) ? "შესრულების ვადა" : "", !terms.p_delivery_place ? "ადგილი / ფორმატი" : "", !terms.p_payment_terms ? "გადახდის პირობები" : "",
   ].filter(Boolean);
   return { terms, missing };
 }

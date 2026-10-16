@@ -54,7 +54,7 @@ function fixture(t, { signedIn = true } = {}) {
   const profiles = records(1105).map(r => ({ ...r, role: 'company', company: `Company ${r.id}`, created_at: '2026-01-01', offers: [], seeks: [] }));
   const offers = records(1105).map(r => ({ ...r, company_id: me.id, request_id: uuid(1105), created_at: '2026-01-01' }));
   const calls = [];
-  let failCursor = false, failDetail = false, holdDetail;
+  let failCursor = false, failDetail = false, holdDetail, holdRequest, requestStarted;
   const token = role => `header.${Buffer.from(JSON.stringify({ role, sub: me.id, exp: Date.now() / 1000 + 3600 })).toString('base64url')}.signature`;
   t.mock.method(globalThis, 'fetch', async (raw, options = {}) => {
     const url = new URL(raw, 'http://localhost'), params = url.searchParams;
@@ -78,13 +78,14 @@ function fixture(t, { signedIn = true } = {}) {
       if (value.startsWith('gt.')) { if (failCursor) throw Error('offline'); rows = rows.filter(r => r[key] > value.slice(3)); }
       if (value.startsWith('in.')) rows = rows.filter(r => value.slice(4, -1).split(',').includes(r[key]));
     }
+    if (params.get('id')?.startsWith('eq.') && url.pathname.endsWith('/requests') && holdRequest) { requestStarted?.(); await holdRequest; }
     if (params.get('id')?.startsWith('eq.') && url.pathname.endsWith('/profiles')) {
       if (holdDetail) await holdDetail;
       if (failDetail) throw Error('offline');
     }
     return reply(rows.slice(0, Number(params.get('limit') || 1000)));
   });
-  return { me, requests, profiles, offers, calls, setFailCursor: () => { failCursor = true; }, setFailDetail: () => { failDetail = true; }, holdDetail: promise => { holdDetail = promise; } };
+  return { me, requests, profiles, offers, calls, setFailCursor: () => { failCursor = true; }, setFailDetail: () => { failDetail = true; }, holdDetail: promise => { holdDetail = promise; }, holdRequest: (promise, started) => { holdRequest = promise; requestStarted = started; } };
 }
 
 test('store retains old owned requests, all companies, and offers beyond row 1000', async t => {
@@ -177,4 +178,21 @@ test('listRequests finds a request by its owner name and mapRequest carries the 
   assert.deepEqual(store.getRequest(uuid(2)) && ['budgetType', 'budgetMin', 'budgetMax'].map(k => store.getRequest(uuid(2))[k]), ['range', 1000, 1800]);
   assert.deepEqual(['budgetType', 'budgetMin', 'budgetMax'].map(k => store.getRequest(uuid(3))[k]), ['exact', 25000, null]);
   assert.deepEqual(['budgetType', 'budgetMin', 'budgetMax'].map(k => store.getRequest(uuid(4))[k]), [null, null, null]);
+});
+
+
+test('a same-account catalog refresh during a request read retries instead of reporting forbidden', async t => {
+ const f=fixture(t),store=createMarketStore({background:false});
+ await store.refresh();
+ let release,started;
+ const gate=new Promise(resolve=>{release=resolve;});
+ const entering=new Promise(resolve=>{started=resolve;});
+ f.holdRequest(gate,started);
+ const reading=store.ensureRequest(uuid(1105));
+ await entering;
+ f.requests[0].title='Concurrent update';
+ await store.refresh();
+ release();
+ assert.equal((await reading)?.id,uuid(1105));
+ assert.equal(f.calls.filter(url=>url.pathname.endsWith('/requests')&&url.searchParams.get('id')==='eq.'+uuid(1105)).length,2);
 });

@@ -1,6 +1,6 @@
 "use client";
 import { CustomSelect } from "../ui/CustomSelect";
-import { CategoryIcon } from "../ui/CategoryIcon";
+import { CategoryTree } from "./catalog/CategoryTree";
 import { Button } from "../ui/Button";
 
 
@@ -19,12 +19,11 @@ import { ResultsBar } from "./ResultsBar";
 import { MobileFilterSheet } from "./MobileFilterSheet";
 import type { RequestRowData } from "./RequestRow";
 import { useMarketStore, type PublicSnapshot } from "../../lib/market-client";
-import { categories, cities, currentCategory, groupNames, categoryGroups, categoryKeys, groupOf } from "../../lib/categories";
+import { categories, cities, currentCategory, groupNames, categoryKeys } from "../../lib/categories";
 import { CatalogSearch } from "./CatalogSearch";
 import { CatalogHeader } from "./CatalogHeader";
 import { useFilters } from "../../lib/use-filters";
 import { postedLabel } from "../../lib/format";
-import { RequestFormSheet } from "./RequestFormSheet";
 
 type MappedRequest = {
   id: string;
@@ -40,6 +39,9 @@ type MappedRequest = {
   budgetMax?: number | null;
 };
 
+const deadlineOptions = [["3", "3 დღემდე"], ["7", "7 დღემდე"], ["14", "14 დღემდე"]];
+const matchesDeadlineDays = (days: number, value: string) => value === "later" ? days > 30 : Number(value) > 0 ? days <= Number(value) : true;
+
 const budgetOptions: [string, string][] = [["1000", "₾1,000-მდე"], ["5000", "₾1,000–5,000"], ["20000", "₾5,000–20,000"], ["more", "₾20,000+"]];
 // The effective budget is the upper bound of a range or the exact amount; requests without a public budget never match.
 function matchesBudget(r: MappedRequest, value: string) {
@@ -49,7 +51,7 @@ function matchesBudget(r: MappedRequest, value: string) {
   return value === "1000" ? amount <= 1000 : value === "5000" ? amount > 1000 && amount <= 5000 : value === "20000" ? amount > 5000 && amount <= 20000 : value === "more" ? amount > 20000 : true;
 }
 
-export function RequestsPageContent({ autoOpenNew = false, initial, initialNow = 0 }: { autoOpenNew?: boolean; initial?: PublicSnapshot; initialNow?: number }) {
+export function RequestsPageContent({ initial, initialNow = 0 }: { initial?: PublicSnapshot; initialNow?: number }) {
   const { store, ready, available } = useMarketStore(initial);
   const searchParams = useSearchParams();
   const filters = useFilters("/requests/");
@@ -75,18 +77,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     if (legacyTab === "expiring") next.set("sort", "expiring");
     window.history.replaceState(window.history.state, "", `/requests/?${next.toString()}`);
   }, [legacyTab]);
-  const [formOpen, setFormOpen] = useState(autoOpenNew);
-  const formCategory = searchParams.get("category") || "";
-  const formTitle = searchParams.get("title") || "";
-  const formCity = searchParams.get("city") || "";
-
-  useEffect(() => {
-    if (!autoOpenNew) return;
-    // /requests/new/ opens the form once over the list, then the address becomes the list URL —
-    // preserves the published /requests/new/ entry point.
-    window.history.replaceState(window.history.state, "", "/requests/" + window.location.search);
-  }, [autoOpenNew]);
-
   const list = useCallback(
     (overrides: Partial<{ category: string; city: string; q: string }>) =>
       (store?.listRequests as (args: unknown) => MappedRequest[])?.({
@@ -107,7 +97,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     if (city === "other" && majorCities.includes(r.city)) return false;
     if (verified && !store?.userById(r.ownerId)?.verified) return false;
     if (!matchesBudget(r, budget)) return false;
-    return deadline === "7" ? days <= 7 : deadline === "30" ? days <= 30 : deadline === "later" ? days > 30 : true;
+    return matchesDeadlineDays(days, deadline);
   }) : []), [ready, available, list, store, deadline, budget, city, verified, now]);
   const sorted = useMemo(() => {
     const arr = [...results];
@@ -119,7 +109,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
 
   const rows: (RequestRowData & { ownerVerified: boolean; budgetType: MappedRequest["budgetType"]; budgetMin: number | null; budgetMax: number | null })[] = useMemo(() => {
     if (!store) return [];
-    const me = store.currentUser() as { id: string; role: string; verified?: boolean } | null;
+    const me = store.currentUser() as { id: string; role: string; blocked?: boolean } | null;
     return sorted.map((r) => {
       const owner = (store.userById as (id: string) => { company?: string; name?: string; verified?: boolean } | null)(r.ownerId);
       const ownerName = owner?.company || owner?.name || "მომხმარებელი";
@@ -127,7 +117,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
       const daysLeft = (store.daysLeft as (r: unknown, now: number) => number)(r, now);
       const isOwn = !!me && r.ownerId === me.id;
       let ownOfferStatus: string | null | undefined;
-      if (me?.role === "company") {
+      if (me && me.role !== "admin") {
         const mine = (store.myOffers as (u: unknown) => { requestId: string; status: string }[])(me);
         ownOfferStatus = mine.find((o) => o.requestId === r.id)?.status;
       }
@@ -158,9 +148,9 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         daysLeft,
         isOwn,
         offerCount: store.offerCount(r.id),
-        canOffer: !isOwn && me?.role === "company" && !!me.verified && state === "open",
+        canOffer: !isOwn && !!me && me.role !== "admin" && !me.blocked && state === "open",
         ownOfferStatus,
-        showOwnOfferBadge: me?.role === "company" && !isOwn,
+        showOwnOfferBadge: !!me && me.role !== "admin" && !isOwn,
         posted: postedLabel(r.createdAt, now),
       };
     });
@@ -175,7 +165,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const activeItems = [
     ...(verified ? [{ key: "verified", label: "ვერიფიცირებული მყიდველი" }] : []),
-    ...(deadline ? [{key: "deadline", label: deadline === "7" ? "7 დღემდე" : deadline === "30" ? "30 დღემდე" : "30 დღეზე მეტი"}] : []),
+    ...(deadline ? [{key: "deadline", label: deadline === "later" ? "30 დღეზე მეტი" : `${deadline} დღემდე`}] : []),
     ...(budget ? [{key: "budget", label: budgetOptions.find(([id]) => id === budget)?.[1] || budget}] : []),
     ...(category ? [{key: "category", label: categories[category] || groupNames[category] || category}] : []),
     ...(city ? [{key: "city", label: city === "other" ? "სხვა" : cities[city] || city}] : []),
@@ -191,7 +181,7 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
     : value.split(",").includes(r.city) || r.city === "georgia");
   const matchesDeadline = (r: MappedRequest, value: string) => {
     const days = store?.daysLeft(r, now) ?? 0;
-    return value === "7" ? days <= 7 : value === "30" ? days <= 30 : value === "later" ? days > 30 : true;
+    return matchesDeadlineDays(days, value);
   };
   const matchesCategory = (r: MappedRequest, value: string) => !value || categoryKeys(value).includes(r.category);
   const facetCount = (key: "category" | "city" | "deadline" | "budget", value: string) => facetRequests.filter(r =>
@@ -203,33 +193,15 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
   const showBudget = !!budget || budgetOptions.some(([id]) => facetCount("budget", id) > 0);
   const verifiedSwitch = () => <label className={styles.requestVerified}>
     <input type="checkbox" role="switch" checked={verified} onChange={e => setFilters({ verified: e.target.checked ? "1" : "" })} />
-    <span className={styles.switchTrack} aria-hidden="true" /><span>მხოლოდ ვერიფიცირებული</span>
+    <span className={styles.switchTrack} aria-hidden="true" /><span>ვერიფიცირებული ავტორი</span>
   </label>;
-  const categoryRow = (id: string, label: string, expanded?: boolean) =>
-    <Button variant="ghost" className={styles.categoryRow} aria-pressed={category === id} aria-expanded={expanded}
-      onClick={() => setFilters({ category: category === id ? "" : id })}>
-      <CategoryIcon id={id} tile /><span>{label}</span><small>{facetCount("category", id)}</small>
-    </Button>;
   const requestFilters = (mobile = false) => <div className={`${styles.requestFilters} ${mobile ? styles.mobileRequestFilters : ""}`}>
-    <section><h2>კატეგორიები</h2><ul>
-      <li>{categoryRow("", "ყველა")}</li>
-      {categoryGroups.map(group => {
-        const expanded = category === group.id || groupOf[category] === group.id;
-        const hasChildren = group.items.some(([id]) => id !== group.id);
-        return <li key={group.id}>
-          {/* One label everywhere (sidebar, sheet, chips): the group's full name. */}
-          {categoryRow(group.id, group.name, hasChildren ? expanded : undefined)}
-          {expanded && hasChildren && <ul className={styles.subcategories}>{group.items.map(([id, label]) =>
-            <li key={id}>{categoryRow(id, label)}</li>
-          )}</ul>}
-        </li>;
-      })}
-    </ul></section>
+    <section><h2>კატეგორიები</h2><CategoryTree value={category} count={id => facetCount("category", id)} onChange={id => setFilters({ category: id })}/></section>
     <section><h2>ადგილმდებარეობა</h2><ul>{[...majorCities.map(id => [id, cities[id]]), ["other", "სხვა რეგიონები"]].map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type="checkbox" checked={city === id}
         onChange={() => setFilters({ city: city === id ? "" : id })} /><span>{label}</span><small>{facetCount("city", id)}</small></label></li>
     )}</ul></section>
-    <section><h2>ვადა</h2><ul>{[["7", "7 დღემდე"], ["30", "30 დღემდე"], ["later", "30 დღეზე მეტი"]].map(([id, label]) =>
+    <section><h2>შეთავაზებების მიღება</h2><ul>{deadlineOptions.map(([id, label]) =>
       <li key={id}><label className={styles.filterCheck}><input type={mobile ? "radio" : "checkbox"} name={mobile ? "mobile-deadline" : undefined} checked={deadline === id}
         onChange={() => setFilters({ deadline: deadline === id ? "" : id })} /><span>{label}</span><small>{facetCount("deadline", id)}</small></label></li>
     )}</ul></section>
@@ -312,7 +284,6 @@ export function RequestsPageContent({ autoOpenNew = false, initial, initialNow =
         {verifiedSwitch()}
       </MobileFilterSheet>
       {saving.authModal}
-      {formOpen && <RequestFormSheet open={formOpen} initialTitle={formTitle} initialCity={formCity} initialCategory={formCategory} onClose={() => setFormOpen(false)} />}
     </div>
   );
 }

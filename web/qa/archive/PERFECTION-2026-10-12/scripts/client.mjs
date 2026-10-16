@@ -9,8 +9,9 @@ if (!['localhost', '127.0.0.1'].includes(new URL(origin).hostname)) throw new Er
 const envFile = process.env.QA_ENV || path.resolve(import.meta.dirname, '../../../.env.local');
 const env = Object.fromEntries(fs.readFileSync(envFile, 'utf8').split(/\r?\n/).flatMap(l => { const m = /^([A-Z0-9_]+)\s*=\s*(.*?)\s*$/.exec(l); return m ? [[m[1], m[2].replace(/^(['"])(.*)\1$/, '$2')]] : []; }));
 const auth = env.NEON_AUTH_BASE_URL.replace(/\/$/, '');
-const email = process.env.QA_EMAIL || 'user@gmail.com';
+const email = process.env.QA_EMAIL;
 const password = process.env.QA_PASSWORD;
+if (!email || !password) throw new Error("QA_EMAIL and QA_PASSWORD are required");
 const mode = process.argv[2] || 'full';
 const out = path.resolve(import.meta.dirname, '..', process.env.OUT || 'before', 'client', mode === 'dashboard' ? 'dashboard-company' : '.');
 fs.mkdirSync(out, { recursive: true });

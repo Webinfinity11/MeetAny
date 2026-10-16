@@ -76,7 +76,7 @@ export function AdminPageContent() {
   const me = ready && available ? store?.currentUser() : null;
 
   const ownData = tab === "content" || tab === "contacts" || tab === "overview" || tab === "photos" || tab === "reviews" || tab === "reports" || tab === "deals";
-  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && !ownData, tab: ownData ? "audit" : tab === "companies" ? "users" : tab, query, status, role, cursor, action: auditAction, target: auditTarget });
+  const admin = useAdminData({ store, enabled: !!me && me.role === "admin" && !ownData, tab: ownData ? "audit" : tab === "companies" ? "users" : tab, query, status, role, cursor, action: auditAction, target: auditTarget, period: auditPeriod });
   // New reports and open deal issues: the navigation badges. Loaded once per admin visit and after each write.
   const [reportCount, setReportCount] = useState(0);
   const [issueCount, setIssueCount] = useState(0);
@@ -250,7 +250,7 @@ export function AdminPageContent() {
     router.replace(`/admin/?${next}`, { scroll: false });
   };
   // The same pager sits above and below the list; distinct names keep the two landmarks apart for screen readers.
-  const pagination = (place: "top" | "bottom") => admin.mode === "ready" && admin.page ? <nav className={styles.pagination} aria-label={place === "top" ? "ჩანაწერების გვერდები — სიის დასაწყისი" : "ჩანაწერების გვერდები — სიის ბოლო"}>
+  const pagination = (place: "top" | "bottom") => admin.mode === "ready" && admin.page && (cursor || admin.page.hasMore) ? <nav className={styles.pagination} aria-label={place === "top" ? "ჩანაწერების გვერდები — სიის დასაწყისი" : "ჩანაწერების გვერდები — სიის ბოლო"}>
     <Button type="button" variant="secondary" disabled={!cursor} onClick={() => changePage(false)}>წინა</Button>
     <span>{admin.page.items.length ? previousCursors.length * 25 + 1 : 0}–{previousCursors.length * 25 + admin.page.items.length} / სულ {admin.page.filteredTotal}</span>
     <Button type="button" variant="secondary" disabled={!admin.page.hasMore || !admin.page.nextCursor} onClick={() => changePage(true)}>შემდეგი</Button>
@@ -289,12 +289,11 @@ export function AdminPageContent() {
       {admin.mode === "error" ? <AdminState error title="ჩანაწერები ვერ ჩაიტვირთა" text={admin.error || undefined} onRetry={admin.reload} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
       {((tab === "offers" && !v2) || (tab === "audit" && admin.mode === "legacy")) ? <AdminState title="საჭიროა ბაზის განახლება" text={tab === "offers" ? "შეთავაზებების მოდერაცია ხელმისაწვდომი გახდება ადმინისტრირების API v2-ის ამოქმედების შემდეგ." : "მოქმედებების ჟურნალი ამ ვერსიაში ხელმისაწვდომი არ არის."} /> : null}
       {canShowRecords && !(tab === "offers" && !v2) && !(tab === "audit" && admin.mode === "legacy") && (tab === "requests" ? !filteredRequests.length : peopleTab ? !filteredUsers.length : !admin.page?.items.length) ? <AdminState
-        title={hasFilters || auditAction || auditTarget ? "ამ ფილტრებით ჩანაწერები ვერ მოიძებნა" : cursor ? "ამ გვერდზე ჩანაწერები აღარ არის" : "ჩანაწერები ჯერ არ არის"}
-        text={hasFilters || auditAction || auditTarget ? "შეცვალეთ ძიება ან გაასუფთავეთ ფილტრები." : "ახალი ჩანაწერები აქ გამოჩნდება."}
-        onClear={hasFilters || auditAction || auditTarget ? clearFilters : undefined} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
-      {tab === "audit" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminAuditTable events={admin.page.items as unknown as AdminAuditEvent[]} query={query} period={auditPeriod} onOpen={setDetail} /> : null}
-      {tab === "offers" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminOffersTable offers={admin.page.items as unknown as AdminOffer[]} onOpen={setDetail}
-        onDelete={offer => setPendingAction({ kind: "offers", action: "deleteOffer", id: offer.id, label: `${offer.company_name || "კომპანია"} · ${offer.request_title || offer.body.slice(0, 80)}` })} /> : null}
+        title={hasFilters || auditAction || auditTarget || (tab === "audit" && (query || auditPeriod)) ? "ამ ფილტრებით ჩანაწერები ვერ მოიძებნა" : cursor ? "ამ გვერდზე ჩანაწერები აღარ არის" : "ჩანაწერები ჯერ არ არის"}
+        text={hasFilters || auditAction || auditTarget || (tab === "audit" && (query || auditPeriod)) ? "შეცვალეთ ძიება ან გაასუფთავეთ ფილტრები." : "ახალი ჩანაწერები აქ გამოჩნდება."}
+        onClear={hasFilters || auditAction || auditTarget || (tab === "audit" && (query || auditPeriod)) ? clearFilters : undefined} onFirst={cursor ? () => setFilter("cursor", "") : undefined} /> : null}
+      {tab === "audit" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminAuditTable events={admin.page.items as unknown as AdminAuditEvent[]} onOpen={setDetail} /> : null}
+      {tab === "offers" && admin.mode === "ready" && !!admin.page?.items.length ? <AdminOffersTable offers={admin.page.items as unknown as AdminOffer[]} onOpen={setDetail} /> : null}
       {canShowRecords && tab === "requests" && filteredRequests.length > 0 ? (
         <div className="ma-table-wrap">
           <table className={`ma-table ${styles.compactRequests}`}>

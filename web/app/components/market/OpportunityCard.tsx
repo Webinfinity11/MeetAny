@@ -1,7 +1,7 @@
 "use client";
 
 import { optimizable } from "../../lib/image";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { categories, cities, currentCategory, units } from "../../lib/categories";
@@ -26,11 +26,11 @@ export function budgetLabel(r: Pick<OpportunityRequest, "budgetType" | "budgetMi
   return null;
 }
 export interface OpportunityCardProps {
-  request: OpportunityRequest; compact?: boolean; offers?: number;
+  request: OpportunityRequest; compact?: boolean; offers?: number; media?: ReactNode;
   buyer?: { name: string; verified: boolean }; onSave?: () => void; saved?: boolean; canOffer?: boolean; guest?: boolean; horizontal?: boolean;
 }
 
-export function OpportunityCard({ request: r, compact = false, offers, buyer, onSave, saved = false, horizontal = false }: OpportunityCardProps) {
+export function OpportunityCard({ request: r, compact = false, offers, buyer, onSave, saved = false, horizontal = false, media }: OpportunityCardProps) {
   const [failed, setFailed] = useState<string | null>(null);
   const href = `/requests/view/?id=${encodeURIComponent(r.id)}`;
   const category = categories[currentCategory(r.category)] || r.category;
@@ -39,13 +39,13 @@ export function OpportunityCard({ request: r, compact = false, offers, buyer, on
   const facts = [category, r.cityLabel || cities[r.city] || r.city, ...(r.quantity != null ? [`${formatNumber(r.quantity)} ${r.unit ? units[r.unit] || r.unit : ""}`] : [])].join(" · ");
   return <article className={`${styles.card} ${compact ? styles.compact : `${catalogStyles.fullCard} ${styles.full}`} ${horizontal ? styles.horizontal : ""}`} data-request-id={r.id}>
     <div className={styles.visual}>
-      {r.photo && failed !== r.photo ? <Image unoptimized={!optimizable(r.photo)} src={r.photo} alt="" width={96} height={72} sizes="96px" loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />}
+      {media ?? (r.photo && failed !== r.photo ? <Image unoptimized={!optimizable(r.photo)} src={r.photo} alt="" width={480} height={300} sizes={horizontal ? "(min-width: 1024px) 96px, (max-width: 767px) 100vw, 50vw" : "(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 400px"} loading="lazy" onError={() => setFailed(r.photo)} /> : <RequestCatalogCover category={r.category} />)}
       {(r.isNew || r.daysLeft <= 5) && <Badge status={r.isNew ? "success" : "warning"} className={styles.new}>{r.isNew ? "ახალი" : "სასწრაფო"}</Badge>}
     </div>
     <div className={styles.body}>
       <h3><Link className={`card-main-link ${styles.mainLink}`} href={href}>{r.title}</Link></h3>
       <p className={styles.facts} title={facts}>{facts}</p>
-      {buyer && <span className="ma-sr-only">{buyer.name}{buyer.verified ? " · ვერიფიცირებული" : ""}</span>}
+      {buyer && <span className="ma-note">{buyer.name}{buyer.verified ? " · ვერიფიცირებული" : ""}</span>}
     </div>
     <div className={styles.bottom}>
       <div className={styles.summary}>

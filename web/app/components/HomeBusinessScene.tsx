@@ -26,7 +26,8 @@ export function HomeBusinessScene({ initial }: { initial?: PublicSnapshot }) {
       <div className="hero-scene__column">{!ready ? <div className="home-live-skeleton ma-skel" /> : !shown.length ? empty : <div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{shown.map(r => <HeroRequest key={r.id} request={r} offers={store?.offerCount(r.id) ?? 0} duplicate={duplicate} />)}</div>)}</div>}</div>
       <div className="hero-scene__column" aria-hidden="true"><div className="hero-scene__track">{[true, false].map(duplicate => <div className="hero-scene__group" key={String(duplicate)} aria-hidden={duplicate || undefined}>{heroOffers.map(o => <HeroOffer key={o.id} offer={o} />)}</div>)}</div></div>
     </div>
-    {/* Hover and focus pause the strip by CSS; this button is for keyboard and touch only (hidden until focused, shown where there is no hover). */}
+    <p className="hero-scene__caption">რეალური მოთხოვნები · შეთავაზებების ნიმუშები</p>
+    {/* Hover and focus pause the strip; the visible button also works with touch. */}
     <button className="hero-scene__motion" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} aria-label={paused ? "გაგრძელება" : "პაუზა"}><Icon name={paused ? "play" : "pause"} /></button>
   </div>;
 }

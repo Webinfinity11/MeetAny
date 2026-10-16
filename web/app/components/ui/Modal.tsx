@@ -49,7 +49,7 @@ export function Modal({ open, onClose, title, lead, icon, tone = "neutral", widt
       <h2 id={titleId} className={styles.title}>{title}</h2>
       {lead ? <p id={leadId} className={styles.lead}>{lead}</p> : null}
     </header>
-    {children ? <div className={styles.body}>{children}</div> : null}
+    {children ? <div className={styles.body} tabIndex={0} role="region" aria-labelledby={titleId}>{children}</div> : null}
     {actions ? <footer className={styles.actions}>{actions}</footer> : null}
   </dialog>;
 }

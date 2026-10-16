@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## MeetAny UI/UX work
+
+Read the current UI/UX acceptance rules in `../DESIGN-SYSTEM.md` before changing interface code. Use the personal `meetany-ui-ux` skill when available. Review actual interactions and settled browser screenshots, including 390px and 320px layouts; passing overflow checks alone does not establish good design. Preserve entered data, keep mobile filter rows scrollable, and keep confirmations compact. Record implemented, locally verified and live verified status separately. Current user preferences supersede historical design notes.

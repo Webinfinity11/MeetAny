@@ -125,7 +125,7 @@ export function Selection({ id, label, options, values, onChange, multiple = fal
     {multiple && <div className={s.footer}><span role="status">{values.length}{Number.isFinite(limit) ? ` / ${limit}` : ' არჩეული'}</span><Button variant="ghost" disabled={!values.length || disabled} onClick={() => { onChange([]); search.current?.focus(); }}>გასუფთავება</Button><Button onClick={close}>მზადაა</Button></div>}
   </div>;
   return <div className={`ma-field ${s.root}`}>
-    {multiple && <label htmlFor={controlId} className="ma-field__label">{label}</label>}
+    {multiple && <label htmlFor={controlId} className="ma-field__label">{label}{required && !label.includes('*') ? <span aria-hidden="true"> *</span> : null}</label>}
     <div className={s.control}>
       <Button variant="base" ref={trigger} id={controlId} className={`ma-select ma-custom-select ${s.trigger}`} role="combobox" disabled={disabled} aria-label={values.length ? `${label}: ${values.map(value => available.find(option => option.value === value)?.label || value).join(", ")}` : label} data-tokens={multiple && values.length > 0 || undefined} aria-expanded={open} aria-haspopup="listbox" aria-controls={open ? listId : undefined} aria-describedby={describedBy} aria-invalid={aria['aria-invalid']} aria-required={required}
         onClick={() => open ? close() : show()} onKeyDown={event => {

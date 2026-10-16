@@ -1,0 +1,43 @@
+\set ON_ERROR_STOP 1
+\o /dev/null
+select t.as_super();
+select t.signup('op_s','op-s@test.ge','{"role":"company","name":"Setup Seller","company":"Setup Seller","phone":"599886201","city":"tbilisi","industry":"furniture"}');
+select t.as_user('op_s');
+select t.throws($q$select public.admin_onboarding_analytics()$q$,'MA003','OP company cannot read admin progress');
+select t.throws($q$select public.record_onboarding_activity('password','view')$q$,'MA902','OP arbitrary field names rejected');
+select t.throws($q$select public.record_onboarding_activity('type','completed')$q$,'MA902','OP browser cannot forge completion');
+select t.ok(public.my_onboarding_activity() is null,'OP unseen progress is unknown');
+select t.ok(public.record_onboarding_activity('provide','view'),'OP records authenticated stage');
+select t.ok(public.my_onboarding_activity()->>'step'='provide','OP last stage available for resume');
+select public.record_onboarding_activity('provide','deferred');
+select t.ok(public.my_onboarding_activity()->>'disposition'='deferred','OP explicit deferral differs from inactivity');
+select t.as_super();
+update meetany_private.onboarding_progress set last_activity_at=now()-interval '1 hour' where profile_id=t.uid('op_s');
+select t.as_user('admin');
+select t.ok((public.admin_onboarding_analytics()->>'deferred')::int=1,'OP optional step remains deferred after inactivity');
+select t.as_user('op_s');
+select public.record_onboarding_activity('provide','view');
+select public.record_onboarding_activity('provide','view');
+select t.as_super();
+select t.ok((select resume_count=1 from meetany_private.onboarding_progress where profile_id=t.uid('op_s')),'OP repeated view counts one return');
+update meetany_private.onboarding_progress set last_activity_at=now()-interval '1 hour' where profile_id=t.uid('op_s');
+select t.as_user('admin');
+select t.ok((public.admin_onboarding_analytics()->>'inactive')::int=1,'OP recent unfinished inactivity distinguished');
+select t.as_user('op_s');
+select public.complete_onboarding();
+select public.record_onboarding_activity('review','completed');
+select t.ok(public.my_onboarding_activity()->>'disposition'='complete','OP zero products/documents can finish setup');
+select t.as_user('fi_s');
+select t.ok(public.my_onboarding_activity() is null,'OP another company cannot read private progress');
+select t.as_user('admin');
+select t.ok((public.admin_onboarding_analytics()->>'inactive')::int=0,'OP completed profile never counted inactive');
+select t.ok((public.admin_onboarding_analytics()->>'resumed')::int=1,'OP admin sees resumed profiles');
+select t.throws($q$select public.admin_onboarding_analytics(500)$q$,'MA902','OP admin date range bounded');
+select t.as_user('fi_b');
+select t.throws($q$select public.record_onboarding_activity('type','view')$q$,'MA901','OP personal account cannot create company progress');
+select t.put('op_r',(public.create_request_full('Reopen window','Request for reopening seven days','furniture','tbilisi',null,1,'pcs',(now() at time zone 'Asia/Tbilisi')::date+60,null,'{}',gen_random_uuid())).id);
+select public.close_request(t.get('op_r'));
+select t.ok((select expires_at between now()+interval '6 days 23 hours' and now()+interval '7 days 1 minute' from public.extend_request(t.get('op_r'))),'OP reopening starts seven days, not old expiry plus seven');
+select t.as_super();
+\o
+select 'Onboarding progress tests passed';

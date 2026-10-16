@@ -16,11 +16,13 @@ export function ViewportInsets() {
         const inset = Math.abs(viewport.scale - 1) > 0.01 ? 0 : Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop));
         if (inset > 0) root.style.setProperty("--keyboard-inset", `${inset}px`);
         else root.style.removeProperty("--keyboard-inset");
+        root.toggleAttribute('data-keyboard-open', inset > 100);
       });
     };
+    update();
     viewport.addEventListener("resize", update);
     viewport.addEventListener("scroll", update);
-    return () => { cancelAnimationFrame(frame); viewport.removeEventListener("resize", update); viewport.removeEventListener("scroll", update); root.style.removeProperty("--keyboard-inset"); };
+    return () => { cancelAnimationFrame(frame); viewport.removeEventListener("resize", update); viewport.removeEventListener("scroll", update); root.style.removeProperty("--keyboard-inset"); root.removeAttribute('data-keyboard-open'); };
   }, []);
   return null;
 }

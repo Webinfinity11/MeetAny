@@ -1,3 +1,4 @@
+import { productKey, PRODUCT_UNITS } from "./products-import";
 import type { Store } from './market-client';
 import { categories } from './categories';
 
@@ -10,6 +11,16 @@ export function stepsFor(intent?: AccountIntent | string | null): readonly Onboa
   return onboardSteps.filter(step => step === 'provide' ? intent !== 'buy' : step === 'need' ? intent !== 'sell' : true);
 }
 export type Product = { name: string; photoUrl?: string | null; note: string; code?: string; unit?: string; price?: number };
+/** An unused editor may be skipped; an entered detail must never disappear with a blank name. */
+export const hasProductContent = (product: Product) => [product.name, product.note, product.code, product.photoUrl, product.unit].some(value => !!value?.trim()) || product.price !== undefined;
+export const normalizeOnboardItems = (values: string[]) => values.map(value => value.trim()).filter(Boolean);
+export function onboardItemsError(values: string[], { limit = 8, maxLength = 120 }: { limit?: number; maxLength?: number } = {}): string {
+  const filled = normalizeOnboardItems(values);
+  if (filled.length > limit) return `შეგიძლიათ დაამატოთ მაქსიმუმ ${limit} ჩანაწერი.`;
+  if (filled.some(value => value.length > maxLength)) return `ჩანაწერი ${maxLength} სიმბოლოზე გრძელი არ უნდა იყოს.`;
+  const keys = filled.map(value => value.replace(/\s+/g, ' ').toLocaleLowerCase('ka-GE'));
+  return new Set(keys).size !== keys.length ? 'ერთნაირი ჩანაწერი მეორდება — შეცვალეთ ან წაშალეთ.' : '';
+}
 export type OnboardProfile = {
   onboarding_completed_at?:string|null;
   id: string; role: string; blocked: boolean; verified: boolean;
@@ -34,8 +45,8 @@ export function verificationState(status?: string | null, verified = false): Ver
   if (status === 'rejected' || status === 'returned') return 'returned';
   return 'none';
 }
-const verificationLabels: Record<VerificationState, string> = { none: 'დოკუმენტები არ არის', pending: 'განსახილველი', approved: 'ვერიფიცირებული', returned: 'დაბრუნებულია შესასწორებლად' };
-/** Badge text: „დოკუმენტები არ არის“ · „განსახილველი“ · „ვერიფიცირებული“ · „დაბრუნებულია შესასწორებლად“. */
+const verificationLabels: Record<VerificationState, string> = { none: 'ვერიფიკაციის გარეშე', pending: 'განსახილველი', approved: 'ვერიფიცირებული', returned: 'დაბრუნებულია შესასწორებლად' };
+/** Badge text: „ვერიფიკაციის გარეშე“ · „განსახილველი“ · „ვერიფიცირებული“ · „დაბრუნებულია შესასწორებლად“. */
 export function verificationLabel(status?: string | null, verified = false): string {
   return verificationLabels[verificationState(status, verified)];
 }
@@ -45,7 +56,7 @@ export function verificationHint(status?: string | null, verified = false, note?
   if (state === 'approved') return 'კომპანიის პროფილზე ვერიფიკაციის ნიშანი ჩანს.';
   if (state === 'pending') return 'ადმინისტრატორი ამოწმებს დოკუმენტებს. შედეგს შეტყობინებით მიიღებთ.';
   if (state === 'returned') return note?.trim() ? `შეასწორეთ და ხელახლა გაგზავნეთ. მიზეზი: ${note.trim()}` : 'შეასწორეთ დოკუმენტები და ხელახლა გაგზავნეთ.';
-  return 'ატვირთეთ რეგისტრაციის ამონაწერი და საგადასახადო დოკუმენტი, შემდეგ გაგზავნეთ განსახილველად.';
+  return 'ვერიფიკაცია არჩევითია — პროფილს დადასტურების ნიშანს ამატებს.';
 }
 /** Badge tone for the state. */
 export function verificationTone(status?: string | null, verified = false): 'success' | 'warning' | 'danger' | 'neutral' {
@@ -130,7 +141,7 @@ export function restoreOnboardDraft(persisted: OnboardModel, draft: string | nul
 /** Shared by normal saves and save-and-exit: invalid steps stay only in the local draft. */
 export function validateOnboardStep(step: OnboardStep, p: OnboardProfile, products: Product[]): string {
   const length = (value: string | null | undefined, min: number, max: number) => !value?.trim() || value.trim().length >= min && value.trim().length <= max;
-  const items = (values: string[]) => values.length <= 8 && values.every(value => !!value.trim() && value.length <= 120);
+  const items = (values: string[]) => !onboardItemsError(values);
   if (step === 'type' && (!['buy', 'sell', 'both'].includes(p.account_intent) || p.provide_categories.length > 5)) return 'აირჩიეთ ანგარიშის ტიპი და მაქსიმუმ 5 დარგი.';
   if (step === 'details') {
     if (p.name.trim().length < 2 || p.name.length > 80) return 'საკონტაქტო პირის სახელი უნდა შეიცავდეს 2–80 სიმბოლოს.';
@@ -143,15 +154,17 @@ export function validateOnboardStep(step: OnboardStep, p: OnboardProfile, produc
   }
   if (step === 'profile' && (p.company.trim().length < 2 || p.about.length > 1000 || !items(p.business_tags) || !items(p.certificates))) return 'შეამოწმეთ კომპანიის სახელი, აღწერა (1000-მდე სიმბოლო) და ტეგები.';
   if (step === 'provide') {
-    const filled = products.filter(item => item.name.trim());
-    if (filled.length > 100) return 'ლიმიტი: მაქსიმუმ 100 პროდუქტი.';
+    const filled = products.filter(hasProductContent);
+    if (filled.some(item => !item.name.trim())) return 'მიუთითეთ პროდუქტის სახელი ან წაშალეთ დაუმთავრებელი პროდუქტი.';
+    if (filled.length > 15) return 'ლიმიტი: მაქსიმუმ 15 პროდუქტი.';
     if (filled.some(item => item.name.trim().length < 2 || item.name.length > 80 || item.note.length > 200)) return 'პროდუქტის სახელი უნდა შეიცავდეს 2–80 სიმბოლოს, აღწერა — 200-მდე.';
-    const names = filled.map(item => item.name.trim().toLocaleLowerCase('ka'));
-    if (new Set(names).size !== names.length) return 'ეს პროდუქტი უკვე დამატებულია.';
-    if (names.some(name => p.offers.some(offer => offer.trim().toLocaleLowerCase('ka') === name))) return 'ეს სახელი მომსახურებებშია — გადაიტანეთ?';
-    if (p.provide_categories.length > 5 || !items(p.offers)) return 'მაქსიმუმ 5 დარგი და 8 მომსახურება.';
+    const keys = filled.map(productKey);
+    if (new Set(keys).size !== keys.length) return 'პროდუქტის კოდი მეორდება ან უკოდო პროდუქტი ამ სახელით უკვე დამატებულია.';
+    if (filled.some(item => (item.code?.length || 0) > 40 || item.unit && !Object.hasOwn(PRODUCT_UNITS, item.unit) || item.price !== undefined && (!Number.isFinite(item.price) || item.price < 0 || item.price > 1e9))) return 'შეამოწმეთ პროდუქტის კოდი, ერთეული და ფასი.';
+    if (p.provide_categories.length > 5) return 'აირჩიეთ მაქსიმუმ 5 დარგი.';
+    if (onboardItemsError(p.offers)) return onboardItemsError(p.offers);
   }
-  if (step === 'need' && !items(p.seeks)) return 'მაქსიმუმ 8 პუნქტი, თითო 120 სიმბოლომდე.';
+  if (step === 'need') return onboardItemsError(p.seeks);
   return '';
 }
 export async function readOnboardProfile(store: Store): Promise<OnboardProfile> {
@@ -165,7 +178,7 @@ export async function readOnboardProfile(store: Store): Promise<OnboardProfile> 
 }
 export function profileInput(p: OnboardProfile) {
   return { name: p.name, company: p.company, city: p.city, industry: p.industry, about: p.about || '', address: p.address,
-    offers: p.offers || [], seeks: p.seeks || [], serviceCities: p.service_cities || [], lat: p.lat, lng: p.lng };
+    offers: normalizeOnboardItems(p.offers || []), seeks: normalizeOnboardItems(p.seeks || []), serviceCities: p.service_cities || [], lat: p.lat, lng: p.lng };
 }
 export async function readOnboard(store: Store) {
   const profile = await readOnboardProfile(store);
@@ -175,11 +188,13 @@ export async function readOnboard(store: Store) {
 }
 /** Read the current raw row before full replacements; only this step's edits override it. */
 export async function saveOnboardStep(store: Store, step: OnboardStep, draft: OnboardProfile, products: Product[]) {
-  if (step === 'provide' && draft.provide_categories.length > 5) throw new Error('აირჩიეთ მაქსიმუმ 5 მიწოდების კატეგორია.');
+  const error = validateOnboardStep(step, draft, products);
+  if (error) throw new Error(error);
   const current = await readOnboardProfile(store);
   if (current.id !== draft.id) throw new Error('ანგარიში შეიცვალა. განაახლეთ გვერდი.');
   const merged = { ...current };
   for (const key of keysByStep[step] || []) Object.assign(merged, { [key]: draft[key] });
+  for (const key of ['markets', 'languages', 'business_tags', 'certificates'] as const) merged[key] = normalizeOnboardItems(merged[key]);
   if (['type', 'details', 'profile'].includes(step)) {
     const args = Object.fromEntries(detailKeys.map(key => ['p_' + key, typeof merged[key] === 'string' && !merged[key]?.trim() ? null : merged[key]]));
     const result = await store.callRpc('set_onboarding_details', args);
@@ -196,7 +211,7 @@ export async function saveOnboardStep(store: Store, step: OnboardStep, draft: On
     if (!Array.isArray(result?.provide) || !Array.isArray(result?.need)) throw new Error('კატეგორიების შენახვა ვერ დადასტურდა.');
   }
   if (step === 'provide') {
-    const result = await store.setMyProducts(products.filter(item => item.name.trim()));
+    const result = await store.setMyProducts(products.filter(hasProductContent));
     if (!Array.isArray(result)) throw new Error('პროდუქტების შენახვა ვერ დადასტურდა.');
   }
   // verify/review are read-only: there is no document submission or completion RPC.

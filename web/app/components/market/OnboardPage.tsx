@@ -14,10 +14,12 @@ import { Logo } from '../Logo';
 import { DetailSkeleton, ListSkeleton } from './Skeletons';
 import { OnboardPreview, OnboardSteps, stepLabels, leads } from './OnboardSteps';
 import s from './onboarding.module.css';
+import { onboardingHref, safeOnboardingNext } from '../../lib/auth-redirect';
+import { trackOnboarding } from '../../lib/onboarding-activity';
 
 export function OnboardLoading() {
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><Button variant="ghost" href="/account/">გადით</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><Button variant="ghost" href="/account/">ანგარიშზე დაბრუნება</Button></div></header>
     <main className={s.shell}><FormLayout steps={<ListSkeleton compact kind="records" label="ნაბიჯები იტვირთება…" />}>
       <DetailSkeleton compact label="კომპანიის პროფილი იტვირთება…" />
     </FormLayout></main>
@@ -33,6 +35,8 @@ export function OnboardPage() {
   const { store, sessionReady, available } = useMarketStore();
   const router = useRouter(), params = useSearchParams();
   const candidate = params.get('step');
+  const next = safeOnboardingNext(params.get('next'));
+  const stepHref = (target: OnboardStep) => onboardingHref(target, next);
   const user = sessionReady ? store?.currentUser() : null;
   const actor = user?.id as string | undefined;
   const role = user?.role as string | undefined;
@@ -67,10 +71,13 @@ export function OnboardPage() {
   };
   const form = useRef<HTMLFormElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const lastView = useRef('');
+  const resumeStep = useRef<OnboardStep | null>(null);
+  const initialRoute = useRef({ candidate, next });
   useEffect(() => {
     if (!sessionReady || !actor || role !== 'company' || blocked) return;
     let active = true;
-    readOnboard(getMarketStore()).then(result => { if (active) {
+    Promise.all([readOnboard(getMarketStore()), getMarketStore().callRpc('my_onboarding_activity', {}).catch(() => null)]).then(([result, activity]) => { if (active) {
       let raw: string | null = null;
       try { raw = localStorage.getItem(onboardDraftKey(result.profile.id)); } catch { /* Storage is optional. */ }
       let restored = restoreOnboardDraft(result, raw);
@@ -78,11 +85,22 @@ export function OnboardPage() {
         JSON.stringify(retainOnboardDraft(result, restored, [value])) !== JSON.stringify(result)) : []);
       const fromDraft = restored !== result;
       if (!fromDraft) storeDraft(result.profile.id, null);
-      if (!dirty.current.has('type') && !dirty.current.has('provide') && restored.profile.account_intent !== 'buy' && !restored.profile.provide_categories.length && restored.profile.industry) { restored = { ...restored, profile: { ...restored.profile, provide_categories: [restored.profile.industry] } }; dirty.current.add('type'); }
+      if (!dirty.current.has('type') && !dirty.current.has('provide') && restored.profile.account_intent !== 'buy' && !restored.profile.provide_categories.length && restored.profile.industry) { restored = { ...restored, profile: { ...restored.profile, provide_categories: [restored.profile.industry] } }; }
+      if (!initialRoute.current.candidate && !result.profile.onboarding_completed_at && stepsFor(restored.profile.account_intent).includes(activity?.step)) {
+        resumeStep.current = activity.step;
+        router.replace(onboardingHref(activity.step, initialRoute.current.next));
+      }
       setHasChanges(dirty.current.size > 0); setModel(restored); setPersisted(result); setRestoredDraft(fromDraft); setSavedAt(''); setError('');
     } }, err => { if (active) setError(onboardError(err)); });
     return () => { active = false; };
-  }, [sessionReady, actor, role, blocked, retry]);
+  }, [sessionReady, actor, role, blocked, retry, router]);
+  useEffect(() => {
+    if (!store || !model || model.profile.id !== actor || (resumeStep.current && resumeStep.current !== step)) return;
+    const key = `${actor}:${step}`;
+    if (lastView.current === key) return;
+    lastView.current = key; resumeStep.current = null;
+    trackOnboarding(store, step, 'view');
+  }, [store, actor, step, model]);
   useEffect(() => {
     const unload = (event: BeforeUnloadEvent) => { flushDraft(); if (dirty.current.size || lock.current) event.preventDefault(); };
     window.addEventListener('beforeunload', unload);
@@ -90,15 +108,22 @@ export function OnboardPage() {
     return () => { flushDraft(); window.removeEventListener('beforeunload', unload); window.removeEventListener('pagehide', flushDraft); };
   }, []);
   useEffect(() => { heading.current?.focus(); }, [step]);
-  const patch = (value: Partial<OnboardProfile>) => {
+  const patch = (value: Partial<OnboardProfile>, serverSaved = false) => {
     if (!model) return;
-    dirty.current.add(step); setNotice(''); setSavedAt('');
+    if (!serverSaved) dirty.current.add(step);
+    else if (persisted) setPersisted({ ...persisted, profile: { ...persisted.profile, ...value } });
+    setNotice(''); setSavedAt('');
     const next = { ...model, profile: { ...model.profile, ...value } };
     setModel(next); persistDraft(next, dirty.current);
   };
-  const setProducts = (products: Product[]) => {
+  const setProducts = (products: Product[], serverSaved = false) => {
     if (!model) return;
-    dirty.current.add('provide'); setNotice(''); setSavedAt('');
+    if (!serverSaved) dirty.current.add('provide');
+    else if (persisted) {
+      setPersisted({ ...persisted, products });
+      if (JSON.stringify(model.profile.offers) === JSON.stringify(persisted.profile.offers) && JSON.stringify(model.profile.provide_categories) === JSON.stringify(persisted.profile.provide_categories)) dirty.current.delete('provide');
+    }
+    setNotice(''); setSavedAt('');
     const next = { ...model, products };
     setModel(next); persistDraft(next, dirty.current);
   };
@@ -107,16 +132,17 @@ export function OnboardPage() {
     dirty.current.clear(); persistDraft(persisted, [], true);
     setModel(persisted); setRestoredDraft(false); setSavedAt(''); setError(''); setErrorStep(null);
   };
-  async function save(destination?: OnboardStep | 'account' | 'home', completing = false) {
+  async function save(destination?: OnboardStep | 'account' | 'home', completing = false, deferInvalid = false) {
     if (!model || !store || pending || lock.current) return;
     const leaving = !completing && (destination === 'account' || destination === 'home');
-    if (!leaving && !form.current?.checkValidity()) { form.current?.querySelector<HTMLElement>('[aria-invalid=true]')?.focus(); return; }
+    if (!leaving && !deferInvalid && !form.current?.checkValidity()) { trackOnboarding(store, step, 'validation_error'); form.current?.querySelector<HTMLElement>('[aria-invalid=true]')?.focus(); return; }
+    const deferredStep = ['provide','need','verify'].includes(step) && !dirty.current.has(step) && !completed[step];
     persistDraft(model, dirty.current, true);
     lock.current = true; setPending(true); setError(''); setErrorStep(null); setNotice('');
     let writeTarget = step;
     try {
       let result = model;
-      const writes = onboardWrites(step, dirty.current, leaving || completing, steps).filter(target => !leaving || !validateOnboardStep(target, model.profile, model.products));
+      const writes = onboardWrites(step, dirty.current, leaving || completing, steps).filter(target => !(leaving || deferInvalid) || !validateOnboardStep(target, model.profile, model.products));
       for (const target of writes) {
         writeTarget = target;
         const invalid = validateOnboardStep(target, model.profile, model.products);
@@ -124,7 +150,7 @@ export function OnboardPage() {
         result = await saveOnboardStep(getMarketStore(), target, model.profile, model.products);
         // Supplied categories are chosen on type; save them with the existing RPC
         // without saving unrelated product/profile drafts.
-        if (target === 'type' && dirty.current.has('type')) {
+        if (target === 'type') {
           if (model.profile.provide_categories.length > 5) throw new Error('აირჩიეთ მაქსიმუმ 5 დარგი.');
           const source = getMarketStore();
           const current = await readOnboardProfile(source);
@@ -138,15 +164,17 @@ export function OnboardPage() {
         setPersisted(result); setModel(remainingModel); persistDraft(remainingModel, dirty.current, true);
       }
       if(completing)await store.mutateRpc('complete_onboarding',{});
+      trackOnboarding(store, step, completing ? 'completed' : leaving || deferredStep ? 'deferred' : 'saved');
       const remaining = [...dirty.current];
       setModel(retainOnboardDraft(result, model, remaining)); setPersisted(result);
       dirty.current = new Set(remaining);
       if (!remaining.length) setRestoredDraft(false);
       setSavedAt(remaining.length ? '' : new Date().toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit', hour12: false }));
-      if (destination === 'home') router.push('/');
+      if (completing && next) router.push(next);
+      else if (destination === 'home') router.push('/');
       else if (destination === 'account') { toast({ title: remaining.length ? 'შეუნახავი ცვლილებები ამ მოწყობილობაზე შენარჩუნებულია' : 'პროფილი შენახულია' }); router.push('/account/'); }
-      else if (destination) router.push('/onboarding/?step=' + destination);
-    } catch (err) { const message = onboardError(err); setError(message); setErrorStep(writeTarget); toast({ title: message, tone: 'danger' }); if (leaving) router.push(destination === 'home' ? '/' : '/account/'); }
+      else if (destination) router.push(stepHref(destination));
+    } catch (err) { trackOnboarding(store, writeTarget, 'validation_error'); const message = onboardError(err); setError(message); setErrorStep(writeTarget); toast({ title: message, tone: 'danger' }); if (leaving) router.push(destination === 'home' ? '/' : '/account/'); }
     finally { lock.current = false; setPending(false); }
   }
   async function upload(file: File | null, kind: 'logo' | 'gallery') {
@@ -174,10 +202,10 @@ export function OnboardPage() {
     } catch (err) { const message = onboardError(err); setError(message); toast({ title: message, tone: 'danger' }); }
     finally { lock.current = false; setPending(false); }
   }
-  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><Button variant="ghost" href="/account/">გადით</Button></div></header>{content}</div>;
+  const shell = (content: React.ReactNode) => <div className={s.page}><header className={s.header}><div><Link className={s.logo} href="/"><Logo size={24} /></Link><Button variant="ghost" href="/account/">ანგარიშზე დაბრუნება</Button></div></header>{content}</div>;
   if (!sessionReady) return <OnboardLoading />;
   if (!available) return shell(<main className={s.state}><h1>მონაცემები მიუწვდომელია</h1><Button onClick={() => { void store?.revalidate(); }}>სცადეთ ხელახლა</Button></main>);
-  if (!actor) return shell(<main className={s.state}><h1>კომპანიის პროფილის შექმნა</h1><p>გააგრძელეთ თქვენი კომპანიის ანგარიშით.</p><Button href="/account/?tab=register&role=company&next=%2Fonboarding%2F">დარეგისტრირდით</Button><Button variant="secondary" href="/account/?next=%2Fonboarding%2F">შედით</Button></main>);
+  if (!actor) return shell(<main className={s.state}><h1>კომპანიის პროფილის შექმნა</h1><p>გააგრძელეთ თქვენი კომპანიის ანგარიშით.</p><Button href={"/account/?tab=register&role=company" + (next ? "&next=" + encodeURIComponent(next) : "")}>დარეგისტრირდით</Button><Button variant="secondary" href={"/account/?next=" + encodeURIComponent(stepHref(step))}>შედით</Button></main>);
   if (blocked || role !== 'company') return shell(<main className={s.state}><h1>{blocked ? 'ანგარიში შეზღუდულია' : 'კომპანიის ანგარიშის გვერდი'}</h1><p>{role === 'admin' ? 'ადმინისტრატორის ანგარიში კომპანიის პროფილად არ იცვლება.' : 'ამ პროფილის შევსება მხოლოდ კომპანიის ანგარიშით არის შესაძლებელი.'}</p><Button href={role === 'admin' ? '/admin/' : '/account/'}>დაბრუნდით თქვენს ანგარიშზე</Button></main>);
   if (!model || model.profile.id !== actor) return error ? shell(<main className={s.state}><p role="alert">{error}</p><Button onClick={() => setRetry(value => value + 1)}>სცადეთ ხელახლა</Button></main>) : <OnboardLoading />;
   // Completion reflects confirmed server data, never unsaved input or position alone.
@@ -190,7 +218,7 @@ export function OnboardPage() {
     // Steps 4–5 are done once something is saved there; products need no photo to count.
     provide: p?.account_intent === 'buy' || !!(p?.offers.length || saved?.products.some(product => product.name.trim())),
     need: p?.account_intent === 'sell' || !!(p?.need_categories.length || p?.seeks.length),
-    verify: !!p&&['pending','approved'].includes(p.verification_documents_status),
+    verify: !!p && (p.verified || ['pending','approved'].includes(p.verification_documents_status)),
     review: !!p?.onboarding_completed_at,
   };
   // ✓ marks every step with saved data, before or after the current one; the current step shows its number.
@@ -200,15 +228,15 @@ export function OnboardPage() {
     // Backward navigation keeps the draft in this mounted page. Required fields
     // must block progression, but must not trap the user on an unfinished step.
     if (steps.indexOf(target) < index) {
-      setError(''); setErrorStep(null); setNotice(''); router.push('/onboarding/?step=' + target);
+      setError(''); setErrorStep(null); setNotice(''); router.push(stepHref(target));
       return;
     }
     void save(target);
   };
-  const status = (key: OnboardStep) => key === step ? 'მიმდინარე' : completed[key] ? 'შევსებულია' : 'მომავალი';
-  const completedCount = steps.filter(key => completed[key]).length;
+  const nextStep = step === 'type' && completed.details ? 'profile' : steps[index + 1];
+  const status = (key: OnboardStep) => key === step ? 'მიმდინარე' : completed[key] ? 'შევსებულია' : ['provide','need','verify'].includes(key) ? 'არასავალდებულო' : 'მომავალი';
   return <div className={s.page}>
-    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გადით</Button></div></header>
+    <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>ანგარიშზე დაბრუნება</Button></div></header>
     <main className={s.shell}>
       <FormLayout title={stepLabels[step]} subtitle={leads[step]} titleRef={heading}
         steps={<>
@@ -217,14 +245,15 @@ export function OnboardPage() {
         </>}
         aside={<>
           <OnboardPreview profile={model.profile} products={model.products} step={step} />
-          <section className={s.progressPanel} aria-label="შევსების პროგრესი"><strong>შევსებულია {completedCount}/{steps.length} ნაბიჯი</strong><progress value={completedCount} max={steps.length} aria-label="შევსებული ნაბიჯები" /><p className={s.draftStatus} role="status">{pending ? 'ინახება…' : hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : 'ცვლილებები შენახულია'}</p><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>გადით</Button></section>
+          <section className={s.progressPanel} aria-label="შევსების პროგრესი"><strong>{p?.onboarding_completed_at ? 'პროფილი მზადაა' : 'შეავსეთ თქვენი საჭიროებით'}</strong><p>დამატებითი ინფორმაციის შევსება მოგვიანებითაც შეგიძლიათ.</p><p className={s.draftStatus} role="status">{pending ? 'ინახება…' : hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : 'ცვლილებები შენახულია'}</p></section>
         </>}
-        footer={<div className={s.actions}><Button variant="secondary" disabled={pending || index === 0} onClick={() => go(steps[index - 1])}>უკან</Button><Button type="submit" form="onboard-form" loading={pending}>{index === last ? 'დასრულება' : 'შემდეგი'}</Button></div>}
+        footer={<div className={s.actions}><Button variant="secondary" disabled={pending || index === 0} onClick={() => go(steps[index - 1])}>უკან</Button><Button type="submit" form="onboard-form" loading={pending}>{index === last ? 'დასრულება' : ['provide','need','verify'].includes(step) && !hasChanges && !completed[step] ? 'მოგვიანებით' : 'შემდეგი'}</Button></div>}
       >
+        {step !== 'review' && <div className={s.setupShortcut}><Button variant="ghost" title="დამატებით მონაცემებს მოგვიანებითაც შეავსებთ" disabled={pending} onClick={() => { void save('account', true, true); }}>დანარჩენს მოგვიანებით შევავსებ</Button></div>}
         {restoredDraft && <Notice tone="info" action={<Button variant="ghost" size="sm" disabled={pending} onClick={discardDraft}>გააუქმეთ</Button>}>აღდგენილია შეუნახავი ცვლილებები</Notice>}
-        <form id="onboard-form" noValidate ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : steps[index + 1], index === last); }}>
+        <form id="onboard-form" noValidate ref={form} onSubmit={event => { event.preventDefault(); void save(index === last ? 'account' : nextStep, index === last); }}>
           <fieldset disabled={pending} className={s.formFieldset}><div className={s.content}><OnboardSteps store={store!} onBusy={setPending} key={step} step={step} profile={model.profile} patch={patch} products={model.products} setProducts={setProducts} upload={upload} go={go} /></div></fieldset>
-          {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push('/onboarding/?step=' + errorStep); }}>{stepLabels[errorStep]} — შეასწორეთ</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
+          {error && <div className={s.error} role="alert"><p>{error}</p>{errorStep && errorStep !== step && <Button variant="secondary" onClick={() => { setError(''); setErrorStep(null); router.push(stepHref(errorStep)); }}>{stepLabels[errorStep]} — შეასწორეთ</Button>}</div>}{notice && <p className={s.notice} role="status">{notice}</p>}
           {hasChanges && <div className={s.draftActions}><span className={s.draftStatus} role="status">შეუნახავი ცვლილებები</span><Button variant="ghost" disabled={pending} onClick={() => setConfirmDiscard(true)}>გააუქმეთ ცვლილებები</Button></div>}
         </form>
       </FormLayout>

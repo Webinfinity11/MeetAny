@@ -38,6 +38,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_NEON_AUTH_BASE_URL: authBaseUrl },
   poweredByHeader: false,
+  devIndicators: false,
   // Uploaded photos are full-size Blob originals (up to 1.4 MB PNG shown at 356 px). Serve them
   // resized as WebP through /_next/image (same origin, so CSP img-src 'self' covers it).
   // Blob URLs carry a random suffix per upload, so a long cache never shows a stale photo.
