@@ -1,0 +1,295 @@
+{
+  "date": "2026-10-16",
+  "origin": "https://www.meetany.ge",
+  "scope": "Visible Chromium walkthrough with dedicated QA actors; 1440/390/320 CSS-pixel viewports. Width emulation, not physical device testing.",
+  "liveVerified": [
+    {
+      "issues": [
+        "UX-001",
+        "UX-002"
+      ],
+      "result": "Fresh personal registration and fresh company registration succeeded. Company welcome toast visibly captured; fresh onboarding has no unsaved-change notice before interaction.",
+      "evidence": [
+        "forms-14-fresh-company-welcome-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "UX-003"
+      ],
+      "result": "Fresh company completed setup directly from type using the defer action, with no products, documents, legal identity or optional enrichment. Seven optional navigation steps remain discoverable; they are not prerequisites for completion.",
+      "evidence": [
+        "forms-15-minimal-completed-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-010",
+        "UX-011"
+      ],
+      "result": "Fresh personal profile company field empty, not copied from personal name. Company upgrade single-column form is readable at1440 and320; no overflow. Added company to same authenticated account.",
+      "evidence": [
+        "forms-02-upgrade-1440.png",
+        "forms-03-upgrade-320.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-005",
+        "UX-043"
+      ],
+      "result": "At320 populated unnamed product retained description, blocked next, focused required name and displayed inline error. Photo caption no longer overlaps form.",
+      "evidence": [
+        "forms-07-unnamed-product-320.png"
+      ]
+    },
+    {
+      "issues": [
+        "UX-007",
+        "UX-008"
+      ],
+      "result": "Uploaded two explicitly labelled QA-only PNG documents and submitted on dedicated QA company. Pending state removes upload-step tabs and pre-submit instructions, shows saved status and one Next action. No false unsaved state. These were test attachments, not legal documents.",
+      "evidence": [
+        "forms-10-verification-pending-1440.png",
+        "forms-11-verification-pending-320.png"
+      ]
+    },
+    {
+      "issues": [
+        "UX-009"
+      ],
+      "result": "Company review displays matching trading/legal name once; contact, city and registration code labelled. Three long service entries saved and summarized; review and completion succeed.",
+      "evidence": [
+        "forms-12-review-320.png"
+      ]
+    },
+    {
+      "issues": [
+        "A11Y-049"
+      ],
+      "result": "Live registration required name/phone/email/password/consent native attributes, city aria-required, visible stars and first-invalid-field focus verified. Company upgrade/profile additional native-required gaps found and separately corrected in current source.",
+      "evidence": [
+        "forms-01-register-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "COPY-027"
+      ],
+      "result": "Contact dialog explicitly explains contact email does not change login email. Email and note draft retained after Escape and reopen. Draft cleared; no contact-change request submitted.",
+      "evidence": [
+        "forms-13-contact-dialog-320.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-004"
+      ],
+      "result": "Onboarding type and details retain same desktop1264px shell with240px/640px/320px columns. Known contact values reused in summary without re-entry.",
+      "evidence": [
+        "forms-04-type-1440.png",
+        "forms-05-details-1440.png",
+        "forms-06-details-390.png"
+      ]
+    }
+  ],
+  "updatedAcceptance": [
+    {
+      "issue": "UX-006",
+      "result": "Historical expected expand-on-demand import UI was superseded by later user preference for visible fields. Current compact import section has short instructions, no permanent product quota, one template and one chooser. Do not claim import is collapsed."
+    }
+  ],
+  "validation": {
+    "onboardingUnitTests": 22,
+    "typecheck": "pass",
+    "targetedEslint": "pass",
+    "designLint": "pass",
+    "localEnvironment": "Isolated PostgreSQL clone and signed local Auth fixture on3408/4408. No hosted auth/mail/storage writes in local checks.",
+    "livePageErrors": [],
+    "currentSourceLivePageErrors": []
+  },
+  "productionMutations": "Only dedicated QA actors: personal/company registrations, company upgrade, optional onboarding completion, one QA product, services/freeform enrichment, two explicitly QA-only attachments, and20QA distributor brands. Final copy check saved a clearly labelled QA company description. No owner/customer accounts modified; no passwords changed; no external emails or messages sent. QA forms company hidden through admin UI; pending QA-only verification review returned with explicit test-cleanup reason, preserving audit history. Second minimal QA company was already hidden by root and left untouched.",
+  "pending": [],
+  "liveRelease": {
+    "deployment": "https://meet-2u05i47e8-infinity-solutions.vercel.app",
+    "deploymentId": "dpl_AvgYfwRWrNUU6gierS4bEZmaF5BE",
+    "testedOrigin": "https://www.meetany.ge",
+    "result": "All form changes verified on live production alias after deployment."
+  },
+  "fixesLiveVerified": [
+    {
+      "issues": [
+        "UI-050"
+      ],
+      "problem": "Single collapsed product at320 still had wide icon/padding and compressed Georgian title;15-product compact case alone had hidden regression.",
+      "fix": "Same32px media,8px grid gaps/padding for every collapsed product; removed duplicated row-padding override. Full title and44px actions remain.",
+      "localResult": "Single row106px high at320,62px at390;15rows readable at320/390; no empty description or horizontal overflow.",
+      "evidence": [
+        "forms-08-services-320.png",
+        "forms-19-product-single-local-320.png",
+        "forms-19-product-single-local-390.png",
+        "forms-19-product-single-local-1440.png",
+        "forms-20-products-fifteen-local-320.png",
+        "forms-20-products-fifteen-local-390.png"
+      ],
+      "status": "live_verified"
+    },
+    {
+      "issues": [
+        "UI-044"
+      ],
+      "problem": "Company profile still displayed saved services as large chip and hidden+2 although onboarding used visible rows. Markets/languages/tags/certificates/brands had same freeform input risk.",
+      "fix": "Shared visible editable rows across onboarding/account/legal/distribution. Parameterized list limits; only blank rows ignored, duplicates/length/count validated before writes. Direct draft saved without separate Done.",
+      "localResult": "Eighth long service typed then Save persisted after reload. Legal market typed then Save persisted trimmed. Distribution20th typed brand persisted with20rows after reload;21st addition blocked;0/20 at320/390 visually checked.",
+      "evidence": [
+        "forms-16-profile-services-local-320.png",
+        "forms-17-profile-services-local-390.png",
+        "forms-18-profile-services-local-1440.png",
+        "forms-21-brands-empty-local-320.png",
+        "forms-22-brands-twenty-local-320.png",
+        "forms-22-brands-twenty-local-390.png",
+        "forms-23-legal-market-local-390.png"
+      ],
+      "status": "live_verified"
+    },
+    {
+      "issues": [
+        "A11Y-049",
+        "UI-010"
+      ],
+      "problem": "Company upgrade name and account profile name/company/city stars lacked corresponding native/ARIA required attributes. Upgrade copy implied selling required a company.",
+      "fix": "Required attributes match existing server rules; company upgrade describes creating public company profile.",
+      "localResult": "Profile controls inspected in local browser; targeted lint/type checks pass.",
+      "status": "live_verified"
+    }
+  ],
+  "liveRecheck": [
+    {
+      "issues": [
+        "UI-050"
+      ],
+      "result": "Single and15-row product list at320/390; full titles, icons and44px actions. Single height106px at320 and62px at390, no empty paragraph.16th addition blocked at15. Fourteen added draft products discarded through confirmation; only original1product persisted.",
+      "evidence": [
+        "forms-live-product-single-320.png",
+        "forms-live-product-single-390.png",
+        "forms-live-products-fifteen-320.png",
+        "forms-live-products-fifteen-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-044"
+      ],
+      "result": "Company profile fourth long service saved directly while editor active, without Done, then persisted after reload. All4entries fully visible.",
+      "evidence": [
+        "forms-live-profile-services-320.png",
+        "forms-live-profile-services-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-044"
+      ],
+      "result": "Legal market saved directly; waited for set_onboarding_details200 and saved status, then confirmed trimmed value after reload. Onboarding tag and clearly-labelled QA certificate both saved without Done and persisted after revisiting.",
+      "evidence": [
+        "forms-live-legal-market-390.png",
+        "forms-live-profile-tags-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-044",
+        "A11Y-049"
+      ],
+      "result": "Distribution empty and20-brand list checked at320/390. Save focused missing city first and missing channel second.20th typed brand saved without Done,20rows persisted after reload.21st addition prevented with local inline message. No horizontal overflow.",
+      "evidence": [
+        "forms-live-brands-empty-320.png",
+        "forms-live-brands-twenty-320.png",
+        "forms-live-brands-twenty-390.png"
+      ]
+    },
+    {
+      "issues": [
+        "UI-010",
+        "A11Y-049"
+      ],
+      "result": "Separate dedicated personal QA actor used read-only. Upgrade form name required=true and empty; copy describes public company profile. Opened and closed without mutations. Company account name/company native required and city aria-required verified.",
+      "evidence": [
+        "forms-live-upgrade-required-320.png"
+      ]
+    }
+  ],
+  "externallyVerified": [
+    "UX-036 manual verification without documents was verified and reset by finish_flows; consult its report rather than treating this as forms-agent evidence."
+  ],
+  "profileCopyFollowup": {
+    "status": "live_verified",
+    "changes": [
+      "Removed section introductions that repeated visible profile field labels; optional-field labels now rely on required stars.",
+      "Removed idle no-change footers while preserving Save controls and dirty, pending, success and error status.",
+      "Kept public address visibility, admin contact approval, login/contact email distinction and upload constraints.",
+      "Removed repeated gallery upload-size text from add tile; limit remains in help and validation.",
+      "Marked all three password-change inputs required in labels and native semantics.",
+      "Removed fresh-onboarding saved claim until an actual save occurs."
+    ],
+    "local": {
+      "viewports": [
+        320,
+        390
+      ],
+      "horizontalOverflow": false,
+      "dirtySavedReload": "passed on isolated local fixture; updated description persisted after save and reload",
+      "requiredPasswordFields": 3,
+      "contactClarification": "preserved",
+      "validation": [
+        "targeted ESLint passed",
+        "TypeScript passed",
+        "design lint passed"
+      ]
+    },
+    "evidence": [
+      "forms-copy-local-basic-320.png",
+      "forms-copy-local-basic-390.png",
+      "forms-copy-local-media-320.png",
+      "forms-copy-local-location-390.png",
+      "forms-copy-local-password-320.png",
+      "forms-copy-local-contact-320.png",
+      "forms-copy-live-basic-320.png",
+      "forms-copy-live-basic-390.png",
+      "forms-copy-live-media-320.png",
+      "forms-copy-live-media-390.png",
+      "forms-copy-live-saved-390.png",
+      "forms-copy-live-password-320.png",
+      "forms-copy-live-password-390.png"
+    ],
+    "deployment": {
+      "url": "https://meet-pfhlx3nld-infinity-solutions.vercel.app",
+      "id": "dpl_HjMmTbv3reLhFsRJfbRqtRAgXLWd",
+      "testedOrigin": "https://www.meetany.ge"
+    },
+    "live": {
+      "viewports": [
+        320,
+        390
+      ],
+      "horizontalOverflow": false,
+      "optionalAndIdleRepetition": false,
+      "dirtySavedReload": "QA company description edited; dirty state visible, RPC200, real saved state visible, value persisted after reload.",
+      "passwordRequired": "Three visible stars and native required attributes inspected without changing any password.",
+      "galleryLimit": "One help note retains file limits; no repeated size within add tile.",
+      "pageErrors": []
+    }
+  },
+  "cleanup": {
+    "company": "QA კომპანია ფორმები 1016",
+    "catalogHidden": true,
+    "verification": "returned/rejected with QA cleanup reason; no pending review",
+    "method": "Admin UI; hide and review RPCs returned200",
+    "evidence": [
+      "forms-qa-cleanup-hidden-returned.png"
+    ],
+    "minimalCompany": "Already hidden by root; not changed in final recheck.",
+    "companyId": "9ec6aa0e-654a-4b13-9b9f-46a379ce8d4c",
+    "reloadVerified": "Hidden badge and return-to-catalog action persist; verification shows returned status plus exact QA cleanup reason, pending review actions absent."
+  }
+}

@@ -35,7 +35,7 @@ export function CompanyProfile({me,section}:{me:AnyUser;section:string}) {
  const active=Object.hasOwn(profileSections,section)?section:"details";
  return <>
   <CompanyProfileNav active={active}/>
-  <ProfileLayout me={me} section={active}>{active==="details"?<ProfileForm key={me.id} me={me}/>:active==="legal"?<LegalProfile key={me.id}/>:active==="documents"?<ProfileDocuments key={me.id} me={me}/>:active==="products"?<section className="account-section account-profile-block"><p className="account-hint">დაამატეთ პროდუქტები და მომსახურებები კომპანიის საჯარო გვერდისთვის.</p><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}</ProfileLayout>
+  <ProfileLayout me={me} section={active}>{active==="details"?<ProfileForm key={me.id} me={me}/>:active==="legal"?<LegalProfile key={me.id}/>:active==="documents"?<ProfileDocuments key={me.id} me={me}/>:active==="products"?<section className="account-section account-profile-block"><CompanyProducts companyId={me.id} edit/></section>:active==="distribution"?<CompanyDistributionPanel owner={me.id}/>:<PasswordForm key={me.id}/>}</ProfileLayout>
  </>;
 }
 
@@ -183,7 +183,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
 
   return (
     <div className={styles.profileForm}>
-      <ProfileBlock {...blockProps("basic")} title={isCompany ? "ძირითადი მონაცემები" : "პირადი მონაცემები"} description={isCompany ? "სახელი, დარგი და ქალაქი ჩანს კომპანიის საჯარო პროფილზე." : "სახელი და კომპანია ჩანს თქვენს მოთხოვნებზე."}>
+      <ProfileBlock {...blockProps("basic")} title={isCompany ? "ძირითადი მონაცემები" : "პირადი მონაცემები"}>
         <div className="ma-form__row ma-form__row--2">
           <div className="ma-field">
             <label className="ma-field__label" htmlFor="name">
@@ -214,10 +214,10 @@ export function ProfileForm({ me }: { me: AnyUser }) {
         </div>
       </ProfileBlock>
       {isCompany ? <>
-        <ProfileBlock {...blockProps("description")} title="აღწერა და მომსახურებები" description="მოკლედ აღწერეთ კომპანია და დაამატეთ რას სთავაზობთ ან ეძებთ.">
+        <ProfileBlock {...blockProps("description")} title="აღწერა და მომსახურებები">
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="about">
-                კომპანიის შესახებ (არასავალდებულო) <span className="ma-field__opt" id="about-count">{about.length}/1000</span>
+                კომპანიის შესახებ <span className="ma-field__opt" id="about-count">{about.length}/1000</span>
               </label>
               <textarea className="ma-textarea" id="about" maxLength={1000} aria-describedby="about-count" value={about} onChange={(e) => setAbout(e.target.value)} />
             </div>
@@ -226,21 +226,21 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <ProfileItems id="seeks" label="რას ვეძებთ" items={seeks} disabled={pending} onChange={items=>{setSeeks(items);}}/>
             </div>
         </ProfileBlock>
-        <ProfileBlock {...blockProps("media")} title="ლოგო და გალერეა" description="ლოგო და პირველი ფოტო კომპანიების კატალოგშიც გამოჩნდება.">
+        <ProfileBlock {...blockProps("media")} title="ლოგო და გალერეა">
           <div className={styles.media}>
             <LogoField compact name={company || name} logoUrl={logoUrl} file={logoFile} disabled={pending} uploading={uploading === "logo"}
               onChange={file => { setLogoFile(file); setLogoChanged(true); }} onRemove={() => { setLogoFile(null); setLogoUrl(""); setLogoChanged(true); }}/>
             <GalleryField compact items={gallery} disabled={pending} uploading={uploading === "gallery"} onChange={next => { setGallery(next); setGalleryChanged(true); }}/>
           </div>
         </ProfileBlock>
-        <ProfileBlock {...blockProps("location")} title="მისამართი და მდებარეობა" description="მიუთითეთ მისამართი, მონიშნეთ რუკა და აირჩიეთ მომსახურების ქალაქები.">
+        <ProfileBlock {...blockProps("location")} title="მისამართი და მდებარეობა">
             <MultiCombobox label="მომსახურების ქალაქები" options={cityOptions} exclusiveValue="georgia" id="profile-service-cities" value={serviceCities} disabled={pending} onChange={next=>{setServiceCities(next);}}/>
             <div className="ma-field">
               <label className="ma-field__label" htmlFor="address">
-                მისამართი <span className="ma-field__opt">არასავალდებულო</span>
+                მისამართი
               </label>
               <input className="ma-input" id="address" maxLength={200} placeholder="ქუჩა, ნომერი" aria-describedby="address-help" value={address} onChange={(e) => setAddress(e.target.value)} />
-              <p className="ma-field__help" id="address-help">ჩანს საჯარო პროფილზე ბმულით „მისამართი რუკაზე“.</p>
+              <p className="ma-field__help" id="address-help">გამოჩნდება კომპანიის საჯარო გვერდზე.</p>
             </div>
             <details className={styles.locationDetails} onToggle={e => setMapOpen(e.currentTarget.open)}><summary><Icon name="map-pin"/><span>მდებარეობა რუკაზე</span>{lat && lng ? <small>მონიშნულია</small> : null}<Icon name="chevron-down"/></summary>
             {mapOpen ? <LocationPicker city={city} disabled={pending} value={Number.isFinite(parseCoord(lat))&&Number.isFinite(parseCoord(lng))&&Math.abs(parseCoord(lat)!)<=90&&Math.abs(parseCoord(lng)!)<=180?{lat:parseCoord(lat)!,lng:parseCoord(lng)!}:null} onChange={point=>{setLat(point?String(point.lat):"");setLng(point?String(point.lng):"");v.clear("lat");v.clear("lng");}}/> : null}
@@ -249,7 +249,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
               <summary>კოორდინატების ხელით მითითება</summary>
             <fieldset className="ma-field account-coords" aria-describedby="coords-help">
               <legend className="ma-field__label">
-                კოორდინატები <span className="ma-field__opt">არასავალდებულო</span>
+                კოორდინატები
               </legend>
               <div className="ma-form__row ma-form__row--2">
                 <div className="ma-field">
@@ -269,7 +269,7 @@ export function ProfileForm({ me }: { me: AnyUser }) {
         </ProfileBlock>
       </> : null}
       <section id="profile-contact" className="account-section account-profile-block" aria-labelledby="profile-contact-title">
-        <header className="account-section__heading"><h2 id="profile-contact-title" className="account-section__title">კონტაქტი</h2><p className="account-hint">ტელეფონისა და ელფოსტის ცვლილებას ადმინისტრატორი ადასტურებს.</p></header>
+        <header className="account-section__heading"><h2 id="profile-contact-title" className="account-section__title">კონტაქტი</h2></header>
         <ContactChange me={me}/>
       </section>
       <UnsavedSheet guard={guard} pending={pending} error={Object.values(errors).find(Boolean) || null} save={saveAll}/>
@@ -318,22 +318,21 @@ export function PasswordForm() {
   return (
     <section className="account-section account-profile-block" aria-labelledby="password-title">
       <h2 className="account-section__title" id="password-title">პაროლი</h2>
-      <p className="account-hint">პაროლის შესაცვლელად მიუთითეთ მიმდინარე და ახალი პაროლი.</p>
       <form className="ma-form" id="account-password" onChange={clearSaved} onSubmit={submit} noValidate>
         <fieldset className="account-form-group account-password" disabled={pending} aria-labelledby="password-title">
           <div className="ma-field">
-            <label className="ma-field__label" htmlFor="password-current">მიმდინარე პაროლი</label>
-            <PasswordInput autoComplete="current-password" disabled={pending} value={current} onChange={value => {setCurrent(value); v.clear("password-current");}} field={v.control("password-current")} />
+            <label className="ma-field__label" htmlFor="password-current">მიმდინარე პაროლი <span className="ma-field__req">*</span></label>
+            <PasswordInput autoComplete="current-password" disabled={pending} value={current} onChange={value => {setCurrent(value); v.clear("password-current");}} field={{...v.control("password-current"), required: true}} />
             <div className="auth-field-message">{v.message("password-current")}</div>
           </div>
           <div className="ma-field">
-            <label className="ma-field__label" htmlFor="password-new">ახალი პაროლი <span className="ma-field__opt">8–128 სიმბოლო</span></label>
-            <PasswordInput autoComplete="new-password" disabled={pending} value={password} onChange={value => {setPassword(value); v.clear("password-new"); v.clear("password-repeat");}} field={{...v.control("password-new"), maxLength: 128}} />
+            <label className="ma-field__label" htmlFor="password-new">ახალი პაროლი <span className="ma-field__req">*</span><span className="ma-field__opt">8–128 სიმბოლო</span></label>
+            <PasswordInput autoComplete="new-password" disabled={pending} value={password} onChange={value => {setPassword(value); v.clear("password-new"); v.clear("password-repeat");}} field={{...v.control("password-new"), required: true, maxLength: 128}} />
             <div className="auth-field-message">{v.message("password-new")}</div>
           </div>
           <div className="ma-field">
-            <label className="ma-field__label" htmlFor="password-repeat">ახალი პაროლი ხელახლა</label>
-            <PasswordInput autoComplete="new-password" disabled={pending} value={repeat} onChange={value => {setRepeat(value); v.clear("password-repeat");}} field={{...v.control("password-repeat"), maxLength: 128}} />
+            <label className="ma-field__label" htmlFor="password-repeat">ახალი პაროლი ხელახლა <span className="ma-field__req">*</span></label>
+            <PasswordInput autoComplete="new-password" disabled={pending} value={repeat} onChange={value => {setRepeat(value); v.clear("password-repeat");}} field={{...v.control("password-repeat"), required: true, maxLength: 128}} />
             <div className="auth-field-message">{v.message("password-repeat")}</div>
           </div>
         </fieldset>
@@ -371,7 +370,7 @@ function ContactChange({me}: {me: AnyUser}) {
  }
  return <>
   <dl className={styles.contacts}><div><dt>ტელეფონი</dt><dd>{me.phone}</dd></div><div><dt>ელფოსტა</dt><dd>{me.email}</dd></div></dl>
-  <div className="account-section__footer"><p className="account-section__status" role="status">{sent ? "მოთხოვნა გაგზავნილია. პასუხს მიიღებთ 1–2 სამუშაო დღეში." : "ცვლილება დადასტურებას საჭიროებს"}</p><Button variant="secondary" aria-label="შეცვალეთ კონტაქტი" aria-haspopup="dialog" onClick={() => setOpen(true)}>შეცვალეთ</Button></div>
+  <div className="account-section__footer"><p className="account-section__status" role="status">{sent ? "მოთხოვნა გაგზავნილია" : "ცვლილებას ადმინისტრატორი ადასტურებს"}</p><Button variant="secondary" aria-label="შეცვალეთ კონტაქტი" aria-haspopup="dialog" onClick={() => setOpen(true)}>შეცვალეთ</Button></div>
   {open && createPortal(<Sheet open={open} onClose={() => {if (!pending) setOpen(false);}} title="კონტაქტის შეცვლა" footer={<Button type="submit" form="contact-change" loading={pending}>გაგზავნეთ მოთხოვნა</Button>}>
    <p>ცვლილებას ადმინისტრატორი განიხილავს. საკონტაქტო ელფოსტის შეცვლა შესვლის ელფოსტას არ ცვლის.</p>
    <form id="contact-change" className="ma-form" onSubmit={send} noValidate>
@@ -388,7 +387,7 @@ function ProfileDocuments({me}: {me: AnyUser}) {
  const {store} = useMarketStore();
  const [profile, setProfile] = useState<OnboardProfile | null>(null), [error, setError] = useState('');
  useEffect(() => {let active = true; if (store) void readOnboardProfile(store).then(p => {if(active) setProfile(p);}, () => {if(active) setError('დოკუმენტების სტატუსი ვერ ჩაიტვირთა.');}); return () => {active=false;};}, [store]);
- return <section className="account-section account-profile-block"><h2 className="account-section__title">დოკუმენტები</h2><p className="account-hint">ატვირთეთ დოკუმენტები და გაგზავნეთ ვერიფიკაციისთვის.</p>{error ? <p role="alert">{error}</p> : profile && store ? <VerificationDocuments blockFooter store={store} id={me.id} status={profile.verification_documents_status} verified={profile.verified} note={profile.verification_note} onStatus={status => setProfile({...profile, verification_documents_status: status as OnboardProfile['verification_documents_status']})}/> : <p role="status">იტვირთება…</p>}</section>;
+ return <section className="account-section account-profile-block"><h2 className="account-section__title">დოკუმენტები</h2>{error ? <p role="alert">{error}</p> : profile && store ? <VerificationDocuments blockFooter store={store} id={me.id} status={profile.verification_documents_status} verified={profile.verified} note={profile.verification_note} onStatus={status => setProfile({...profile, verification_documents_status: status as OnboardProfile['verification_documents_status']})}/> : <p role="status">იტვირთება…</p>}</section>;
 }
 
 const legalFields = [
@@ -436,7 +435,7 @@ function LegalProfile() {
   } catch(failure) {setError((failure as {userMessage?: string}).userMessage || 'მონაცემები ვერ შეინახა.'); return false;}
   finally {setPending(false);}
  }
- return <section className={`account-section account-profile-block ${styles.profileForm}`}><h2 className="account-section__title">იურიდიული მონაცემები</h2><p className="account-hint">ყველა ველი არასავალდებულოა.</p>
+ return <section className={`account-section account-profile-block ${styles.profileForm}`}><h2 className="account-section__title">იურიდიული მონაცემები</h2>
   {profile ? <form className="ma-form" onSubmit={async e => {e.preventDefault(); await save();}} noValidate>
    <fieldset className="account-form-group" disabled={pending}><div className="ma-form__row ma-form__row--2">
     {legalFields.map(([key, label, max]) => <div className="ma-field" key={key}><label className="ma-field__label" htmlFor={`legal-${key}`}>{label}</label><input className="ma-input" maxLength={max} type={key === 'website' ? 'url' : 'text'} value={profile[key] || ''} onChange={e => {patch({[key]: e.target.value || null}); fields.clear(`legal-${key}`);}} {...fields.control(`legal-${key}`)}/>{fields.message(`legal-${key}`)}</div>)}

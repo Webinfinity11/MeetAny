@@ -64,7 +64,7 @@ export function adminActionResult(action: string, company = false): string {
     "reportHide.request": "მოთხოვნა დაიმალა; საჩივრები დამუშავდა",
     "reportHide.offer": "შეთავაზება წაიშალა; საჩივრები დამუშავდა",
     "reportHide.company": "კომპანია დაიბლოკა; საჩივრები დამუშავდა",
-    reportReject: "საჩივარი უარყოფილია", removePhoto: "ფოტო წაიშალა",
+    reportReject: "მომართვა უარყოფილია", removePhoto: "ფოტო წაიშალა",
     hide: "მოთხოვნა დაიმალა", unhide: "მოთხოვნა გამოჩნდა", delete: "მოთხოვნა წაიშალა",
     deleteOffer: "შეთავაზება წაიშალა",
     block: company ? "კომპანია დაიბლოკა" : "ანგარიში დაიბლოკა",

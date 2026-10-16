@@ -97,7 +97,8 @@
 .errorSummary ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); }
 .errorSummary a { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--danger-600); text-decoration: underline; }
 
-.catalogLink { display: inline-flex; align-items: center; min-height: var(--tap-min); margin-top: var(--stack-gap); text-decoration: underline; }
+.catalogLink { display: inline-flex; align-items: center; min-height: var(--tap-min); margin-top: var(--stack-gap); padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm); text-decoration: none; }
+.catalogLink:hover { background: var(--ink-100); text-decoration: none; }
 
 .fields { min-width: 0; margin: 0; padding: 0; border: 0; }
 .layout { --form-gap: var(--space-6); --form-col: var(--size-880); align-content: start; }

@@ -20,7 +20,7 @@ export const moderationActions: Record<string, { title: string; confirm: string;
   "showCompany": { title: "კატალოგში დაბრუნება", confirm: "კატალოგში დაბრუნება", consequence: "კომპანია კვლავ გამოჩნდება კატალოგში, თუ ანგარიში დაბლოკილი არ არის.", reason: true, destructive: false },
   "reportHide.review": { title: "საჩივრის დაკმაყოფილება · შეფასების დამალვა", confirm: "შეფასების დამალვა", consequence: "შეფასება საჯარო პროფილიდან დაიმალება და საჩივრის ავტორს შედეგი გაეგზავნება.", reason: true, destructive: true },
   "reportHide.conversation": { title: "საჩივრის დაკმაყოფილება · მომხმარებლის დაბლოკვა", confirm: "მომხმარებლის დაბლოკვა", consequence: "საჩივრის ავტორის მეორე მხარე დაიბლოკება და საჩივრის ავტორს შედეგი გაეგზავნება.", reason: true, destructive: true },
-  reportReject: { title: "საჩივრის უარყოფა", confirm: "საჩივრის უარყოფა", reason: true, consequence: "საჩივარი დაიხურება, შინაარსი უცვლელი დარჩება. ავტორს შეტყობინება გაეგზავნება." },
+  reportReject: { title: "მომართვის უარყოფა", confirm: "უარყოფა", reason: true, consequence: "მომართვა დაიხურება; ცვლილება არ განხორციელდება. ავტორი შეტყობინებას მიიღებს." },
   removePhoto: { title: "ფოტოს წაშლა", confirm: "ფოტოს წაშლა", reason: true, destructive: true, consequence: "ფოტო კომპანიის პროფილიდან და საცავიდან სამუდამოდ წაიშლება. მიზეზი ისტორიაში შეინახება." },
   hide: { title: "მოთხოვნის დამალვა", confirm: "დამალვა", reason: true, destructive: true, consequence: "მოთხოვნა საჯარო სიიდან დაიმალება. მისი გამოჩენა მოგვიანებით შესაძლებელია." },
   unhide: { title: "მოთხოვნის გამოჩენა", confirm: "გამოჩენა", consequence: "მოთხოვნა კვლავ გამოჩნდება საჯაროდ, მისი მიმდინარე სტატუსის შესაბამისად." },

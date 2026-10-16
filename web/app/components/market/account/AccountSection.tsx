@@ -17,20 +17,21 @@ export function useSavedTime() {
 export function AccountSectionFooter({ dirty, pending, disabled, savedAt, error, errorId, children }: {
   dirty?: boolean; pending?: boolean; disabled?: boolean; savedAt?: string; error?: string | null; errorId?: string; children?: ReactNode;
 }) {
+  const message = error || (pending ? "ინახება…" : dirty ? "შეუნახავი ცვლილებები" : savedAt ? `შენახულია · ${new Date(savedAt).toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit" })}` : "");
   return <div className="account-section__footer">
-    <p id={errorId} className={error ? "ma-field__error" : "account-section__status"} role={error ? "alert" : "status"}>
-      {error || (pending ? "ინახება…" : dirty ? "შეუნახავი ცვლილებები" : savedAt ? `შენახულია · ${new Date(savedAt).toLocaleTimeString("ka-GE", { hour: "2-digit", minute: "2-digit" })}` : "ცვლილებები არ არის")}
+    <p id={errorId} className={message ? error ? "ma-field__error" : "account-section__status" : "ma-sr-only"} role={error ? "alert" : "status"}>
+      {message}
     </p>
     {children || <Button variant={dirty ? "primary" : "secondary"} type="submit" disabled={!dirty || pending || disabled} loading={pending}>შენახვა</Button>}
   </div>;
 }
 
 export function ProfileBlock({ id, title, description, dirty, pending, locked, savedAt, error, onSave, children }: {
-  id: string; title: string; description: string; dirty: boolean; pending: boolean; locked?: boolean; savedAt?: string; error?: string;
+  id: string; title: string; description?: string; dirty: boolean; pending: boolean; locked?: boolean; savedAt?: string; error?: string;
   onSave: () => Promise<boolean>; children: ReactNode;
 }) {
   return <section id={`profile-${id}`} className="account-section account-profile-block" aria-labelledby={`profile-${id}-title`}>
-    <header className="account-section__heading"><h2 id={`profile-${id}-title`} className="account-section__title">{title}</h2><p className="account-hint">{description}</p></header>
+    <header className="account-section__heading"><h2 id={`profile-${id}-title`} className="account-section__title">{title}</h2>{description && <p className="account-hint">{description}</p>}</header>
     <form className="ma-form" onSubmit={event => { event.preventDefault(); void onSave(); }} noValidate>
       <fieldset className="account-block-fields" disabled={pending || locked}>{children}</fieldset>
       <AccountSectionFooter dirty={dirty} pending={pending} disabled={locked} savedAt={savedAt} error={error}/>

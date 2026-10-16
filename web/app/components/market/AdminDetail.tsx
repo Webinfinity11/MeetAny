@@ -184,13 +184,14 @@ function AccountOrRequest({ store, target, v2, revision, onClose, onOpen, onActi
   } else if (target?.kind === "request") {
     if (!request) body = currentRequest?.error ? <div role="alert"><p className={styles.note}>მოთხოვნა ვერ ჩაიტვირთა.</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : <p className={styles.note} role="status">{currentRequest ? "მოთხოვნა ვერ მოიძებნა — შესაძლოა წაშლილია." : "მოთხოვნა იტვირთება…"}</p>;
     else {
-      const state = request.hidden ? "დამალული" : stateLabel[store.requestState(request)] || "";
+      const terminalStage = requestDeal?.stage === "cancelled" || requestDeal?.stage === "complete" ? requestDeal.stage : null;
+      const state = request.hidden ? "დამალული" : terminalStage === "cancelled" ? "გარიგება გაუქმებულია" : terminalStage === "complete" ? "გარიგება დასრულებულია" : stateLabel[store.requestState(request)] || "";
       body = <div className={styles.detail}>
         {currentRequest?.error ? <div role="alert"><p className={styles.note}>განახლება ვერ მოხერხდა.</p><Button variant="secondary" onClick={retry}>ხელახლა ცდა</Button></div> : null}
         <div className={styles.detailHead}>
           <h3>{request.title}</h3>
           <p>{categories[request.category] || request.category} · {cities[request.city] || request.city}</p>
-          <div className={styles.detailBadges}><span className={`ma-badge ma-badge--${request.hidden ? "warning" : store.requestState(request) === "open" ? "success" : "neutral"}`}>{state}</span>
+          <div className={styles.detailBadges}><span className={`ma-badge ma-badge--${request.hidden ? "warning" : terminalStage === "cancelled" ? "danger" : terminalStage === "complete" || store.requestState(request) === "open" ? "success" : "neutral"}`}>{state}</span>
             <a className={styles.externalLink} href={`/requests/view/?id=${request.id}`} target="_blank" rel="noreferrer">საჯარო გვერდი<Icon name="external-link" /></a></div>
           {request.hidden && request.hiddenReason ? <p className={styles.note}>დამალვის მიზეზი: {request.hiddenReason}</p> : null}
         </div>

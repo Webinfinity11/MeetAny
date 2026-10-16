@@ -1,12 +1,12 @@
 # MeetAny administration: operational foundation
 
-Status: implemented and tested locally, 2026-09-23. Remote schema migration and deployment are pending. See [migration contract](../db/ADMIN-MIGRATION.md) for exact APIs and rollout limits.
+Current review: 2026-10-16. Administration is deployed at https://www.meetany.ge. See the [critical inventory and prioritized plan](qa/closure-20261016/ADMIN-REVIEW.txt) and [release evidence](qa/CLOSURE-2026-10-16.md) for verified behavior and open work. The September validation sections below record historical checks, not the current deployment status. [Migration contract](../db/ADMIN-MIGRATION.md).
 
 ## Current authority and data boundaries
 
 The database, not navigation visibility, authorizes moderation. Existing moderation RPCs call `meetany_private.require_admin()` and reject blocked or non-admin actors. Keep this check on every future administrative read and write. Do not turn public search endpoints into privileged endpoints or expose a service credential in the browser.
 
-Current store loading is shared with the marketplace: requests are limited to the latest 1,000, company discovery is capped at 1,000, and offers use a bounded query. `admin_list_users()` is unbounded in legacy mode; API v1 skips this preload and uses dedicated paginated queries. Request details now load by ID under existing authorization, including records outside the catalog cache. Global `admin_stats()` counts the database, not just the loaded subset. Client-side filters and pagination cannot make this complete or scalable. The interface must identify its loaded-record scope until dedicated server queries replace this transport.
+Current operational request/user/offer/deal lists use dedicated server queries and load details by ID. Shared marketplace bootstrap still loads all RLS-visible catalog records for the admin; it is not currently a 1,000-row catalog cap. This unbounded preload needs measurement and separation as data grows. Photos still derive from the filtered company catalog and cover company logos/gallery rather than all media. Global `admin_stats()` counts the database, but some KPI definitions differ from their linked filters; the October review records the required alignment. Client-side pagination alone cannot establish complete or scalable coverage.
 
 The operational interface supports both the legacy APIs and capability-detected admin API v1: searchable request/user management, URL-backed filters, clear empty states, explicit moderation reasons, and action-specific confirmations. Destructive actions disclose that deleting a request also deletes its offers. Pending writes must not be submitted twice or have their dialog dismissed mid-operation.
 
@@ -27,9 +27,9 @@ Avoid an all-purpose component that fetches the full marketplace and implements 
 
 Current filters: requests query/state/category at API level (query/state in UI); users query/role/blocked/verified. City, owner/date ranges and additional staff capabilities remain future extensions. Exact filtered counts and substring searches can scan tables: measure query plans before adding indexes or a search service. The global marketplace preload still exists; fully separating application bootstrap is additional work.
 
-Four moderation RPCs now insert minimal before/after flags and explicit reasons into the private append-only audit table in the same transaction. Protected reads enforce administrator access. Deleted targets retain their identifiers. Failed writes and rolled-back operations leave no successful-action event. No historical backfill or contact data is stored in audit flags. Correlation IDs, a retention policy, and audit coverage for direct SQL maintenance are not implemented. Database owners can deliberately disable triggers; this is not a tamper-proof external archive.
+Four moderation RPCs now insert minimal before/after flags and explicit reasons into the private append-only audit table in the same transaction. Protected reads enforce administrator access. Deleted targets retain their identifiers. Failed writes and rolled-back operations leave no successful-action event. No historical backfill is provided. Newer profile/contact RPCs retain before/after contact values in restricted audit records; a field-level access and retention review remains open. Correlation IDs, a retention policy, and audit coverage for direct SQL maintenance are not implemented. Database owners can deliberately disable triggers; this is not a tamper-proof external archive.
 
-## Validation
+## Historical validation — September 2026
 
 701 SQL assertions passed in throwaway local databases, loading the schema twice. Tests include authorization, blocked actors, 1,105 requests/users with equal timestamps, full cursor traversal, filtered counts, immutable history and rollback/storage failure. Browser checks cover mocked API v1 rows outside the cache, request/user filters, next/first page, audit, errors/retry and small screens. Legacy moderation checks intercept writes and cover required reasons and pending-dialog protection. Remote API v1 end-to-end validation still requires applying the reviewed migration to a test environment.
 

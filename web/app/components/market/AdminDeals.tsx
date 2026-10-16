@@ -25,8 +25,10 @@ export function AdminDeals({ store, revision, stage, query, cursor, onChange, on
   useEffect(() => {
     let active = true;
     const timer = window.setTimeout(() => {
-      listAdminDeals(store, { p_stage: validStage, p_query: query, p_cursor: cursor ? JSON.parse(cursor) : null })
-        .then(page => { if (active) setState({ key, page }); }, err => { if (active) setState({ key, error: adminErrorMessage(err, "გარიგებები ვერ ჩაიტვირთა. სცადეთ ხელახლა.") }); });
+      // Copied URLs may contain invalid JSON. Parse inside the promise so the
+      // same recoverable error state handles it and no loading view gets stuck.
+      Promise.resolve().then(() => listAdminDeals(store, { p_stage: validStage, p_query: query, p_cursor: cursor ? JSON.parse(cursor) : null }))
+        .then(page => { if (active) setState({ key, page }); }, err => { if (active) setState({ key, error: err instanceof SyntaxError ? "გვერდის ბმული არასწორია. დაბრუნდით პირველ გვერდზე." : adminErrorMessage(err, "გარიგებები ვერ ჩაიტვირთა. სცადეთ ხელახლა.") }); });
     }, 200);
     return () => { active = false; window.clearTimeout(timer); };
   }, [store, validStage, query, cursor, key]);
@@ -47,7 +49,7 @@ export function AdminDeals({ store, revision, stage, query, cursor, onChange, on
       </div>
       {filtered ? <Button type="button" variant="secondary" className={styles.clear} onClick={onClear}>ფილტრების გასუფთავება</Button> : null}
       {!current ? <ListSkeleton compact kind="records" label="გარიგებები იტვირთება…" />
-        : current.error ? <AdminState error title="გარიგებები ვერ ჩაიტვირთა" text={current.error} onRetry={() => setRetry(n => n + 1)} />
+        : current.error ? <AdminState error title="გარიგებები ვერ ჩაიტვირთა" text={current.error} onRetry={() => setRetry(n => n + 1)} onFirst={cursor ? () => onChange("cursor", "") : undefined} />
         : !page?.items.length ? <AdminState title={filtered ? "ამ ფილტრებით გარიგება ვერ მოიძებნა" : cursor ? "ამ გვერდზე გარიგებები აღარ არის" : "გარიგებები ჯერ არ არის"}
             text={filtered ? "შეცვალეთ ძიება ან გაასუფთავეთ ფილტრები." : "მომწოდებლის არჩევის შემდეგ გარიგება აქ გამოჩნდება."} onClear={filtered ? onClear : undefined} onFirst={cursor ? () => onChange("cursor", "") : undefined} />
         : <>

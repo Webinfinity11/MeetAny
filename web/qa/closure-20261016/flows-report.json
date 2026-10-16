@@ -1,6 +1,6 @@
 {
   "origin": "https://www.meetany.ge",
-  "checkedAt": "2026-10-16T07:00:07.923238+00:00",
+  "checkedAt": "2026-10-16T07:35:03.723870+00:00",
   "scope": "Dedicated labelled live QA actors only; no owner account or customer data mutations. Width emulation is not physical-device coverage.",
   "requestId": "bd003bf9-ef7f-493b-9b96-eef118e1ca4d",
   "dealId": "50be8507-faa8-4143-a9d3-37ca1e5f4363",
@@ -13,7 +13,18 @@
     "flows/compare-table-320.png",
     "flows/chat-draft-320.png",
     "flows/terms-before-submit-320.png",
-    "flows/request-cancelled-320.png"
+    "flows/request-cancelled-320.png",
+    "flows/manually-verified-no-docs-390.png",
+    "flows/admin-cancelled-1440.png",
+    "flows/admin-cancelled-390.png",
+    "flows/published-copy-1440.png",
+    "flows/datecap-reopened-1440.png",
+    "flows/offer-nav-fixed-390.png",
+    "flows/offer-nav-fixed-1440.png",
+    "flows/admin-request-cancelled-list-fixed-1440.png",
+    "flows/admin-request-cancelled-detail-fixed-1440.png",
+    "flows/admin-request-cancelled-detail-fixed-390.png",
+    "flows/qa-cleanup-hidden-390.png"
   ],
   "checks": [
     {
@@ -29,13 +40,13 @@
     {
       "id": "LOGIC-028",
       "status": "live_verified",
-      "details": "Closed dedicated request originally expiring30Oct; reopened16Oct; confirmation, request heading and expiry changed to7days/23Oct. Separate copy fix for date-capped extension remains pending release below.",
+      "details": "Closed the dedicated request originally expiring on 30 October. Reopened it on 16 October: confirmation, heading and expiry now agree on seven days, ending 23 October. The additional deadline cap copy was verified in the first release below.",
       "evidence": "flows/reopened-1440.png"
     },
     {
       "id": "UX-029",
       "status": "live_verified",
-      "details": "Unverified company sent120GEL total, unknown deadline, payment100% on delivery and typed condition; withdrew offer; reopened form retained price, description,payment,condition; resubmitted successfully. Buyer sees120GEL.",
+      "details": "An unverified company sent an offer with a total price of 120 GEL, an unspecified execution deadline, payment on delivery and a typed condition. After withdrawal, the new offer form retained the price, description, payment and condition. Resubmission succeeded and the buyer saw the same 120 GEL total.",
       "evidence": "flows/resubmit-restored-390.png"
     },
     {
@@ -46,7 +57,7 @@
     {
       "id": "UI-018",
       "status": "live_verified",
-      "details": "Two offers100/120GEL shown as readable comparison rows; table is optional, preserves full critical prices/taxes/delivery/payment data;320px table scrolls internally without page overflow.1440 and320screens visually inspected.",
+      "details": "Offers of 100 and 120 GEL appear as readable comparison rows. The optional comparison table preserves price, tax, delivery and payment information. At 320px it scrolls internally without page overflow. Screens at 1440px and 320px were visually inspected.",
       "evidence": [
         "flows/compare-1440.png",
         "flows/compare-320.png",
@@ -56,53 +67,87 @@
     {
       "id": "UX-032",
       "status": "live_verified",
-      "details": "Unsent text retained across popup close/reopen, switching to another conversation (empty separate draft), full inbox Back/reopen,and page reload at320px. No test message was sent.",
+      "details": "Unsent text survived closing and reopening the popup, opening a different conversation with an independent empty draft, using Back and reopening the full inbox conversation, and reloading the page at 320px. No test message was sent.",
       "evidence": "flows/chat-draft-320.png"
     },
     {
       "id": "UX-048",
       "status": "live_verified",
-      "details": "Buyer typed condition directly without pressingAdd;Back,X,Escape each opened discard guard;continue retained input. Quantity validation retained other fields. Final submission saved1service,3days,online,100%advance and condition;both buyer and personal supplier saw identical saved condition before cancellation.",
+      "details": "The buyer typed a condition without pressing Add. Back, X and Escape each opened the discard confirmation; continuing retained the text. A quantity validation error preserved the other fields. Submission saved one service, three days, online execution, full advance payment and the condition. Both participants saw identical saved terms before cancellation.",
       "evidence": "flows/terms-before-submit-320.png"
     },
     {
       "id": "LOGIC-038",
       "status": "live_verified",
-      "details": "Buyer cancelled pendingterms deal;buyer and supplier both see cancelled;request headline/status shows cancellation prominently while preserving historical chosen offer. Admin exact view assigned root; source removes redundant repeated cancellation meta row.",
-      "evidence": "flows/request-cancelled-320.png"
+      "details": "After the second release and migration, the admin request list, cancelled filter and detail panel agree with the buyer, supplier and deal views. The request badge says the deal was cancelled and uses a red status treatment. The historical selected offer remains available. The QA-only CSV contains the same cancellation status. Screens at 1440px and 390px were inspected.",
+      "evidence": [
+        "flows/admin-request-cancelled-list-fixed-1440.png",
+        "flows/admin-request-cancelled-detail-fixed-1440.png",
+        "flows/admin-request-cancelled-detail-fixed-390.png"
+      ]
+    },
+    {
+      "id": "UX-036",
+      "status": "live_verified",
+      "details": "A dedicated minimal company had no products, documents or legal details. The admin hid it from the catalog, then manually verified it. Its review screen at 390px showed a green verified badge without false missing-document crosses. Verification was then removed and document status restored to not_submitted; catalog_hidden remains true.",
+      "evidence": "flows/manually-verified-no-docs-390.png"
     }
   ],
   "findingsAndFixes": [
     {
       "id": "UI-014",
-      "status": "implemented_pending_live_recheck",
-      "details": "Live breadcrumbs have no underline but subtitle and returnLink retained browser underlines. Fixed explicit navigationLink style with44px target,neutral hover,and no underline for all three request navigation links.",
+      "status": "live_verified",
+      "details": "Live breadcrumbs were fixed, but the subtitle and return link still had underlines. All three request navigation links now use a shared style with a neutral hover treatment and no underline.",
       "files": [
         "web/app/components/market/MakeOfferPageContent.tsx",
         "web/app/components/market/MakeOffer.module.css"
-      ]
+      ],
+      "liveEvidence": "Screens at 1440px and 390px were inspected. Breadcrumb, subtitle, return and sidebar links have text-decoration:none; the return target is 44px tall."
     },
     {
       "id": "COPY-051",
-      "status": "implemented_pending_live_recheck",
-      "details": "Published request success screen incorrectly said request will be published when no matching supplier exists. Success-only text now says alreadypublished;draftpreview unchanged.",
+      "status": "live_verified",
+      "details": "The publication success screen incorrectly said the request would be published when no matching supplier existed. The success text now confirms publication; the draft preview retains future tense.",
       "files": [
         "web/app/components/market/post/MatchingSuppliers.tsx"
-      ]
+      ],
+      "liveEvidence": "A fresh published request with no matching suppliers showed confirmation in past tense and no future-publication message."
     },
     {
       "id": "LOGIC-028-date-cap-copy",
-      "status": "implemented_pending_live_recheck",
-      "details": "Root found expiry is capped by neededBy and21daysahead. Removed unconditional+7badge;confirmation explainsmax7 and cap;toast now uses actual returned expirydate in detail andMyRequests.",
+      "status": "live_verified",
+      "details": "Expiry is capped by the desired date and by 21 days from today. The unconditional +7 badge was removed. Confirmation explains the maximum extension and cap; success messages show the expiry date returned by the server.",
       "files": [
         "web/app/components/market/RequestViewPageContent.tsx",
         "web/app/components/market/account/MyRequests.tsx"
-      ]
+      ],
+      "liveEvidence": "A dedicated request with a desired date of 17 October 2026 was closed and reopened on 16 October. The confirmation explains the maximum seven days, while the resulting expiry remains 17 October. A further extension preserved that cap. The actual toast event said: შეთავაზებების მიღება: 17 ოქტ. 2026."
     },
     {
       "id": "COPY-052",
-      "status": "implemented_pending_live_recheck",
-      "details": "Cancelled request repeated the same state inbadge andcalendarfact directly below. Headerfact row now shows deadline only foropenrequests;closed state remains visible onceinbadge plus actionpanel."
+      "status": "live_verified",
+      "details": "The cancelled request repeated its status in the badge and calendar fact. Header facts now include a deadline only for open requests; closed statuses remain in the badge and management panel.",
+      "liveEvidence": "The cancelled request header shows its status once, followed by category and city. The duplicate calendar status is absent."
+    },
+    {
+      "id": "LOGIC-038-admin-request",
+      "status": "live_verified",
+      "details": "The migrated admin request API and UI prioritize terminal deal status. A cancellation filter returned exactly the dedicated cancelled QA request. Its list badge, detail badge and CSV agree. The cancelled badge computes to red text on a pale red surface; hidden records use amber after cleanup.",
+      "files": [
+        "web/app/components/market/AdminDetail.tsx",
+        "web/app/components/market/AdminPageContent.tsx",
+        "web/app/components/market/AdminFilters.tsx"
+      ],
+      "liveEvidence": "Actual filter query: q=QA1610&status=cancelled. One CSV data row with request bd003bf9-ef7f-493b-9b96-eef118e1ca4d and status გარიგება გაუქმებულია. Detail at 390px has no horizontal overflow."
+    },
+    {
+      "id": "UI-053",
+      "status": "live_verified",
+      "details": "The deployed Post module stylesheet now removes the catalog link underline and supplies a neutral hover surface. A temporary off-screen DOM probe using the actual compiled class confirmed text-decoration:none and min-height:44px; the probe was removed immediately.",
+      "files": [
+        "web/app/components/market/post/Post.module.css"
+      ],
+      "verificationMethod": "Production stylesheet inspection and computed-style probe. The publication workflow was not repeated solely for this minor CSS change."
     }
   ],
   "checksLocal": [
@@ -111,15 +156,42 @@
     "Design lint passed"
   ],
   "cleanup": {
-    "status": "requested_root",
-    "requestHidden": false,
-    "note": "Preserve history. Root shouldhide labelled request andQAcompany after finalverification. No reviewscreated."
+    "status": "complete",
+    "requestHidden": true,
+    "note": "Both dedicated QA requests were hidden through admin confirmation dialogs, preserving their records and history. The admin hidden filter shows both records. An anonymous QA1610 catalog search returns zero requests. No reviews were created in this run.",
+    "minimalCompany": "Hidden through the admin UI. Verification restored to false and document status restored to not_submitted.",
+    "hiddenRequestIds": [
+      "bd003bf9-ef7f-493b-9b96-eef118e1ca4d",
+      "0aa35319-1f13-426c-b8bc-3eedc47fce69"
+    ],
+    "publicCatalogZeroResults": true
   },
   "limits": [
-    "Physical devices not tested by this agent",
-    "Real email delivery not tested",
-    "Fresh finaldeal was deliberatelycancelled toverifyLOGIC038;completedcycle evidencealreadyexists inOct15mainreport",
-    "Manualverifiedcompany withoutdocuments delegatedfinish_forms/root",
-    "Newcopy/stylesawaitreleasevisualrecheck"
-  ]
+    "Physical devices were not tested by this agent.",
+    "Real email delivery was not tested.",
+    "This run deliberately cancelled its deal to reproduce LOGIC-038. A completed live cycle is documented in the 15 October report.",
+    "The final catalog-link CSS change was checked through the deployed stylesheet and a computed-style probe; the successful publication flow had already been exercised on the preceding release."
+  ],
+  "releases": [
+    {
+      "url": "https://meet-2u05i47e8-infinity-solutions.vercel.app",
+      "id": "dpl_AvgYfwRWrNUU6gierS4bEZmaF5BE",
+      "verifiedOrigin": "https://www.meetany.ge"
+    },
+    {
+      "url": "https://meet-pfhlx3nld-infinity-solutions.vercel.app",
+      "id": "dpl_HjMmTbv3reLhFsRJfbRqtRAgXLWd",
+      "verifiedOrigin": "https://www.meetany.ge"
+    }
+  ],
+  "dateCapRequestId": "0aa35319-1f13-426c-b8bc-3eedc47fce69",
+  "csvVerification": {
+    "query": "QA1610",
+    "state": "cancelled",
+    "dataRows": 1,
+    "requestId": "bd003bf9-ef7f-493b-9b96-eef118e1ca4d",
+    "statusLabel": "გარიგება გაუქმებულია",
+    "customerRowsExported": 0,
+    "artifactStoredPrivately": true
+  }
 }

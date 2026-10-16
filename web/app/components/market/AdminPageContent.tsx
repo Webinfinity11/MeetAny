@@ -328,7 +328,7 @@ export function AdminPageContent() {
                       {admin.mode === "ready" ? r.ownerCompany || r.ownerName || "—" : owner?.company || owner?.name || "—"}
                     </td>
                     <td data-label="სტატუსი">
-                      <span className={`ma-badge ma-badge--${state === "open" ? "success" : r.hidden ? "warning" : "neutral"}`}>
+                      <span className={`ma-badge ma-badge--${r.hidden ? "warning" : state === "cancelled" ? "danger" : state === "open" || state === "complete" ? "success" : "neutral"}`}>
                         {r.hidden ? "დამალული" : requestStates[state || ""] || "დახურული"}
                       </span>
                       {r.hidden && r.hiddenReason ? <small>მიზეზი: {r.hiddenReason}</small> : null}
@@ -412,4 +412,4 @@ export function AdminPageContent() {
   );
 }
 
-const requestStates: Record<string, string> = { open: "ღია", chosen: "არჩეულია", expired: "ვადაგასული", closed: "დახურული", hidden: "დამალული" };
+const requestStates: Record<string, string> = { open: "ღია", chosen: "არჩეულია", complete: "გარიგება დასრულებულია", cancelled: "გარიგება გაუქმებულია", expired: "ვადაგასული", closed: "დახურული", hidden: "დამალული" };

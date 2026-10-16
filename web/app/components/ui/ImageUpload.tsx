@@ -55,7 +55,7 @@ export function ImageUpload({ id, label, kind, items, onChange, max = 8, disable
           <Button variant="ghost" disabled={inactive} aria-label={`${logo ? 'ლოგო' : `ფოტო ${index + 1}`} — წაშალეთ`} onClick={() => { setError(''); onChange(items.filter(i => i.key !== item.key)); }}>{logo ? 'წაშალეთ' : <Icon name="x" />}</Button></div>
       </li>)}
       {items.length < limit && <li><Button variant="secondary" className={`${s.tile} ${s.add}`} disabled={inactive} data-over={over || undefined} aria-describedby={`${id}-help`} onClick={() => input.current?.click()}
-        onDragOver={event => { event.preventDefault(); if (!inactive) setOver(true); }} onDragLeave={() => setOver(false)} onDrop={event => { event.preventDefault(); setOver(false); add(Array.from(event.dataTransfer.files)); }}><Icon name="upload" /><span>{logo ? 'ატვირთეთ ლოგო' : 'დაამატეთ'}</span>{!logo && <span className={s.format}>{size} მბ-მდე</span>}</Button></li>}
+        onDragOver={event => { event.preventDefault(); if (!inactive) setOver(true); }} onDragLeave={() => setOver(false)} onDrop={event => { event.preventDefault(); setOver(false); add(Array.from(event.dataTransfer.files)); }}><Icon name="upload" /><span>{logo ? 'ატვირთეთ ლოგო' : 'დაამატეთ'}</span></Button></li>}
     </ul>
     <input ref={input} id={id} className="ma-sr-only" type="file" multiple={!logo} disabled={inactive} tabIndex={-1} aria-label={`${label} — დაამატეთ`} accept={ALLOWED.join(',')} onChange={event => { add(Array.from(event.target.files || [])); event.target.value = ''; }} />
     <p id={`${id}-help`} className="ma-field__help">{hint ?? `JPG, PNG, WEBP ან GIF · ${size} მბ-მდე${logo ? '' : ' · პირველი ფოტო მთავარია.'}`}</p>

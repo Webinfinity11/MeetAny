@@ -102,7 +102,7 @@ function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(item
   if (!validate()) throw { userMessage: "ჯერ გაასწორეთ პროდუქტების ფორმის შეცდომები." };
   await persist(imported);setSearch("");setPage(0);
  }}/>
- <p className={styles.productsHelp}>ფოტო არასავალდებულოა. სურვილის შემთხვევაში აირჩიეთ გალერეიდან. <Link className="ma-link" href="/account/?tab=profile&section=details#profile-gallery-label">ფოტოების დამატება</Link></p>
+ <p className={styles.productsHelp}>ფოტო აირჩიეთ გალერეიდან. <Link className="ma-link" href="/account/?tab=profile&section=details#profile-gallery-label">ფოტოების დამატება</Link></p>
  <form className="ma-form" noValidate onSubmit={async e=>{
   e.preventDefault();if(pending)return;setError("");setFeedback("");
   if (!validate()) return;
@@ -111,7 +111,7 @@ function ProductsForm({initial,onSaved}:{initial:ProductCardData[];onSaved:(item
  }}>
  {Object.keys(fields.errors).length ? <div className={styles.productErrorSummary} role="alert"><p>გადაამოწმეთ პროდუქტების ველები:</p><ul>{Object.entries(fields.errors).map(([id,message])=><li key={id}><a href={`#${id}`} onClick={e=>{e.preventDefault();setSearch("");setPage(Math.floor(Number(id.split("-")[1])/20));requestAnimationFrame(()=>document.getElementById(id)?.focus());}}>პროდუქტი {Number(id.split("-")[1])+1}: {message}</a></li>)}</ul></div> : null}
  {items.length>10 ? <label className="ma-field">ძიება სახელით ან კოდით<input type="search" className="ma-input" value={search} onChange={e=>{setSearch(e.target.value);setPage(0);}}/></label> : null}
- {!items.length ? <p className={styles.productsHelp}>პროდუქტები ჯერ არ დაგიმატებიათ. დაამატეთ ხელით ან ატვირთეთ შაბლონი.</p> : null}
+ {!items.length ? <p className={styles.productsHelp}>პროდუქტები ჯერ არ დაგიმატებიათ.</p> : null}
  {filtered.slice(currentPage*20,currentPage*20+20).map(({item,index})=>{
  const id = (field:string)=>`product-${index}-${field}`;
  return <fieldset key={index} className={styles.productEditorCard}><legend>პროდუქტი {index+1}</legend>

@@ -15,7 +15,7 @@ export function AdminNavigation({ tab, reports, issues = 0, offersEnabled }: { t
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const close = () => { setOpen(false); if (open) trigger.current?.focus(); };
-  const badges: Partial<Record<AdminSection, [number, string]>> = { reports: [reports, "ახალი საჩივარი"], deals: [issues, "ღია პრობლემა"] };
+  const badges: Partial<Record<AdminSection, [number, string]>> = { reports: [reports, "ახალი მომართვა"], deals: [issues, "ღია პრობლემა"] };
   return <aside className={styles.sidebar} data-open={open || undefined} onKeyDown={event => {
     if (event.key === "Escape" && open) { event.preventDefault(); close(); }
   }}>

@@ -85,15 +85,15 @@ function ReportSheet({ kind, targetId, onClose }: { kind: ReportKind; targetId: 
     </>}>
     <form id={formId} className="ma-form" onSubmit={submit} noValidate>
       <fieldset className="report-reasons">
-        <legend className="ma-field__label">{questions[kind]}</legend>
+        <legend className="ma-field__label">{questions[kind]} *</legend>
         {reasons.map(r => <label key={r.key} className="ma-check">
-          <input type="radio" name="report-reason" value={r.key} checked={reason === r.key} disabled={pending} onChange={() => { setReason(r.key); setError(null); }} />
+          <input type="radio" required name="report-reason" value={r.key} checked={reason === r.key} disabled={pending} onChange={() => { setReason(r.key); setError(null); }} />
           {r.label}
         </label>)}
       </fieldset>
       <div className="ma-field">
         <label className="ma-field__label" htmlFor={`${formId}-text`}>
-          დეტალები {needsText ? null : <span className="ma-field__opt">არასავალდებულო</span>}
+          დეტალები {needsText ? "*" : null}
         </label>
         <textarea id={`${formId}-text`} className="ma-textarea" maxLength={TEXT_MAX} value={text} disabled={pending} required={needsText}
           aria-describedby={`${formId}-help`} onChange={e => { setText(e.target.value); setError(null); }} />

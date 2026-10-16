@@ -32,7 +32,7 @@ export function DistributionForm({initial,onSaved}:{initial?:Distribution|null;o
    setValue(savedValue);setBaseline(JSON.stringify(savedValue));markSaved();onSaved();return true;
   }catch(err){setError(businessError(err));return false;}finally{setPending(false);}
  }
- return <section className="account-section account-profile-block"><header className="account-section__heading"><h2 className="account-section__title">მიწოდების პირობები</h2><p className="account-hint">აირჩიეთ მომსახურების ქალაქები, არხები და მიწოდების პირობები.</p></header>
+ return <section className="account-section account-profile-block"><header className="account-section__heading"><h2 className="account-section__title">მიწოდების პირობები</h2></header>
  <form className={`ma-form distribution-form ${styles.form}`} onSubmit={e=>{e.preventDefault();void save();}}>
  <fieldset className={styles.selections} disabled={pending}>
  <MultiCombobox label="მომსახურების ქალაქები" options={cityOptions} exclusiveValue="georgia" id="distribution-cities" required aria-invalid={!!error&&!value.regions.length} aria-describedby={error ? "distribution-error" : undefined} value={value.regions} onChange={regions=>{setError("");patch({regions});}} disabled={pending}/>

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-10-16T07:31:28.488Z",
+  "mode": "applied",
+  "migration": "20261016-admin-request-states",
+  "rowWrites": false,
+  "aclPreserved": true,
+  "cancelledFixtureMatches": 1,
+  "chosenFixtureMatches": 0,
+  "beforeHash": "602ba32e8a70a414f023059b4a0e28ed76878871fc4aaf9040f103f4b2f3e98a",
+  "afterHash": "6eef0d72899552ea95c532cf52aa8e34b6b947942ac76918183eea7175df8ab4",
+  "finalHash": "6eef0d72899552ea95c532cf52aa8e34b6b947942ac76918183eea7175df8ab4"
+}

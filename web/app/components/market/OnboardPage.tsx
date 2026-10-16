@@ -234,7 +234,7 @@ export function OnboardPage() {
     void save(target);
   };
   const nextStep = step === 'type' && completed.details ? 'profile' : steps[index + 1];
-  const status = (key: OnboardStep) => key === step ? 'მიმდინარე' : completed[key] ? 'შევსებულია' : ['provide','need','verify'].includes(key) ? 'არასავალდებულო' : 'მომავალი';
+  const status = (key: OnboardStep) => key === step ? 'მიმდინარე' : completed[key] ? 'შევსებულია' : 'მომავალი';
   return <div className={s.page}>
     <header className={s.header}><div><Link className={s.logo} href="/" onClick={event => { if (dirty.current.size || pending) { event.preventDefault(); void save('home'); } }}><Logo size={24} /></Link><Button variant="ghost" disabled={pending} onClick={() => { void save('account'); }}>ანგარიშზე დაბრუნება</Button></div></header>
     <main className={s.shell}>
@@ -245,7 +245,7 @@ export function OnboardPage() {
         </>}
         aside={<>
           <OnboardPreview profile={model.profile} products={model.products} step={step} />
-          <section className={s.progressPanel} aria-label="შევსების პროგრესი"><strong>{p?.onboarding_completed_at ? 'პროფილი მზადაა' : 'შეავსეთ თქვენი საჭიროებით'}</strong><p>დამატებითი ინფორმაციის შევსება მოგვიანებითაც შეგიძლიათ.</p><p className={s.draftStatus} role="status">{pending ? 'ინახება…' : hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : 'ცვლილებები შენახულია'}</p></section>
+          <section className={s.progressPanel} aria-label="შევსების პროგრესი"><strong>{p?.onboarding_completed_at ? 'პროფილი მზადაა' : 'შეავსეთ თქვენი საჭიროებით'}</strong><p>დამატებითი ინფორმაციის შევსება მოგვიანებითაც შეგიძლიათ.</p><p className={pending || hasChanges || savedAt ? s.draftStatus : 'ma-sr-only'} role="status">{pending ? 'ინახება…' : hasChanges ? 'შეუნახავი ცვლილებები' : savedAt ? 'შენახულია ' + savedAt : ''}</p></section>
         </>}
         footer={<div className={s.actions}><Button variant="secondary" disabled={pending || index === 0} onClick={() => go(steps[index - 1])}>უკან</Button><Button type="submit" form="onboard-form" loading={pending}>{index === last ? 'დასრულება' : ['provide','need','verify'].includes(step) && !hasChanges && !completed[step] ? 'მოგვიანებით' : 'შემდეგი'}</Button></div>}
       >

@@ -296,7 +296,9 @@
       "title": "Registration welcome and next step",
       "details": "Requested by user: dedicated welcome after registration for personal and company accounts. Only generic dashboard greeting currently.",
       "at": "2026-10-15T11:23:38.772Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-002",
@@ -304,7 +306,9 @@
       "title": "Fresh company onboarding immediately says unsaved changes",
       "details": "Immediately after registration, before any input on onboarding type, page shows unsaved changes twice. Default values seeded from registration should not imply the user edited unsaved data. Screenshot 06.",
       "at": "2026-10-15T11:24:33.241Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-003",
@@ -312,7 +316,9 @@
       "title": "Onboarding exposes seven steps even when data is already provided",
       "details": "Company data and business profile prefilled/completed, but seven-step navigation with multiple future optional sections makes a simple registration feel long. Evaluate one concise setup + optional enrichment.",
       "at": "2026-10-15T11:24:33.241Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-004",
@@ -321,7 +327,9 @@
       "details": "User observed live /onboarding/?step=type vs details. Source OnboardPage applies detailsLayout and removes aside only on details; form width and alignment jump. Need stable frame, step navigation, content width and footer across all steps.",
       "at": "2026-10-15T11:27:46.946Z",
       "status": "live_verified",
-      "evidence": "forms-regression/report.json"
+      "evidence": "forms-regression/report.json",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-005",
@@ -329,8 +337,10 @@
       "title": "Product photo caption overflows into form column",
       "details": "User screenshot confirms Georgian ფოტო არასავალდებულოა spills out of narrow photo column toward product code field. Need wrapping/min-width rules and consistent responsive product form.",
       "at": "2026-10-15T11:28:21.782Z",
-      "status": "locally_verified",
-      "evidence": "forms-regression/report.json"
+      "status": "live_verified",
+      "evidence": "forms-regression/report.json",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-006",
@@ -338,8 +348,11 @@
       "title": "Spreadsheet import dominates single-product creation",
       "details": "Large import instructions and technical limits appear before first product. Single product add should lead; import can expand on demand.",
       "at": "2026-10-15T11:28:21.782Z",
-      "status": "locally_verified",
-      "evidence": "forms-regression/report.json"
+      "status": "live_verified",
+      "evidence": "forms-regression/report.json",
+      "closureEvidence": "../closure-20261016/forms-report.json#updatedAcceptance",
+      "recheckedOn": "2026-10-16",
+      "currentAcceptance": "Later user preference supersedes collapse: compact import remains visible, with short instructions, no permanent product quota, one template and one chooser."
     },
     {
       "id": "UX-007",
@@ -347,7 +360,9 @@
       "title": "Verification submission leaves contradictory instructions",
       "details": "After successful submission status is განსახილველი, but wizard still says გაგზავნამდე შეამოწმეთ and unsaved changes. Server-persisted verification status is treated as unsaved form editing.",
       "at": "2026-10-15T11:28:46.191Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-008",
@@ -355,7 +370,9 @@
       "title": "Verification has nested progress and ambiguous exits",
       "details": "Desktop verification screen shows outer 7-step flow, inner 3-step document tabs, right completion meter, top skip-to-finish and multiple გადით actions. After pending, user still sees 4/7 despite action completed. Simplify one primary next action, label optional/skipped steps accurately, distinguish leave setup from sign out.",
       "at": "2026-10-15T11:29:03.874Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-009",
@@ -363,7 +380,9 @@
       "title": "Company review repeats name without field labels",
       "details": "Review company section prints trading name and identical legal name twice, plus person/city/registration code without labels. Collapse equal names and label differing values. Screenshot 14.",
       "at": "2026-10-15T11:29:36.734Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-010",
@@ -371,7 +390,9 @@
       "title": "Upgrade company nested grid compresses form and actions",
       "details": "In personal account settings, CompanyUpgrade uses another FormLayout with benefits aside inside the narrow account content column. At desktop the company field is ~210px, supporting paragraph becomes a tall narrow column, and footer buttons crowd. Screenshot16. Use single column within account card.",
       "at": "2026-10-15T11:30:40.526Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-011",
@@ -379,7 +400,9 @@
       "title": "Personal name duplicated as company in profile settings",
       "details": "Fresh personal registration without company shows personal name in Company / Organization field and twice in profile preview. Do not invent company identity from personal name.",
       "at": "2026-10-15T11:30:40.526Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-012",
@@ -395,7 +418,9 @@
       "title": "Request review and preview use different missing-photo treatment",
       "details": "Final review has gray image icon while right preview uses themed photo. Shared fallback treatment should be consistent. Screenshot21.",
       "at": "2026-10-15T11:31:34.435Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-014",
@@ -403,7 +428,9 @@
       "title": "Underlined navigation links remain in offer flow",
       "details": "Offer page breadcrumbs, repeated request title links and return link still use default underlines, inconsistent with requested link treatment. Screenshot28.",
       "at": "2026-10-15T11:35:36.092Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-015",
@@ -435,7 +462,9 @@
       "title": "Comparison table and repeated cards create excessive vertical length",
       "details": "User still observes spacing and table problems. Comparison table uses wide cells and repeats same values in full offer cards beneath. Align sizing to information density and avoid duplicated details; verify on desktop and mobile. Screenshot32.",
       "at": "2026-10-15T11:44:06.098Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-019",
@@ -468,7 +497,10 @@
       "title": "Simplify interface text and remove repeated instructions",
       "details": "User requirement: review all critical flows for concise Georgian text, clear action labels and progressive disclosure. Keep decision-critical price, privacy, verification and irreversible-action information.",
       "at": "2026-10-15T11:51:26.515Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/forms-report.json#profileCopyFollowup",
+      "recheckedOn": "2026-10-16",
+      "verificationScope": "Profile, account password, onboarding idle states and reviewed request/offer/contact copy. Required stars replace repeated optional labels; critical privacy, upload limits and result notices remain."
     },
     {
       "id": "UX-023",
@@ -476,7 +508,9 @@
       "title": "Content publish stays enabled without edits",
       "details": "Content editor says no changes but both publish actions remain enabled. Screenshot54; publishing not invoked.",
       "at": "2026-10-15T11:51:57.825Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-024",
@@ -501,7 +535,9 @@
       "title": "Contact-change requests are filed as complaints",
       "details": "A normal profile contact-change enters Complaints, adds complaint count, and is described as complaint for admin. Separate account-change task semantics and clear pending state needed. Screenshot67.",
       "at": "2026-10-15T12:00:27.143Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "COPY-027",
@@ -509,7 +545,9 @@
       "title": "Contact email vs login email semantics differ between user and admin",
       "details": "User contact-change dialog describes phone/email as account identifiers, while admin says only profile contact email changes and login email stays unchanged. User must see this distinction before submitting.",
       "at": "2026-10-15T12:01:16.932Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "LOGIC-028",
@@ -517,7 +555,9 @@
       "title": "Reopen confirmation promises seven days but request still shows fourteen",
       "details": "Request closed then reopened. Confirmation says accepts offers for 7 days; resulting buyer/supplier view shows14 days and original Oct28 expiry. Need align operation and copy. Screenshot69.",
       "at": "2026-10-15T12:04:23.847Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-029",
@@ -525,7 +565,9 @@
       "title": "Resubmitting a withdrawn offer requires all information again",
       "details": "After cancellation the promised resubmit path opens a blank form, losing access to prior description, price, delivery and terms. Offer reuse option would meet no-repeat-entry requirement.",
       "at": "2026-10-15T12:05:15.995Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-030",
@@ -549,7 +591,9 @@
       "title": "Unsent message is lost when closing mobile conversation",
       "details": "Type an unsent message, press Back, reopen same conversation: composer is empty without warning. Preserve per-thread draft across navigation, including attachments where supported.",
       "at": "2026-10-15T12:10:28.451Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-033",
@@ -584,7 +628,9 @@
       "title": "Manually verified company still receives missing-verification crosses",
       "details": "Review screen says verified but lists legal data/documents with failure crosses after admin manual verification. Avoid presenting optional outstanding documents as verification failure; status authority and next action must agree. Screenshot83.",
       "at": "2026-10-15T12:17:40.993Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "ANALYTICS-037",
@@ -601,7 +647,9 @@
       "title": "Cancelled deal retains selected-supplier request wording",
       "details": "After deal cancellation, admin request shows supplier selected and chosen offer alongside cancelled deal. Cancellation copy says request stays closed. Keep historical selection but show cancellation prominently and use consistent current status.",
       "at": "2026-10-15T12:19:17.151Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-039",
@@ -609,23 +657,30 @@
       "title": "Popups sometimes appear beneath page text or open out of bounds",
       "details": "User reports recurring overlay stacking/placement bug. Inspect actual transition frames and settled state, parent stacking contexts, portal/top-layer use, clipping, flip/shift placement and nested overlays. Earlier transparent-frame observations were not confirmed; reproduce before choosing fix.",
       "at": "2026-10-15T12:22:10.166Z",
-      "status": "implemented_pending_live_recheck"
+      "status": "live_verified",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16",
+      "verificationScope": "Native search/category/contact overlays, admin contact modal and final terms/discard guards at recorded viewport sizes; not every possible popup/device combination."
     },
     {
       "id": "UI-040",
       "title": "Search menu detached from its field",
       "details": "Replaced viewport-wide absolute popup with anchored native top-layer popover; flips/clamps, follows scroll/resize, closes when anchor leaves view; keyboard scroll affects only panel.",
       "severity": "medium",
-      "status": "locally_verified",
-      "evidence": "104/105 screenshots and local keyboard/scroll/Escape checks"
+      "status": "live_verified",
+      "evidence": "104/105 screenshots and local keyboard/scroll/Escape checks",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-041",
       "title": "Category-specific request fields and mandatory unknown quantity/date",
       "details": "One request form with title/category/body/city required; quantity/date optional. Optional fields visible, budget errors focus field; categories remain open for browsing.",
       "severity": "medium",
-      "status": "locally_verified",
-      "evidence": "Actual local minimal request af38d827-6be5-4f8a-9c38-bd4bf6274601; 320px budget validation"
+      "status": "live_verified",
+      "evidence": "Actual local minimal request af38d827-6be5-4f8a-9c38-bd4bf6274601; 320px budget validation",
+      "closureEvidence": "../closure-20261016/admin-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "LOGIC-042",
@@ -640,16 +695,20 @@
       "title": "Populated unnamed optional product silently discarded",
       "details": "Only entirely blank products ignored. Populated missing-name rows retain fields and focus marked required name before any save.",
       "severity": "medium",
-      "status": "locally_verified",
-      "evidence": "forms-regression/report.json; onboarding unit tests"
+      "status": "live_verified",
+      "evidence": "forms-regression/report.json; onboarding unit tests",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-044",
       "title": "Long service names hidden by +N and oversized chips",
       "details": "All services/needs appear in editable rows; immediate draft updates, compact add and 44px removal controls.",
       "severity": "medium",
-      "status": "locally_verified",
-      "evidence": "forms-regression/31-services-final-390.png; forms-regression/32-services-final-320.png; forms-regression/33-needs-list-320.png"
+      "status": "live_verified",
+      "evidence": "forms-regression/31-services-final-390.png; forms-regression/32-services-final-320.png; forms-regression/33-needs-list-320.png",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UX-045",
@@ -677,21 +736,116 @@
     {
       "id": "UX-048",
       "title": "Final deal terms could drop pending added condition",
-      "status": "locally_verified",
-      "details": "Editableconditionrows save enteredtext; blankrows ignored. Back/X/Escape/backdrop all use the same discardguard; local320/390 verified."
+      "status": "live_verified",
+      "details": "Editableconditionrows save enteredtext; blankrows ignored. Back/X/Escape/backdrop all use the same discardguard; local320/390 verified.",
+      "closureEvidence": "../closure-20261016/flows-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "A11Y-049",
       "title": "Registration stars did not match native required attributes",
-      "status": "locally_verified",
+      "status": "live_verified",
       "details": "Native/ARIArequired, consentstar, first-invalidfocus; duplicatephone gets inlineerrorandfocus.",
-      "evidence": "live-final/forms-auth-discard-report.json"
+      "evidence": "live-final/forms-auth-discard-report.json",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
     },
     {
       "id": "UI-050",
       "title": "Empty product descriptions reserve redundant rows",
-      "status": "locally_verified",
-      "details": "Compactedit/delete row and no emptyparagraph;15-product case checked320/390."
+      "status": "live_verified",
+      "details": "Compactedit/delete row and no emptyparagraph;15-product case checked320/390.",
+      "closureEvidence": "../closure-20261016/forms-report.json",
+      "recheckedOn": "2026-10-16"
+    },
+    {
+      "id": "ADMIN-CURSOR",
+      "severity": "medium",
+      "title": "Malformed admin deal cursor leaves a permanent loading state",
+      "status": "live_verified",
+      "details": "Parsing is caught; error offers Retry and First page. Live recovery and three regression tests passed.",
+      "closureEvidence": "../closure-20261016/admin-report.json"
+    },
+    {
+      "id": "ADMIN-01",
+      "severity": "high",
+      "kind": "bug",
+      "title": "Verification work queue includes companies that never submitted documents",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-02",
+      "severity": "high",
+      "kind": "bug",
+      "title": "Overview KPI definitions differ from linked list filters",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-03",
+      "severity": "high",
+      "kind": "bug",
+      "title": "CSV cap can silently truncate more than 5000 records",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-04",
+      "severity": "high",
+      "kind": "capability_gap",
+      "title": "Deal issue queue and closed history have incomplete traversal",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-05",
+      "severity": "high",
+      "kind": "external_dependency",
+      "title": "Production email worker is not configured or scheduled",
+      "status": "external_dependency",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-06",
+      "severity": "medium",
+      "kind": "capability_gap",
+      "title": "Search, saved filters and media coverage differ between admin modules",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-07",
+      "severity": "medium",
+      "kind": "conditional_new_capability",
+      "title": "Operator assignment and queue ownership if several staff work concurrently",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-08",
+      "severity": "medium",
+      "kind": "new_capability",
+      "title": "End-to-end cohort analytics beyond existing registration/onboarding funnel",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
+    },
+    {
+      "id": "ADMIN-09",
+      "severity": "medium",
+      "kind": "operational_validation",
+      "title": "Admin bootstrap scale, audit retention/access and backup recovery need measured review",
+      "status": "planned",
+      "evidence": "../closure-20261016/ADMIN-REVIEW.txt",
+      "note": "Critical admin review finding; not claimed fixed in this release. Acceptance criteria and priorities are in the review."
     }
   ],
   "artifacts": {
@@ -722,24 +876,25 @@
     "accountsRetained": true
   },
   "release": {
-    "status": "deployed_and_verified",
-    "candidate": "https://meet-lyd2zz9xw-infinity-solutions.vercel.app",
-    "unitTests": 147,
-    "sqlAssertions": 2356,
-    "typescript": "passed",
-    "lint": "app ESLint:0 errors/warnings; full lint includes32 existingQA script warnings",
-    "designLint": "passed",
-    "productionMigration": "applied;11postchecks passed",
-    "liveRecheck": "Business flow complete; final category icons/disclosure/320px verified. Modal input-retention mechanics locally verified.",
-    "limitations": [
-      "Browser viewport emulation at 320/390/desktop; no physical-device test.",
-      "Email/SMS delivery outside browser walkthrough not established.",
-      "No destructive actions against real customer data."
-    ],
-    "deploymentId": "dpl_Ftwm36qCLCPLoLMiDtLT4JsSbrAz",
+    "status": "deployed_and_targeted_live_verified",
     "site": "https://www.meetany.ge",
-    "build": "Webpack local and Turbopack Vercel passed",
-    "sourceSnapshot": "Final app files match tested build snapshot."
+    "candidate": "https://meet-pfhlx3nld-infinity-solutions.vercel.app",
+    "deploymentId": "dpl_HjMmTbv3reLhFsRJfbRqtRAgXLWd",
+    "unitTests": 155,
+    "sqlAssertions": 2454,
+    "typescript": "passed",
+    "lint": "app ESLint passed",
+    "designLint": "passed",
+    "build": "isolated webpack and Vercel production build passed",
+    "productionMigration": "admin request states dry-run/rollback/apply passed; ACL unchanged; no record rewrites",
+    "evidence": "../CLOSURE-2026-10-16.md",
+    "openAdminPlan": "../closure-20261016/ADMIN-REVIEW.txt",
+    "limitations": [
+      "Browser viewport emulation/macOS WebKit, not physical device test.",
+      "Actual email delivery/OTP/reset not established.",
+      "Official contact values still need owner input.",
+      "Nine admin review workstreams remain planned/external; implemented fixes do not imply all product capabilities complete."
+    ]
   },
   "liveFinal": {
     "origin": "https://www.meetany.ge",
@@ -778,5 +933,33 @@
       "Final terms close-guard interactions locally verified on exact deployed source; live completed deal remains unchanged."
     ],
     "finalPresentationDeployment": "meet-lyd2zz9xw-infinity-solutions.vercel.app"
+  },
+  "priorRelease20261015": {
+    "status": "deployed_and_verified",
+    "candidate": "https://meet-lyd2zz9xw-infinity-solutions.vercel.app",
+    "unitTests": 147,
+    "sqlAssertions": 2356,
+    "typescript": "passed",
+    "lint": "app ESLint:0 errors/warnings; full lint includes32 existingQA script warnings",
+    "designLint": "passed",
+    "productionMigration": "applied;11postchecks passed",
+    "liveRecheck": "Business flow complete; final category icons/disclosure/320px verified. Modal input-retention mechanics locally verified.",
+    "limitations": [
+      "Browser viewport emulation at 320/390/desktop; no physical-device test.",
+      "Email/SMS delivery outside browser walkthrough not established.",
+      "No destructive actions against real customer data."
+    ],
+    "deploymentId": "dpl_Ftwm36qCLCPLoLMiDtLT4JsSbrAz",
+    "site": "https://www.meetany.ge",
+    "build": "Webpack local and Turbopack Vercel passed",
+    "sourceSnapshot": "Final app files match tested build snapshot."
+  },
+  "liveClosure20261016": {
+    "evidence": [
+      "../closure-20261016/forms-report.json",
+      "../closure-20261016/flows-report.json",
+      "../closure-20261016/admin-report.json"
+    ],
+    "cleanup": "Both dedicated QA requests and both QA companies hidden; test verification returned with QA reason; history preserved. No real customer records modified."
   }
 }

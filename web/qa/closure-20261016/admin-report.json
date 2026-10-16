@@ -1,9 +1,9 @@
 {
   "date": "2026-10-16",
   "origin": "https://www.meetany.ge",
-  "scope": "Read-only owner admin and guest browser UI. Browser viewport emulation, not a physical device test. No email sent or production records mutated.",
-  "deployment": "dpl_Ftwm36qCLCPLoLMiDtLT4JsSbrAz",
-  "checkedAt": "2026-10-16T06:55:26.487115+00:00",
+  "scope": "Guest/read-only owner-admin browser audit plus authorized contact-change flow on a dedicated hidden QA company. Browser viewport emulation, not physical-device testing. Owner profile untouched; no external emails/messages sent.",
+  "deployment": "dpl_HjMmTbv3reLhFsRJfbRqtRAgXLWd",
+  "checkedAt": "2026-10-16T07:38:31.083312+00:00",
   "checks": [
     {
       "issue": "UX-023",
@@ -16,22 +16,27 @@
     },
     {
       "issue": "UX-026",
-      "status": "implemented_pending_live_recheck",
+      "status": "live_verified",
       "route": "/admin/?tab=reports",
-      "observed": "Live nav/title already says inquiries, but empty/count/table labels still called contact-change requests complaints. Fixed generic queue labels and removed complaint count from contact-change row.",
+      "observed": "New and handled contact-change rows use neutral inquiry labels, without complaint counts. Dedicated QA request submitted and approved; handled result visible.",
       "files": [
         "app/components/market/AdminReports.tsx"
+      ],
+      "screenshots": [
+        "contact-admin-pending-1440.png",
+        "contact-admin-handled-1440.png"
       ]
     },
     {
       "issue": "COPY-027",
       "status": "live_verified",
-      "scope": "Admin side only; user profile dialog requires separate forms evidence",
+      "scope": "User request, admin approval, notification and fresh login",
       "route": "/admin/?tab=reports&status=handled",
-      "observed": "Contact-change dialog distinguishes profile contact email from unchanged login email.",
+      "observed": "User and admin dialogs explain contact vs login email. After dedicated QA contact email approval, fresh isolated login with the original login email/password succeeded; profile displayed the new contact email.",
       "screenshots": [
-        "admin-contact-dialog-1440.png",
-        "admin-contact-dialog-390.png"
+        "contact-request-390.png",
+        "contact-admin-pending-1440.png",
+        "contact-notification-detail-390.png"
       ]
     },
     {
@@ -105,41 +110,95 @@
     },
     {
       "issue": "terms-product-copy",
-      "status": "implemented_pending_live_recheck",
+      "status": "live_verified",
       "route": "/terms/",
-      "observed": "Removed false claim that every registration confirms email by code. Clarified that offer execution date/conditions can be agreed later. No legal policies or contact details invented.",
+      "observed": "Live terms requires a valid email without falsely claiming code verification, and permits later clarification of execution date/conditions.",
       "files": [
         "app/(terms)/terms/page.tsx"
       ]
     },
     {
       "issue": "handled-contact-duplication",
-      "status": "implemented_pending_live_recheck",
+      "status": "live_verified",
       "route": "/admin/?tab=reports",
       "observed": "After contact update was applied, modal showed current phone pointing to identical requested phone, as though still pending. Handled records now label and show requested contact only; current→requested comparison remains for new requests.",
       "files": [
         "app/components/market/AdminReports.tsx"
+      ],
+      "screenshots": [
+        "contact-admin-handled-1440.png"
       ]
     },
     {
       "issue": "contact-notification-and-audit-semantics",
-      "status": "implemented_pending_live_recheck",
-      "observed": "Contact-change notices identify update/rejection separately from complaints, show unchanged login email on success and preserve rejection reason. Current result enums and historical sentence payloads supported; unknown result stays neutral. Audit general report labels neutral, contact update explicitly named.",
+      "status": "live_verified",
+      "observed": "Dedicated QA contact approval produces green success with unchanged-login statement; handled row requested value only; business audit explicitly names contact update. Second dedicated request was rejected on final release: admin neutral rejection title/consequence and new-inquiry ARIA badge verified; user red rejected notice retains the full reason including colon, detail has no overflow at390. Contact remained unchanged after rejection.",
       "files": [
         "app/components/market/EngagementPanels.tsx",
         "app/components/market/AdminAuditTable.tsx",
         "app/components/market/AdminBusinessAudit.tsx"
       ],
-      "validation": "account-public unit suite 8/8 and targeted ESLint pass"
+      "validation": "Live applied and rejected flows, fresh original-login check, 8 account-public unit tests and targeted ESLint pass.",
+      "screenshots": [
+        "contact-notification-390.png",
+        "contact-notification-detail-390.png",
+        "contact-admin-handled-1440.png",
+        "contact-admin-audit-1440.png",
+        "contact-reject-dialog-1440.png",
+        "contact-rejected-detail-390.png",
+        "contact-rejected-admin-1440.png"
+      ]
     },
     {
       "issue": "multi-select-required-marker",
-      "status": "implemented_pending_live_recheck",
+      "status": "live_verified",
       "observed": "Required MultiCombobox visible label gets one star, avoids duplicate when supplied label already contains star; aria-required preserved.",
       "files": [
         "app/components/ui/Combobox.tsx"
       ],
-      "validation": "targeted ESLint pass"
+      "validation": "Required distribution city/channel labels and ARIA semantics verified by forms agent on first release; missing city then channel focus followed visual order.",
+      "evidence": "forms-report.json liveRecheck A11Y-049"
+    },
+    {
+      "issue": "LOGIC-038",
+      "status": "live_verified",
+      "scope": "Admin request search RPC and export/list state",
+      "observed": "Terminal cancelled/complete stage overrides historical choice; hidden overrides terminal state. Single unique-request deal join, shared filter/count/pagination projection.",
+      "files": [
+        "db/migrations/20261016-admin-request-states.sql",
+        "db/tests/admin_request_states_tests.sql",
+        "db/tests/run.sh",
+        "db/CONTRACT.md"
+      ],
+      "validation": {
+        "fullSqlSuiteAssertions": 2454,
+        "newAssertions": 98,
+        "migrationRuns": 2,
+        "coverage": [
+          "terminal and hidden state priorities",
+          "legacy choice/no-deal",
+          "open/closed/expired",
+          "status+category filters",
+          "UUID lookup",
+          "stable cursor/count",
+          "11-state fixture paged exactly once",
+          "offer/owner/deal metadata",
+          "anonymous/personal/blocked-admin denial",
+          "invalid state/cursor/limit"
+        ],
+        "production": "Production migration dry-run/apply passed; ACL unchanged; rollback hash verified. Live admin q=QA1610&status=cancelled returned exactly1; list/detail1440/390 showed cancelled; QA-filtered CSV agreed. After cleanup hiddenfilter returned2 QA requests; anonymous search returned0."
+      },
+      "evidence": "flows-report.json (final dpl_HjMmTbv3reLhFsRJfbRqtRAgXLWd)"
+    },
+    {
+      "issue": "admin-malformed-deal-cursor",
+      "status": "live_verified",
+      "route": "/admin/?tab=deals&cursor=%7Bbad",
+      "observed": "Second release: malformed JSON cursor settles into a recoverable error with Retry and First page. First page removes cursor and renders 14 deals (15 table rows including header). No uncaught page errors. Three regression tests exercise actual loading effect and recovery handlers.",
+      "source": "app/components/market/AdminDeals.tsx",
+      "screenshots": [
+        "admin-cursor-recovered-1440.png"
+      ]
     }
   ],
   "emailInfrastructure": {
@@ -164,20 +223,26 @@
     "requiredToEnableNotifications": "Valid Resend key, verified sender/domain, HTTPS origin, deliberate worker schedule and authorized test inbox. Do not claim delivery from fake-provider unit tests."
   },
   "mutations": {
-    "productionDatabase": false,
+    "productionDatabase": "Two authorized contact-change requests on the dedicated hidden QA company: first applied (fake local contact email), second rejected with QA reason. Two corresponding QA notifications marked read. No public content added.",
     "ownerProfile": false,
     "messagesOrEmailsSent": false,
+    "inAppNotification": "Two automatic notices to the dedicated QA profile: applied and rejected",
     "guestDraft": "Browser-local only"
   },
   "validation": {
     "targetedESLint": "pass; final AdminReports.tsx and terms/page.tsx edits checked with ESLint from web workspace",
-    "visual": "Settled screenshots reviewed for search1440/320, categories320, admincontact390, adminoffers320, requestreview1440",
-    "pageErrorsDuringChecks": []
+    "visual": "Settled screenshots reviewed for search1440/320, categories320, admincontact390, adminoffers320, requestreview1440; contact request390, pending1440, success notification390/detail390, handled1440, audit1440",
+    "pageErrorsDuringChecks": [
+      "Earlier first-release malformed deal cursor reproduced; second release fixed and live-rechecked with zero page errors."
+    ],
+    "cursorRegression": "3/3 tests exercise actual effect/error view; final live error recovery verified."
   },
   "limitations": [
-    "Newly changed copy has not yet been deployed/rechecked.",
+    "Planned operational admin improvements in ADMIN-REVIEW.txt remain open; live fixes are not a claim that those additional capabilities are complete.",
     "A request to inspect offer detail used the wrong button locator and timed out; this is an automation failure, not evidence of an app bug. No offer detail modal recheck claimed.",
     "Screenshots are local QA artifacts and may contain dedicated QA contacts; do not publish screenshots to public GitHub.",
-    "No physical iPhone/Android device or actual mailbox delivery test in this audit."
-  ]
+    "No physical iPhone/Android device or actual mailbox delivery test in this audit.",
+    "Two isolated admin page URL changes occurred between commands; cause not established, not logged as an app defect. Subsequent single-command navigations/actions completed correctly."
+  ],
+  "priorDeployment": "dpl_Ftwm36qCLCPLoLMiDtLT4JsSbrAz"
 }
